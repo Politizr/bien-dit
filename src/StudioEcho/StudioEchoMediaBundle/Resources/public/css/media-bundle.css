@@ -1,0 +1,213 @@
+/* 
+    Document   : media-bundle
+    Created on : 29 nov. 2012, 14:25:24
+    Author     : lionel
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+  display: block;
+}
+
+#mediabundle {
+	position: relative;
+}
+
+#mediabundle ul, #mediabundle li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#mediabundle #displayzone {
+	float: left;
+	width: 73%
+}
+
+#mediabundle #uploadzone {
+	float: right;
+	width: 25%;
+
+}
+
+#fineuploader {
+	padding: 10px;
+	background-color: #cccccc;	
+}
+
+
+.qq-upload-button {
+	background: url(../images/bg_upload_zone.jpg);
+	width: 100%;
+	border: solid 1px #82ab4d;
+	color: #000;
+	font-weight: bold;
+}
+
+#uploadzone-help {
+	font-size: 12px;
+	line-height: 140%;
+	margin-top: 10px;
+}
+
+#displayzone li {
+	background: #d9d9d9;
+	padding: 5px 5px 5px 55px;	
+	background-image: url(../images/medialist_drag.png);
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	cursor: move;
+	float: left;
+	position: relative;
+	width: 92%;
+	margin : 50px 0;
+}
+
+#displayzone li a {
+	cursor: pointer;
+}
+
+.fileblock-header {
+	height: 40px;
+}
+
+.fileblock-header-thumbnail {
+	width: 120px;
+	height: 120px;
+	position: absolute;
+	top : -30px;
+	left : 70px;
+}
+
+.fileblock-header-thumbnail-box {
+	width: 120px;
+	height: 120px;
+/* 	margin-top: -50px; */
+	padding: 5px;
+	text-align: center;
+	background-color: #f9f9f9;
+	display: table-cell; 
+	vertical-align: middle;
+	-moz-box-shadow: 10px 10px 4px #888;
+	-webkit-box-shadow: 10px 10px 4px #888;
+	box-shadow: 0px 0px 4px #888;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: solid 1px #b9b9b9;
+
+}
+
+.fileblock-header-thumbnail:hover {
+	width: 160px;
+	height: 160px;
+	left: 50px;
+	top: -50px;
+	z-index: 1;
+}
+
+.fileblock-header-thumbnail-box:hover {
+	width: 160px;
+	height: 160px;	
+}
+
+.fileblock-header-thumbnail-box img.landscape {	width: 80px;}
+.fileblock-header-thumbnail:hover img.landscape {	width: 120px;}
+
+
+.fileblock-header-thumbnail-box img.portrait {	height: 120px;}
+.fileblock-header-thumbnail:hover img.portrait {	height: 170px;}
+
+
+.fileblock-header-size {
+	position: absolute;
+	height: 18px;
+	font-size: 10px;
+	padding-right: 15px;
+	margin-top: 10px;
+	background-image: url(../images/media_separator.png);
+	background-repeat: no-repeat;
+	background-position: right center;
+	text-align: right;
+	color: #898989;
+	right: 130px;
+
+}
+
+.fileblock-online-button {
+	position: absolute;
+	right: 90px;
+	width: 40px;
+	height: 40px;
+	z-index: 1;
+}
+
+.fileblock-header-online-label, .fileblock-header-offline-label {
+	position: absolute;
+	right: 90px;
+	width: 40px;
+	height: 40px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	cursor: pointer;
+}
+
+.fileblock-header-online-label {	background-image: url(../images/media_online.png);}
+.fileblock-header-offline-label {	background-image: url(../images/media_offline.png);}
+
+.fileblock-header-online-label:hover, .fileblock-header-offline-label:hover {
+		opacity : 0.7; 
+		-moz-opacity : 0.7; 
+		-ms-filter: "alpha(opacity=70)"; /* IE 8 */ 
+		filter : alpha(opacity=70); /* IE < 8 */ 
+}
+
+.fileblock-delete-button {
+	position: absolute;
+	right: 45px;
+	top: 5px;
+	width: 45px;
+	height: 38px;
+	background-image: url(../images/media_delete.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	cursor: pointer;
+/* 	background-color: aqua; */
+}
+
+.fileblock-delete-button:hover {
+	background-image: url(../images/media_delete-hover.png);	
+}
+
+.fileblock-header-edit {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	width: 40px;
+}
+
+.fileblock-edit {
+	margin-left: 160px;
+}
+
+.fileblock-edit div, .fileblock-edit div input, .fileblock-edit div textarea  {	width: 95%;}
+
+.fileblock-edit label {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.fileblock-edit div textarea {
+	height: 6em;
+}
+
+.fileblock-edit a {
+	background: #82ab4d;
+	color: #fff;
+	margin: 10px 0 20px 0;
+	padding: 5px 10px ;
+	float: left;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: right;
+}

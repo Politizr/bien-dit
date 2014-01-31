@@ -1,0 +1,65 @@
+<script>
+	// Bug gmaps de chargement
+    $("body").on("click", "a[data-target='.form_fieldset_GMaps']", function() {
+    	// console.log('resize gmaps');
+		google.maps.event.trigger(gmwmap, 'resize');
+	});
+	$("body").on("click", "#resize_gmaps", function() {
+    	// console.log('resize gmaps');
+		google.maps.event.trigger(gmwmap, 'resize');
+	});
+
+	$(function() {
+		var addresspickerMap = $( "#gmwaddresspicker_map" ).addresspicker({
+			regionBias: "fr",
+	        updateCallback: updateInput,
+	        reverseGeocode: true,
+	        mapOptions: {
+	            zoom: {{ zoomLevel }},
+	            center: new google.maps.LatLng({{ center | raw }}),
+	            scrollwheel: {{ scroolWheel }},
+	            mapTypeId: google.maps.MapTypeId.{{ mapTypeId }}
+        	},
+			elements: {
+			    map: "#gmwmap",
+			    lat: ".gmwlat",
+			    lng: ".gmwlng",
+			    street_number: '.gmwstreet_number',
+			    route: '.gmwroute',
+			    locality: '.gmwlocality',
+			    administrative_area_level_2: '.gmwadministrative_area_level_2',
+			    administrative_area_level_1: '.gmwadministrative_area_level_1',
+			    country: '.gmwcountry',
+			    postal_code: '.gmwpostal_code',
+	        	type: '.gmwtype' 
+		  	}
+		});
+
+		var gmarker = addresspickerMap.addresspicker( "marker");
+		gmarker.setVisible(true);
+		addresspickerMap.addresspicker("updatePosition");
+
+		google.maps.event.trigger(gmwmap, 'resize');
+
+	    function updateInput(geocodeResult, parsedGeocodeResult) {
+	      // $('#callback_result').text(JSON.stringify(parsedGeocodeResult, null, 4));
+
+	      $(".gmwlat").val(parsedGeocodeResult['lat']);
+	      $(".gmwlng").val(parsedGeocodeResult['lng']);
+	      $(".gmwstreet_number").val(parsedGeocodeResult['street_number']);
+	      $(".gmwroute").val(parsedGeocodeResult['route']);
+	      $(".gmwlocality").val(parsedGeocodeResult['locality']);
+	      $(".gmwadministrative_area_level_2").val(parsedGeocodeResult['administrative_area_level_2']);
+	      $(".gmwadministrative_area_level_1").val(parsedGeocodeResult['administrative_area_level_1']);
+	      $(".gmwcountry").val(parsedGeocodeResult['country']);
+	      $(".gmwpostal_code").val(parsedGeocodeResult['postal_code']);
+	      $(".gmwtype").val(parsedGeocodeResult['type']);
+	    }
+
+		// MAJ marqueur en fonction de la saisie lat/lng
+		$("body").on("click", "#update_position", function() {
+	    	// console.log('update position');
+			addresspickerMap.addresspicker("reloadPosition");
+		}); 
+	});
+</script>

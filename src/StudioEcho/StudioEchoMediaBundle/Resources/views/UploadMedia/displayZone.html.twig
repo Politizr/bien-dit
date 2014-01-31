@@ -1,0 +1,269 @@
+{% set mediaConfig = app.session.get('studio_echo_media_bundle/' ~ mediaParameterConfigKey) %}
+<div id="media-loading-box"></div>
+<div id="media-success-box"></div>
+<div id="media-error-box"></div>
+<ul id="medialist">
+  {% for mediaFile in mediaFiles %}
+    <li id="{{ mediaFile.id }}">
+      <div class="fileblock" file_id="{{ mediaFile.id }}">
+        <div class="fileblock-header">
+          <div class="fileblock-header-thumbnail">
+            <div class="fileblock-header-thumbnail-box">
+              {% if (mediaConfig.type == 'image') %}
+                <img src='/uploads/{{ mediaFile.name }}' class="{% if mediaFile.landscape %}landscape{% else %}portrait{% endif %}"/>
+              {% elseif (mediaConfig.type == 'document') %}
+                {% if (mediaFile.extension | lower == '.pdf') %}
+                  <img src='{{ asset("bundles/studioechomedia/images/icon_pdf.png") }}' class=" portrait"/>
+                  <strong>{{ mediaFile.name }}</strong>
+                {% else %}
+                  <img src='{{ asset("bundles/studioechomedia/images/icon_document.png") }}' class=" portrait"/>
+                  <strong>{{ mediaFile.name }}</strong>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          <!-- <div class="fileblock-header-name">Fichier {{ mediaFile.name }}</div> -->
+          <div class="fileblock-header-size">{{ (mediaFile.size / 1000000) | number_format(2, ',', ' ') }} Mo</div>
+          <div class="fileblock-header-online">
+            <a class="fileblock-online-button"></a>
+            <span class="fileblock-online-label-span">{% include "StudioEchoMediaBundle:UploadMedia:fileblock-header-online.html.twig" %}</span>
+          </div>
+          <div class="fileblock-header-delete">
+            <a class="fileblock-delete-button"></a>
+          </div>
+          <div class="fileblock-header-edit">
+            <a class="fileblock-edit-button"><img src="{{ asset('bundles/studioechomedia/images/medialist_dropdown.png') }}" alt="Ouvrir / Fermer" width="41" height="39"></a>
+          </div>
+        </div>
+        <div class="fileblock-edit" id="fileblock-edit-{{ mediaFile.id }}">
+          <div class="fileblock-edit-title">
+            <label>Titre</label>
+            <input type="text" value="{{ mediaFile.title }}"/>
+          </div>
+          <div class="fileblock-edit-description">
+            <label>Description</label>
+            <textarea>{{ mediaFile.description }}</textarea>
+          </div>
+          <div class="fileblock-edit-copyright">
+            <label>Copyright</label>
+            <textarea>{{ mediaFile.copyright }}</textarea>
+          </div>
+          <a class="fileblock-save-button">Enregistrer les modifications</a>
+        </div>
+      </div>
+    </li>
+  {% else %}
+    <div id="nofile">
+      Aucun fichier média.
+    </div>
+  {% endfor %}
+</ul>
+
+<script>
+      $(document).ready(function () {
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] .fileblock-edit").hide();
+        
+        // Hide upload div if max upload files is reached
+        {% if (mediaFiles | length >= mediaConfig.max_files) %}
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #uploadzone").hide();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #uploadzone_hide)".show();
+        {% endif %}
+        
+        // Edit button
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] .fileblock-edit-button").on( "click", function() {
+          var file_id = $(this).parents('.fileblock').attr("file_id");
+          // console.log(file_id);
+          if ($("[category='displayzone_{{ mediaConfig.category_id }}'] #fileblock-edit-" + file_id).is(":visible")) {
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #fileblock-edit-" + file_id).slideUp();
+          } else {
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #fileblock-edit-" + file_id).slideDown();
+          }
+        });
+        
+        // Delete button
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] .fileblock-delete-button").click(function(event) {
+          if (confirm('Êtes-vous sûr?')) {
+            // visual informations
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty().html('Suppression en cours...');
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").empty();
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").empty();
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).fadeOut();
+          
+            var file_id = $(this).parents('.fileblock').attr("file_id");
+            // console.log(file_id);
+            var to_url = "{{ path('studio_echo_media_delete_file', {'mediaFileId': '###', 'mediaParameterConfigKey': mediaParameterConfigKey }) }}";
+            // console.log(to_url.replace("%23%23%23", file_id));
+            $.ajax({
+              url: to_url.replace("%23%23%23", file_id),
+              dataType: 'json',
+              statusCode: {
+                404: function() {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 404: merci de recharger la page.');
+                },
+                500: function() {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 500: merci de recharger la page.');
+                }
+              },            
+              error: function(jqXHR, textStatus, errorThrown) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html("Une erreur s'est produite: merci de recharger la page.");
+                },
+              success: function(data) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                if (data['error']) {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Une erreur s\'est produite: merci de recharger la page. Message: ' + data['error']);
+                } else {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").html('Suppression avec succès.');
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).hide();
+                  
+                  // TODO: gestion + précise
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #uploadzone").show();
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #uploadzone_hide").hide();
+                }
+              }
+            });
+          }
+        });        
+        
+        // Online button
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] .fileblock-online-button").click(function(event) {
+          // visual informations
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty().html('En ligne / Hors ligne en cours...');
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").empty();
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").empty();
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).fadeOut();
+          
+          var file_id = $(this).parents('.fileblock').attr("file_id");
+          var to_url = "{{ path('studio_echo_media_online_file', {'mediaFileId': '###' }) }}";
+          $.ajax({
+            url: to_url.replace("%23%23%23", file_id),
+            dataType: 'json',
+            statusCode: {
+              404: function() {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 404: merci de recharger la page.');
+              },
+              500: function() {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 500: merci de recharger la page.');
+              }
+            },            
+            error: function(jqXHR, textStatus, errorThrown) {
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html("Une erreur s'est produite: merci de recharger la page.");
+              },
+            success: function(data) {
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+              if (data['error']) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Une erreur s\'est produite: merci de recharger la page. Message: ' + data['error']);
+              } else {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").html('En ligne / Hors ligne avec succès.');
+
+                var labelOnline = '<label class="fileblock-header-online-label"></label>';
+                if (data['success'] == false) {
+                  labelOnline = '<label class="fileblock-header-offline-label"></label>';
+                }
+
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id + ' > .fileblock > .fileblock-header > .fileblock-header-online > .fileblock-online-label-span').html(labelOnline);
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).fadeIn();
+              }
+            }
+          });
+        });
+        
+        // Save button
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] .fileblock-save-button").click(function(event) {
+          // visual informations
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty().html('Sauvegarde en cours...');
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").empty();
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").empty();
+          $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).fadeOut();
+          
+          var file_id = $(this).parents('.fileblock').attr("file_id");
+          var to_url = "{{ path('studio_echo_media_edit_file', {'mediaFileId': '###' }) }}";
+          $.ajax({
+            type: "POST",
+            url: to_url.replace("%23%23%23", file_id),
+            dataType: 'json',
+            data: {
+              title: $('#' + file_id + ' > .fileblock > .fileblock-edit > .fileblock-edit-title > input').val(), 
+              description: $('#' + file_id + ' > .fileblock > .fileblock-edit > .fileblock-edit-description > textarea').val(), 
+              copyright: $('#' + file_id + ' > .fileblock > .fileblock-edit > .fileblock-edit-copyright > textarea').val(),
+              mediaParameterConfigKey: '{{ mediaParameterConfigKey }}'
+            },
+            statusCode: {
+              404: function() {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 404: merci de recharger la page.');
+              },
+              500: function() {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 500: merci de recharger la page.');
+              }
+            },            
+            error: function(jqXHR, textStatus, errorThrown) {
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html("Une erreur s'est produite: merci de recharger la page.");
+              },
+            success: function(data) {
+              $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+              if (data['error']) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Une erreur s\'est produite: merci de recharger la page. Message: ' + data['error']);
+              } else {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").html('Sauvegarde avec succès.');
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #" + file_id).fadeIn();
+              }
+            }
+          });
+        });
+        
+        // UI Sortable
+        $("[category='displayzone_{{ mediaConfig.category_id }}'] #medialist").sortable({
+          update: function( event, ui ) {
+            // visual informations
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty().html('Ordonnancement en cours...');
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").empty();
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").empty();
+            $("[category='displayzone_{{ mediaConfig.category_id }}'] #medialist").fadeOut();
+          
+            var sort = $( "[category='displayzone_{{ mediaConfig.category_id }}'] #medialist" ).sortable( "toArray" );
+            console.log('sort = ' + sort);
+            $.ajax({
+              type: "POST",
+              url: "{{ path('studio_echo_media_sort') }}",
+              dataType: 'json',
+              data: {
+                sort: sort,
+                objectMediaId: {{ mediaObjectId }}
+              },
+              statusCode: {
+                404: function() {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 404: merci de recharger la page.');
+                },
+                500: function() {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Erreur 500: merci de recharger la page.');
+                }
+              },            
+              error: function(jqXHR, textStatus, errorThrown) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html("Une erreur s'est produite: merci de recharger la page.");
+                },
+              success: function(data) {
+                $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-loading-box").empty();
+                if (data['error']) {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-error-box").html('Une erreur s\'est produite: merci de recharger la page. Message: ' + data['error']);
+                } else {
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #media-success-box").html('Ordonnancement avec succès.');
+                  $("[category='displayzone_{{ mediaConfig.category_id }}'] #medialist").fadeIn();
+                }
+              }
+            });
+          }
+        });
+        
+      });
+</script>

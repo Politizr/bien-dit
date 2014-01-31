@@ -1,0 +1,99 @@
+{
+    "name": "studioecho-sf2/politizr",
+    "license": "(c) Studio Echo",
+    "type": "project",
+    "description": "Studio Echo SF2 / Politizr",
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "repositories": {
+        "phing": {
+            "type": "pear",
+            "url": "http://pear.phing.info"
+        },
+        "phingGit": {
+            "type": "package",
+            "package": {
+                "name": "phing/phing",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/Xosofox/phing.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }              
+    },
+    "require": {
+        "php": ">=5.3.3",
+        
+        "symfony/symfony": "2.3.*",
+        
+        "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "doctrine/doctrine-bundle": "1.2.*",
+        
+        "twig/extensions": "1.0.*",
+        
+        "symfony/assetic-bundle": "2.3.*",
+        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/monolog-bundle": "2.3.*",
+                
+        "sensio/distribution-bundle": "2.3.*",
+        "sensio/framework-extra-bundle": "2.3.*",
+        "sensio/generator-bundle": "2.3.*",
+        "incenteev/composer-parameter-handler": "~2.0",
+        
+        "jms/security-extra-bundle": "1.5.*",
+        "jms/di-extra-bundle": "1.4.*",
+        
+        "friendsofsymfony/user-bundle": "*",
+        
+        "propel/propel-bundle": "1.2.7.*",
+        "willdurand/propel-typehintable-behavior": "1.0.4",
+        "craftyshadow/propel-equalnest-behavior": "1.0.5",
+        
+        "phing/phing": "2.4.14",
+        
+        "white-october/pagerfanta-bundle": "1.0.*",
+        
+        "ensepar/html2pdf-bundle": "1.0.0",
+        
+        "cedriclombardot/admingenerator-generator-bundle": "2.3.*@dev",
+        "cedriclombardot/admingenerator-user-bundle": "dev-master",
+        "avocode/form-extensions-bundle": "dev-master",
+
+        "liip/imagine-bundle": "0.11.*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin",
+        "component-dir": "web/components"
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "symlink",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias": {
+            "dev-master": "2.3-dev"
+        }
+    }
+}

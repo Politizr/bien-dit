@@ -1,0 +1,3 @@
+studio_echo_gmaps_homepage:
+    pattern:  /
+    defaults: { _controller: StudioEchoGmapsBundle:Gmaps:widget }

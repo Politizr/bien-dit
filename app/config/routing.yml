@@ -1,0 +1,21 @@
+politzr_admin:
+    resource: "@PolitzrAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+politzr_front:
+    resource: "@PolitzrFrontBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+studio_echo_media:
+    resource: "@StudioEchoMediaBundle/Resources/config/routing.yml"
+    prefix:   /media
+
+_imagine:
+    resource: .
+    type:     imagine
+
+# Internal routing configuration to handle ESI
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal
