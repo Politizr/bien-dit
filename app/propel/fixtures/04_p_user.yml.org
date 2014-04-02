@@ -1,0 +1,126 @@
+# USER DATAS
+Politizr\Model\PUser:
+    user_qualifie1:
+        online:         true
+        type:           2
+        status:         1
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', '250', '250', 'people', 'false') ?>
+        gender:         Monsieur
+        firstname:      Damien
+        name:           Abad
+
+        summary:        <?php $faker('text', 500); ?>
+        biography:      <?php $faker('text', 500); ?>
+
+        website:        http://www.loremipsum.com
+        twitter:        https://twitter.com/loremipsum
+        facebook:       https://facebook.com/loremipsum
+        email:          lorem@ipsum.com
+        phone:          0123456789
+        last_connect:   2014-02-01 10:00:00
+
+    user_qualifie2:
+        online:         true
+        type:           2
+        status:         1
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', '250', '250', 'people', 'false') ?>
+        gender:         Madame
+        firstname:      Laurence
+        name:           Abeille
+
+        summary:        <?php $faker('text', 500); ?>
+        biography:      <?php $faker('text', 500); ?>
+
+        website:        http://www.loremipsum.com
+        twitter:        https://twitter.com/loremipsum
+        facebook:       https://facebook.com/loremipsum
+        email:          lorem@ipsum.com
+        phone:          0123456789
+        last_connect:   2014-02-01 10:00:00
+
+
+
+    user_citoyen1:
+        online:         true
+        type:           1
+        status:         1
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', '250', '250', 'people', 'false') ?>
+        gender:         Monsieur
+        firstname:      Robert
+        name:           Dupont
+
+        summary:        <?php $faker('text', 500); ?>
+        biography:      <?php $faker('text', 500); ?>
+
+        website:        http://www.loremipsum.com
+        twitter:        https://twitter.com/loremipsum
+        facebook:       https://facebook.com/loremipsum
+        email:          lorem@ipsum.com
+        phone:          0123456789
+        last_connect:   2014-02-04 10:00:00
+
+
+
+
+
+
+Politizr\Model\PUFollowU:
+    q1_q2:
+        p_user_id:              user_qualifie1
+        p_user_follower_id:     user_qualifie2
+    q2_q1:
+        p_user_id:              user_qualifie2
+        p_user_follower_id:     user_qualifie1
+    q1_c1:
+        p_user_id:              user_qualifie1
+        p_user_follower_id:     user_citoyen1
+    q2_c1:
+        p_user_id:              user_qualifie2
+        p_user_follower_id:     user_citoyen1
+
+
+
+
+
+Politizr\Model\PUQualification:
+    u1_depute:
+        title:          Député de la 5ème circonscription de l'Ain
+        p_user_id:      user_qualifie1
+        begin_at:       2012-06-17
+        end_at:         null
+    u2_depute:
+        title:          Député de la 6ème circonscription du Val-de-Marne
+        p_user_id:      user_qualifie2
+        begin_at:       2012-06-17
+        end_at:         null
+
+Politizr\Model\PUQTaggedT:
+    u1_depute_current:
+        p_u_qualification_id:       u1_depute
+        p_tag_id:                   depute
+
+    u2_depute_current:
+        p_u_qualification_id:       u2_depute
+        p_tag_id:                   depute
+
+
+
+
+
+
+Politizr\Model\PUReputationRB:
+    u1_badge1:
+        p_user_id:      user_qualifie1
+        p_r_badge_id:   badge1
+
+
+Politizr\Model\PUReputationRA:
+    u1_d_debate_note_pos:
+        p_user_id:      user_qualifie1
+        p_r_action_id:  d_debate_note_pos
+        p_object_name:  PDDebate
+        p_object_id:    1
+

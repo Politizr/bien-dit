@@ -6,6 +6,9 @@ jms_security_extra:
     expressions: true
 
 security:
+    acl:
+        provider: propel.security.acl.provider
+
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username

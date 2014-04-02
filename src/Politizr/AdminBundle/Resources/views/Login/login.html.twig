@@ -1,0 +1,19 @@
+{% extends "AdmingeneratorGeneratorBundle::base_admin.html.twig" %}
+
+{% block navbar %}
+    {% embed 'AdmingeneratorGeneratorBundle::base_admin_navbar.html.twig' %}
+        {% block brand_text %}
+            Politizr
+        {% endblock brand_text %}
+        {% block menu %}
+        {% endblock %}
+        {% block profile %}
+        {% endblock profile %}
+    {% endembed %}
+{% endblock navbar %}
+
+{% block footer %}
+  <div id="footer">
+    &copy; 2014 <a href="http://www.politizr.fr" target="_blank">Politizr</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Politizr\Model" defaultIdMethod="native">
+
+    <table name="p_tag">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_t_tag_type_id" type="integer" required="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_t_tag_type_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+    <table name="p_t_tag_type">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="description" type="longvarchar" />
+    </table>
+
+
+
+
+
+    <table name="p_r_badge">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="description" type="longvarchar" />
+    </table>
+
+    <table name="p_r_action">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="score_evolution" type="integer" />
+    </table>
+
+
+
+
+
+    <table name="p_order">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_o_order_state_id" type="integer" />
+        <column name="p_o_payment_state_id" type="integer" />
+        <column name="p_o_payment_type_id" type="integer" />
+        <column name="p_o_subscription_id" type="integer" />
+
+        <column name="subscription_title" type="varchar" size="150" />
+        <column name="subscription_description" type="longvarchar" />
+        <column name="information" type="longvarchar" />
+
+        <column name="price" type="decimal" size="10" scale="2" />
+        <column name="promotion" type="decimal" size="10" scale="2" />
+        <column name="total" type="decimal" size="10" scale="2" />
+
+        <column name="gender" type="enum" valueSet="Madame, Monsieur" />
+        <column name="name" type="varchar" size="150" />
+        <column name="firstname" type="varchar" size="150" />   
+        <column name="address" type="longvarchar" />
+        <column name="zip" type="varchar" size="45" />   
+        <column name="city" type="varchar" size="150" />   
+
+        <column name="invoice_ref" type="varchar" size="250" />
+        <column name="invoice_at" type="timestamp" />
+        <column name="invoice_filename" type="varchar" size="250" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_order_state" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_order_state_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_payment_state" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_payment_state_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_payment_type" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_payment_type_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_subscription" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_subscription_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_o_order_state">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+    </table>
+
+    <table name="p_o_payment_state">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+    </table>
+
+    <table name="p_o_payment_type">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+    </table>
+
+    <table name="p_o_subscription">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+
+        <column name="price" type="decimal" size="10" scale="2" />
+    </table>
+    
+    <table name="p_o_email">
+        <behavior name="timestampable" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_order_id" required="true" type="integer" />
+        <column name="p_o_order_state_id" type="integer" />
+        <column name="p_o_payment_state_id" type="integer" />
+        <column name="p_o_payment_type_id" type="integer" />
+        <column name="p_o_subscription_id" type="integer" />
+
+        <column name="subject" type="varchar" size="250" />
+        <column name="html_body" type="longvarchar" />
+        <column name="txt_body" type="longvarchar" />
+
+        <foreign-key foreignTable="p_order" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_order_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_order_state" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_order_state_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_payment_state" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_payment_state_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_payment_type" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_payment_type_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_o_subscription" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_o_subscription_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+
+
+    <table name="p_user">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{firstname}-{name}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="type" type="integer" required="true" />
+        <column name="status" type="integer" required="true" />
+
+        <column name="file_name" type="varchar" size="150" />
+        <column name="gender" type="enum" valueSet="Madame, Monsieur" />
+        <column name="firstname" type="varchar" size="150" />
+        <column name="name" type="varchar" size="150" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="biography" type="longvarchar" />
+
+        <column name="website" type="varchar" size="150" />
+        <column name="twitter" type="varchar" size="150" />
+        <column name="facebook" type="varchar" size="150" />
+        <column name="email" type="varchar" size="150" />
+        <column name="phone" type="varchar" size="30" />
+        
+        <column name="last_connect" type="timestamp" />
+    </table>
+
+    <table name="p_u_follow_u">
+        <behavior name="timestampable" />
+        <behavior name="equal_nest">
+            <parameter name="parent_table" value="p_user" />
+            <parameter name="reference_column_1" value="p_user_id" />
+            <parameter name="reference_column_2" value="p_user_follower_id" />
+        </behavior>
+    </table>    
+
+    <table name="p_u_qualification">
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+
+        <column name="title" type="varchar" size="250" />
+
+        <column name="begin_at" type="date" />
+        <column name="end_at" type="date" />
+
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+
+    <table name="p_u_follow_d_d" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_d_debate_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_user" phpName="PuFollowDdPUser" refPhpName="PuFollowDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_debate" phpName="PuFollowDdPDDebate" refPhpName="PuFollowDdPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_reputation_r_b" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_r_badge_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_user" phpName="PuReputationRbPUser" refPhpName="PuReputationRbPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_r_badge" phpName="PuReputationRbPRBadge" refPhpName="PuReputationRbPRBadge" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_badge_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_reputation_r_a" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_r_action_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_user" phpName="PuReputationRaPUser" refPhpName="PuReputationRaPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_r_action" phpName="PuReputationRaPRBadge" refPhpName="PuReputationRaPRBadge" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_action_id" foreign="id" />
+        </foreign-key>
+
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+    </table>
+
+    <table name="p_u_q_tagged_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_u_qualification_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_u_qualification" phpName="PuqTaggedTPUQualification" refPhpName="PuqTaggedTPUQualification" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_u_qualification_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" phpName="PuqTaggedTPTag" refPhpName="PuqTaggedTPTag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+
+
+
+    <table name="p_d_debate">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />
+
+        <column name="title" type="varchar" size="150" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="longvarchar" />
+        <column name="more_info" type="longvarchar" />
+
+        <column name="note_pos" type="integer" />
+        <column name="note_neg" type="integer" />
+
+        <column name="published" type="boolean" />
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_d_comment">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_d_debate_id" type="integer" required="true" />
+
+        <column name="description" type="longvarchar" />
+        <column name="paragraph_no" type="integer" />
+
+        <column name="note_pos" type="integer" />
+        <column name="note_neg" type="integer" />
+
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_reaction">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+          <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_d_debate_id" type="integer" required="true" />
+        <column name="p_d_reaction_id" type="integer" required="false" />
+
+        <column name="title" type="varchar" size="150" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="longvarchar" />
+        <column name="more_info" type="longvarchar" />
+
+        <column name="note_pos" type="integer" />
+        <column name="note_neg" type="integer" />
+
+        <column name="published" type="boolean" />
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_r_comment">
+        <behavior name="online" />
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+
+        <column name="description" type="longvarchar" />
+        <column name="paragraph_no" type="integer" />
+
+        <column name="note_pos" type="integer" />
+        <column name="note_neg" type="integer" />
+
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_d_tagged_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_d_debate_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_d_debate" phpName="PddTaggedTPDDebate" refPhpName="PddTaggedTPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" phpName="PddTaggedTPTag" refPhpName="PddTaggedTPTag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+</database>

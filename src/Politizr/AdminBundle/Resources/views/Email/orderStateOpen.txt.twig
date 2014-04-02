@@ -1,0 +1,7 @@
+{{ user.firstname | capitalize }} {{ user.name | capitalize }},
+
+Votre commande chez Politizr est validé et sera bientôt en cours de traitement.
+
+{% include 'PolitizrAdminBundle:Email:orderSummary.txt.twig' with { 'Order': order } %}
+
+{% include 'PolitizrAdminBundle:Email:footer.txt.twig' %}

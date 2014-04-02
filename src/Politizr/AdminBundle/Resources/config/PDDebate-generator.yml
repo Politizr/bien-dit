@@ -1,0 +1,177 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PDDebate
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          Utilisateur
+        p_user:
+            label:          Utilisateur
+        title:
+            label:          Titre
+        summary:
+            label:          Résumé
+        description:
+            label:          Description
+        more_info:
+            label:          Encart
+        note_pos:
+            label:          Notes +
+        note_neg:
+            label:          Notes -
+        published:
+            label:          Publié
+        published_at:
+            label:          Publication
+        published_by:
+            label:          Auteur
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des débats
+            max_per_page:                       50
+            sort:                               [ published_at, DESC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Publiés":
+                        default:                true
+                        filters:
+                            filterByPublished:  true
+                    "Brouillons":
+                        filters:
+                            filterByPublished:  false
+            display:                            [ id, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ id, p_user, published, published_at, online, created_at ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+    new:
+        params:
+            title:                              "Création d'un contenu débat"
+            display:
+                "Champs principaux":            [ [ p_user ], [ title ] ]
+                "Champs complémentaires":       [ [ note_pos, note_neg ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                        required:               false
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description, more_info ] ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                "Statut":
+                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                    "Notes":                    [ [ note_pos, note_neg ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                        required:               false
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                description:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                more_info:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                published_at:
+                    # formType:                   afe_datetime_picker
+                    addFormOptions:
+                      widget:                   single_text
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du contenu débat '{{ PDDebate.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description, more_info ] ]
+                "Réactions":
+                    "Contenus associés":        [ block_reactions, block_comments ]
+                "Tags":
+                    "Tags associés":            [ block_tags ]
+                "Abonnés":
+                    "Utilisateurs":             [ block_followers_q, block_followers_c ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                "Statut":
+                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                block_reactions:
+                    label:                      "Réactions"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_comments:
+                    label:                      "Commentaires"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags:
+                    label:                      "Tags"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_followers_q:
+                    label:                      "Qualifiés"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_followers_c:
+                    label:                      "Citoyens"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

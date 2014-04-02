@@ -1,0 +1,8 @@
+{% extends_admingenerated "PolitizrAdminBundle:PDReactionEdit:index.html.twig" %}
+
+{% block scripts_head %}
+    {{ parent() }}
+
+    <!-- TinyMCE -->
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+{% endblock %}

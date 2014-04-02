@@ -1,0 +1,198 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\POrder
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          Utilisateur
+        p_user:
+            label:          Utilisateur
+        p_o_payment_state_id:
+            label:          Paiement
+        p_o_payment_state:
+            label:          Paiement
+        p_o_order_state_id:
+            label:          Etat
+        p_o_order_state:
+            label:          Etat
+        p_o_payment_type_id:
+            label:          Mode paiement
+        p_o_payment_type:
+            label:          Mode paiement
+        p_o_subscription_id:
+            label:          Formule
+        p_o_subscription:
+            label:          Formule
+        subscription_title:
+            label:          Titre
+        subscription_description:
+            label:          Description
+        information:
+            label:          Information
+        gender:
+            label:          Genre
+        name:
+            label:          Nom
+        firstname:
+            label:          Prénom
+        address:
+            label:          Adresse
+        zip:
+            label:          CP
+        city:
+            label:          Ville
+        price:
+            label:          Prix initial
+        promotion:
+            label:          Promotion
+        total:
+            label:          Prix final
+        invoice_ref:
+            label:          Réf. facture
+        invoice_at:
+            label:          Date facture
+        invoice_filename:
+            label:          Nom du fichier
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des commandes
+            max_per_page:                       50
+            sort:                               [ id, DESC ]
+            scopes:
+                group_1: 
+                    "Toutes":                   ~
+                    "Ouvertes":
+                        default: true
+                        filters:
+                            filterByPOOrderStateId: 1
+                    "Traitées":
+                        filters:
+                            filterByPOOrderStateId: 2
+                    "Annulées":
+                        filters:
+                            filterByPOOrderStateId: 3
+            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user, price, promotion, total ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params:                                 ~
+        filename:                               ~
+        filetype:                               ~
+    filters:
+        params:
+            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user, created_at ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+    new:
+        params:
+            title:                              "Création d'une commande"
+            display:
+                "Champs principaux":            [ [ p_user ], [ p_o_subscription ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
+                "Champs complémentaires":       [ [ information ], [ gender, firstname, name ], [ address ], [ zip, city ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                price:
+                    formType:                   money
+                promotion:
+                    formType:                   money
+                total:
+                    formType:                   money
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de la commande n°{{ POrder.id }}"
+            tabs:
+                "Commande":
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description, information ] ]
+                "Facture":
+                    "Facture":                  [ invoice_ref, block_invoice ]
+                "Emails":
+                    "Emails":                   [ block_mail ]
+                "Utilisateur":
+                    "Objet associé":            [ [ p_user ] ]
+                    "Adresse facture":          [ [ gender, firstname, name ], [ address ], [ zip, city ] ]
+                "Paiement":
+                    "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
+                "Statut":
+                    "Actuel":                   [ [ p_o_order_state ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                price:
+                    formType:                   money
+                promotion:
+                    formType:                   money
+                total:
+                    formType:                   money
+                block_invoice:
+                    label:                      " "
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_mail:
+                    label:                      " "
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                created_at:
+                    addFormOptions:
+                        widget:                 single_text
+                updated_at:
+                    addFormOptions:
+                        widget:                 single_text
+            actions:
+              save:                             ~
+              list:                             ~
+              delete:                           ~
+    show:
+        params:
+            title:                              "Visualisation de la commande n°{{ POrder.id }}"
+            tabs:
+                "Commande":
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description, information ] ]
+                "Paiement":
+                    "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
+                    "Adresse facture":          [ [ gender, firstname, name ], [ address ], [ zip, city ] ]
+                "Statut":
+                    "Actuel":                   [ [ p_o_order_state ] ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            # fields:
+            #     last_connect:
+            #         label:                      Date de dernière connexion
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

@@ -1,3 +1,0 @@
-politzr_front_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: PolitzrFrontBundle:Default:index }

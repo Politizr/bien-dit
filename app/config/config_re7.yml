@@ -21,3 +21,10 @@ monolog:
 swiftmailer:
     delivery_address: lionel.bouzonville@gmail.com
 
+# Bazinga Faker
+bazinga_faker:
+    locale:                             fr_FR
+    entities:
+        Politizr\Model\PUser:
+            custom_formatters:
+                FileName:               { method: image, parameters: [ '/var/www/politizr.v2.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }

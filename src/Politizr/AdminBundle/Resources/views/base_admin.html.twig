@@ -1,0 +1,43 @@
+{% extends "AdmingeneratorGeneratorBundle::base_admin.html.twig" %}
+
+{% block title %}Module d'administration Politizr{% endblock %}
+
+{% block scripts_head %}
+    {{ parent() }}
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block navbar %}
+   {% embed 'AdmingeneratorGeneratorBundle::base_admin_navbar.html.twig' %}
+        {% block brand_text %}
+            Politizr
+        {% endblock brand_text %}
+        {% block menu %}
+            {{ knp_menu_render('PolitizrAdminBundle:AdminMenu:navbarMenu') }}
+        {% endblock %}
+    {% endembed %}
+{% endblock navbar %}
+  
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% include 'AvocodeFormExtensionsBundle::stylesheets.html.twig' %}
+    {% if form is defined %}
+        {{ afe_form_stylesheet(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% include 'AvocodeFormExtensionsBundle::javascripts.html.twig' %}
+    {% if form is defined %}
+        {{ afe_form_javascript(form) }}
+    {% endif %}
+{% endblock %}
+  
+{% block footer %}
+  <div id="footer">
+    &copy; 2014 <a href="http://www.politizr.fr" target="_blank">Politizr</a>
+  </div>
+{% endblock %}

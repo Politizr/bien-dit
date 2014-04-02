@@ -1,0 +1,29 @@
+{% extends_admingenerated "PolitizrAdminBundle:POrderEdit:form.html.twig" %}
+
+{# Bloc génération facture PDF #}
+{% block form_block_invoice %}
+	<label for="edit_order_block_invoice" class="control-label required">Facture PDF</label>
+	{% if POrder.invoiceRef and POrder.invoiceAt and POrder.invoiceFilename %}
+		La facture n°{{ POrder.invoiceRef }} a été générée la dernière fois le {{ POrder.invoiceAt | date("d/m/Y \\à H\\hi") }}.<br/><br/>
+		<a href="{{ asset("uploads/invoices/"~POrder.invoiceFilename) }}" target="_blank">Téléchargez la facture</a><br/><br/>
+	{% else %}
+		La facture de cette commande n'a pas encore été générée.<br/><br/>
+	{% endif %}
+	<a class="btn " href="{{ path("Politizr_AdminBundle_POrder_invoice", { pk: POrder.Id }) }}">Générer la facture</a>
+{% endblock %}
+
+{# Bloc génération facture PDF #}
+{% block form_block_mail %}
+	<label for="edit_order_block_invoice" class="control-label required">Liste des emails envoyés au client:</label>
+	<ul>
+		{% for poEmail in POrder.POEmails %}
+			<li>Date : <b>{{ poEmail.createdAt | date("d/m/Y \\à H\\hi") }}</b>.</li>
+			<li>Status Commande : <b>{{ poEmail.poOrderState }}</b>.</li>
+			<li>Status Paiement : <b>{{ poEmail.poPaymentState }}</b>.</li>
+			<li>Mode Paiement : <b>{{ poEmail.poPaymentType }}</b>.</li>
+		{% else %}
+			<li>Aucun email n'a été envoyé au client.</li>
+		{% endfor %}
+	</ul>
+	<a class="btn " href="{{ path("Politizr_AdminBundle_POrder_mail", { pk: POrder.Id }) }}" onclick='return confirm("Êtes-vous sûr de vouloir envoyer un email au client pour le status {{ POrder.poOrderState }}?")'>Envoyer email</a>
+{% endblock %}

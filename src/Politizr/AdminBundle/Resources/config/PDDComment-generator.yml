@@ -1,0 +1,152 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PDDComment
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          Utilisateur
+        p_user:
+            label:          Utilisateur
+        p_d_debate_id:
+            label:          Débat associé
+        p_d_debate:
+            label:          Débat associé
+        description:
+            label:          Description
+        paragraph_no:
+            label:          Num. paragraphe
+        note_pos:
+            label:          Notes +
+        note_neg:
+            label:          Notes -
+        published:
+            label:          Publié
+        published_at:
+            label:          Publication
+        published_by:
+            label:          Auteur
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des commentaires de débat
+            max_per_page:                       50
+            sort:                               [ published_at, DESC ]
+            scopes:
+            display:                            [ id, p_user, p_d_debate, description, paragraph_no, note_pos, note_neg, online, published_at ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ id, p_user, p_d_debate, paragraph_no, published_at, online, created_at ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+    new:
+        params:
+            title:                              "Création d'un commentaire de débat"
+            display:
+                "Champs principaux":            [ [ p_user, p_d_debate ], [ description ] ]
+                "Champs complémentaires":       [ [ paragraph_no ], [ note_pos, note_neg ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                        required:               false
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                p_d_debate:
+                    addFormOptions:
+                        empty_value:            ""
+                description:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du commentaire de débat 'pk-{{ PDDComment.id }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ description ] ]
+                    "Paragraphe":               [ [ paragraph_no ] ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                    "Débat":                    [ [ p_d_debate ] ]
+                "Statut":
+                    "Publication":              [ [ published_by ], [ published_at ] ]
+                    "Notes":                    [ [ note_pos, note_neg ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                p_user:
+                    addFormOptions:
+                        empty_value:            ""
+                        required:               false
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                p_d_debate:
+                    addFormOptions:
+                        empty_value:            ""
+                description:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                published_at:
+                    # formType:                   afe_datetime_picker
+                    addFormOptions:
+                      widget:                   single_text
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du commentaire du débat 'pk-{{ PDDComment.id }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ description ] ]
+                    "Paragraphe":               [ [ paragraph_no ] ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                    "Débat":                    [ [ p_d_debate ] ]
+                "Statut":
+                    "Publication":              [ [ published_by ], [ published_at ] ]
+                    "Notes":                    [ [ note_pos, note_neg ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

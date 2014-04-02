@@ -1,0 +1,121 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PTag
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_t_tag_type_id:
+            label:          Type
+        p_t_tag_type:
+            label:          Type
+        title:
+            label:          Titre
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des tags
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Mandats":
+                        filters:
+                            filterByPTTagTypeId:        1
+                    "Zonage":
+                        filters:
+                            filterByPTTagTypeId:        2
+                    "Thèmes":
+                        default:                true
+                        filters:
+                            filterByPTTagTypeId:        3
+            display:                            [ title, p_t_tag_type, online ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ title, p_t_tag_type, online, created_at ]
+            fields:
+                p_t_tag_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+    new:
+        params:
+            title:                              "Création d'un tag"
+            display:
+                "Champs principaux":            [ [ p_t_tag_type ], [ title ] ]
+            fields:
+                p_t_tag_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du tag '{{ PTag.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                p_t_tag_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du tag '{{ PTag.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
+                "Utilisation":
+                    "Contenus taggés":          [ block_debates ]
+                    "Utilisateurs taggés":      [ ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                block_debates:
+                    label:                      "Débats"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

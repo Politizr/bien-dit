@@ -1,0 +1,110 @@
+# DOCUMENT DATAS
+Politizr\Model\PDDebate:
+    debat1:
+        online:			true
+
+        p_user_id:		user_qualifie1
+
+        title:			Lorem Ipsum
+        summary:        |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+        description:    |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+        more_info:    |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+
+        published:      1
+        published_at:	2014-02-01 12:00:00
+        published_by:   Damien Abad
+
+        note_pos:		10
+        note_neg:		1
+
+
+Politizr\Model\PUFollowDD:
+    q1_d1:
+        p_user_id:      user_qualifie1
+        p_d_debate_id:  debat1
+    c1_d1:
+        p_user_id:      user_citoyen1
+        p_d_debate_id:  debat1
+
+
+Politizr\Model\PDDComment:
+    debat1:
+        online:         true
+
+        p_user_id:      user_citoyen1
+        p_d_debate_id:  debat1
+        paragraph_no:   1
+
+        description:    |
+            Tincidunt ac rhoncus! mdr!
+
+        published_at:   2014-02-05 12:00:00
+        published_by:   Robert Dupont
+
+        note_pos:       2
+        note_neg:       0
+
+
+
+Politizr\Model\PDReaction:
+    reaction1:
+        online:         true
+
+        p_user_id:          user_qualifie2
+        p_d_debate_id:      debat1
+        p_d_reaction_id:    null
+
+        title:          Lorem Ipsum
+        summary:        |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+        description:    |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+        more_info:    |
+            <p>Tincidunt ac rhoncus! Arcu, enim montes parturient! Lundium, porta, tincidunt vut nascetur penatibus porttitor, aenean tristique dignissim adipiscing 
+            augue mattis non a augue platea, adipiscing turpis, enim est habitasse turpis? Platea elementum enim arcu nunc! Magna, risus lacus scelerisque ut 
+            rhoncus porttitor? Lorem porttitor nisi, porta eros eu, sit. Cras.</p>
+
+        published:      1
+        published_at:   2014-02-01 12:00:00
+        published_by:   Laurence Abeille
+
+        note_pos:       5
+        note_neg:       2
+
+
+Politizr\Model\PDRComment:
+    debat1:
+        online:         true
+
+        p_user_id:          user_citoyen1
+        p_d_reaction_id:    reaction1
+        paragraph_no:   0
+
+        description:    |
+            Lorem reaction! mdr!
+
+        published_at:   2014-02-05 15:00:00
+        published_by:   Robert Dupont
+
+        note_pos:       1
+        note_neg:       4
+

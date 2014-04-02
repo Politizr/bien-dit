@@ -1,0 +1,34 @@
+# TAG DATAS
+Politizr\Model\PTTagType:
+    elu:
+        title:			Mandat
+        description:	|
+            Exemples: député, maire, conseiller régional, etc.
+    geo:
+        title:			Zonage
+        description:	|
+            Exemples: ariège, foix, etc.
+    theme:
+        title:			Thème
+        description:	|
+            Exemples: poubelle, nucléaire, etc.
+
+
+Politizr\Model\PTag:
+
+    # LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+    depute:
+        online:				true
+        p_t_tag_type_id:	elu
+        title:				Député
+    conseiller_regional:
+        online:				true
+        p_t_tag_type_id:	elu
+        title:				Conseiller Régional
+
+
+    # LISTE DE TOUS LES ZONAGES: ici "France" > TODO: script pour insertion régions / départements / villes
+    ariege:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              France

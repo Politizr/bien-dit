@@ -1,0 +1,55 @@
+/* 
+    Document   : backoffice
+    Created on : 12 nov. 2012, 14:59:05
+    Author     : Studio Echo / Eco'Logic Communication
+    Description:
+        Stylages spécifiques backoffice.
+*/
+
+body, input, select, button {	font-family: 'Titillium Web', sans-serif;}
+
+/*a { color: #82a141}
+a:hover { color: #94b254}
+
+ul#main_navigation.sf-menu a, ul#main_navigation.sf-menu span  {
+	border-top : none;
+	border-left : solid 1px #000;
+	cursor: pointer;
+}
+
+ul#main_navigation li a, ul#main_navigation li span {
+	background: #94b254;
+	color: #fff;
+}
+
+ul#main_navigation li a:hover, ul#main_navigation li span:hover {
+	background: #82a141;
+}
+
+.form-actions  {
+	background: #000;
+}
+
+.btn-primary {	background: #94b254;}
+
+.btn-primary:hover {	background: #82a141;}
+
+.btn-primary:active, .btn-primary.active {background-color: #82a141;}*/
+
+/* homepage / stats */
+#home_stats {
+    font-size: 1.5em;
+    margin-bottom: 3em;
+}
+
+#home_stats ul li {
+    margin-top: 1.5em;
+}
+
+#home_stats a {
+    font-weight: bold;
+}
+
+.bigsize {
+    width: 500px;
+}

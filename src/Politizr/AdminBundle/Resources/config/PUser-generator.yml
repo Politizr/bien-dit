@@ -1,0 +1,232 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PUser
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    embed_types:
+        # qualification
+        - "PUQualification-generator.yml"
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        type:
+            label:          Type
+        status:
+            label:          Statut
+        file_name:
+            label:          Image
+        gender:
+            label:          Genre
+        firstname:
+            label:          Prénom
+        name:
+            label:          Nom
+        summary:
+            label:          Résumé
+        biography:
+            label:          Biographie
+        website:
+            label:          Site web
+        twitter:
+            label:          Twitter
+        facebook:
+            label:          Facebook
+        email:
+            label:          Email
+        phone:
+            label:          Téléphone
+        last_connect:
+            label:          Dernière connexion
+        p_u_qualifications:
+            label:          Qualifications
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des utilisateurs
+            max_per_page:                       50
+            sort:                               [ created_at, DESC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Qualifiés":
+                        default:                true
+                        filters: 
+                            filterByType:       2
+                    "Citoyens":
+                        filters: 
+                            filterByType:       1
+            display:                            [ file_name, name, firstname, type, status, online, last_connect ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params:                                 ~
+        filename:                               ~
+        filetype:                               ~
+    filters:
+        params:
+            display:                            [ name, firstname, type, status, online, last_connect ]
+    new:
+        params:
+            title:                              "Création d'un utilisateur"
+            display:
+                "Champs principaux":            [ [ type, status], [ firstname, name ] ]
+                "Champs complémentaires":       [ [ summary, biography ] ]
+            fields:
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                biography:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
+            tabs:
+                "Identité":
+                    "Type":                     [ type ]
+                    "Civilité":                 [ [ gender, firstname, name ], [ uploaded_file_name ] ]
+                    "Contacts":                 [ [ phone, email ], [ website, twitter, facebook ] ]
+                "Descriptifs":
+                    "Informations":             [ [ summary, biography ] ]
+                "Qualifications":
+                    "Qualifications":           [ p_u_qualifications ]
+                "Statut":
+                    "Actuel":                   [ [ status ] ]
+                    "Connexion":                [ last_connect ]
+                "Attributs":
+                    "En ligne":                 [ [ online ] ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                uploaded_file_name:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   afe_single_upload
+                    addFormOptions:
+                        # nameable:               fileName
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
+                p_u_qualifications:
+                    dbType:                     collection
+                    formType:                   collection
+                    label:                      Liste des postes de qualification de l'utilisateur
+                    addFormOptions:
+                        # widget:                 fieldset
+                        # editable:               [ title, begin_at, end_at ]
+                        type:                   \Politizr\AdminBundle\Form\Type\PUQualification\EditType
+                        allow_add:              true
+                        allow_delete:           true
+                        by_reference:           false
+                        options:
+                            # label:              Poste
+                            data_class:         Politizr\Model\PUQualification
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                biography:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                last_connect:
+                    label:                      Date de dernière connexion
+                    addFormOptions:
+                      widget:                   single_text
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+              save:                             ~
+              list:                             ~
+              delete:                           ~
+    show:
+        params:
+            title:                              "Visualisation de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
+            tabs:
+                "Identité":
+                    "Type":                     [ type ]
+                    "Civilité":                 [ [ file_name, gender, firstname, name ] ]
+                    "Contacts":                 [ [ phone, email ], [ website, twitter, facebook ] ]
+                "Descriptifs":
+                    "Informations":             [ [ summary, biography ] ]
+                "Qualifications":
+                    "Qualifications":           [ ]
+                "Publications":
+                    "Contenus associés":        [ block_debates, block_reactions ]
+                    "Commentaires":             [ block_comments_d, block_comments_r ]
+                "Abonnements":
+                    "Followers":                [ block_followers_q, block_followers_c ]
+                    "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
+                "Statut":
+                    "Actuel":                   [ [ status ] ]
+                    "Connexion":                [ last_connect ]
+                "Attributs":
+                    "En ligne":                 [ [ online ] ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_debates:
+                    label:                      "Débats"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_reactions:
+                    label:                      "Réactions"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_comments_d:
+                    label:                      "Débats"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_comments_r:
+                    label:                      "Réactions"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags:
+                    label:                      "Tags"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_followers_q:
+                    label:                      "Qualifiés"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_followers_c:
+                    label:                      "Citoyens"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_subscribers_q:
+                    label:                      "Qualifiés"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_subscribers_c:
+                    label:                      "Citoyens"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                last_connect:
+                    label:                      Date de dernière connexion
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

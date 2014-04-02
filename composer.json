@@ -29,9 +29,6 @@
         
         "symfony/symfony": "2.3.*",
         
-        "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.2.*",
-        
         "twig/extensions": "1.0.*",
         
         "symfony/assetic-bundle": "2.3.*",
@@ -48,10 +45,13 @@
         
         "friendsofsymfony/user-bundle": "*",
         
-        "propel/propel-bundle": "1.2.7.*",
+        "fzaninotto/faker": "1.4.*@dev",
+
+        "propel/propel-bundle": "1.2.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",
         "craftyshadow/propel-equalnest-behavior": "1.0.5",
-        
+        "willdurand/faker-bundle": "@stable",
+
         "phing/phing": "2.4.14",
         
         "white-october/pagerfanta-bundle": "1.0.*",
@@ -64,6 +64,9 @@
 
         "liip/imagine-bundle": "0.11.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },    
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

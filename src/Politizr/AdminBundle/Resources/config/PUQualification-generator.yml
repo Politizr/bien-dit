@@ -1,0 +1,37 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PUQualification
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    i18n_catalog:           PUQualification
+
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        begin_at:
+            label:          Début
+        end_at:
+            label:          Fin
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    edit:
+        params:
+            display:                
+                NONE:               [ [ title, begin_at, end_at ] ]
+            title:                  ""  # title has to be defined to avoid errors, but is not used
+            fields:
+                begin_at:
+                    formType:       afe_date_picker
+                end_at:
+                    formType:       afe_date_picker

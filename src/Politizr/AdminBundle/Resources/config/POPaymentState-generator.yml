@@ -1,0 +1,86 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\POPaymentState
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        description:
+            label:          Description
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des statuts de paiement
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            display:                            [ title, description ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ title, created_at ]
+    new:
+        params:
+            title:                              "Création d'un statut de paiement"
+            display:
+                "Champs principaux":            [ [ title ] ]
+                "Champs complémentaires":       [ [ description ] ]
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du statut de paiement '{{ POPaymentState.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du statut de paiement '{{ POPaymentState.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

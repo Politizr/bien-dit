@@ -1,0 +1,3643 @@
+<?php
+
+namespace Politizr\Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \DateTime;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelCollection;
+use \PropelDateTime;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDDTaggedT;
+use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PTag;
+use Politizr\Model\PTagQuery;
+use Politizr\Model\PUFollowDD;
+use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUser;
+use Politizr\Model\PUserQuery;
+
+abstract class BasePDDebate extends BaseObject implements Persistent
+{
+    /**
+     * Peer class name
+     */
+    const PEER = 'Politizr\\Model\\PDDebatePeer';
+
+    /**
+     * The Peer class.
+     * Instance provides a convenient way of calling static methods on a class
+     * that calling code may not be able to identify.
+     * @var        PDDebatePeer
+     */
+    protected static $peer;
+
+    /**
+     * The flag var to prevent infinit loop in deep copy
+     * @var       boolean
+     */
+    protected $startCopy = false;
+
+    /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
+     * The value for the p_user_id field.
+     * @var        int
+     */
+    protected $p_user_id;
+
+    /**
+     * The value for the title field.
+     * @var        string
+     */
+    protected $title;
+
+    /**
+     * The value for the summary field.
+     * @var        string
+     */
+    protected $summary;
+
+    /**
+     * The value for the description field.
+     * @var        string
+     */
+    protected $description;
+
+    /**
+     * The value for the more_info field.
+     * @var        string
+     */
+    protected $more_info;
+
+    /**
+     * The value for the note_pos field.
+     * @var        int
+     */
+    protected $note_pos;
+
+    /**
+     * The value for the note_neg field.
+     * @var        int
+     */
+    protected $note_neg;
+
+    /**
+     * The value for the published field.
+     * @var        boolean
+     */
+    protected $published;
+
+    /**
+     * The value for the published_at field.
+     * @var        string
+     */
+    protected $published_at;
+
+    /**
+     * The value for the published_by field.
+     * @var        string
+     */
+    protected $published_by;
+
+    /**
+     * The value for the online field.
+     * @var        boolean
+     */
+    protected $online;
+
+    /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
+
+    /**
+     * The value for the slug field.
+     * @var        string
+     */
+    protected $slug;
+
+    /**
+     * @var        PUser
+     */
+    protected $aPUser;
+
+    /**
+     * @var        PropelObjectCollection|PUFollowDD[] Collection to store aggregation of PUFollowDD objects.
+     */
+    protected $collPuFollowDdPDDebates;
+    protected $collPuFollowDdPDDebatesPartial;
+
+    /**
+     * @var        PropelObjectCollection|PDDComment[] Collection to store aggregation of PDDComment objects.
+     */
+    protected $collPDDComments;
+    protected $collPDDCommentsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPDReactions;
+    protected $collPDReactionsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PDDTaggedT[] Collection to store aggregation of PDDTaggedT objects.
+     */
+    protected $collPddTaggedTPDDebates;
+    protected $collPddTaggedTPDDebatesPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPuFollowDdPUsers;
+
+    /**
+     * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
+     */
+    protected $collPddTaggedTPTags;
+
+    /**
+     * Flag to prevent endless save loop, if this object is referenced
+     * by another object which falls in this transaction.
+     * @var        boolean
+     */
+    protected $alreadyInSave = false;
+
+    /**
+     * Flag to prevent endless validation loop, if this object is referenced
+     * by another object which falls in this transaction.
+     * @var        boolean
+     */
+    protected $alreadyInValidation = false;
+
+    /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puFollowDdPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pddTaggedTPTagsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puFollowDdPDDebatesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDDCommentsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pddTaggedTPDDebatesScheduledForDeletion = null;
+
+    /**
+     * Get the [id] column value.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the [p_user_id] column value.
+     *
+     * @return int
+     */
+    public function getPUserId()
+    {
+        return $this->p_user_id;
+    }
+
+    /**
+     * Get the [title] column value.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Get the [summary] column value.
+     *
+     * @return string
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * Get the [description] column value.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get the [more_info] column value.
+     *
+     * @return string
+     */
+    public function getMoreInfo()
+    {
+        return $this->more_info;
+    }
+
+    /**
+     * Get the [note_pos] column value.
+     *
+     * @return int
+     */
+    public function getNotePos()
+    {
+        return $this->note_pos;
+    }
+
+    /**
+     * Get the [note_neg] column value.
+     *
+     * @return int
+     */
+    public function getNoteNeg()
+    {
+        return $this->note_neg;
+    }
+
+    /**
+     * Get the [published] column value.
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [published_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getPublishedAt($format = null)
+    {
+        if ($this->published_at === null) {
+            return null;
+        }
+
+        if ($this->published_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->published_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->published_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [published_by] column value.
+     *
+     * @return string
+     */
+    public function getPublishedBy()
+    {
+        return $this->published_by;
+    }
+
+    /**
+     * Get the [online] column value.
+     *
+     * @return boolean
+     */
+    public function getOnline()
+    {
+        return $this->online;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [created_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreatedAt($format = null)
+    {
+        if ($this->created_at === null) {
+            return null;
+        }
+
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->created_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdatedAt($format = null)
+    {
+        if ($this->updated_at === null) {
+            return null;
+        }
+
+        if ($this->updated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->updated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of [id] column.
+     *
+     * @param int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[] = PDDebatePeer::ID;
+        }
+
+
+        return $this;
+    } // setId()
+
+    /**
+     * Set the value of [p_user_id] column.
+     *
+     * @param int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPUserId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_user_id !== $v) {
+            $this->p_user_id = $v;
+            $this->modifiedColumns[] = PDDebatePeer::P_USER_ID;
+        }
+
+        if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
+            $this->aPUser = null;
+        }
+
+
+        return $this;
+    } // setPUserId()
+
+    /**
+     * Set the value of [title] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setTitle($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = PDDebatePeer::TITLE;
+        }
+
+
+        return $this;
+    } // setTitle()
+
+    /**
+     * Set the value of [summary] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setSummary($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->summary !== $v) {
+            $this->summary = $v;
+            $this->modifiedColumns[] = PDDebatePeer::SUMMARY;
+        }
+
+
+        return $this;
+    } // setSummary()
+
+    /**
+     * Set the value of [description] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setDescription($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[] = PDDebatePeer::DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setDescription()
+
+    /**
+     * Set the value of [more_info] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setMoreInfo($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->more_info !== $v) {
+            $this->more_info = $v;
+            $this->modifiedColumns[] = PDDebatePeer::MORE_INFO;
+        }
+
+
+        return $this;
+    } // setMoreInfo()
+
+    /**
+     * Set the value of [note_pos] column.
+     *
+     * @param int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setNotePos($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->note_pos !== $v) {
+            $this->note_pos = $v;
+            $this->modifiedColumns[] = PDDebatePeer::NOTE_POS;
+        }
+
+
+        return $this;
+    } // setNotePos()
+
+    /**
+     * Set the value of [note_neg] column.
+     *
+     * @param int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setNoteNeg($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->note_neg !== $v) {
+            $this->note_neg = $v;
+            $this->modifiedColumns[] = PDDebatePeer::NOTE_NEG;
+        }
+
+
+        return $this;
+    } // setNoteNeg()
+
+    /**
+     * Sets the value of the [published] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPublished($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->published !== $v) {
+            $this->published = $v;
+            $this->modifiedColumns[] = PDDebatePeer::PUBLISHED;
+        }
+
+
+        return $this;
+    } // setPublished()
+
+    /**
+     * Sets the value of [published_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPublishedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->published_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->published_at !== null && $tmpDt = new DateTime($this->published_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->published_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::PUBLISHED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setPublishedAt()
+
+    /**
+     * Set the value of [published_by] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPublishedBy($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->published_by !== $v) {
+            $this->published_by = $v;
+            $this->modifiedColumns[] = PDDebatePeer::PUBLISHED_BY;
+        }
+
+
+        return $this;
+    } // setPublishedBy()
+
+    /**
+     * Sets the value of the [online] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setOnline($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->online !== $v) {
+            $this->online = $v;
+            $this->modifiedColumns[] = PDDebatePeer::ONLINE;
+        }
+
+
+        return $this;
+    } // setOnline()
+
+    /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
+
+    /**
+     * Set the value of [slug] column.
+     *
+     * @param string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PDDebatePeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
+     * Indicates whether the columns in this object are only set to default values.
+     *
+     * This method can be used in conjunction with isModified() to indicate whether an object is both
+     * modified _and_ has some values set which are non-default.
+     *
+     * @return boolean Whether the columns in this object are only been set with default values.
+     */
+    public function hasOnlyDefaultValues()
+    {
+        // otherwise, everything was equal, so return true
+        return true;
+    } // hasOnlyDefaultValues()
+
+    /**
+     * Hydrates (populates) the object variables with values from the database resultset.
+     *
+     * An offset (0-based "start column") is specified so that objects can be hydrated
+     * with a subset of the columns in the resultset rows.  This is needed, for example,
+     * for results of JOIN queries where the resultset row includes columns from two or
+     * more tables.
+     *
+     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @return int             next starting column
+     * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
+     */
+    public function hydrate($row, $startcol = 0, $rehydrate = false)
+    {
+        try {
+
+            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->more_info = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->published = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->published_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->published_by = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->online = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->slug = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->resetModified();
+
+            $this->setNew(false);
+
+            if ($rehydrate) {
+                $this->ensureConsistency();
+            }
+            $this->postHydrate($row, $startcol, $rehydrate);
+            return $startcol + 15; // 15 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
+
+        } catch (Exception $e) {
+            throw new PropelException("Error populating PDDebate object", $e);
+        }
+    }
+
+    /**
+     * Checks and repairs the internal consistency of the object.
+     *
+     * This method is executed after an already-instantiated object is re-hydrated
+     * from the database.  It exists to check any foreign keys to make sure that
+     * the objects related to the current object are correct based on foreign key.
+     *
+     * You can override this method in the stub class, but you should always invoke
+     * the base method from the overridden method (i.e. parent::ensureConsistency()),
+     * in case your model changes.
+     *
+     * @throws PropelException
+     */
+    public function ensureConsistency()
+    {
+
+        if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
+            $this->aPUser = null;
+        }
+    } // ensureConsistency
+
+    /**
+     * Reloads this object from datastore based on primary key and (optionally) resets all associated objects.
+     *
+     * This will only work if the object has been saved and has a valid primary key set.
+     *
+     * @param boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con (optional) The PropelPDO connection to use.
+     * @return void
+     * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
+     */
+    public function reload($deep = false, PropelPDO $con = null)
+    {
+        if ($this->isDeleted()) {
+            throw new PropelException("Cannot reload a deleted object.");
+        }
+
+        if ($this->isNew()) {
+            throw new PropelException("Cannot reload an unsaved object.");
+        }
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        // We don't need to alter the object instance pool; we're just modifying this instance
+        // already in the pool.
+
+        $stmt = PDDebatePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $row = $stmt->fetch(PDO::FETCH_NUM);
+        $stmt->closeCursor();
+        if (!$row) {
+            throw new PropelException('Cannot find matching row in the database to reload object values.');
+        }
+        $this->hydrate($row, 0, true); // rehydrate
+
+        if ($deep) {  // also de-associate any related objects?
+
+            $this->aPUser = null;
+            $this->collPuFollowDdPDDebates = null;
+
+            $this->collPDDComments = null;
+
+            $this->collPDReactions = null;
+
+            $this->collPddTaggedTPDDebates = null;
+
+            $this->collPuFollowDdPUsers = null;
+            $this->collPddTaggedTPTags = null;
+        } // if (deep)
+    }
+
+    /**
+     * Removes this object from datastore and sets delete attribute.
+     *
+     * @param PropelPDO $con
+     * @return void
+     * @throws PropelException
+     * @throws Exception
+     * @see        BaseObject::setDeleted()
+     * @see        BaseObject::isDeleted()
+     */
+    public function delete(PropelPDO $con = null)
+    {
+        if ($this->isDeleted()) {
+            throw new PropelException("This object has already been deleted.");
+        }
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $con->beginTransaction();
+        try {
+            $deleteQuery = PDDebateQuery::create()
+                ->filterByPrimaryKey($this->getPrimaryKey());
+            $ret = $this->preDelete($con);
+            if ($ret) {
+                $deleteQuery->delete($con);
+                $this->postDelete($con);
+                $con->commit();
+                $this->setDeleted(true);
+            } else {
+                $con->commit();
+            }
+        } catch (Exception $e) {
+            $con->rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Persists this object to the database.
+     *
+     * If the object is new, it inserts it; otherwise an update is performed.
+     * All modified related objects will also be persisted in the doSave()
+     * method.  This method wraps all precipitate database operations in a
+     * single transaction.
+     *
+     * @param PropelPDO $con
+     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @throws PropelException
+     * @throws Exception
+     * @see        doSave()
+     */
+    public function save(PropelPDO $con = null)
+    {
+        if ($this->isDeleted()) {
+            throw new PropelException("You cannot save an object that has been deleted.");
+        }
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $con->beginTransaction();
+        $isInsert = $this->isNew();
+        try {
+            $ret = $this->preSave($con);
+            // sluggable behavior
+
+            if ($this->isColumnModified(PDDebatePeer::SLUG) && $this->getSlug()) {
+                $this->setSlug($this->makeSlugUnique($this->getSlug()));
+            } elseif ($this->isColumnModified(PDDebatePeer::TITLE)) {
+                $this->setSlug($this->createSlug());
+            } elseif (!$this->getSlug()) {
+                $this->setSlug($this->createSlug());
+            }
+            if ($isInsert) {
+                $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(PDDebatePeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(PDDebatePeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
+            } else {
+                $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(PDDebatePeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
+            }
+            if ($ret) {
+                $affectedRows = $this->doSave($con);
+                if ($isInsert) {
+                    $this->postInsert($con);
+                } else {
+                    $this->postUpdate($con);
+                }
+                $this->postSave($con);
+                PDDebatePeer::addInstanceToPool($this);
+            } else {
+                $affectedRows = 0;
+            }
+            $con->commit();
+
+            return $affectedRows;
+        } catch (Exception $e) {
+            $con->rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Performs the work of inserting or updating the row in the database.
+     *
+     * If the object is new, it inserts it; otherwise an update is performed.
+     * All related objects are also updated in this method.
+     *
+     * @param PropelPDO $con
+     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @throws PropelException
+     * @see        save()
+     */
+    protected function doSave(PropelPDO $con)
+    {
+        $affectedRows = 0; // initialize var to track total num of affected rows
+        if (!$this->alreadyInSave) {
+            $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUser !== null) {
+                if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
+                    $affectedRows += $this->aPUser->save($con);
+                }
+                $this->setPUser($this->aPUser);
+            }
+
+            if ($this->isNew() || $this->isModified()) {
+                // persist changes
+                if ($this->isNew()) {
+                    $this->doInsert($con);
+                } else {
+                    $this->doUpdate($con);
+                }
+                $affectedRows += 1;
+                $this->resetModified();
+            }
+
+            if ($this->puFollowDdPUsersScheduledForDeletion !== null) {
+                if (!$this->puFollowDdPUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puFollowDdPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PuFollowDdPDDebateQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puFollowDdPUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuFollowDdPUsers() as $puFollowDdPUser) {
+                    if ($puFollowDdPUser->isModified()) {
+                        $puFollowDdPUser->save($con);
+                    }
+                }
+            } elseif ($this->collPuFollowDdPUsers) {
+                foreach ($this->collPuFollowDdPUsers as $puFollowDdPUser) {
+                    if ($puFollowDdPUser->isModified()) {
+                        $puFollowDdPUser->save($con);
+                    }
+                }
+            }
+
+            if ($this->pddTaggedTPTagsScheduledForDeletion !== null) {
+                if (!$this->pddTaggedTPTagsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pddTaggedTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PddTaggedTPDDebateQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pddTaggedTPTagsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPddTaggedTPTags() as $pddTaggedTPTag) {
+                    if ($pddTaggedTPTag->isModified()) {
+                        $pddTaggedTPTag->save($con);
+                    }
+                }
+            } elseif ($this->collPddTaggedTPTags) {
+                foreach ($this->collPddTaggedTPTags as $pddTaggedTPTag) {
+                    if ($pddTaggedTPTag->isModified()) {
+                        $pddTaggedTPTag->save($con);
+                    }
+                }
+            }
+
+            if ($this->puFollowDdPDDebatesScheduledForDeletion !== null) {
+                if (!$this->puFollowDdPDDebatesScheduledForDeletion->isEmpty()) {
+                    PUFollowDDQuery::create()
+                        ->filterByPrimaryKeys($this->puFollowDdPDDebatesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puFollowDdPDDebatesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuFollowDdPDDebates !== null) {
+                foreach ($this->collPuFollowDdPDDebates as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pDDCommentsScheduledForDeletion !== null) {
+                if (!$this->pDDCommentsScheduledForDeletion->isEmpty()) {
+                    PDDCommentQuery::create()
+                        ->filterByPrimaryKeys($this->pDDCommentsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDDCommentsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDDComments !== null) {
+                foreach ($this->collPDDComments as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pDReactionsScheduledForDeletion !== null) {
+                if (!$this->pDReactionsScheduledForDeletion->isEmpty()) {
+                    PDReactionQuery::create()
+                        ->filterByPrimaryKeys($this->pDReactionsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDReactionsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDReactions !== null) {
+                foreach ($this->collPDReactions as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pddTaggedTPDDebatesScheduledForDeletion !== null) {
+                if (!$this->pddTaggedTPDDebatesScheduledForDeletion->isEmpty()) {
+                    PDDTaggedTQuery::create()
+                        ->filterByPrimaryKeys($this->pddTaggedTPDDebatesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pddTaggedTPDDebatesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPddTaggedTPDDebates !== null) {
+                foreach ($this->collPddTaggedTPDDebates as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            $this->alreadyInSave = false;
+
+        }
+
+        return $affectedRows;
+    } // doSave()
+
+    /**
+     * Insert the row in the database.
+     *
+     * @param PropelPDO $con
+     *
+     * @throws PropelException
+     * @see        doSave()
+     */
+    protected function doInsert(PropelPDO $con)
+    {
+        $modifiedColumns = array();
+        $index = 0;
+
+        $this->modifiedColumns[] = PDDebatePeer::ID;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PDDebatePeer::ID . ')');
+        }
+
+         // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(PDDebatePeer::ID)) {
+            $modifiedColumns[':p' . $index++]  = '`id`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`title`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::SUMMARY)) {
+            $modifiedColumns[':p' . $index++]  = '`summary`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`description`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::MORE_INFO)) {
+            $modifiedColumns[':p' . $index++]  = '`more_info`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::NOTE_POS)) {
+            $modifiedColumns[':p' . $index++]  = '`note_pos`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::NOTE_NEG)) {
+            $modifiedColumns[':p' . $index++]  = '`note_neg`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED)) {
+            $modifiedColumns[':p' . $index++]  = '`published`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`published_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) {
+            $modifiedColumns[':p' . $index++]  = '`published_by`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::ONLINE)) {
+            $modifiedColumns[':p' . $index++]  = '`online`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`created_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`updated_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
+
+        $sql = sprintf(
+            'INSERT INTO `p_d_debate` (%s) VALUES (%s)',
+            implode(', ', $modifiedColumns),
+            implode(', ', array_keys($modifiedColumns))
+        );
+
+        try {
+            $stmt = $con->prepare($sql);
+            foreach ($modifiedColumns as $identifier => $columnName) {
+                switch ($columnName) {
+                    case '`id`':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`p_user_id`':
+                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`title`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
+                    case '`summary`':
+                        $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
+                        break;
+                    case '`description`':
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`more_info`':
+                        $stmt->bindValue($identifier, $this->more_info, PDO::PARAM_STR);
+                        break;
+                    case '`note_pos`':
+                        $stmt->bindValue($identifier, $this->note_pos, PDO::PARAM_INT);
+                        break;
+                    case '`note_neg`':
+                        $stmt->bindValue($identifier, $this->note_neg, PDO::PARAM_INT);
+                        break;
+                    case '`published`':
+                        $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
+                        break;
+                    case '`published_at`':
+                        $stmt->bindValue($identifier, $this->published_at, PDO::PARAM_STR);
+                        break;
+                    case '`published_by`':
+                        $stmt->bindValue($identifier, $this->published_by, PDO::PARAM_STR);
+                        break;
+                    case '`online`':
+                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`created_at`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`updated_at`':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                }
+            }
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
+        }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', $e);
+        }
+        $this->setId($pk);
+
+        $this->setNew(false);
+    }
+
+    /**
+     * Update the row in the database.
+     *
+     * @param PropelPDO $con
+     *
+     * @see        doSave()
+     */
+    protected function doUpdate(PropelPDO $con)
+    {
+        $selectCriteria = $this->buildPkeyCriteria();
+        $valuesCriteria = $this->buildCriteria();
+        BasePeer::doUpdate($selectCriteria, $valuesCriteria, $con);
+    }
+
+    /**
+     * Array of ValidationFailed objects.
+     * @var        array ValidationFailed[]
+     */
+    protected $validationFailures = array();
+
+    /**
+     * Gets any ValidationFailed objects that resulted from last call to validate().
+     *
+     *
+     * @return array ValidationFailed[]
+     * @see        validate()
+     */
+    public function getValidationFailures()
+    {
+        return $this->validationFailures;
+    }
+
+    /**
+     * Validates the objects modified field values and all objects related to this table.
+     *
+     * If $columns is either a column name or an array of column names
+     * only those columns are validated.
+     *
+     * @param mixed $columns Column name or an array of column names.
+     * @return boolean Whether all columns pass validation.
+     * @see        doValidate()
+     * @see        getValidationFailures()
+     */
+    public function validate($columns = null)
+    {
+        $res = $this->doValidate($columns);
+        if ($res === true) {
+            $this->validationFailures = array();
+
+            return true;
+        }
+
+        $this->validationFailures = $res;
+
+        return false;
+    }
+
+    /**
+     * This function performs the validation work for complex object models.
+     *
+     * In addition to checking the current object, all related objects will
+     * also be validated.  If all pass then <code>true</code> is returned; otherwise
+     * an aggreagated array of ValidationFailed objects will be returned.
+     *
+     * @param array $columns Array of column names to validate.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     */
+    protected function doValidate($columns = null)
+    {
+        if (!$this->alreadyInValidation) {
+            $this->alreadyInValidation = true;
+            $retval = null;
+
+            $failureMap = array();
+
+
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUser !== null) {
+                if (!$this->aPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
+                }
+            }
+
+
+            if (($retval = PDDebatePeer::doValidate($this, $columns)) !== true) {
+                $failureMap = array_merge($failureMap, $retval);
+            }
+
+
+                if ($this->collPuFollowDdPDDebates !== null) {
+                    foreach ($this->collPuFollowDdPDDebates as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPDDComments !== null) {
+                    foreach ($this->collPDDComments as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPDReactions !== null) {
+                    foreach ($this->collPDReactions as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPddTaggedTPDDebates !== null) {
+                    foreach ($this->collPddTaggedTPDDebates as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+
+            $this->alreadyInValidation = false;
+        }
+
+        return (!empty($failureMap) ? $failureMap : true);
+    }
+
+    /**
+     * Retrieves a field from the object by name passed in as a string.
+     *
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
+     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *               Defaults to BasePeer::TYPE_PHPNAME
+     * @return mixed Value of field.
+     */
+    public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+    {
+        $pos = PDDebatePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $field = $this->getByPosition($pos);
+
+        return $field;
+    }
+
+    /**
+     * Retrieves a field from the object by Position as specified in the xml schema.
+     * Zero-based.
+     *
+     * @param int $pos position in xml schema
+     * @return mixed Value of field at $pos
+     */
+    public function getByPosition($pos)
+    {
+        switch ($pos) {
+            case 0:
+                return $this->getId();
+                break;
+            case 1:
+                return $this->getPUserId();
+                break;
+            case 2:
+                return $this->getTitle();
+                break;
+            case 3:
+                return $this->getSummary();
+                break;
+            case 4:
+                return $this->getDescription();
+                break;
+            case 5:
+                return $this->getMoreInfo();
+                break;
+            case 6:
+                return $this->getNotePos();
+                break;
+            case 7:
+                return $this->getNoteNeg();
+                break;
+            case 8:
+                return $this->getPublished();
+                break;
+            case 9:
+                return $this->getPublishedAt();
+                break;
+            case 10:
+                return $this->getPublishedBy();
+                break;
+            case 11:
+                return $this->getOnline();
+                break;
+            case 12:
+                return $this->getCreatedAt();
+                break;
+            case 13:
+                return $this->getUpdatedAt();
+                break;
+            case 14:
+                return $this->getSlug();
+                break;
+            default:
+                return null;
+                break;
+        } // switch()
+    }
+
+    /**
+     * Exports the object as an array.
+     *
+     * You can specify the key type of the array by passing one of the class
+     * type constants.
+     *
+     * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+     *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *                    Defaults to BasePeer::TYPE_PHPNAME.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
+     * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+     *
+     * @return array an associative array containing the field names (as keys) and field values
+     */
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    {
+        if (isset($alreadyDumpedObjects['PDDebate'][$this->getPrimaryKey()])) {
+            return '*RECURSION*';
+        }
+        $alreadyDumpedObjects['PDDebate'][$this->getPrimaryKey()] = true;
+        $keys = PDDebatePeer::getFieldNames($keyType);
+        $result = array(
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getSummary(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getMoreInfo(),
+            $keys[6] => $this->getNotePos(),
+            $keys[7] => $this->getNoteNeg(),
+            $keys[8] => $this->getPublished(),
+            $keys[9] => $this->getPublishedAt(),
+            $keys[10] => $this->getPublishedBy(),
+            $keys[11] => $this->getOnline(),
+            $keys[12] => $this->getCreatedAt(),
+            $keys[13] => $this->getUpdatedAt(),
+            $keys[14] => $this->getSlug(),
+        );
+        if ($includeForeignObjects) {
+            if (null !== $this->aPUser) {
+                $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collPuFollowDdPDDebates) {
+                $result['PuFollowDdPDDebates'] = $this->collPuFollowDdPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDDComments) {
+                $result['PDDComments'] = $this->collPDDComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDReactions) {
+                $result['PDReactions'] = $this->collPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPddTaggedTPDDebates) {
+                $result['PddTaggedTPDDebates'] = $this->collPddTaggedTPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Sets a field from the object by name passed in as a string.
+     *
+     * @param string $name peer name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
+     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *                     Defaults to BasePeer::TYPE_PHPNAME
+     * @return void
+     */
+    public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+    {
+        $pos = PDDebatePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+
+        $this->setByPosition($pos, $value);
+    }
+
+    /**
+     * Sets a field from the object by Position as specified in the xml schema.
+     * Zero-based.
+     *
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
+     * @return void
+     */
+    public function setByPosition($pos, $value)
+    {
+        switch ($pos) {
+            case 0:
+                $this->setId($value);
+                break;
+            case 1:
+                $this->setPUserId($value);
+                break;
+            case 2:
+                $this->setTitle($value);
+                break;
+            case 3:
+                $this->setSummary($value);
+                break;
+            case 4:
+                $this->setDescription($value);
+                break;
+            case 5:
+                $this->setMoreInfo($value);
+                break;
+            case 6:
+                $this->setNotePos($value);
+                break;
+            case 7:
+                $this->setNoteNeg($value);
+                break;
+            case 8:
+                $this->setPublished($value);
+                break;
+            case 9:
+                $this->setPublishedAt($value);
+                break;
+            case 10:
+                $this->setPublishedBy($value);
+                break;
+            case 11:
+                $this->setOnline($value);
+                break;
+            case 12:
+                $this->setCreatedAt($value);
+                break;
+            case 13:
+                $this->setUpdatedAt($value);
+                break;
+            case 14:
+                $this->setSlug($value);
+                break;
+        } // switch()
+    }
+
+    /**
+     * Populates the object using an array.
+     *
+     * This is particularly useful when populating an object from one of the
+     * request arrays (e.g. $_POST).  This method goes through the column
+     * names, checking to see whether a matching key exists in populated
+     * array. If so the setByName() method is called for that column.
+     *
+     * You can specify the key type of the array by additionally passing one
+     * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+     * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     * The default key type is the column's BasePeer::TYPE_PHPNAME
+     *
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
+     * @return void
+     */
+    public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+    {
+        $keys = PDDebatePeer::getFieldNames($keyType);
+
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMoreInfo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPublished($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPublishedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPublishedBy($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setOnline($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setSlug($arr[$keys[14]]);
+    }
+
+    /**
+     * Build a Criteria object containing the values of all modified columns in this object.
+     *
+     * @return Criteria The Criteria object containing all modified values.
+     */
+    public function buildCriteria()
+    {
+        $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
+
+        if ($this->isColumnModified(PDDebatePeer::ID)) $criteria->add(PDDebatePeer::ID, $this->id);
+        if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) $criteria->add(PDDebatePeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PDDebatePeer::TITLE)) $criteria->add(PDDebatePeer::TITLE, $this->title);
+        if ($this->isColumnModified(PDDebatePeer::SUMMARY)) $criteria->add(PDDebatePeer::SUMMARY, $this->summary);
+        if ($this->isColumnModified(PDDebatePeer::DESCRIPTION)) $criteria->add(PDDebatePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PDDebatePeer::MORE_INFO)) $criteria->add(PDDebatePeer::MORE_INFO, $this->more_info);
+        if ($this->isColumnModified(PDDebatePeer::NOTE_POS)) $criteria->add(PDDebatePeer::NOTE_POS, $this->note_pos);
+        if ($this->isColumnModified(PDDebatePeer::NOTE_NEG)) $criteria->add(PDDebatePeer::NOTE_NEG, $this->note_neg);
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED)) $criteria->add(PDDebatePeer::PUBLISHED, $this->published);
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED_AT)) $criteria->add(PDDebatePeer::PUBLISHED_AT, $this->published_at);
+        if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) $criteria->add(PDDebatePeer::PUBLISHED_BY, $this->published_by);
+        if ($this->isColumnModified(PDDebatePeer::ONLINE)) $criteria->add(PDDebatePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) $criteria->add(PDDebatePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) $criteria->add(PDDebatePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PDDebatePeer::SLUG)) $criteria->add(PDDebatePeer::SLUG, $this->slug);
+
+        return $criteria;
+    }
+
+    /**
+     * Builds a Criteria object containing the primary key for this object.
+     *
+     * Unlike buildCriteria() this method includes the primary key values regardless
+     * of whether or not they have been modified.
+     *
+     * @return Criteria The Criteria object containing value(s) for primary key(s).
+     */
+    public function buildPkeyCriteria()
+    {
+        $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
+        $criteria->add(PDDebatePeer::ID, $this->id);
+
+        return $criteria;
+    }
+
+    /**
+     * Returns the primary key for this object (row).
+     * @return int
+     */
+    public function getPrimaryKey()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * Generic method to set the primary key (id column).
+     *
+     * @param  int $key Primary key.
+     * @return void
+     */
+    public function setPrimaryKey($key)
+    {
+        $this->setId($key);
+    }
+
+    /**
+     * Returns true if the primary key for this object is null.
+     * @return boolean
+     */
+    public function isPrimaryKeyNull()
+    {
+
+        return null === $this->getId();
+    }
+
+    /**
+     * Sets contents of passed object to values from current object.
+     *
+     * If desired, this method can also make copies of all associated (fkey referrers)
+     * objects.
+     *
+     * @param object $copyObj An object of PDDebate (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @throws PropelException
+     */
+    public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
+    {
+        $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setTitle($this->getTitle());
+        $copyObj->setSummary($this->getSummary());
+        $copyObj->setDescription($this->getDescription());
+        $copyObj->setMoreInfo($this->getMoreInfo());
+        $copyObj->setNotePos($this->getNotePos());
+        $copyObj->setNoteNeg($this->getNoteNeg());
+        $copyObj->setPublished($this->getPublished());
+        $copyObj->setPublishedAt($this->getPublishedAt());
+        $copyObj->setPublishedBy($this->getPublishedBy());
+        $copyObj->setOnline($this->getOnline());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            foreach ($this->getPuFollowDdPDDebates() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuFollowDdPDDebate($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPDDComments() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDDComment($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPDReactions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDReaction($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPddTaggedTPDDebates() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPddTaggedTPDDebate($relObj->copy($deepCopy));
+                }
+            }
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
+        if ($makeNew) {
+            $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+        }
+    }
+
+    /**
+     * Makes a copy of this object that will be inserted as a new row in table when saved.
+     * It creates a new object filling in the simple attributes, but skipping any primary
+     * keys that are defined for the table.
+     *
+     * If desired, this method can also make copies of all associated (fkey referrers)
+     * objects.
+     *
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return PDDebate Clone of current object.
+     * @throws PropelException
+     */
+    public function copy($deepCopy = false)
+    {
+        // we use get_class(), because this might be a subclass
+        $clazz = get_class($this);
+        $copyObj = new $clazz();
+        $this->copyInto($copyObj, $deepCopy);
+
+        return $copyObj;
+    }
+
+    /**
+     * Returns a peer instance associated with this om.
+     *
+     * Since Peer classes are not to have any instance attributes, this method returns the
+     * same instance for all member of this class. The method could therefore
+     * be static, but this would prevent one from overriding the behavior.
+     *
+     * @return PDDebatePeer
+     */
+    public function getPeer()
+    {
+        if (self::$peer === null) {
+            self::$peer = new PDDebatePeer();
+        }
+
+        return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a PUser object.
+     *
+     * @param             PUser $v
+     * @return PDDebate The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUser(PUser $v = null)
+    {
+        if ($v === null) {
+            $this->setPUserId(NULL);
+        } else {
+            $this->setPUserId($v->getId());
+        }
+
+        $this->aPUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDDebate($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUser object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUser The associated PUser object.
+     * @throws PropelException
+     */
+    public function getPUser(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUser->addPDDebates($this);
+             */
+        }
+
+        return $this->aPUser;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('PuFollowDdPDDebate' == $relationName) {
+            $this->initPuFollowDdPDDebates();
+        }
+        if ('PDDComment' == $relationName) {
+            $this->initPDDComments();
+        }
+        if ('PDReaction' == $relationName) {
+            $this->initPDReactions();
+        }
+        if ('PddTaggedTPDDebate' == $relationName) {
+            $this->initPddTaggedTPDDebates();
+        }
+    }
+
+    /**
+     * Clears out the collPuFollowDdPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPuFollowDdPDDebates()
+     */
+    public function clearPuFollowDdPDDebates()
+    {
+        $this->collPuFollowDdPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPuFollowDdPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuFollowDdPDDebates collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuFollowDdPDDebates($v = true)
+    {
+        $this->collPuFollowDdPDDebatesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuFollowDdPDDebates collection.
+     *
+     * By default this just sets the collPuFollowDdPDDebates collection to an empty array (like clearcollPuFollowDdPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuFollowDdPDDebates($overrideExisting = true)
+    {
+        if (null !== $this->collPuFollowDdPDDebates && !$overrideExisting) {
+            return;
+        }
+        $this->collPuFollowDdPDDebates = new PropelObjectCollection();
+        $this->collPuFollowDdPDDebates->setModel('PUFollowDD');
+    }
+
+    /**
+     * Gets an array of PUFollowDD objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUFollowDD[] List of PUFollowDD objects
+     * @throws PropelException
+     */
+    public function getPuFollowDdPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuFollowDdPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPuFollowDdPDDebates || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuFollowDdPDDebates) {
+                // return empty collection
+                $this->initPuFollowDdPDDebates();
+            } else {
+                $collPuFollowDdPDDebates = PUFollowDDQuery::create(null, $criteria)
+                    ->filterByPuFollowDdPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuFollowDdPDDebatesPartial && count($collPuFollowDdPDDebates)) {
+                      $this->initPuFollowDdPDDebates(false);
+
+                      foreach($collPuFollowDdPDDebates as $obj) {
+                        if (false == $this->collPuFollowDdPDDebates->contains($obj)) {
+                          $this->collPuFollowDdPDDebates->append($obj);
+                        }
+                      }
+
+                      $this->collPuFollowDdPDDebatesPartial = true;
+                    }
+
+                    $collPuFollowDdPDDebates->getInternalIterator()->rewind();
+                    return $collPuFollowDdPDDebates;
+                }
+
+                if($partial && $this->collPuFollowDdPDDebates) {
+                    foreach($this->collPuFollowDdPDDebates as $obj) {
+                        if($obj->isNew()) {
+                            $collPuFollowDdPDDebates[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuFollowDdPDDebates = $collPuFollowDdPDDebates;
+                $this->collPuFollowDdPDDebatesPartial = false;
+            }
+        }
+
+        return $this->collPuFollowDdPDDebates;
+    }
+
+    /**
+     * Sets a collection of PuFollowDdPDDebate objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puFollowDdPDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPuFollowDdPDDebates(PropelCollection $puFollowDdPDDebates, PropelPDO $con = null)
+    {
+        $puFollowDdPDDebatesToDelete = $this->getPuFollowDdPDDebates(new Criteria(), $con)->diff($puFollowDdPDDebates);
+
+        $this->puFollowDdPDDebatesScheduledForDeletion = unserialize(serialize($puFollowDdPDDebatesToDelete));
+
+        foreach ($puFollowDdPDDebatesToDelete as $puFollowDdPDDebateRemoved) {
+            $puFollowDdPDDebateRemoved->setPuFollowDdPDDebate(null);
+        }
+
+        $this->collPuFollowDdPDDebates = null;
+        foreach ($puFollowDdPDDebates as $puFollowDdPDDebate) {
+            $this->addPuFollowDdPDDebate($puFollowDdPDDebate);
+        }
+
+        $this->collPuFollowDdPDDebates = $puFollowDdPDDebates;
+        $this->collPuFollowDdPDDebatesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUFollowDD objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUFollowDD objects.
+     * @throws PropelException
+     */
+    public function countPuFollowDdPDDebates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuFollowDdPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPuFollowDdPDDebates || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuFollowDdPDDebates) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getPuFollowDdPDDebates());
+            }
+            $query = PUFollowDDQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuFollowDdPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPuFollowDdPDDebates);
+    }
+
+    /**
+     * Method called to associate a PUFollowDD object to this object
+     * through the PUFollowDD foreign key attribute.
+     *
+     * @param    PUFollowDD $l PUFollowDD
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPuFollowDdPDDebate(PUFollowDD $l)
+    {
+        if ($this->collPuFollowDdPDDebates === null) {
+            $this->initPuFollowDdPDDebates();
+            $this->collPuFollowDdPDDebatesPartial = true;
+        }
+        if (!in_array($l, $this->collPuFollowDdPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuFollowDdPDDebate($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
+     */
+    protected function doAddPuFollowDdPDDebate($puFollowDdPDDebate)
+    {
+        $this->collPuFollowDdPDDebates[]= $puFollowDdPDDebate;
+        $puFollowDdPDDebate->setPuFollowDdPDDebate($this);
+    }
+
+    /**
+     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePuFollowDdPDDebate($puFollowDdPDDebate)
+    {
+        if ($this->getPuFollowDdPDDebates()->contains($puFollowDdPDDebate)) {
+            $this->collPuFollowDdPDDebates->remove($this->collPuFollowDdPDDebates->search($puFollowDdPDDebate));
+            if (null === $this->puFollowDdPDDebatesScheduledForDeletion) {
+                $this->puFollowDdPDDebatesScheduledForDeletion = clone $this->collPuFollowDdPDDebates;
+                $this->puFollowDdPDDebatesScheduledForDeletion->clear();
+            }
+            $this->puFollowDdPDDebatesScheduledForDeletion[]= clone $puFollowDdPDDebate;
+            $puFollowDdPDDebate->setPuFollowDdPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PuFollowDdPDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUFollowDD[] List of PUFollowDD objects
+     */
+    public function getPuFollowDdPDDebatesJoinPuFollowDdPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUFollowDDQuery::create(null, $criteria);
+        $query->joinWith('PuFollowDdPUser', $join_behavior);
+
+        return $this->getPuFollowDdPDDebates($query, $con);
+    }
+
+    /**
+     * Clears out the collPDDComments collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPDDComments()
+     */
+    public function clearPDDComments()
+    {
+        $this->collPDDComments = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDCommentsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDDComments collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDDComments($v = true)
+    {
+        $this->collPDDCommentsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDDComments collection.
+     *
+     * By default this just sets the collPDDComments collection to an empty array (like clearcollPDDComments());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDDComments($overrideExisting = true)
+    {
+        if (null !== $this->collPDDComments && !$overrideExisting) {
+            return;
+        }
+        $this->collPDDComments = new PropelObjectCollection();
+        $this->collPDDComments->setModel('PDDComment');
+    }
+
+    /**
+     * Gets an array of PDDComment objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
+     * @throws PropelException
+     */
+    public function getPDDComments($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDDComments || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDDComments) {
+                // return empty collection
+                $this->initPDDComments();
+            } else {
+                $collPDDComments = PDDCommentQuery::create(null, $criteria)
+                    ->filterByPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDDCommentsPartial && count($collPDDComments)) {
+                      $this->initPDDComments(false);
+
+                      foreach($collPDDComments as $obj) {
+                        if (false == $this->collPDDComments->contains($obj)) {
+                          $this->collPDDComments->append($obj);
+                        }
+                      }
+
+                      $this->collPDDCommentsPartial = true;
+                    }
+
+                    $collPDDComments->getInternalIterator()->rewind();
+                    return $collPDDComments;
+                }
+
+                if($partial && $this->collPDDComments) {
+                    foreach($this->collPDDComments as $obj) {
+                        if($obj->isNew()) {
+                            $collPDDComments[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDDComments = $collPDDComments;
+                $this->collPDDCommentsPartial = false;
+            }
+        }
+
+        return $this->collPDDComments;
+    }
+
+    /**
+     * Sets a collection of PDDComment objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDDComments A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPDDComments(PropelCollection $pDDComments, PropelPDO $con = null)
+    {
+        $pDDCommentsToDelete = $this->getPDDComments(new Criteria(), $con)->diff($pDDComments);
+
+        $this->pDDCommentsScheduledForDeletion = unserialize(serialize($pDDCommentsToDelete));
+
+        foreach ($pDDCommentsToDelete as $pDDCommentRemoved) {
+            $pDDCommentRemoved->setPDDebate(null);
+        }
+
+        $this->collPDDComments = null;
+        foreach ($pDDComments as $pDDComment) {
+            $this->addPDDComment($pDDComment);
+        }
+
+        $this->collPDDComments = $pDDComments;
+        $this->collPDDCommentsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDDComment objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDDComment objects.
+     * @throws PropelException
+     */
+    public function countPDDComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDDComments || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDDComments) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getPDDComments());
+            }
+            $query = PDDCommentQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPDDComments);
+    }
+
+    /**
+     * Method called to associate a PDDComment object to this object
+     * through the PDDComment foreign key attribute.
+     *
+     * @param    PDDComment $l PDDComment
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPDDComment(PDDComment $l)
+    {
+        if ($this->collPDDComments === null) {
+            $this->initPDDComments();
+            $this->collPDDCommentsPartial = true;
+        }
+        if (!in_array($l, $this->collPDDComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDComment($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDDComment $pDDComment The pDDComment object to add.
+     */
+    protected function doAddPDDComment($pDDComment)
+    {
+        $this->collPDDComments[]= $pDDComment;
+        $pDDComment->setPDDebate($this);
+    }
+
+    /**
+     * @param	PDDComment $pDDComment The pDDComment object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePDDComment($pDDComment)
+    {
+        if ($this->getPDDComments()->contains($pDDComment)) {
+            $this->collPDDComments->remove($this->collPDDComments->search($pDDComment));
+            if (null === $this->pDDCommentsScheduledForDeletion) {
+                $this->pDDCommentsScheduledForDeletion = clone $this->collPDDComments;
+                $this->pDDCommentsScheduledForDeletion->clear();
+            }
+            $this->pDDCommentsScheduledForDeletion[]= clone $pDDComment;
+            $pDDComment->setPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PDDComments from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
+     */
+    public function getPDDCommentsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDCommentQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDDComments($query, $con);
+    }
+
+    /**
+     * Clears out the collPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPDReactions()
+     */
+    public function clearPDReactions()
+    {
+        $this->collPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDReactions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDReactions($v = true)
+    {
+        $this->collPDReactionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDReactions collection.
+     *
+     * By default this just sets the collPDReactions collection to an empty array (like clearcollPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDReactions($overrideExisting = true)
+    {
+        if (null !== $this->collPDReactions && !$overrideExisting) {
+            return;
+        }
+        $this->collPDReactions = new PropelObjectCollection();
+        $this->collPDReactions->setModel('PDReaction');
+    }
+
+    /**
+     * Gets an array of PDReaction objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     * @throws PropelException
+     */
+    public function getPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPDReactions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                // return empty collection
+                $this->initPDReactions();
+            } else {
+                $collPDReactions = PDReactionQuery::create(null, $criteria)
+                    ->filterByPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDReactionsPartial && count($collPDReactions)) {
+                      $this->initPDReactions(false);
+
+                      foreach($collPDReactions as $obj) {
+                        if (false == $this->collPDReactions->contains($obj)) {
+                          $this->collPDReactions->append($obj);
+                        }
+                      }
+
+                      $this->collPDReactionsPartial = true;
+                    }
+
+                    $collPDReactions->getInternalIterator()->rewind();
+                    return $collPDReactions;
+                }
+
+                if($partial && $this->collPDReactions) {
+                    foreach($this->collPDReactions as $obj) {
+                        if($obj->isNew()) {
+                            $collPDReactions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDReactions = $collPDReactions;
+                $this->collPDReactionsPartial = false;
+            }
+        }
+
+        return $this->collPDReactions;
+    }
+
+    /**
+     * Sets a collection of PDReaction objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPDReactions(PropelCollection $pDReactions, PropelPDO $con = null)
+    {
+        $pDReactionsToDelete = $this->getPDReactions(new Criteria(), $con)->diff($pDReactions);
+
+        $this->pDReactionsScheduledForDeletion = unserialize(serialize($pDReactionsToDelete));
+
+        foreach ($pDReactionsToDelete as $pDReactionRemoved) {
+            $pDReactionRemoved->setPDDebate(null);
+        }
+
+        $this->collPDReactions = null;
+        foreach ($pDReactions as $pDReaction) {
+            $this->addPDReaction($pDReaction);
+        }
+
+        $this->collPDReactions = $pDReactions;
+        $this->collPDReactionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDReaction objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDReaction objects.
+     * @throws PropelException
+     */
+    public function countPDReactions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPDReactions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getPDReactions());
+            }
+            $query = PDReactionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPDReactions);
+    }
+
+    /**
+     * Method called to associate a PDReaction object to this object
+     * through the PDReaction foreign key attribute.
+     *
+     * @param    PDReaction $l PDReaction
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPDReaction(PDReaction $l)
+    {
+        if ($this->collPDReactions === null) {
+            $this->initPDReactions();
+            $this->collPDReactionsPartial = true;
+        }
+        if (!in_array($l, $this->collPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDReaction($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDReaction $pDReaction The pDReaction object to add.
+     */
+    protected function doAddPDReaction($pDReaction)
+    {
+        $this->collPDReactions[]= $pDReaction;
+        $pDReaction->setPDDebate($this);
+    }
+
+    /**
+     * @param	PDReaction $pDReaction The pDReaction object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePDReaction($pDReaction)
+    {
+        if ($this->getPDReactions()->contains($pDReaction)) {
+            $this->collPDReactions->remove($this->collPDReactions->search($pDReaction));
+            if (null === $this->pDReactionsScheduledForDeletion) {
+                $this->pDReactionsScheduledForDeletion = clone $this->collPDReactions;
+                $this->pDReactionsScheduledForDeletion->clear();
+            }
+            $this->pDReactionsScheduledForDeletion[]= clone $pDReaction;
+            $pDReaction->setPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPDReactionRelatedByPDReactionId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PDReactionRelatedByPDReactionId', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+    /**
+     * Clears out the collPddTaggedTPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPddTaggedTPDDebates()
+     */
+    public function clearPddTaggedTPDDebates()
+    {
+        $this->collPddTaggedTPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPddTaggedTPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPddTaggedTPDDebates collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPddTaggedTPDDebates($v = true)
+    {
+        $this->collPddTaggedTPDDebatesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPddTaggedTPDDebates collection.
+     *
+     * By default this just sets the collPddTaggedTPDDebates collection to an empty array (like clearcollPddTaggedTPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPddTaggedTPDDebates($overrideExisting = true)
+    {
+        if (null !== $this->collPddTaggedTPDDebates && !$overrideExisting) {
+            return;
+        }
+        $this->collPddTaggedTPDDebates = new PropelObjectCollection();
+        $this->collPddTaggedTPDDebates->setModel('PDDTaggedT');
+    }
+
+    /**
+     * Gets an array of PDDTaggedT objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDDTaggedT[] List of PDDTaggedT objects
+     * @throws PropelException
+     */
+    public function getPddTaggedTPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPddTaggedTPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPddTaggedTPDDebates || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPddTaggedTPDDebates) {
+                // return empty collection
+                $this->initPddTaggedTPDDebates();
+            } else {
+                $collPddTaggedTPDDebates = PDDTaggedTQuery::create(null, $criteria)
+                    ->filterByPddTaggedTPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPddTaggedTPDDebatesPartial && count($collPddTaggedTPDDebates)) {
+                      $this->initPddTaggedTPDDebates(false);
+
+                      foreach($collPddTaggedTPDDebates as $obj) {
+                        if (false == $this->collPddTaggedTPDDebates->contains($obj)) {
+                          $this->collPddTaggedTPDDebates->append($obj);
+                        }
+                      }
+
+                      $this->collPddTaggedTPDDebatesPartial = true;
+                    }
+
+                    $collPddTaggedTPDDebates->getInternalIterator()->rewind();
+                    return $collPddTaggedTPDDebates;
+                }
+
+                if($partial && $this->collPddTaggedTPDDebates) {
+                    foreach($this->collPddTaggedTPDDebates as $obj) {
+                        if($obj->isNew()) {
+                            $collPddTaggedTPDDebates[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPddTaggedTPDDebates = $collPddTaggedTPDDebates;
+                $this->collPddTaggedTPDDebatesPartial = false;
+            }
+        }
+
+        return $this->collPddTaggedTPDDebates;
+    }
+
+    /**
+     * Sets a collection of PddTaggedTPDDebate objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pddTaggedTPDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPddTaggedTPDDebates(PropelCollection $pddTaggedTPDDebates, PropelPDO $con = null)
+    {
+        $pddTaggedTPDDebatesToDelete = $this->getPddTaggedTPDDebates(new Criteria(), $con)->diff($pddTaggedTPDDebates);
+
+        $this->pddTaggedTPDDebatesScheduledForDeletion = unserialize(serialize($pddTaggedTPDDebatesToDelete));
+
+        foreach ($pddTaggedTPDDebatesToDelete as $pddTaggedTPDDebateRemoved) {
+            $pddTaggedTPDDebateRemoved->setPddTaggedTPDDebate(null);
+        }
+
+        $this->collPddTaggedTPDDebates = null;
+        foreach ($pddTaggedTPDDebates as $pddTaggedTPDDebate) {
+            $this->addPddTaggedTPDDebate($pddTaggedTPDDebate);
+        }
+
+        $this->collPddTaggedTPDDebates = $pddTaggedTPDDebates;
+        $this->collPddTaggedTPDDebatesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDDTaggedT objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDDTaggedT objects.
+     * @throws PropelException
+     */
+    public function countPddTaggedTPDDebates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPddTaggedTPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPddTaggedTPDDebates || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPddTaggedTPDDebates) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getPddTaggedTPDDebates());
+            }
+            $query = PDDTaggedTQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPddTaggedTPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPddTaggedTPDDebates);
+    }
+
+    /**
+     * Method called to associate a PDDTaggedT object to this object
+     * through the PDDTaggedT foreign key attribute.
+     *
+     * @param    PDDTaggedT $l PDDTaggedT
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPddTaggedTPDDebate(PDDTaggedT $l)
+    {
+        if ($this->collPddTaggedTPDDebates === null) {
+            $this->initPddTaggedTPDDebates();
+            $this->collPddTaggedTPDDebatesPartial = true;
+        }
+        if (!in_array($l, $this->collPddTaggedTPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPddTaggedTPDDebate($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PddTaggedTPDDebate $pddTaggedTPDDebate The pddTaggedTPDDebate object to add.
+     */
+    protected function doAddPddTaggedTPDDebate($pddTaggedTPDDebate)
+    {
+        $this->collPddTaggedTPDDebates[]= $pddTaggedTPDDebate;
+        $pddTaggedTPDDebate->setPddTaggedTPDDebate($this);
+    }
+
+    /**
+     * @param	PddTaggedTPDDebate $pddTaggedTPDDebate The pddTaggedTPDDebate object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePddTaggedTPDDebate($pddTaggedTPDDebate)
+    {
+        if ($this->getPddTaggedTPDDebates()->contains($pddTaggedTPDDebate)) {
+            $this->collPddTaggedTPDDebates->remove($this->collPddTaggedTPDDebates->search($pddTaggedTPDDebate));
+            if (null === $this->pddTaggedTPDDebatesScheduledForDeletion) {
+                $this->pddTaggedTPDDebatesScheduledForDeletion = clone $this->collPddTaggedTPDDebates;
+                $this->pddTaggedTPDDebatesScheduledForDeletion->clear();
+            }
+            $this->pddTaggedTPDDebatesScheduledForDeletion[]= clone $pddTaggedTPDDebate;
+            $pddTaggedTPDDebate->setPddTaggedTPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PddTaggedTPDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDTaggedT[] List of PDDTaggedT objects
+     */
+    public function getPddTaggedTPDDebatesJoinPddTaggedTPTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDTaggedTQuery::create(null, $criteria);
+        $query->joinWith('PddTaggedTPTag', $join_behavior);
+
+        return $this->getPddTaggedTPDDebates($query, $con);
+    }
+
+    /**
+     * Clears out the collPuFollowDdPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPuFollowDdPUsers()
+     */
+    public function clearPuFollowDdPUsers()
+    {
+        $this->collPuFollowDdPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuFollowDdPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuFollowDdPUsers collection.
+     *
+     * By default this just sets the collPuFollowDdPUsers collection to an empty collection (like clearPuFollowDdPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuFollowDdPUsers()
+    {
+        $this->collPuFollowDdPUsers = new PropelObjectCollection();
+        $this->collPuFollowDdPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_follow_d_d cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPuFollowDdPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuFollowDdPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuFollowDdPUsers) {
+                // return empty collection
+                $this->initPuFollowDdPUsers();
+            } else {
+                $collPuFollowDdPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPuFollowDdPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuFollowDdPUsers;
+                }
+                $this->collPuFollowDdPUsers = $collPuFollowDdPUsers;
+            }
+        }
+
+        return $this->collPuFollowDdPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_follow_d_d cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puFollowDdPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPuFollowDdPUsers(PropelCollection $puFollowDdPUsers, PropelPDO $con = null)
+    {
+        $this->clearPuFollowDdPUsers();
+        $currentPuFollowDdPUsers = $this->getPuFollowDdPUsers();
+
+        $this->puFollowDdPUsersScheduledForDeletion = $currentPuFollowDdPUsers->diff($puFollowDdPUsers);
+
+        foreach ($puFollowDdPUsers as $puFollowDdPUser) {
+            if (!$currentPuFollowDdPUsers->contains($puFollowDdPUser)) {
+                $this->doAddPuFollowDdPUser($puFollowDdPUser);
+            }
+        }
+
+        $this->collPuFollowDdPUsers = $puFollowDdPUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_follow_d_d cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPuFollowDdPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuFollowDdPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuFollowDdPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuFollowDdPDDebate($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuFollowDdPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_follow_d_d cross reference table.
+     *
+     * @param  PUser $pUser The PUFollowDD object to relate
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPuFollowDdPUser(PUser $pUser)
+    {
+        if ($this->collPuFollowDdPUsers === null) {
+            $this->initPuFollowDdPUsers();
+        }
+        if (!$this->collPuFollowDdPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPuFollowDdPUser($pUser);
+
+            $this->collPuFollowDdPUsers[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
+     */
+    protected function doAddPuFollowDdPUser($puFollowDdPUser)
+    {
+        $pUFollowDD = new PUFollowDD();
+        $pUFollowDD->setPuFollowDdPUser($puFollowDdPUser);
+        $this->addPuFollowDdPDDebate($pUFollowDD);
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_follow_d_d cross reference table.
+     *
+     * @param PUser $pUser The PUFollowDD object to relate
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePuFollowDdPUser(PUser $pUser)
+    {
+        if ($this->getPuFollowDdPUsers()->contains($pUser)) {
+            $this->collPuFollowDdPUsers->remove($this->collPuFollowDdPUsers->search($pUser));
+            if (null === $this->puFollowDdPUsersScheduledForDeletion) {
+                $this->puFollowDdPUsersScheduledForDeletion = clone $this->collPuFollowDdPUsers;
+                $this->puFollowDdPUsersScheduledForDeletion->clear();
+            }
+            $this->puFollowDdPUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPddTaggedTPTags collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPddTaggedTPTags()
+     */
+    public function clearPddTaggedTPTags()
+    {
+        $this->collPddTaggedTPTags = null; // important to set this to null since that means it is uninitialized
+        $this->collPddTaggedTPTagsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPddTaggedTPTags collection.
+     *
+     * By default this just sets the collPddTaggedTPTags collection to an empty collection (like clearPddTaggedTPTags());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPddTaggedTPTags()
+    {
+        $this->collPddTaggedTPTags = new PropelObjectCollection();
+        $this->collPddTaggedTPTags->setModel('PTag');
+    }
+
+    /**
+     * Gets a collection of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_d_d_tagged_t cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     */
+    public function getPddTaggedTPTags($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPddTaggedTPTags || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPddTaggedTPTags) {
+                // return empty collection
+                $this->initPddTaggedTPTags();
+            } else {
+                $collPddTaggedTPTags = PTagQuery::create(null, $criteria)
+                    ->filterByPddTaggedTPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPddTaggedTPTags;
+                }
+                $this->collPddTaggedTPTags = $collPddTaggedTPTags;
+            }
+        }
+
+        return $this->collPddTaggedTPTags;
+    }
+
+    /**
+     * Sets a collection of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_d_d_tagged_t cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pddTaggedTPTags A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPddTaggedTPTags(PropelCollection $pddTaggedTPTags, PropelPDO $con = null)
+    {
+        $this->clearPddTaggedTPTags();
+        $currentPddTaggedTPTags = $this->getPddTaggedTPTags();
+
+        $this->pddTaggedTPTagsScheduledForDeletion = $currentPddTaggedTPTags->diff($pddTaggedTPTags);
+
+        foreach ($pddTaggedTPTags as $pddTaggedTPTag) {
+            if (!$currentPddTaggedTPTags->contains($pddTaggedTPTag)) {
+                $this->doAddPddTaggedTPTag($pddTaggedTPTag);
+            }
+        }
+
+        $this->collPddTaggedTPTags = $pddTaggedTPTags;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_d_d_tagged_t cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PTag objects
+     */
+    public function countPddTaggedTPTags($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPddTaggedTPTags || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPddTaggedTPTags) {
+                return 0;
+            } else {
+                $query = PTagQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPddTaggedTPDDebate($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPddTaggedTPTags);
+        }
+    }
+
+    /**
+     * Associate a PTag object to this object
+     * through the p_d_d_tagged_t cross reference table.
+     *
+     * @param  PTag $pTag The PDDTaggedT object to relate
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPddTaggedTPTag(PTag $pTag)
+    {
+        if ($this->collPddTaggedTPTags === null) {
+            $this->initPddTaggedTPTags();
+        }
+        if (!$this->collPddTaggedTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
+            $this->doAddPddTaggedTPTag($pTag);
+
+            $this->collPddTaggedTPTags[]= $pTag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PddTaggedTPTag $pddTaggedTPTag The pddTaggedTPTag object to add.
+     */
+    protected function doAddPddTaggedTPTag($pddTaggedTPTag)
+    {
+        $pDDTaggedT = new PDDTaggedT();
+        $pDDTaggedT->setPddTaggedTPTag($pddTaggedTPTag);
+        $this->addPddTaggedTPDDebate($pDDTaggedT);
+    }
+
+    /**
+     * Remove a PTag object to this object
+     * through the p_d_d_tagged_t cross reference table.
+     *
+     * @param PTag $pTag The PDDTaggedT object to relate
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePddTaggedTPTag(PTag $pTag)
+    {
+        if ($this->getPddTaggedTPTags()->contains($pTag)) {
+            $this->collPddTaggedTPTags->remove($this->collPddTaggedTPTags->search($pTag));
+            if (null === $this->pddTaggedTPTagsScheduledForDeletion) {
+                $this->pddTaggedTPTagsScheduledForDeletion = clone $this->collPddTaggedTPTags;
+                $this->pddTaggedTPTagsScheduledForDeletion->clear();
+            }
+            $this->pddTaggedTPTagsScheduledForDeletion[]= $pTag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears the current object and sets all attributes to their default values
+     */
+    public function clear()
+    {
+        $this->id = null;
+        $this->p_user_id = null;
+        $this->title = null;
+        $this->summary = null;
+        $this->description = null;
+        $this->more_info = null;
+        $this->note_pos = null;
+        $this->note_neg = null;
+        $this->published = null;
+        $this->published_at = null;
+        $this->published_by = null;
+        $this->online = null;
+        $this->created_at = null;
+        $this->updated_at = null;
+        $this->slug = null;
+        $this->alreadyInSave = false;
+        $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
+        $this->clearAllReferences();
+        $this->resetModified();
+        $this->setNew(true);
+        $this->setDeleted(false);
+    }
+
+    /**
+     * Resets all references to other model objects or collections of model objects.
+     *
+     * This method is a user-space workaround for PHP's inability to garbage collect
+     * objects with circular references (even in PHP 5.3). This is currently necessary
+     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     *
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
+     */
+    public function clearAllReferences($deep = false)
+    {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPuFollowDdPDDebates) {
+                foreach ($this->collPuFollowDdPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPDDComments) {
+                foreach ($this->collPDDComments as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPDReactions) {
+                foreach ($this->collPDReactions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPddTaggedTPDDebates) {
+                foreach ($this->collPddTaggedTPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuFollowDdPUsers) {
+                foreach ($this->collPuFollowDdPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPddTaggedTPTags) {
+                foreach ($this->collPddTaggedTPTags as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->aPUser instanceof Persistent) {
+              $this->aPUser->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
+        } // if ($deep)
+
+        if ($this->collPuFollowDdPDDebates instanceof PropelCollection) {
+            $this->collPuFollowDdPDDebates->clearIterator();
+        }
+        $this->collPuFollowDdPDDebates = null;
+        if ($this->collPDDComments instanceof PropelCollection) {
+            $this->collPDDComments->clearIterator();
+        }
+        $this->collPDDComments = null;
+        if ($this->collPDReactions instanceof PropelCollection) {
+            $this->collPDReactions->clearIterator();
+        }
+        $this->collPDReactions = null;
+        if ($this->collPddTaggedTPDDebates instanceof PropelCollection) {
+            $this->collPddTaggedTPDDebates->clearIterator();
+        }
+        $this->collPddTaggedTPDDebates = null;
+        if ($this->collPuFollowDdPUsers instanceof PropelCollection) {
+            $this->collPuFollowDdPUsers->clearIterator();
+        }
+        $this->collPuFollowDdPUsers = null;
+        if ($this->collPddTaggedTPTags instanceof PropelCollection) {
+            $this->collPddTaggedTPTags->clearIterator();
+        }
+        $this->collPddTaggedTPTags = null;
+        $this->aPUser = null;
+    }
+
+    /**
+     * return the string representation of this object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->exportTo(PDDebatePeer::DEFAULT_STRING_FORMAT);
+    }
+
+    /**
+     * return true is the object is in saving state
+     *
+     * @return boolean
+     */
+    public function isAlreadyInSave()
+    {
+        return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     PDDebate The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = PDDebatePeer::UPDATED_AT;
+
+        return $this;
+    }
+
+    // sluggable behavior
+
+    /**
+     * Create a unique slug based on the object
+     *
+     * @return string The object slug
+     */
+    protected function createSlug()
+    {
+        $slug = $this->createRawSlug();
+        $slug = $this->limitSlugSize($slug);
+        $slug = $this->makeSlugUnique($slug);
+
+        return $slug;
+    }
+
+    /**
+     * Create the slug from the appropriate columns
+     *
+     * @return string
+     */
+    protected function createRawSlug()
+    {
+        return '' . $this->cleanupSlugPart($this->gettitle()) . '';
+    }
+
+    /**
+     * Cleanup a string to make a slug of it
+     * Removes special characters, replaces blanks with a separator, and trim it
+     *
+     * @param     string $slug        the text to slugify
+     * @param     string $replacement the separator used by slug
+     * @return    string               the slugified text
+     */
+    protected static function cleanupSlugPart($slug, $replacement = '-')
+    {
+        // transliterate
+        if (function_exists('iconv')) {
+            $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+        }
+
+        // lowercase
+        if (function_exists('mb_strtolower')) {
+            $slug = mb_strtolower($slug);
+        } else {
+            $slug = strtolower($slug);
+        }
+
+        // remove accents resulting from OSX's iconv
+        $slug = str_replace(array('\'', '`', '^'), '', $slug);
+
+        // replace non letter or digits with separator
+        $slug = preg_replace('/\W+/', $replacement, $slug);
+
+        // trim
+        $slug = trim($slug, $replacement);
+
+        if (empty($slug)) {
+            return 'n-a';
+        }
+
+        return $slug;
+    }
+
+
+    /**
+     * Make sure the slug is short enough to accomodate the column size
+     *
+     * @param    string $slug                   the slug to check
+     * @param    int    $incrementReservedSpace the number of characters to keep empty
+     *
+     * @return string                            the truncated slug
+     */
+    protected static function limitSlugSize($slug, $incrementReservedSpace = 3)
+    {
+        // check length, as suffix could put it over maximum
+        if (strlen($slug) > (255 - $incrementReservedSpace)) {
+            $slug = substr($slug, 0, 255 - $incrementReservedSpace);
+        }
+
+        return $slug;
+    }
+
+
+    /**
+     * Get the slug, ensuring its uniqueness
+     *
+     * @param    string $slug            the slug to check
+     * @param    string $separator       the separator used by slug
+     * @param    int    $alreadyExists   false for the first try, true for the second, and take the high count + 1
+     * @return   string                   the unique slug
+     */
+    protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
+    {
+        if (!$alreadyExists) {
+            $slug2 = $slug;
+        } else {
+            $slug2 = $slug . $separator;
+        }
+
+        $query = PDDebateQuery::create('q')
+            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
+            ->prune($this)
+        ;
+
+        if (!$alreadyExists) {
+            $count = $query->count();
+            if ($count > 0) {
+                return $this->makeSlugUnique($slug, $separator, true);
+            }
+
+            return $slug2;
+        }
+
+        // Already exists
+        $object = $query
+            ->addDescendingOrderByColumn('LENGTH(slug)')
+            ->addDescendingOrderByColumn('slug')
+        ->findOne();
+
+        // First duplicate slug
+        if (null == $object) {
+            return $slug2 . '1';
+        }
+
+        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
+        if (0 == $slugNum[0]) {
+            $slugNum[0] = 1;
+        }
+
+        return $slug2 . ($slugNum + 1);
+    }
+
+}

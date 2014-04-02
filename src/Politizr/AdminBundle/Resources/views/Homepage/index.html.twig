@@ -1,0 +1,17 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/backoffice.css') }}" type="text/css" media="all" />
+{% endblock %}
+    
+{% block title %}
+    {{ parent() }} - Accueil
+{% endblock %}
+
+{% block body %}
+    <div id="home_stats">
+    </div>
+    {{ parent() }}
+{% endblock %}

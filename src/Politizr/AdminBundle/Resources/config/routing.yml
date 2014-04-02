@@ -1,0 +1,123 @@
+# FOS user routes
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
+# Accueil
+admin_homepage:
+    pattern:  /
+    defaults: { _controller: PolitizrAdminBundle:Homepage\AdminHomepage:index }
+
+# Spécifiques
+# Commandes
+Politizr_AdminBundle_POrder_invoice:
+    pattern:  /POrder/{pk}/invoice
+    defaults: { _controller: PolitizrAdminBundle:POrder/Actions:invoice }
+
+Politizr_AdminBundle_POrder_mail:
+    pattern:  /POrder/{pk}/mail
+    defaults: { _controller: PolitizrAdminBundle:POrder/Actions:mail }
+
+
+# Admin generated routes
+
+# FOSUser (admin)
+Politizr_AdminBundle_User:
+    resource: "@PolitizrAdminBundle/Controller/User/"
+    type:     admingenerator
+    prefix:   /User
+
+
+
+
+# Commandes
+Politizr_AdminBundle_POrder:
+    resource: "@PolitizrAdminBundle/Controller/POrder/"
+    type:     admingenerator
+    prefix:   /POrder
+
+
+
+# Utilisateurs
+Politizr_AdminBundle_PUser:
+    resource: "@PolitizrAdminBundle/Controller/PUser/"
+    type:     admingenerator
+    prefix:   /PUser
+
+Politizr_AdminBundle_PUQualification:
+    resource: "@PolitizrAdminBundle/Controller/PUQualification/"
+    type:     admingenerator
+    prefix:   /PUQualification
+
+
+
+# Contenus / Documents
+Politizr_AdminBundle_PDDebate:
+    resource: "@PolitizrAdminBundle/Controller/PDDebate/"
+    type:     admingenerator
+    prefix:   /PDDebate
+
+Politizr_AdminBundle_PDReaction:
+    resource: "@PolitizrAdminBundle/Controller/PDReaction/"
+    type:     admingenerator
+    prefix:   /PDReaction
+
+
+
+# Contenus / Commantaires
+Politizr_AdminBundle_PDDComment:
+    resource: "@PolitizrAdminBundle/Controller/PDDComment/"
+    type:     admingenerator
+    prefix:   /PDDComment
+
+Politizr_AdminBundle_PDRComment:
+    resource: "@PolitizrAdminBundle/Controller/PDRComment/"
+    type:     admingenerator
+    prefix:   /PDRComment
+
+
+
+# Tags
+Politizr_AdminBundle_PTag:
+    resource: "@PolitizrAdminBundle/Controller/PTag/"
+    type:     admingenerator
+    prefix:   /PTag
+
+
+
+# Réglages des types
+Politizr_AdminBundle_PTTagType:
+    resource: "@PolitizrAdminBundle/Controller/PTTagType/"
+    type:     admingenerator
+    prefix:   /PTTagType
+
+Politizr_AdminBundle_POPaymentType:
+    resource: "@PolitizrAdminBundle/Controller/POPaymentType/"
+    type:     admingenerator
+    prefix:   /POPaymentType
+
+Politizr_AdminBundle_POPaymentState:
+    resource: "@PolitizrAdminBundle/Controller/POPaymentState/"
+    type:     admingenerator
+    prefix:   /POPaymentState
+
+Politizr_AdminBundle_POOrderState:
+    resource: "@PolitizrAdminBundle/Controller/POOrderState/"
+    type:     admingenerator
+    prefix:   /POOrderState
+

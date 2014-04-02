@@ -1,0 +1,95 @@
+{% extends_admingenerated "PolitizrAdminBundle:PUserShow:index.html.twig" %}
+
+{# Image #}
+{% block show_column_file_name %}
+	<img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
+{% endblock %}
+
+{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
+
+{# Bloc débats #}
+{% block show_column_block_debates %}
+	Nombre de débats: {{ PUser.PDDebates | length }}<br/>
+	<br/>
+	{% for pdDebate in PUser.PDDebates %}
+		id-{{ pdDebate.id }} / <b>{{ pdDebate.title }}</b><br/>
+		{{ pdDebate.summary | raw }}<br/>
+		Note: {{ pdDebate.notePos }} + / {{ pdDebate.noteNeg }} -<br/>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc réactions #}
+{% block show_column_block_reactions %}
+	Nombre de réactions: {{ PUser.PDReactions | length }}<br/>
+	<br/>
+	{% for pdReaction in PUser.PDReactions %}
+		id-{{ pdReaction.id }} / <b>{{ pdReaction.title }}</b><br/>
+		{{ pdReaction.summary | raw }}<br/>
+		Note: {{ pdReaction.notePos }} + / {{ pdReaction.noteNeg }} -<br/>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc commentaires débats #}
+{% block show_column_block_comments_d %}
+	Nombre de commentaires débats: {{ PUser.PDDComments | length }}<br/>
+	<br/>
+	{% for pddComment in PUser.PDDComments %}
+		<b>Commentaire id-{{ pddComment.id }}</b><br/>
+		Contenu original: {{ pddComment.pdDebate.title }}<br/>
+		{{ pddComment.description | raw }}<br/>
+		Note: {{ pddComment.notePos }} + / {{ pddComment.noteNeg }} -<br/>
+		<a href="#">Modérer</a>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc commentaires réactions #}
+{% block show_column_block_comments_r %}
+	Nombre de commentaires réactions: {{ PUser.PDRComments | length }}<br/>
+	<br/>
+	{% for pdrComment in PUser.PDRComments %}
+		<b>Commentaire id-{{ pdrComment.id }}</b><br/>
+		Contenu original: {{ pdrComment.pdReaction.title }}<br/>
+		{{ pdrComment.description | raw }}<br/>
+		Note: {{ pdrComment.notePos }} + / {{ pdrComment.noteNeg }} -<br/>
+		<a href="#">Modérer</a>
+	{% endfor %}
+{% endblock %}
+
+
+{# Bloc tags #}
+{% block show_column_block_tags %}
+	{% for pTag in PUser.PddTaggedTPTags %}
+		<b>{{ pTag.title }}</b><br/>
+		<a href="#">Supprimer</a>
+	{% endfor %}
+	<a href="#">Ajouter un tag</a>
+{% endblock %}
+
+
+{# Bloc followers qualifiés #}
+{% block show_column_block_followers_q %}
+	{% for pUser in PUser.PUserFollowersQ %}
+		{{ pUser.firstName }} {{ pUser.name }}<br/>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc followers citoyens #}
+{% block show_column_block_followers_c %}
+	{% for pUser in PUser.PUserFollowersC %}
+		{{ pUser.firstName }} {{ pUser.name }}<br/>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc subscribers qualifiés #}
+{% block show_column_block_subscribers_q %}
+	{% for pUser in PUser.PUserSubscribersQ %}
+		{{ pUser.firstName }} {{ pUser.name }}<br/>
+	{% endfor %}
+{% endblock %}
+
+{# Bloc subscribers citoyens #}
+{% block show_column_block_subscribers_c %}
+	{% for pUser in PUser.PUserSubscribersC %}
+		{{ pUser.firstName }} {{ pUser.name }}<br/>
+	{% endfor %}
+{% endblock %}

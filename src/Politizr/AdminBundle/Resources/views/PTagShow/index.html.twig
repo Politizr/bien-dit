@@ -1,0 +1,7 @@
+{% extends_admingenerated "PolitizrAdminBundle:PTagShow:index.html.twig" %}
+
+{# Bloc réactions #}
+{% block show_column_block_debates %}
+	{{ PTag.countPddTaggedTPDDebates }}
+{% endblock %}
+

@@ -1,0 +1,21 @@
+# REPUTATION DATAS
+Politizr\Model\PRBadge:
+    badge1:
+        online:				true
+        title:				Badge 1
+        description:		|
+            Exemple Badge
+
+Politizr\Model\PRAction:
+    d_debate_note_pos:
+        online:				true
+        title:				Note positive débat
+        description:		|
+            Mettre une note + à un débat
+        score_evolution:	1
+    d_debate_note_neg:
+        online:				true
+        title:				Note négative débat
+        description:		|
+            Mettre une note - à un débat
+        score_evolution:	-1

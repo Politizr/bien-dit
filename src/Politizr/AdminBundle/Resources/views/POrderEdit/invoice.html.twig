@@ -1,0 +1,23 @@
+<style>
+</style>
+<div id="invoice_politizr">
+    POLITIZR (c) 2014
+</div>
+<div id="invoice_client">
+    {{ order.gender }} {{ order.name }} {{ order.firstname }}<br/>
+    {{ order.address }}<br/>
+    {{ order.zip }} {{ order.city }}
+</div>
+<div id="invoice_order">
+    Mode de paiement : {{ order.POPaymentType }}<br/>
+    Date de facturation : {{ nowAt | date("d/m/Y \\à G\\hi") }}<br/>
+    Souscription : {{ order.subscriptionTitle }}<br/>
+</div>
+<div class="note">
+    Facture en euros.<br>
+</div>
+<div class="dots">.......................................................................................</div>
+<div class="footer">
+    POLITIZR (c) 2014
+    www.politizr.com
+</div>

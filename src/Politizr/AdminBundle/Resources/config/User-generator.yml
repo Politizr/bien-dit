@@ -1,0 +1,85 @@
+generator: admingenerator.generator.propel
+params:
+    model:                                      FOS\UserBundle\Propel\User
+    namespace_prefix:                           Politizr
+    concurrency_lock:                           ~
+    bundle_name:                                AdminBundle
+    pk_requirement:                             ~
+    fields:         
+        username:           
+            label:                              Login
+        enabled:            
+            label:                              Activé
+        roles:          
+            label:                              Liste des rôles
+            formType:                           collection
+            addFormOptions:         
+                type:                           text
+                allow_add:                      true
+                allow_delete:                   true
+                by_reference:                   false
+                options:            
+                    label:                      Rôle
+        plainPassword:          
+            label:                              label.plainPassword
+            dbType:                             VARCHAR
+            formType:                           repeated
+            addFormOptions:         
+                first_options:          
+                    label:                      Mot de passe
+                second_options:         
+                    label:                      Confirmation
+                type:                           password
+    object_actions:         
+        delete:                                 ~
+    batch_actions:          
+        delete:                                 ~
+builders:           
+    list:           
+        params:         
+            title:                              Gestion des administrateurs
+            display:                            [ username, enabled, email, roles ]
+            actions:            
+                new:                            ~
+            object_actions:         
+                edit:                           ~
+                delete:                         ~
+    excel:          
+        params:                                 ~
+        filename:                               ~
+        filetype:                               ~
+    filters:            
+        params:         
+            display:                            [ username, email, enabled ]
+    new:
+        params:
+            title:                              "Création d'un administrateur"
+            display:
+                "Champs principaux":            [ [ username], [ plainPassword ] ]
+                "Champs complémentaires":       [ [ email ], [ roles ] ]
+            fields:                             ~
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Édition de l'administrateur {{ User.username }}"
+            tabs:
+                "Identité":
+                    "Connexion":                [ username ]
+                    "Mot de passe":             [ plainPassword ]
+                "Droits d'acccès":
+                    "Gestion des rôles":        [ roles ]
+                "Attributs":
+                    "Email":                    [ email ]
+                    "Activation":               [ enabled ]
+            actions:
+                save:                           ~
+                list:                           ~
+                delete:                         ~
+    actions:            
+        params:         
+            object_actions:         
+                delete:                         ~
+            batch_actions:          
+                delete:                         ~

@@ -6,9 +6,11 @@ README.md
 /app/cache/*
 /app/logs/*
 /app/config/parameters.yml
+/app/config/parameters.yml.dev
 /app/config/parameters.yml.dist
-/app/config/parameters.yml.stage
 
+/web/.htaccess
+/web/robots.txt
 /web/app.php
 /web/index.php
 /web/*_dev.php

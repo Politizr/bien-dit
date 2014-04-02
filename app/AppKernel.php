@@ -15,7 +15,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
@@ -39,16 +38,14 @@ class AppKernel extends Kernel
 
             // Propel
             new Propel\PropelBundle\PropelBundle(),
+            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
             
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),
 
-            // Studio Echo
-            new StudioEcho\StudioEchoMediaBundle\StudioEchoMediaBundle(),
-            
-            // Project Bundle
-            new Politzr\AdminBundle\PolitzrAdminBundle(),
-            new Politzr\FrontBundle\PolitzrFrontBundle(),
+            // Project Bundle,
+            new Politizr\FrontBundle\PolitizrFrontBundle(),
+            new Politizr\AdminBundle\PolitizrAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'stage'))) {

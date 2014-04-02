@@ -1,0 +1,108 @@
+##################################################################################
+#                   PROPEL VALIDATOR RULES / ADMIN
+##################################################################################
+
+
+####################################### USER #####################################
+
+Politizr\Model\PUser:
+    properties:
+        type:
+            - Type:
+                type: 		integer
+                message: 	"La valeur {{ value }} n'est pas un type {{ type }} valide."
+            - NotBlank:     ~
+        status:
+            - Type:
+                type: 		integer 
+                message: 	"La valeur {{ value }} n'est pas un type {{ type }} valide."
+            - NotBlank:     ~
+        firstname:
+            - NotBlank:     ~
+        name:
+            - NotBlank:     ~
+
+Politizr\Model\PUQualification:
+    properties:
+        title:
+            - NotBlank:     ~
+        begin_at:
+            - NotBlank:     ~
+
+####################################### ORDER #####################################
+
+Politizr\Model\POrder:
+    properties:
+        price:
+            - NotBlank:     ~
+        total:
+            - NotBlank:     ~
+
+##################################### DOCUMENT #####################################
+
+Politizr\Model\PDDebate:
+    properties:
+        p_user_id:
+            - NotBlank:     ~
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\PDReaction:
+    properties:
+        p_d_debate_id:
+            - NotBlank:     ~
+        p_user_id:
+            - NotBlank:     ~
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\PDDComment:
+    properties:
+        p_d_debate_id:
+            - NotBlank:     ~
+        p_user_id:
+            - NotBlank:     ~
+        description:
+            - NotBlank:     ~
+
+Politizr\Model\PDRComment:
+    properties:
+        p_d_reaction_id:
+            - NotBlank:     ~
+        p_user_id:
+            - NotBlank:     ~
+        description:
+            - NotBlank:     ~
+
+
+##################################### TAGS #####################################
+
+Politizr\Model\PTag:
+    properties:
+        p_t_tag_type_id:
+            - NotBlank:     ~
+        title:
+            - NotBlank:     ~
+
+##################################### TYPES #####################################
+
+Politizr\Model\PTTagType:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\POPaymentType:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\POPaymentState:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\POOrderState:
+    properties:
+        title:
+            - NotBlank:     ~
+

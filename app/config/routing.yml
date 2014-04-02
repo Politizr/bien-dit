@@ -1,15 +1,10 @@
-politzr_admin:
-    resource: "@PolitzrAdminBundle/Resources/config/routing.yml"
+politizr_admin:
+    resource: "@PolitizrAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
 
-politzr_front:
-    resource: "@PolitzrFrontBundle/Resources/config/routing.yml"
+politizr_front:
+    resource: "@PolitizrFrontBundle/Resources/config/routing.yml"
     prefix:   /
-
-
-studio_echo_media:
-    resource: "@StudioEchoMediaBundle/Resources/config/routing.yml"
-    prefix:   /media
 
 _imagine:
     resource: .
