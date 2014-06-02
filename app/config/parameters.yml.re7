@@ -13,3 +13,18 @@ parameters:
     mailer_password:   post09MASTER
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
+
+    # OAuth parameters
+    # Facebook
+    facebook_client_id: 266115070240664
+    facebook_client_secret: 094d0a411e2fad097d9c9c06807f102c
+    facebook_scope: public_profile,email
+
+    #Twitter
+    twitter_api_key: 02GusvnYO5TjndvcbCSJvW8iI
+    twitter_api_secret: 3mmH1Oio37Be4OIUtVJ7u6sl8pDUjnQfGg7d9Ju5a6fvaOJMW5
+
+    # Google
+    google_client_id: 167079406705-mb19ehbqrd0fu8pp7qsescfihbseet7a.apps.googleusercontent.com
+    google_client_secret: jwutLPI46RsSXEoTT1M_ShAI
+    google_scope: email profile

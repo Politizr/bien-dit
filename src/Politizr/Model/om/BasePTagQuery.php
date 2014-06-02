@@ -18,8 +18,8 @@ use Politizr\Model\PTTagType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
 use Politizr\Model\PTagQuery;
-use Politizr\Model\PUQTaggedT;
-use Politizr\Model\PUQualification;
+use Politizr\Model\PUTaggedT;
+use Politizr\Model\PUser;
 
 /**
  * @method PTagQuery orderById($order = Criteria::ASC) Order by the id column
@@ -46,9 +46,9 @@ use Politizr\Model\PUQualification;
  * @method PTagQuery rightJoinPTTagType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTTagType relation
  * @method PTagQuery innerJoinPTTagType($relationAlias = null) Adds a INNER JOIN clause to the query using the PTTagType relation
  *
- * @method PTagQuery leftJoinPuqTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuqTaggedTPTag relation
- * @method PTagQuery rightJoinPuqTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuqTaggedTPTag relation
- * @method PTagQuery innerJoinPuqTaggedTPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PuqTaggedTPTag relation
+ * @method PTagQuery leftJoinPuTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPTag relation
+ * @method PTagQuery rightJoinPuTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPTag relation
+ * @method PTagQuery innerJoinPuTaggedTPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTaggedTPTag relation
  *
  * @method PTagQuery leftJoinPddTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PddTaggedTPTag relation
  * @method PTagQuery rightJoinPddTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PddTaggedTPTag relation
@@ -595,41 +595,41 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUQTaggedT object
+     * Filter the query by a related PUTaggedT object
      *
-     * @param   PUQTaggedT|PropelObjectCollection $pUQTaggedT  the related object to use as filter
+     * @param   PUTaggedT|PropelObjectCollection $pUTaggedT  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PTagQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuqTaggedTPTag($pUQTaggedT, $comparison = null)
+    public function filterByPuTaggedTPTag($pUTaggedT, $comparison = null)
     {
-        if ($pUQTaggedT instanceof PUQTaggedT) {
+        if ($pUTaggedT instanceof PUTaggedT) {
             return $this
-                ->addUsingAlias(PTagPeer::ID, $pUQTaggedT->getPTagId(), $comparison);
-        } elseif ($pUQTaggedT instanceof PropelObjectCollection) {
+                ->addUsingAlias(PTagPeer::ID, $pUTaggedT->getPTagId(), $comparison);
+        } elseif ($pUTaggedT instanceof PropelObjectCollection) {
             return $this
-                ->usePuqTaggedTPTagQuery()
-                ->filterByPrimaryKeys($pUQTaggedT->getPrimaryKeys())
+                ->usePuTaggedTPTagQuery()
+                ->filterByPrimaryKeys($pUTaggedT->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPuqTaggedTPTag() only accepts arguments of type PUQTaggedT or PropelCollection');
+            throw new PropelException('filterByPuTaggedTPTag() only accepts arguments of type PUTaggedT or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuqTaggedTPTag relation
+     * Adds a JOIN clause to the query using the PuTaggedTPTag relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PTagQuery The current query, for fluid interface
      */
-    public function joinPuqTaggedTPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPuTaggedTPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuqTaggedTPTag');
+        $relationMap = $tableMap->getRelation('PuTaggedTPTag');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -644,14 +644,14 @@ abstract class BasePTagQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuqTaggedTPTag');
+            $this->addJoinObject($join, 'PuTaggedTPTag');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuqTaggedTPTag relation PUQTaggedT object
+     * Use the PuTaggedTPTag relation PUTaggedT object
      *
      * @see       useQuery()
      *
@@ -659,13 +659,13 @@ abstract class BasePTagQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PUQTaggedTQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PUTaggedTQuery A secondary query class using the current class as primary query
      */
-    public function usePuqTaggedTPTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePuTaggedTPTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuqTaggedTPTag($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuqTaggedTPTag', '\Politizr\Model\PUQTaggedTQuery');
+            ->joinPuTaggedTPTag($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuTaggedTPTag', '\Politizr\Model\PUTaggedTQuery');
     }
 
     /**
@@ -743,19 +743,19 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUQualification object
-     * using the p_u_q_tagged_t table as cross reference
+     * Filter the query by a related PUser object
+     * using the p_u_tagged_t table as cross reference
      *
-     * @param   PUQualification $pUQualification the related object to use as filter
+     * @param   PUser $pUser the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   PTagQuery The current query, for fluid interface
      */
-    public function filterByPuqTaggedTPUQualification($pUQualification, $comparison = Criteria::EQUAL)
+    public function filterByPuTaggedTPUser($pUser, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePuqTaggedTPTagQuery()
-            ->filterByPuqTaggedTPUQualification($pUQualification, $comparison)
+            ->usePuTaggedTPTagQuery()
+            ->filterByPuTaggedTPUser($pUser, $comparison)
             ->endUse();
     }
 

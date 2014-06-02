@@ -6,6 +6,9 @@ parameters:
     session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
 
 framework:
+    # config / bazingageocoder
+    trusted_proxies: ['127.0.0.1']
+
     #esi:             ~
     translator:      { fallback: %locale% }
     secret:          %secret%
@@ -31,10 +34,14 @@ twig:
 #      image_path_project:     %image_path_project%
 #      image_path_diaporama:   %image_path_diaporama%
     globals:
+        facebook:
+            client_id:          %facebook_client_id%
+            client_secret:      %facebook_client_secret%
+            scope:              %facebook_scope%
         pagerfanta_opts:
-            previous_message: '< page précédente'
-            next_message:     'page suivante >'
-            dots_message:     '...'
+            previous_message:   '< page précédente'
+            next_message:       'page suivante >'
+            dots_message:       '...'
 
 # Assetic Configuration
 assetic:
@@ -207,6 +214,12 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 150 }
 
+        # front
+        facebook_share:
+            quality:              100
+            filters:
+                thumbnail:         { size: [90, 90], mode: outbound }
+
 
 # Bazinga Faker
 bazinga_faker:
@@ -218,11 +231,9 @@ bazinga_faker:
         Politizr\Model\PUser:
             number:                     100
             custom_formatters:
-                Type:                   { method: randomNumber, parameters: [ 1, 2 ] }
-                Status:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Type:                   { method: numberBetween, parameters: [ 1, 2 ] }
+                Status:                 { method: numberBetween, parameters: [ 1, 1 ] }
 
-#                FileName:               { method: image, parameters: [ '/home/lionel/www/Politizr v2.0/web/uploads/users', '150', '150', 'people', false ] }
-#                FileName:               { method: lexify, parameters: [ '?????????????.jpg' ], unique: true }
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 
@@ -232,11 +243,26 @@ bazinga_faker:
                 Website:                { method: url }
                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
                 Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
-                Email:                  { method: email }
                 Phone:                  { method: phoneNumber }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Email:                  { method: email }
+
+                Provider:               { method: null }
+                ProviderId:             { method: null }
+                Nickname:               { method: null }
+                Realname:               { method: null }
+
+                UsernameCanonical:      { method: null }
+                EmailCanonical:         { method: null }
+                Salt:                   { method: null }
+                Password:               { method: null }
+                ConfirmationToken:      { method: null }
+                PasswordRequestedAt:    { method: null }
+
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
+
+
 
         Politizr\Model\PUQualification:
             number:                     150
@@ -252,10 +278,10 @@ bazinga_faker:
         Politizr\Model\POrder:
             number:                     20
             custom_formatters:
-                POOrderStateId:         { method: randomNumber, parameters: [ 1, 3 ] }
-                POPaymentStateId:       { method: randomNumber, parameters: [ 1, 3 ] }
-                POPaymentTypeId:        { method: randomNumber, parameters: [ 1, 4 ] }
-                POSubscriptionId:       { method: randomNumber, parameters: [ 1, 1 ] }
+                POOrderStateId:         { method: numberBetween, parameters: [ 1, 3 ] }
+                POPaymentStateId:       { method: numberBetween, parameters: [ 1, 3 ] }
+                POPaymentTypeId:        { method: numberBetween, parameters: [ 1, 4 ] }
+                POSubscriptionId:       { method: numberBetween, parameters: [ 1, 1 ] }
 
                 SubscriptionTitle:      { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
                 SubscriptionDescription:  { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
@@ -287,13 +313,13 @@ bazinga_faker:
                 Description:            { method: paragraphs, parameters: [ 50, true ] }
                 MoreInfo:               { method: paragraphs, parameters: [ 5, true ] }
 
-                NotePos:                { method: randomNumber, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: randomNumber, parameters: [ 2, 50 ] }
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 Published:              { method: boolean }
                 PublishedBy:            { method: null }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
 
 #         Politizr\Model\PUFollowDD:
@@ -308,13 +334,13 @@ bazinga_faker:
                 Description:            { method: paragraphs, parameters: [ 50, true ] }
                 MoreInfo:               { method: paragraphs, parameters: [ 5, true ] }
 
-                NotePos:                { method: randomNumber, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: randomNumber, parameters: [ 2, 50 ] }
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 Published:              { method: boolean }
                 PublishedBy:            { method: null }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
 
         Politizr\Model\PDDComment:
@@ -323,12 +349,12 @@ bazinga_faker:
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }
 
-                NotePos:                { method: randomNumber, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: randomNumber, parameters: [ 2, 50 ] }
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 PublishedBy:            { method: null }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
 
         Politizr\Model\PDRComment:
             number:                     300
@@ -336,12 +362,12 @@ bazinga_faker:
                 Description:            { method: realText, parameters: [ 150 ] }
                 ParagraphNo:            { method: randomDigit }
 
-                NotePos:                { method: randomNumber, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: randomNumber, parameters: [ 2, 50 ] }
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 PublishedBy:            { method: null }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
 
 
         #################################################################################################################
@@ -355,5 +381,41 @@ bazinga_faker:
                 # Title:                  { method: realText, parameters: [ 20 ] }
                 Title:                  { method: lexify, parameters: [ '???????????????' ], unique: true }
 
-                Online:                 { method: randomNumber, parameters: [ 1, 1 ] }
+                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
+
+
+# Géoloc
+bazinga_geocoder:
+    fake_ip:
+        enabled:                        false
+        ip:                             ~
+    providers:
+        geoip:                          []
+        free_geo_ip:                    []
+        google_maps:
+            locale:                     ~
+            region:                     FR
+            use_ssl:                    false
+
+# OAuth Instagram
+hwi_oauth:
+    firewall_name:                      oauth
+    resource_owners:
+        facebook:       
+            type:                       facebook
+            client_id:                  %facebook_client_id%
+            client_secret:              %facebook_client_secret%
+            scope:                      %facebook_scope%
+            options:        
+                display:                popup               #dialog is optimized for popup window
+        twitter:
+            type:                       twitter
+            client_id:                  %twitter_api_key%
+            client_secret:              %twitter_api_secret%
+
+        google:
+            type:                       google
+            client_id:                  %google_client_id%
+            client_secret:              %google_client_secret%
+            scope:                      "%google_scope%"

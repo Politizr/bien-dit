@@ -13,7 +13,7 @@ use Politizr\Model\PDDTaggedTPeer;
 use Politizr\Model\PTTagTypePeer;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
-use Politizr\Model\PUQTaggedTPeer;
+use Politizr\Model\PUTaggedTPeer;
 use Politizr\Model\map\PTagTableMap;
 
 abstract class BasePTagPeer
@@ -395,9 +395,9 @@ abstract class BasePTagPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUQTaggedTPeer instance pool,
+        // Invalidate objects in PUTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUQTaggedTPeer::clearInstancePool();
+        PUTaggedTPeer::clearInstancePool();
         // Invalidate objects in PDDTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDTaggedTPeer::clearInstancePool();

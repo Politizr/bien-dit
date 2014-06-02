@@ -44,7 +44,7 @@ class PUQualificationTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('begin_at', 'BeginAt', 'DATE', false, null, null);
         $this->addColumn('end_at', 'EndAt', 'DATE', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
@@ -59,8 +59,6 @@ class PUQualificationTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PuqTaggedTPUQualification', 'Politizr\\Model\\PUQTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_u_qualification_id', ), 'CASCADE', 'CASCADE', 'PuqTaggedTPUQualifications');
-        $this->addRelation('PuqTaggedTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuqTaggedTPTags');
     } // buildRelations()
 
     /**

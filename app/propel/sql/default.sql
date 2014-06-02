@@ -117,14 +117,38 @@ DROP TABLE IF EXISTS `p_r_badge`;
 CREATE TABLE `p_r_badge`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_r_badge_type_id` INTEGER NOT NULL,
     `title` VARCHAR(150),
     `description` TEXT,
+    `grade` TINYINT,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `p_r_badge_slug` (`slug`(255))
+    UNIQUE INDEX `p_r_badge_slug` (`slug`(255)),
+    INDEX `p_r_badge_FI_1` (`p_r_badge_type_id`),
+    CONSTRAINT `p_r_badge_FK_1`
+        FOREIGN KEY (`p_r_badge_type_id`)
+        REFERENCES `p_r_badge_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_type`;
+
+CREATE TABLE `p_r_badge_type`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -343,25 +367,48 @@ DROP TABLE IF EXISTS `p_user`;
 CREATE TABLE `p_user`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `provider` VARCHAR(255),
+    `provider_id` VARCHAR(255),
+    `nickname` VARCHAR(255),
+    `realname` VARCHAR(255),
+    `username` VARCHAR(255),
+    `username_canonical` VARCHAR(255),
+    `email` VARCHAR(255),
+    `email_canonical` VARCHAR(255),
+    `enabled` TINYINT(1) DEFAULT 0,
+    `salt` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `last_login` DATETIME,
+    `locked` TINYINT(1) DEFAULT 0,
+    `expired` TINYINT(1) DEFAULT 0,
+    `expires_at` DATETIME,
+    `confirmation_token` VARCHAR(255),
+    `password_requested_at` DATETIME,
+    `credentials_expired` TINYINT(1) DEFAULT 0,
+    `credentials_expire_at` DATETIME,
+    `roles` TEXT,
     `type` INTEGER NOT NULL,
     `status` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
+    `birthday` DATE,
     `summary` TEXT,
     `biography` TEXT,
     `website` VARCHAR(150),
     `twitter` VARCHAR(150),
     `facebook` VARCHAR(150),
-    `email` VARCHAR(150),
     `phone` VARCHAR(30),
+    `newsletter` TINYINT(1),
     `last_connect` DATETIME,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_user_U_1` (`username_canonical`),
+    UNIQUE INDEX `p_user_U_2` (`email_canonical`),
     UNIQUE INDEX `p_user_slug` (`slug`(255))
 ) ENGINE=InnoDB;
 
@@ -399,7 +446,7 @@ CREATE TABLE `p_u_qualification`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
-    `title` VARCHAR(150),
+    `title` VARCHAR(250),
     `begin_at` DATE,
     `end_at` DATE,
     `created_at` DATETIME,
@@ -496,25 +543,25 @@ CREATE TABLE `p_u_reputation_r_a`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_q_tagged_t
+-- p_u_tagged_t
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_q_tagged_t`;
+DROP TABLE IF EXISTS `p_u_tagged_t`;
 
-CREATE TABLE `p_u_q_tagged_t`
+CREATE TABLE `p_u_tagged_t`
 (
-    `p_u_qualification_id` INTEGER NOT NULL,
+    `p_user_id` INTEGER NOT NULL,
     `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_u_qualification_id`,`p_tag_id`),
-    INDEX `p_u_q_tagged_t_FI_2` (`p_tag_id`),
-    CONSTRAINT `p_u_q_tagged_t_FK_1`
-        FOREIGN KEY (`p_u_qualification_id`)
-        REFERENCES `p_u_qualification` (`id`)
+    PRIMARY KEY (`p_user_id`,`p_tag_id`),
+    INDEX `p_u_tagged_t_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_u_tagged_t_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_q_tagged_t_FK_2`
+    CONSTRAINT `p_u_tagged_t_FK_2`
         FOREIGN KEY (`p_tag_id`)
         REFERENCES `p_tag` (`id`)
         ON UPDATE CASCADE

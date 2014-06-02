@@ -56,12 +56,30 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');
 
 
+        // Réputation
+        $reputation = $this->addDropdown($menu, 'Réputation');
+        $this->addLinkRoute(
+            $reputation,
+            'Badge',
+            'Politizr_AdminBundle_PRBadge_list'
+        );
+        $this->addLinkRoute(
+            $reputation,
+            'Action',
+            'Politizr_AdminBundle_PRAction_list'
+        );
+
         // Réglages des types:  types de paiement, types de commandes, types de tags
         $documents = $this->addDropdown($menu, 'Type');
         $this->addLinkRoute(
             $documents,
             'Tag',
             'Politizr_AdminBundle_PTTagType_list'
+        );
+        $this->addLinkRoute(
+            $documents,
+            'Badge',
+            'Politizr_AdminBundle_PRBadgeType_list'
         );
         $this->addLinkRoute(
             $documents,

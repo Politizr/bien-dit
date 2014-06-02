@@ -84,9 +84,31 @@ Politizr\Model\PTag:
         title:
             - NotBlank:     ~
 
+##################################  RÉPUTATION  ################################
+
+Politizr\Model\PRBadge:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\PRAction:
+    properties:
+        title:
+            - NotBlank:     ~
+        score_evolution:
+            - Type:
+                type:       integer 
+                message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
+            - NotBlank:     ~
+
 ##################################### TYPES #####################################
 
 Politizr\Model\PTTagType:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\PRBadgeType:
     properties:
         title:
             - NotBlank:     ~

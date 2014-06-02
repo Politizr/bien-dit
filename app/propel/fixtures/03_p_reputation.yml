@@ -1,10 +1,113 @@
 # REPUTATION DATAS
+Politizr\Model\PRBadgeType:
+    debat:
+        title:              Débat
+        description:        |
+            Badges relatifs à la mise en ligne de débat(s) devenu populaire(s)
+    commentaire:
+        title:              Commentaire
+        description:        |
+            Badges relatifs à la rédaction de commentaires
+    participation:
+        title:              Participation
+        description:        |
+            Badges relatifs à la participation à l'activité du site (votes, profil complété, followers)
+    moderation:
+        title:              Modération
+        description:        |
+            Badges relatifs aux demandes de modération
+    autre:
+        title:              Autre
+        description:        |
+            Badges autres
+
+
+
 Politizr\Model\PRBadge:
-    badge1:
+    polemiqueur_or:
         online:				true
-        title:				Badge 1
+        p_r_badge_type_id:  debat
+        grade:              Or
+        title:				Polémiqueur
         description:		|
-            Exemple Badge
+            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
+    polemiqueur_argent:
+        online:             true
+        p_r_badge_type_id:  debat
+        grade:              Argent
+        title:              Polémiqueur
+        description:        |
+            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
+    polemiqueur_bronze:
+        online:             true
+        p_r_badge_type_id:  debat
+        grade:              Bronze
+        title:              Polémiqueur
+        description:        |
+            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
+    redacteur_or:
+        online:             true
+        p_r_badge_type_id:  debat
+        grade:              Or
+        title:              Rédacteur
+        description:        |
+            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
+    redacteur_argent:
+        online:             true
+        p_r_badge_type_id:  debat
+        grade:              Argent
+        title:              Rédacteur
+        description:        |
+            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
+    redacteur_bronze:
+        online:             true
+        p_r_badge_type_id:  debat
+        grade:              Bronze
+        title:              Rédacteur
+        description:        |
+            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
+    commentateur_or:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Or
+        title:              Commentateur
+        description:        |
+            Écrire X commentaires
+    commentateur_argent:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Argent
+        title:              Commentateur
+        description:        |
+            Écrire X commentaires
+    commentateur_bronze:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Bronze
+        title:              Commentateur
+        description:        |
+            Écrire X commentaires
+    impertinent_or:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Or
+        title:              Impertinent
+        description:        |
+            Atteindre un score de +X à un de ses commentaires
+    impertinent_argent:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Argent
+        title:              Impertinent
+        description:        |
+            Atteindre un score de +X à un de ses commentaires
+    impertinent_bronze:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        grade:              Bronze
+        title:              Impertinent
+        description:        |
+            Atteindre un score de +X à un de ses commentaires
 
 Politizr\Model\PRAction:
     d_debate_note_pos:

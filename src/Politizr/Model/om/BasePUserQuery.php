@@ -19,30 +19,53 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\POrder;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
+use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUReputationRA;
 use Politizr\Model\PUReputationRB;
+use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
 
 /**
  * @method PUserQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUserQuery orderByProvider($order = Criteria::ASC) Order by the provider column
+ * @method PUserQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
+ * @method PUserQuery orderByNickname($order = Criteria::ASC) Order by the nickname column
+ * @method PUserQuery orderByRealname($order = Criteria::ASC) Order by the realname column
+ * @method PUserQuery orderByUsername($order = Criteria::ASC) Order by the username column
+ * @method PUserQuery orderByUsernameCanonical($order = Criteria::ASC) Order by the username_canonical column
+ * @method PUserQuery orderByEmail($order = Criteria::ASC) Order by the email column
+ * @method PUserQuery orderByEmailCanonical($order = Criteria::ASC) Order by the email_canonical column
+ * @method PUserQuery orderByEnabled($order = Criteria::ASC) Order by the enabled column
+ * @method PUserQuery orderBySalt($order = Criteria::ASC) Order by the salt column
+ * @method PUserQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method PUserQuery orderByLastLogin($order = Criteria::ASC) Order by the last_login column
+ * @method PUserQuery orderByLocked($order = Criteria::ASC) Order by the locked column
+ * @method PUserQuery orderByExpired($order = Criteria::ASC) Order by the expired column
+ * @method PUserQuery orderByExpiresAt($order = Criteria::ASC) Order by the expires_at column
+ * @method PUserQuery orderByConfirmationToken($order = Criteria::ASC) Order by the confirmation_token column
+ * @method PUserQuery orderByPasswordRequestedAt($order = Criteria::ASC) Order by the password_requested_at column
+ * @method PUserQuery orderByCredentialsExpired($order = Criteria::ASC) Order by the credentials_expired column
+ * @method PUserQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
+ * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
  * @method PUserQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method PUserQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method PUserQuery orderByBirthday($order = Criteria::ASC) Order by the birthday column
  * @method PUserQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PUserQuery orderByBiography($order = Criteria::ASC) Order by the biography column
  * @method PUserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method PUserQuery orderByTwitter($order = Criteria::ASC) Order by the twitter column
  * @method PUserQuery orderByFacebook($order = Criteria::ASC) Order by the facebook column
- * @method PUserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method PUserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
+ * @method PUserQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -50,19 +73,40 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PUserQuery groupById() Group by the id column
+ * @method PUserQuery groupByProvider() Group by the provider column
+ * @method PUserQuery groupByProviderId() Group by the provider_id column
+ * @method PUserQuery groupByNickname() Group by the nickname column
+ * @method PUserQuery groupByRealname() Group by the realname column
+ * @method PUserQuery groupByUsername() Group by the username column
+ * @method PUserQuery groupByUsernameCanonical() Group by the username_canonical column
+ * @method PUserQuery groupByEmail() Group by the email column
+ * @method PUserQuery groupByEmailCanonical() Group by the email_canonical column
+ * @method PUserQuery groupByEnabled() Group by the enabled column
+ * @method PUserQuery groupBySalt() Group by the salt column
+ * @method PUserQuery groupByPassword() Group by the password column
+ * @method PUserQuery groupByLastLogin() Group by the last_login column
+ * @method PUserQuery groupByLocked() Group by the locked column
+ * @method PUserQuery groupByExpired() Group by the expired column
+ * @method PUserQuery groupByExpiresAt() Group by the expires_at column
+ * @method PUserQuery groupByConfirmationToken() Group by the confirmation_token column
+ * @method PUserQuery groupByPasswordRequestedAt() Group by the password_requested_at column
+ * @method PUserQuery groupByCredentialsExpired() Group by the credentials_expired column
+ * @method PUserQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
+ * @method PUserQuery groupByRoles() Group by the roles column
  * @method PUserQuery groupByType() Group by the type column
  * @method PUserQuery groupByStatus() Group by the status column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
  * @method PUserQuery groupByName() Group by the name column
+ * @method PUserQuery groupByBirthday() Group by the birthday column
  * @method PUserQuery groupBySummary() Group by the summary column
  * @method PUserQuery groupByBiography() Group by the biography column
  * @method PUserQuery groupByWebsite() Group by the website column
  * @method PUserQuery groupByTwitter() Group by the twitter column
  * @method PUserQuery groupByFacebook() Group by the facebook column
- * @method PUserQuery groupByEmail() Group by the email column
  * @method PUserQuery groupByPhone() Group by the phone column
+ * @method PUserQuery groupByNewsletter() Group by the newsletter column
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
@@ -93,6 +137,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPuReputationRaPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuReputationRaPUser relation
  * @method PUserQuery innerJoinPuReputationRaPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuReputationRaPUser relation
  *
+ * @method PUserQuery leftJoinPuTaggedTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPUser relation
+ * @method PUserQuery rightJoinPuTaggedTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPUser relation
+ * @method PUserQuery innerJoinPuTaggedTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTaggedTPUser relation
+ *
  * @method PUserQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
  * @method PUserQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
  * @method PUserQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
@@ -120,19 +168,40 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOne(PropelPDO $con = null) Return the first PUser matching the query
  * @method PUser findOneOrCreate(PropelPDO $con = null) Return the first PUser matching the query, or a new PUser object populated from the query conditions when no match is found
  *
+ * @method PUser findOneByProvider(string $provider) Return the first PUser filtered by the provider column
+ * @method PUser findOneByProviderId(string $provider_id) Return the first PUser filtered by the provider_id column
+ * @method PUser findOneByNickname(string $nickname) Return the first PUser filtered by the nickname column
+ * @method PUser findOneByRealname(string $realname) Return the first PUser filtered by the realname column
+ * @method PUser findOneByUsername(string $username) Return the first PUser filtered by the username column
+ * @method PUser findOneByUsernameCanonical(string $username_canonical) Return the first PUser filtered by the username_canonical column
+ * @method PUser findOneByEmail(string $email) Return the first PUser filtered by the email column
+ * @method PUser findOneByEmailCanonical(string $email_canonical) Return the first PUser filtered by the email_canonical column
+ * @method PUser findOneByEnabled(boolean $enabled) Return the first PUser filtered by the enabled column
+ * @method PUser findOneBySalt(string $salt) Return the first PUser filtered by the salt column
+ * @method PUser findOneByPassword(string $password) Return the first PUser filtered by the password column
+ * @method PUser findOneByLastLogin(string $last_login) Return the first PUser filtered by the last_login column
+ * @method PUser findOneByLocked(boolean $locked) Return the first PUser filtered by the locked column
+ * @method PUser findOneByExpired(boolean $expired) Return the first PUser filtered by the expired column
+ * @method PUser findOneByExpiresAt(string $expires_at) Return the first PUser filtered by the expires_at column
+ * @method PUser findOneByConfirmationToken(string $confirmation_token) Return the first PUser filtered by the confirmation_token column
+ * @method PUser findOneByPasswordRequestedAt(string $password_requested_at) Return the first PUser filtered by the password_requested_at column
+ * @method PUser findOneByCredentialsExpired(boolean $credentials_expired) Return the first PUser filtered by the credentials_expired column
+ * @method PUser findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUser filtered by the credentials_expire_at column
+ * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
  * @method PUser findOneByType(int $type) Return the first PUser filtered by the type column
  * @method PUser findOneByStatus(int $status) Return the first PUser filtered by the status column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
  * @method PUser findOneByName(string $name) Return the first PUser filtered by the name column
+ * @method PUser findOneByBirthday(string $birthday) Return the first PUser filtered by the birthday column
  * @method PUser findOneBySummary(string $summary) Return the first PUser filtered by the summary column
  * @method PUser findOneByBiography(string $biography) Return the first PUser filtered by the biography column
  * @method PUser findOneByWebsite(string $website) Return the first PUser filtered by the website column
  * @method PUser findOneByTwitter(string $twitter) Return the first PUser filtered by the twitter column
  * @method PUser findOneByFacebook(string $facebook) Return the first PUser filtered by the facebook column
- * @method PUser findOneByEmail(string $email) Return the first PUser filtered by the email column
  * @method PUser findOneByPhone(string $phone) Return the first PUser filtered by the phone column
+ * @method PUser findOneByNewsletter(boolean $newsletter) Return the first PUser filtered by the newsletter column
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
@@ -140,19 +209,40 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneBySlug(string $slug) Return the first PUser filtered by the slug column
  *
  * @method array findById(int $id) Return PUser objects filtered by the id column
+ * @method array findByProvider(string $provider) Return PUser objects filtered by the provider column
+ * @method array findByProviderId(string $provider_id) Return PUser objects filtered by the provider_id column
+ * @method array findByNickname(string $nickname) Return PUser objects filtered by the nickname column
+ * @method array findByRealname(string $realname) Return PUser objects filtered by the realname column
+ * @method array findByUsername(string $username) Return PUser objects filtered by the username column
+ * @method array findByUsernameCanonical(string $username_canonical) Return PUser objects filtered by the username_canonical column
+ * @method array findByEmail(string $email) Return PUser objects filtered by the email column
+ * @method array findByEmailCanonical(string $email_canonical) Return PUser objects filtered by the email_canonical column
+ * @method array findByEnabled(boolean $enabled) Return PUser objects filtered by the enabled column
+ * @method array findBySalt(string $salt) Return PUser objects filtered by the salt column
+ * @method array findByPassword(string $password) Return PUser objects filtered by the password column
+ * @method array findByLastLogin(string $last_login) Return PUser objects filtered by the last_login column
+ * @method array findByLocked(boolean $locked) Return PUser objects filtered by the locked column
+ * @method array findByExpired(boolean $expired) Return PUser objects filtered by the expired column
+ * @method array findByExpiresAt(string $expires_at) Return PUser objects filtered by the expires_at column
+ * @method array findByConfirmationToken(string $confirmation_token) Return PUser objects filtered by the confirmation_token column
+ * @method array findByPasswordRequestedAt(string $password_requested_at) Return PUser objects filtered by the password_requested_at column
+ * @method array findByCredentialsExpired(boolean $credentials_expired) Return PUser objects filtered by the credentials_expired column
+ * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUser objects filtered by the credentials_expire_at column
+ * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
  * @method array findByType(int $type) Return PUser objects filtered by the type column
  * @method array findByStatus(int $status) Return PUser objects filtered by the status column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
  * @method array findByName(string $name) Return PUser objects filtered by the name column
+ * @method array findByBirthday(string $birthday) Return PUser objects filtered by the birthday column
  * @method array findBySummary(string $summary) Return PUser objects filtered by the summary column
  * @method array findByBiography(string $biography) Return PUser objects filtered by the biography column
  * @method array findByWebsite(string $website) Return PUser objects filtered by the website column
  * @method array findByTwitter(string $twitter) Return PUser objects filtered by the twitter column
  * @method array findByFacebook(string $facebook) Return PUser objects filtered by the facebook column
- * @method array findByEmail(string $email) Return PUser objects filtered by the email column
  * @method array findByPhone(string $phone) Return PUser objects filtered by the phone column
+ * @method array findByNewsletter(boolean $newsletter) Return PUser objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
@@ -259,7 +349,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `type`, `status`, `file_name`, `gender`, `firstname`, `name`, `summary`, `biography`, `website`, `twitter`, `facebook`, `email`, `phone`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `type`, `status`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -388,6 +478,686 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the provider column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProvider('fooValue');   // WHERE provider = 'fooValue'
+     * $query->filterByProvider('%fooValue%'); // WHERE provider LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $provider The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByProvider($provider = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($provider)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $provider)) {
+                $provider = str_replace('*', '%', $provider);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::PROVIDER, $provider, $comparison);
+    }
+
+    /**
+     * Filter the query on the provider_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProviderId('fooValue');   // WHERE provider_id = 'fooValue'
+     * $query->filterByProviderId('%fooValue%'); // WHERE provider_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $providerId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByProviderId($providerId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($providerId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $providerId)) {
+                $providerId = str_replace('*', '%', $providerId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::PROVIDER_ID, $providerId, $comparison);
+    }
+
+    /**
+     * Filter the query on the nickname column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNickname('fooValue');   // WHERE nickname = 'fooValue'
+     * $query->filterByNickname('%fooValue%'); // WHERE nickname LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $nickname The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByNickname($nickname = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($nickname)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $nickname)) {
+                $nickname = str_replace('*', '%', $nickname);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::NICKNAME, $nickname, $comparison);
+    }
+
+    /**
+     * Filter the query on the realname column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRealname('fooValue');   // WHERE realname = 'fooValue'
+     * $query->filterByRealname('%fooValue%'); // WHERE realname LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $realname The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByRealname($realname = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($realname)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $realname)) {
+                $realname = str_replace('*', '%', $realname);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::REALNAME, $realname, $comparison);
+    }
+
+    /**
+     * Filter the query on the username column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
+     * $query->filterByUsername('%fooValue%'); // WHERE username LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $username The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByUsername($username = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($username)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $username)) {
+                $username = str_replace('*', '%', $username);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::USERNAME, $username, $comparison);
+    }
+
+    /**
+     * Filter the query on the username_canonical column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUsernameCanonical('fooValue');   // WHERE username_canonical = 'fooValue'
+     * $query->filterByUsernameCanonical('%fooValue%'); // WHERE username_canonical LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $usernameCanonical The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByUsernameCanonical($usernameCanonical = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($usernameCanonical)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $usernameCanonical)) {
+                $usernameCanonical = str_replace('*', '%', $usernameCanonical);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::USERNAME_CANONICAL, $usernameCanonical, $comparison);
+    }
+
+    /**
+     * Filter the query on the email column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%'); // WHERE email LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $email The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByEmail($email = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($email)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $email)) {
+                $email = str_replace('*', '%', $email);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::EMAIL, $email, $comparison);
+    }
+
+    /**
+     * Filter the query on the email_canonical column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmailCanonical('fooValue');   // WHERE email_canonical = 'fooValue'
+     * $query->filterByEmailCanonical('%fooValue%'); // WHERE email_canonical LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $emailCanonical The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByEmailCanonical($emailCanonical = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($emailCanonical)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $emailCanonical)) {
+                $emailCanonical = str_replace('*', '%', $emailCanonical);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::EMAIL_CANONICAL, $emailCanonical, $comparison);
+    }
+
+    /**
+     * Filter the query on the enabled column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEnabled(true); // WHERE enabled = true
+     * $query->filterByEnabled('yes'); // WHERE enabled = true
+     * </code>
+     *
+     * @param     boolean|string $enabled The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByEnabled($enabled = null, $comparison = null)
+    {
+        if (is_string($enabled)) {
+            $enabled = in_array(strtolower($enabled), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::ENABLED, $enabled, $comparison);
+    }
+
+    /**
+     * Filter the query on the salt column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySalt('fooValue');   // WHERE salt = 'fooValue'
+     * $query->filterBySalt('%fooValue%'); // WHERE salt LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $salt The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterBySalt($salt = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($salt)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $salt)) {
+                $salt = str_replace('*', '%', $salt);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::SALT, $salt, $comparison);
+    }
+
+    /**
+     * Filter the query on the password column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPassword('fooValue');   // WHERE password = 'fooValue'
+     * $query->filterByPassword('%fooValue%'); // WHERE password LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $password The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByPassword($password = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($password)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $password)) {
+                $password = str_replace('*', '%', $password);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::PASSWORD, $password, $comparison);
+    }
+
+    /**
+     * Filter the query on the last_login column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastLogin('2011-03-14'); // WHERE last_login = '2011-03-14'
+     * $query->filterByLastLogin('now'); // WHERE last_login = '2011-03-14'
+     * $query->filterByLastLogin(array('max' => 'yesterday')); // WHERE last_login > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastLogin The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByLastLogin($lastLogin = null, $comparison = null)
+    {
+        if (is_array($lastLogin)) {
+            $useMinMax = false;
+            if (isset($lastLogin['min'])) {
+                $this->addUsingAlias(PUserPeer::LAST_LOGIN, $lastLogin['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastLogin['max'])) {
+                $this->addUsingAlias(PUserPeer::LAST_LOGIN, $lastLogin['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::LAST_LOGIN, $lastLogin, $comparison);
+    }
+
+    /**
+     * Filter the query on the locked column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLocked(true); // WHERE locked = true
+     * $query->filterByLocked('yes'); // WHERE locked = true
+     * </code>
+     *
+     * @param     boolean|string $locked The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByLocked($locked = null, $comparison = null)
+    {
+        if (is_string($locked)) {
+            $locked = in_array(strtolower($locked), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::LOCKED, $locked, $comparison);
+    }
+
+    /**
+     * Filter the query on the expired column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpired(true); // WHERE expired = true
+     * $query->filterByExpired('yes'); // WHERE expired = true
+     * </code>
+     *
+     * @param     boolean|string $expired The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByExpired($expired = null, $comparison = null)
+    {
+        if (is_string($expired)) {
+            $expired = in_array(strtolower($expired), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::EXPIRED, $expired, $comparison);
+    }
+
+    /**
+     * Filter the query on the expires_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpiresAt('2011-03-14'); // WHERE expires_at = '2011-03-14'
+     * $query->filterByExpiresAt('now'); // WHERE expires_at = '2011-03-14'
+     * $query->filterByExpiresAt(array('max' => 'yesterday')); // WHERE expires_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $expiresAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByExpiresAt($expiresAt = null, $comparison = null)
+    {
+        if (is_array($expiresAt)) {
+            $useMinMax = false;
+            if (isset($expiresAt['min'])) {
+                $this->addUsingAlias(PUserPeer::EXPIRES_AT, $expiresAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($expiresAt['max'])) {
+                $this->addUsingAlias(PUserPeer::EXPIRES_AT, $expiresAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::EXPIRES_AT, $expiresAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the confirmation_token column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfirmationToken('fooValue');   // WHERE confirmation_token = 'fooValue'
+     * $query->filterByConfirmationToken('%fooValue%'); // WHERE confirmation_token LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $confirmationToken The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByConfirmationToken($confirmationToken = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($confirmationToken)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $confirmationToken)) {
+                $confirmationToken = str_replace('*', '%', $confirmationToken);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::CONFIRMATION_TOKEN, $confirmationToken, $comparison);
+    }
+
+    /**
+     * Filter the query on the password_requested_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPasswordRequestedAt('2011-03-14'); // WHERE password_requested_at = '2011-03-14'
+     * $query->filterByPasswordRequestedAt('now'); // WHERE password_requested_at = '2011-03-14'
+     * $query->filterByPasswordRequestedAt(array('max' => 'yesterday')); // WHERE password_requested_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $passwordRequestedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByPasswordRequestedAt($passwordRequestedAt = null, $comparison = null)
+    {
+        if (is_array($passwordRequestedAt)) {
+            $useMinMax = false;
+            if (isset($passwordRequestedAt['min'])) {
+                $this->addUsingAlias(PUserPeer::PASSWORD_REQUESTED_AT, $passwordRequestedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($passwordRequestedAt['max'])) {
+                $this->addUsingAlias(PUserPeer::PASSWORD_REQUESTED_AT, $passwordRequestedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::PASSWORD_REQUESTED_AT, $passwordRequestedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the credentials_expired column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCredentialsExpired(true); // WHERE credentials_expired = true
+     * $query->filterByCredentialsExpired('yes'); // WHERE credentials_expired = true
+     * </code>
+     *
+     * @param     boolean|string $credentialsExpired The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByCredentialsExpired($credentialsExpired = null, $comparison = null)
+    {
+        if (is_string($credentialsExpired)) {
+            $credentialsExpired = in_array(strtolower($credentialsExpired), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::CREDENTIALS_EXPIRED, $credentialsExpired, $comparison);
+    }
+
+    /**
+     * Filter the query on the credentials_expire_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCredentialsExpireAt('2011-03-14'); // WHERE credentials_expire_at = '2011-03-14'
+     * $query->filterByCredentialsExpireAt('now'); // WHERE credentials_expire_at = '2011-03-14'
+     * $query->filterByCredentialsExpireAt(array('max' => 'yesterday')); // WHERE credentials_expire_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $credentialsExpireAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByCredentialsExpireAt($credentialsExpireAt = null, $comparison = null)
+    {
+        if (is_array($credentialsExpireAt)) {
+            $useMinMax = false;
+            if (isset($credentialsExpireAt['min'])) {
+                $this->addUsingAlias(PUserPeer::CREDENTIALS_EXPIRE_AT, $credentialsExpireAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($credentialsExpireAt['max'])) {
+                $this->addUsingAlias(PUserPeer::CREDENTIALS_EXPIRE_AT, $credentialsExpireAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::CREDENTIALS_EXPIRE_AT, $credentialsExpireAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the roles column
+     *
+     * @param     array $roles The values to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByRoles($roles = null, $comparison = null)
+    {
+        $key = $this->getAliasedColName(PUserPeer::ROLES);
+        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
+            foreach ($roles as $value) {
+                $value = '%| ' . $value . ' |%';
+                if ($this->containsKey($key)) {
+                    $this->addAnd($key, $value, Criteria::LIKE);
+                } else {
+                    $this->add($key, $value, Criteria::LIKE);
+                }
+            }
+
+            return $this;
+        } elseif ($comparison == Criteria::CONTAINS_SOME) {
+            foreach ($roles as $value) {
+                $value = '%| ' . $value . ' |%';
+                if ($this->containsKey($key)) {
+                    $this->addOr($key, $value, Criteria::LIKE);
+                } else {
+                    $this->add($key, $value, Criteria::LIKE);
+                }
+            }
+
+            return $this;
+        } elseif ($comparison == Criteria::CONTAINS_NONE) {
+            foreach ($roles as $value) {
+                $value = '%| ' . $value . ' |%';
+                if ($this->containsKey($key)) {
+                    $this->addAnd($key, $value, Criteria::NOT_LIKE);
+                } else {
+                    $this->add($key, $value, Criteria::NOT_LIKE);
+                }
+            }
+            $this->addOr($key, null, Criteria::ISNULL);
+
+            return $this;
+        }
+
+        return $this->addUsingAlias(PUserPeer::ROLES, $roles, $comparison);
+    }
+
+    /**
+     * Filter the query on the roles column
+     * @param     mixed $roles The value to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::CONTAINS_ALL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByRole($roles = null, $comparison = null)
+    {
+        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
+            if (is_scalar($roles)) {
+                $roles = '%| ' . $roles . ' |%';
+                $comparison = Criteria::LIKE;
+            }
+        } elseif ($comparison == Criteria::CONTAINS_NONE) {
+            $roles = '%| ' . $roles . ' |%';
+            $comparison = Criteria::NOT_LIKE;
+            $key = $this->getAliasedColName(PUserPeer::ROLES);
+            if ($this->containsKey($key)) {
+                $this->addAnd($key, $roles, $comparison);
+            } else {
+                $this->addAnd($key, $roles, $comparison);
+            }
+            $this->addOr($key, null, Criteria::ISNULL);
+
+            return $this;
+        }
+
+        return $this->addUsingAlias(PUserPeer::ROLES, $roles, $comparison);
     }
 
     /**
@@ -589,6 +1359,49 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the birthday column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBirthday('2011-03-14'); // WHERE birthday = '2011-03-14'
+     * $query->filterByBirthday('now'); // WHERE birthday = '2011-03-14'
+     * $query->filterByBirthday(array('max' => 'yesterday')); // WHERE birthday > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $birthday The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByBirthday($birthday = null, $comparison = null)
+    {
+        if (is_array($birthday)) {
+            $useMinMax = false;
+            if (isset($birthday['min'])) {
+                $this->addUsingAlias(PUserPeer::BIRTHDAY, $birthday['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($birthday['max'])) {
+                $this->addUsingAlias(PUserPeer::BIRTHDAY, $birthday['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::BIRTHDAY, $birthday, $comparison);
+    }
+
+    /**
      * Filter the query on the summary column
      *
      * Example usage:
@@ -734,35 +1547,6 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the email column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
-     * $query->filterByEmail('%fooValue%'); // WHERE email LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $email The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterByEmail($email = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($email)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $email)) {
-                $email = str_replace('*', '%', $email);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PUserPeer::EMAIL, $email, $comparison);
-    }
-
-    /**
      * Filter the query on the phone column
      *
      * Example usage:
@@ -789,6 +1573,33 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::PHONE, $phone, $comparison);
+    }
+
+    /**
+     * Filter the query on the newsletter column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNewsletter(true); // WHERE newsletter = true
+     * $query->filterByNewsletter('yes'); // WHERE newsletter = true
+     * </code>
+     *
+     * @param     boolean|string $newsletter The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByNewsletter($newsletter = null, $comparison = null)
+    {
+        if (is_string($newsletter)) {
+            $newsletter = in_array(strtolower($newsletter), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::NEWSLETTER, $newsletter, $comparison);
     }
 
     /**
@@ -1347,6 +2158,80 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUTaggedT object
+     *
+     * @param   PUTaggedT|PropelObjectCollection $pUTaggedT  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuTaggedTPUser($pUTaggedT, $comparison = null)
+    {
+        if ($pUTaggedT instanceof PUTaggedT) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUTaggedT->getPUserId(), $comparison);
+        } elseif ($pUTaggedT instanceof PropelObjectCollection) {
+            return $this
+                ->usePuTaggedTPUserQuery()
+                ->filterByPrimaryKeys($pUTaggedT->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuTaggedTPUser() only accepts arguments of type PUTaggedT or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuTaggedTPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuTaggedTPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuTaggedTPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuTaggedTPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuTaggedTPUser relation PUTaggedT object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTaggedTQuery A secondary query class using the current class as primary query
+     */
+    public function usePuTaggedTPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuTaggedTPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuTaggedTPUser', '\Politizr\Model\PUTaggedTQuery');
+    }
+
+    /**
      * Filter the query by a related PDDebate object
      *
      * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
@@ -1838,6 +2723,23 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePuReputationRaPUserQuery()
             ->filterByPuReputationRaPRBadge($pRAction, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PTag object
+     * using the p_u_tagged_t table as cross reference
+     *
+     * @param   PTag $pTag the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuTaggedTPTag($pTag, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuTaggedTPUserQuery()
+            ->filterByPuTaggedTPTag($pTag, $comparison)
             ->endUse();
     }
 

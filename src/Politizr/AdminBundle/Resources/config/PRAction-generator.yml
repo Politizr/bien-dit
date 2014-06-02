@@ -1,0 +1,93 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PRAction
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        description:
+            label:          Description
+        score_evolution:
+            label:          Évolution du score
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des actions
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            display:                            [ title, description, score_evolution ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ title, created_at ]
+    new:
+        params:
+            title:                              "Création d'une action"
+            display:
+                "Champs principaux":            [ [ title ], [ score_evolution ] ]
+                "Champs complémentaires":       [ [ description ] ]
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de l'action '{{ PRAction.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title, score_evolution ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation de l'action '{{ PRAction.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title, score_evolution ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_badges:
+                    label:                      "Badges"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

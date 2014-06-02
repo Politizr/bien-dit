@@ -99,12 +99,30 @@ Politizr_AdminBundle_PTag:
     prefix:   /PTag
 
 
+# Réputation
+Politizr_AdminBundle_PRBadge:
+    resource: "@PolitizrAdminBundle/Controller/PRBadge/"
+    type:     admingenerator
+    prefix:   /PRBadge
+
+Politizr_AdminBundle_PRAction:
+    resource: "@PolitizrAdminBundle/Controller/PRAction/"
+    type:     admingenerator
+    prefix:   /PRAction
+
+
+
 
 # Réglages des types
 Politizr_AdminBundle_PTTagType:
     resource: "@PolitizrAdminBundle/Controller/PTTagType/"
     type:     admingenerator
     prefix:   /PTTagType
+
+Politizr_AdminBundle_PRBadgeType:
+    resource: "@PolitizrAdminBundle/Controller/PRBadgeType/"
+    type:     admingenerator
+    prefix:   /PRBadgeType
 
 Politizr_AdminBundle_POPaymentType:
     resource: "@PolitizrAdminBundle/Controller/POPaymentType/"

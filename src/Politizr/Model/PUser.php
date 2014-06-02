@@ -12,7 +12,14 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
 
-class PUser extends BasePUser
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
+use Propel\PropelBundle\Validator\Constraints\UniqueObject;
+
+
+class PUser extends BasePUser implements UserInterface
 {
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -36,12 +43,19 @@ class PUser extends BasePUser
 
  	/**
 	 * Override to manage accented characters
+     *
 	 * @return string
 	 */
 	protected function createRawSlug()
 	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getFirstname().'-'.$this->getName());
-		$slug = $this->cleanupSlugPart($toSlug);
+        if ($firstname = $this->getFirstname() && $name = $this->getName()) {
+    		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($firstname.'-'.$name);
+    		$slug = $this->cleanupSlugPart($toSlug);
+        } elseif($realname = $this->getRealname()) {
+            $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($realname);
+            $slug = $this->cleanupSlugPart($toSlug);
+        }
+
 		return $slug;
 	}
 
@@ -284,4 +298,146 @@ class PUser extends BasePUser
 	}
 	public function getBlockSubscribersC() {
 	}
+	public function getBlockTags() {
+	}
+
+
+	// ************************************************************************************ //
+	//						METHODES SECURITE / INSCRIPTION / LOGIN
+	// ************************************************************************************ //
+
+
+    /**
+     * Plain password. Used when changing the password.
+     *
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->id,
+                $this->username,
+                $this->name,
+                $this->firstname,
+                $this->birthday,
+                $this->email,
+                $this->profile_completed,
+                $this->salt,
+                $this->password,
+                $this->expired,
+                $this->locked,
+                $this->credentials_expired,
+                $this->enabled,
+                $this->_new,
+            )
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        // add a few extra elements in the array to ensure that we have enough keys when unserializing
+        // older data which does not include all properties.
+        $data = array_merge($data, array_fill(0, 1, null));
+
+        list(
+                $this->id,
+                $this->username,
+                $this->name,
+                $this->firstname,
+                $this->birthday,
+                $this->email,
+                $this->profile_completed,
+                $this->salt,
+                $this->password,
+                $this->expired,
+                $this->locked,
+                $this->credentials_expired,
+                $this->enabled,
+                $this->_new,
+        ) = $data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+
+    /**
+     * @param Array
+     */
+    public function setOAuthData($oAuthData)
+    {
+        if (isset($oAuthData['provider'])) {
+            $this->setProvider($oAuthData['provider']);
+        }
+        if (isset($oAuthData['providerId'])) {
+            $this->setProviderId($oAuthData['providerId']);
+        }
+        if (isset($oAuthData['nickname'])) {
+            $this->setNickname($oAuthData['nickname']);
+        }
+        if (isset($oAuthData['realname'])) {
+            $this->setRealname($oAuthData['realname']);
+        }
+        if (isset($oAuthData['email'])) {
+            $this->setEmail($oAuthData['email']);
+        }
+        if (isset($oAuthData['accessToken'])) {
+            $this->setConfirmationToken($oAuthData['accessToken']);
+        }
+    }
+
+
+
+    // ################################################################################## //
+
+    public function getBirthdayText() {
+        return $this->getBirthday('d/m/Y');
+    }
+
+    /**
+     *  Email est un identifiant unique
+     */
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueObject(array(
+            'fields'  => 'email',
+            'message' => 'Cette adresse email existe déja.',
+        )));
+    }    
+
+
 }

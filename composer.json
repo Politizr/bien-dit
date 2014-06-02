@@ -46,11 +46,16 @@
         "friendsofsymfony/user-bundle": "*",
         
         "fzaninotto/faker": "1.4.*@dev",
+        "willdurand/faker-bundle": "@stable",
 
+        "willdurand/geocoder-bundle": "3.0.*",
+
+        "hwi/oauth-bundle": "0.4.*@dev",
+        "facebook/php-sdk": "dev-master",
+        
         "propel/propel-bundle": "1.2.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",
         "craftyshadow/propel-equalnest-behavior": "1.0.5",
-        "willdurand/faker-bundle": "@stable",
 
         "phing/phing": "2.4.14",
         
@@ -58,9 +63,10 @@
         
         "ensepar/html2pdf-bundle": "1.0.0",
         
-        "cedriclombardot/admingenerator-generator-bundle": "2.3.*@dev",
+        "cedriclombardot/admingenerator-generator-bundle": "~1.0.0",
         "cedriclombardot/admingenerator-user-bundle": "dev-master",
         "avocode/form-extensions-bundle": "dev-master",
+        "liuggio/ExcelBundle": "2.0.0",
 
         "liip/imagine-bundle": "0.11.*"
     },

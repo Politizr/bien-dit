@@ -10,15 +10,9 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
-use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PTag;
-use Politizr\Model\PTagQuery;
-use Politizr\Model\PUQTaggedT;
-use Politizr\Model\PUQTaggedTQuery;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUQualificationQuery;
@@ -100,17 +94,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     protected $aPUser;
 
     /**
-     * @var        PropelObjectCollection|PUQTaggedT[] Collection to store aggregation of PUQTaggedT objects.
-     */
-    protected $collPuqTaggedTPUQualifications;
-    protected $collPuqTaggedTPUQualificationsPartial;
-
-    /**
-     * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
-     */
-    protected $collPuqTaggedTPTags;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -129,18 +112,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $puqTaggedTPTagsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $puqTaggedTPUQualificationsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -636,9 +607,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPUser = null;
-            $this->collPuqTaggedTPUQualifications = null;
-
-            $this->collPuqTaggedTPTags = null;
         } // if (deep)
     }
 
@@ -793,49 +761,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->puqTaggedTPTagsScheduledForDeletion !== null) {
-                if (!$this->puqTaggedTPTagsScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->puqTaggedTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($pk, $remotePk);
-                    }
-                    PuqTaggedTPUQualificationQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->puqTaggedTPTagsScheduledForDeletion = null;
-                }
-
-                foreach ($this->getPuqTaggedTPTags() as $puqTaggedTPTag) {
-                    if ($puqTaggedTPTag->isModified()) {
-                        $puqTaggedTPTag->save($con);
-                    }
-                }
-            } elseif ($this->collPuqTaggedTPTags) {
-                foreach ($this->collPuqTaggedTPTags as $puqTaggedTPTag) {
-                    if ($puqTaggedTPTag->isModified()) {
-                        $puqTaggedTPTag->save($con);
-                    }
-                }
-            }
-
-            if ($this->puqTaggedTPUQualificationsScheduledForDeletion !== null) {
-                if (!$this->puqTaggedTPUQualificationsScheduledForDeletion->isEmpty()) {
-                    PUQTaggedTQuery::create()
-                        ->filterByPrimaryKeys($this->puqTaggedTPUQualificationsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->puqTaggedTPUQualificationsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPuqTaggedTPUQualifications !== null) {
-                foreach ($this->collPuqTaggedTPUQualifications as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -1034,14 +959,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPuqTaggedTPUQualifications !== null) {
-                    foreach ($this->collPuqTaggedTPUQualifications as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
 
             $this->alreadyInValidation = false;
         }
@@ -1142,9 +1059,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collPuqTaggedTPUQualifications) {
-                $result['PuqTaggedTPUQualifications'] = $this->collPuqTaggedTPUQualifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1333,12 +1247,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPuqTaggedTPUQualifications() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPuqTaggedTPUQualification($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1441,442 +1349,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         return $this->aPUser;
     }
 
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('PuqTaggedTPUQualification' == $relationName) {
-            $this->initPuqTaggedTPUQualifications();
-        }
-    }
-
-    /**
-     * Clears out the collPuqTaggedTPUQualifications collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUQualification The current object (for fluent API support)
-     * @see        addPuqTaggedTPUQualifications()
-     */
-    public function clearPuqTaggedTPUQualifications()
-    {
-        $this->collPuqTaggedTPUQualifications = null; // important to set this to null since that means it is uninitialized
-        $this->collPuqTaggedTPUQualificationsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPuqTaggedTPUQualifications collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPuqTaggedTPUQualifications($v = true)
-    {
-        $this->collPuqTaggedTPUQualificationsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPuqTaggedTPUQualifications collection.
-     *
-     * By default this just sets the collPuqTaggedTPUQualifications collection to an empty array (like clearcollPuqTaggedTPUQualifications());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPuqTaggedTPUQualifications($overrideExisting = true)
-    {
-        if (null !== $this->collPuqTaggedTPUQualifications && !$overrideExisting) {
-            return;
-        }
-        $this->collPuqTaggedTPUQualifications = new PropelObjectCollection();
-        $this->collPuqTaggedTPUQualifications->setModel('PUQTaggedT');
-    }
-
-    /**
-     * Gets an array of PUQTaggedT objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUQualification is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUQTaggedT[] List of PUQTaggedT objects
-     * @throws PropelException
-     */
-    public function getPuqTaggedTPUQualifications($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPuqTaggedTPUQualificationsPartial && !$this->isNew();
-        if (null === $this->collPuqTaggedTPUQualifications || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPuqTaggedTPUQualifications) {
-                // return empty collection
-                $this->initPuqTaggedTPUQualifications();
-            } else {
-                $collPuqTaggedTPUQualifications = PUQTaggedTQuery::create(null, $criteria)
-                    ->filterByPuqTaggedTPUQualification($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPuqTaggedTPUQualificationsPartial && count($collPuqTaggedTPUQualifications)) {
-                      $this->initPuqTaggedTPUQualifications(false);
-
-                      foreach($collPuqTaggedTPUQualifications as $obj) {
-                        if (false == $this->collPuqTaggedTPUQualifications->contains($obj)) {
-                          $this->collPuqTaggedTPUQualifications->append($obj);
-                        }
-                      }
-
-                      $this->collPuqTaggedTPUQualificationsPartial = true;
-                    }
-
-                    $collPuqTaggedTPUQualifications->getInternalIterator()->rewind();
-                    return $collPuqTaggedTPUQualifications;
-                }
-
-                if($partial && $this->collPuqTaggedTPUQualifications) {
-                    foreach($this->collPuqTaggedTPUQualifications as $obj) {
-                        if($obj->isNew()) {
-                            $collPuqTaggedTPUQualifications[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPuqTaggedTPUQualifications = $collPuqTaggedTPUQualifications;
-                $this->collPuqTaggedTPUQualificationsPartial = false;
-            }
-        }
-
-        return $this->collPuqTaggedTPUQualifications;
-    }
-
-    /**
-     * Sets a collection of PuqTaggedTPUQualification objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $puqTaggedTPUQualifications A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function setPuqTaggedTPUQualifications(PropelCollection $puqTaggedTPUQualifications, PropelPDO $con = null)
-    {
-        $puqTaggedTPUQualificationsToDelete = $this->getPuqTaggedTPUQualifications(new Criteria(), $con)->diff($puqTaggedTPUQualifications);
-
-        $this->puqTaggedTPUQualificationsScheduledForDeletion = unserialize(serialize($puqTaggedTPUQualificationsToDelete));
-
-        foreach ($puqTaggedTPUQualificationsToDelete as $puqTaggedTPUQualificationRemoved) {
-            $puqTaggedTPUQualificationRemoved->setPuqTaggedTPUQualification(null);
-        }
-
-        $this->collPuqTaggedTPUQualifications = null;
-        foreach ($puqTaggedTPUQualifications as $puqTaggedTPUQualification) {
-            $this->addPuqTaggedTPUQualification($puqTaggedTPUQualification);
-        }
-
-        $this->collPuqTaggedTPUQualifications = $puqTaggedTPUQualifications;
-        $this->collPuqTaggedTPUQualificationsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PUQTaggedT objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PUQTaggedT objects.
-     * @throws PropelException
-     */
-    public function countPuqTaggedTPUQualifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPuqTaggedTPUQualificationsPartial && !$this->isNew();
-        if (null === $this->collPuqTaggedTPUQualifications || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPuqTaggedTPUQualifications) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getPuqTaggedTPUQualifications());
-            }
-            $query = PUQTaggedTQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPuqTaggedTPUQualification($this)
-                ->count($con);
-        }
-
-        return count($this->collPuqTaggedTPUQualifications);
-    }
-
-    /**
-     * Method called to associate a PUQTaggedT object to this object
-     * through the PUQTaggedT foreign key attribute.
-     *
-     * @param    PUQTaggedT $l PUQTaggedT
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function addPuqTaggedTPUQualification(PUQTaggedT $l)
-    {
-        if ($this->collPuqTaggedTPUQualifications === null) {
-            $this->initPuqTaggedTPUQualifications();
-            $this->collPuqTaggedTPUQualificationsPartial = true;
-        }
-        if (!in_array($l, $this->collPuqTaggedTPUQualifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPuqTaggedTPUQualification($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PuqTaggedTPUQualification $puqTaggedTPUQualification The puqTaggedTPUQualification object to add.
-     */
-    protected function doAddPuqTaggedTPUQualification($puqTaggedTPUQualification)
-    {
-        $this->collPuqTaggedTPUQualifications[]= $puqTaggedTPUQualification;
-        $puqTaggedTPUQualification->setPuqTaggedTPUQualification($this);
-    }
-
-    /**
-     * @param	PuqTaggedTPUQualification $puqTaggedTPUQualification The puqTaggedTPUQualification object to remove.
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function removePuqTaggedTPUQualification($puqTaggedTPUQualification)
-    {
-        if ($this->getPuqTaggedTPUQualifications()->contains($puqTaggedTPUQualification)) {
-            $this->collPuqTaggedTPUQualifications->remove($this->collPuqTaggedTPUQualifications->search($puqTaggedTPUQualification));
-            if (null === $this->puqTaggedTPUQualificationsScheduledForDeletion) {
-                $this->puqTaggedTPUQualificationsScheduledForDeletion = clone $this->collPuqTaggedTPUQualifications;
-                $this->puqTaggedTPUQualificationsScheduledForDeletion->clear();
-            }
-            $this->puqTaggedTPUQualificationsScheduledForDeletion[]= clone $puqTaggedTPUQualification;
-            $puqTaggedTPUQualification->setPuqTaggedTPUQualification(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUQualification is new, it will return
-     * an empty collection; or if this PUQualification has previously
-     * been saved, it will retrieve related PuqTaggedTPUQualifications from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUQualification.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUQTaggedT[] List of PUQTaggedT objects
-     */
-    public function getPuqTaggedTPUQualificationsJoinPuqTaggedTPTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PUQTaggedTQuery::create(null, $criteria);
-        $query->joinWith('PuqTaggedTPTag', $join_behavior);
-
-        return $this->getPuqTaggedTPUQualifications($query, $con);
-    }
-
-    /**
-     * Clears out the collPuqTaggedTPTags collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUQualification The current object (for fluent API support)
-     * @see        addPuqTaggedTPTags()
-     */
-    public function clearPuqTaggedTPTags()
-    {
-        $this->collPuqTaggedTPTags = null; // important to set this to null since that means it is uninitialized
-        $this->collPuqTaggedTPTagsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * Initializes the collPuqTaggedTPTags collection.
-     *
-     * By default this just sets the collPuqTaggedTPTags collection to an empty collection (like clearPuqTaggedTPTags());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initPuqTaggedTPTags()
-    {
-        $this->collPuqTaggedTPTags = new PropelObjectCollection();
-        $this->collPuqTaggedTPTags->setModel('PTag');
-    }
-
-    /**
-     * Gets a collection of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_q_tagged_t cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUQualification is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|PTag[] List of PTag objects
-     */
-    public function getPuqTaggedTPTags($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collPuqTaggedTPTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuqTaggedTPTags) {
-                // return empty collection
-                $this->initPuqTaggedTPTags();
-            } else {
-                $collPuqTaggedTPTags = PTagQuery::create(null, $criteria)
-                    ->filterByPuqTaggedTPUQualification($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collPuqTaggedTPTags;
-                }
-                $this->collPuqTaggedTPTags = $collPuqTaggedTPTags;
-            }
-        }
-
-        return $this->collPuqTaggedTPTags;
-    }
-
-    /**
-     * Sets a collection of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_q_tagged_t cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $puqTaggedTPTags A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function setPuqTaggedTPTags(PropelCollection $puqTaggedTPTags, PropelPDO $con = null)
-    {
-        $this->clearPuqTaggedTPTags();
-        $currentPuqTaggedTPTags = $this->getPuqTaggedTPTags();
-
-        $this->puqTaggedTPTagsScheduledForDeletion = $currentPuqTaggedTPTags->diff($puqTaggedTPTags);
-
-        foreach ($puqTaggedTPTags as $puqTaggedTPTag) {
-            if (!$currentPuqTaggedTPTags->contains($puqTaggedTPTag)) {
-                $this->doAddPuqTaggedTPTag($puqTaggedTPTag);
-            }
-        }
-
-        $this->collPuqTaggedTPTags = $puqTaggedTPTags;
-
-        return $this;
-    }
-
-    /**
-     * Gets the number of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_q_tagged_t cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related PTag objects
-     */
-    public function countPuqTaggedTPTags($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collPuqTaggedTPTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuqTaggedTPTags) {
-                return 0;
-            } else {
-                $query = PTagQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByPuqTaggedTPUQualification($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collPuqTaggedTPTags);
-        }
-    }
-
-    /**
-     * Associate a PTag object to this object
-     * through the p_u_q_tagged_t cross reference table.
-     *
-     * @param  PTag $pTag The PUQTaggedT object to relate
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function addPuqTaggedTPTag(PTag $pTag)
-    {
-        if ($this->collPuqTaggedTPTags === null) {
-            $this->initPuqTaggedTPTags();
-        }
-        if (!$this->collPuqTaggedTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
-            $this->doAddPuqTaggedTPTag($pTag);
-
-            $this->collPuqTaggedTPTags[]= $pTag;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PuqTaggedTPTag $puqTaggedTPTag The puqTaggedTPTag object to add.
-     */
-    protected function doAddPuqTaggedTPTag($puqTaggedTPTag)
-    {
-        $pUQTaggedT = new PUQTaggedT();
-        $pUQTaggedT->setPuqTaggedTPTag($puqTaggedTPTag);
-        $this->addPuqTaggedTPUQualification($pUQTaggedT);
-    }
-
-    /**
-     * Remove a PTag object to this object
-     * through the p_u_q_tagged_t cross reference table.
-     *
-     * @param PTag $pTag The PUQTaggedT object to relate
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function removePuqTaggedTPTag(PTag $pTag)
-    {
-        if ($this->getPuqTaggedTPTags()->contains($pTag)) {
-            $this->collPuqTaggedTPTags->remove($this->collPuqTaggedTPTags->search($pTag));
-            if (null === $this->puqTaggedTPTagsScheduledForDeletion) {
-                $this->puqTaggedTPTagsScheduledForDeletion = clone $this->collPuqTaggedTPTags;
-                $this->puqTaggedTPTagsScheduledForDeletion->clear();
-            }
-            $this->puqTaggedTPTagsScheduledForDeletion[]= $pTag;
-        }
-
-        return $this;
-    }
-
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -1912,16 +1384,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPuqTaggedTPUQualifications) {
-                foreach ($this->collPuqTaggedTPUQualifications as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPuqTaggedTPTags) {
-                foreach ($this->collPuqTaggedTPTags as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
@@ -1929,14 +1391,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPuqTaggedTPUQualifications instanceof PropelCollection) {
-            $this->collPuqTaggedTPUQualifications->clearIterator();
-        }
-        $this->collPuqTaggedTPUQualifications = null;
-        if ($this->collPuqTaggedTPTags instanceof PropelCollection) {
-            $this->collPuqTaggedTPTags->clearIterator();
-        }
-        $this->collPuqTaggedTPTags = null;
         $this->aPUser = null;
     }
 

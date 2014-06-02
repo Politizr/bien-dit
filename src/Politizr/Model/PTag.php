@@ -23,10 +23,45 @@ class PTag extends BasePTag
 		$slug = $this->cleanupSlugPart($toSlug);
 		return $slug;
 	}
+	
+	/******************************************************************************/
 
+	/**
+	 * 	Surcharge simplification du nom de la méthode
+	 */
+	public function countPDDebates(\PropelPDO $con = null, $doQuery = true)
+	{
+		return parent::countPddTaggedTPDDebates($con, $doQuery);
+	}
+
+	/**
+	 * 	Surcharge simplification du nom de la méthode
+	 */
+	public function getPDDebates(\PropelPDO $con = null, $doQuery = true)
+	{
+		return parent::getPddTaggedTPDDebates($con, $doQuery);
+	}
+
+	/**
+	 * 	Surcharge simplification du nom de la méthode
+	 */
+	public function countPUsers(\PropelPDO $con = null, $doQuery = true)
+	{
+		return parent::countPuTaggedTPTags($con, $doQuery);
+	}
+
+	/**
+	 * 	Surcharge simplification du nom de la méthode
+	 */
+	public function getPUsers(\PropelPDO $con = null, $doQuery = true)
+	{
+		return parent::getPuTaggedTPTags($con, $doQuery);
+	}
 
 
 	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
 	public function getBlockDebates() {
+	}
+	public function getBlockUsers() {
 	}
 }

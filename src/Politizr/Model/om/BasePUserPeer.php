@@ -19,6 +19,7 @@ use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUReputationRAPeer;
 use Politizr\Model\PUReputationRBPeer;
+use Politizr\Model\PUTaggedTPeer;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PUserTableMap;
@@ -39,16 +40,76 @@ abstract class BasePUserPeer
     const TM_CLASS = 'PUserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 40;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 40;
 
     /** the column name for the id field */
     const ID = 'p_user.id';
+
+    /** the column name for the provider field */
+    const PROVIDER = 'p_user.provider';
+
+    /** the column name for the provider_id field */
+    const PROVIDER_ID = 'p_user.provider_id';
+
+    /** the column name for the nickname field */
+    const NICKNAME = 'p_user.nickname';
+
+    /** the column name for the realname field */
+    const REALNAME = 'p_user.realname';
+
+    /** the column name for the username field */
+    const USERNAME = 'p_user.username';
+
+    /** the column name for the username_canonical field */
+    const USERNAME_CANONICAL = 'p_user.username_canonical';
+
+    /** the column name for the email field */
+    const EMAIL = 'p_user.email';
+
+    /** the column name for the email_canonical field */
+    const EMAIL_CANONICAL = 'p_user.email_canonical';
+
+    /** the column name for the enabled field */
+    const ENABLED = 'p_user.enabled';
+
+    /** the column name for the salt field */
+    const SALT = 'p_user.salt';
+
+    /** the column name for the password field */
+    const PASSWORD = 'p_user.password';
+
+    /** the column name for the last_login field */
+    const LAST_LOGIN = 'p_user.last_login';
+
+    /** the column name for the locked field */
+    const LOCKED = 'p_user.locked';
+
+    /** the column name for the expired field */
+    const EXPIRED = 'p_user.expired';
+
+    /** the column name for the expires_at field */
+    const EXPIRES_AT = 'p_user.expires_at';
+
+    /** the column name for the confirmation_token field */
+    const CONFIRMATION_TOKEN = 'p_user.confirmation_token';
+
+    /** the column name for the password_requested_at field */
+    const PASSWORD_REQUESTED_AT = 'p_user.password_requested_at';
+
+    /** the column name for the credentials_expired field */
+    const CREDENTIALS_EXPIRED = 'p_user.credentials_expired';
+
+    /** the column name for the credentials_expire_at field */
+    const CREDENTIALS_EXPIRE_AT = 'p_user.credentials_expire_at';
+
+    /** the column name for the roles field */
+    const ROLES = 'p_user.roles';
 
     /** the column name for the type field */
     const TYPE = 'p_user.type';
@@ -68,6 +129,9 @@ abstract class BasePUserPeer
     /** the column name for the name field */
     const NAME = 'p_user.name';
 
+    /** the column name for the birthday field */
+    const BIRTHDAY = 'p_user.birthday';
+
     /** the column name for the summary field */
     const SUMMARY = 'p_user.summary';
 
@@ -83,11 +147,11 @@ abstract class BasePUserPeer
     /** the column name for the facebook field */
     const FACEBOOK = 'p_user.facebook';
 
-    /** the column name for the email field */
-    const EMAIL = 'p_user.email';
-
     /** the column name for the phone field */
     const PHONE = 'p_user.phone';
+
+    /** the column name for the newsletter field */
+    const NEWSLETTER = 'p_user.newsletter';
 
     /** the column name for the last_connect field */
     const LAST_CONNECT = 'p_user.last_connect';
@@ -127,12 +191,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[PUserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Type', 'Status', 'FileName', 'Gender', 'Firstname', 'Name', 'Summary', 'Biography', 'Website', 'Twitter', 'Facebook', 'Email', 'Phone', 'LastConnect', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'type', 'status', 'fileName', 'gender', 'firstname', 'name', 'summary', 'biography', 'website', 'twitter', 'facebook', 'email', 'phone', 'lastConnect', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::TYPE, PUserPeer::STATUS, PUserPeer::FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::SUMMARY, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::EMAIL, PUserPeer::PHONE, PUserPeer::LAST_CONNECT, PUserPeer::ONLINE, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TYPE', 'STATUS', 'FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'SUMMARY', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'EMAIL', 'PHONE', 'LAST_CONNECT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'type', 'status', 'file_name', 'gender', 'firstname', 'name', 'summary', 'biography', 'website', 'twitter', 'facebook', 'email', 'phone', 'last_connect', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'Type', 'Status', 'FileName', 'Gender', 'Firstname', 'Name', 'Birthday', 'Summary', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'type', 'status', 'fileName', 'gender', 'firstname', 'name', 'birthday', 'summary', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::TYPE, PUserPeer::STATUS, PUserPeer::FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::SUMMARY, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::ONLINE, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'TYPE', 'STATUS', 'FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'SUMMARY', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'type', 'status', 'file_name', 'gender', 'firstname', 'name', 'birthday', 'summary', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, )
     );
 
     /**
@@ -142,12 +206,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Type' => 1, 'Status' => 2, 'FileName' => 3, 'Gender' => 4, 'Firstname' => 5, 'Name' => 6, 'Summary' => 7, 'Biography' => 8, 'Website' => 9, 'Twitter' => 10, 'Facebook' => 11, 'Email' => 12, 'Phone' => 13, 'LastConnect' => 14, 'Online' => 15, 'CreatedAt' => 16, 'UpdatedAt' => 17, 'Slug' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'type' => 1, 'status' => 2, 'fileName' => 3, 'gender' => 4, 'firstname' => 5, 'name' => 6, 'summary' => 7, 'biography' => 8, 'website' => 9, 'twitter' => 10, 'facebook' => 11, 'email' => 12, 'phone' => 13, 'lastConnect' => 14, 'online' => 15, 'createdAt' => 16, 'updatedAt' => 17, 'slug' => 18, ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::TYPE => 1, PUserPeer::STATUS => 2, PUserPeer::FILE_NAME => 3, PUserPeer::GENDER => 4, PUserPeer::FIRSTNAME => 5, PUserPeer::NAME => 6, PUserPeer::SUMMARY => 7, PUserPeer::BIOGRAPHY => 8, PUserPeer::WEBSITE => 9, PUserPeer::TWITTER => 10, PUserPeer::FACEBOOK => 11, PUserPeer::EMAIL => 12, PUserPeer::PHONE => 13, PUserPeer::LAST_CONNECT => 14, PUserPeer::ONLINE => 15, PUserPeer::CREATED_AT => 16, PUserPeer::UPDATED_AT => 17, PUserPeer::SLUG => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TYPE' => 1, 'STATUS' => 2, 'FILE_NAME' => 3, 'GENDER' => 4, 'FIRSTNAME' => 5, 'NAME' => 6, 'SUMMARY' => 7, 'BIOGRAPHY' => 8, 'WEBSITE' => 9, 'TWITTER' => 10, 'FACEBOOK' => 11, 'EMAIL' => 12, 'PHONE' => 13, 'LAST_CONNECT' => 14, 'ONLINE' => 15, 'CREATED_AT' => 16, 'UPDATED_AT' => 17, 'SLUG' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'type' => 1, 'status' => 2, 'file_name' => 3, 'gender' => 4, 'firstname' => 5, 'name' => 6, 'summary' => 7, 'biography' => 8, 'website' => 9, 'twitter' => 10, 'facebook' => 11, 'email' => 12, 'phone' => 13, 'last_connect' => 14, 'online' => 15, 'created_at' => 16, 'updated_at' => 17, 'slug' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Provider' => 1, 'ProviderId' => 2, 'Nickname' => 3, 'Realname' => 4, 'Username' => 5, 'UsernameCanonical' => 6, 'Email' => 7, 'EmailCanonical' => 8, 'Enabled' => 9, 'Salt' => 10, 'Password' => 11, 'LastLogin' => 12, 'Locked' => 13, 'Expired' => 14, 'ExpiresAt' => 15, 'ConfirmationToken' => 16, 'PasswordRequestedAt' => 17, 'CredentialsExpired' => 18, 'CredentialsExpireAt' => 19, 'Roles' => 20, 'Type' => 21, 'Status' => 22, 'FileName' => 23, 'Gender' => 24, 'Firstname' => 25, 'Name' => 26, 'Birthday' => 27, 'Summary' => 28, 'Biography' => 29, 'Website' => 30, 'Twitter' => 31, 'Facebook' => 32, 'Phone' => 33, 'Newsletter' => 34, 'LastConnect' => 35, 'Online' => 36, 'CreatedAt' => 37, 'UpdatedAt' => 38, 'Slug' => 39, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'provider' => 1, 'providerId' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'usernameCanonical' => 6, 'email' => 7, 'emailCanonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'lastLogin' => 12, 'locked' => 13, 'expired' => 14, 'expiresAt' => 15, 'confirmationToken' => 16, 'passwordRequestedAt' => 17, 'credentialsExpired' => 18, 'credentialsExpireAt' => 19, 'roles' => 20, 'type' => 21, 'status' => 22, 'fileName' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'summary' => 28, 'biography' => 29, 'website' => 30, 'twitter' => 31, 'facebook' => 32, 'phone' => 33, 'newsletter' => 34, 'lastConnect' => 35, 'online' => 36, 'createdAt' => 37, 'updatedAt' => 38, 'slug' => 39, ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::PROVIDER => 1, PUserPeer::PROVIDER_ID => 2, PUserPeer::NICKNAME => 3, PUserPeer::REALNAME => 4, PUserPeer::USERNAME => 5, PUserPeer::USERNAME_CANONICAL => 6, PUserPeer::EMAIL => 7, PUserPeer::EMAIL_CANONICAL => 8, PUserPeer::ENABLED => 9, PUserPeer::SALT => 10, PUserPeer::PASSWORD => 11, PUserPeer::LAST_LOGIN => 12, PUserPeer::LOCKED => 13, PUserPeer::EXPIRED => 14, PUserPeer::EXPIRES_AT => 15, PUserPeer::CONFIRMATION_TOKEN => 16, PUserPeer::PASSWORD_REQUESTED_AT => 17, PUserPeer::CREDENTIALS_EXPIRED => 18, PUserPeer::CREDENTIALS_EXPIRE_AT => 19, PUserPeer::ROLES => 20, PUserPeer::TYPE => 21, PUserPeer::STATUS => 22, PUserPeer::FILE_NAME => 23, PUserPeer::GENDER => 24, PUserPeer::FIRSTNAME => 25, PUserPeer::NAME => 26, PUserPeer::BIRTHDAY => 27, PUserPeer::SUMMARY => 28, PUserPeer::BIOGRAPHY => 29, PUserPeer::WEBSITE => 30, PUserPeer::TWITTER => 31, PUserPeer::FACEBOOK => 32, PUserPeer::PHONE => 33, PUserPeer::NEWSLETTER => 34, PUserPeer::LAST_CONNECT => 35, PUserPeer::ONLINE => 36, PUserPeer::CREATED_AT => 37, PUserPeer::UPDATED_AT => 38, PUserPeer::SLUG => 39, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROVIDER' => 1, 'PROVIDER_ID' => 2, 'NICKNAME' => 3, 'REALNAME' => 4, 'USERNAME' => 5, 'USERNAME_CANONICAL' => 6, 'EMAIL' => 7, 'EMAIL_CANONICAL' => 8, 'ENABLED' => 9, 'SALT' => 10, 'PASSWORD' => 11, 'LAST_LOGIN' => 12, 'LOCKED' => 13, 'EXPIRED' => 14, 'EXPIRES_AT' => 15, 'CONFIRMATION_TOKEN' => 16, 'PASSWORD_REQUESTED_AT' => 17, 'CREDENTIALS_EXPIRED' => 18, 'CREDENTIALS_EXPIRE_AT' => 19, 'ROLES' => 20, 'TYPE' => 21, 'STATUS' => 22, 'FILE_NAME' => 23, 'GENDER' => 24, 'FIRSTNAME' => 25, 'NAME' => 26, 'BIRTHDAY' => 27, 'SUMMARY' => 28, 'BIOGRAPHY' => 29, 'WEBSITE' => 30, 'TWITTER' => 31, 'FACEBOOK' => 32, 'PHONE' => 33, 'NEWSLETTER' => 34, 'LAST_CONNECT' => 35, 'ONLINE' => 36, 'CREATED_AT' => 37, 'UPDATED_AT' => 38, 'SLUG' => 39, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'provider' => 1, 'provider_id' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'username_canonical' => 6, 'email' => 7, 'email_canonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'last_login' => 12, 'locked' => 13, 'expired' => 14, 'expires_at' => 15, 'confirmation_token' => 16, 'password_requested_at' => 17, 'credentials_expired' => 18, 'credentials_expire_at' => 19, 'roles' => 20, 'type' => 21, 'status' => 22, 'file_name' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'summary' => 28, 'biography' => 29, 'website' => 30, 'twitter' => 31, 'facebook' => 32, 'phone' => 33, 'newsletter' => 34, 'last_connect' => 35, 'online' => 36, 'created_at' => 37, 'updated_at' => 38, 'slug' => 39, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, )
     );
 
     /** The enumerated values for this table */
@@ -274,19 +338,40 @@ abstract class BasePUserPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PUserPeer::ID);
+            $criteria->addSelectColumn(PUserPeer::PROVIDER);
+            $criteria->addSelectColumn(PUserPeer::PROVIDER_ID);
+            $criteria->addSelectColumn(PUserPeer::NICKNAME);
+            $criteria->addSelectColumn(PUserPeer::REALNAME);
+            $criteria->addSelectColumn(PUserPeer::USERNAME);
+            $criteria->addSelectColumn(PUserPeer::USERNAME_CANONICAL);
+            $criteria->addSelectColumn(PUserPeer::EMAIL);
+            $criteria->addSelectColumn(PUserPeer::EMAIL_CANONICAL);
+            $criteria->addSelectColumn(PUserPeer::ENABLED);
+            $criteria->addSelectColumn(PUserPeer::SALT);
+            $criteria->addSelectColumn(PUserPeer::PASSWORD);
+            $criteria->addSelectColumn(PUserPeer::LAST_LOGIN);
+            $criteria->addSelectColumn(PUserPeer::LOCKED);
+            $criteria->addSelectColumn(PUserPeer::EXPIRED);
+            $criteria->addSelectColumn(PUserPeer::EXPIRES_AT);
+            $criteria->addSelectColumn(PUserPeer::CONFIRMATION_TOKEN);
+            $criteria->addSelectColumn(PUserPeer::PASSWORD_REQUESTED_AT);
+            $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRED);
+            $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRE_AT);
+            $criteria->addSelectColumn(PUserPeer::ROLES);
             $criteria->addSelectColumn(PUserPeer::TYPE);
             $criteria->addSelectColumn(PUserPeer::STATUS);
             $criteria->addSelectColumn(PUserPeer::FILE_NAME);
             $criteria->addSelectColumn(PUserPeer::GENDER);
             $criteria->addSelectColumn(PUserPeer::FIRSTNAME);
             $criteria->addSelectColumn(PUserPeer::NAME);
+            $criteria->addSelectColumn(PUserPeer::BIRTHDAY);
             $criteria->addSelectColumn(PUserPeer::SUMMARY);
             $criteria->addSelectColumn(PUserPeer::BIOGRAPHY);
             $criteria->addSelectColumn(PUserPeer::WEBSITE);
             $criteria->addSelectColumn(PUserPeer::TWITTER);
             $criteria->addSelectColumn(PUserPeer::FACEBOOK);
-            $criteria->addSelectColumn(PUserPeer::EMAIL);
             $criteria->addSelectColumn(PUserPeer::PHONE);
+            $criteria->addSelectColumn(PUserPeer::NEWSLETTER);
             $criteria->addSelectColumn(PUserPeer::LAST_CONNECT);
             $criteria->addSelectColumn(PUserPeer::ONLINE);
             $criteria->addSelectColumn(PUserPeer::CREATED_AT);
@@ -294,19 +379,40 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn(PUserPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.provider');
+            $criteria->addSelectColumn($alias . '.provider_id');
+            $criteria->addSelectColumn($alias . '.nickname');
+            $criteria->addSelectColumn($alias . '.realname');
+            $criteria->addSelectColumn($alias . '.username');
+            $criteria->addSelectColumn($alias . '.username_canonical');
+            $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.email_canonical');
+            $criteria->addSelectColumn($alias . '.enabled');
+            $criteria->addSelectColumn($alias . '.salt');
+            $criteria->addSelectColumn($alias . '.password');
+            $criteria->addSelectColumn($alias . '.last_login');
+            $criteria->addSelectColumn($alias . '.locked');
+            $criteria->addSelectColumn($alias . '.expired');
+            $criteria->addSelectColumn($alias . '.expires_at');
+            $criteria->addSelectColumn($alias . '.confirmation_token');
+            $criteria->addSelectColumn($alias . '.password_requested_at');
+            $criteria->addSelectColumn($alias . '.credentials_expired');
+            $criteria->addSelectColumn($alias . '.credentials_expire_at');
+            $criteria->addSelectColumn($alias . '.roles');
             $criteria->addSelectColumn($alias . '.type');
             $criteria->addSelectColumn($alias . '.status');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.gender');
             $criteria->addSelectColumn($alias . '.firstname');
             $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.birthday');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.biography');
             $criteria->addSelectColumn($alias . '.website');
             $criteria->addSelectColumn($alias . '.twitter');
             $criteria->addSelectColumn($alias . '.facebook');
-            $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.phone');
+            $criteria->addSelectColumn($alias . '.newsletter');
             $criteria->addSelectColumn($alias . '.last_connect');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
@@ -533,6 +639,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PUReputationRAPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUReputationRAPeer::clearInstancePool();
+        // Invalidate objects in PUTaggedTPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUTaggedTPeer::clearInstancePool();
         // Invalidate objects in PDDebatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDebatePeer::clearInstancePool();

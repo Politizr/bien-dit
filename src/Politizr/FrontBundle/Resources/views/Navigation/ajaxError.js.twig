@@ -1,0 +1,23 @@
+              beforeSend: function ( xhr ) {
+                $('#notifError').hide();
+                $('#ajaxLoader').show();
+              },
+              statusCode: {
+                404: function() {
+                  $('#ajaxLoader').hide();
+                  $('#notifErrorContent').html('Erreur 404: merci de recharger la page.');
+                  $('#notifError').show();
+                },
+                500: function() {
+                  $('#ajaxLoader').hide();
+                  $('#notifErrorContent').html('Erreur 500: merci de recharger la page.');
+                  $('#notifError').show();
+                }
+              },            
+              error: function(jqXHR, textStatus, errorThrown) {
+                  $('#ajaxLoader').hide();
+                  $('#notifErrorContent').html('Erreur inconnue: merci de recharger la page.');
+                  console.log('textStatus - '+textStatus);
+                  console.log('errorThrown - '+errorThrown);
+                  $('#notifError').show();
+              },

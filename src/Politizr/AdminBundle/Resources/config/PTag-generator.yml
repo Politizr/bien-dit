@@ -40,7 +40,7 @@ builders:
                         filters:
                             filterByPTTagTypeId:        2
                     "Thèmes":
-                        default:                true
+                        default:                        true
                         filters:
                             filterByPTTagTypeId:        3
             display:                            [ title, p_t_tag_type, online ]
@@ -102,12 +102,16 @@ builders:
                     "Texte":                    [ [ p_t_tag_type ], [ title ] ]
                 "Utilisation":
                     "Contenus taggés":          [ block_debates ]
-                    "Utilisateurs taggés":      [ ]
+                    "Utilisateurs taggés":      [ block_users ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 block_debates:
                     label:                      "Débats"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_users:
+                    label:                      "Utilisateurs"
                     formType:                   hidden
                     dbType:                     VARCHAR
             actions:

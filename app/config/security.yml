@@ -1,47 +1,80 @@
 # http://symfony.com/doc/master/reference/configuration/security.html
-# https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/index.md
-
 jms_security_extra:
-    secure_all_services: false
-    expressions: true
+    secure_all_services:    false
+    expressions:            true
 
 security:
     acl:
-        provider: propel.security.acl.provider
+        provider:           propel.security.acl.provider
 
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id:             fos_user.user_provider.username
+        oauth:
+            id:             politizr.oauth_user_provider
+        main:
+            propel:
+                class:      Politizr\Model\PUser
+                property:   username
+
 
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
+        Politizr\Model\PUser:               sha512
 
     firewalls:
-        # Firewall pour les pages de connexion, inscription, et récupération de mot de passe
-#        login:
-#            pattern:                  ^/admin/(login$|register|resetting)  # Les adresses de ces pages sont login, register et resetting
-#            anonymous:                true
-
         # Firewall zone admin
         admin_area:
-            pattern:                  ^/admin
+            pattern:                        ^/admin
+            form_login:     
+                provider:                   fos_userbundle
+                csrf_provider:              form.csrf_provider
+                login_path:                 /admin/login
+                check_path:                 /admin/login_check
+                default_target_path:        /admin/
+            logout:             
+                path:                       /admin/logout
+                target:                     /admin/login
+            anonymous:                      true
+
+        # Firewall OAuth
+        oauth:
+            pattern:                        ^/oauth/.*
+            anonymous:                      ~
+            provider:                       oauth
+            oauth:
+                resource_owners:
+                    facebook:               "/oauth/login/check-facebook"
+                    twitter:                "/oauth/login/check-twitter"
+                    google:                 "/oauth/login/check-google"
+                login_path:                 /oauth/login
+                failure_path:               /oauth/login
+                check_path:                 /oauth/login_check
+                default_target_path:        /oauth/target
+                oauth_user_provider:
+                    service:                politizr.oauth_user_provider
+
+        # Firewall login classique
+        public:
+            pattern:                        ^/
             form_login:
-                provider:             fos_userbundle
-                csrf_provider:        form.csrf_provider
-                login_path:           /admin/login
-                check_path:           /admin/login_check
-                default_target_path:  /admin/
-            logout:        
-                path:                 /admin/logout
-                target:               /admin/login
-            anonymous:                true
+                login_path:                 /login
+            #     check_path:                 /login/check-form
+            remember_me:
+                key:                        "%secret%"
+                lifetime:                   31536000                # 365 jours en secondes
+                path:                       /
+                domain:                     ~
+            logout:
+                path:                       /logout
+                target:                     /
+                invalidate_session:         true
+            anonymous:                      true
 
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        - { path: ^/citoyen/, role: ROLE_CITIZEN }
+        - { path: ^/elu/, role: ROLE_ELECTED }
+        - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }
+        - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

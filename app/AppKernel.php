@@ -22,6 +22,9 @@ class AppKernel extends Kernel
             // FOSUserBundle
             new FOS\UserBundle\FOSUserBundle(),
             
+            // OAuthBundle
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            
             // Menu
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
@@ -35,6 +38,7 @@ class AppKernel extends Kernel
             new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
             new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
             new Admingenerator\UserBundle\AdmingeneratorUserBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
 
             // Propel
             new Propel\PropelBundle\PropelBundle(),
@@ -42,6 +46,9 @@ class AppKernel extends Kernel
             
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),
+
+            // Géolocalisation
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),

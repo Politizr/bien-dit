@@ -9,7 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PUQTaggedTPeer;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUserPeer;
@@ -399,9 +398,6 @@ abstract class BasePUQualificationPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUQTaggedTPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUQTaggedTPeer::clearInstancePool();
     }
 
     /**

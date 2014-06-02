@@ -40,9 +40,24 @@
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_r_badge_type_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
 
+        <column name="grade"  type="enum" valueSet="Or, Argent, Bronze" />
+
+        <foreign-key foreignTable="p_r_badge_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_badge_type_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+    <table name="p_r_badge_type">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
     </table>
 
@@ -195,6 +210,36 @@
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="provider" type="varchar" size="255" />
+        <column name="provider_id" type="varchar" size="255" />
+        <column name="nickname" type="varchar" size="255" />
+        <column name="realname" type="varchar" size="255" />
+
+        <column name="username" type="varchar" size="255" />
+        <column name="username_canonical" type="varchar" size="255" />
+        <unique>
+            <unique-column name="username_canonical" />
+        </unique>
+
+        <column name="email" type="varchar" size="255" />
+        <column name="email_canonical" type="varchar" size="255" />
+        <unique>
+            <unique-column name="email_canonical" />
+        </unique>
+
+        <column name="enabled" type="boolean" defaultValue="false" />
+        <column name="salt" type="varchar" size="255" required="true" />
+        <column name="password" type="varchar" size="255" required="true" />
+        <column name="last_login" type="timestamp" required="false" />
+        <column name="locked" type="boolean" defaultValue="false" />
+        <column name="expired" type="boolean" defaultValue="false" />
+        <column name="expires_at" type="timestamp" required="false" />
+        <column name="confirmation_token" type="varchar" size="255" required="false" />
+        <column name="password_requested_at" type="timestamp" required="false" />
+        <column name="credentials_expired" type="boolean" defaultValue="false" />
+        <column name="credentials_expire_at" type="timestamp" required="false" />
+        <column name="roles" type="array" />
         
         <column name="type" type="integer" required="true" />
         <column name="status" type="integer" required="true" />
@@ -203,6 +248,7 @@
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="firstname" type="varchar" size="150" />
         <column name="name" type="varchar" size="150" />
+        <column name="birthday" type="date" />
 
         <column name="summary" type="longvarchar" />
         <column name="biography" type="longvarchar" />
@@ -210,11 +256,13 @@
         <column name="website" type="varchar" size="150" />
         <column name="twitter" type="varchar" size="150" />
         <column name="facebook" type="varchar" size="150" />
-        <column name="email" type="varchar" size="150" />
         <column name="phone" type="varchar" size="30" />
+
+        <column name="newsletter" type="boolean" />
         
         <column name="last_connect" type="timestamp" />
     </table>
+
 
     <table name="p_u_follow_u">
         <behavior name="timestampable" />
@@ -284,14 +332,14 @@
         <column name="p_object_id" type="integer" />
     </table>
 
-    <table name="p_u_q_tagged_t" isCrossRef="true">
+    <table name="p_u_tagged_t" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_u_qualification_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
         <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
-        <foreign-key foreignTable="p_u_qualification" phpName="PuqTaggedTPUQualification" refPhpName="PuqTaggedTPUQualification" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_u_qualification_id" foreign="id" />
+        <foreign-key foreignTable="p_user" phpName="PuTaggedTPUser" refPhpName="PuTaggedTPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_tag" phpName="PuqTaggedTPTag" refPhpName="PuqTaggedTPTag" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_tag" phpName="PuTaggedTPTag" refPhpName="PuTaggedTPTag" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_tag_id" foreign="id" />
         </foreign-key>
     </table>

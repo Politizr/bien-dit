@@ -126,7 +126,7 @@ builders:
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 p_u_qualifications:
                     dbType:                     collection
-                    formType:                   collection
+                    formType:                   afe_collection_table
                     label:                      Liste des postes de qualification de l'utilisateur
                     addFormOptions:
                         # widget:                 fieldset
@@ -135,6 +135,7 @@ builders:
                         allow_add:              true
                         allow_delete:           true
                         by_reference:           false
+                        new_label:              " - Nouvelle qualification"
                         options:
                             # label:              Poste
                             data_class:         Politizr\Model\PUQualification
@@ -169,7 +170,9 @@ builders:
                 "Descriptifs":
                     "Informations":             [ [ summary, biography ] ]
                 "Qualifications":
-                    "Qualifications":           [ ]
+                    "Qualifications":           [ p_u_qualifications ]
+                "Tags":
+                    "Tags associés":            [ block_tags ]
                 "Publications":
                     "Contenus associés":        [ block_debates, block_reactions ]
                     "Commentaires":             [ block_comments_d, block_comments_r ]
@@ -183,6 +186,21 @@ builders:
                     "En ligne":                 [ [ online ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                p_u_qualifications:
+                    dbType:                     collection
+                    formType:                   afe_collection_table
+                    label:                      Liste des postes de qualification de l'utilisateur
+                    addFormOptions:
+                        # widget:                 fieldset
+                        # editable:               [ title, begin_at, end_at ]
+                        type:                   \Politizr\AdminBundle\Form\Type\PUQualification\EditType
+                        allow_add:              true
+                        allow_delete:           true
+                        by_reference:           false
+                        new_label:              " - Nouvelle qualification"
+                        options:
+                            # label:              Poste
+                            data_class:         Politizr\Model\PUQualification
                 block_debates:
                     label:                      "Débats"
                     formType:                   hidden

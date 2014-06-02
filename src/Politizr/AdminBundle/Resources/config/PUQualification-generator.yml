@@ -29,7 +29,7 @@ builders:
         params:
             display:                
                 NONE:               [ [ title, begin_at, end_at ] ]
-            title:                  ""  # title has to be defined to avoid errors, but is not used
+            title:                  "Nouvelle qualification"  # title has to be defined to avoid errors, but is not used
             fields:
                 begin_at:
                     formType:       afe_date_picker

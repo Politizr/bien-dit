@@ -12,12 +12,13 @@ params:
             label:                              Activé
         roles:          
             label:                              Liste des rôles
-            formType:                           collection
+            formType:                           afe_collection_table
             addFormOptions:         
                 type:                           text
                 allow_add:                      true
                 allow_delete:                   true
                 by_reference:                   false
+                new_label:                      " - Nouveau rôle"
                 options:            
                     label:                      Rôle
         plainPassword:          

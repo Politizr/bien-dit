@@ -95,7 +95,7 @@ builders:
                     "Paragraphe":               [ [ paragraph_no ] ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
-                    "Réaction":                    [ [ p_d_reaction ] ]
+                    "Réaction":                 [ [ p_d_reaction ] ]
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
@@ -135,7 +135,7 @@ builders:
                     "Paragraphe":               [ [ paragraph_no ] ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
-                    "Réaction":                    [ [ p_d_reaction ] ]
+                    "Réaction":                 [ [ p_d_reaction ] ]
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]

@@ -1,0 +1,73 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		<h1>Accueil</h1>
+
+		<div id="homeSlide">
+			<ul>
+				<li>slide débat / réactions</li>
+				<li>slide profils</li>
+				<li>slide gestion de ma réputation</li>
+			</ul>
+		</div>
+
+		<div id="homeDebates">
+			<h2>Débats les plus actifs</h2>
+			<div>
+				{% for debate in homeDebates %}
+					<div>
+						<a href="">{{ debate.title | slice(0, 50) }}...</a> par {{ debate.pUser }}<br/>
+					</div>
+				{% else %}
+					<div id="noResult">Aucun débat disponible</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div id="homeUsers">
+			<h2>Profils les plus populaires</h2>
+			<div>
+				{% for user in homeUsers %}
+					<div>
+						<a href="">{{ user.firstname }} {{ user.name }}</a><br/>
+					</div>
+				{% else %}
+					<div id="noResult">Aucun profil disponible</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div id="homeComments">
+			<h2>Vos derniers commentaires</h2>
+			<div>
+				{% for comment in homeComments %}
+					<div>
+						<a href="">{{ comment.description | slice(0, 50) }}...</a><br/>
+					</div>
+				{% else %}
+					<div id="noResult">Aucun commentaire disponible</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<!--
+		<div id="homeLocalDebates">
+			<h2>Les débats de votre région</h2>
+			<div>
+			</div>
+		</div>
+		-->
+
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:homepage.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

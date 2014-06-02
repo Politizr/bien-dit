@@ -58,9 +58,9 @@ class PTagTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PTTagType', 'Politizr\\Model\\PTTagType', RelationMap::MANY_TO_ONE, array('p_t_tag_type_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PuqTaggedTPTag', 'Politizr\\Model\\PUQTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuqTaggedTPTags');
+        $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
         $this->addRelation('PddTaggedTPTag', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PddTaggedTPTags');
-        $this->addRelation('PuqTaggedTPUQualification', 'Politizr\\Model\\PUQualification', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuqTaggedTPUQualifications');
+        $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
         $this->addRelation('PddTaggedTPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PddTaggedTPDDebates');
     } // buildRelations()
 

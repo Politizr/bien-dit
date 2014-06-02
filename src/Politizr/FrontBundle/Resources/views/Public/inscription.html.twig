@@ -1,0 +1,80 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+{% endblock %}
+
+
+{% block main %}
+	<div id="main">
+		<h1>Inscription</h1>
+		<p><a href="{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}" class="FacebookConnect">Inscription avec Facebook</a></p>
+
+		{% if pUserForm.vars.errors|length %}
+			<div class="boxError">
+		    	{{ form_errors(pUserForm) }}
+		    </div>
+		{% endif %}
+		<form id="pUserForm" action="{{ path('InscriptionCheck') }}" method="POST">
+		    {% if pUserForm.gender.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(pUserForm.gender) }}</div>
+			{% endif %}
+			<div>{{ form_widget(pUserForm.gender, {'attr': {'placeholder': 'Civilité*'}}) }}</div>
+
+		    {% if pUserForm.name.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(pUserForm.name) }}</div>
+			{% endif %}
+			<div>{{ form_widget(pUserForm.name, {'attr': {'placeholder': 'Nom*'}}) }}</div>
+
+		    {% if pUserForm.firstname.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(pUserForm.firstname) }}</div>
+			{% endif %}
+			<div>{{ form_widget(pUserForm.firstname, {'attr': {'placeholder': 'Prénom*'}}) }}</div>
+
+		    {% if pUserForm.birthday.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(pUserForm.birthday) }}</div>
+			{% endif %}
+			<div>{{ form_widget(pUserForm.birthday, {'attr': {'placeholder': 'Date de naissance* jj/mm/aaaa'}}) }}</div>
+
+		    {% if pUserForm.email.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(pUserForm.email) }}</div>
+			{% endif %}
+			{% for emailField in pUserForm.email %}
+		        {% if emailField.vars.errors|length %}
+					<div class="boxError">{{ form_errors(emailField) }}</div>
+		    	{% endif %}
+		    	{% if loop.index == 1 %}
+		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Email*'}}) }}</div>
+		        {% else %}
+		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Confirmation d\'email*'}}) }}</div>
+		        {% endif %}
+			{% endfor %}
+
+		    {% if pUserForm.plainPassword.vars.errors|length %}
+				<div class="boxError">{{ form_errors(plainPassword) }}</div>
+			{% endif %}
+			{% for passwordField in pUserForm.plainPassword %}
+		        {% if passwordField.vars.errors|length %}
+					<div class="boxError">{{ form_errors(passwordField) }}</div>
+		    	{% endif %}
+		    	{% if loop.index == 1 %}
+		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Mot de passe*'}}) }}</div>
+		        {% else %}
+		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Confirmation mot de passe*'}}) }}</div>
+		        {% endif %}
+			{% endfor %}
+
+			<div id="withNewsletter">{{ form_widget(pUserForm.newsletter, {}) }}Je souhaite recevoir les news de Politizr.</div>
+
+			{{ form_rest(pUserForm) }}
+			<div class="form_mentions">Les champs marqués d'une * sont obligatoires</div>
+			<div class="form_submit"><input type="submit" value="Je valide"></div>
+		</form>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:inscription.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

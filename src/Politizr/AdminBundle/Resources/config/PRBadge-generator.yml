@@ -1,0 +1,112 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PRBadge
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_r_badge_type_id:
+            label:          Type
+        p_r_badge_type:
+            label:          Type
+        title:
+            label:          Titre
+        description:
+            label:          Description
+        grade:
+            label:          Niveau
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des badges
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            display:                            [ title, p_r_badge_type, grade, description, online ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ title, grade, p_r_badge_type, online, created_at ]
+            fields:
+                p_r_badge_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+    new:
+        params:
+            title:                              "Création d'un badge"
+            display:
+                "Champs principaux":            [ [ p_r_badge_type ], [ title ] ]
+                "Champs complémentaires":       [ [ grade ], [ description ] ]
+            fields:
+                p_r_badge_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du badge '{{ PRBadge.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                p_r_badge_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du tag '{{ PRBadge.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
+                "Utilisation":
+                    "Utilisateurs badgés":      [ block_users ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                block_users:
+                    label:                      "Utilisateurs"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

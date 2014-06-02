@@ -43,6 +43,26 @@ class PUserTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('provider', 'Provider', 'VARCHAR', false, 255, null);
+        $this->addColumn('provider_id', 'ProviderId', 'VARCHAR', false, 255, null);
+        $this->addColumn('nickname', 'Nickname', 'VARCHAR', false, 255, null);
+        $this->addColumn('realname', 'Realname', 'VARCHAR', false, 255, null);
+        $this->addColumn('username', 'Username', 'VARCHAR', false, 255, null);
+        $this->addColumn('username_canonical', 'UsernameCanonical', 'VARCHAR', false, 255, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
+        $this->addColumn('email_canonical', 'EmailCanonical', 'VARCHAR', false, 255, null);
+        $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
+        $this->addColumn('salt', 'Salt', 'VARCHAR', true, 255, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
+        $this->addColumn('last_login', 'LastLogin', 'TIMESTAMP', false, null, null);
+        $this->addColumn('locked', 'Locked', 'BOOLEAN', false, 1, false);
+        $this->addColumn('expired', 'Expired', 'BOOLEAN', false, 1, false);
+        $this->addColumn('expires_at', 'ExpiresAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('confirmation_token', 'ConfirmationToken', 'VARCHAR', false, 255, null);
+        $this->addColumn('password_requested_at', 'PasswordRequestedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('credentials_expired', 'CredentialsExpired', 'BOOLEAN', false, 1, false);
+        $this->addColumn('credentials_expire_at', 'CredentialsExpireAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('roles', 'Roles', 'ARRAY', false, null, null);
         $this->addColumn('type', 'Type', 'INTEGER', true, null, null);
         $this->addColumn('status', 'Status', 'INTEGER', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
@@ -53,13 +73,14 @@ class PUserTableMap extends TableMap
 ));
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 150, null);
         $this->addColumn('name', 'Name', 'VARCHAR', false, 150, null);
+        $this->addColumn('birthday', 'Birthday', 'DATE', false, null, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('biography', 'Biography', 'LONGVARCHAR', false, null, null);
         $this->addColumn('website', 'Website', 'VARCHAR', false, 150, null);
         $this->addColumn('twitter', 'Twitter', 'VARCHAR', false, 150, null);
         $this->addColumn('facebook', 'Facebook', 'VARCHAR', false, 150, null);
-        $this->addColumn('email', 'Email', 'VARCHAR', false, 150, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
+        $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
@@ -78,6 +99,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PuReputationRbPUser', 'Politizr\\Model\\PUReputationRB', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuReputationRbPUsers');
         $this->addRelation('PuReputationRaPUser', 'Politizr\\Model\\PUReputationRA', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuReputationRaPUsers');
+        $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDDebates');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDDComments');
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
@@ -87,6 +109,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
         $this->addRelation('PuReputationRbPRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuReputationRbPRBadges');
         $this->addRelation('PuReputationRaPRBadge', 'Politizr\\Model\\PRAction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuReputationRaPRBadges');
+        $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
     } // buildRelations()
 
     /**

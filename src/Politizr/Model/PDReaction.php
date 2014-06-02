@@ -54,15 +54,23 @@ class PDReaction extends BasePDReaction
     	parent::save($con);
 	}
 	
+	/******************************************************************************/
+
 	/**
 	 * 	Surcharge simplification du nom de la méthode
 	 */
-	public function getPDReaction(\PropelPDO $con = null, $doQuery = true)
+	public function countPDReactions(\PropelPDO $con = null, $doQuery = true)
+	{
+		return parent::countPDReactionsRelatedById($con, $doQuery);
+	}
+
+	/**
+	 * 	Surcharge simplification du nom de la méthode
+	 */
+	public function getPDReactions(\PropelPDO $con = null, $doQuery = true)
 	{
 		return parent::getPDReactionRelatedByPDReactionId($con, $doQuery);
 	}
-
-	/******************************************************************************/
 
 	/**
 	 * Renvoie les abonnés qualifiés - au débat associé à la réaction courante.

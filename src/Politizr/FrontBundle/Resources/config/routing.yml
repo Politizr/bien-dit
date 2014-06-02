@@ -1,3 +1,66 @@
-politizr_front_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: PolitizrFrontBundle:Default:index }
+################################################################################
+# 							HWIOAUTHBUNDLE
+################################################################################
+OAuthRegister:
+    pattern:  /oauthRegister
+    defaults: { _controller: PolitizrFrontBundle:Security:oauthRegister }
+
+OAuth:
+    resource: "@PolitizrFrontBundle/Resources/config/routingSecurityOAuth.yml"
+    prefix:   /oauth/
+
+
+################################################################################
+#				ROUTING PUBLIQUE
+################################################################################
+Homepage:
+    pattern:  /
+    defaults: { _controller: PolitizrFrontBundle:Public:homepage }
+
+Presentation:
+    pattern:  /presentation
+    defaults: { _controller: PolitizrFrontBundle:Public:presentation }
+
+
+################################################################################
+#               ROUTING CONNEXION / CREATION PROFIL
+################################################################################
+Inscription:
+    pattern:  /inscription
+    defaults: { _controller: PolitizrFrontBundle:Security:inscription }
+
+InscriptionCheck:
+    pattern:  /inscription/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
+
+Login:
+    pattern:  /mon-profil
+    defaults: { _controller: PolitizrFrontBundle:Security:login }
+
+Logout:
+    pattern:  /logout
+
+
+################################################################################
+#				ROUTING ESPACE PRIVE
+################################################################################
+Prive:
+    pattern:  /mon-espace/action
+    defaults: { _controller: PolitizrFrontBundle:Profile:photoChoice }
+
+
+################################################################################
+#				ROUTING AJAX
+################################################################################
+
+# LOGIN
+LoginCheck:
+    pattern:  /connexion/login.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Security:loginCheck, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+LostPasswordCheck:
+    pattern:  /connexion/mot-de-passe-perdu.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

@@ -7,6 +7,8 @@
 
 {# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
 
+{# Bloc tags #}
+
 {# Bloc débats #}
 {% block show_column_block_debates %}
 	Nombre de débats: {{ PUser.PDDebates | length }}<br/>
@@ -58,7 +60,7 @@
 
 {# Bloc tags #}
 {% block show_column_block_tags %}
-	{% for pTag in PUser.PddTaggedTPTags %}
+	{% for pTag in PUser.PuTaggedTPTags %}
 		<b>{{ pTag.title }}</b><br/>
 		<a href="#">Supprimer</a>
 	{% endfor %}

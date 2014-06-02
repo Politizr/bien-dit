@@ -1,0 +1,54 @@
+{% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
+
+{% block title %}Politizr{% endblock title %}
+{% block description %}Politizr{% endblock description %}
+
+{% block metaopengraph %}
+	{% block ogImage %}{% render controller("PolitizrFrontBundle:Navigation:ogImage") %}{% endblock ogImage %}
+	<meta property="og:site_name" content="Politizr" /> 
+	<meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
+	<meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
+	<meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
+{% endblock metaopengraph %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/style.css') }}">
+{% endblock stylesheets %}
+
+{% block javascriptHeader %}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.11.1.min.js') }}"></script>
+{% endblock javascriptHeader %}
+
+{% block genericBoxes %}      
+    <!-- overlay ajax generique -->
+    <div id="ajaxLoader" style="display: none"></div>
+
+    <!-- overlay notif -->
+    <div id="notif" style="display: none">
+        <div id="notifContent"></div>
+        <div id="notifClose">Fermer</div>
+    </div>
+
+    <!-- overlay erreur -->
+    <div id="notifError" style="display: none">
+        <div id="notifErrorContent"></div>
+        <div id="notifErrorClose">Fermer</div>
+    </div>
+{% endblock genericBoxes %}
+
+{% block header %}
+	{% include 'PolitizrFrontBundle:Navigation:header.html.twig' %}
+    {# render controller("PolitizrFrontBundle:Navigation:menu", { 'idEvent': null }) #}
+{% endblock %}
+
+{% block main %}
+{% endblock main %}
+
+{% block footer %}
+	{% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+{% endblock %}
+
+{% block javascriptFooter %}
+    {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:share.js.twig' %}
+{% endblock javascriptFooter %}

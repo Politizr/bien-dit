@@ -12,8 +12,6 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PTag;
-use Politizr\Model\PUQTaggedT;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUQualificationQuery;
@@ -45,10 +43,6 @@ use Politizr\Model\PUser;
  * @method PUQualificationQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PUQualificationQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PUQualificationQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
- *
- * @method PUQualificationQuery leftJoinPuqTaggedTPUQualification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuqTaggedTPUQualification relation
- * @method PUQualificationQuery rightJoinPuqTaggedTPUQualification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuqTaggedTPUQualification relation
- * @method PUQualificationQuery innerJoinPuqTaggedTPUQualification($relationAlias = null) Adds a INNER JOIN clause to the query using the PuqTaggedTPUQualification relation
  *
  * @method PUQualification findOne(PropelPDO $con = null) Return the first PUQualification matching the query
  * @method PUQualification findOneOrCreate(PropelPDO $con = null) Return the first PUQualification matching the query, or a new PUQualification object populated from the query conditions when no match is found
@@ -649,97 +643,6 @@ abstract class BasePUQualificationQuery extends ModelCriteria
         return $this
             ->joinPUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
-    }
-
-    /**
-     * Filter the query by a related PUQTaggedT object
-     *
-     * @param   PUQTaggedT|PropelObjectCollection $pUQTaggedT  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUQualificationQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPuqTaggedTPUQualification($pUQTaggedT, $comparison = null)
-    {
-        if ($pUQTaggedT instanceof PUQTaggedT) {
-            return $this
-                ->addUsingAlias(PUQualificationPeer::ID, $pUQTaggedT->getPUQualificationId(), $comparison);
-        } elseif ($pUQTaggedT instanceof PropelObjectCollection) {
-            return $this
-                ->usePuqTaggedTPUQualificationQuery()
-                ->filterByPrimaryKeys($pUQTaggedT->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPuqTaggedTPUQualification() only accepts arguments of type PUQTaggedT or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PuqTaggedTPUQualification relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUQualificationQuery The current query, for fluid interface
-     */
-    public function joinPuqTaggedTPUQualification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuqTaggedTPUQualification');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PuqTaggedTPUQualification');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PuqTaggedTPUQualification relation PUQTaggedT object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PUQTaggedTQuery A secondary query class using the current class as primary query
-     */
-    public function usePuqTaggedTPUQualificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPuqTaggedTPUQualification($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuqTaggedTPUQualification', '\Politizr\Model\PUQTaggedTQuery');
-    }
-
-    /**
-     * Filter the query by a related PTag object
-     * using the p_u_q_tagged_t table as cross reference
-     *
-     * @param   PTag $pTag the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   PUQualificationQuery The current query, for fluid interface
-     */
-    public function filterByPuqTaggedTPTag($pTag, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->usePuqTaggedTPUQualificationQuery()
-            ->filterByPuqTaggedTPTag($pTag, $comparison)
-            ->endUse();
     }
 
     /**

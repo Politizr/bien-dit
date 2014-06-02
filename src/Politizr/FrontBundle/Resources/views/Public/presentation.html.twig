@@ -1,0 +1,19 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		<h1>Présentation</h1>
+		<p>Présentation(s) visuelle(s) > vidéos, slides explicatifs, etc.</p>
+		<p>Système d’onglet “Citoyen / Élu”</p>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:presentation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}
