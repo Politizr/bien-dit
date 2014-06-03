@@ -1,0 +1,20 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block main %}
+	<div id="main">
+		<h1>Inscription - Etape 3 / 3</h1>
+		<div id="selectGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}">
+			Tapez le début d'une zone géographique (ville ou département ou région) puis sélectionnez parmi les propositions et cliquez sur 'ajouter'.<br/>
+			Recommencez l'opération pour sélectionner l'ensemble des zones qui vous intéressent.<br/>
+			<input type="text" id="selectGeo" />
+			<input type="hidden" id="selectGeoID" />
+			<a id="addGeo">Ajouter</a>
+		</div>
+		<a href="{{ path('Homepage') }}">Finaliser mon inscription</a>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:inscriptionStep3.js.twig' %}
+{% endblock javascriptFooter %}

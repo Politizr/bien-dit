@@ -1,13 +1,13 @@
 <div id="connexionBox" style="display: none">
 	<div id="oAuthButtons">
-		{% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' %}
-		{% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' %}
-		{% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' %}
+		{% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
+		{% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
+		{% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
 	</div>
 	<div id="boxLogin">
 		<form id="formLogin" method="post">
 	        <div id="boxErrorLogin" style="display:none"></div>
-			{{ form_widget(formLogin.username, {'attr': {'placeholder': 'Email@adresse.com'}}) }}
+			{{ form_widget(formLogin.username, {'attr': {'placeholder': 'Identifiant'}}) }}
 			{{ form_widget(formLogin.password, {'attr': {'placeholder': 'Mot de passe'}}) }}
 			{{ form_widget(formLogin.remember_me) }}&nbsp;Se souvenir de moi<br>
 			{{ form_rest(formLogin) }}

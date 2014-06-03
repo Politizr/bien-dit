@@ -17,10 +17,7 @@ Politizr\Model\PUser:
                 type: 		integer 
                 message: 	"La valeur {{ value }} n'est pas un type {{ type }} valide."
             - NotBlank:     ~
-        firstname:
-            - NotBlank:     ~
-        name:
-            - NotBlank:     ~
+
 
 Politizr\Model\PUQualification:
     properties:

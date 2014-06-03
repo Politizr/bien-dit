@@ -132,7 +132,7 @@ class PUserTableMap extends TableMap
             'sluggable' =>  array (
   'add_cleanup' => 'true',
   'slug_column' => 'slug',
-  'slug_pattern' => '{firstname}-{name}',
+  'slug_pattern' => '',
   'replace_pattern' => '/\\W+/',
   'replacement' => '-',
   'separator' => '-',

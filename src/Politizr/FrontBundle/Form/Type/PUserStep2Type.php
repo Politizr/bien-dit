@@ -14,12 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
 
-class PUserType extends AbstractType
+class PUserStep2Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('id', 'hidden', array(
-            'required' => false
+            'required' => true
             )
         );
         $builder->add('type', 'hidden', array(
@@ -28,6 +28,10 @@ class PUserType extends AbstractType
         );
         $builder->add('status', 'hidden', array(
             'attr'     => array( 'value' => PUser::STATUS_ACTIV )
+            )
+        );
+        $builder->add('online', 'hidden', array(
+            'attr'     => array( 'value' => true )
             )
         );
 
@@ -66,17 +70,6 @@ class PUserType extends AbstractType
                 ),
             'type' => 'email',
             'constraints' => new NotBlank(array('message' => 'Email obligatoire.'))
-            )
-        );  
-        
-        $builder->add('plainPassword', 'repeated', array(
-            'required' => true,
-            'first_options' =>   array(
-                ),
-            'second_options' =>   array(
-                ),
-            'type' => 'password',
-            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
             )
         );
 

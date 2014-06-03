@@ -58,8 +58,8 @@ security:
         public:
             pattern:                        ^/
             form_login:
-                login_path:                 /login
-            #     check_path:                 /login/check-form
+                login_path:                 /
+                # check_path:                 /inscription/check
             remember_me:
                 key:                        "%secret%"
                 lifetime:                   31536000                # 365 jours en secondes
@@ -73,8 +73,9 @@ security:
 
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/citoyen/, role: ROLE_CITIZEN }
-        - { path: ^/elu/, role: ROLE_ELECTED }
-        - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }
+        - { path: ^/admin/, role: ROLE_ADMIN }                              # Espace ADMIN
+        - { path: ^/u/, role: ROLE_USER }                                   # Process d'inscription citoyen
+        - { path: ^/citoyen/, role: ROLE_CITIZEN }                          # Espace citoyen
+        - { path: ^/elu/, role: ROLE_ELECTED }                              # Espace élu
         - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }                  # Process d'inscription OAuth

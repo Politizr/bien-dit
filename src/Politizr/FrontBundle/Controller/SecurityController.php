@@ -22,7 +22,9 @@ use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PUser;
 
-use Politizr\FrontBundle\Form\Type\PUserType;
+use Politizr\FrontBundle\Form\Type\PUserStep1Type;
+use Politizr\FrontBundle\Form\Type\PUserStep2Type;
+
 use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
@@ -44,127 +46,6 @@ class SecurityController extends Controller {
     /* ######################################################################################################## */
     /*                                                 CONNEXION CLASSIQUE                                      */
     /* ######################################################################################################## */
-
-    /**
-     *     Page d'inscription
-     */
-    public function inscriptionAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionAction');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        // TODO / redirection si connecté
-        $pUser = $this->getUser();
-        if ($pUser && $pUser->hasRole('ROLE_USER')) {
-            if ($pUser->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('Homepage', array());
-                return $this->redirect($redirectUrl);
-            }
-        }
-
-        // Objet & formulaire
-        $pUser = new PUser();
-        $pUserFormType = new PUserType();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
-        
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', 
-                array(
-                    'pUserForm' => $pUserForm->createView()
-                    ));
-    }
-
-    /**
-     *      Validation inscription
-     */
-    public function inscriptionCheckAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionCheckAction');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        // TODO / redirection si connecté
-        $pUser = $this->getUser();
-        if ($pUser && $pUser->hasRole('ROLE_USER')) {
-            if ($pUser->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('Homepage', array());
-                return $this->redirect($redirectUrl);
-            }
-        }
-
-        // Objet & formulaire
-        $pUser = new PUser();
-        $pUserFormType = new PUserType();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
-        
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
-        $request = $this->get('request');
-        if ($request->getMethod() == 'POST') {
-            $pUserForm->bind($this->getRequest());
-
-            if ($pUserForm->isValid()) {
-                $pUser = $pUserForm->getData();
-                $logger->info('pUser = '.print_r($pUser, true));
-
-                // MAJ objet
-                $pUser->setEnabled(true);
-                $pUser->setLastLogin(new \DateTime());
-
-                // MAJ droits
-                $pUser->addRole('ROLE_USER');
-                $pUser->addRole('ROLE_CITIZEN');
-
-                // Canonicalization
-                $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-                $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
-
-                // username = email
-                $pUser->setUsername($pUser->getEmail());
-                $pUser->setUsernameCanonical($pUser->getEmailCanonical());
-
-                // Encodage MDP
-                $encoderFactory = $this->get('security.encoder_factory');
-
-                if (0 !== strlen($password = $pUser->getPlainPassword())) {
-                    $encoder = $encoderFactory->getEncoder($pUser);
-                    $pUser->setPassword($encoder->encodePassword($password, $pUser->getSalt()));
-                    $pUser->eraseCredentials();
-                }
-
-                // Save user
-                $pUser->save();
-
-                // Connexion
-                $this->doPublicConnection($pUser, $request);
-
-                // redirection
-                $url = $this->container->get('router')->generate('Homepage');
-                return $this->redirect($url);
-            } else {
-                $logger->info('form is not valid');
-            }
-        } else {
-            $logger->info('method is not POST');
-        }
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
-                        'pUserForm' => $pUserForm->createView()
-            ));
-    }
 
     /**
      * Connexion
@@ -189,6 +70,219 @@ class SecurityController extends Controller {
             ));
     }
 
+    /**
+     *     Page d'inscription
+     */
+    public function inscriptionAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        // TODO / redirection si connecté
+        $pUser = $this->getUser();
+        if ($pUser && $pUser->hasRole('ROLE_USER')) {
+            if ($pUser->hasRole('ROLE_CITIZEN')) {
+                $redirectUrl = $this->generateUrl('Homepage', array());
+                return $this->redirect($redirectUrl);
+            }
+        }
+
+        // Objet & formulaire
+        $pUser = new PUser();
+        $pUserFormType = new PUserStep1Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', 
+                array(
+                    'pUserForm' => $pUserForm->createView()
+                    ));
+    }
+
+    /**
+     *      Validation inscription
+     */
+    public function inscriptionCheckAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionCheckAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $pUser = $this->getUser();
+        $pUser = new PUser();
+        $pUserFormType = new PUserStep1Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+            $pUserForm->bind($this->getRequest());
+
+            if ($pUserForm->isValid()) {
+                $pUser = $pUserForm->getData();
+                // $logger->info('pUser = '.print_r($pUser, true));
+
+                // MAJ droits
+                $pUser->addRole('ROLE_USER');
+
+                $canonicalizeUsername = $this->get('fos_user.util.username_canonicalizer');
+                $pUser->setUsernameCanonical($canonicalizeUsername->canonicalize($pUser->getUsername()));
+
+                // Encodage MDP
+                $encoderFactory = $this->get('security.encoder_factory');
+
+                if (0 !== strlen($password = $pUser->getPlainPassword())) {
+                    $encoder = $encoderFactory->getEncoder($pUser);
+                    $pUser->setPassword($encoder->encodePassword($password, $pUser->getSalt()));
+                    $pUser->eraseCredentials();
+                }
+
+                // Save user
+                $pUser->save();
+
+                // Connexion
+                $this->doPublicConnection($pUser);
+
+                // redirection
+                $url = $this->container->get('router')->generate('InscriptionStep2');
+                return $this->redirect($url);
+            } else {
+                $logger->info('form is not valid');
+            }
+        } else {
+            $logger->info('method is not POST');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
+                        'pUserForm' => $pUserForm->createView()
+            ));
+    }
+
+    /**
+     *     Page d'inscription / Etape 2
+     */
+    public function inscriptionStep2Action()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionStep2Action');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $pUser = $this->getUser();
+        $pUserFormType = new PUserStep2Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionStep2.html.twig', 
+                array(
+                    'pUserForm' => $pUserForm->createView()
+                    ));
+    }
+
+    /**
+     *      Validation inscription
+     */
+    public function inscriptionStep2CheckAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionStep2CheckAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $pUser = $this->getUser();
+        $pUserFormType = new PUserStep2Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+            $pUserForm->bind($this->getRequest());
+
+            if ($pUserForm->isValid()) {
+                $pUser = $pUserForm->getData();
+                // $logger->info('pUser = '.print_r($pUser, true));
+
+                // MAJ objet
+                $pUser->setEnabled(true);
+                $pUser->setLastLogin(new \DateTime());
+
+                // MAJ droits
+                $pUser->addRole('ROLE_CITIZEN');
+
+                // Canonicalization
+                $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
+                $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
+
+                // Save user
+                $pUser->save();
+
+                // (re)Connexion (/ maj droits)
+                $this->doPublicConnection($pUser);
+
+                // redirection
+                $url = $this->container->get('router')->generate('InscriptionStep3');
+                return $this->redirect($url);
+            } else {
+                $logger->info('form is not valid');
+            }
+        } else {
+            $logger->info('method is not POST');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionStep2.html.twig', array(
+                        'pUserForm' => $pUserForm->createView()
+            ));
+    }
+
+    /**
+     *     Page d'inscription / Etape 3
+     */
+    public function inscriptionStep3Action()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionStep3Action');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionStep3.html.twig', 
+                array(
+                    // 'pUserForm' => $pUserForm->createView()
+                    ));
+    }
+
+
+
     /* ######################################################################################################## */
     /*                                                 CONNEXION OAUTH                                          */
     /* ######################################################################################################## */
@@ -203,10 +297,9 @@ class SecurityController extends Controller {
         $logger->info('*** oauthTargetAction');
 
         // Récupération de l'objet OAuthUser & mise en session des éléments associés
-        $user = $this->getUser();
-        $this->get('session')->getFlashBag()->set('oAuthData', $user->getData());
-
-        // TODO Check user existant & redirection appropriée
+        $oAuthUser = $this->getUser();
+        $oAuthData = $oAuthUser->getData();
+        $this->get('session')->getFlashBag()->set('oAuthData', $oAuthData);
 
         return $this->redirect($this->generateUrl('OAuthRegister'));
     }
@@ -221,7 +314,7 @@ class SecurityController extends Controller {
 
         $oAuthData = $this->get('session')->getFlashBag()->get('oAuthData');
         $logger->info('$oAuthData = '.print_r($oAuthData, true));
-        
+
         if (!$oAuthData || !is_array($oAuthData) || !isset($oAuthData['provider']) || !isset($oAuthData['providerId'])) {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -229,30 +322,35 @@ class SecurityController extends Controller {
         // Récupération du PUser éventuellement existant en base
         $pUser = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
 
-        $request = $this->get('request');
         if ($pUser) {
             // Utilisateur existant
-            $logger->info('Utilisateur oAuth existant');
+            $logger->info('Utilisateur existant');
 
             // MAJ des infos relatives à la connexion
             $pUser->setOAuthData($oAuthData);
 
-            // Connexion
-            $this->doPublicConnection($pUser, $request);
-
             // Save user
             $pUser->save();
 
-            // TODO redirection dernière action en cours
-            return $this->redirect($this->generateUrl('Homepage'));
+            // Connexion
+            $this->doPublicConnection($pUser);
+
+            // check process d'inscription finalisé
+            if ($pUser->hasRole('ROLE_CITIZEN')) {
+                $logger->info('ROLE_CITIZEN ok');
+
+                // TODO redirection dernière action en cours
+                $redirectUrl = $this->generateUrl('Homepage');
+                return $this->redirect($redirectUrl);
+            } else {
+                $logger->info('ROLE_CITIZEN pas ok');
+
+                $redirectUrl = $this->generateUrl('InscriptionStep2');
+                return $this->redirect($redirectUrl);
+            }
         } else {
-            // Création & connexion de l'utilisateur sur le firewall 'public'
-
             // Création d'un utilisateur
-            $logger->info('Création d\'un utilisateur');
-
             $pUser = new PUser();
-
             $pUser->setOAuthData($oAuthData);
 
             // MAJ objet
@@ -261,7 +359,6 @@ class SecurityController extends Controller {
 
             // MAJ droits
             $pUser->addRole('ROLE_USER');
-            $pUser->addRole('ROLE_CITIZEN');
 
             if ($email = $pUser->getEmail()) {
                 // Canonicalization
@@ -272,7 +369,7 @@ class SecurityController extends Controller {
                 $pUser->setUsername($pUser->getEmail());
                 $pUser->setUsernameCanonical($pUser->getEmailCanonical());
             } elseif($nickname = $pUser->getNickname()) {
-                // username = email
+                // username = nickname
                 $pUser->setUsername($pUser->getNickname());
                 $pUser->setUsernameCanonical($pUser->getNickname());
             } else {
@@ -280,17 +377,14 @@ class SecurityController extends Controller {
             }
 
             // Connexion
-            $this->doPublicConnection($pUser, $request);
+            $this->doPublicConnection($pUser);
 
             // Save user
             $pUser->save();
 
-            // TODO redirection dernière action en cours
-            return $this->redirect($this->generateUrl('Homepage'));
+            // Redirection process d'inscription étape 2
+            return $this->redirect($this->generateUrl('InscriptionStep2'));
         }
-
-
-        return $this->redirect($this->generateUrl('Homepage'));
     }
     
 
@@ -347,16 +441,28 @@ class SecurityController extends Controller {
                                 'error' => $message
                                 );
                         } else {
-                            // MAJ objet
-                            $pUser->setLastLogin(new \DateTime());
-                            $pUser->save();
+                            // check process d'inscription finalisé
+                            if ($pUser->hasRole('ROLE_CITIZEN')) {
+                                $logger->info('ROLE_CITIZEN ok');
+
+                                // MAJ objet
+                                $pUser->setLastLogin(new \DateTime());
+                                $pUser->save();
+
+                                $redirectUrl = $this->generateUrl('Homepage');
+                            } else {
+                                $logger->info('ROLE_CITIZEN pas ok');
+
+                                $redirectUrl = $this->generateUrl('InscriptionStep2');
+                            }
 
                             // Connexion
-                            $this->doPublicConnection($pUser, $request);
+                            $this->doPublicConnection($pUser);
 
                             // Construction de la réponse
                             $jsonResponse = array (
-                                'success' => true
+                                'success' => true,
+                                'redirectUrl' => $redirectUrl
                             );
                         }
                     }
@@ -491,14 +597,12 @@ class SecurityController extends Controller {
      *  Connexion "logiciel" au firewall public (citoyen)
      *
      */
-    private function doPublicConnection(&$pUser, $request) {
+    private function doPublicConnection($pUser) {
         $providerKey = 'public';
 
         $token = new UsernamePasswordToken($pUser, null, $providerKey, $pUser->getRoles());
         $this->get('security.context')->setToken($token);
-
-        $event = new InteractiveLoginEvent($request, $token);
-        $this->get('event_dispatcher')->dispatch('security.authentication', $event);
+        $this->get('event_dispatcher')->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
 
     /**

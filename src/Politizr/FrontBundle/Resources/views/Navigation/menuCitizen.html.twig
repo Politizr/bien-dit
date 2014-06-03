@@ -1,8 +1,8 @@
 <div id="menu">
+	Bienvenue {{ app.user.firstname }} {{ app.user.name }}!<br/>
+	<a href="#">Mon espace</a>
+	<a href="{{ path('Logout') }}" class="deconnectMe">Me déconnecter</a>
+	<hr>
 	<a href="{{ path('Homepage') }}">Accueil</a>
 	<a href="{{ path('Presentation') }}">Présentation</a>
-	<hr>
-	<a href="#">Mon espace</a>
-	<hr>
-	<a href="{{ path('Logout') }}" class="deconnectMe">Me déconnecter</a>
 </div>

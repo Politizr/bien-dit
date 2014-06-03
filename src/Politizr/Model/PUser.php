@@ -48,6 +48,8 @@ class PUser extends BasePUser implements UserInterface
 	 */
 	protected function createRawSlug()
 	{
+        $slug = parent::createRawSlug();
+        
         if ($firstname = $this->getFirstname() && $name = $this->getName()) {
     		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($firstname.'-'.$name);
     		$slug = $this->cleanupSlugPart($toSlug);

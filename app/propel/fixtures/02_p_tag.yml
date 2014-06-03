@@ -28,7 +28,19 @@ Politizr\Model\PTag:
 
 
     # LISTE DE TOUS LES ZONAGES: ici "France" > TODO: script pour insertion régions / départements / villes
-    ariege:
+    france:
         online:             true
         p_t_tag_type_id:    geo
         title:              France
+    midipyrenees:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Midi-Pyrénées
+    ariege:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ariège
+    foix:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              foix

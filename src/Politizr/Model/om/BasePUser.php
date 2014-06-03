@@ -2436,9 +2436,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->isColumnModified(PUserPeer::SLUG) && $this->getSlug()) {
                 $this->setSlug($this->makeSlugUnique($this->getSlug()));
-            } elseif ($this->isColumnModified(PUserPeer::FIRSTNAME) || $this->isColumnModified(PUserPeer::NAME)) {
-                $this->setSlug($this->createSlug());
-            } elseif (!$this->getSlug()) {
+            } else {
                 $this->setSlug($this->createSlug());
             }
             if ($isInsert) {
@@ -8027,7 +8025,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     protected function createRawSlug()
     {
-        return '' . $this->cleanupSlugPart($this->getfirstname()) . '-' . $this->cleanupSlugPart($this->getname()) . '';
+        return $this->cleanupSlugPart($this->__toString());
     }
 
     /**
@@ -8102,6 +8100,15 @@ abstract class BasePUser extends BaseObject implements Persistent
             $slug2 = $slug;
         } else {
             $slug2 = $slug . $separator;
+
+            $count = PUserQuery::create()
+                ->filterBySlug($this->getSlug())
+                ->filterByPrimaryKey($this->getPrimaryKey())
+            ->count();
+
+            if (1 == $count) {
+                return $this->getSlug();
+            }
         }
 
         $query = PUserQuery::create('q')

@@ -25,6 +25,13 @@ Presentation:
 ################################################################################
 #               ROUTING CONNEXION / CREATION PROFIL
 ################################################################################
+Login:
+    pattern:  /login
+    defaults: { _controller: PolitizrFrontBundle:Security:login }
+
+Logout:
+    pattern:  /logout
+
 Inscription:
     pattern:  /inscription
     defaults: { _controller: PolitizrFrontBundle:Security:inscription }
@@ -33,12 +40,18 @@ InscriptionCheck:
     pattern:  /inscription/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
 
-Login:
-    pattern:  /mon-profil
-    defaults: { _controller: PolitizrFrontBundle:Security:login }
+InscriptionStep2:
+    pattern:  /u/inscription-etape2
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep2 }
 
-Logout:
-    pattern:  /logout
+InscriptionStep2Check:
+    pattern:  /u/inscription-etape2/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep2Check }
+
+InscriptionStep3:
+    pattern:  /citoyen/inscription-etape3
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep3 }
+
 
 
 ################################################################################
@@ -64,3 +77,7 @@ LostPasswordCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+GetPTags:
+    pattern:  /citoyen/getTags.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:getPTags, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

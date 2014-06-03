@@ -1,6 +1,8 @@
 <div id="header">
 	{% if is_granted('ROLE_CITIZEN') %}
 		{% include 'PolitizrFrontBundle:Navigation:menuCitizen.html.twig' %}
+	{% elseif is_granted('ROLE_USER') %}
+		{% include 'PolitizrFrontBundle:Navigation:menuInscriptionCitizen.html.twig' %}
 	{% else %}
 		{% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
 	{% endif %}
