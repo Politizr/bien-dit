@@ -21,6 +21,7 @@ use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
+use Politizr\Model\PUFollowT;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUReputationRA;
@@ -66,6 +67,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByFacebook($order = Criteria::ASC) Order by the facebook column
  * @method PUserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method PUserQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
+ * @method PUserQuery orderBySupportingDocument($order = Criteria::ASC) Order by the supporting_document column
+ * @method PUserQuery orderByElectiveMandates($order = Criteria::ASC) Order by the elective_mandates column
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -107,6 +110,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByFacebook() Group by the facebook column
  * @method PUserQuery groupByPhone() Group by the phone column
  * @method PUserQuery groupByNewsletter() Group by the newsletter column
+ * @method PUserQuery groupBySupportingDocument() Group by the supporting_document column
+ * @method PUserQuery groupByElectiveMandates() Group by the elective_mandates column
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
@@ -140,6 +145,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPuTaggedTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPUser relation
  * @method PUserQuery rightJoinPuTaggedTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPUser relation
  * @method PUserQuery innerJoinPuTaggedTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTaggedTPUser relation
+ *
+ * @method PUserQuery leftJoinPuFollowTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowTPUser relation
+ * @method PUserQuery rightJoinPuFollowTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowTPUser relation
+ * @method PUserQuery innerJoinPuFollowTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowTPUser relation
  *
  * @method PUserQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
  * @method PUserQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
@@ -202,6 +211,8 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByFacebook(string $facebook) Return the first PUser filtered by the facebook column
  * @method PUser findOneByPhone(string $phone) Return the first PUser filtered by the phone column
  * @method PUser findOneByNewsletter(boolean $newsletter) Return the first PUser filtered by the newsletter column
+ * @method PUser findOneBySupportingDocument(string $supporting_document) Return the first PUser filtered by the supporting_document column
+ * @method PUser findOneByElectiveMandates(string $elective_mandates) Return the first PUser filtered by the elective_mandates column
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
@@ -243,6 +254,8 @@ use Politizr\Model\PUserQuery;
  * @method array findByFacebook(string $facebook) Return PUser objects filtered by the facebook column
  * @method array findByPhone(string $phone) Return PUser objects filtered by the phone column
  * @method array findByNewsletter(boolean $newsletter) Return PUser objects filtered by the newsletter column
+ * @method array findBySupportingDocument(string $supporting_document) Return PUser objects filtered by the supporting_document column
+ * @method array findByElectiveMandates(string $elective_mandates) Return PUser objects filtered by the elective_mandates column
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
@@ -349,7 +362,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `type`, `status`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `type`, `status`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `supporting_document`, `elective_mandates`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1603,6 +1616,64 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the supporting_document column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySupportingDocument('fooValue');   // WHERE supporting_document = 'fooValue'
+     * $query->filterBySupportingDocument('%fooValue%'); // WHERE supporting_document LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $supportingDocument The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterBySupportingDocument($supportingDocument = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($supportingDocument)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $supportingDocument)) {
+                $supportingDocument = str_replace('*', '%', $supportingDocument);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::SUPPORTING_DOCUMENT, $supportingDocument, $comparison);
+    }
+
+    /**
+     * Filter the query on the elective_mandates column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByElectiveMandates('fooValue');   // WHERE elective_mandates = 'fooValue'
+     * $query->filterByElectiveMandates('%fooValue%'); // WHERE elective_mandates LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $electiveMandates The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByElectiveMandates($electiveMandates = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($electiveMandates)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $electiveMandates)) {
+                $electiveMandates = str_replace('*', '%', $electiveMandates);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::ELECTIVE_MANDATES, $electiveMandates, $comparison);
+    }
+
+    /**
      * Filter the query on the last_connect column
      *
      * Example usage:
@@ -2232,6 +2303,80 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUFollowT object
+     *
+     * @param   PUFollowT|PropelObjectCollection $pUFollowT  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuFollowTPUser($pUFollowT, $comparison = null)
+    {
+        if ($pUFollowT instanceof PUFollowT) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUFollowT->getPUserId(), $comparison);
+        } elseif ($pUFollowT instanceof PropelObjectCollection) {
+            return $this
+                ->usePuFollowTPUserQuery()
+                ->filterByPrimaryKeys($pUFollowT->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuFollowTPUser() only accepts arguments of type PUFollowT or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuFollowTPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuFollowTPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuFollowTPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuFollowTPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuFollowTPUser relation PUFollowT object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUFollowTQuery A secondary query class using the current class as primary query
+     */
+    public function usePuFollowTPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuFollowTPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuFollowTPUser', '\Politizr\Model\PUFollowTQuery');
+    }
+
+    /**
      * Filter the query by a related PDDebate object
      *
      * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
@@ -2740,6 +2885,23 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePuTaggedTPUserQuery()
             ->filterByPuTaggedTPTag($pTag, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PTag object
+     * using the p_u_follow_t table as cross reference
+     *
+     * @param   PTag $pTag the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuFollowTPTag($pTag, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuFollowTPUserQuery()
+            ->filterByPuFollowTPTag($pTag, $comparison)
             ->endUse();
     }
 

@@ -22,9 +22,16 @@ class EditController extends BaseEditController
 
         $file = $form['uploaded_file_name']->getData();
         if ($file) {
-          $currentObject->removeUpload(true);
+          $currentObject->removeUpload(true, false);
           $fileName = $currentObject->upload($file);
           $currentObject->setFileName($fileName);
+        }
+
+        $file = $form['uploaded_supporting_document']->getData();
+        if ($file) {
+          $currentObject->removeUpload(false, true);
+          $fileName = $currentObject->upload($file);
+          $currentObject->setSupportingDocument($fileName);
         }
     }
 }

@@ -1,3 +1,5 @@
+# TODO
+# - nouvelle table p_u_follow_t
 generator:                  admingenerator.generator.propel
 params:
     model:                  Politizr\Model\PUser

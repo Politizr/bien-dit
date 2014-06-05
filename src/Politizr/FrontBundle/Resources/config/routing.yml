@@ -23,7 +23,7 @@ Presentation:
 
 
 ################################################################################
-#               ROUTING CONNEXION / CREATION PROFIL
+#               ROUTING CONNEXION
 ################################################################################
 Login:
     pattern:  /login
@@ -32,6 +32,9 @@ Login:
 Logout:
     pattern:  /logout
 
+################################################################################
+#               ROUTING CREATION PROFIL CITOYEN
+################################################################################
 Inscription:
     pattern:  /inscription
     defaults: { _controller: PolitizrFrontBundle:Security:inscription }
@@ -49,9 +52,39 @@ InscriptionStep2Check:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep2Check }
 
 InscriptionStep3:
-    pattern:  /citoyen/inscription-etape3
+    pattern:  /u/inscription-etape3
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep3 }
 
+InscriptionStep3Check:
+    pattern:  /u/inscription-etape3/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep3Check }
+
+################################################################################
+#               ROUTING CREATION PROFIL ÉLU
+################################################################################
+InscriptionElected:
+    pattern:  /inscription-elu
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElected }
+
+InscriptionElectedCheck:
+    pattern:  /inscription-elu/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
+
+InscriptionElectedStep2:
+    pattern:  /u/inscription-elu-etape2
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep2 }
+
+
+
+################################################################################
+#				ROUTING DOCUMENT
+################################################################################
+DebateDetail:
+    pattern:  /{id}/debat/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
+    requirements:
+        _method:        GET
+        id:             \d+
 
 
 ################################################################################
@@ -77,7 +110,44 @@ LostPasswordCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+# INSCRIPTION STEP 3 / TAGS PROFIL
 GetPTags:
-    pattern:  /citoyen/getTags.{_format}
+    pattern:  /u/getPTags.{_format}
     defaults: { _controller: PolitizrFrontBundle:Profile:getPTags, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+GetPUTaggedTPTags:
+    pattern:  /u/getPUTaggedTPTags.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:getPUTaggedTPTags, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AddPUTaggedTPTag:
+    pattern:  /u/addPUTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:addPUTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+RemovePUTaggedTPTag:
+    pattern:  /u/removePUTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:removePUTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+GetPUFollowTPTags:
+    pattern:  /u/getPUFollowTPTags.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:getPUFollowTPTags, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AddPUFollowTPTag:
+    pattern:  /u/addPUFollowTPTag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:addPUFollowTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+RemovePUFollowTPTag:
+    pattern:  /u/removePUFollowTPTag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:removePUFollowTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AddNewPTag:
+    pattern:  /u/addNewPTag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:addNewPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

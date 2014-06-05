@@ -19,15 +19,15 @@ class PUserStep1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('type', 'hidden', array(
-            'attr'     => array( 'value' => false )
+            'attr'     => array( 'value' => '0' )
             )
         );
         $builder->add('status', 'hidden', array(
-            'attr'     => array( 'value' => false )
+            'attr'     => array( 'value' => '0' )
             )
         );
         $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
+            'attr'     => array( 'value' => '0' )
             )
         );
 

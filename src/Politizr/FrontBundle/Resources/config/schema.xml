@@ -257,6 +257,9 @@
         <column name="phone" type="varchar" size="30" />
 
         <column name="newsletter" type="boolean" />
+
+        <column name="supporting_document" type="varchar" size="150" />
+        <column name="elective_mandates" type="longvarchar" />
         
         <column name="last_connect" type="timestamp" />
     </table>
@@ -338,6 +341,18 @@
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
         <foreign-key foreignTable="p_tag" phpName="PuTaggedTPTag" refPhpName="PuTaggedTPTag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_follow_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
+        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="p_user" phpName="PuFollowTPUser" refPhpName="PuFollowTPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" phpName="PuFollowTPTag" refPhpName="PuFollowTPTag" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_tag_id" foreign="id" />
         </foreign-key>
     </table>

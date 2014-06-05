@@ -18,6 +18,7 @@ parameters:
     # Facebook
     facebook_client_id: 583693971728599
     facebook_client_secret: d79e946c38f54927e4c22a5753455c01
+    facebook_scope: public_profile,email
 
     #Twitter
     twitter_api_key: gP2NLxvlDNrnFlz0afMfXvWLk

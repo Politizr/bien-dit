@@ -27,7 +27,7 @@ Politizr\Model\PTag:
         title:				Conseiller Régional
 
 
-    # LISTE DE TOUS LES ZONAGES: ici "France" > TODO: script pour insertion régions / départements / villes
+    # LISTE DE TOUS LES ZONAGES: TODO: script pour insertion régions / départements / villes
     france:
         online:             true
         p_t_tag_type_id:    geo
@@ -44,3 +44,31 @@ Politizr\Model\PTag:
         online:             true
         p_t_tag_type_id:    geo
         title:              foix
+
+
+
+    # LISTE DE TOUS LES THEMES: TODO: script pour principales thématiques
+    liberte:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              liberté
+    egalite:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              égalité
+    fraternite:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              fraternité
+    mondialisation:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              mondialisation
+    ecologie:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              écologie
+    cumul-des-mandats:
+        online:             true
+        p_t_tag_type_id:    theme
+        title:              cumul des mandats

@@ -14,28 +14,25 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
 
-class PUserStep2Type extends AbstractType
+class PUserElectedStep1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden', array(
-            'required' => true
-            )
-        );
+        // Attributs cachés
         $builder->add('type', 'hidden', array(
-            'attr'     => array( 'value' => PUser::TYPE_CITOYEN )
+            'attr'     => array( 'value' => '0' )
             )
         );
         $builder->add('status', 'hidden', array(
-            'attr'     => array( 'value' => PUser::STATUS_ACTIV )
+            'attr'     => array( 'value' => '0' )
             )
         );
         $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => true )
+            'attr'     => array( 'value' => '0' )
             )
         );
 
-
+        // Nom, prénom, etc.
         $builder->add('gender', 'choice', array(
             'required' => true,
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
@@ -76,6 +73,39 @@ class PUserStep2Type extends AbstractType
         $builder->add('newsletter', 'checkbox', array(  
             'required' => false,
             'attr'     => array( 'checked' => 'checked' )
+            )
+        );
+
+        // Username / Password
+        $builder->add('username', 'text', array(
+            'required' => true,
+            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
+            )
+        );
+        
+        $builder->add('plainPassword', 'repeated', array(
+            'required' => true,
+            'first_options' =>   array(
+                ),
+            'second_options' =>   array(
+                ),
+            'type' => 'password',
+            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            )
+        );
+
+
+        // Justificatif
+        $builder->add('uploaded_supporting_document', 'file', array(
+            'required' => true,
+            'mapped' => false,
+            'constraints' => new NotBlank(array('message' => 'Scan d\'une pièce justificative obligatoire.'))
+            )
+        );
+
+        $builder->add('elective_mandates', 'textarea', array(
+            'required' => true,
+            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs en cours obligatoire.'))
             )
         );
 

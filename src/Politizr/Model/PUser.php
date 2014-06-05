@@ -73,7 +73,8 @@ class PUser extends BasePUser implements UserInterface
 	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
 	// Colonnes virtuelles / fichiers
-	public $uploaded_file_name;
+    public $uploaded_file_name;
+	public $uploaded_supporting_document;
 
     /**
      *
@@ -134,10 +135,21 @@ class PUser extends BasePUser implements UserInterface
 	public function setFileName($v)
 	{
 		if (!$v) {
-			$this->removeUpload(true);
+			$this->removeUpload(true, false);
 		}
 		parent::setFileName($v);
 	}
+
+    /**
+     *  Surcharge pour gérer la suppression physique.
+     */
+    public function setSupportingDocument($v)
+    {
+        if (!$v) {
+            $this->removeUpload(false, true);
+        }
+        parent::setSupportingDocument($v);
+    }
 
 	/**
 	 *  Surcharge pour gérer la suppression physique.
@@ -150,11 +162,14 @@ class PUser extends BasePUser implements UserInterface
 	/**
 	 * 	Suppression physique des fichiers.
 	 */
-	public function removeUpload($uploaded_file_name = true)
+	public function removeUpload($uploaded_file_name = true, $uploaded_supporting_document = true)
 	{
 		if ($uploaded_file_name && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
 		  	unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
 		}
+        if ($uploaded_supporting_document && $this->supporting_document && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->supporting_document)) {
+            unlink(__DIR__ . PUser::UPLOAD_PATH . $this->supporting_document);
+        }
 	}
 
 
@@ -315,6 +330,7 @@ class PUser extends BasePUser implements UserInterface
      * @var string
      */
     protected $plainPassword;
+
 
     /**
      * {@inheritDoc}

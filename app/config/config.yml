@@ -259,6 +259,9 @@ bazinga_faker:
                 ConfirmationToken:      { method: null }
                 PasswordRequestedAt:    { method: null }
 
+                SupportingDocument:     { method: null }
+                ElectiveMandates:       { method: null }
+
                 Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
 
@@ -373,16 +376,16 @@ bazinga_faker:
         #################################################################################################################
         #                                   TAGS
         #################################################################################################################
-        Politizr\Model\PTag:
-            number:                     1000
-            custom_formatters:
-                PTTagTypeId:            { method: numberBetween, parameters: [ 3, 3 ] }
-
-                # Title:                  { method: realText, parameters: [ 20 ] }
-                Title:                  { method: lexify, parameters: [ '???????????????' ], unique: true }
-
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
-                Slug:                   { method: null }
+        # Politizr\Model\PTag:
+        #     number:                     1000
+        #     custom_formatters:
+        #         PTTagTypeId:            { method: numberBetween, parameters: [ 3, 3 ] }
+        #         
+        #         # Title:                  { method: realText, parameters: [ 20 ] }
+        #         Title:                  { method: lexify, parameters: [ '???????????????' ], unique: true }
+        # 
+        #         Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+        #         Slug:                   { method: null }
 
 
 # Géoloc

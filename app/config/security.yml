@@ -68,7 +68,7 @@ security:
             logout:
                 path:                       /logout
                 target:                     /
-                invalidate_session:         true
+                invalidate_session:         false
             anonymous:                      true
 
     access_control:

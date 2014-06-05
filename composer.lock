@@ -1191,12 +1191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "f9713bb5c0740a1bf2d3fea40c833ceb96c5082c"
+                "reference": "e7a9c71db510e06b7771024ac3ba5cfa08db75c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/f9713bb5c0740a1bf2d3fea40c833ceb96c5082c",
-                "reference": "f9713bb5c0740a1bf2d3fea40c833ceb96c5082c",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/e7a9c71db510e06b7771024ac3ba5cfa08db75c9",
+                "reference": "e7a9c71db510e06b7771024ac3ba5cfa08db75c9",
                 "shasum": ""
             },
             "require": {
@@ -1233,7 +1233,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-06-01 20:59:03"
+            "time": "2014-06-03 20:39:01"
         },
         {
             "name": "hwi/oauth-bundle",
@@ -1242,12 +1242,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "8fe09e0daf8405ef784adf125909f0cba1c31d4e"
+                "reference": "26033b75bda64e33d9258dda50defd10e6b6dbb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/8fe09e0daf8405ef784adf125909f0cba1c31d4e",
-                "reference": "8fe09e0daf8405ef784adf125909f0cba1c31d4e",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/26033b75bda64e33d9258dda50defd10e6b6dbb2",
+                "reference": "26033b75bda64e33d9258dda50defd10e6b6dbb2",
                 "shasum": ""
             },
             "require": {
@@ -1348,7 +1348,7 @@
                 "yahoo",
                 "yandex"
             ],
-            "time": "2014-05-30 10:44:00"
+            "time": "2014-06-02 13:28:07"
         },
         {
             "name": "imagine/imagine",
@@ -2185,31 +2185,36 @@
         },
         {
             "name": "pagerfanta/pagerfanta",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/whiteoctober/Pagerfanta.git",
-                "reference": "9568187b789a39a3933c71e4e28b60fc2c26b70d"
+                "reference": "ac1edfdf81c91a0f1471769071011ebf9b055421"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/9568187b789a39a3933c71e4e28b60fc2c26b70d",
-                "reference": "9568187b789a39a3933c71e4e28b60fc2c26b70d",
+                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/ac1edfdf81c91a0f1471769071011ebf9b055421",
+                "reference": "ac1edfdf81c91a0f1471769071011ebf9b055421",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "doctrine/mongodb-odm": "*",
-                "doctrine/orm": "2.*",
-                "mandango/mandango": "*",
+                "doctrine/mongodb-odm": "1.0.*@dev",
+                "doctrine/orm": "2.3.*",
+                "doctrine/phpcr-odm": "1.*",
+                "jackalope/jackalope-doctrine-dbal": "1.*",
+                "jmikola/geojson": "1.0.*",
+                "mandango/mandango": "1.0.*@dev",
+                "phpunit/phpunit": "3.7.*",
                 "propel/propel1": "~1.6",
-                "solarium/solarium": "dev-develop"
+                "solarium/solarium": "3.1.*"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "To use the DoctrineODMMongoDBAdapter.",
                 "doctrine/orm": "To use the DoctrineORMAdapter.",
+                "doctrine/phpcr-odm": "To use the DoctrineODMPhpcrAdapter. >= 1.1.0",
                 "mandango/mandango": "To use the MandangoAdapter.",
                 "propel/propel1": "To use the PropelAdapter",
                 "solarium/solarium": "To use the SolariumAdapter."
@@ -2243,7 +2248,7 @@
                 "paginator",
                 "paging"
             ],
-            "time": "2013-09-23 08:06:55"
+            "time": "2014-06-02 09:21:14"
         },
         {
             "name": "phing/phing",

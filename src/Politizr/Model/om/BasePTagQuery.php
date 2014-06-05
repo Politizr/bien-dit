@@ -18,6 +18,7 @@ use Politizr\Model\PTTagType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PUFollowT;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUser;
 
@@ -49,6 +50,10 @@ use Politizr\Model\PUser;
  * @method PTagQuery leftJoinPuTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPTag relation
  * @method PTagQuery rightJoinPuTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPTag relation
  * @method PTagQuery innerJoinPuTaggedTPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTaggedTPTag relation
+ *
+ * @method PTagQuery leftJoinPuFollowTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowTPTag relation
+ * @method PTagQuery rightJoinPuFollowTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowTPTag relation
+ * @method PTagQuery innerJoinPuFollowTPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowTPTag relation
  *
  * @method PTagQuery leftJoinPddTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PddTaggedTPTag relation
  * @method PTagQuery rightJoinPddTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PddTaggedTPTag relation
@@ -669,6 +674,80 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUFollowT object
+     *
+     * @param   PUFollowT|PropelObjectCollection $pUFollowT  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuFollowTPTag($pUFollowT, $comparison = null)
+    {
+        if ($pUFollowT instanceof PUFollowT) {
+            return $this
+                ->addUsingAlias(PTagPeer::ID, $pUFollowT->getPTagId(), $comparison);
+        } elseif ($pUFollowT instanceof PropelObjectCollection) {
+            return $this
+                ->usePuFollowTPTagQuery()
+                ->filterByPrimaryKeys($pUFollowT->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuFollowTPTag() only accepts arguments of type PUFollowT or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuFollowTPTag relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPuFollowTPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuFollowTPTag');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuFollowTPTag');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuFollowTPTag relation PUFollowT object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUFollowTQuery A secondary query class using the current class as primary query
+     */
+    public function usePuFollowTPTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuFollowTPTag($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuFollowTPTag', '\Politizr\Model\PUFollowTQuery');
+    }
+
+    /**
      * Filter the query by a related PDDTaggedT object
      *
      * @param   PDDTaggedT|PropelObjectCollection $pDDTaggedT  the related object to use as filter
@@ -756,6 +835,23 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this
             ->usePuTaggedTPTagQuery()
             ->filterByPuTaggedTPUser($pUser, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_follow_t table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PTagQuery The current query, for fluid interface
+     */
+    public function filterByPuFollowTPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuFollowTPTagQuery()
+            ->filterByPuFollowTPUser($pUser, $comparison)
             ->endUse();
     }
 

@@ -3,14 +3,33 @@
 {% block main %}
 	<div id="main">
 		<h1>Inscription - Etape 3 / 3</h1>
-		<div id="selectGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}">
-			Tapez le début d'une zone géographique (ville ou département ou région) puis sélectionnez parmi les propositions et cliquez sur 'ajouter'.<br/>
-			Recommencez l'opération pour sélectionner l'ensemble des zones qui vous intéressent.<br/>
-			<input type="text" id="selectGeo" />
-			<input type="hidden" id="selectGeoID" />
-			<a id="addGeo">Ajouter</a>
+		<h2>Taggez votre profil</h2>
+		<div id="myProfile">
+			<div id="profileChooseGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUTaggedTPTag') }}">
+				<label>Votre zonage géographique</label>
+				<input type="text" id="profileChooseGeo" /><input type="hidden" id="profileChooseGeoID" />
+			</div>
+			<div id="profileSelectedGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
 		</div>
-		<a href="{{ path('Homepage') }}">Finaliser mon inscription</a>
+		<h2>Vos centres d'intérêts</h2>
+		<div id="myFollow">
+			<div id="followChooseGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
+				<div class="help">Indiquez les tags "géo" qui vous intéressent</div>
+				<label>Zonages géographiques suivis</label>
+				<input type="text" id="followChooseGeo" /><input type="hidden" id="followChooseGeoID" />
+			</div>
+			<div id="followSelectedGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
+			<hr>
+			<div id="followChooseThemeZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
+				<div class="help">Indiquez les tags "thématiques" qui vous intéressent - si le thème n'est pas présent dans la liste, cliquez sur 'Ajouter' une fois saisie.</div>
+				<label>Thèmes suivis</label>
+				<input type="text" id="followChooseTheme" /><input type="hidden" id="followChooseThemeID" />
+				<a id="addNewTag">Ajouter</a>
+			</div>
+			<div id="followSelectedThemeZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}"></div>
+		</div>
+		<hr>
+		<a href="{{ path('InscriptionStep3Check') }}">Finaliser mon inscription</a>
 	</div>
 {% endblock main %}
 

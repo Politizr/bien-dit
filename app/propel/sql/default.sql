@@ -401,6 +401,8 @@ CREATE TABLE `p_user`
     `facebook` VARCHAR(150),
     `phone` VARCHAR(30),
     `newsletter` TINYINT(1),
+    `supporting_document` VARCHAR(150),
+    `elective_mandates` TEXT,
     `last_connect` DATETIME,
     `online` TINYINT(1),
     `created_at` DATETIME,
@@ -562,6 +564,32 @@ CREATE TABLE `p_u_tagged_t`
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `p_u_tagged_t_FK_2`
+        FOREIGN KEY (`p_tag_id`)
+        REFERENCES `p_tag` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_follow_t
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_follow_t`;
+
+CREATE TABLE `p_u_follow_t`
+(
+    `p_user_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`p_user_id`,`p_tag_id`),
+    INDEX `p_u_follow_t_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_u_follow_t_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_follow_t_FK_2`
         FOREIGN KEY (`p_tag_id`)
         REFERENCES `p_tag` (`id`)
         ON UPDATE CASCADE
