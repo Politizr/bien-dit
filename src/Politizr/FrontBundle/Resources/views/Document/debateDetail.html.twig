@@ -1,36 +1,17 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
 
 {% block connexionBox %}
-    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
 {% endblock %}
 
 {% block main %}
-	<div id="overlayZenReader">
-		<div id="contentZen"></div>
-	</div>
-	<div id="debateBlock">
-		<h3>{{ debate.title }}</h3>
-		<h4>par {{ debate.pUser }}</h4>
-		<h5>publié le {{ debate.publishedAt('d/m/Y') }}</h5>
-
-		<div id="debateHeader">
-			<div id="star">Suivre / Ne plus suivre</div>
-			<div id="debateSummary">
-				{{ debate.summary | raw }}
-			</div>
-			<a class="readZen" objectId="{{ debate.id }}" type="debate">Lire l'intégralité du débat</a>
-		</div>
-		<hr>
-		<div id="debateMoreInfos">
-			{% include 'PolitizrFrontBundle:Fragment:pUserMiniBio.html.twig' with { 'pUser': author } only %}
-			<hr>
-			{% include 'PolitizrFrontBundle:Fragment:DebateInfos.html.twig' with { 'pDocument': debate, 'pTags': debate.pTags, 'globalComments': globalComments, 'paragraphComments': paragraphComments } only %}
-		</div>
-		<hr>
-	</div>
-	<div id="debateReactionsFeed">
-		{% for reaction in reactions %}
-			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'pDocument': reaction, 'reactionTo': reaction.reactionTo, 'globalComments': reaction.globalComments } only %}
+	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
+	{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate } %}
+	<div class="debateReactionsFeed">
+		{% for reaction in debate.reactions %}
+			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': false, 'pDocument': reaction, 'reactionTo': reaction.reactionTo, 'globalComments': reaction.globalComments } only %}
 		{% else %}
 			<div id="noResult">
 				Aucune réaction pour le moment
@@ -42,5 +23,9 @@
 {% block javascriptFooter %}
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
+    
+    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

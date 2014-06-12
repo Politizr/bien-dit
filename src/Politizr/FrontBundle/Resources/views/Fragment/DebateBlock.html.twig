@@ -1,0 +1,22 @@
+<div class="debateBlock">
+	<h3>{{ debate.title }}</h3>
+	<h4>par {{ debate.pUser }}</h4>
+	<h5>publié le {{ debate.publishedAt('d/m/Y') }}</h5>
+
+	<div class="debateHeader">
+		<div class="star">
+			{{ linkFollowDebate(debate.id) }}
+		</div>
+		<div class="debateSummary">
+			{{ debate.summary | raw }}
+		</div>
+		<a class="readZen" objectId="{{ debate.id }}" type="debate">Lire l'intégralité du débat</a>
+	</div>
+	<hr>
+	<div class="debateMoreInfos">
+		{% include 'PolitizrFrontBundle:Fragment:pUserMiniBio.html.twig' with { 'pUser': debate.pUser } only %}
+		<hr>
+		{% include 'PolitizrFrontBundle:Fragment:DebateInfos.html.twig' with { 'pDocument': debate, 'pTags': debate.pTags, 'globalComments': debate.globalComments, 'paragraphComments': debate.paragraphComments } only %}
+	</div>
+	<hr>
+</div>

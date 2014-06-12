@@ -1,0 +1,23 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+
+{% block main %}
+	<h1>Suggestions</h1>
+	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
+	<h2>Des débats tags géo</h2>
+	{% for debate in debatesGeo %}
+		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate } %}
+	{% else %}
+		Aucun débat en cours ne correspond à vos préférences tag géo<br/>
+		> Ajouter des tags géo
+	{% endfor %}
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:suggestionsC.js.twig' %}
+    
+    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+{% endblock javascriptFooter %}

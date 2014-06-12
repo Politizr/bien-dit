@@ -17,9 +17,9 @@ use Politizr\Model\PUFollowTQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
+use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
-use Politizr\Model\PTTagType;
 
 
 /**
@@ -36,6 +36,67 @@ class ProfileController extends Controller {
     /* ######################################################################################################## */
     /*                                                 ROUTING CLASSIQUE                                        */
     /* ######################################################################################################## */
+
+    /* ######################################################################################################## */
+    /*                                                      CITOYEN                                             */
+    /* ######################################################################################################## */
+
+    /**
+     *  Accueil
+     */
+    public function homepageCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** homepageCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // Récupération réactions associées aux débats suivis
+        $reactions = $pUser->getReactionsFollowedDebates();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:homepageC.html.twig', array(
+                    'reactions' => $reactions
+            ));
+    }
+
+    /**
+     *  Suggestions
+     */
+    public function suggestionsCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** suggestionsCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // Récupération listing débat "match" tags géo
+        // TODO: algo "match" à définir
+        $debatesGeo = $pUser->getDebatesTag(PTTagType::TYPE_GEO);
+
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:suggestionsC.html.twig', array(
+                    'debatesGeo' => $debatesGeo
+            ));
+    }
+
 
 
     /* ######################################################################################################## */

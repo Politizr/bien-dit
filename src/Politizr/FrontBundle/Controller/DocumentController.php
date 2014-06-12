@@ -17,7 +17,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PUser;
-
+use Politizr\Model\PUFollowDD;
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
@@ -55,29 +55,11 @@ class DocumentController extends Controller {
         }
 
         // *********************************** //
-        //      Récupération des objets associés
-        // *********************************** //
-
-        // PUser
-        $author = $debate->getPUser();
-
-        // PDDComment (collection)
-        $globalComments = $debate->getGlobalComments();
-        $paragraphComments = $debate->getParagraphComments();
-
-        // PDReaction
-        $reactions = $debate->getReactions();
-
-        // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
-        			'debate' => $debate,
-                    'author' => $author,
-                    'globalComments' => $globalComments,
-                    'paragraphComments' => $paragraphComments,
-                    'reactions' => $reactions
-            ));
+        			'debate' => $debate
+        ));
     }
 
     /**
@@ -170,6 +152,105 @@ class DocumentController extends Controller {
                 $jsonResponse = array (
                     'success' => true,
                     'htmlZen' => $htmlZen
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *      Suivi d'un débat
+     */
+    public function followPDDebateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** followPDDebateAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $pUser = $this->getUser();
+                if (!$pUser) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
+                // Récupération args
+                $id = $request->get('objectId');
+                $logger->info('$id = ' . print_r($id, true));
+                
+                // TODO > contrôle élément non existant?
+
+                // Insertion nouvel élément
+                $pUFollowDD = new PUFollowDD();
+
+                $pUFollowDD->setPUserId($pUser->getId());
+                $pUFollowDD->setPDDebateId($id);
+
+                $pUFollowDD->save();
+                
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *      Arrêter le suivi d'un débat
+     */
+    public function unfollowPDDebateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** unfollowPDDebateAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $pUser = $this->getUser();
+                if (!$pUser) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
+                // Récupération args
+                $id = $request->get('objectId');
+                $logger->info('$id = ' . print_r($id, true));
+                
+                // Suppression élément
+                $pUFollowDDList = PUFollowDDQuery::create()
+                                ->filterByPUserId($pUser->getId())
+                                ->filterByPDDebateId($id)
+                                ->find();
+
+                // précaution > boucle sur tous les éléments
+                foreach ($pUFollowDDList as $pUFollowDD) {
+                    $pUFollowDD->delete();
+                }
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
                 );
             } else {
                 throw $this->createNotFoundException('Not a XHR request');

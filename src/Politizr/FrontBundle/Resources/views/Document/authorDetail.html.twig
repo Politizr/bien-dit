@@ -1,7 +1,9 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
 
 {% block connexionBox %}
-    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
 {% endblock %}
 
 {% block main %}

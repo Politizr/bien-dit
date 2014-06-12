@@ -133,7 +133,7 @@ class SecurityController extends Controller {
                                 $pUser->setLastLogin(new \DateTime());
                                 $pUser->save();
 
-                                $redirectUrl = $this->generateUrl('Homepage');
+                                $redirectUrl = $this->generateUrl('HomepageC');
                             } else {
                                 $logger->info('ROLE_CITIZEN pas ok');
 
@@ -293,7 +293,7 @@ class SecurityController extends Controller {
         $pUser = $this->getUser();
         if ($pUser && $pUser->hasRole('ROLE_USER')) {
             if ($pUser->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('Homepage', array());
+                $redirectUrl = $this->generateUrl('HomepageC', array());
                 return $this->redirect($redirectUrl);
             }
         }
@@ -495,11 +495,14 @@ class SecurityController extends Controller {
         // MAJ droits
         $pUser->addRole('ROLE_CITIZEN');
 
+        // Save user
+        $pUser->save();
+
         // (re)Connexion (/ maj droits)
         $this->doPublicConnection($pUser);
 
         // redirection
-        $url = $this->container->get('router')->generate('Homepage');
+        $url = $this->container->get('router')->generate('HomepageC');
         return $this->redirect($url);
     }
 
@@ -693,7 +696,7 @@ class SecurityController extends Controller {
                 $logger->info('ROLE_CITIZEN ok');
 
                 // TODO redirection dernière action en cours
-                $redirectUrl = $this->generateUrl('Homepage');
+                $redirectUrl = $this->generateUrl('HomepageC');
                 return $this->redirect($redirectUrl);
             } else {
                 $logger->info('ROLE_CITIZEN pas ok');

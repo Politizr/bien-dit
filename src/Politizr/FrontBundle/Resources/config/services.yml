@@ -12,3 +12,10 @@ services:
     politizr.oauth_user_provider:
         class: 								"%politizr.oauth_user_provider.class%"
         arguments: 							[ @service_container ]
+
+    # Extension twig
+    politzr.twig.link_extension:
+        class: 								Politizr\FrontBundle\Twig\PLinkExtension
+        arguments: 							[ @service_container ]
+        tags:
+                                            - { name: twig.extension }

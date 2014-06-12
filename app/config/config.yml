@@ -270,7 +270,7 @@ bazinga_faker:
                 SupportingDocument:     { method: null }
                 ElectiveMandates:       { method: null }
 
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
 
 
@@ -352,11 +352,11 @@ bazinga_faker:
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
-                Published:              { method: boolean }
+                Published:              { method: boolean, parameters: [ 90 ] }
                 PublishedAt:            { method: dateTimeThisYear }
                 PublishedBy:            { method: null }
 
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
 
         Politizr\Model\PUFollowDD:
@@ -379,11 +379,11 @@ bazinga_faker:
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
-                Published:              { method: boolean }
+                Published:              { method: boolean, parameters: [ 90 ] }
                 PublishedAt:            { method: dateTimeThisYear }
                 PublishedBy:            { method: null }
 
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
 
         Politizr\Model\PDDComment:
@@ -398,7 +398,7 @@ bazinga_faker:
                 PublishedBy:            { method: null }
                 PublishedAt:            { method: dateTimeThisYear }
 
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                Online:                 { method: boolean, parameters: [ 100 ] }
 
         Politizr\Model\PDRComment:
             number:                     900
@@ -412,7 +412,7 @@ bazinga_faker:
                 PublishedBy:            { method: null }
                 PublishedAt:            { method: dateTimeThisYear }
 
-                Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                Online:                 { method: boolean, parameters: [ 100 ] }
 
 
         #################################################################################################################
@@ -426,7 +426,7 @@ bazinga_faker:
         #         # Title:                  { method: realText, parameters: [ 20 ] }
         #         Title:                  { method: lexify, parameters: [ '???????????????' ], unique: true }
         # 
-        #         Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
+        #         Online:                 { method: boolean, parameters: [ 100 ] }
         #         Slug:                   { method: null }
 
 

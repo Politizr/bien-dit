@@ -9,6 +9,17 @@ use Geocoder\Result\Geocoded;
 class PDDebateQuery extends BasePDDebateQuery
 {
 
+
+
+    // *****************************    AGGREGATIONS / UTILES    ************************* //
+    
+    /**
+     * Cumule les contraintes associés à un objet en ligne
+     */
+    public function online() {
+    	return $this->filterByOnline(true)->filterByPublished(true);
+    }
+
 	/**
 	 *	Filtre les objets par popularité
 	 *	TODO requête "populaire" à préciser et à affiner
@@ -18,7 +29,7 @@ class PDDebateQuery extends BasePDDebateQuery
 	 * @return  Query
 	 */
 	public function popularity($limit = 10) {
-		return PDDebateQuery::create()->filterByOnline(true)->filterByPublished(true)->orderByNotePos()->orderByNoteNeg(\Criteria::DESC)->setLimit($limit);
+		return $this->setLimit($limit);
 	}
 
 	/**
@@ -28,6 +39,8 @@ class PDDebateQuery extends BasePDDebateQuery
 	 * @param 	$geocoded 	Geocoder\Result\Geocoded
 	 */
 	public function geolocalized(Geocoded $geocoded, $limit = 10) {
-		return PDDebateQuery::create()->filterByOnline(true)->filterByPublished(true)->setLimit($limit);
+		return $this->setLimit($limit);
 	}
+
+
 }

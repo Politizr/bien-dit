@@ -1,0 +1,24 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+
+{% block main %}
+	<h1>Accueil Citoyen</h1>
+	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
+	<div id="debateReactionsFeed">
+		{% for reaction in reactions %}
+			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': true, 'pDocument': reaction, 'reactionTo': reaction.reactionTo, 'globalComments': reaction.globalComments } only %}
+		{% else %}
+			<div id="noResult">
+				Aucune réaction pour le moment
+			</div>
+		{% endfor %}
+	</div>
+{% endblock main %}
+
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:homepageC.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
+{% endblock javascriptFooter %}

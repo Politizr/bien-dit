@@ -13,6 +13,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\Model\PUQualificationQuery;
 
@@ -568,7 +569,7 @@ class PUser extends BasePUser implements UserInterface
      */
     public function getDebates() {
         $query = PDDebateQuery::create()
-                    ->filterByOnline(true)
+                    ->online()
                     ->orderByCreatedAt(\Criteria::DESC);
 
         return parent::getPDDebates($query);
@@ -581,10 +582,71 @@ class PUser extends BasePUser implements UserInterface
      */
     public function getReactions() {
         $query = PDReactionQuery::create()
-                    ->filterByOnline(true)
+                    ->online()
                     ->orderByCreatedAt(\Criteria::DESC);
 
         return parent::getPDReactions($query);
+    }
+
+
+    /**
+     *  Renvoie la liste des réactions associées aux débats suivis par l'utilisateur
+     *  triée de la plus récente à la plus ancienne.
+     *
+     * @return PDReaction (collection)
+     */
+    public function getReactionsFollowedDebates() {
+        // Récupère la liste des IDs des débats suivis
+        $followedIds = PUFollowDDQuery::create()
+                            ->select('PDDebateId')
+                            ->filterByPUserId($this->getId())
+                            ->find();
+
+        // Récupère les réactions
+        $pDReactions = PDReactionQuery::create()
+            ->filterByPDDebateId($followedIds->getData())
+            ->online()
+            ->orderByPublishedAt(\Criteria::DESC)
+            ->find();
+
+        return $pDReactions;
+    }
+
+    /**
+     * Renvoie un ensemble de débats correspondant aux tags du type spécifié en argument
+     *
+     * TODO: algo à affiner > idée de ne conserver que les plus pertinents > dépend du nombre de tags et du nombre de résultats
+     *
+     * @param $typeId integer type de tag PTTagType id
+     * @param $notFollowed boolean  renvoie uniquement les débats non suivis
+     *
+     * @return PDDebate (collection)
+     */
+    public function getDebatesTag($typeId, $notFollowed = true) {
+        // Récupère la liste des IDs des tags suivis
+        $followedIds = PTagQuery::create()
+                            ->select('Id')
+                            ->filterByPTTagTypeId($typeId)
+                            ->usePuFollowTPTagQuery()
+                                ->filterByPUserId($this->getId())
+                            ->endUse()
+                            ->setDistinct()
+                            ->find();
+
+        // Récupère les débats
+        $pDDebates = PDDebateQuery::create()
+                        ->usePddTaggedTPDDebateQuery()
+                            ->filterByPTagId($followedIds->getData())
+                        ->endUse()
+                        ->online()
+                        ->popularity()
+                        ->_if($notFollowed)
+                            ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $this->getId())
+                        ->_endif()
+                        ->setDistinct()
+                        ->find();
+
+        return $pDDebates;
     }
 
     // *****************************    BADGES / REPUTATION    ************************* //

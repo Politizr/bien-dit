@@ -95,11 +95,16 @@ AuthorDetail:
 
 
 ################################################################################
-#				ROUTING ESPACE PRIVE
+#               ROUTING CITOYEN
 ################################################################################
-Prive:
-    pattern:  /mon-espace/action
-    defaults: { _controller: PolitizrFrontBundle:Profile:photoChoice }
+HomepageC:
+    pattern:  /citoyen
+    defaults: { _controller: PolitizrFrontBundle:Profile:homepageC }
+
+SuggestionsC:
+    pattern:  /citoyen/suggestions
+    defaults: { _controller: PolitizrFrontBundle:Profile:suggestionsC }
+
 
 
 ################################################################################
@@ -164,3 +169,13 @@ GetDescriptionPDocument:
     defaults: { _controller: PolitizrFrontBundle:Document:getDescriptionPDocument, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+# SUIVI DEBAT
+FollowPDDebate:
+    pattern:  /followPDDebate.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:followPDDebate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UnfollowPDDebate:
+    pattern:  /unfollowPDDebate.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:unfollowPDDebate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

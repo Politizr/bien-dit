@@ -1,8 +1,8 @@
-<div id="debateInfosBlock">
-	<span id="debateMoreInfo">A propos du débat</span>
+<div class="debateInfosBlock">
+	<span class="debateMoreInfo">A propos du débat</span>
 	<hr>
 	{% if pDocument %}
-		<div id="debateInfos">
+		<div class="debateInfos">
 			<!-- TODO / + nombre de followers? -->
 			<!-- NOTES -->
 			{% include 'PolitizrFrontBundle:Fragment:pDocumentNotation.html.twig' with { 'pDocument': pDocument } only %}

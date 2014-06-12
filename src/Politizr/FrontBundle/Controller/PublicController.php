@@ -44,13 +44,13 @@ class PublicController extends Controller
         // *********************************** //
 
         // débats les plus populaires
-        $homeDebates = PDDebateQuery::create()->popularity(10)->find();
+        $homeDebates = PDDebateQuery::create()->online()->popularity(10)->find();
 
         // profils les plus populaires
-        $homeUsers = PUserQuery::create()->popularity(10)->find();
+        $homeUsers = PUserQuery::create()->online()->popularity(10)->find();
 
         // commentaires les plus populaires
-        $homeComments = PDDCommentQuery::create()->last(10)->find();
+        $homeComments = PDDCommentQuery::create()->online()->last(10)->find();
 
         // débats locaux / adresse IP
         // $request = $this->get('request');
