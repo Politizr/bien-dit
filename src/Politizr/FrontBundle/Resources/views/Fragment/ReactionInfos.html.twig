@@ -1,0 +1,11 @@
+<div class="reactionInfosBlock">
+	<span class="reactionMoreInfo">A propos de cette réaction</span>
+	<hr>
+	{% if pDocument %}
+		<div class="reactionInfos">
+			{% include 'PolitizrFrontBundle:Fragment:pDocumentNotation.html.twig' with { 'pDocument': pDocument } only %}
+			<hr>
+			{% include 'PolitizrFrontBundle:Fragment:pDocumentCommentsHighlight.html.twig' with { 'globalComments': pDocument.globalComments } only %}
+		</div>
+	{% endif %}
+</div>

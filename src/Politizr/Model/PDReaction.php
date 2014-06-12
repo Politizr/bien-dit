@@ -4,8 +4,13 @@ namespace Politizr\Model;
 
 use Politizr\Exception\InconsistentDataException;
 
-
 use Politizr\Model\om\BasePDReaction;
+
+
+use Politizr\Model\PUser;
+
+use Politizr\Model\PDRCommentQuery;
+
 
 class PDReaction extends BasePDReaction
 {
@@ -116,4 +121,79 @@ class PDReaction extends BasePDReaction
 	}
 	public function getBlockFollowersC() {
 	}
+
+
+
+	// ************************************************************************************ //
+	//										METHODES 
+	// ************************************************************************************ //
+
+	/**
+	 *	Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
+	 *
+	 * @return PropelCollection d'objets PDRComment 
+	 */
+	public function getGlobalComments() {
+		$query = PDRCommentQuery::create()
+					->filterByPDReactionId($this->getId())
+					->filterByOnline(true)
+					->filterByParagraphNo(0)
+						->_or()
+					->filterByParagraphNo(null)
+					->orderByNotePos(\Criteria::DESC);
+
+		return parent::getPDRComments($query);
+	}
+	
+
+	/**
+	 *	Renvoit les commentaires du débat associés à un paragraphe
+	 *
+	 * @param $paragraphNo 	Numéro du paragraphe ou null pour tous
+	 *
+	 * @return PropelCollection d'objets PDDComment 
+	 */
+	public function getParagraphComments($paragraphNo = null) {
+		$query = PDRCommentQuery::create()
+					->filterByPDReactionId($this->getId())
+					->filterByOnline(true)
+					->_if($paragraphNo)
+						->filterByParagraphNo($paragraphNo)
+					->_else()
+						->filterByParagraphNo(array('min' => 1))
+					->_endif()
+					->orderByNotePos(\Criteria::DESC);
+
+		return parent::getPDRComments($query);
+	}
+
+	/**
+	 *	Renvoit les réactions publiées associées à la réaction
+	 *
+	 * @return PropelCollection d'objets PDReaction
+	 */
+	public function getReactions() {
+		$query = PDReactionQuery::create()
+					->filterByPDReactionId($this->getId())
+					->filterByOnline(true)
+					->filterByPublished(true)
+					->orderByPublishedAt(\Criteria::DESC);
+
+		return parent::getPDReactions($query);
+	}
+
+	/**
+	 *	Renvoir l'objet PDReaction associé à la réaction courante
+	 *
+	 * @return PDReaction
+	 */
+	public function getReactionTo() {
+		$query = PDReactionQuery::create()
+					->filterByOnline(true)
+					->filterByPublished(true)
+					->filterByPublished(true);
+
+		return parent::getPDReactionRelatedByPDReactionId(null, $query);
+	}
+
 }

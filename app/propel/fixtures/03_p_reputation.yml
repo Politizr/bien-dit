@@ -109,6 +109,10 @@ Politizr\Model\PRBadge:
         description:        |
             Atteindre un score de +X à un de ses commentaires
 
+
+
+
+
 Politizr\Model\PRAction:
     d_debate_note_pos:
         online:				true
@@ -122,3 +126,63 @@ Politizr\Model\PRAction:
         description:		|
             Mettre une note - à un débat
         score_evolution:	-1
+    d_reaction_note_pos:
+        online:             true
+        title:              Note positive réaction
+        description:        |
+            Mettre une note + à un débat
+        score_evolution:    1
+    d_reaction_note_neg:
+        online:             true
+        title:              Note négative réaction
+        description:        |
+            Mettre une note - à une réaction
+        score_evolution:    -1
+    d_d_comment_note_pos:
+        online:             true
+        title:              Note positive commentaire débat
+        description:        |
+            Mettre une note + à un commentaire débat
+        score_evolution:    1
+    d_d_comment_note_neg:
+        online:             true
+        title:              Note négative commentaire débat
+        description:        |
+            Mettre une note - à un commentaire débat
+        score_evolution:    -1
+    d_r_comment_note_pos:
+        online:             true
+        title:              Note positive commentaire réaction
+        description:        |
+            Mettre une note + à un commentaire réaction
+        score_evolution:    1
+    d_r_comment_note_neg:
+        online:             true
+        title:              Note négative commentaire réaction
+        description:        |
+            Mettre une note - à un commentaire réaction
+        score_evolution:    -1
+    d_debate_write:
+        online:             true
+        title:              Rédiger un débat
+        description:        |
+            Rédiger un débat
+        score_evolution:    10
+    d_reaction_write:
+        online:             true
+        title:              Rédiger une réaction
+        description:        |
+            Rédiger une réaction
+        score_evolution:    10
+    d_d_comment_write:
+        online:             true
+        title:              Rédiger un commentaire débat
+        description:        |
+            Rédiger un commentaire débat
+        score_evolution:    5
+    d_r_comment_write:
+        online:             true
+        title:              Rédiger un commentaire réaction
+        description:        |
+            Rédiger un commentaire réaction
+        score_evolution:    5

@@ -37,6 +37,9 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
  * http://nyrodev.info/fr/posts/286/Connexions-OAuth-Multiple-avec-Symfony-2-3
  *
  * TODO:
+ *  - lire:
+ *          http://sirprize.me/scribble/under-the-hood-of-symfony-security/
+ *          http://www.reecefowell.com/2011/10/26/redirecting-on-loginlogout-in-symfony2-using-loginhandlers/
  *  - sortir les envois d'emails dans une classe dédiée
  *  - implémentation BaseFacebook pour exploitation API et récupération infos annexes supplémentaires (photo)
  *  - personnaliser les exception

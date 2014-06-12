@@ -31,13 +31,16 @@ abstract class BasePUFollowDDPeer
     const TM_CLASS = 'PUFollowDDTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
+
+    /** the column name for the id field */
+    const ID = 'p_u_follow_d_d.id';
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_u_follow_d_d.p_user_id';
@@ -70,12 +73,12 @@ abstract class BasePUFollowDDPeer
      * e.g. PUFollowDDPeer::$fieldNames[PUFollowDDPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('PUserId', 'PDDebateId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pUserId', 'pDDebateId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::P_USER_ID, PUFollowDDPeer::P_D_DEBATE_ID, PUFollowDDPeer::CREATED_AT, PUFollowDDPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_USER_ID', 'P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('p_user_id', 'p_d_debate_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID, PUFollowDDPeer::P_USER_ID, PUFollowDDPeer::P_D_DEBATE_ID, PUFollowDDPeer::CREATED_AT, PUFollowDDPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -85,12 +88,12 @@ abstract class BasePUFollowDDPeer
      * e.g. PUFollowDDPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('PUserId' => 0, 'PDDebateId' => 1, 'CreatedAt' => 2, 'UpdatedAt' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pUserId' => 0, 'pDDebateId' => 1, 'createdAt' => 2, 'updatedAt' => 3, ),
-        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::P_USER_ID => 0, PUFollowDDPeer::P_D_DEBATE_ID => 1, PUFollowDDPeer::CREATED_AT => 2, PUFollowDDPeer::UPDATED_AT => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_USER_ID' => 0, 'P_D_DEBATE_ID' => 1, 'CREATED_AT' => 2, 'UPDATED_AT' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('p_user_id' => 0, 'p_d_debate_id' => 1, 'created_at' => 2, 'updated_at' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID => 0, PUFollowDDPeer::P_USER_ID => 1, PUFollowDDPeer::P_D_DEBATE_ID => 2, PUFollowDDPeer::CREATED_AT => 3, PUFollowDDPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -164,11 +167,13 @@ abstract class BasePUFollowDDPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
+            $criteria->addSelectColumn(PUFollowDDPeer::ID);
             $criteria->addSelectColumn(PUFollowDDPeer::P_USER_ID);
             $criteria->addSelectColumn(PUFollowDDPeer::P_D_DEBATE_ID);
             $criteria->addSelectColumn(PUFollowDDPeer::CREATED_AT);
             $criteria->addSelectColumn(PUFollowDDPeer::UPDATED_AT);
         } else {
+            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_d_debate_id');
             $criteria->addSelectColumn($alias . '.created_at');
@@ -299,7 +304,7 @@ abstract class BasePUFollowDDPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = serialize(array((string) $obj->getPUserId(), (string) $obj->getPDDebateId()));
+                $key = (string) $obj->getId();
             } // if key === null
             PUFollowDDPeer::$instances[$key] = $obj;
         }
@@ -322,10 +327,10 @@ abstract class BasePUFollowDDPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof PUFollowDD) {
-                $key = serialize(array((string) $value->getPUserId(), (string) $value->getPDDebateId()));
-            } elseif (is_array($value) && count($value) === 2) {
+                $key = (string) $value->getId();
+            } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
-                $key = serialize(array((string) $value[0], (string) $value[1]));
+                $key = (string) $value;
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUFollowDD object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -394,11 +399,11 @@ abstract class BasePUFollowDDPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null && $row[$startcol + 1] === null) {
+        if ($row[$startcol] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
+        return (string) $row[$startcol];
     }
 
     /**
@@ -413,7 +418,7 @@ abstract class BasePUFollowDDPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol], (int) $row[$startcol + 1]);
+        return (int) $row[$startcol];
     }
 
     /**
@@ -1161,6 +1166,10 @@ abstract class BasePUFollowDDPeer
             $criteria = $values->buildCriteria(); // build Criteria from PUFollowDD object
         }
 
+        if ($criteria->containsKey(PUFollowDDPeer::ID) && $criteria->keyContainsValue(PUFollowDDPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUFollowDDPeer::ID.')');
+        }
+
 
         // Set the correct dbName
         $criteria->setDbName(PUFollowDDPeer::DATABASE_NAME);
@@ -1199,18 +1208,10 @@ abstract class BasePUFollowDDPeer
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PUFollowDDPeer::P_USER_ID);
-            $value = $criteria->remove(PUFollowDDPeer::P_USER_ID);
+            $comparison = $criteria->getComparison(PUFollowDDPeer::ID);
+            $value = $criteria->remove(PUFollowDDPeer::ID);
             if ($value) {
-                $selectCriteria->add(PUFollowDDPeer::P_USER_ID, $value, $comparison);
-            } else {
-                $selectCriteria->setPrimaryTableName(PUFollowDDPeer::TABLE_NAME);
-            }
-
-            $comparison = $criteria->getComparison(PUFollowDDPeer::P_D_DEBATE_ID);
-            $value = $criteria->remove(PUFollowDDPeer::P_D_DEBATE_ID);
-            if ($value) {
-                $selectCriteria->add(PUFollowDDPeer::P_D_DEBATE_ID, $value, $comparison);
+                $selectCriteria->add(PUFollowDDPeer::ID, $value, $comparison);
             } else {
                 $selectCriteria->setPrimaryTableName(PUFollowDDPeer::TABLE_NAME);
             }
@@ -1289,18 +1290,10 @@ abstract class BasePUFollowDDPeer
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(PUFollowDDPeer::DATABASE_NAME);
-            // primary key is composite; we therefore, expect
-            // the primary key passed to be an array of pkey values
-            if (count($values) == count($values, COUNT_RECURSIVE)) {
-                // array is not multi-dimensional
-                $values = array($values);
-            }
-            foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(PUFollowDDPeer::P_USER_ID, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(PUFollowDDPeer::P_D_DEBATE_ID, $value[1]));
-                $criteria->addOr($criterion);
-                // we can invalidate the cache for this single PK
-                PUFollowDDPeer::removeInstanceFromPool($value);
+            $criteria->add(PUFollowDDPeer::ID, (array) $values, Criteria::IN);
+            // invalidate the cache for this object(s)
+            foreach ((array) $values as $singleval) {
+                PUFollowDDPeer::removeInstanceFromPool($singleval);
             }
         }
 
@@ -1363,28 +1356,58 @@ abstract class BasePUFollowDDPeer
     }
 
     /**
-     * Retrieve object using using composite pkey values.
-     * @param   int $p_user_id
-     * @param   int $p_d_debate_id
-     * @param      PropelPDO $con
-     * @return   PUFollowDD
+     * Retrieve a single object by pkey.
+     *
+     * @param      int $pk the primary key.
+     * @param      PropelPDO $con the connection to use
+     * @return PUFollowDD
      */
-    public static function retrieveByPK($p_user_id, $p_d_debate_id, PropelPDO $con = null) {
-        $_instancePoolKey = serialize(array((string) $p_user_id, (string) $p_d_debate_id));
-         if (null !== ($obj = PUFollowDDPeer::getInstanceFromPool($_instancePoolKey))) {
-             return $obj;
+    public static function retrieveByPK($pk, PropelPDO $con = null)
+    {
+
+        if (null !== ($obj = PUFollowDDPeer::getInstanceFromPool((string) $pk))) {
+            return $obj;
         }
 
         if ($con === null) {
             $con = Propel::getConnection(PUFollowDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
         $criteria = new Criteria(PUFollowDDPeer::DATABASE_NAME);
-        $criteria->add(PUFollowDDPeer::P_USER_ID, $p_user_id);
-        $criteria->add(PUFollowDDPeer::P_D_DEBATE_ID, $p_d_debate_id);
+        $criteria->add(PUFollowDDPeer::ID, $pk);
+
         $v = PUFollowDDPeer::doSelect($criteria, $con);
 
-        return !empty($v) ? $v[0] : null;
+        return !empty($v) > 0 ? $v[0] : null;
     }
+
+    /**
+     * Retrieve multiple objects by pkey.
+     *
+     * @param      array $pks List of primary keys
+     * @param      PropelPDO $con the connection to use
+     * @return PUFollowDD[]
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function retrieveByPKs($pks, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PUFollowDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $objs = null;
+        if (empty($pks)) {
+            $objs = array();
+        } else {
+            $criteria = new Criteria(PUFollowDDPeer::DATABASE_NAME);
+            $criteria->add(PUFollowDDPeer::ID, $pks, Criteria::IN);
+            $objs = PUFollowDDPeer::doSelect($criteria, $con);
+        }
+
+        return $objs;
+    }
+
 } // BasePUFollowDDPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.

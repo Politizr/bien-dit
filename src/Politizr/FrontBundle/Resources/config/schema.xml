@@ -284,6 +284,7 @@
         <column name="p_user_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
+        <column name="description" type="longvarchar" />
 
         <column name="begin_at" type="date" />
         <column name="end_at" type="date" />
@@ -296,8 +297,9 @@
 
     <table name="p_u_follow_d_d" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_d_debate_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
         <foreign-key foreignTable="p_user" phpName="PuFollowDdPUser" refPhpName="PuFollowDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -308,8 +310,9 @@
 
     <table name="p_u_reputation_r_b" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_r_badge_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_r_badge_id" type="integer" required="true" />
         <foreign-key foreignTable="p_user" phpName="PuReputationRbPUser" refPhpName="PuReputationRbPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -320,8 +323,9 @@
 
     <table name="p_u_reputation_r_a" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_r_action_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_r_action_id" type="integer" required="true" />
         <foreign-key foreignTable="p_user" phpName="PuReputationRaPUser" refPhpName="PuReputationRaPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -335,8 +339,9 @@
 
     <table name="p_u_tagged_t" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
         <foreign-key foreignTable="p_user" phpName="PuTaggedTPUser" refPhpName="PuTaggedTPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -347,8 +352,9 @@
 
     <table name="p_u_follow_t" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_user_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
         <foreign-key foreignTable="p_user" phpName="PuFollowTPUser" refPhpName="PuFollowTPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -477,8 +483,9 @@
 
     <table name="p_d_d_tagged_t" isCrossRef="true">
         <behavior name="timestampable" />
-        <column name="p_d_debate_id" type="integer" required="true" primaryKey="true" />
-        <column name="p_tag_id" type="integer" required="true" primaryKey="true" />
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
         <foreign-key foreignTable="p_d_debate" phpName="PddTaggedTPDDebate" refPhpName="PddTaggedTPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>

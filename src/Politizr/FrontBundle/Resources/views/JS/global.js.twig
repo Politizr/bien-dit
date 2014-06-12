@@ -8,10 +8,11 @@
     // **************************** //
     //      Fonctions simples
     // **************************** //
-    $("#notifClose").click(function(){
+    $("body").on("click", "#notifClose", function() {
         $("#notif").hide();
     });
-    $("#notifErrorClose").click(function(){
+    
+    $("body").on("click", "#notifErrorClose", function() {
         $("#notifError").hide();
     });
 

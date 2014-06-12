@@ -125,7 +125,7 @@ class ProfileController extends Controller {
                 $htmlTags = '';
                 foreach($pTags as $pTag) {
 	                $htmlTags .= $templating->render(
-	                                    'PolitizrFrontBundle:Fragment:tag.html.twig', array(
+	                                    'PolitizrFrontBundle:Fragment:pUserAddTag.html.twig', array(
 	                                    	'pTagId' => $pTag->getId(), 
 	                                    	'pTagTitle' => $pTag->getTitle(), 
 	                                    	'pTTagTypeId' => $pTag->getPTTagTypeId(),
@@ -194,7 +194,7 @@ class ProfileController extends Controller {
                 $pTag = PTagQuery::create()->findPk($pTagId);
                 $templating = $this->get('templating');
                 $htmlTag = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:tag.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment:pUserAddTag.html.twig', array(
                                     	'pTagId' => $pTag->getId(),
                                     	'pTagTitle' => $pTag->getTitle(),
                                     	'pTTagTypeId' => $pTag->getPTTagTypeId(),
@@ -306,7 +306,7 @@ class ProfileController extends Controller {
                 $htmlTags = '';
                 foreach($pTags as $pTag) {
 	                $htmlTags .= $templating->render(
-	                                    'PolitizrFrontBundle:Fragment:tag.html.twig', array(
+	                                    'PolitizrFrontBundle:Fragment:pUserAddTag.html.twig', array(
 	                                    	'pTagId' => $pTag->getId(),
 	                                    	'pTagTitle' => $pTag->getTitle(),
 	                                    	'pTTagTypeId' => $pTag->getPTTagTypeId(),
@@ -375,7 +375,7 @@ class ProfileController extends Controller {
                 $pTag = PTagQuery::create()->findPk($pTagId);
                 $templating = $this->get('templating');
                 $htmlTag = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:tag.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment:pUserAddTag.html.twig', array(
                                     	'pTagId' => $pTag->getId(),
                                     	'pTagTitle' => $pTag->getTitle(),
                                     	'pTTagTypeId' => $pTag->getPTTagTypeId(),

@@ -40,11 +40,12 @@ class PUReputationRBTableMap extends TableMap
         $this->setPhpName('PUReputationRB');
         $this->setClassname('Politizr\\Model\\PUReputationRB');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);
-        $this->addForeignPrimaryKey('p_r_badge_id', 'PRBadgeId', 'INTEGER' , 'p_r_badge', 'id', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
+        $this->addForeignKey('p_r_badge_id', 'PRBadgeId', 'INTEGER', 'p_r_badge', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

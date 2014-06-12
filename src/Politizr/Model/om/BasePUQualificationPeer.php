@@ -30,13 +30,13 @@ abstract class BasePUQualificationPeer
     const TM_CLASS = 'PUQualificationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_u_qualification.id';
@@ -46,6 +46,9 @@ abstract class BasePUQualificationPeer
 
     /** the column name for the title field */
     const TITLE = 'p_u_qualification.title';
+
+    /** the column name for the description field */
+    const DESCRIPTION = 'p_u_qualification.description';
 
     /** the column name for the begin_at field */
     const BEGIN_AT = 'p_u_qualification.begin_at';
@@ -81,12 +84,12 @@ abstract class BasePUQualificationPeer
      * e.g. PUQualificationPeer::$fieldNames[PUQualificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'beginAt', 'endAt', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID, PUQualificationPeer::P_USER_ID, PUQualificationPeer::TITLE, PUQualificationPeer::BEGIN_AT, PUQualificationPeer::END_AT, PUQualificationPeer::CREATED_AT, PUQualificationPeer::UPDATED_AT, PUQualificationPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'begin_at', 'end_at', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Description', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'description', 'beginAt', 'endAt', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID, PUQualificationPeer::P_USER_ID, PUQualificationPeer::TITLE, PUQualificationPeer::DESCRIPTION, PUQualificationPeer::BEGIN_AT, PUQualificationPeer::END_AT, PUQualificationPeer::CREATED_AT, PUQualificationPeer::UPDATED_AT, PUQualificationPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'description', 'begin_at', 'end_at', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -96,12 +99,12 @@ abstract class BasePUQualificationPeer
      * e.g. PUQualificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'BeginAt' => 3, 'EndAt' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'beginAt' => 3, 'endAt' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID => 0, PUQualificationPeer::P_USER_ID => 1, PUQualificationPeer::TITLE => 2, PUQualificationPeer::BEGIN_AT => 3, PUQualificationPeer::END_AT => 4, PUQualificationPeer::CREATED_AT => 5, PUQualificationPeer::UPDATED_AT => 6, PUQualificationPeer::SLUG => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'BEGIN_AT' => 3, 'END_AT' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'begin_at' => 3, 'end_at' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Description' => 3, 'BeginAt' => 4, 'EndAt' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Slug' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'description' => 3, 'beginAt' => 4, 'endAt' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'slug' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID => 0, PUQualificationPeer::P_USER_ID => 1, PUQualificationPeer::TITLE => 2, PUQualificationPeer::DESCRIPTION => 3, PUQualificationPeer::BEGIN_AT => 4, PUQualificationPeer::END_AT => 5, PUQualificationPeer::CREATED_AT => 6, PUQualificationPeer::UPDATED_AT => 7, PUQualificationPeer::SLUG => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'BEGIN_AT' => 4, 'END_AT' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'SLUG' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'description' => 3, 'begin_at' => 4, 'end_at' => 5, 'created_at' => 6, 'updated_at' => 7, 'slug' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -178,6 +181,7 @@ abstract class BasePUQualificationPeer
             $criteria->addSelectColumn(PUQualificationPeer::ID);
             $criteria->addSelectColumn(PUQualificationPeer::P_USER_ID);
             $criteria->addSelectColumn(PUQualificationPeer::TITLE);
+            $criteria->addSelectColumn(PUQualificationPeer::DESCRIPTION);
             $criteria->addSelectColumn(PUQualificationPeer::BEGIN_AT);
             $criteria->addSelectColumn(PUQualificationPeer::END_AT);
             $criteria->addSelectColumn(PUQualificationPeer::CREATED_AT);
@@ -187,6 +191,7 @@ abstract class BasePUQualificationPeer
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.begin_at');
             $criteria->addSelectColumn($alias . '.end_at');
             $criteria->addSelectColumn($alias . '.created_at');

@@ -449,6 +449,7 @@ CREATE TABLE `p_u_qualification`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `title` VARCHAR(250),
+    `description` TEXT,
     `begin_at` DATE,
     `end_at` DATE,
     `created_at` DATETIME,
@@ -472,11 +473,13 @@ DROP TABLE IF EXISTS `p_u_follow_d_d`;
 
 CREATE TABLE `p_u_follow_d_d`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_d_debate_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_user_id`,`p_d_debate_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_u_follow_d_d_FI_1` (`p_user_id`),
     INDEX `p_u_follow_d_d_FI_2` (`p_d_debate_id`),
     CONSTRAINT `p_u_follow_d_d_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -498,11 +501,13 @@ DROP TABLE IF EXISTS `p_u_reputation_r_b`;
 
 CREATE TABLE `p_u_reputation_r_b`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_r_badge_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_user_id`,`p_r_badge_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_u_reputation_r_b_FI_1` (`p_user_id`),
     INDEX `p_u_reputation_r_b_FI_2` (`p_r_badge_id`),
     CONSTRAINT `p_u_reputation_r_b_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -524,13 +529,15 @@ DROP TABLE IF EXISTS `p_u_reputation_r_a`;
 
 CREATE TABLE `p_u_reputation_r_a`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_r_action_id` INTEGER NOT NULL,
     `p_object_name` VARCHAR(150),
     `p_object_id` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_user_id`,`p_r_action_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_u_reputation_r_a_FI_1` (`p_user_id`),
     INDEX `p_u_reputation_r_a_FI_2` (`p_r_action_id`),
     CONSTRAINT `p_u_reputation_r_a_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -552,11 +559,13 @@ DROP TABLE IF EXISTS `p_u_tagged_t`;
 
 CREATE TABLE `p_u_tagged_t`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_user_id`,`p_tag_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_u_tagged_t_FI_1` (`p_user_id`),
     INDEX `p_u_tagged_t_FI_2` (`p_tag_id`),
     CONSTRAINT `p_u_tagged_t_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -578,11 +587,13 @@ DROP TABLE IF EXISTS `p_u_follow_t`;
 
 CREATE TABLE `p_u_follow_t`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_user_id`,`p_tag_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_u_follow_t_FI_1` (`p_user_id`),
     INDEX `p_u_follow_t_FI_2` (`p_tag_id`),
     CONSTRAINT `p_u_follow_t_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -754,11 +765,13 @@ DROP TABLE IF EXISTS `p_d_d_tagged_t`;
 
 CREATE TABLE `p_d_d_tagged_t`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_d_debate_id` INTEGER NOT NULL,
     `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`p_d_debate_id`,`p_tag_id`),
+    PRIMARY KEY (`id`),
+    INDEX `p_d_d_tagged_t_FI_1` (`p_d_debate_id`),
     INDEX `p_d_d_tagged_t_FI_2` (`p_tag_id`),
     CONSTRAINT `p_d_d_tagged_t_FK_1`
         FOREIGN KEY (`p_d_debate_id`)

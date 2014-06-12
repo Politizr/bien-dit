@@ -1,0 +1,26 @@
+<div class="reactionBlock">
+	<h3>{{ pDocument.title }}</h3>
+	<h4>par {{ pDocument.pUser }}</h4>
+	<h5>publié le {{ pDocument.publishedAt('d/m/Y') }}</h5>
+
+	<div class="debateHeader">
+		<div id="debateSummary">
+			{{ pDocument.summary | raw }}
+		</div>
+		<a class="readZen" objectId="{{ pDocument.id }}" type="reaction">Lire l'intégralité de la réaction</a>
+	</div>
+	<hr>
+	<div class="reactionTo">
+		{% if reactionTo %}
+			En réaction à la réaction "{{ reactionTo.title }}" par {{ reactionTo.pUser }}
+		{% else %}
+			En réaction au débat
+		{% endif %} 
+	</div>
+	<hr>
+	<div class="reactionMoreInfos">
+		{% include 'PolitizrFrontBundle:Fragment:pUserMiniBio.html.twig' with { 'pUser': pDocument.pUser } only %}
+		<hr>
+		{% include 'PolitizrFrontBundle:Fragment:ReactionInfos.html.twig' with { 'pDocument': pDocument, 'globalComments': globalComments } only %}
+	</div>
+</div>

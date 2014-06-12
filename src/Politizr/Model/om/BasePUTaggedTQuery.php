@@ -19,11 +19,13 @@ use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUser;
 
 /**
+ * @method PUTaggedTQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUTaggedTQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUTaggedTQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
  * @method PUTaggedTQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUTaggedTQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
+ * @method PUTaggedTQuery groupById() Group by the id column
  * @method PUTaggedTQuery groupByPUserId() Group by the p_user_id column
  * @method PUTaggedTQuery groupByPTagId() Group by the p_tag_id column
  * @method PUTaggedTQuery groupByCreatedAt() Group by the created_at column
@@ -49,6 +51,7 @@ use Politizr\Model\PUser;
  * @method PUTaggedT findOneByCreatedAt(string $created_at) Return the first PUTaggedT filtered by the created_at column
  * @method PUTaggedT findOneByUpdatedAt(string $updated_at) Return the first PUTaggedT filtered by the updated_at column
  *
+ * @method array findById(int $id) Return PUTaggedT objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUTaggedT objects filtered by the p_user_id column
  * @method array findByPTagId(int $p_tag_id) Return PUTaggedT objects filtered by the p_tag_id column
  * @method array findByCreatedAt(string $created_at) Return PUTaggedT objects filtered by the created_at column
@@ -98,11 +101,10 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
      * Go fast if the query is untouched.
      *
      * <code>
-     * $obj = $c->findPk(array(12, 34), $con);
+     * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
-                         A Primary key composition: [$p_user_id, $p_tag_id]
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   PUTaggedT|PUTaggedT[]|mixed the result, formatted by the current formatter
@@ -112,7 +114,7 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUTaggedTPeer::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
+        if ((null !== ($obj = PUTaggedTPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is alredy in the instance pool
             return $obj;
         }
@@ -130,6 +132,20 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 PUTaggedT A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
@@ -141,11 +157,10 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_user_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_u_tagged_t` WHERE `p_user_id` = :p0 AND `p_tag_id` = :p1';
+        $sql = 'SELECT `id`, `p_user_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_u_tagged_t` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -155,7 +170,7 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $obj = new PUTaggedT();
             $obj->hydrate($row);
-            PUTaggedTPeer::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
+            PUTaggedTPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -184,7 +199,7 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
@@ -214,10 +229,8 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(PUTaggedTPeer::P_USER_ID, $key[0], Criteria::EQUAL);
-        $this->addUsingAlias(PUTaggedTPeer::P_TAG_ID, $key[1], Criteria::EQUAL);
 
-        return $this;
+        return $this->addUsingAlias(PUTaggedTPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -229,17 +242,50 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        if (empty($keys)) {
-            return $this->add(null, '1<>1', Criteria::CUSTOM);
-        }
-        foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(PUTaggedTPeer::P_USER_ID, $key[0], Criteria::EQUAL);
-            $cton1 = $this->getNewCriterion(PUTaggedTPeer::P_TAG_ID, $key[1], Criteria::EQUAL);
-            $cton0->addAnd($cton1);
-            $this->addOr($cton0);
+
+        return $this->addUsingAlias(PUTaggedTPeer::ID, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
+     * </code>
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUTaggedTQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(PUTaggedTPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(PUTaggedTPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        return $this;
+        return $this->addUsingAlias(PUTaggedTPeer::ID, $id, $comparison);
     }
 
     /**
@@ -578,9 +624,7 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
     public function prune($pUTaggedT = null)
     {
         if ($pUTaggedT) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(PUTaggedTPeer::P_USER_ID), $pUTaggedT->getPUserId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond1', $this->getAliasedColName(PUTaggedTPeer::P_TAG_ID), $pUTaggedT->getPTagId(), Criteria::NOT_EQUAL);
-            $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
+            $this->addUsingAlias(PUTaggedTPeer::ID, $pUTaggedT->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

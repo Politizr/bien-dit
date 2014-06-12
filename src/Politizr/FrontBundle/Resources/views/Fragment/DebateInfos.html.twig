@@ -1,0 +1,17 @@
+<div id="debateInfosBlock">
+	<span id="debateMoreInfo">A propos du débat</span>
+	<hr>
+	{% if pDocument %}
+		<div id="debateInfos">
+			<!-- TODO / + nombre de followers? -->
+			<!-- NOTES -->
+			{% include 'PolitizrFrontBundle:Fragment:pDocumentNotation.html.twig' with { 'pDocument': pDocument } only %}
+			<hr>
+			<!-- TAGS -->
+			{% include 'PolitizrFrontBundle:Fragment:DebateTags.html.twig' with { 'pTags': pDocument.pTags } only %}
+			<hr>
+			<!-- COMMENTAIRES -->
+			{% include 'PolitizrFrontBundle:Fragment:pDocumentCommentsHighlight.html.twig' with { 'globalComments': globalComments } only %}
+		</div>
+	{% endif %}
+</div>

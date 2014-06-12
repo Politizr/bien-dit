@@ -21,6 +21,7 @@ use Politizr\Model\PUser;
  * @method PUQualificationQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUQualificationQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUQualificationQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PUQualificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PUQualificationQuery orderByBeginAt($order = Criteria::ASC) Order by the begin_at column
  * @method PUQualificationQuery orderByEndAt($order = Criteria::ASC) Order by the end_at column
  * @method PUQualificationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -30,6 +31,7 @@ use Politizr\Model\PUser;
  * @method PUQualificationQuery groupById() Group by the id column
  * @method PUQualificationQuery groupByPUserId() Group by the p_user_id column
  * @method PUQualificationQuery groupByTitle() Group by the title column
+ * @method PUQualificationQuery groupByDescription() Group by the description column
  * @method PUQualificationQuery groupByBeginAt() Group by the begin_at column
  * @method PUQualificationQuery groupByEndAt() Group by the end_at column
  * @method PUQualificationQuery groupByCreatedAt() Group by the created_at column
@@ -49,6 +51,7 @@ use Politizr\Model\PUser;
  *
  * @method PUQualification findOneByPUserId(int $p_user_id) Return the first PUQualification filtered by the p_user_id column
  * @method PUQualification findOneByTitle(string $title) Return the first PUQualification filtered by the title column
+ * @method PUQualification findOneByDescription(string $description) Return the first PUQualification filtered by the description column
  * @method PUQualification findOneByBeginAt(string $begin_at) Return the first PUQualification filtered by the begin_at column
  * @method PUQualification findOneByEndAt(string $end_at) Return the first PUQualification filtered by the end_at column
  * @method PUQualification findOneByCreatedAt(string $created_at) Return the first PUQualification filtered by the created_at column
@@ -58,6 +61,7 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PUQualification objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUQualification objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PUQualification objects filtered by the title column
+ * @method array findByDescription(string $description) Return PUQualification objects filtered by the description column
  * @method array findByBeginAt(string $begin_at) Return PUQualification objects filtered by the begin_at column
  * @method array findByEndAt(string $end_at) Return PUQualification objects filtered by the end_at column
  * @method array findByCreatedAt(string $created_at) Return PUQualification objects filtered by the created_at column
@@ -164,7 +168,7 @@ abstract class BasePUQualificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `begin_at`, `end_at`, `created_at`, `updated_at`, `slug` FROM `p_u_qualification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `description`, `begin_at`, `end_at`, `created_at`, `updated_at`, `slug` FROM `p_u_qualification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -366,6 +370,35 @@ abstract class BasePUQualificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUQualificationPeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $description The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUQualificationQuery The current query, for fluid interface
+     */
+    public function filterByDescription($description = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($description)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $description)) {
+                $description = str_replace('*', '%', $description);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUQualificationPeer::DESCRIPTION, $description, $comparison);
     }
 
     /**

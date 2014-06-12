@@ -59,6 +59,12 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     protected $title;
 
     /**
+     * The value for the description field.
+     * @var        string
+     */
+    protected $description;
+
+    /**
      * The value for the begin_at field.
      * @var        string
      */
@@ -141,6 +147,16 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Get the [description] column value.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -381,6 +397,27 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     } // setTitle()
 
     /**
+     * Set the value of [description] column.
+     *
+     * @param string $v new value
+     * @return PUQualification The current object (for fluent API support)
+     */
+    public function setDescription($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[] = PUQualificationPeer::DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setDescription()
+
+    /**
      * Sets the value of [begin_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -528,11 +565,12 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->begin_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->end_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->begin_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->end_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->slug = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -541,7 +579,7 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 8; // 8 = PUQualificationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PUQualificationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUQualification object", $e);
@@ -798,6 +836,9 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUQualificationPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
+        if ($this->isColumnModified(PUQualificationPeer::DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`description`';
+        }
         if ($this->isColumnModified(PUQualificationPeer::BEGIN_AT)) {
             $modifiedColumns[':p' . $index++]  = '`begin_at`';
         }
@@ -832,6 +873,9 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
+                    case '`description`':
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case '`begin_at`':
                         $stmt->bindValue($identifier, $this->begin_at, PDO::PARAM_STR);
@@ -1004,18 +1048,21 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 return $this->getTitle();
                 break;
             case 3:
-                return $this->getBeginAt();
+                return $this->getDescription();
                 break;
             case 4:
-                return $this->getEndAt();
+                return $this->getBeginAt();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getEndAt();
                 break;
             case 6:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 7:
+                return $this->getUpdatedAt();
+                break;
+            case 8:
                 return $this->getSlug();
                 break;
             default:
@@ -1050,11 +1097,12 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getBeginAt(),
-            $keys[4] => $this->getEndAt(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
-            $keys[7] => $this->getSlug(),
+            $keys[3] => $this->getDescription(),
+            $keys[4] => $this->getBeginAt(),
+            $keys[5] => $this->getEndAt(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
+            $keys[8] => $this->getSlug(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
@@ -1104,18 +1152,21 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 $this->setTitle($value);
                 break;
             case 3:
-                $this->setBeginAt($value);
+                $this->setDescription($value);
                 break;
             case 4:
-                $this->setEndAt($value);
+                $this->setBeginAt($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setEndAt($value);
                 break;
             case 6:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 7:
+                $this->setUpdatedAt($value);
+                break;
+            case 8:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1145,11 +1196,12 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setBeginAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setEndAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
+        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setBeginAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEndAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSlug($arr[$keys[8]]);
     }
 
     /**
@@ -1164,6 +1216,7 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUQualificationPeer::ID)) $criteria->add(PUQualificationPeer::ID, $this->id);
         if ($this->isColumnModified(PUQualificationPeer::P_USER_ID)) $criteria->add(PUQualificationPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUQualificationPeer::TITLE)) $criteria->add(PUQualificationPeer::TITLE, $this->title);
+        if ($this->isColumnModified(PUQualificationPeer::DESCRIPTION)) $criteria->add(PUQualificationPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PUQualificationPeer::BEGIN_AT)) $criteria->add(PUQualificationPeer::BEGIN_AT, $this->begin_at);
         if ($this->isColumnModified(PUQualificationPeer::END_AT)) $criteria->add(PUQualificationPeer::END_AT, $this->end_at);
         if ($this->isColumnModified(PUQualificationPeer::CREATED_AT)) $criteria->add(PUQualificationPeer::CREATED_AT, $this->created_at);
@@ -1234,6 +1287,7 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     {
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
+        $copyObj->setDescription($this->getDescription());
         $copyObj->setBeginAt($this->getBeginAt());
         $copyObj->setEndAt($this->getEndAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1357,6 +1411,7 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         $this->id = null;
         $this->p_user_id = null;
         $this->title = null;
+        $this->description = null;
         $this->begin_at = null;
         $this->end_at = null;
         $this->created_at = null;

@@ -43,6 +43,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -107,6 +113,16 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * Get the [id] column value.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Get the [p_user_id] column value.
@@ -227,6 +243,27 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         return $dt->format($format);
 
     }
+
+    /**
+     * Set the value of [id] column.
+     *
+     * @param int $v new value
+     * @return PUReputationRA The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[] = PUReputationRAPeer::ID;
+        }
+
+
+        return $this;
+    } // setId()
 
     /**
      * Set the value of [p_user_id] column.
@@ -398,12 +435,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         try {
 
-            $this->p_user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_r_action_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_object_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->p_object_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->p_r_action_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -412,7 +450,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 6; // 6 = PUReputationRAPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PUReputationRAPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUReputationRA object", $e);
@@ -656,8 +694,15 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[] = PUReputationRAPeer::ID;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUReputationRAPeer::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(PUReputationRAPeer::ID)) {
+            $modifiedColumns[':p' . $index++]  = '`id`';
+        }
         if ($this->isColumnModified(PUReputationRAPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -687,6 +732,9 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case '`id`':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
@@ -712,6 +760,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -851,21 +906,24 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getPUserId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getPRActionId();
+                return $this->getPUserId();
                 break;
             case 2:
-                return $this->getPObjectName();
+                return $this->getPRActionId();
                 break;
             case 3:
-                return $this->getPObjectId();
+                return $this->getPObjectName();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getPObjectId();
                 break;
             case 5:
+                return $this->getCreatedAt();
+                break;
+            case 6:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -891,18 +949,19 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUReputationRA'][serialize($this->getPrimaryKey())])) {
+        if (isset($alreadyDumpedObjects['PUReputationRA'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUReputationRA'][serialize($this->getPrimaryKey())] = true;
+        $alreadyDumpedObjects['PUReputationRA'][$this->getPrimaryKey()] = true;
         $keys = PUReputationRAPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getPUserId(),
-            $keys[1] => $this->getPRActionId(),
-            $keys[2] => $this->getPObjectName(),
-            $keys[3] => $this->getPObjectId(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getPRActionId(),
+            $keys[3] => $this->getPObjectName(),
+            $keys[4] => $this->getPObjectId(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPuReputationRaPUser) {
@@ -946,21 +1005,24 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setPUserId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setPRActionId($value);
+                $this->setPUserId($value);
                 break;
             case 2:
-                $this->setPObjectName($value);
+                $this->setPRActionId($value);
                 break;
             case 3:
-                $this->setPObjectId($value);
+                $this->setPObjectName($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setPObjectId($value);
                 break;
             case 5:
+                $this->setCreatedAt($value);
+                break;
+            case 6:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -987,12 +1049,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         $keys = PUReputationRAPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setPUserId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPRActionId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPObjectName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPObjectId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPRActionId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
     }
 
     /**
@@ -1004,6 +1067,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         $criteria = new Criteria(PUReputationRAPeer::DATABASE_NAME);
 
+        if ($this->isColumnModified(PUReputationRAPeer::ID)) $criteria->add(PUReputationRAPeer::ID, $this->id);
         if ($this->isColumnModified(PUReputationRAPeer::P_USER_ID)) $criteria->add(PUReputationRAPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUReputationRAPeer::P_R_ACTION_ID)) $criteria->add(PUReputationRAPeer::P_R_ACTION_ID, $this->p_r_action_id);
         if ($this->isColumnModified(PUReputationRAPeer::P_OBJECT_NAME)) $criteria->add(PUReputationRAPeer::P_OBJECT_NAME, $this->p_object_name);
@@ -1025,36 +1089,29 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     public function buildPkeyCriteria()
     {
         $criteria = new Criteria(PUReputationRAPeer::DATABASE_NAME);
-        $criteria->add(PUReputationRAPeer::P_USER_ID, $this->p_user_id);
-        $criteria->add(PUReputationRAPeer::P_R_ACTION_ID, $this->p_r_action_id);
+        $criteria->add(PUReputationRAPeer::ID, $this->id);
 
         return $criteria;
     }
 
     /**
-     * Returns the composite primary key for this object.
-     * The array elements will be in same order as specified in XML.
-     * @return array
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        $pks = array();
-        $pks[0] = $this->getPUserId();
-        $pks[1] = $this->getPRActionId();
-
-        return $pks;
+        return $this->getId();
     }
 
     /**
-     * Set the [composite] primary key.
+     * Generic method to set the primary key (id column).
      *
-     * @param array $keys The elements of the composite key (order must match the order in XML file).
+     * @param  int $key Primary key.
      * @return void
      */
-    public function setPrimaryKey($keys)
+    public function setPrimaryKey($key)
     {
-        $this->setPUserId($keys[0]);
-        $this->setPRActionId($keys[1]);
+        $this->setId($key);
     }
 
     /**
@@ -1064,7 +1121,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getPUserId()) && (null === $this->getPRActionId());
+        return null === $this->getId();
     }
 
     /**
@@ -1100,6 +1157,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1252,6 +1310,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function clear()
     {
+        $this->id = null;
         $this->p_user_id = null;
         $this->p_r_action_id = null;
         $this->p_object_name = null;

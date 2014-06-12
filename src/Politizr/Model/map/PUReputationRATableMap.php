@@ -40,11 +40,12 @@ class PUReputationRATableMap extends TableMap
         $this->setPhpName('PUReputationRA');
         $this->setClassname('Politizr\\Model\\PUReputationRA');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);
-        $this->addForeignPrimaryKey('p_r_action_id', 'PRActionId', 'INTEGER' , 'p_r_action', 'id', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
+        $this->addForeignKey('p_r_action_id', 'PRActionId', 'INTEGER', 'p_r_action', 'id', true, null, null);
         $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
         $this->addColumn('p_object_id', 'PObjectId', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);

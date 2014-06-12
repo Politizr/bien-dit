@@ -40,11 +40,12 @@ class PUFollowTTableMap extends TableMap
         $this->setPhpName('PUFollowT');
         $this->setClassname('Politizr\\Model\\PUFollowT');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);
-        $this->addForeignPrimaryKey('p_tag_id', 'PTagId', 'INTEGER' , 'p_tag', 'id', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
+        $this->addForeignKey('p_tag_id', 'PTagId', 'INTEGER', 'p_tag', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

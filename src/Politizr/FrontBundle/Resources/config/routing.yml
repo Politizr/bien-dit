@@ -86,6 +86,13 @@ DebateDetail:
         _method:        GET
         id:             \d+
 
+AuthorDetail:
+    pattern:  /{id}/auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:authorDetail }
+    requirements:
+        _method:        GET
+        id:             \d+
+
 
 ################################################################################
 #				ROUTING ESPACE PRIVE
@@ -149,5 +156,11 @@ RemovePUFollowTPTag:
 AddNewPTag:
     pattern:  /u/addNewPTag.{_format}
     defaults: { _controller: PolitizrFrontBundle:Profile:addNewPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+# CONSULTATION DEBAT / REACTION
+GetDescriptionPDocument:
+    pattern:  /getDescriptionPDocument.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:getDescriptionPDocument, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 

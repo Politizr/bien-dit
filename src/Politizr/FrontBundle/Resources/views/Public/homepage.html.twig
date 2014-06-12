@@ -20,34 +20,36 @@
 			<h2>Débats les plus actifs</h2>
 			<div>
 				{% for debate in homeDebates %}
+					{% set user = debate.pUser %}
 					<div>
-						<a href="">{{ debate.title | slice(0, 50) }}...</a> par {{ debate.pUser }}<br/>
+						<i>"<a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a>"</i> par <a href="{{ path('AuthorDetail', { 'id': user.id, 'slug': user.slug }) }}">{{ user }}</a><br/>
 					</div>
 				{% else %}
 					<div id="noResult">Aucun débat disponible</div>
 				{% endfor %}
 			</div>
 		</div>
-
+		<hr>
 		<div id="homeUsers">
 			<h2>Profils les plus populaires</h2>
 			<div>
 				{% for user in homeUsers %}
 					<div>
-						<a href="">{{ user.firstname }} {{ user.name }}</a><br/>
+						<a href="{{ path('AuthorDetail', { 'id': user.id, 'slug': user.slug }) }}">{{ user.firstname }} {{ user.name }}</a><br/>
 					</div>
 				{% else %}
 					<div id="noResult">Aucun profil disponible</div>
 				{% endfor %}
 			</div>
 		</div>
-
+		<hr>
 		<div id="homeComments">
 			<h2>Vos derniers commentaires</h2>
 			<div>
 				{% for comment in homeComments %}
+					{% set debate = comment.pDDebate %}
 					<div>
-						<a href="">{{ comment.description | slice(0, 50) }}...</a><br/>
+						<i>"{{ comment.description }}"</i> sur le débat <a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a><br/>
 					</div>
 				{% else %}
 					<div id="noResult">Aucun commentaire disponible</div>

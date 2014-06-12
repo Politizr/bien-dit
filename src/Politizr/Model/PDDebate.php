@@ -8,6 +8,7 @@ use Politizr\Model\om\BasePDDebate;
 use Politizr\Model\PUser;
 
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PDReactionQuery;
 
 class PDDebate extends BasePDDebate
 {
@@ -94,4 +95,74 @@ class PDDebate extends BasePDDebate
 	}
 	public function getBlockFollowersC() {
 	}
+
+
+	// ************************************************************************************ //
+	//										METHODES
+	// ************************************************************************************ //
+
+	/**
+	 * Renvoit les tags associés au document
+	 *
+	 * @return PropelCollection d'objets PTag
+	 */
+	public function getPTags() {
+		$query = PTagQuery::create()->filterByOnline(true);
+
+		return parent::getPddTaggedTPTags($query);
+	}
+
+	/**
+	 *	Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
+	 *
+	 * @return PropelCollection d'objets PDDComment 
+	 */
+	public function getGlobalComments() {
+		$query = PDDCommentQuery::create()
+					->filterByPDDebateId($this->getId())
+					->filterByOnline(true)
+					->filterByParagraphNo(0)
+						->_or()
+					->filterByParagraphNo(null)
+					->orderByNotePos(\Criteria::DESC);
+
+		return parent::getPDDComments($query);
+	}
+	
+
+	/**
+	 *	Renvoit les commentaires du débat associés à un paragraphe
+	 *
+	 * @param $paragraphNo 	Numéro du paragraphe ou null pour tous
+	 *
+	 * @return PropelCollection d'objets PDDComment 
+	 */
+	public function getParagraphComments($paragraphNo = null) {
+		$query = PDDCommentQuery::create()
+					->filterByPDDebateId($this->getId())
+					->filterByOnline(true)
+					->_if($paragraphNo)
+						->filterByParagraphNo($paragraphNo)
+					->_else()
+						->filterByParagraphNo(array('min' => 1))
+					->_endif()
+					->orderByNotePos(\Criteria::DESC);
+
+		return parent::getPDDComments($query);
+	}
+
+	/**
+	 *	Renvoit les réactions publiées associées au débat
+	 *
+	 * @return PropelCollection d'objets PDReaction
+	 */
+	public function getReactions() {
+		$query = PDReactionQuery::create()
+					->filterByPDDebateId($this->getId())
+					->filterByOnline(true)
+					->orderByPublishedAt(\Criteria::DESC);
+
+		return parent::getPDReactions($query);
+	}
+
 }

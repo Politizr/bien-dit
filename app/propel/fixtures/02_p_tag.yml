@@ -17,33 +17,177 @@ Politizr\Model\PTTagType:
 Politizr\Model\PTag:
 
     # LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+    president:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Président de la République
     depute:
         online:				true
         p_t_tag_type_id:	elu
         title:				Député
+    senateur:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Sénateur
+    depute_europeen:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Député Européen
     conseiller_regional:
         online:				true
         p_t_tag_type_id:	elu
         title:				Conseiller Régional
+    president_conseiller_regional:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Président du Conseil Régional
+    conseiller_departemental:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Conseiller Départemental
+    president_conseiller_departemental:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Président du Conseil Départemental
+    conseiller_communautaire:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Conseiller Communautaire
+    president_conseiller_communautaire:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Président du Conseil Communautaire
+    conseiller_municipal:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Conseiller Municipal
+    maire:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Maire
+    adjoint_maire:
+        online:             true
+        p_t_tag_type_id:    elu
+        title:              Adjoint au Maire
 
 
     # LISTE DE TOUS LES ZONAGES: TODO: script pour insertion régions / départements / villes
+    monde:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Monde
     france:
         online:             true
         p_t_tag_type_id:    geo
         title:              France
+    alsace:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Alsace
+    aquitaine:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Aquitaine
+    auvergne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Auvergne
+    basse_normandie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Basse-Normandie
+    bourgogne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bourgogne
+    bretagne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bretagne
+    centre:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Centre
+    champagne_ardenne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Champagne-Ardenne
+    corse:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Corse
+    franche_comte:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Franche-Comté
+    guadeloupe:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Guadeloupe
+    guyane:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Guyane
+    haute_normandie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Normandie
+    ile_de_france:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Île-de-France
+    la_reunion:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              La Réunion
+    languedoc_roussillon:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Languedoc-Roussillon
+    limousin:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Limousin
+    lorraine:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Lorraine
+    martinique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Martinique
+    mayotte:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Mayotte
     midipyrenees:
         online:             true
         p_t_tag_type_id:    geo
         title:              Midi-Pyrénées
-    ariege:
+    nord_pas_de_calais:
         online:             true
         p_t_tag_type_id:    geo
-        title:              Ariège
-    foix:
+        title:              Nord-Pas-de-Calais
+    pays_de_la_loire:
         online:             true
         p_t_tag_type_id:    geo
-        title:              foix
+        title:              Pays de la Loire
+    picardie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Picardie
+    poitou_charentes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Poitou Charentes
+    provence_alpes_cote_d_azur:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Provence-Alpes-Côte d'Azur
+    rhone_alpes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Rhône-Alpes
 
 
 

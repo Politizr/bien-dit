@@ -215,6 +215,14 @@ liip_imagine:
                 relative_resize:  { widen: 150 }
 
         # front
+        user_bio_mini_thumb:
+            quality:              100
+            filters:
+                thumbnail:         { size: [50, 50], mode: outbound }
+        user_bio_thumb:
+            quality:              100
+            filters:
+                thumbnail:         { size: [150, 150], mode: outbound }
         facebook_share:
             quality:              100
             filters:
@@ -229,7 +237,7 @@ bazinga_faker:
         #                                   UTILISATEUR
         #################################################################################################################
         Politizr\Model\PUser:
-            number:                     100
+            number:                     50
             custom_formatters:
                 Type:                   { method: numberBetween, parameters: [ 1, 2 ] }
                 Status:                 { method: numberBetween, parameters: [ 1, 1 ] }
@@ -271,9 +279,34 @@ bazinga_faker:
             number:                     150
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 20 ] }
+                Description:            { method: paragraphs, parameters: [ 4, true ] }
 
-#        Politizr\Model\PUFollowU:
-#            number:                     150
+        Politizr\Model\PUFollowU:
+            number:                     1
+
+        Politizr\Model\PUFollowT:
+            number:                     150
+            custom_formatters:
+                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
+
+        Politizr\Model\PUTaggedT:
+            number:                     150
+            custom_formatters:
+                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
+
+        #################################################################################################################
+        #                                   REPUTATION
+        #################################################################################################################
+        Politizr\Model\PUReputationRB:
+            number:                     50
+            custom_formatters:
+                PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
+
+        Politizr\Model\PUReputationRA:
+            number:                     150
+            custom_formatters:
+                PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
+
 
         #################################################################################################################
         #                                   COMMANDE
@@ -308,46 +341,53 @@ bazinga_faker:
         #                                   DOCUMENTS
         #################################################################################################################
         Politizr\Model\PDDebate:
-            number:                     200
+            number:                     300
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 150 ] }
 
-                Summary:                { method: paragraphs, parameters: [ 2, true ] }
-                Description:            { method: paragraphs, parameters: [ 50, true ] }
-                MoreInfo:               { method: paragraphs, parameters: [ 5, true ] }
+                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+                Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+                MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 Published:              { method: boolean }
+                PublishedAt:            { method: dateTimeThisYear }
                 PublishedBy:            { method: null }
 
                 Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
 
-#         Politizr\Model\PUFollowDD:
-#             number:                     150
+        Politizr\Model\PUFollowDD:
+            number:                     700
+
+        Politizr\Model\PDDTaggedT:
+            number:                     700
+            custom_formatters:
+                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
 
         Politizr\Model\PDReaction:
-            number:                     300
+            number:                     700
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 150 ] }
 
-                Summary:                { method: paragraphs, parameters: [ 2, true ] }
-                Description:            { method: paragraphs, parameters: [ 50, true ] }
-                MoreInfo:               { method: paragraphs, parameters: [ 5, true ] }
+                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+                Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+                MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 Published:              { method: boolean }
+                PublishedAt:            { method: dateTimeThisYear }
                 PublishedBy:            { method: null }
 
                 Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
                 Slug:                   { method: null }
 
         Politizr\Model\PDDComment:
-            number:                     300
+            number:                     700
             custom_formatters:
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }
@@ -356,11 +396,12 @@ bazinga_faker:
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
 
                 Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
 
         Politizr\Model\PDRComment:
-            number:                     300
+            number:                     900
             custom_formatters:
                 Description:            { method: realText, parameters: [ 150 ] }
                 ParagraphNo:            { method: randomDigit }
@@ -369,6 +410,7 @@ bazinga_faker:
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
 
                 PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
 
                 Online:                 { method: numberBetween, parameters: [ 1, 1 ] }
 

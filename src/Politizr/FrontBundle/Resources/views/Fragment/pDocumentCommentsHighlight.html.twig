@@ -1,0 +1,16 @@
+<div id="commentsHightlight">
+	{% for comment in globalComments | slice(0, 5) %}
+		<div id="comment">
+			<div id="description">{{ comment.description | raw }}</div>
+			<div id="notePos">{{ comment.notePos }} +</div>
+			<div id="noteNeg">{{ comment.noteNeg }} -</div>
+		</div>
+	{% else %}
+		<div id="noResult">
+			Aucun commentaire pour le moment
+		</div>
+	{% endfor %}
+	{% if globalComments | length > 5 %}
+		<a>Lire tous les commentaires</a>
+	{% endif %}
+</div>
