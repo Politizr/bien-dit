@@ -25,7 +25,7 @@
 	{% endif %} 
 	<hr>
 	<div class="reactionMoreInfos">
-		{% include 'PolitizrFrontBundle:Fragment:pUserMiniBio.html.twig' with { 'pUser': pDocument.pUser } only %}
+		{% include 'PolitizrFrontBundle:Fragment:UserMiniBio.html.twig' with { 'pUser': pDocument.pUser } only %}
 		<hr>
 		{% include 'PolitizrFrontBundle:Fragment:ReactionInfos.html.twig' with { 'pDocument': pDocument, 'globalComments': globalComments } only %}
 	</div>

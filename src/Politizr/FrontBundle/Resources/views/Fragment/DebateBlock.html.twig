@@ -5,7 +5,7 @@
 
 	<div class="debateHeader">
 		<div class="star">
-			{{ linkFollowDebate(debate.id) }}
+			{{ linkFollow(debate.id, 'debate') }}
 		</div>
 		<div class="debateSummary">
 			{{ debate.summary | raw }}
@@ -14,7 +14,7 @@
 	</div>
 	<hr>
 	<div class="debateMoreInfos">
-		{% include 'PolitizrFrontBundle:Fragment:pUserMiniBio.html.twig' with { 'pUser': debate.pUser } only %}
+		{% include 'PolitizrFrontBundle:Fragment:UserMiniBio.html.twig' with { 'pUser': debate.pUser } only %}
 		<hr>
 		{% include 'PolitizrFrontBundle:Fragment:DebateInfos.html.twig' with { 'pDocument': debate, 'pTags': debate.pTags, 'globalComments': debate.globalComments, 'paragraphComments': debate.paragraphComments } only %}
 	</div>

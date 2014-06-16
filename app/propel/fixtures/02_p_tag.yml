@@ -44,11 +44,11 @@ Politizr\Model\PTag:
     conseiller_departemental:
         online:             true
         p_t_tag_type_id:    elu
-        title:              Conseiller Départemental
+        title:              Conseiller Général
     president_conseiller_departemental:
         online:             true
         p_t_tag_type_id:    elu
-        title:              Président du Conseil Départemental
+        title:              Président du Conseil Général
     conseiller_communautaire:
         online:             true
         p_t_tag_type_id:    elu

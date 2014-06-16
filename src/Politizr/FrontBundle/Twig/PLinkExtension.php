@@ -18,6 +18,7 @@ class PLinkExtension extends \Twig_Extension
     private $logger;
 
     private $router;
+    private $templating;
 
     private $pUser;
 
@@ -28,6 +29,7 @@ class PLinkExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
 
         $this->router = $serviceContainer->get('router');
+        $this->templating = $serviceContainer->get('templating');
 
         // Récupération du user en session
         $token = $serviceContainer->get('security.context')->getToken();
@@ -67,7 +69,7 @@ class PLinkExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'linkFollowDebate'  => new \Twig_Function_Method($this, 'linkFollowDebate', array(
+            'linkFollow'  => new \Twig_Function_Method($this, 'linkFollow', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -75,20 +77,22 @@ class PLinkExtension extends \Twig_Extension
     }
 
     /**
-     *  Formate un lien "Suivre le débat" / "Ne plus suivre le débat"
+     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
      *
-     * @param $id   ID objet PDDebate
+     * @param $id   ID objet
+     * @param $type Object type (debate / puser)
      *
      * @return string
      */
-    public function linkFollowDebate($id)
+    public function linkFollow($id, $type)
     {
         $this->logger->info('*** linkFollowDebate');
         $this->logger->info('$id = '.print_r($id, true));
+        $this->logger->info('$type = '.print_r($type, true));
 
-        // Lien par défaut > inscription
-        $linkHref = $this->router->generate('Inscription');
-        $linkText = 'Suivre le débat';
+        $objectType = $type;
+        $objectId = $id;
+        $isFollower = false;
 
         if ($this->pUser) {
             $nbDebates = PUFollowDDQuery::create()
@@ -97,19 +101,21 @@ class PLinkExtension extends \Twig_Extension
                 ->count();
 
             if ($nbDebates > 0) {
-                $linkText = 'Ne plus suivre';
-                
-                $html = '<a class="unfollowPDebate" objectId="'.$id.'">'.$linkText.'</a>';
-            } else {
-                $html = '<a class="followPDebate" objectId="'.$id.'">'.$linkText.'</a>';
+                $isFollower = true;
             }
-        } else {
-            $html = '<a href="'.$linkHref.'">'.$linkText.'</a>';
         }
 
-        
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
+                                'objectId' => $objectId,
+                                'objectType' => $objectType,
+                                'isFollower' => $isFollower
+                                )
+                    );
 
         return $html;
+
     }
 
     public function getName()

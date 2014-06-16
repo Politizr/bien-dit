@@ -13,11 +13,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUFollowUQuery;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
+use Politizr\Model\PUFollowU;
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
@@ -143,7 +146,7 @@ class DocumentController extends Controller {
                 // Construction du rendu du tag
                 $templating = $this->get('templating');
                 $htmlZen = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:pDocumentZen.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment:DocumentZen.html.twig', array(
                                         'pDocument' => $pDocument
                                         )
                             );
@@ -170,11 +173,11 @@ class DocumentController extends Controller {
     }
 
     /**
-     *      Suivi d'un débat
+     *      Suivi d'un débat / profil
      */
-    public function followPDDebateAction(Request $request) {
+    public function followAction(Request $request) {
         $logger = $this->get('logger');
-        $logger->info('*** followPDDebateAction');
+        $logger->info('*** followAction');
         
         try {
             if ($request->isXmlHttpRequest()) {
@@ -185,22 +188,48 @@ class DocumentController extends Controller {
                 }
 
                 // Récupération args
-                $id = $request->get('objectId');
-                $logger->info('$id = ' . print_r($id, true));
-                
-                // TODO > contrôle élément non existant?
+                $objectId = $request->get('objectId');
+                $logger->info('$objectId = ' . print_r($objectId, true));
+                $objectType = $request->get('objectType');
+                $logger->info('$objectType = ' . print_r($objectType, true));
 
-                // Insertion nouvel élément
-                $pUFollowDD = new PUFollowDD();
+                if ($objectType == 'debate') {
+                    // TODO > contrôle élément non existant?
 
-                $pUFollowDD->setPUserId($pUser->getId());
-                $pUFollowDD->setPDDebateId($id);
+                    // Insertion nouvel élément
+                    $pUFollowDD = new PUFollowDD();
 
-                $pUFollowDD->save();
-                
+                    $pUFollowDD->setPUserId($pUser->getId());
+                    $pUFollowDD->setPDDebateId($objectId);
+
+                    $pUFollowDD->save();
+                } elseif ($objectType = 'puser') {
+                    // TODO > contrôle élément non existant? / a priori exception dans ce cas
+
+                    // Insertion nouvel élément
+                    $pUFollowU = new PUFollowU();
+
+                    $pUFollowU->setPUserId($objectId);
+                    $pUFollowU->setPUserFollowerId($pUser->getId());
+
+                    $pUFollowU->save();
+                }
+
+                // Construction rendu
+                $templating = $this->get('templating');
+                $html = $templating->render(
+                                    'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
+                                        'objectId' => $objectId,
+                                        'objectType' => $objectType,
+                                        'isFollower' => true
+                                        )
+                            );
+
+
                 // Construction de la réponse
                 $jsonResponse = array (
                     'success' => true,
+                    'html' => $html
                 );
             } else {
                 throw $this->createNotFoundException('Not a XHR request');
@@ -219,11 +248,11 @@ class DocumentController extends Controller {
     }
 
     /**
-     *      Arrêter le suivi d'un débat
+     *      Arrêter le suivi d'un débat / profil
      */
-    public function unfollowPDDebateAction(Request $request) {
+    public function unfollowAction(Request $request) {
         $logger = $this->get('logger');
-        $logger->info('*** unfollowPDDebateAction');
+        $logger->info('*** unfollowAction');
         
         try {
             if ($request->isXmlHttpRequest()) {
@@ -234,23 +263,49 @@ class DocumentController extends Controller {
                 }
 
                 // Récupération args
-                $id = $request->get('objectId');
-                $logger->info('$id = ' . print_r($id, true));
+                $objectId = $request->get('objectId');
+                $logger->info('$objectId = ' . print_r($objectId, true));
+                $objectType = $request->get('objectType');
+                $logger->info('$objectType = ' . print_r($objectType, true));
                 
-                // Suppression élément
-                $pUFollowDDList = PUFollowDDQuery::create()
-                                ->filterByPUserId($pUser->getId())
-                                ->filterByPDDebateId($id)
-                                ->find();
+                if ($objectType == 'debate') {
+                    // Suppression élément
+                    $pUFollowDDList = PUFollowDDQuery::create()
+                                    ->filterByPUserId($objectId)
+                                    ->filterByPDDebateId($objectId)
+                                    ->find();
 
-                // précaution > boucle sur tous les éléments
-                foreach ($pUFollowDDList as $pUFollowDD) {
-                    $pUFollowDD->delete();
+                    // précaution > boucle sur tous les éléments
+                    foreach ($pUFollowDDList as $pUFollowDD) {
+                        $pUFollowDD->delete();
+                    }
+                } elseif ($objectType = 'puser') {
+                    // Suppression élément
+                    $pUFollowUList = PUFollowUQuery::create()
+                                    ->filterByPUserId($objectId)
+                                    ->filterByPUserFollowerId($pUser->getId())
+                                    ->find();
+
+                    // précaution > boucle sur tous les éléments
+                    foreach ($pUFollowUList as $pUFollowU) {
+                        $pUFollowU->delete();
+                    }
                 }
+
+                // Construction rendu
+                $templating = $this->get('templating');
+                $html = $templating->render(
+                                    'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
+                                        'objectId' => $objectId,
+                                        'objectType' => $objectType,
+                                        'isFollower' => false
+                                        )
+                            );
 
                 // Construction de la réponse
                 $jsonResponse = array (
                     'success' => true,
+                    'html' => $html
                 );
             } else {
                 throw $this->createNotFoundException('Not a XHR request');

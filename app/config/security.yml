@@ -79,3 +79,5 @@ security:
         - { path: ^/elu/, role: ROLE_ELECTED }                              # Espace élu
         - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }                  # Process d'inscription OAuth
+
+# + réflexion sur un nouveau rôle citoyen OU elu permettant de définir des URLs sécurisés et communes aux profils complétés

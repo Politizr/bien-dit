@@ -26,7 +26,9 @@
 			</div>
 			<div class="followers">
 				<span>Suivi par {{ pUser.countPUserFollowersC }} citoyens et {{ pUser.countPUserFollowersQ }} élus.</span>
-				<span>Suivre / Ne plus suivre</span>
+				<div class="star">
+					{{ linkFollow(pUser.id, 'puser') }}
+				</div>
 			</div>
 			<a href="{{ path('AuthorDetail', { 'id': pUser.id, 'slug': pUser.slug }) }}">en savoir plus</a>
 		</div>

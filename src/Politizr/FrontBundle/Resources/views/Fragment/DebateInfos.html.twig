@@ -5,13 +5,13 @@
 		<div class="debateInfos">
 			<!-- TODO / + nombre de followers? -->
 			<!-- NOTES -->
-			{% include 'PolitizrFrontBundle:Fragment:pDocumentNotation.html.twig' with { 'pDocument': pDocument } only %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentNotation.html.twig' with { 'pDocument': pDocument } only %}
 			<hr>
 			<!-- TAGS -->
 			{% include 'PolitizrFrontBundle:Fragment:DebateTags.html.twig' with { 'pTags': pDocument.pTags } only %}
 			<hr>
 			<!-- COMMENTAIRES -->
-			{% include 'PolitizrFrontBundle:Fragment:pDocumentCommentsHighlight.html.twig' with { 'globalComments': globalComments } only %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentCommentsHighlight.html.twig' with { 'globalComments': globalComments } only %}
 		</div>
 	{% endif %}
 </div>

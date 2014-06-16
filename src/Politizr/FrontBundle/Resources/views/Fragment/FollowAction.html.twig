@@ -1,0 +1,9 @@
+{% if app.user %}
+	{% if isFollower %}
+		<a class="unfollow" objectId="{{ objectId }}" objectType="{{ objectType }}">Ne plus suivre</a>
+	{% else %}
+		<a class="follow" objectId="{{ objectId }}" objectType="{{ objectType }}">Suivre</a>
+	{% endif %}
+{% else %}
+	<a href="{{ path('Inscription') }}" class="inscription" objectId="{{ objectId }}" objectType="{{ objectType }}">M'inscrire pour suivre</a>
+{% endif %}

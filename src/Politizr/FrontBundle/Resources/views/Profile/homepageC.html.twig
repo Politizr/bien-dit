@@ -20,5 +20,8 @@
 {% block javascriptFooter %}
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:homepageC.js.twig' %}
+    
     {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
 {% endblock javascriptFooter %}
