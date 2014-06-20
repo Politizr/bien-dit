@@ -1,6 +1,8 @@
 <div id="header">
-	{% if is_granted('ROLE_USER') %}
-		{% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
+	{% if is_granted('ROLE_CITIZEN_INSCRIPTION') %}
+		{% include 'PolitizrFrontBundle:Navigation:menuInscriptionC.html.twig' %}
+	{% elseif is_granted('ROLE_ELECTED_INSCRIPTION') %}
+		{% include 'PolitizrFrontBundle:Navigation:menuInscriptionE.html.twig' %}
 	{% else %}
 		{% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
 	{% endif %}

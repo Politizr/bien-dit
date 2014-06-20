@@ -21,6 +21,9 @@ use Politizr\Model\PUser;
 /**
  *  Gestion du routing tout public
  *
+ *  TODO:
+ *      - gestion redirection / connexion + droits + activ
+ *
  * @author  Lionel Bouzonville
  */
 class PublicController extends Controller
@@ -86,6 +89,20 @@ class PublicController extends Controller
             ));
     }
 
+    /**
+     *  Profil en cours de validation
+     */
+    public function eluActivationProcessAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** eluActivationProcessAction');
+
+        return $this->render('PolitizrFrontBundle:Public:eluActivationProcess.html.twig', array(
+            ));
+    }
+
+
+
     /* ######################################################################################################## */
     /*                                                  FONCTIONS PRIVEES                                       */
     /* ######################################################################################################## */
@@ -111,65 +128,6 @@ class PublicController extends Controller
         }
         
         return $pagerfanta;
-    }
-    
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-
-    /**
-     *      Yellow Carpet Top
-     *      Clic centrage d'une autre photo
-     */
-    public function yellowCarpetTopCenterPhotoAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** yellowCarpetTopCenterPhotoAction');
-        
-        try {
-            if ($request->isXmlHttpRequest()) {
-                // Récupération args
-                $wuserId = $request->get('wuserId');
-                $logger->info('$wuserId = ' . print_r($wuserId, true));
-                $gap = $request->get('gap');
-                $logger->info('$gap = ' . print_r($gap, true));
-                $sortedWuserIds = json_decode($request->get('sortedWuserIds'));
-                $logger->info('$sortedWuserIds = ' . print_r($sortedWuserIds, true));
-
-                // Construction d'un tableau correspondant à l'ordre actuel
-                $wusers = array();
-                foreach ($sortedWuserIds as $wuserSortedId) {
-                    $wusers[] = WUserQuery::create()->findPk($wuserSortedId);
-                }
-
-                // Réordonnancement
-                $wusers = $this->centerPhoto($wusers, $gap);
-
-                // Construction de la structure
-                $templating = $this->get('templating');
-                $newGalery = $templating->render(
-                                    'WonderbraJDDFrontBundle:'.$this->getLayoutDir().':yellowCarpetTopGalery.html.twig', array('wusers' => $wusers)
-                            );
-
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true,
-                    'box_carousel' => $newGalery
-                );
-            } else {
-                throw $this->createNotFoundException('Not a XHR request');
-            }
-        } catch (NotFoundHttpException $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        } catch (\Exception $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        }
-
-        // JSON formatted success/error message
-        $response = new Response(json_encode($jsonResponse));
-        return $response;
     }
 
 }

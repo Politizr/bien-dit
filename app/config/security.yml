@@ -74,10 +74,10 @@ security:
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }                              # Espace ADMIN
-        - { path: ^/u/, role: ROLE_USER }                                   # Process d'inscription citoyen
-        - { path: ^/citoyen, role: ROLE_CITIZEN }                          # Espace citoyen
+        - { path: ^/u/, role: ROLE_CITIZEN_INSCRIPTION }                    # Process d'inscription citoyen
+        - { path: ^/v/, role: ROLE_ELECTED_INSCRIPTION }                    # Process d'inscription elu
+        - { path: ^/citoyen/, role: ROLE_CITIZEN }                          # Espace citoyen
         - { path: ^/elu/, role: ROLE_ELECTED }                              # Espace élu
+        - { path: ^/profil, role: ROLE_PROFILE_COMPLETED }                  # Profil citoyen ou élu complet
         - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }                  # Process d'inscription OAuth
-
-# + réflexion sur un nouveau rôle citoyen OU elu permettant de définir des URLs sécurisés et communes aux profils complétés

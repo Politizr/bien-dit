@@ -25,6 +25,7 @@ use Politizr\Model\POrder;
  * @method POPaymentTypeQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method POPaymentTypeQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method POPaymentTypeQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method POPaymentTypeQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method POPaymentTypeQuery groupById() Group by the id column
  * @method POPaymentTypeQuery groupByTitle() Group by the title column
@@ -32,6 +33,7 @@ use Politizr\Model\POrder;
  * @method POPaymentTypeQuery groupByOnline() Group by the online column
  * @method POPaymentTypeQuery groupByCreatedAt() Group by the created_at column
  * @method POPaymentTypeQuery groupByUpdatedAt() Group by the updated_at column
+ * @method POPaymentTypeQuery groupBySortableRank() Group by the sortable_rank column
  *
  * @method POPaymentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method POPaymentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -53,6 +55,7 @@ use Politizr\Model\POrder;
  * @method POPaymentType findOneByOnline(boolean $online) Return the first POPaymentType filtered by the online column
  * @method POPaymentType findOneByCreatedAt(string $created_at) Return the first POPaymentType filtered by the created_at column
  * @method POPaymentType findOneByUpdatedAt(string $updated_at) Return the first POPaymentType filtered by the updated_at column
+ * @method POPaymentType findOneBySortableRank(int $sortable_rank) Return the first POPaymentType filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return POPaymentType objects filtered by the id column
  * @method array findByTitle(string $title) Return POPaymentType objects filtered by the title column
@@ -60,6 +63,7 @@ use Politizr\Model\POrder;
  * @method array findByOnline(boolean $online) Return POPaymentType objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return POPaymentType objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return POPaymentType objects filtered by the updated_at column
+ * @method array findBySortableRank(int $sortable_rank) Return POPaymentType objects filtered by the sortable_rank column
  */
 abstract class BasePOPaymentTypeQuery extends ModelCriteria
 {
@@ -161,7 +165,7 @@ abstract class BasePOPaymentTypeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `online`, `created_at`, `updated_at` FROM `p_o_payment_type` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `online`, `created_at`, `updated_at`, `sortable_rank` FROM `p_o_payment_type` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -464,6 +468,48 @@ abstract class BasePOPaymentTypeQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POPaymentTypeQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(POPaymentTypePeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(POPaymentTypePeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(POPaymentTypePeer::SORTABLE_RANK, $sortableRank, $comparison);
+    }
+
+    /**
      * Filter the query by a related POrder object
      *
      * @param   POrder|PropelObjectCollection $pOrder  the related object to use as filter
@@ -692,4 +738,126 @@ abstract class BasePOPaymentTypeQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(POPaymentTypePeer::CREATED_AT);
     }
+    // sortable behavior
+
+    /**
+     * Filter the query based on a rank in the list
+     *
+     * @param     integer   $rank rank
+     *
+     * @return    POPaymentTypeQuery The current query, for fluid interface
+     */
+    public function filterByRank($rank)
+    {
+        return $this
+            ->addUsingAlias(POPaymentTypePeer::RANK_COL, $rank, Criteria::EQUAL);
+    }
+
+    /**
+     * Order the query based on the rank in the list.
+     * Using the default $order, returns the item with the lowest rank first
+     *
+     * @param     string $order either Criteria::ASC (default) or Criteria::DESC
+     *
+     * @return    POPaymentTypeQuery The current query, for fluid interface
+     */
+    public function orderByRank($order = Criteria::ASC)
+    {
+        $order = strtoupper($order);
+        switch ($order) {
+            case Criteria::ASC:
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(POPaymentTypePeer::RANK_COL));
+                break;
+            case Criteria::DESC:
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(POPaymentTypePeer::RANK_COL));
+                break;
+            default:
+                throw new PropelException('POPaymentTypeQuery::orderBy() only accepts "asc" or "desc" as argument');
+        }
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    POPaymentType
+     */
+    public function findOneByRank($rank, PropelPDO $con = null)
+    {
+        return $this
+            ->filterByRank($rank)
+            ->findOne($con);
+    }
+
+    /**
+     * Returns the list of objects
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     mixed the list of results, formatted by the current formatter
+     */
+    public function findList($con = null)
+    {
+        return $this
+            ->orderByRank()
+            ->find($con);
+    }
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . POPaymentTypePeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = $this->findPks($ids, $con);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (PropelException $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
 }

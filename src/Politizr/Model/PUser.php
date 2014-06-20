@@ -32,8 +32,9 @@ class PUser extends BasePUser implements UserInterface
 	const TYPE_CITOYEN = 1;
 	const TYPE_QUALIFIE = 2;
 
-	const STATUS_ACTIV = 1;
-	const STATUS_ARCHIVE = 2;
+    const STATUS_ACTIV = 1;
+	const STATUS_VALIDATION_PROCESS = 2;
+	const STATUS_ARCHIVE = 3;
 
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
@@ -343,6 +344,11 @@ class PUser extends BasePUser implements UserInterface
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',
             'message' => 'Cette adresse email existe déja.',
+        )));
+
+        $metadata->addConstraint(new UniqueObject(array(
+            'fields'  => 'username',
+            'message' => 'Cet identifiant est déjà pris.',
         )));
     }    
 

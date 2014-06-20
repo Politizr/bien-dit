@@ -61,9 +61,9 @@ class POrderTableMap extends TableMap
 ));
         $this->addColumn('name', 'Name', 'VARCHAR', false, 150, null);
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 150, null);
-        $this->addColumn('address', 'Address', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('zip', 'Zip', 'VARCHAR', false, 45, null);
-        $this->addColumn('city', 'City', 'VARCHAR', false, 150, null);
+        $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
+        $this->addColumn('elective_mandates', 'ElectiveMandates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('invoice_ref', 'InvoiceRef', 'VARCHAR', false, 250, null);
         $this->addColumn('invoice_at', 'InvoiceAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('invoice_filename', 'InvoiceFilename', 'VARCHAR', false, 250, null);

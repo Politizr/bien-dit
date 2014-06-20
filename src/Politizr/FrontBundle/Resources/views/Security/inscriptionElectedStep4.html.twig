@@ -1,0 +1,24 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		<h1>Validation par nos services</h1>
+	    <div id="box_paiement">
+	        <h3>Récapitulatif paiement</h3>
+	        <p>succès / échec / en attente / etc.</p>
+	        <h3>La suite</h3>
+	        <p>email de confirmation abonnement ok & vous pourrez vous connecter</p>
+	        <a href="{{ path('InscriptionElectedStep4Check') }}">Cliquez pour continuer</a>
+	    </div>			
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:inscriptionElectedStep4.js.twig' %}
+{% endblock javascriptFooter %}

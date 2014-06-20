@@ -26,24 +26,28 @@ Politizr\Model\POPaymentState:
 Politizr\Model\POPaymentType:
     virement:
         id:				1
+        sortable_rank:  1
         online:			true
         title:			Virement
         description:	|
             Virement bancaire
     cb:
         id:				2
+        sortable_rank:  2
         online:			true
         title:			Carte Bancaire
         description:	|
             Carte Bancaire
     cheque:
         id:				3
+        sortable_rank:  3
         online:			true
         title:			Chèque
         description:	|
             Chèque
     paypal:
         id:				4
+        sortable_rank:  4
         online:			false
         title:			Paypal
         description:	|
@@ -53,6 +57,7 @@ Politizr\Model\POPaymentType:
 Politizr\Model\POSubscription:
     annuel:
         online:			true
+        sortable_rank:  1
         title:			Abonnement Annuel
         description:	|
             Abonnement annuel

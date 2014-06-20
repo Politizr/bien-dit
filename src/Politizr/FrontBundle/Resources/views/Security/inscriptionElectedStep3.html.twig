@@ -1,0 +1,30 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		<h1>Paiement</h1>
+	    <div id="box_paiement">
+	        <h3>choix du mode de paiement</h3>
+	        {% for payment in payments %}
+                <div class="paymentChoice">
+                    <input type="radio" name="radioChoice"><label>{{ payment.title }}</label>
+                    <div class="paymentDetail">
+                        {{ payment.description | raw }}
+                        <br/>
+                        <a class="paymentProcess" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
+                    </div>
+                </div>
+	        {% endfor %}
+	    </div>			
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:inscriptionElectedStep3.js.twig' %}
+{% endblock javascriptFooter %}

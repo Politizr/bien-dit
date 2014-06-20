@@ -12,6 +12,7 @@ use \PropelPDO;
 use Politizr\Model\POEmailPeer;
 use Politizr\Model\POPaymentType;
 use Politizr\Model\POPaymentTypePeer;
+use Politizr\Model\POPaymentTypeQuery;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\map\POPaymentTypeTableMap;
 
@@ -31,13 +32,13 @@ abstract class BasePOPaymentTypePeer
     const TM_CLASS = 'POPaymentTypeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'p_o_payment_type.id';
@@ -57,6 +58,9 @@ abstract class BasePOPaymentTypePeer
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_o_payment_type.updated_at';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_o_payment_type.sortable_rank';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -69,6 +73,13 @@ abstract class BasePOPaymentTypePeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_o_payment_type.sortable_rank';
+
     /**
      * holds an array of fieldnames
      *
@@ -76,12 +87,12 @@ abstract class BasePOPaymentTypePeer
      * e.g. POPaymentTypePeer::$fieldNames[POPaymentTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (POPaymentTypePeer::ID, POPaymentTypePeer::TITLE, POPaymentTypePeer::DESCRIPTION, POPaymentTypePeer::ONLINE, POPaymentTypePeer::CREATED_AT, POPaymentTypePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'online', 'createdAt', 'updatedAt', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (POPaymentTypePeer::ID, POPaymentTypePeer::TITLE, POPaymentTypePeer::DESCRIPTION, POPaymentTypePeer::ONLINE, POPaymentTypePeer::CREATED_AT, POPaymentTypePeer::UPDATED_AT, POPaymentTypePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'online', 'created_at', 'updated_at', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -91,12 +102,12 @@ abstract class BasePOPaymentTypePeer
      * e.g. POPaymentTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        BasePeer::TYPE_COLNAME => array (POPaymentTypePeer::ID => 0, POPaymentTypePeer::TITLE => 1, POPaymentTypePeer::DESCRIPTION => 2, POPaymentTypePeer::ONLINE => 3, POPaymentTypePeer::CREATED_AT => 4, POPaymentTypePeer::UPDATED_AT => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'SortableRank' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'sortableRank' => 6, ),
+        BasePeer::TYPE_COLNAME => array (POPaymentTypePeer::ID => 0, POPaymentTypePeer::TITLE => 1, POPaymentTypePeer::DESCRIPTION => 2, POPaymentTypePeer::ONLINE => 3, POPaymentTypePeer::CREATED_AT => 4, POPaymentTypePeer::UPDATED_AT => 5, POPaymentTypePeer::SORTABLE_RANK => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SORTABLE_RANK' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'sortable_rank' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -176,6 +187,7 @@ abstract class BasePOPaymentTypePeer
             $criteria->addSelectColumn(POPaymentTypePeer::ONLINE);
             $criteria->addSelectColumn(POPaymentTypePeer::CREATED_AT);
             $criteria->addSelectColumn(POPaymentTypePeer::UPDATED_AT);
+            $criteria->addSelectColumn(POPaymentTypePeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
@@ -183,6 +195,7 @@ abstract class BasePOPaymentTypePeer
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -782,6 +795,146 @@ abstract class BasePOPaymentTypePeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . POPaymentTypePeer::RANK_COL . ')');
+        $stmt = POPaymentTypePeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return POPaymentType
+     */
+    public static function retrieveByRank($rank, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(POPaymentTypePeer::RANK_COL, $rank);
+
+        return POPaymentTypePeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = POPaymentTypePeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (PropelException $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(POPaymentTypePeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(POPaymentTypePeer::RANK_COL);
+        }
+
+        return POPaymentTypePeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POPaymentTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = POPaymentTypeQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(POPaymentTypePeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(POPaymentTypePeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+
+        $valuesCriteria = new Criteria(POPaymentTypePeer::DATABASE_NAME);
+        $valuesCriteria->add(POPaymentTypePeer::RANK_COL, array('raw' => POPaymentTypePeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        POPaymentTypePeer::clearInstancePool();
     }
 
 } // BasePOPaymentTypePeer

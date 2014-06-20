@@ -40,12 +40,6 @@ params:
             label:          Nom
         firstname:
             label:          Prénom
-        address:
-            label:          Adresse
-        zip:
-            label:          CP
-        city:
-            label:          Ville
         price:
             label:          Prix initial
         promotion:
@@ -108,7 +102,7 @@ builders:
             title:                              "Création d'une commande"
             display:
                 "Champs principaux":            [ [ p_user ], [ p_o_subscription ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
-                "Champs complémentaires":       [ [ information ], [ gender, firstname, name ], [ address ], [ zip, city ] ]
+                "Champs complémentaires":       [ [ information ], [ gender, firstname, name ] ]
             fields:
                 p_user:
                     addFormOptions:
@@ -134,7 +128,7 @@ builders:
                     "Emails":                   [ block_mail ]
                 "Utilisateur":
                     "Objet associé":            [ [ p_user ] ]
-                    "Adresse facture":          [ [ gender, firstname, name ], [ address ], [ zip, city ] ]
+                    "Adresse facture":          [ [ gender, firstname, name ] ]
                 "Paiement":
                     "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
                 "Statut":
@@ -177,7 +171,7 @@ builders:
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description, information ] ]
                 "Paiement":
                     "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
-                    "Adresse facture":          [ [ gender, firstname, name ], [ address ], [ zip, city ] ]
+                    "Adresse facture":          [ [ gender, firstname, name ] ]
                 "Statut":
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Objets":

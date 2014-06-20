@@ -4,6 +4,10 @@
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
 {% endblock %}
 
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 1 } only %}
+{% endblock %}
+
 {% block main %}
 	<div id="main">
 		<h1>Inscription Élu</h1>

@@ -104,9 +104,9 @@
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="name" type="varchar" size="150" />
         <column name="firstname" type="varchar" size="150" />   
-        <column name="address" type="longvarchar" />
-        <column name="zip" type="varchar" size="45" />   
-        <column name="city" type="varchar" size="150" />   
+        <column name="phone" type="varchar" size="30" />
+        <column name="email" type="varchar" size="255" />   
+        <column name="elective_mandates" type="longvarchar" />   
 
         <column name="invoice_ref" type="varchar" size="250" />
         <column name="invoice_at" type="timestamp" />
@@ -148,6 +148,7 @@
     <table name="p_o_payment_type">
         <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="sortable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
@@ -160,6 +161,7 @@
         <behavior name="sluggable">
           <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         

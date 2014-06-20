@@ -4,6 +4,9 @@
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
 {% endblock %}
 
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 1 } only %}
+{% endblock %}
 
 {% block main %}
 	<div id="main">

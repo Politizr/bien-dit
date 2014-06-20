@@ -1,5 +1,9 @@
 {% extends 'PolitizrFrontBundle::layout.html.twig' %}
 
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 2 } only %}
+{% endblock %}
+
 {% block main %}
 	<div id="main">
 		<h1>Inscription - Etape 2 / 3</h1>

@@ -21,6 +21,10 @@ Presentation:
     pattern:  /presentation
     defaults: { _controller: PolitizrFrontBundle:Public:presentation }
 
+EluActivationProcess:
+    pattern:  /profil-elu-en-cours-de-validation
+    defaults: { _controller: PolitizrFrontBundle:Public:eluActivationProcess }
+
 
 ################################################################################
 #               ROUTING CONNEXION
@@ -71,9 +75,28 @@ InscriptionElectedCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
 
 InscriptionElectedStep2:
-    pattern:  /u/inscription-elu-etape2
+    pattern:  /v/inscription-elu-etape2
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep2 }
 
+InscriptionElectedStep2Check:
+    pattern:  /v/inscription-elu-etape2/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep2Check }
+
+InscriptionElectedStep3:
+    pattern:  /v/inscription-elu-etape3
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep3 }
+
+InscriptionElectedStep3Check:
+    pattern:  /v/inscription-elu-etape3/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep3Check }
+
+InscriptionElectedStep4:
+    pattern:  /v/inscription-elu-etape4
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep4 }
+
+InscriptionElectedStep4Check:
+    pattern:  /v/inscription-elu-etape4/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep4Check }
 
 
 ################################################################################
@@ -106,12 +129,25 @@ SuggestionsC:
     defaults: { _controller: PolitizrFrontBundle:Profile:suggestionsC }
 
 
+################################################################################
+#               ROUTING ELU
+################################################################################
+HomepageE:
+    pattern:  /elu
+    defaults: { _controller: PolitizrFrontBundle:Profile:homepageE }
 
+
+
+################################################################################
 ################################################################################
 #				ROUTING AJAX
 ################################################################################
+################################################################################
 
+
+################################################################################
 # LOGIN
+################################################################################
 LoginCheck:
     pattern:  /connexion/login.{_format}
     defaults: { _controller: PolitizrFrontBundle:Security:loginCheck, _format: json }
@@ -122,7 +158,10 @@ LostPasswordCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
-# INSCRIPTION STEP 3 / TAGS PROFIL
+
+################################################################################
+# INSCRIPTION CITOYEN STEP 3 / TAGS PROFIL
+################################################################################
 GetPTags:
     pattern:  /u/getPTags.{_format}
     defaults: { _controller: PolitizrFrontBundle:Profile:getPTags, _format: json }
@@ -163,13 +202,25 @@ AddNewPTag:
     defaults: { _controller: PolitizrFrontBundle:Profile:addNewPTag, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+# INSCRIPTION ELU / PAIEMENT
+################################################################################
+PaymentProcess:
+    pattern:  /v/paymentProcess.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Security:paymentProcess, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
 # CONSULTATION DEBAT / REACTION
+################################################################################
 GetDescriptionPDocument:
     pattern:  /getDescriptionPDocument.{_format}
     defaults: { _controller: PolitizrFrontBundle:Document:getDescriptionPDocument, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
 # SUIVI DEBAT / USER
+################################################################################
 Follow:
     pattern:  /u/follow.{_format}
     defaults: { _controller: PolitizrFrontBundle:Document:follow, _format: json }

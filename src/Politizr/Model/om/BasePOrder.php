@@ -143,22 +143,22 @@ abstract class BasePOrder extends BaseObject implements Persistent
     protected $firstname;
 
     /**
-     * The value for the address field.
+     * The value for the phone field.
      * @var        string
      */
-    protected $address;
+    protected $phone;
 
     /**
-     * The value for the zip field.
+     * The value for the email field.
      * @var        string
      */
-    protected $zip;
+    protected $email;
 
     /**
-     * The value for the city field.
+     * The value for the elective_mandates field.
      * @var        string
      */
-    protected $city;
+    protected $elective_mandates;
 
     /**
      * The value for the invoice_ref field.
@@ -407,33 +407,33 @@ abstract class BasePOrder extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [address] column value.
+     * Get the [phone] column value.
      *
      * @return string
      */
-    public function getAddress()
+    public function getPhone()
     {
-        return $this->address;
+        return $this->phone;
     }
 
     /**
-     * Get the [zip] column value.
+     * Get the [email] column value.
      *
      * @return string
      */
-    public function getZip()
+    public function getEmail()
     {
-        return $this->zip;
+        return $this->email;
     }
 
     /**
-     * Get the [city] column value.
+     * Get the [elective_mandates] column value.
      *
      * @return string
      */
-    public function getCity()
+    public function getElectiveMandates()
     {
-        return $this->city;
+        return $this->elective_mandates;
     }
 
     /**
@@ -917,67 +917,67 @@ abstract class BasePOrder extends BaseObject implements Persistent
     } // setFirstname()
 
     /**
-     * Set the value of [address] column.
+     * Set the value of [phone] column.
      *
      * @param string $v new value
      * @return POrder The current object (for fluent API support)
      */
-    public function setAddress($v)
+    public function setPhone($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->address !== $v) {
-            $this->address = $v;
-            $this->modifiedColumns[] = POrderPeer::ADDRESS;
+        if ($this->phone !== $v) {
+            $this->phone = $v;
+            $this->modifiedColumns[] = POrderPeer::PHONE;
         }
 
 
         return $this;
-    } // setAddress()
+    } // setPhone()
 
     /**
-     * Set the value of [zip] column.
+     * Set the value of [email] column.
      *
      * @param string $v new value
      * @return POrder The current object (for fluent API support)
      */
-    public function setZip($v)
+    public function setEmail($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->zip !== $v) {
-            $this->zip = $v;
-            $this->modifiedColumns[] = POrderPeer::ZIP;
+        if ($this->email !== $v) {
+            $this->email = $v;
+            $this->modifiedColumns[] = POrderPeer::EMAIL;
         }
 
 
         return $this;
-    } // setZip()
+    } // setEmail()
 
     /**
-     * Set the value of [city] column.
+     * Set the value of [elective_mandates] column.
      *
      * @param string $v new value
      * @return POrder The current object (for fluent API support)
      */
-    public function setCity($v)
+    public function setElectiveMandates($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->city !== $v) {
-            $this->city = $v;
-            $this->modifiedColumns[] = POrderPeer::CITY;
+        if ($this->elective_mandates !== $v) {
+            $this->elective_mandates = $v;
+            $this->modifiedColumns[] = POrderPeer::ELECTIVE_MANDATES;
         }
 
 
         return $this;
-    } // setCity()
+    } // setElectiveMandates()
 
     /**
      * Set the value of [invoice_ref] column.
@@ -1137,9 +1137,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
             $this->gender = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
             $this->name = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->firstname = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->address = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->zip = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->city = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->phone = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->email = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->elective_mandates = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->invoice_ref = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->invoice_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->invoice_filename = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
@@ -1500,14 +1500,14 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = '`firstname`';
         }
-        if ($this->isColumnModified(POrderPeer::ADDRESS)) {
-            $modifiedColumns[':p' . $index++]  = '`address`';
+        if ($this->isColumnModified(POrderPeer::PHONE)) {
+            $modifiedColumns[':p' . $index++]  = '`phone`';
         }
-        if ($this->isColumnModified(POrderPeer::ZIP)) {
-            $modifiedColumns[':p' . $index++]  = '`zip`';
+        if ($this->isColumnModified(POrderPeer::EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = '`email`';
         }
-        if ($this->isColumnModified(POrderPeer::CITY)) {
-            $modifiedColumns[':p' . $index++]  = '`city`';
+        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) {
+            $modifiedColumns[':p' . $index++]  = '`elective_mandates`';
         }
         if ($this->isColumnModified(POrderPeer::INVOICE_REF)) {
             $modifiedColumns[':p' . $index++]  = '`invoice_ref`';
@@ -1580,14 +1580,14 @@ abstract class BasePOrder extends BaseObject implements Persistent
                     case '`firstname`':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
-                    case '`address`':
-                        $stmt->bindValue($identifier, $this->address, PDO::PARAM_STR);
+                    case '`phone`':
+                        $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
-                    case '`zip`':
-                        $stmt->bindValue($identifier, $this->zip, PDO::PARAM_STR);
+                    case '`email`':
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case '`city`':
-                        $stmt->bindValue($identifier, $this->city, PDO::PARAM_STR);
+                    case '`elective_mandates`':
+                        $stmt->bindValue($identifier, $this->elective_mandates, PDO::PARAM_STR);
                         break;
                     case '`invoice_ref`':
                         $stmt->bindValue($identifier, $this->invoice_ref, PDO::PARAM_STR);
@@ -1828,13 +1828,13 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 return $this->getFirstname();
                 break;
             case 15:
-                return $this->getAddress();
+                return $this->getPhone();
                 break;
             case 16:
-                return $this->getZip();
+                return $this->getEmail();
                 break;
             case 17:
-                return $this->getCity();
+                return $this->getElectiveMandates();
                 break;
             case 18:
                 return $this->getInvoiceRef();
@@ -1895,9 +1895,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
             $keys[12] => $this->getGender(),
             $keys[13] => $this->getName(),
             $keys[14] => $this->getFirstname(),
-            $keys[15] => $this->getAddress(),
-            $keys[16] => $this->getZip(),
-            $keys[17] => $this->getCity(),
+            $keys[15] => $this->getPhone(),
+            $keys[16] => $this->getEmail(),
+            $keys[17] => $this->getElectiveMandates(),
             $keys[18] => $this->getInvoiceRef(),
             $keys[19] => $this->getInvoiceAt(),
             $keys[20] => $this->getInvoiceFilename(),
@@ -2007,13 +2007,13 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 $this->setFirstname($value);
                 break;
             case 15:
-                $this->setAddress($value);
+                $this->setPhone($value);
                 break;
             case 16:
-                $this->setZip($value);
+                $this->setEmail($value);
                 break;
             case 17:
-                $this->setCity($value);
+                $this->setElectiveMandates($value);
                 break;
             case 18:
                 $this->setInvoiceRef($value);
@@ -2069,9 +2069,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if (array_key_exists($keys[12], $arr)) $this->setGender($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setName($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setFirstname($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setAddress($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setZip($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setCity($arr[$keys[17]]);
+        if (array_key_exists($keys[15], $arr)) $this->setPhone($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setEmail($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setElectiveMandates($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setInvoiceRef($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setInvoiceAt($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setInvoiceFilename($arr[$keys[20]]);
@@ -2103,9 +2103,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::GENDER)) $criteria->add(POrderPeer::GENDER, $this->gender);
         if ($this->isColumnModified(POrderPeer::NAME)) $criteria->add(POrderPeer::NAME, $this->name);
         if ($this->isColumnModified(POrderPeer::FIRSTNAME)) $criteria->add(POrderPeer::FIRSTNAME, $this->firstname);
-        if ($this->isColumnModified(POrderPeer::ADDRESS)) $criteria->add(POrderPeer::ADDRESS, $this->address);
-        if ($this->isColumnModified(POrderPeer::ZIP)) $criteria->add(POrderPeer::ZIP, $this->zip);
-        if ($this->isColumnModified(POrderPeer::CITY)) $criteria->add(POrderPeer::CITY, $this->city);
+        if ($this->isColumnModified(POrderPeer::PHONE)) $criteria->add(POrderPeer::PHONE, $this->phone);
+        if ($this->isColumnModified(POrderPeer::EMAIL)) $criteria->add(POrderPeer::EMAIL, $this->email);
+        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) $criteria->add(POrderPeer::ELECTIVE_MANDATES, $this->elective_mandates);
         if ($this->isColumnModified(POrderPeer::INVOICE_REF)) $criteria->add(POrderPeer::INVOICE_REF, $this->invoice_ref);
         if ($this->isColumnModified(POrderPeer::INVOICE_AT)) $criteria->add(POrderPeer::INVOICE_AT, $this->invoice_at);
         if ($this->isColumnModified(POrderPeer::INVOICE_FILENAME)) $criteria->add(POrderPeer::INVOICE_FILENAME, $this->invoice_filename);
@@ -2188,9 +2188,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $copyObj->setGender($this->getGender());
         $copyObj->setName($this->getName());
         $copyObj->setFirstname($this->getFirstname());
-        $copyObj->setAddress($this->getAddress());
-        $copyObj->setZip($this->getZip());
-        $copyObj->setCity($this->getCity());
+        $copyObj->setPhone($this->getPhone());
+        $copyObj->setEmail($this->getEmail());
+        $copyObj->setElectiveMandates($this->getElectiveMandates());
         $copyObj->setInvoiceRef($this->getInvoiceRef());
         $copyObj->setInvoiceAt($this->getInvoiceAt());
         $copyObj->setInvoiceFilename($this->getInvoiceFilename());
@@ -2874,9 +2874,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $this->gender = null;
         $this->name = null;
         $this->firstname = null;
-        $this->address = null;
-        $this->zip = null;
-        $this->city = null;
+        $this->phone = null;
+        $this->email = null;
+        $this->elective_mandates = null;
         $this->invoice_ref = null;
         $this->invoice_at = null;
         $this->invoice_filename = null;

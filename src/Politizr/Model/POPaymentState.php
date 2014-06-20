@@ -9,9 +9,11 @@ class POPaymentState extends BasePOPaymentState
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-	const STATE_PAYMENT_WAITING = 1;
-	const STATE_PAYMENT_OK = 2;
-	const STATE_PAYMENT_REFUSED = 3;
+	const STATE_PROCESS = 1;
+	const STATE_WAITING = 2;
+	const STATE_DONE = 3;
+	const STATE_REFUSED = 4;
+	const STATE_CANCELED = 5;
 	// ************************************************************************************ //
 
 

@@ -196,9 +196,9 @@ CREATE TABLE `p_order`
     `gender` TINYINT,
     `name` VARCHAR(150),
     `firstname` VARCHAR(150),
-    `address` TEXT,
-    `zip` VARCHAR(45),
-    `city` VARCHAR(150),
+    `phone` VARCHAR(30),
+    `email` VARCHAR(255),
+    `elective_mandates` TEXT,
     `invoice_ref` VARCHAR(250),
     `invoice_at` DATETIME,
     `invoice_filename` VARCHAR(250),
@@ -283,6 +283,7 @@ CREATE TABLE `p_o_payment_type`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -302,6 +303,7 @@ CREATE TABLE `p_o_subscription`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_o_subscription_slug` (`slug`(255))
 ) ENGINE=InnoDB;

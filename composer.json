@@ -63,8 +63,8 @@
         
         "ensepar/html2pdf-bundle": "1.0.0",
         
-        "cedriclombardot/admingenerator-generator-bundle": "~1.0.0",
-        "cedriclombardot/admingenerator-user-bundle": "dev-master",
+        "cedriclombardot/admingenerator-generator-bundle": "1.0.0",
+        "cedriclombardot/admingenerator-user-bundle": "1.0.0",
         "avocode/form-extensions-bundle": "dev-master",
         "liuggio/ExcelBundle": "2.0.0",
 

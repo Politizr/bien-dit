@@ -38,9 +38,9 @@ use Politizr\Model\PUser;
  * @method POrderQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method POrderQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method POrderQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
- * @method POrderQuery orderByAddress($order = Criteria::ASC) Order by the address column
- * @method POrderQuery orderByZip($order = Criteria::ASC) Order by the zip column
- * @method POrderQuery orderByCity($order = Criteria::ASC) Order by the city column
+ * @method POrderQuery orderByPhone($order = Criteria::ASC) Order by the phone column
+ * @method POrderQuery orderByEmail($order = Criteria::ASC) Order by the email column
+ * @method POrderQuery orderByElectiveMandates($order = Criteria::ASC) Order by the elective_mandates column
  * @method POrderQuery orderByInvoiceRef($order = Criteria::ASC) Order by the invoice_ref column
  * @method POrderQuery orderByInvoiceAt($order = Criteria::ASC) Order by the invoice_at column
  * @method POrderQuery orderByInvoiceFilename($order = Criteria::ASC) Order by the invoice_filename column
@@ -62,9 +62,9 @@ use Politizr\Model\PUser;
  * @method POrderQuery groupByGender() Group by the gender column
  * @method POrderQuery groupByName() Group by the name column
  * @method POrderQuery groupByFirstname() Group by the firstname column
- * @method POrderQuery groupByAddress() Group by the address column
- * @method POrderQuery groupByZip() Group by the zip column
- * @method POrderQuery groupByCity() Group by the city column
+ * @method POrderQuery groupByPhone() Group by the phone column
+ * @method POrderQuery groupByEmail() Group by the email column
+ * @method POrderQuery groupByElectiveMandates() Group by the elective_mandates column
  * @method POrderQuery groupByInvoiceRef() Group by the invoice_ref column
  * @method POrderQuery groupByInvoiceAt() Group by the invoice_at column
  * @method POrderQuery groupByInvoiceFilename() Group by the invoice_filename column
@@ -116,9 +116,9 @@ use Politizr\Model\PUser;
  * @method POrder findOneByGender(int $gender) Return the first POrder filtered by the gender column
  * @method POrder findOneByName(string $name) Return the first POrder filtered by the name column
  * @method POrder findOneByFirstname(string $firstname) Return the first POrder filtered by the firstname column
- * @method POrder findOneByAddress(string $address) Return the first POrder filtered by the address column
- * @method POrder findOneByZip(string $zip) Return the first POrder filtered by the zip column
- * @method POrder findOneByCity(string $city) Return the first POrder filtered by the city column
+ * @method POrder findOneByPhone(string $phone) Return the first POrder filtered by the phone column
+ * @method POrder findOneByEmail(string $email) Return the first POrder filtered by the email column
+ * @method POrder findOneByElectiveMandates(string $elective_mandates) Return the first POrder filtered by the elective_mandates column
  * @method POrder findOneByInvoiceRef(string $invoice_ref) Return the first POrder filtered by the invoice_ref column
  * @method POrder findOneByInvoiceAt(string $invoice_at) Return the first POrder filtered by the invoice_at column
  * @method POrder findOneByInvoiceFilename(string $invoice_filename) Return the first POrder filtered by the invoice_filename column
@@ -140,9 +140,9 @@ use Politizr\Model\PUser;
  * @method array findByGender(int $gender) Return POrder objects filtered by the gender column
  * @method array findByName(string $name) Return POrder objects filtered by the name column
  * @method array findByFirstname(string $firstname) Return POrder objects filtered by the firstname column
- * @method array findByAddress(string $address) Return POrder objects filtered by the address column
- * @method array findByZip(string $zip) Return POrder objects filtered by the zip column
- * @method array findByCity(string $city) Return POrder objects filtered by the city column
+ * @method array findByPhone(string $phone) Return POrder objects filtered by the phone column
+ * @method array findByEmail(string $email) Return POrder objects filtered by the email column
+ * @method array findByElectiveMandates(string $elective_mandates) Return POrder objects filtered by the elective_mandates column
  * @method array findByInvoiceRef(string $invoice_ref) Return POrder objects filtered by the invoice_ref column
  * @method array findByInvoiceAt(string $invoice_at) Return POrder objects filtered by the invoice_at column
  * @method array findByInvoiceFilename(string $invoice_filename) Return POrder objects filtered by the invoice_filename column
@@ -249,7 +249,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `address`, `zip`, `city`, `invoice_ref`, `invoice_at`, `invoice_filename`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `phone`, `email`, `elective_mandates`, `invoice_ref`, `invoice_at`, `invoice_filename`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -899,90 +899,90 @@ abstract class BasePOrderQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the address column
+     * Filter the query on the phone column
      *
      * Example usage:
      * <code>
-     * $query->filterByAddress('fooValue');   // WHERE address = 'fooValue'
-     * $query->filterByAddress('%fooValue%'); // WHERE address LIKE '%fooValue%'
+     * $query->filterByPhone('fooValue');   // WHERE phone = 'fooValue'
+     * $query->filterByPhone('%fooValue%'); // WHERE phone LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $address The value to use as filter.
+     * @param     string $phone The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return POrderQuery The current query, for fluid interface
      */
-    public function filterByAddress($address = null, $comparison = null)
+    public function filterByPhone($phone = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($address)) {
+            if (is_array($phone)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $address)) {
-                $address = str_replace('*', '%', $address);
+            } elseif (preg_match('/[\%\*]/', $phone)) {
+                $phone = str_replace('*', '%', $phone);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(POrderPeer::ADDRESS, $address, $comparison);
+        return $this->addUsingAlias(POrderPeer::PHONE, $phone, $comparison);
     }
 
     /**
-     * Filter the query on the zip column
+     * Filter the query on the email column
      *
      * Example usage:
      * <code>
-     * $query->filterByZip('fooValue');   // WHERE zip = 'fooValue'
-     * $query->filterByZip('%fooValue%'); // WHERE zip LIKE '%fooValue%'
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%'); // WHERE email LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $zip The value to use as filter.
+     * @param     string $email The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return POrderQuery The current query, for fluid interface
      */
-    public function filterByZip($zip = null, $comparison = null)
+    public function filterByEmail($email = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($zip)) {
+            if (is_array($email)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $zip)) {
-                $zip = str_replace('*', '%', $zip);
+            } elseif (preg_match('/[\%\*]/', $email)) {
+                $email = str_replace('*', '%', $email);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(POrderPeer::ZIP, $zip, $comparison);
+        return $this->addUsingAlias(POrderPeer::EMAIL, $email, $comparison);
     }
 
     /**
-     * Filter the query on the city column
+     * Filter the query on the elective_mandates column
      *
      * Example usage:
      * <code>
-     * $query->filterByCity('fooValue');   // WHERE city = 'fooValue'
-     * $query->filterByCity('%fooValue%'); // WHERE city LIKE '%fooValue%'
+     * $query->filterByElectiveMandates('fooValue');   // WHERE elective_mandates = 'fooValue'
+     * $query->filterByElectiveMandates('%fooValue%'); // WHERE elective_mandates LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $city The value to use as filter.
+     * @param     string $electiveMandates The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return POrderQuery The current query, for fluid interface
      */
-    public function filterByCity($city = null, $comparison = null)
+    public function filterByElectiveMandates($electiveMandates = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($city)) {
+            if (is_array($electiveMandates)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $city)) {
-                $city = str_replace('*', '%', $city);
+            } elseif (preg_match('/[\%\*]/', $electiveMandates)) {
+                $electiveMandates = str_replace('*', '%', $electiveMandates);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(POrderPeer::CITY, $city, $comparison);
+        return $this->addUsingAlias(POrderPeer::ELECTIVE_MANDATES, $electiveMandates, $comparison);
     }
 
     /**

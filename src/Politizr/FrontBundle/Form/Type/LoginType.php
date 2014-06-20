@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Description
- *
- * @author Studio Echo / Lionel Bouzonville
+ * TODO: commentaires
+ * 
+ * @author Lionel Bouzonville
  */
 class LoginType extends AbstractType {
     /**

@@ -1,11 +1,34 @@
 {% extends 'PolitizrFrontBundle::layout.html.twig' %}
 
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 2 } only %}
+{% endblock %}
+
 {% block main %}
 	<div id="main">
-		<h1>Inscription - Etape 2 / 3</h1>
-		<p>Merci de votre inscription!</p>
-		<p>Notre équipe va maintenant procéder à la vérification du document fourni attestant de votre mandat électif.</p>
-		<p>Dès que cette étape sera validée, vous recevrez un email pour finaliser votre inscription</p>
-		<a href="{{ path('Logout') }}">Accueil</a>
+		<h1>Choix de la formule</h1>
+		<p>Complétez le formulaire suivant</p>
+		{% if subscriptionForm.vars.errors|length %}
+			<div class="boxError">
+		    	{{ form_errors(subscriptionForm) }}
+		    </div>
+		{% endif %}
+		<form id="subscriptionForm" action="{{ path('InscriptionElectedStep2Check') }}" method="POST">
+			<h3>Formule</h3>
+		    {% if subscriptionForm.p_o_subscription.vars.errors|length %}
+				<div class="fieldError">{{ form_errors(subscriptionForm.p_o_subscription) }}</div>
+			{% endif %}
+			<div>{{ form_widget(subscriptionForm.p_o_subscription) }}</div>
+
+			
+			{{ form_rest(subscriptionForm) }}
+			<div class="form_submit"><input type="submit" value="Je valide"></div>
+		</form>
 	</div>
 {% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:inscriptionElectedStep2.js.twig' %}
+{% endblock javascriptFooter %}

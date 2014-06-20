@@ -1,0 +1,14 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		<h1>Patience...</h1>
+		<p>
+			Votre profil est en cours de validation par nos services, vous recevrez prochainement un email dès que vous pourrez vous connecter...
+		</p>
+	</div>
+{% endblock main %}

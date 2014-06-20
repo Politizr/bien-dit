@@ -14,6 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
 
+/**
+ * TODO: commentaires
+ * 
+ * @author Lionel Bouzonville
+ */
 class PUserStep2Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -12,6 +12,7 @@ use \PropelPDO;
 use Politizr\Model\POEmailPeer;
 use Politizr\Model\POSubscription;
 use Politizr\Model\POSubscriptionPeer;
+use Politizr\Model\POSubscriptionQuery;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\map\POSubscriptionTableMap;
 
@@ -31,13 +32,13 @@ abstract class BasePOSubscriptionPeer
     const TM_CLASS = 'POSubscriptionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_o_subscription.id';
@@ -63,6 +64,9 @@ abstract class BasePOSubscriptionPeer
     /** the column name for the slug field */
     const SLUG = 'p_o_subscription.slug';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_o_subscription.sortable_rank';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -75,6 +79,13 @@ abstract class BasePOSubscriptionPeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_o_subscription.sortable_rank';
+
     /**
      * holds an array of fieldnames
      *
@@ -82,12 +93,12 @@ abstract class BasePOSubscriptionPeer
      * e.g. POSubscriptionPeer::$fieldNames[POSubscriptionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Price', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'price', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID, POSubscriptionPeer::TITLE, POSubscriptionPeer::DESCRIPTION, POSubscriptionPeer::PRICE, POSubscriptionPeer::ONLINE, POSubscriptionPeer::CREATED_AT, POSubscriptionPeer::UPDATED_AT, POSubscriptionPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'PRICE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'price', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Price', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'price', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID, POSubscriptionPeer::TITLE, POSubscriptionPeer::DESCRIPTION, POSubscriptionPeer::PRICE, POSubscriptionPeer::ONLINE, POSubscriptionPeer::CREATED_AT, POSubscriptionPeer::UPDATED_AT, POSubscriptionPeer::SLUG, POSubscriptionPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'PRICE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'price', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -97,12 +108,12 @@ abstract class BasePOSubscriptionPeer
      * e.g. POSubscriptionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Price' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID => 0, POSubscriptionPeer::TITLE => 1, POSubscriptionPeer::DESCRIPTION => 2, POSubscriptionPeer::PRICE => 3, POSubscriptionPeer::ONLINE => 4, POSubscriptionPeer::CREATED_AT => 5, POSubscriptionPeer::UPDATED_AT => 6, POSubscriptionPeer::SLUG => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'PRICE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Price' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
+        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID => 0, POSubscriptionPeer::TITLE => 1, POSubscriptionPeer::DESCRIPTION => 2, POSubscriptionPeer::PRICE => 3, POSubscriptionPeer::ONLINE => 4, POSubscriptionPeer::CREATED_AT => 5, POSubscriptionPeer::UPDATED_AT => 6, POSubscriptionPeer::SLUG => 7, POSubscriptionPeer::SORTABLE_RANK => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'PRICE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -184,6 +195,7 @@ abstract class BasePOSubscriptionPeer
             $criteria->addSelectColumn(POSubscriptionPeer::CREATED_AT);
             $criteria->addSelectColumn(POSubscriptionPeer::UPDATED_AT);
             $criteria->addSelectColumn(POSubscriptionPeer::SLUG);
+            $criteria->addSelectColumn(POSubscriptionPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
@@ -193,6 +205,7 @@ abstract class BasePOSubscriptionPeer
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -796,6 +809,146 @@ abstract class BasePOSubscriptionPeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . POSubscriptionPeer::RANK_COL . ')');
+        $stmt = POSubscriptionPeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return POSubscription
+     */
+    public static function retrieveByRank($rank, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(POSubscriptionPeer::RANK_COL, $rank);
+
+        return POSubscriptionPeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = POSubscriptionPeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (PropelException $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(POSubscriptionPeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(POSubscriptionPeer::RANK_COL);
+        }
+
+        return POSubscriptionPeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = POSubscriptionQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(POSubscriptionPeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(POSubscriptionPeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+
+        $valuesCriteria = new Criteria(POSubscriptionPeer::DATABASE_NAME);
+        $valuesCriteria->add(POSubscriptionPeer::RANK_COL, array('raw' => POSubscriptionPeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        POSubscriptionPeer::clearInstancePool();
     }
 
 } // BasePOSubscriptionPeer

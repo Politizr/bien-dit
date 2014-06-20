@@ -330,9 +330,6 @@ bazinga_faker:
 
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
-                Address:                { method: streetAddress }
-                Zip:                    { method: postcode }
-                City:                   { method: city }
 
                 InvoiceRef:             { method: bothify, parameters: [ '?####?#####' ], unique: true }
                 InvoiceFilename:        { method: lexify, parameters: [ '?????????????.pdf' ], unique: true }
