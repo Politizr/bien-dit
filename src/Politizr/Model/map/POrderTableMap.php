@@ -50,6 +50,8 @@ class POrderTableMap extends TableMap
         $this->addForeignKey('p_o_subscription_id', 'POSubscriptionId', 'INTEGER', 'p_o_subscription', 'id', false, null, null);
         $this->addColumn('subscription_title', 'SubscriptionTitle', 'VARCHAR', false, 150, null);
         $this->addColumn('subscription_description', 'SubscriptionDescription', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('subscription_begin_at', 'SubscriptionBeginAt', 'DATE', false, null, null);
+        $this->addColumn('subscription_end_at', 'SubscriptionEndAt', 'DATE', false, null, null);
         $this->addColumn('information', 'Information', 'LONGVARCHAR', false, null, null);
         $this->addColumn('price', 'Price', 'DECIMAL', false, 10, null);
         $this->addColumn('promotion', 'Promotion', 'DECIMAL', false, 10, null);
@@ -63,10 +65,11 @@ class POrderTableMap extends TableMap
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 150, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
-        $this->addColumn('elective_mandates', 'ElectiveMandates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('invoice_ref', 'InvoiceRef', 'VARCHAR', false, 250, null);
         $this->addColumn('invoice_at', 'InvoiceAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('invoice_filename', 'InvoiceFilename', 'VARCHAR', false, 250, null);
+        $this->addColumn('supporting_document', 'SupportingDocument', 'VARCHAR', false, 250, null);
+        $this->addColumn('elective_mandates', 'ElectiveMandates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

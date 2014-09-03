@@ -24,6 +24,7 @@ class PTag extends BasePTag
 		return $slug;
 	}
 	
+
 	/******************************************************************************/
 
 	/**
@@ -58,10 +59,4 @@ class PTag extends BasePTag
 		return parent::getPuTaggedTPTags($con, $doQuery);
 	}
 
-
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-	public function getBlockDebates() {
-	}
-	public function getBlockUsers() {
-	}
 }

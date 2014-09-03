@@ -10,7 +10,7 @@
 	        {% endif %}
 			<div class="name">{{ pUser.firstname }} {{ pUser.name }}</div>
 			<div class="bio">
-				{% if pUser.type == constant('Politizr\\Model\\PUser::TYPE_CITOYEN') %}
+				{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}
 					<span>Citoyen</span>
 				{% else %}
 					<span>Élu</span>

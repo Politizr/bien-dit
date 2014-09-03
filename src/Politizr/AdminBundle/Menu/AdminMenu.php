@@ -18,7 +18,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $user = $this->container->get('security.context')->getToken()->getUser();
       
         $menu = $factory->createItem('root');
-        $menu->setChildrenAttributes(array('id' => 'main_navigation', 'class' => 'nav'));
+        $menu->setChildrenAttributes(array('id' => 'main_navigation', 'class' => 'nav navbar-nav'));
         
         // Order
         $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
@@ -27,19 +27,9 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
-        $documents = $this->addDropdown($menu, 'Contenu');
-        $this->addLinkRoute(
-            $documents,
-            'Débat',
-            'Politizr_AdminBundle_PDDebate_list'
-        );
-        $this->addLinkRoute(
-            $documents,
-            'Réaction',
-            'Politizr_AdminBundle_PDReaction_list'
-        );
+        $users = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
 
-
+        // Commentaires
         $comments = $this->addDropdown($menu, 'Commentaire');
         $this->addLinkRoute(
             $comments,
@@ -101,7 +91,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
 
 
         // Réglages techniques: notifications utilisateurs
-        $regulations = $this->addDropdown($menu, 'Réglages');
+        $regulations = $this->addDropdown($menu, 'Réglage');
         $this->addLinkRoute(
             $regulations,
             'Administrateurs',

@@ -189,6 +189,8 @@ CREATE TABLE `p_order`
     `p_o_subscription_id` INTEGER,
     `subscription_title` VARCHAR(150),
     `subscription_description` TEXT,
+    `subscription_begin_at` DATE,
+    `subscription_end_at` DATE,
     `information` TEXT,
     `price` DECIMAL(10,2),
     `promotion` DECIMAL(10,2),
@@ -198,10 +200,11 @@ CREATE TABLE `p_order`
     `firstname` VARCHAR(150),
     `phone` VARCHAR(30),
     `email` VARCHAR(255),
-    `elective_mandates` TEXT,
     `invoice_ref` VARCHAR(250),
     `invoice_at` DATETIME,
     `invoice_filename` VARCHAR(250),
+    `supporting_document` VARCHAR(250),
+    `elective_mandates` TEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -389,8 +392,8 @@ CREATE TABLE `p_user`
     `credentials_expired` TINYINT(1) DEFAULT 0,
     `credentials_expire_at` DATETIME,
     `roles` TEXT,
-    `type` INTEGER NOT NULL,
-    `status` INTEGER NOT NULL,
+    `p_u_type_id` INTEGER NOT NULL,
+    `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
@@ -403,8 +406,6 @@ CREATE TABLE `p_user`
     `facebook` VARCHAR(150),
     `phone` VARCHAR(30),
     `newsletter` TINYINT(1),
-    `supporting_document` VARCHAR(150),
-    `elective_mandates` TEXT,
     `last_connect` DATETIME,
     `online` TINYINT(1),
     `created_at` DATETIME,
@@ -413,7 +414,49 @@ CREATE TABLE `p_user`
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_user_U_1` (`username_canonical`),
     UNIQUE INDEX `p_user_U_2` (`email_canonical`),
-    UNIQUE INDEX `p_user_slug` (`slug`(255))
+    UNIQUE INDEX `p_user_slug` (`slug`(255)),
+    INDEX `p_user_FI_1` (`p_u_type_id`),
+    INDEX `p_user_FI_2` (`p_u_status_id`),
+    CONSTRAINT `p_user_FK_1`
+        FOREIGN KEY (`p_u_type_id`)
+        REFERENCES `p_u_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_user_FK_2`
+        FOREIGN KEY (`p_u_status_id`)
+        REFERENCES `p_u_status` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_type`;
+
+CREATE TABLE `p_u_type`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_status
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_status`;
+
+CREATE TABLE `p_u_status`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -619,6 +662,7 @@ CREATE TABLE `p_d_debate`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER,
+    `file_name` VARCHAR(150),
     `title` VARCHAR(150),
     `summary` TEXT,
     `description` TEXT,

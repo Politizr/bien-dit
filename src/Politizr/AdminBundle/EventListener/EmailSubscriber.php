@@ -65,27 +65,31 @@ class EmailSubscriber implements EventSubscriberInterface
 
         $template = '';
         $subject = '';
+
         switch($status = $order->getPOOrderStateId()) {
+            case POOrderState::STATE_CREATE:
+                $subject = 'Commande créée';
+                break;
+            case POOrderState::STATE_WAITING:
+                $subject = 'Commande en attente';
+                break;
             case POOrderState::STATE_OPEN:
-                $template = 'orderStateOpen';
                 $subject = 'Commande ouverte';
                 break;
             case POOrderState::STATE_HANDLED:
-                $template = 'orderStateHandled';
                 $subject = 'Commande en cours de traitement';
                 break;
             case POOrderState::STATE_CANCEL:
-                $template = 'orderStateCancel';
                 $subject = 'Commande annulée';
                 break;
             default: break;
         }
 
         $htmlBody = $this->templating->render(
-                            'PolitizrAdminBundle:Email:'.$template.'.html.twig', array('order' => $order, 'user' => $user)
+                            'PolitizrAdminBundle:Email:orderStateGeneric.html.twig', array('order' => $order, 'user' => $user, 'status' => $order->getPOOrderStateId())
                     );
         $txtBody = $this->templating->render(
-                            'PolitizrAdminBundle:Email:'.$template.'.txt.twig', array('order' => $order, 'user' => $user)
+                            'PolitizrAdminBundle:Email:orderStateGeneric.txt.twig', array('order' => $order, 'user' => $user, 'status' => $order->getPOOrderStateId())
                     );
 
         // TODO: gestion propre des envoyeurs / receveur check normes email "prénom nom" <email>

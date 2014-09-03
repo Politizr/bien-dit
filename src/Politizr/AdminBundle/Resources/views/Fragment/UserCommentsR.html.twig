@@ -1,0 +1,11 @@
+<div id="displayCommentsZone">
+	{% if pdrComments | length > 0 %}
+		<b>{{ pdrComments | length }} commentaires de réaction ont été rédigés par {{ pUser }}</b>
+	{% else %}
+		<b>Aucun commentaire de réaction rédigé par {{ pUser }}</b>
+	{% endif %}
+	<hr>
+	{% for pdrComment in pdrComments %}
+		{% include 'PolitizrAdminBundle:Fragment:UserCommentR.html.twig' with { 'pdrComment': pdrComment } %}
+	{% endfor %}
+</div>

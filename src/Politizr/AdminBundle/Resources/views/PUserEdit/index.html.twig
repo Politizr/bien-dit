@@ -6,3 +6,11 @@
     <!-- TinyMCE -->
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
+
+
+{# Autocomplete CSS #}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+{% endblock %}
+

@@ -32,26 +32,38 @@ params:
             label:          Titre
         subscription_description:
             label:          Description
+        subscription_begin_at:
+            label:          Début
+        subscription_end_at:
+            label:          Fin
         information:
             label:          Information
-        gender:
-            label:          Genre
-        name:
-            label:          Nom
-        firstname:
-            label:          Prénom
         price:
             label:          Prix initial
         promotion:
             label:          Promotion
         total:
             label:          Prix final
+        gender:
+            label:          Genre
+        name:
+            label:          Nom
+        firstname:
+            label:          Prénom
+        phone:
+            label:          Téléphone
+        email:
+            label:          Email
         invoice_ref:
             label:          Réf. facture
         invoice_at:
             label:          Date facture
         invoice_filename:
             label:          Nom du fichier
+        elective_mandates:
+            label:          Mandats électifs
+        supporting_document:
+            label:          Justificatif
         created_at:
             label:          Création
         updated_at:
@@ -101,12 +113,17 @@ builders:
         params:
             title:                              "Création d'une commande"
             display:
-                "Champs principaux":            [ [ p_user ], [ p_o_subscription ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
-                "Champs complémentaires":       [ [ information ], [ gender, firstname, name ] ]
+                "Champs principaux":            [ [ p_user ], [ p_o_subscription ], [ subscription_begin_at, subscription_end_at ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
+                "Champs complémentaires":       [ [ information ], [ gender, firstname, name ], [ phone, email ], [ elective_mandates ] ]
             fields:
                 p_user:
                     addFormOptions:
                         empty_value:            ""
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                subscription_begin_at:
+                    formType:                   afe_date_picker
+                subscription_end_at:
+                    formType:                   afe_date_picker
                 price:
                     formType:                   money
                 promotion:
@@ -121,14 +138,15 @@ builders:
             title:                              "Edition de la commande n°{{ POrder.id }}"
             tabs:
                 "Commande":
-                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description, information ] ]
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Utilisateur":
+                    "Objet associé":            [ [ p_user ] ]
+                    "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
+                    "Justificatifs":            [ uploadedSupportingDocument, elective_mandates ]
                 "Facture":
                     "Facture":                  [ invoice_ref, block_invoice ]
                 "Emails":
                     "Emails":                   [ block_mail ]
-                "Utilisateur":
-                    "Objet associé":            [ [ p_user ] ]
-                    "Adresse facture":          [ [ gender, firstname, name ] ]
                 "Paiement":
                     "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
                 "Statut":
@@ -136,15 +154,27 @@ builders:
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                uploadedSupportingDocument:
+                    dbType:                     VARCHAR
+                    label:                      Justificatif
+                    formType:                   afe_single_upload
+                    addFormOptions:
+                        deleteable:             supportingDocument
+                        data_class:             Symfony\Component\HttpFoundation\File\File            
                 p_user:
                     addFormOptions:
                         empty_value:            ""
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 price:
                     formType:                   money
                 promotion:
                     formType:                   money
                 total:
                     formType:                   money
+                subscription_begin_at:
+                    formType:                   afe_date_picker
+                subscription_end_at:
+                    formType:                   afe_date_picker
                 block_invoice:
                     label:                      " "
                     formType:                   hidden
@@ -160,30 +190,33 @@ builders:
                     addFormOptions:
                         widget:                 single_text
             actions:
-              save:                             ~
-              list:                             ~
-              delete:                           ~
+                save:                           ~
+                show:                           ~
+                list:                           ~
+                delete:                         ~
     show:
         params:
             title:                              "Visualisation de la commande n°{{ POrder.id }}"
             tabs:
                 "Commande":
-                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description, information ] ]
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Utilisateur":
+                    "Objet associé":            [ [ p_user ] ]
+                    "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
+                    "Justificatifs":            [ supporting_document, elective_mandates ]
                 "Paiement":
                     "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
-                    "Adresse facture":          [ [ gender, firstname, name ] ]
                 "Statut":
                     "Actuel":                   [ [ p_o_order_state ] ]
-                "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
             # fields:
             #     last_connect:
             #         label:                      Date de dernière connexion
             actions:
-              list:                             ~
-              delete:                           ~
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
     actions:
         params:
             object_actions:

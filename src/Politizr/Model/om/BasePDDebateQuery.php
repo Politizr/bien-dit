@@ -25,6 +25,7 @@ use Politizr\Model\PUser;
 /**
  * @method PDDebateQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDDebateQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDDebateQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -41,6 +42,7 @@ use Politizr\Model\PUser;
  *
  * @method PDDebateQuery groupById() Group by the id column
  * @method PDDebateQuery groupByPUserId() Group by the p_user_id column
+ * @method PDDebateQuery groupByFileName() Group by the file_name column
  * @method PDDebateQuery groupByTitle() Group by the title column
  * @method PDDebateQuery groupBySummary() Group by the summary column
  * @method PDDebateQuery groupByDescription() Group by the description column
@@ -83,6 +85,7 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneOrCreate(PropelPDO $con = null) Return the first PDDebate matching the query, or a new PDDebate object populated from the query conditions when no match is found
  *
  * @method PDDebate findOneByPUserId(int $p_user_id) Return the first PDDebate filtered by the p_user_id column
+ * @method PDDebate findOneByFileName(string $file_name) Return the first PDDebate filtered by the file_name column
  * @method PDDebate findOneByTitle(string $title) Return the first PDDebate filtered by the title column
  * @method PDDebate findOneBySummary(string $summary) Return the first PDDebate filtered by the summary column
  * @method PDDebate findOneByDescription(string $description) Return the first PDDebate filtered by the description column
@@ -99,6 +102,7 @@ use Politizr\Model\PUser;
  *
  * @method array findById(int $id) Return PDDebate objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDDebate objects filtered by the p_user_id column
+ * @method array findByFileName(string $file_name) Return PDDebate objects filtered by the file_name column
  * @method array findByTitle(string $title) Return PDDebate objects filtered by the title column
  * @method array findBySummary(string $summary) Return PDDebate objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDDebate objects filtered by the description column
@@ -213,7 +217,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `file_name`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -386,6 +390,35 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**

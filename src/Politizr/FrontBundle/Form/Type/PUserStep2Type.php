@@ -13,6 +13,8 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
+use Politizr\Model\PUStatus;
 
 /**
  * TODO: commentaires
@@ -28,11 +30,11 @@ class PUserStep2Type extends AbstractType
             )
         );
         $builder->add('type', 'hidden', array(
-            'attr'     => array( 'value' => PUser::TYPE_CITOYEN )
+            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
             )
         );
         $builder->add('status', 'hidden', array(
-            'attr'     => array( 'value' => PUser::STATUS_ACTIV )
+            'attr'     => array( 'value' => PUStatus::STATUS_ACTIV )
             )
         );
         $builder->add('online', 'hidden', array(

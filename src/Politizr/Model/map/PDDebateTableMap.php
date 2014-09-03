@@ -44,6 +44,7 @@ class PDDebateTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
+        $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);

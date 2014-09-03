@@ -34,19 +34,22 @@ abstract class BasePDDebatePeer
     const TM_CLASS = 'PDDebateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 16;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /** the column name for the id field */
     const ID = 'p_d_debate.id';
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_d_debate.p_user_id';
+
+    /** the column name for the file_name field */
+    const FILE_NAME = 'p_d_debate.file_name';
 
     /** the column name for the title field */
     const TITLE = 'p_d_debate.title';
@@ -106,12 +109,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[PDDebatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::P_USER_ID, PDDebatePeer::TITLE, PDDebatePeer::SUMMARY, PDDebatePeer::DESCRIPTION, PDDebatePeer::MORE_INFO, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::ONLINE, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'FileName', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'fileName', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::P_USER_ID, PDDebatePeer::FILE_NAME, PDDebatePeer::TITLE, PDDebatePeer::SUMMARY, PDDebatePeer::DESCRIPTION, PDDebatePeer::MORE_INFO, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::ONLINE, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'FILE_NAME', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'file_name', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -121,12 +124,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'Slug' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::P_USER_ID => 1, PDDebatePeer::TITLE => 2, PDDebatePeer::SUMMARY => 3, PDDebatePeer::DESCRIPTION => 4, PDDebatePeer::MORE_INFO => 5, PDDebatePeer::NOTE_POS => 6, PDDebatePeer::NOTE_NEG => 7, PDDebatePeer::PUBLISHED => 8, PDDebatePeer::PUBLISHED_AT => 9, PDDebatePeer::PUBLISHED_BY => 10, PDDebatePeer::ONLINE => 11, PDDebatePeer::CREATED_AT => 12, PDDebatePeer::UPDATED_AT => 13, PDDebatePeer::SLUG => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, 'SLUG' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'created_at' => 12, 'updated_at' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'FileName' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'MoreInfo' => 6, 'NotePos' => 7, 'NoteNeg' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Online' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, 'Slug' => 15, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'fileName' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'moreInfo' => 6, 'notePos' => 7, 'noteNeg' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'online' => 12, 'createdAt' => 13, 'updatedAt' => 14, 'slug' => 15, ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::P_USER_ID => 1, PDDebatePeer::FILE_NAME => 2, PDDebatePeer::TITLE => 3, PDDebatePeer::SUMMARY => 4, PDDebatePeer::DESCRIPTION => 5, PDDebatePeer::MORE_INFO => 6, PDDebatePeer::NOTE_POS => 7, PDDebatePeer::NOTE_NEG => 8, PDDebatePeer::PUBLISHED => 9, PDDebatePeer::PUBLISHED_AT => 10, PDDebatePeer::PUBLISHED_BY => 11, PDDebatePeer::ONLINE => 12, PDDebatePeer::CREATED_AT => 13, PDDebatePeer::UPDATED_AT => 14, PDDebatePeer::SLUG => 15, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'FILE_NAME' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'MORE_INFO' => 6, 'NOTE_POS' => 7, 'NOTE_NEG' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'ONLINE' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, 'SLUG' => 15, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'file_name' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'more_info' => 6, 'note_pos' => 7, 'note_neg' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'online' => 12, 'created_at' => 13, 'updated_at' => 14, 'slug' => 15, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -202,6 +205,7 @@ abstract class BasePDDebatePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PDDebatePeer::ID);
             $criteria->addSelectColumn(PDDebatePeer::P_USER_ID);
+            $criteria->addSelectColumn(PDDebatePeer::FILE_NAME);
             $criteria->addSelectColumn(PDDebatePeer::TITLE);
             $criteria->addSelectColumn(PDDebatePeer::SUMMARY);
             $criteria->addSelectColumn(PDDebatePeer::DESCRIPTION);
@@ -218,6 +222,7 @@ abstract class BasePDDebatePeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
+            $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');

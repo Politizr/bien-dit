@@ -100,7 +100,7 @@ class PUserElectedStep1Type extends AbstractType
         );
 
 
-        // Justificatif
+        // Justificatif + mandats électifs
         $builder->add('uploaded_supporting_document', 'file', array(
             'required' => true,
             'mapped' => false,
@@ -110,6 +110,7 @@ class PUserElectedStep1Type extends AbstractType
 
         $builder->add('elective_mandates', 'textarea', array(
             'required' => true,
+            'mapped' => false,
             'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs en cours obligatoire.'))
             )
         );

@@ -1,0 +1,18 @@
+{{ user.firstname | capitalize }} {{ user.name | capitalize }},
+
+
+{% if status == constant('Politizr\\Model\\POOrderState::STATE_CREATE')  %}
+	Votre commande chez Politizr vient d'être créée.
+{% elseif status == constant('Politizr\\Model\\POOrderState::STATE_WAITING') %}
+	Votre commande chez Politizr est en attente de traitement.
+{% elseif status == constant('Politizr\\Model\\POOrderState::STATE_OPEN') %}
+	Votre commande chez Politizr est ouverte.
+{% elseif status == constant('Politizr\\Model\\POOrderState::STATE_HANDLED') %}
+	Votre commande chez Politizr est en cours de traitement.
+{% elseif status == constant('Politizr\\Model\\POOrderState::STATE_CANCEL') %}
+	Votre commande chez Politizr a été annulée.
+{% endif %}
+
+{% include 'PolitizrAdminBundle:Email:orderSummary.txt.twig' with { 'Order': order } %}
+
+{% include 'PolitizrAdminBundle:Email:footer.txt.twig' %}

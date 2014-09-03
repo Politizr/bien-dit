@@ -9,9 +9,11 @@ params:
         id:
             label:          ID
         p_user_id:
-            label:          Utilisateur
+            label:          ID Utilisateur
         p_user:
             label:          Utilisateur
+        file_name:
+            label:          Image
         title:
             label:          Titre
         summary:
@@ -56,7 +58,10 @@ builders:
                     "Brouillons":
                         filters:
                             filterByPublished:  false
-            display:                            [ id, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
+            display:                            [ file_name, id, p_user, title, summary, count_reactions, online, published, published_at, created_at ]
+            fields:
+                count_reactions:
+                    label:                      Réactions
             actions:
                 new:                            ~
             object_actions:
@@ -69,7 +74,7 @@ builders:
         filetype: ~
     filters:
         params:
-            display:                            [ id, p_user, published, published_at, online, created_at ]
+            display:                            [ id, p_user_id, published, published_at, online, created_at ]
             fields:
                 p_user:
                     addFormOptions:
@@ -79,13 +84,16 @@ builders:
             title:                              "Création d'un contenu débat"
             display:
                 "Champs principaux":            [ [ p_user ], [ title ] ]
-                "Champs complémentaires":       [ [ note_pos, note_neg ] ]
+                "Champs complémentaires":       [ [ summary ] ]
             fields:
                 p_user:
                     addFormOptions:
                         empty_value:            ""
                         required:               false
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
             actions:
               save:                             ~
               list:                             ~
@@ -94,53 +102,84 @@ builders:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ title ], [ description, more_info ] ]
+                    "Texte":                    [ uploadedFileName, title, summary, description, more_info ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
+                "Réactions":
+                    "Réactions associées":      [ block_reactions ]
+                "Tags":
+                    "Tags associés":            [ block_tags_geo, block_tags_theme ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   afe_single_upload
+                    addFormOptions:
+                        # nameable:               fileName
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user:
                     addFormOptions:
                         empty_value:            ""
                         required:               false
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
                 description:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 more_info:
                     addFormOptions:
                         attr:                   { class : tinymce }
+                block_reactions:
+                    label:                      "Réactions"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags_geo:
+                    label:                      "Tags Géo"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags_theme:
+                    label:                      "Tags Thématiques"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
                 published_at:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
                 created_at:
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
                 updated_at:
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
             actions:
-                save: ~
-                list: ~
+                save:                           ~
+                show:                           ~
+                list:                           ~
+                delete:                         ~
     show:
         params:
             title:                              "Visualisation du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ title ], [ description, more_info ] ]
-                "Réactions":
-                    "Contenus associés":        [ block_reactions, block_comments ]
-                "Tags":
-                    "Tags associés":            [ block_tags ]
-                "Abonnés":
-                    "Utilisateurs":             [ block_followers_q, block_followers_c ]
+                    "Texte":                    [ file_name, title, summary, description, more_info ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
+                "Réactions":
+                    "Réactions associées":      [ block_reactions ]
+                "Commentaires":
+                    "Commentaires associés":    [ block_comments ]
+                "Tags":
+                    "Tags associés":            [ block_tags_geo, block_tags_theme ]
+                "Abonnés":
+                    "Utilisateurs":             [ block_followers_q, block_followers_c ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
@@ -154,8 +193,12 @@ builders:
                     label:                      "Commentaires"
                     formType:                   hidden
                     dbType:                     VARCHAR
-                block_tags:
-                    label:                      "Tags"
+                block_tags_geo:
+                    label:                      "Tags Géo"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags_theme:
+                    label:                      "Tags Thématiques"
                     formType:                   hidden
                     dbType:                     VARCHAR
                 block_followers_q:
@@ -167,8 +210,9 @@ builders:
                     formType:                   hidden
                     dbType:                     VARCHAR
             actions:
-              list:                             ~
-              delete:                           ~
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
     actions:
         params:
             object_actions:

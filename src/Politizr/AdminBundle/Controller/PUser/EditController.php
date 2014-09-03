@@ -17,21 +17,14 @@ class EditController extends BaseEditController
      */
     public function preSave(\Symfony\Component\Form\Form $form, \Politizr\Model\PUser $currentObject)
     {
-    	$logger = $this->get('logger');
-    	$logger->info('*** post datas '.print_r($form->getData(), true));
+    	// $logger = $this->get('logger');
+    	// $logger->info('*** post datas '.print_r($form->getData(), true));
 
-        $file = $form['uploaded_file_name']->getData();
+        $file = $form['uploadedFileName']->getData();
         if ($file) {
-          $currentObject->removeUpload(true, false);
+          $currentObject->removeUpload(true);
           $fileName = $currentObject->upload($file);
           $currentObject->setFileName($fileName);
-        }
-
-        $file = $form['uploaded_supporting_document']->getData();
-        if ($file) {
-          $currentObject->removeUpload(false, true);
-          $fileName = $currentObject->upload($file);
-          $currentObject->setSupportingDocument($fileName);
         }
     }
 }

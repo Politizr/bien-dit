@@ -1,1 +1,8 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateNew:index.html.twig" %}
+
+{% block scripts_head %}
+    {{ parent() }}
+
+    <!-- TinyMCE -->
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+{% endblock %}

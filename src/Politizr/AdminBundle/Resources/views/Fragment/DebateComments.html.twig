@@ -1,0 +1,13 @@
+<div id="displayCommentsZone">
+	<a href="{{ path('Politizr_AdminBundle_PDDebate_Comments', { 'pk': pdDebate.id }) }}">
+		{% if pddComments | length > 0 %}
+			<b>{{ pddComments | length }} commentaires ont été rédigés pour ce débat.</b>
+		{% else %}
+			<b>Aucun commentaire rédigé pour ce débat.</b>
+		{% endif %}
+	</a>
+	<hr>
+	{% for pddComment in pddComments %}
+		{% include 'PolitizrAdminBundle:Fragment:DebateComment.html.twig' with { 'pddComment': pddComment } %}
+	{% endfor %}
+</div>

@@ -32,4 +32,13 @@ class PDDComment extends BasePDDComment
 	
 	/******************************************************************************/
 
+	/**
+	 * Renvoit le débat associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getDebate() {
+		return parent::getPDDebate();
+	}
+
 }

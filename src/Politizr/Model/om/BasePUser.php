@@ -44,8 +44,12 @@ use Politizr\Model\PUReputationRA;
 use Politizr\Model\PUReputationRAQuery;
 use Politizr\Model\PUReputationRB;
 use Politizr\Model\PUReputationRBQuery;
+use Politizr\Model\PUStatus;
+use Politizr\Model\PUStatusQuery;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PUType;
+use Politizr\Model\PUTypeQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
@@ -209,16 +213,16 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $roles_unserialized;
 
     /**
-     * The value for the type field.
+     * The value for the p_u_type_id field.
      * @var        int
      */
-    protected $type;
+    protected $p_u_type_id;
 
     /**
-     * The value for the status field.
+     * The value for the p_u_status_id field.
      * @var        int
      */
-    protected $status;
+    protected $p_u_status_id;
 
     /**
      * The value for the file_name field.
@@ -293,18 +297,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $newsletter;
 
     /**
-     * The value for the supporting_document field.
-     * @var        string
-     */
-    protected $supporting_document;
-
-    /**
-     * The value for the elective_mandates field.
-     * @var        string
-     */
-    protected $elective_mandates;
-
-    /**
      * The value for the last_connect field.
      * @var        string
      */
@@ -333,6 +325,16 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var        string
      */
     protected $slug;
+
+    /**
+     * @var        PUType
+     */
+    protected $aPUType;
+
+    /**
+     * @var        PUStatus
+     */
+    protected $aPUStatus;
 
     /**
      * @var        PropelObjectCollection|POrder[] Collection to store aggregation of POrder objects.
@@ -954,23 +956,23 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // hasRole()
 
     /**
-     * Get the [type] column value.
+     * Get the [p_u_type_id] column value.
      *
      * @return int
      */
-    public function getType()
+    public function getPUTypeId()
     {
-        return $this->type;
+        return $this->p_u_type_id;
     }
 
     /**
-     * Get the [status] column value.
+     * Get the [p_u_status_id] column value.
      *
      * @return int
      */
-    public function getStatus()
+    public function getPUStatusId()
     {
-        return $this->status;
+        return $this->p_u_status_id;
     }
 
     /**
@@ -1130,26 +1132,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function getNewsletter()
     {
         return $this->newsletter;
-    }
-
-    /**
-     * Get the [supporting_document] column value.
-     *
-     * @return string
-     */
-    public function getSupportingDocument()
-    {
-        return $this->supporting_document;
-    }
-
-    /**
-     * Get the [elective_mandates] column value.
-     *
-     * @return string
-     */
-    public function getElectiveMandates()
-    {
-        return $this->elective_mandates;
     }
 
     /**
@@ -1805,46 +1787,54 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // removeRole()
 
     /**
-     * Set the value of [type] column.
+     * Set the value of [p_u_type_id] column.
      *
      * @param int $v new value
      * @return PUser The current object (for fluent API support)
      */
-    public function setType($v)
+    public function setPUTypeId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->type !== $v) {
-            $this->type = $v;
-            $this->modifiedColumns[] = PUserPeer::TYPE;
+        if ($this->p_u_type_id !== $v) {
+            $this->p_u_type_id = $v;
+            $this->modifiedColumns[] = PUserPeer::P_U_TYPE_ID;
+        }
+
+        if ($this->aPUType !== null && $this->aPUType->getId() !== $v) {
+            $this->aPUType = null;
         }
 
 
         return $this;
-    } // setType()
+    } // setPUTypeId()
 
     /**
-     * Set the value of [status] column.
+     * Set the value of [p_u_status_id] column.
      *
      * @param int $v new value
      * @return PUser The current object (for fluent API support)
      */
-    public function setStatus($v)
+    public function setPUStatusId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->status !== $v) {
-            $this->status = $v;
-            $this->modifiedColumns[] = PUserPeer::STATUS;
+        if ($this->p_u_status_id !== $v) {
+            $this->p_u_status_id = $v;
+            $this->modifiedColumns[] = PUserPeer::P_U_STATUS_ID;
+        }
+
+        if ($this->aPUStatus !== null && $this->aPUStatus->getId() !== $v) {
+            $this->aPUStatus = null;
         }
 
 
         return $this;
-    } // setStatus()
+    } // setPUStatusId()
 
     /**
      * Set the value of [file_name] column.
@@ -2114,48 +2104,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setNewsletter()
 
     /**
-     * Set the value of [supporting_document] column.
-     *
-     * @param string $v new value
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setSupportingDocument($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->supporting_document !== $v) {
-            $this->supporting_document = $v;
-            $this->modifiedColumns[] = PUserPeer::SUPPORTING_DOCUMENT;
-        }
-
-
-        return $this;
-    } // setSupportingDocument()
-
-    /**
-     * Set the value of [elective_mandates] column.
-     *
-     * @param string $v new value
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setElectiveMandates($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->elective_mandates !== $v) {
-            $this->elective_mandates = $v;
-            $this->modifiedColumns[] = PUserPeer::ELECTIVE_MANDATES;
-        }
-
-
-        return $this;
-    } // setElectiveMandates()
-
-    /**
      * Sets the value of [last_connect] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -2344,8 +2292,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->credentials_expire_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->roles = $row[$startcol + 20];
             $this->roles_unserialized = null;
-            $this->type = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
-            $this->status = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->p_u_type_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->p_u_status_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
             $this->file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
             $this->gender = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
             $this->firstname = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
@@ -2358,13 +2306,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->facebook = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
             $this->phone = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
             $this->newsletter = ($row[$startcol + 34] !== null) ? (boolean) $row[$startcol + 34] : null;
-            $this->supporting_document = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
-            $this->elective_mandates = ($row[$startcol + 36] !== null) ? (string) $row[$startcol + 36] : null;
-            $this->last_connect = ($row[$startcol + 37] !== null) ? (string) $row[$startcol + 37] : null;
-            $this->online = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
-            $this->created_at = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
-            $this->updated_at = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
-            $this->slug = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
+            $this->last_connect = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
+            $this->online = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
+            $this->created_at = ($row[$startcol + 37] !== null) ? (string) $row[$startcol + 37] : null;
+            $this->updated_at = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
+            $this->slug = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2373,7 +2319,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 42; // 42 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 40; // 40 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -2396,6 +2342,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPUType !== null && $this->p_u_type_id !== $this->aPUType->getId()) {
+            $this->aPUType = null;
+        }
+        if ($this->aPUStatus !== null && $this->p_u_status_id !== $this->aPUStatus->getId()) {
+            $this->aPUStatus = null;
+        }
     } // ensureConsistency
 
     /**
@@ -2435,6 +2387,8 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPUType = null;
+            $this->aPUStatus = null;
             $this->collPOrders = null;
 
             $this->collPUQualifications = null;
@@ -2599,6 +2553,25 @@ abstract class BasePUser extends BaseObject implements Persistent
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUType !== null) {
+                if ($this->aPUType->isModified() || $this->aPUType->isNew()) {
+                    $affectedRows += $this->aPUType->save($con);
+                }
+                $this->setPUType($this->aPUType);
+            }
+
+            if ($this->aPUStatus !== null) {
+                if ($this->aPUStatus->isModified() || $this->aPUStatus->isNew()) {
+                    $affectedRows += $this->aPUStatus->save($con);
+                }
+                $this->setPUStatus($this->aPUStatus);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -3056,11 +3029,11 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::ROLES)) {
             $modifiedColumns[':p' . $index++]  = '`roles`';
         }
-        if ($this->isColumnModified(PUserPeer::TYPE)) {
-            $modifiedColumns[':p' . $index++]  = '`type`';
+        if ($this->isColumnModified(PUserPeer::P_U_TYPE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_u_type_id`';
         }
-        if ($this->isColumnModified(PUserPeer::STATUS)) {
-            $modifiedColumns[':p' . $index++]  = '`status`';
+        if ($this->isColumnModified(PUserPeer::P_U_STATUS_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_u_status_id`';
         }
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
@@ -3097,12 +3070,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PUserPeer::NEWSLETTER)) {
             $modifiedColumns[':p' . $index++]  = '`newsletter`';
-        }
-        if ($this->isColumnModified(PUserPeer::SUPPORTING_DOCUMENT)) {
-            $modifiedColumns[':p' . $index++]  = '`supporting_document`';
-        }
-        if ($this->isColumnModified(PUserPeer::ELECTIVE_MANDATES)) {
-            $modifiedColumns[':p' . $index++]  = '`elective_mandates`';
         }
         if ($this->isColumnModified(PUserPeer::LAST_CONNECT)) {
             $modifiedColumns[':p' . $index++]  = '`last_connect`';
@@ -3193,11 +3160,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                     case '`roles`':
                         $stmt->bindValue($identifier, $this->roles, PDO::PARAM_STR);
                         break;
-                    case '`type`':
-                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
+                    case '`p_u_type_id`':
+                        $stmt->bindValue($identifier, $this->p_u_type_id, PDO::PARAM_INT);
                         break;
-                    case '`status`':
-                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
+                    case '`p_u_status_id`':
+                        $stmt->bindValue($identifier, $this->p_u_status_id, PDO::PARAM_INT);
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
@@ -3234,12 +3201,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`newsletter`':
                         $stmt->bindValue($identifier, (int) $this->newsletter, PDO::PARAM_INT);
-                        break;
-                    case '`supporting_document`':
-                        $stmt->bindValue($identifier, $this->supporting_document, PDO::PARAM_STR);
-                        break;
-                    case '`elective_mandates`':
-                        $stmt->bindValue($identifier, $this->elective_mandates, PDO::PARAM_STR);
                         break;
                     case '`last_connect`':
                         $stmt->bindValue($identifier, $this->last_connect, PDO::PARAM_STR);
@@ -3348,6 +3309,24 @@ abstract class BasePUser extends BaseObject implements Persistent
             $retval = null;
 
             $failureMap = array();
+
+
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUType !== null) {
+                if (!$this->aPUType->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUType->getValidationFailures());
+                }
+            }
+
+            if ($this->aPUStatus !== null) {
+                if (!$this->aPUStatus->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUStatus->getValidationFailures());
+                }
+            }
 
 
             if (($retval = PUserPeer::doValidate($this, $columns)) !== true) {
@@ -3558,10 +3537,10 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getRoles();
                 break;
             case 21:
-                return $this->getType();
+                return $this->getPUTypeId();
                 break;
             case 22:
-                return $this->getStatus();
+                return $this->getPUStatusId();
                 break;
             case 23:
                 return $this->getFileName();
@@ -3600,24 +3579,18 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getNewsletter();
                 break;
             case 35:
-                return $this->getSupportingDocument();
-                break;
-            case 36:
-                return $this->getElectiveMandates();
-                break;
-            case 37:
                 return $this->getLastConnect();
                 break;
-            case 38:
+            case 36:
                 return $this->getOnline();
                 break;
-            case 39:
+            case 37:
                 return $this->getCreatedAt();
                 break;
-            case 40:
+            case 38:
                 return $this->getUpdatedAt();
                 break;
-            case 41:
+            case 39:
                 return $this->getSlug();
                 break;
             default:
@@ -3670,8 +3643,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[18] => $this->getCredentialsExpired(),
             $keys[19] => $this->getCredentialsExpireAt(),
             $keys[20] => $this->getRoles(),
-            $keys[21] => $this->getType(),
-            $keys[22] => $this->getStatus(),
+            $keys[21] => $this->getPUTypeId(),
+            $keys[22] => $this->getPUStatusId(),
             $keys[23] => $this->getFileName(),
             $keys[24] => $this->getGender(),
             $keys[25] => $this->getFirstname(),
@@ -3684,15 +3657,19 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[32] => $this->getFacebook(),
             $keys[33] => $this->getPhone(),
             $keys[34] => $this->getNewsletter(),
-            $keys[35] => $this->getSupportingDocument(),
-            $keys[36] => $this->getElectiveMandates(),
-            $keys[37] => $this->getLastConnect(),
-            $keys[38] => $this->getOnline(),
-            $keys[39] => $this->getCreatedAt(),
-            $keys[40] => $this->getUpdatedAt(),
-            $keys[41] => $this->getSlug(),
+            $keys[35] => $this->getLastConnect(),
+            $keys[36] => $this->getOnline(),
+            $keys[37] => $this->getCreatedAt(),
+            $keys[38] => $this->getUpdatedAt(),
+            $keys[39] => $this->getSlug(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->aPUType) {
+                $result['PUType'] = $this->aPUType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPUStatus) {
+                $result['PUStatus'] = $this->aPUStatus->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collPOrders) {
                 $result['POrders'] = $this->collPOrders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -3834,10 +3811,10 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setRoles($value);
                 break;
             case 21:
-                $this->setType($value);
+                $this->setPUTypeId($value);
                 break;
             case 22:
-                $this->setStatus($value);
+                $this->setPUStatusId($value);
                 break;
             case 23:
                 $this->setFileName($value);
@@ -3880,24 +3857,18 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setNewsletter($value);
                 break;
             case 35:
-                $this->setSupportingDocument($value);
-                break;
-            case 36:
-                $this->setElectiveMandates($value);
-                break;
-            case 37:
                 $this->setLastConnect($value);
                 break;
-            case 38:
+            case 36:
                 $this->setOnline($value);
                 break;
-            case 39:
+            case 37:
                 $this->setCreatedAt($value);
                 break;
-            case 40:
+            case 38:
                 $this->setUpdatedAt($value);
                 break;
-            case 41:
+            case 39:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -3945,8 +3916,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[18], $arr)) $this->setCredentialsExpired($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setCredentialsExpireAt($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setRoles($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setType($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setStatus($arr[$keys[22]]);
+        if (array_key_exists($keys[21], $arr)) $this->setPUTypeId($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setPUStatusId($arr[$keys[22]]);
         if (array_key_exists($keys[23], $arr)) $this->setFileName($arr[$keys[23]]);
         if (array_key_exists($keys[24], $arr)) $this->setGender($arr[$keys[24]]);
         if (array_key_exists($keys[25], $arr)) $this->setFirstname($arr[$keys[25]]);
@@ -3959,13 +3930,11 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[32], $arr)) $this->setFacebook($arr[$keys[32]]);
         if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[33]]);
         if (array_key_exists($keys[34], $arr)) $this->setNewsletter($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setSupportingDocument($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setElectiveMandates($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setLastConnect($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setOnline($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setCreatedAt($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setUpdatedAt($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setSlug($arr[$keys[41]]);
+        if (array_key_exists($keys[35], $arr)) $this->setLastConnect($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setOnline($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setCreatedAt($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setUpdatedAt($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setSlug($arr[$keys[39]]);
     }
 
     /**
@@ -3998,8 +3967,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::CREDENTIALS_EXPIRED)) $criteria->add(PUserPeer::CREDENTIALS_EXPIRED, $this->credentials_expired);
         if ($this->isColumnModified(PUserPeer::CREDENTIALS_EXPIRE_AT)) $criteria->add(PUserPeer::CREDENTIALS_EXPIRE_AT, $this->credentials_expire_at);
         if ($this->isColumnModified(PUserPeer::ROLES)) $criteria->add(PUserPeer::ROLES, $this->roles);
-        if ($this->isColumnModified(PUserPeer::TYPE)) $criteria->add(PUserPeer::TYPE, $this->type);
-        if ($this->isColumnModified(PUserPeer::STATUS)) $criteria->add(PUserPeer::STATUS, $this->status);
+        if ($this->isColumnModified(PUserPeer::P_U_TYPE_ID)) $criteria->add(PUserPeer::P_U_TYPE_ID, $this->p_u_type_id);
+        if ($this->isColumnModified(PUserPeer::P_U_STATUS_ID)) $criteria->add(PUserPeer::P_U_STATUS_ID, $this->p_u_status_id);
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) $criteria->add(PUserPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PUserPeer::GENDER)) $criteria->add(PUserPeer::GENDER, $this->gender);
         if ($this->isColumnModified(PUserPeer::FIRSTNAME)) $criteria->add(PUserPeer::FIRSTNAME, $this->firstname);
@@ -4012,8 +3981,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::FACEBOOK)) $criteria->add(PUserPeer::FACEBOOK, $this->facebook);
         if ($this->isColumnModified(PUserPeer::PHONE)) $criteria->add(PUserPeer::PHONE, $this->phone);
         if ($this->isColumnModified(PUserPeer::NEWSLETTER)) $criteria->add(PUserPeer::NEWSLETTER, $this->newsletter);
-        if ($this->isColumnModified(PUserPeer::SUPPORTING_DOCUMENT)) $criteria->add(PUserPeer::SUPPORTING_DOCUMENT, $this->supporting_document);
-        if ($this->isColumnModified(PUserPeer::ELECTIVE_MANDATES)) $criteria->add(PUserPeer::ELECTIVE_MANDATES, $this->elective_mandates);
         if ($this->isColumnModified(PUserPeer::LAST_CONNECT)) $criteria->add(PUserPeer::LAST_CONNECT, $this->last_connect);
         if ($this->isColumnModified(PUserPeer::ONLINE)) $criteria->add(PUserPeer::ONLINE, $this->online);
         if ($this->isColumnModified(PUserPeer::CREATED_AT)) $criteria->add(PUserPeer::CREATED_AT, $this->created_at);
@@ -4102,8 +4069,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setCredentialsExpired($this->getCredentialsExpired());
         $copyObj->setCredentialsExpireAt($this->getCredentialsExpireAt());
         $copyObj->setRoles($this->getRoles());
-        $copyObj->setType($this->getType());
-        $copyObj->setStatus($this->getStatus());
+        $copyObj->setPUTypeId($this->getPUTypeId());
+        $copyObj->setPUStatusId($this->getPUStatusId());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setGender($this->getGender());
         $copyObj->setFirstname($this->getFirstname());
@@ -4116,8 +4083,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setFacebook($this->getFacebook());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setNewsletter($this->getNewsletter());
-        $copyObj->setSupportingDocument($this->getSupportingDocument());
-        $copyObj->setElectiveMandates($this->getElectiveMandates());
         $copyObj->setLastConnect($this->getLastConnect());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -4257,6 +4222,110 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a PUType object.
+     *
+     * @param             PUType $v
+     * @return PUser The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUType(PUType $v = null)
+    {
+        if ($v === null) {
+            $this->setPUTypeId(NULL);
+        } else {
+            $this->setPUTypeId($v->getId());
+        }
+
+        $this->aPUType = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUType object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUser($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUType object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUType The associated PUType object.
+     * @throws PropelException
+     */
+    public function getPUType(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUType === null && ($this->p_u_type_id !== null) && $doQuery) {
+            $this->aPUType = PUTypeQuery::create()->findPk($this->p_u_type_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUType->addPUsers($this);
+             */
+        }
+
+        return $this->aPUType;
+    }
+
+    /**
+     * Declares an association between this object and a PUStatus object.
+     *
+     * @param             PUStatus $v
+     * @return PUser The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUStatus(PUStatus $v = null)
+    {
+        if ($v === null) {
+            $this->setPUStatusId(NULL);
+        } else {
+            $this->setPUStatusId($v->getId());
+        }
+
+        $this->aPUStatus = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUStatus object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUser($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUStatus object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUStatus The associated PUStatus object.
+     * @throws PropelException
+     */
+    public function getPUStatus(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUStatus === null && ($this->p_u_status_id !== null) && $doQuery) {
+            $this->aPUStatus = PUStatusQuery::create()->findPk($this->p_u_status_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUStatus->addPUsers($this);
+             */
+        }
+
+        return $this->aPUStatus;
     }
 
 
@@ -8382,8 +8451,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->credentials_expire_at = null;
         $this->roles = null;
         $this->roles_unserialized = null;
-        $this->type = null;
-        $this->status = null;
+        $this->p_u_type_id = null;
+        $this->p_u_status_id = null;
         $this->file_name = null;
         $this->gender = null;
         $this->firstname = null;
@@ -8396,8 +8465,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->facebook = null;
         $this->phone = null;
         $this->newsletter = null;
-        $this->supporting_document = null;
-        $this->elective_mandates = null;
         $this->last_connect = null;
         $this->online = null;
         $this->created_at = null;
@@ -8516,6 +8583,12 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aPUType instanceof Persistent) {
+              $this->aPUType->clearAllReferences($deep);
+            }
+            if ($this->aPUStatus instanceof Persistent) {
+              $this->aPUStatus->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -8605,6 +8678,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowTPTags->clearIterator();
         }
         $this->collPuFollowTPTags = null;
+        $this->aPUType = null;
+        $this->aPUStatus = null;
     }
 
     /**

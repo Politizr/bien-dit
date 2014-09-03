@@ -10,7 +10,11 @@ use \PropelPDO;
 use \Criteria;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
+use Politizr\Model\PUStatus;
 use Politizr\Model\PUserPeer;
+use Politizr\Model\PRBadge;
+
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -29,13 +33,6 @@ class PUser extends BasePUser implements UserInterface
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-	const TYPE_CITOYEN = 1;
-	const TYPE_QUALIFIE = 2;
-
-    const STATUS_ACTIV = 1;
-	const STATUS_VALIDATION_PROCESS = 2;
-	const STATUS_ARCHIVE = 3;
-
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
 
@@ -79,6 +76,38 @@ class PUser extends BasePUser implements UserInterface
 		return $slug;
 	}
 
+    /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
+
+    public function getBlockDebates() {
+    }
+    public function getBlockReactions() {
+    }
+    public function getBlockCommentsD() {
+    }
+    public function getBlockCommentsR() {
+    }
+    public function getBlockFollowersQ() {
+    }
+    public function getBlockFollowersC() {
+    }
+    public function getBlockSubscribersQ() {
+    }
+    public function getBlockSubscribersC() {
+    }
+    public function getBlockTagsMandat() {
+    }
+    public function getBlockTagsGeo() {
+    }
+    public function getBlockBadgesDebat() {
+    }
+    public function getBlockBadgesComment() {
+    }
+    public function getBlockBadgesParticipation() {
+    }
+    public function getBlockBadgesModeration() {
+    }
+    public function getBlockBadgesAutres() {
+    }
 
 
 	// ************************************************************************************ //
@@ -91,8 +120,10 @@ class PUser extends BasePUser implements UserInterface
 	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
 	// Colonnes virtuelles / fichiers
-    public $uploaded_file_name;
-	public $uploaded_supporting_document;
+    public $uploadedFileName;
+    public function setUploadedFileName($uploadedFileName) {
+        $this->uploadedFileName = $uploadedFileName;
+    }
 
     /**
      *
@@ -100,13 +131,6 @@ class PUser extends BasePUser implements UserInterface
     public function getUploadedFileNameWebPath()
     {
         return PUser::UPLOAD_WEB_PATH . $this->file_name;
-    }
-
-    /**
-     *
-     */
-    public function getAbsolutePath() {
-    	return __DIR__ . PUser::UPLOAD_PATH . $this->getFileName();
     }
     
 	/**
@@ -117,7 +141,7 @@ class PUser extends BasePUser implements UserInterface
         // inject file into property (if uploaded)
         if ($this->file_name) {
             return new \Symfony\Component\HttpFoundation\File\File(
-                $this->getAbsolutePath()
+                __DIR__ . PUser::UPLOAD_PATH . $this->file_name
             );
         }
 
@@ -125,7 +149,7 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     *	Gestion physique de l'upload
+     *  Gestion physique de l'upload
      */
 	public function upload($file = null)
 	{
@@ -153,21 +177,10 @@ class PUser extends BasePUser implements UserInterface
 	public function setFileName($v)
 	{
 		if (!$v) {
-			$this->removeUpload(true, false);
+			$this->removeUpload();
 		}
 		parent::setFileName($v);
 	}
-
-    /**
-     *  Surcharge pour gérer la suppression physique.
-     */
-    public function setSupportingDocument($v)
-    {
-        if (!$v) {
-            $this->removeUpload(false, true);
-        }
-        parent::setSupportingDocument($v);
-    }
 
 	/**
 	 *  Surcharge pour gérer la suppression physique.
@@ -180,35 +193,12 @@ class PUser extends BasePUser implements UserInterface
 	/**
 	 * 	Suppression physique des fichiers.
 	 */
-	public function removeUpload($uploaded_file_name = true, $uploaded_supporting_document = true)
+	public function removeUpload($uploadedFileName = true)
 	{
-		if ($uploaded_file_name && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
+		if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
 		  	unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
 		}
-        if ($uploaded_supporting_document && $this->supporting_document && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->supporting_document)) {
-            unlink(__DIR__ . PUser::UPLOAD_PATH . $this->supporting_document);
-        }
 	}
-
-    /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-    public function getBlockDebates() {
-    }
-    public function getBlockReactions() {
-    }
-    public function getBlockCommentsD() {
-    }
-    public function getBlockCommentsR() {
-    }
-    public function getBlockFollowersQ() {
-    }
-    public function getBlockFollowersC() {
-    }
-    public function getBlockSubscribersQ() {
-    }
-    public function getBlockSubscribersC() {
-    }
-    public function getBlockTags() {
-    }
 
 
     // ************************************************************************************ //
@@ -406,7 +396,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserFollowersQ() {
-		$query = PUserQuery::create()->filterByType(PUser::TYPE_QUALIFIE);
+		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE);
 		$pUsers = $this->getPUserFollowers($query);
 
 		return $pUsers;
@@ -429,7 +419,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserFollowersC() {
-		$query = PUserQuery::create()->filterByType(PUser::TYPE_CITOYEN);
+		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_CITOYEN);
 		$pUsers = $this->getPUserFollowers($query);
 
 		return $pUsers;
@@ -493,7 +483,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserSubscribersQ() {
-		$query = PUserQuery::create()->filterByType(PUser::TYPE_QUALIFIE);
+		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE);
 		$pUsers = $this->getPUserSubscribers($query);
 
 		return $pUsers;
@@ -517,7 +507,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserSubscribersC() {
-		$query = PUserQuery::create()->filterByType(PUser::TYPE_CITOYEN);
+		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_CITOYEN);
 		$pUsers = $this->getPUserSubscribers($query);
 
 		return $pUsers;
@@ -564,6 +554,25 @@ class PUser extends BasePUser implements UserInterface
             ->findOne();
 
         return $puQualification;
+    }
+
+    // *****************************    TAGS   ************************* //
+
+    /**
+     * Renvoie les tags taggant l'utilisateur
+     *
+     *
+     * @return PTag (collection)
+     */
+    public function getTaggedPTags($ptTagTypeId = null, $online = true) {
+        $query = PTagQuery::create()
+                    ->_if($ptTagTypeId)
+                        ->filterByPTTagTypeId($ptTagTypeId)
+                    ->_endif()
+                    ->filterByOnline($online)
+                    ;
+
+        return parent::getPuTaggedTPTags($query);
     }
 
     // *****************************    DOCUMENTS > DEBATS, REACTIONS    ************************* //
@@ -655,6 +664,39 @@ class PUser extends BasePUser implements UserInterface
         return $pDDebates;
     }
 
+    // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //
+
+    /**
+     * Renvoit les commentaires associés à des débats pour le user courant.
+     *
+     * @param   $online     boolean     Renvoit uniquement les commentaires en ligne
+     *
+     * @return array    Liste d'objets PDDComment
+     */
+    public function getCommentsD($online = true) {
+        $query = PDDCommentQuery::create()
+                    ->filterByOnline($online);
+
+        return parent::getPDDComments($query);
+    }
+
+
+    /**
+     * Renvoit les commentaires associés à des réactions pour le user courant.
+     *
+     * @param   $online     boolean     Renvoit uniquement les commentaires en ligne
+     *
+     * @return array    Liste d'objets PDRComment
+     */
+    public function getCommentsR($online = true) {
+        $query = PDRCommentQuery::create()
+                    ->filterByOnline($online);
+
+        return parent::getPDRComments($query);
+    }
+
+
+
     // *****************************    BADGES / REPUTATION    ************************* //
 
     /**
@@ -664,19 +706,28 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PRBadge (collection)
      */
-    public function getBadges($pRBadgeTypeId = null) {
-        $pRBadges = PRBadgeQuery::create()
-            ->filterByOnline(true)
-            ->_if($pRBadgeTypeId)
-                ->filterByPRBadgeTypeId($pRBadgeTypeId)
-            ->_endif()
-            ->usePuReputationRbPRBadgeQuery()
-                ->filterByPUserId($this->getId())
-            ->endUse()
-            ->setDistinct()
-            ->find();
+    public function getPRBadges($prBadgeTypeId = null, $online = true) {
+        $query = PRBadgeQuery::create()
+            ->filterByOnline($online)
+            ->_if($prBadgeTypeId)
+                ->filterByPRBadgeTypeId($prBadgeTypeId)
+            ->_endif();
 
-        return $pRBadges;
+        return parent::getPuReputationRbPRBadges($query);
+    }
+
+    /**
+     * @see addPuReputationRbPRBadge
+     */
+    public function addPRBadge(PRBadge $prBadge) {
+        return parent::addPuReputationRbPRBadge($prBadge);
+    }
+
+    /**
+     * @see removePuReputationRbPRBadge
+     */
+    public function removePRBadge(PRBadge $prBadge) {
+        return parent::removePuReputationRbPRBadge($prBadge);
     }
 
     /**

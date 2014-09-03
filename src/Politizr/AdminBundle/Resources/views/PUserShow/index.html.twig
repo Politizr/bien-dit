@@ -1,97 +1,100 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserShow:index.html.twig" %}
 
+{# Autocomplete CSS #}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+{% endblock %}
+
+{# Contenus #}
+{% block show_column_summary %}
+	{{ PUser.summary | raw }}
+{% endblock %}
+
+{% block show_column_biography %}
+	{{ PUser.biography | raw }}
+{% endblock %}
+
+
 {# Image #}
 {% block show_column_file_name %}
 	<img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
 {% endblock %}
 
-{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
-
 {# Bloc tags #}
+{% block show_column_block_tags_mandat %}
+	{{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_MANDAT'), 1, 'show') }}
+{% endblock %}
+
+{% block show_column_block_tags_geo %}
+	{{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, 'show') }}
+{% endblock %}
+
+{# Blocs badges #}
+{% block show_column_block_badges_debat %}
+	{{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_DEBATE'), 1) }}
+{% endblock %}
+
+{% block show_column_block_badges_comment %}
+	{{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_COMMENT'), 2) }}
+{% endblock %}
+
+{% block show_column_block_badges_participation %}
+	{{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_PARTICIPATION'), 3) }}
+{% endblock %}
+
+{% block show_column_block_badges_moderation %}
+	{{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_MODERATION'), 4) }}
+{% endblock %}
+
+{% block show_column_block_badges_autre %}
+	{{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_OTHER'), 5) }}
+{% endblock %}
+
 
 {# Bloc débats #}
 {% block show_column_block_debates %}
-	Nombre de débats: {{ PUser.PDDebates | length }}<br/>
-	<br/>
-	{% for pdDebate in PUser.PDDebates %}
-		id-{{ pdDebate.id }} / <b>{{ pdDebate.title }}</b><br/>
-		{{ pdDebate.summary | raw }}<br/>
-		Note: {{ pdDebate.notePos }} + / {{ pdDebate.noteNeg }} -<br/>
-	{% endfor %}
+	{{ adminUserDebates(PUser) }}
 {% endblock %}
 
 {# Bloc réactions #}
 {% block show_column_block_reactions %}
-	Nombre de réactions: {{ PUser.PDReactions | length }}<br/>
-	<br/>
-	{% for pdReaction in PUser.PDReactions %}
-		id-{{ pdReaction.id }} / <b>{{ pdReaction.title }}</b><br/>
-		{{ pdReaction.summary | raw }}<br/>
-		Note: {{ pdReaction.notePos }} + / {{ pdReaction.noteNeg }} -<br/>
-	{% endfor %}
+	{{ adminUserReactions(PUser) }}
 {% endblock %}
+
 
 {# Bloc commentaires débats #}
 {% block show_column_block_comments_d %}
-	Nombre de commentaires débats: {{ PUser.PDDComments | length }}<br/>
-	<br/>
-	{% for pddComment in PUser.PDDComments %}
-		<b>Commentaire id-{{ pddComment.id }}</b><br/>
-		Contenu original: {{ pddComment.pdDebate.title }}<br/>
-		{{ pddComment.description | raw }}<br/>
-		Note: {{ pddComment.notePos }} + / {{ pddComment.noteNeg }} -<br/>
-		<a href="#">Modérer</a>
-	{% endfor %}
+	{{ adminUserCommentsD(PUser) }}
 {% endblock %}
 
 {# Bloc commentaires réactions #}
 {% block show_column_block_comments_r %}
-	Nombre de commentaires réactions: {{ PUser.PDRComments | length }}<br/>
-	<br/>
-	{% for pdrComment in PUser.PDRComments %}
-		<b>Commentaire id-{{ pdrComment.id }}</b><br/>
-		Contenu original: {{ pdrComment.pdReaction.title }}<br/>
-		{{ pdrComment.description | raw }}<br/>
-		Note: {{ pdrComment.notePos }} + / {{ pdrComment.noteNeg }} -<br/>
-		<a href="#">Modérer</a>
-	{% endfor %}
-{% endblock %}
-
-
-{# Bloc tags #}
-{% block show_column_block_tags %}
-	{% for pTag in PUser.PuTaggedTPTags %}
-		<b>{{ pTag.title }}</b><br/>
-		<a href="#">Supprimer</a>
-	{% endfor %}
-	<a href="#">Ajouter un tag</a>
+	{{ adminUserCommentsR(PUser) }}
 {% endblock %}
 
 
 {# Bloc followers qualifiés #}
 {% block show_column_block_followers_q %}
-	{% for pUser in PUser.PUserFollowersQ %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminUserFollowersQ(PUser) }}
 {% endblock %}
 
 {# Bloc followers citoyens #}
 {% block show_column_block_followers_c %}
-	{% for pUser in PUser.PUserFollowersC %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminUserFollowersC(PUser) }}
 {% endblock %}
 
 {# Bloc subscribers qualifiés #}
 {% block show_column_block_subscribers_q %}
-	{% for pUser in PUser.PUserSubscribersQ %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminUserSubscribersQ(PUser) }}
 {% endblock %}
 
 {# Bloc subscribers citoyens #}
 {% block show_column_block_subscribers_c %}
-	{% for pUser in PUser.PUserSubscribersC %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminUserSubscribersC(PUser) }}
+{% endblock %}
+
+
+{% block generic_actions_script %}
+	{% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
 {% endblock %}

@@ -101,6 +101,18 @@ abstract class BasePOrder extends BaseObject implements Persistent
     protected $subscription_description;
 
     /**
+     * The value for the subscription_begin_at field.
+     * @var        string
+     */
+    protected $subscription_begin_at;
+
+    /**
+     * The value for the subscription_end_at field.
+     * @var        string
+     */
+    protected $subscription_end_at;
+
+    /**
      * The value for the information field.
      * @var        string
      */
@@ -155,12 +167,6 @@ abstract class BasePOrder extends BaseObject implements Persistent
     protected $email;
 
     /**
-     * The value for the elective_mandates field.
-     * @var        string
-     */
-    protected $elective_mandates;
-
-    /**
      * The value for the invoice_ref field.
      * @var        string
      */
@@ -177,6 +183,18 @@ abstract class BasePOrder extends BaseObject implements Persistent
      * @var        string
      */
     protected $invoice_filename;
+
+    /**
+     * The value for the supporting_document field.
+     * @var        string
+     */
+    protected $supporting_document;
+
+    /**
+     * The value for the elective_mandates field.
+     * @var        string
+     */
+    protected $elective_mandates;
 
     /**
      * The value for the created_at field.
@@ -328,6 +346,86 @@ abstract class BasePOrder extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [subscription_begin_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getSubscriptionBeginAt($format = null)
+    {
+        if ($this->subscription_begin_at === null) {
+            return null;
+        }
+
+        if ($this->subscription_begin_at === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->subscription_begin_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->subscription_begin_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [subscription_end_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getSubscriptionEndAt($format = null)
+    {
+        if ($this->subscription_end_at === null) {
+            return null;
+        }
+
+        if ($this->subscription_end_at === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->subscription_end_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->subscription_end_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
      * Get the [information] column value.
      *
      * @return string
@@ -427,16 +525,6 @@ abstract class BasePOrder extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [elective_mandates] column value.
-     *
-     * @return string
-     */
-    public function getElectiveMandates()
-    {
-        return $this->elective_mandates;
-    }
-
-    /**
      * Get the [invoice_ref] column value.
      *
      * @return string
@@ -494,6 +582,26 @@ abstract class BasePOrder extends BaseObject implements Persistent
     public function getInvoiceFilename()
     {
         return $this->invoice_filename;
+    }
+
+    /**
+     * Get the [supporting_document] column value.
+     *
+     * @return string
+     */
+    public function getSupportingDocument()
+    {
+        return $this->supporting_document;
+    }
+
+    /**
+     * Get the [elective_mandates] column value.
+     *
+     * @return string
+     */
+    public function getElectiveMandates()
+    {
+        return $this->elective_mandates;
     }
 
     /**
@@ -765,6 +873,52 @@ abstract class BasePOrder extends BaseObject implements Persistent
     } // setSubscriptionDescription()
 
     /**
+     * Sets the value of [subscription_begin_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return POrder The current object (for fluent API support)
+     */
+    public function setSubscriptionBeginAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->subscription_begin_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->subscription_begin_at !== null && $tmpDt = new DateTime($this->subscription_begin_at)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->subscription_begin_at = $newDateAsString;
+                $this->modifiedColumns[] = POrderPeer::SUBSCRIPTION_BEGIN_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setSubscriptionBeginAt()
+
+    /**
+     * Sets the value of [subscription_end_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return POrder The current object (for fluent API support)
+     */
+    public function setSubscriptionEndAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->subscription_end_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->subscription_end_at !== null && $tmpDt = new DateTime($this->subscription_end_at)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->subscription_end_at = $newDateAsString;
+                $this->modifiedColumns[] = POrderPeer::SUBSCRIPTION_END_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setSubscriptionEndAt()
+
+    /**
      * Set the value of [information] column.
      *
      * @param string $v new value
@@ -959,27 +1113,6 @@ abstract class BasePOrder extends BaseObject implements Persistent
     } // setEmail()
 
     /**
-     * Set the value of [elective_mandates] column.
-     *
-     * @param string $v new value
-     * @return POrder The current object (for fluent API support)
-     */
-    public function setElectiveMandates($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->elective_mandates !== $v) {
-            $this->elective_mandates = $v;
-            $this->modifiedColumns[] = POrderPeer::ELECTIVE_MANDATES;
-        }
-
-
-        return $this;
-    } // setElectiveMandates()
-
-    /**
      * Set the value of [invoice_ref] column.
      *
      * @param string $v new value
@@ -1043,6 +1176,48 @@ abstract class BasePOrder extends BaseObject implements Persistent
 
         return $this;
     } // setInvoiceFilename()
+
+    /**
+     * Set the value of [supporting_document] column.
+     *
+     * @param string $v new value
+     * @return POrder The current object (for fluent API support)
+     */
+    public function setSupportingDocument($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->supporting_document !== $v) {
+            $this->supporting_document = $v;
+            $this->modifiedColumns[] = POrderPeer::SUPPORTING_DOCUMENT;
+        }
+
+
+        return $this;
+    } // setSupportingDocument()
+
+    /**
+     * Set the value of [elective_mandates] column.
+     *
+     * @param string $v new value
+     * @return POrder The current object (for fluent API support)
+     */
+    public function setElectiveMandates($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->elective_mandates !== $v) {
+            $this->elective_mandates = $v;
+            $this->modifiedColumns[] = POrderPeer::ELECTIVE_MANDATES;
+        }
+
+
+        return $this;
+    } // setElectiveMandates()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -1130,21 +1305,24 @@ abstract class BasePOrder extends BaseObject implements Persistent
             $this->p_o_subscription_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->subscription_title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->subscription_description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->information = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->price = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->promotion = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->total = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->gender = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->name = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->firstname = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->phone = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->email = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->elective_mandates = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->invoice_ref = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->invoice_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->invoice_filename = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->created_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->updated_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->subscription_begin_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->subscription_end_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->information = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->price = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->promotion = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->total = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->gender = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->name = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->firstname = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->phone = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->email = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->invoice_ref = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->invoice_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->invoice_filename = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->supporting_document = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->elective_mandates = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->created_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->updated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1153,7 +1331,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 23; // 23 = POrderPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 26; // 26 = POrderPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating POrder object", $e);
@@ -1479,6 +1657,12 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`subscription_description`';
         }
+        if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_BEGIN_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`subscription_begin_at`';
+        }
+        if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_END_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`subscription_end_at`';
+        }
         if ($this->isColumnModified(POrderPeer::INFORMATION)) {
             $modifiedColumns[':p' . $index++]  = '`information`';
         }
@@ -1506,9 +1690,6 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::EMAIL)) {
             $modifiedColumns[':p' . $index++]  = '`email`';
         }
-        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) {
-            $modifiedColumns[':p' . $index++]  = '`elective_mandates`';
-        }
         if ($this->isColumnModified(POrderPeer::INVOICE_REF)) {
             $modifiedColumns[':p' . $index++]  = '`invoice_ref`';
         }
@@ -1517,6 +1698,12 @@ abstract class BasePOrder extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(POrderPeer::INVOICE_FILENAME)) {
             $modifiedColumns[':p' . $index++]  = '`invoice_filename`';
+        }
+        if ($this->isColumnModified(POrderPeer::SUPPORTING_DOCUMENT)) {
+            $modifiedColumns[':p' . $index++]  = '`supporting_document`';
+        }
+        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) {
+            $modifiedColumns[':p' . $index++]  = '`elective_mandates`';
         }
         if ($this->isColumnModified(POrderPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -1559,6 +1746,12 @@ abstract class BasePOrder extends BaseObject implements Persistent
                     case '`subscription_description`':
                         $stmt->bindValue($identifier, $this->subscription_description, PDO::PARAM_STR);
                         break;
+                    case '`subscription_begin_at`':
+                        $stmt->bindValue($identifier, $this->subscription_begin_at, PDO::PARAM_STR);
+                        break;
+                    case '`subscription_end_at`':
+                        $stmt->bindValue($identifier, $this->subscription_end_at, PDO::PARAM_STR);
+                        break;
                     case '`information`':
                         $stmt->bindValue($identifier, $this->information, PDO::PARAM_STR);
                         break;
@@ -1586,9 +1779,6 @@ abstract class BasePOrder extends BaseObject implements Persistent
                     case '`email`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case '`elective_mandates`':
-                        $stmt->bindValue($identifier, $this->elective_mandates, PDO::PARAM_STR);
-                        break;
                     case '`invoice_ref`':
                         $stmt->bindValue($identifier, $this->invoice_ref, PDO::PARAM_STR);
                         break;
@@ -1597,6 +1787,12 @@ abstract class BasePOrder extends BaseObject implements Persistent
                         break;
                     case '`invoice_filename`':
                         $stmt->bindValue($identifier, $this->invoice_filename, PDO::PARAM_STR);
+                        break;
+                    case '`supporting_document`':
+                        $stmt->bindValue($identifier, $this->supporting_document, PDO::PARAM_STR);
+                        break;
+                    case '`elective_mandates`':
+                        $stmt->bindValue($identifier, $this->elective_mandates, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1807,48 +2003,57 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 return $this->getSubscriptionDescription();
                 break;
             case 8:
-                return $this->getInformation();
+                return $this->getSubscriptionBeginAt();
                 break;
             case 9:
-                return $this->getPrice();
+                return $this->getSubscriptionEndAt();
                 break;
             case 10:
-                return $this->getPromotion();
+                return $this->getInformation();
                 break;
             case 11:
-                return $this->getTotal();
+                return $this->getPrice();
                 break;
             case 12:
-                return $this->getGender();
+                return $this->getPromotion();
                 break;
             case 13:
-                return $this->getName();
+                return $this->getTotal();
                 break;
             case 14:
-                return $this->getFirstname();
+                return $this->getGender();
                 break;
             case 15:
-                return $this->getPhone();
+                return $this->getName();
                 break;
             case 16:
-                return $this->getEmail();
+                return $this->getFirstname();
                 break;
             case 17:
-                return $this->getElectiveMandates();
+                return $this->getPhone();
                 break;
             case 18:
-                return $this->getInvoiceRef();
+                return $this->getEmail();
                 break;
             case 19:
-                return $this->getInvoiceAt();
+                return $this->getInvoiceRef();
                 break;
             case 20:
-                return $this->getInvoiceFilename();
+                return $this->getInvoiceAt();
                 break;
             case 21:
-                return $this->getCreatedAt();
+                return $this->getInvoiceFilename();
                 break;
             case 22:
+                return $this->getSupportingDocument();
+                break;
+            case 23:
+                return $this->getElectiveMandates();
+                break;
+            case 24:
+                return $this->getCreatedAt();
+                break;
+            case 25:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1888,21 +2093,24 @@ abstract class BasePOrder extends BaseObject implements Persistent
             $keys[5] => $this->getPOSubscriptionId(),
             $keys[6] => $this->getSubscriptionTitle(),
             $keys[7] => $this->getSubscriptionDescription(),
-            $keys[8] => $this->getInformation(),
-            $keys[9] => $this->getPrice(),
-            $keys[10] => $this->getPromotion(),
-            $keys[11] => $this->getTotal(),
-            $keys[12] => $this->getGender(),
-            $keys[13] => $this->getName(),
-            $keys[14] => $this->getFirstname(),
-            $keys[15] => $this->getPhone(),
-            $keys[16] => $this->getEmail(),
-            $keys[17] => $this->getElectiveMandates(),
-            $keys[18] => $this->getInvoiceRef(),
-            $keys[19] => $this->getInvoiceAt(),
-            $keys[20] => $this->getInvoiceFilename(),
-            $keys[21] => $this->getCreatedAt(),
-            $keys[22] => $this->getUpdatedAt(),
+            $keys[8] => $this->getSubscriptionBeginAt(),
+            $keys[9] => $this->getSubscriptionEndAt(),
+            $keys[10] => $this->getInformation(),
+            $keys[11] => $this->getPrice(),
+            $keys[12] => $this->getPromotion(),
+            $keys[13] => $this->getTotal(),
+            $keys[14] => $this->getGender(),
+            $keys[15] => $this->getName(),
+            $keys[16] => $this->getFirstname(),
+            $keys[17] => $this->getPhone(),
+            $keys[18] => $this->getEmail(),
+            $keys[19] => $this->getInvoiceRef(),
+            $keys[20] => $this->getInvoiceAt(),
+            $keys[21] => $this->getInvoiceFilename(),
+            $keys[22] => $this->getSupportingDocument(),
+            $keys[23] => $this->getElectiveMandates(),
+            $keys[24] => $this->getCreatedAt(),
+            $keys[25] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
@@ -1982,52 +2190,61 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 $this->setSubscriptionDescription($value);
                 break;
             case 8:
-                $this->setInformation($value);
+                $this->setSubscriptionBeginAt($value);
                 break;
             case 9:
-                $this->setPrice($value);
+                $this->setSubscriptionEndAt($value);
                 break;
             case 10:
-                $this->setPromotion($value);
+                $this->setInformation($value);
                 break;
             case 11:
-                $this->setTotal($value);
+                $this->setPrice($value);
                 break;
             case 12:
+                $this->setPromotion($value);
+                break;
+            case 13:
+                $this->setTotal($value);
+                break;
+            case 14:
                 $valueSet = POrderPeer::getValueSet(POrderPeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 13:
+            case 15:
                 $this->setName($value);
                 break;
-            case 14:
+            case 16:
                 $this->setFirstname($value);
                 break;
-            case 15:
+            case 17:
                 $this->setPhone($value);
                 break;
-            case 16:
+            case 18:
                 $this->setEmail($value);
                 break;
-            case 17:
-                $this->setElectiveMandates($value);
-                break;
-            case 18:
+            case 19:
                 $this->setInvoiceRef($value);
                 break;
-            case 19:
+            case 20:
                 $this->setInvoiceAt($value);
                 break;
-            case 20:
+            case 21:
                 $this->setInvoiceFilename($value);
                 break;
-            case 21:
+            case 22:
+                $this->setSupportingDocument($value);
+                break;
+            case 23:
+                $this->setElectiveMandates($value);
+                break;
+            case 24:
                 $this->setCreatedAt($value);
                 break;
-            case 22:
+            case 25:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2062,21 +2279,24 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setPOSubscriptionId($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setSubscriptionTitle($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setSubscriptionDescription($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setInformation($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPrice($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPromotion($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setTotal($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setGender($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setName($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setFirstname($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setPhone($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setEmail($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setElectiveMandates($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setInvoiceRef($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setInvoiceAt($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setInvoiceFilename($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setCreatedAt($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setUpdatedAt($arr[$keys[22]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSubscriptionBeginAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setSubscriptionEndAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setInformation($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPrice($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPromotion($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setTotal($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setGender($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setName($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setFirstname($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPhone($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setEmail($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setInvoiceRef($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setInvoiceAt($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setInvoiceFilename($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setSupportingDocument($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setElectiveMandates($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setCreatedAt($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setUpdatedAt($arr[$keys[25]]);
     }
 
     /**
@@ -2096,6 +2316,8 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::P_O_SUBSCRIPTION_ID)) $criteria->add(POrderPeer::P_O_SUBSCRIPTION_ID, $this->p_o_subscription_id);
         if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_TITLE)) $criteria->add(POrderPeer::SUBSCRIPTION_TITLE, $this->subscription_title);
         if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_DESCRIPTION)) $criteria->add(POrderPeer::SUBSCRIPTION_DESCRIPTION, $this->subscription_description);
+        if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_BEGIN_AT)) $criteria->add(POrderPeer::SUBSCRIPTION_BEGIN_AT, $this->subscription_begin_at);
+        if ($this->isColumnModified(POrderPeer::SUBSCRIPTION_END_AT)) $criteria->add(POrderPeer::SUBSCRIPTION_END_AT, $this->subscription_end_at);
         if ($this->isColumnModified(POrderPeer::INFORMATION)) $criteria->add(POrderPeer::INFORMATION, $this->information);
         if ($this->isColumnModified(POrderPeer::PRICE)) $criteria->add(POrderPeer::PRICE, $this->price);
         if ($this->isColumnModified(POrderPeer::PROMOTION)) $criteria->add(POrderPeer::PROMOTION, $this->promotion);
@@ -2105,10 +2327,11 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::FIRSTNAME)) $criteria->add(POrderPeer::FIRSTNAME, $this->firstname);
         if ($this->isColumnModified(POrderPeer::PHONE)) $criteria->add(POrderPeer::PHONE, $this->phone);
         if ($this->isColumnModified(POrderPeer::EMAIL)) $criteria->add(POrderPeer::EMAIL, $this->email);
-        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) $criteria->add(POrderPeer::ELECTIVE_MANDATES, $this->elective_mandates);
         if ($this->isColumnModified(POrderPeer::INVOICE_REF)) $criteria->add(POrderPeer::INVOICE_REF, $this->invoice_ref);
         if ($this->isColumnModified(POrderPeer::INVOICE_AT)) $criteria->add(POrderPeer::INVOICE_AT, $this->invoice_at);
         if ($this->isColumnModified(POrderPeer::INVOICE_FILENAME)) $criteria->add(POrderPeer::INVOICE_FILENAME, $this->invoice_filename);
+        if ($this->isColumnModified(POrderPeer::SUPPORTING_DOCUMENT)) $criteria->add(POrderPeer::SUPPORTING_DOCUMENT, $this->supporting_document);
+        if ($this->isColumnModified(POrderPeer::ELECTIVE_MANDATES)) $criteria->add(POrderPeer::ELECTIVE_MANDATES, $this->elective_mandates);
         if ($this->isColumnModified(POrderPeer::CREATED_AT)) $criteria->add(POrderPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(POrderPeer::UPDATED_AT)) $criteria->add(POrderPeer::UPDATED_AT, $this->updated_at);
 
@@ -2181,6 +2404,8 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $copyObj->setPOSubscriptionId($this->getPOSubscriptionId());
         $copyObj->setSubscriptionTitle($this->getSubscriptionTitle());
         $copyObj->setSubscriptionDescription($this->getSubscriptionDescription());
+        $copyObj->setSubscriptionBeginAt($this->getSubscriptionBeginAt());
+        $copyObj->setSubscriptionEndAt($this->getSubscriptionEndAt());
         $copyObj->setInformation($this->getInformation());
         $copyObj->setPrice($this->getPrice());
         $copyObj->setPromotion($this->getPromotion());
@@ -2190,10 +2415,11 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setEmail($this->getEmail());
-        $copyObj->setElectiveMandates($this->getElectiveMandates());
         $copyObj->setInvoiceRef($this->getInvoiceRef());
         $copyObj->setInvoiceAt($this->getInvoiceAt());
         $copyObj->setInvoiceFilename($this->getInvoiceFilename());
+        $copyObj->setSupportingDocument($this->getSupportingDocument());
+        $copyObj->setElectiveMandates($this->getElectiveMandates());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -2867,6 +3093,8 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $this->p_o_subscription_id = null;
         $this->subscription_title = null;
         $this->subscription_description = null;
+        $this->subscription_begin_at = null;
+        $this->subscription_end_at = null;
         $this->information = null;
         $this->price = null;
         $this->promotion = null;
@@ -2876,10 +3104,11 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $this->firstname = null;
         $this->phone = null;
         $this->email = null;
-        $this->elective_mandates = null;
         $this->invoice_ref = null;
         $this->invoice_at = null;
         $this->invoice_filename = null;
+        $this->supporting_document = null;
+        $this->elective_mandates = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;

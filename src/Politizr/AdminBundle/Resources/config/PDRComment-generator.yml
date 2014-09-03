@@ -48,10 +48,11 @@ builders:
             sort:                               [ published_at, DESC ]
             scopes:
             display:                            [ id, p_user, p_d_reaction, description, paragraph_no, note_pos, note_neg, online, published_at ]
-            actions:
-                new:                            ~
+#             actions:
+#                 new:                            ~
             object_actions:
-                show:                           ~
+# TODO: prévoir un object_action mise en ligne / hors ligne plutôt que "delete"? 
+#                 show:                           ~
                 edit:                           ~
                 delete:                         ~
     excel:
@@ -60,32 +61,32 @@ builders:
         filetype: ~
     filters:
         params:
-            display:                            [ id, p_user, p_d_reaction, paragraph_no, published_at, online, created_at ]
+            display:                            [ id, p_user_id, p_d_reaction_id, published_at, online, created_at ]
             fields:
                 p_user:
                     addFormOptions:
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-    new:
-        params:
-            title:                              "Création d'un commentaire de réaction"
-            display:
-                "Champs principaux":            [ [ p_user, p_d_reaction ], [ description ] ]
-                "Champs complémentaires":       [ [ paragraph_no ], [ note_pos, note_neg ] ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        empty_value:            ""
-                        required:               false
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                p_d_reaction:
-                    addFormOptions:
-                        empty_value:            ""
-                description:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
-            actions:
-              save:                             ~
-              list:                             ~
+#     new:
+#         params:
+#             title:                              "Création d'un commentaire de réaction"
+#             display:
+#                 "Champs principaux":            [ [ p_user, p_d_reaction ], [ description ] ]
+#                 "Champs complémentaires":       [ [ paragraph_no ], [ note_pos, note_neg ] ]
+#             fields:
+#                 p_user:
+#                     addFormOptions:
+#                         empty_value:            ""
+#                         required:               false
+#                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+#                 p_d_reaction:
+#                     addFormOptions:
+#                         empty_value:            ""
+#                 description:
+#                     addFormOptions:
+#                         attr:                   { class : tinymce }
+#             actions:
+#               save:                             ~
+#               list:                             ~
     edit:
         params:
             title:                              "Edition du commentaire de réaction 'pk-{{ PDRComment.id }}'"
@@ -126,24 +127,24 @@ builders:
             actions:
                 save: ~
                 list: ~
-    show:
-        params:
-            title:                              "Visualisation du commentaire du réaction 'pk-{{ PDRComment.id }}'"
-            tabs:
-                "Contenu":
-                    "Texte":                    [ [ description ] ]
-                    "Paragraphe":               [ [ paragraph_no ] ]
-                "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
-                    "Réaction":                 [ [ p_d_reaction ] ]
-                "Statut":
-                    "Publication":              [ [ published_by ], [ published_at ] ]
-                    "Notes":                    [ [ note_pos, note_neg ] ]
-                "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
-            actions:
-              list:                             ~
-              delete:                           ~
+#     show:
+#         params:
+#             title:                              "Visualisation du commentaire du réaction 'pk-{{ PDRComment.id }}'"
+#             tabs:
+#                 "Contenu":
+#                     "Texte":                    [ [ description ] ]
+#                     "Paragraphe":               [ [ paragraph_no ] ]
+#                 "Objets":
+#                     "Utilisateur":              [ [ p_user ] ]
+#                     "Réaction":                 [ [ p_d_reaction ] ]
+#                 "Statut":
+#                     "Publication":              [ [ published_by ], [ published_at ] ]
+#                     "Notes":                    [ [ note_pos, note_neg ] ]
+#                 "Attributs":
+#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+#             actions:
+#               list:                             ~
+#               delete:                           ~
     actions:
         params:
             object_actions:

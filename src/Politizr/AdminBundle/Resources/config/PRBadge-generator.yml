@@ -34,13 +34,15 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_type, grade, description, online ]
+            display:                            [ title, p_r_badge_type, grade, description, nb_users, online ]
             actions:
                 new:                            ~
             object_actions:
-                show:                           ~
                 edit:                           ~
                 delete:                         ~
+            fields:
+                nb_users:
+                    label:                      Badgés
     excel:
         params: ~
         filename: ~
@@ -86,24 +88,24 @@ builders:
             actions:
                 save: ~
                 list: ~
-    show:
-        params:
-            title:                              "Visualisation du tag '{{ PRBadge.title }}'"
-            tabs:
-                "Contenu":
-                    "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
-                "Utilisation":
-                    "Utilisateurs badgés":      [ block_users ]
-                "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
-            fields:
-                block_users:
-                    label:                      "Utilisateurs"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-            actions:
-              list:                             ~
-              delete:                           ~
+#     show:
+#         params:
+#             title:                              "Visualisation du badge '{{ PRBadge.title }}'"
+#             tabs:
+#                 "Contenu":
+#                     "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
+#                 "Utilisation":
+#                     "Utilisateurs badgés":      [ block_users ]
+#                 "Attributs":
+#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+#             fields:
+#                 block_users:
+#                     label:                      "Utilisateurs"
+#                     formType:                   hidden
+#                     dbType:                     VARCHAR
+#             actions:
+#               list:                             ~
+#               delete:                           ~
     actions:
         params:
             object_actions:

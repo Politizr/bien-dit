@@ -10,7 +10,7 @@ class PRBadge extends BasePRBadge
 	 *
 	 */
 	public function __toString() {
-		return $this->getTitle();
+		return $this->getTitle() . ' ('.$this->getGrade().')';
 	}
 
  	/**
@@ -42,9 +42,4 @@ class PRBadge extends BasePRBadge
 		return parent::getPuReputationRbPUsers($con, $doQuery);
 	}
 
-
-
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-	public function getBlockUsers() {
-	}
 }

@@ -1,0 +1,13 @@
+<div class="pddComment">
+	<div class="pddComment-description">{{ pddComment.description | striptags | slice(0, 250) | raw }}...</div>
+	<hr>
+	<div class="pddComment-online">{% if pddComment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+	<div class="pddComment-published">Publié le {{ pddComment.publishedAt | date('d/m/Y H:i') }}</div>
+	<hr>
+	<div class="pddComment-author"><a href="{{ path('Politizr_AdminBundle_PUser_edit', { 'pk': pddComment.PUser.id }) }}">{{ pddComment.PUser }}</a>&nbsp;({{ pddComment.PUser.PUType }} / {{ pddComment.PUser.PUStatus }})</div>
+	<div class="pddComment-note"><b>{{ pddComment.notePos }} +</b> &nbsp; <b>{{ pddComment.noteNeg }} -</b></div>
+	<hr>
+	<a href="{{ path('Politizr_AdminBundle_PDDComment_edit', { 'pk': pddComment.id }) }}">Editer</a>&nbsp;-&nbsp; 
+	<a href="{{ path('Politizr_AdminBundle_PDDComment_show', { 'pk': pddComment.id }) }}">Consulter</a>
+	<hr>
+</div>

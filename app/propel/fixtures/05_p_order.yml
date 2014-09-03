@@ -1,26 +1,38 @@
 # ORDER DATAS
 Politizr\Model\POOrderState:
+    create:
+        id:         1
+        title:      Commande créée
+    waiting:
+        id:         2
+        title:      Commande en attente
     open:
-        id:			1
+        id:			3
         title:		Commande ouverte
     handled:
-        id:			2
+        id:			4
         title:		Commande traitée
     cancel:
-        id:         3
+        id:         5
         title:      Commande annulée
 
 
 Politizr\Model\POPaymentState:
-    waiting:
+    process:
         id:         1
-        title:      Paiement en attente
-    paid:
+        title:      Paiement en cours de traitement
+    waiting:
         id:         2
+        title:      Paiement en attente
+    done:
+        id:         3
         title:      Paiement effectué
     refused:
-        id:         3
+        id:         4
         title:      Paiement refusé
+    canceled:
+        id:         5
+        title:      Paiement annulé
 
 
 Politizr\Model\POPaymentType:

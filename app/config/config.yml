@@ -239,8 +239,8 @@ bazinga_faker:
         Politizr\Model\PUser:
             number:                     50
             custom_formatters:
-                Type:                   { method: numberBetween, parameters: [ 1, 2 ] }
-                Status:                 { method: numberBetween, parameters: [ 1, 1 ] }
+                PUTypeId:               { method: numberBetween, parameters: [ 1, 2 ] }
+                PUStatusId:             { method: numberBetween, parameters: [ 1, 3 ] }
 
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
@@ -266,9 +266,6 @@ bazinga_faker:
                 Password:               { method: null }
                 ConfirmationToken:      { method: null }
                 PasswordRequestedAt:    { method: null }
-
-                SupportingDocument:     { method: null }
-                ElectiveMandates:       { method: null }
 
                 Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
@@ -321,6 +318,8 @@ bazinga_faker:
 
                 SubscriptionTitle:      { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
                 SubscriptionDescription:  { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
+                SubscriptionBeginAt:    { method: dateTimeThisYear }
+                SubscriptionEndAt:      { method: dateTimeThisYear }
 
                 Information:            { method: paragraphs, parameters: [ 2, true ] }
 
@@ -334,11 +333,14 @@ bazinga_faker:
                 InvoiceRef:             { method: bothify, parameters: [ '?####?#####' ], unique: true }
                 InvoiceFilename:        { method: lexify, parameters: [ '?????????????.pdf' ], unique: true }
 
+                SupportingDocument:     { method: null }
+                ElectiveMandates:       { method: null }
+
         #################################################################################################################
         #                                   DOCUMENTS
         #################################################################################################################
         Politizr\Model\PDDebate:
-            number:                     300
+            number:                     50
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 150 ] }
 
@@ -357,16 +359,18 @@ bazinga_faker:
                 Slug:                   { method: null }
 
         Politizr\Model\PUFollowDD:
-            number:                     700
+            number:                     300
 
         Politizr\Model\PDDTaggedT:
-            number:                     700
+            number:                     300
             custom_formatters:
                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
 
         Politizr\Model\PDReaction:
-            number:                     700
+            number:                     300
             custom_formatters:
+                PDReactionId:           { method: null }
+
                 Title:                  { method: realText, parameters: [ 150 ] }
 
                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
@@ -384,7 +388,7 @@ bazinga_faker:
                 Slug:                   { method: null }
 
         Politizr\Model\PDDComment:
-            number:                     700
+            number:                     300
             custom_formatters:
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }

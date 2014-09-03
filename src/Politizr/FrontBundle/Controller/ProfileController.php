@@ -28,6 +28,7 @@ use Politizr\Model\PUFollowT;
  * TODO:
  *	- gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
  *  - refactorisation pour réduire les doublons de code entre les tables PUTaggedT et PUFollowT
+ *  - refactoring gestion des tags > gestion des doublons / admin + externalisation logique métier dans les *Query class
  *
  * @author Lionel Bouzonville
  */

@@ -3,19 +3,3 @@
 {% block list_td_column_file_name %}
     <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PUser.fileName }}" />
 {% endblock list_td_column_file_name %}
-
-{% block list_td_column_type %}
-	{% if PUser.type is constant('Politizr\\Model\\PUser::TYPE_CITOYEN') %}
-		Citoyen
-	{% elseif PUser.type is constant('Politizr\\Model\\PUser::TYPE_QUALIFIE') %}
-		Qualifié
-	{% endif %}
-{% endblock list_td_column_type %}
-
-{% block list_td_column_status %}
-	{% if PUser.status is constant('Politizr\\Model\\PUser::STATUS_ACTIV') %}
-		Actif
-	{% elseif PUser.status is constant('Politizr\\Model\\PUser::STATUS_ARCHIVE') %}
-		Archivé
-	{% endif %}
-{% endblock list_td_column_status %}

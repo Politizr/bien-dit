@@ -1,1 +1,6 @@
 {% extends_admingenerated "PolitizrAdminBundle:PRBadgeList:row.html.twig" %}
+
+
+{% block list_td_column_nb_users %}
+	{{ PRBadge.countPUsers }}
+{% endblock %}

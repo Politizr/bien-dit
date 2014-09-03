@@ -66,6 +66,7 @@ class PDFSubscriber implements EventSubscriberInterface
                                         'nowAt' => $nowAt
                                         )
                             );
+
         // $this->logger->info('$htmlInvoice = '.print_r($htmlInvoice, true));
         $html2pdf = $this->html2pdf->get();
         $html2pdf->writeHTML($htmlInvoice);
@@ -76,8 +77,8 @@ class PDFSubscriber implements EventSubscriberInterface
 
         $content = $html2pdf->Output($invoiceDir . $invoiceFilename, 'F');
 
-        // $this->logger->info('$dir = '.print_r($dir, true));
-        // $this->logger->info('$invoiceFilename = '.print_r($invoiceFilename, true));
+        $this->logger->info('$dir = '.print_r($invoiceDir, true));
+        $this->logger->info('$invoiceFilename = '.print_r($invoiceFilename, true));
 
         // Remove previous invoice
         $oldInvoice = $order->getInvoiceFilename();

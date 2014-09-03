@@ -1,7 +1,0 @@
-{{ user.firstname | capitalize }} {{ user.name | capitalize }},
-
-Votre commande chez Politizr a été annulée.
-
-{% include 'PolitizrAdminBundle:Email:orderSummary.html.twig' with { 'Order': order } %}
-
-{% include 'PolitizrAdminBundle:Email:footer.html.twig' %}

@@ -51,6 +51,10 @@ bazinga_faker:
             custom_formatters:
                 FileName:               { method: image, parameters: [ '/home/lionel/www/Politizr v2.0/web/uploads/users', '150', '150', 'people', false ] }
 
+        Politizr\Model\PDDebate:
+            custom_formatters:
+                FileName:               { method: image, parameters: [ '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false ] }
+
 # Bazinga Geocoder
 bazinga_geocoder:
     fake_ip:

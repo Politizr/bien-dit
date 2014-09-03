@@ -95,6 +95,8 @@
 
         <column name="subscription_title" type="varchar" size="150" />
         <column name="subscription_description" type="longvarchar" />
+        <column name="subscription_begin_at" type="date" />
+        <column name="subscription_end_at" type="date" />
         <column name="information" type="longvarchar" />
 
         <column name="price" type="decimal" size="10" scale="2" />
@@ -105,12 +107,14 @@
         <column name="name" type="varchar" size="150" />
         <column name="firstname" type="varchar" size="150" />   
         <column name="phone" type="varchar" size="30" />
-        <column name="email" type="varchar" size="255" />   
-        <column name="elective_mandates" type="longvarchar" />   
+        <column name="email" type="varchar" size="255" /> 
 
         <column name="invoice_ref" type="varchar" size="250" />
         <column name="invoice_at" type="timestamp" />
         <column name="invoice_filename" type="varchar" size="250" />
+
+        <column name="supporting_document" type="varchar" size="250" />
+        <column name="elective_mandates" type="longvarchar" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -241,8 +245,8 @@
         <column name="credentials_expire_at" type="timestamp" />
         <column name="roles" type="array" />
         
-        <column name="type" type="integer" required="true" />
-        <column name="status" type="integer" required="true" />
+        <column name="p_u_type_id" type="integer" required="true" />
+        <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
@@ -259,12 +263,31 @@
         <column name="phone" type="varchar" size="30" />
 
         <column name="newsletter" type="boolean" />
-
-        <column name="supporting_document" type="varchar" size="150" />
-        <column name="elective_mandates" type="longvarchar" />
         
         <column name="last_connect" type="timestamp" />
+
+        <foreign-key foreignTable="p_u_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_u_type_id" foreign="id" />
+        </foreign-key>        
+        <foreign-key foreignTable="p_u_status" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_u_status_id" foreign="id" />
+        </foreign-key>        
     </table>
+
+    <table name="p_u_type">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        <column name="title" type="varchar" size="150" />
+    </table>    
+
+    <table name="p_u_status">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        <column name="title" type="varchar" size="150" />
+    </table>    
+
 
 
     <table name="p_u_follow_u">
@@ -379,6 +402,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />
 
+        <column name="file_name" type="varchar" size="150" />
         <column name="title" type="varchar" size="150" />
 
         <column name="summary" type="longvarchar" />

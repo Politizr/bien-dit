@@ -1,0 +1,15 @@
+<div class="pddComment">
+	<div class="pddComment-parentDebateTitle">Associé au débat <b>{{ pddComment.debate.title }}</b></div>
+	<hr>
+	<div class="pddComment-description">{{ pddComment.description | striptags | slice(0, 150) | raw }}...</div>
+	<hr>
+	<div class="pddComment-online">{% if pddComment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+	<div class="pddComment-published">Publié le {{ pddComment.publishedAt | date('d/m/Y H:i') }}</div>
+	<hr>
+	<div class="pddComment-paragraph">{% if pddComment.paragraphNo == 0 %}Commentaire <b>général</b>{% else %}Commentaire du <b>paragraphe n°{{ pddComment.paragraphNo }}</b>{% endif %}</div>
+	<div class="pddComment-note"><b>{{ pddComment.notePos }} +</b> &nbsp; <b>{{ pddComment.noteNeg }} -</b></div>
+	<hr>
+	<a href="{{ path('Politizr_AdminBundle_PDDComment_edit', { 'pk': pddComment.id }) }}">Editer</a>&nbsp;-&nbsp; 
+	<a href="{{ path('Politizr_AdminBundle_PDDComment_show', { 'pk': pddComment.id }) }}">Consulter</a>
+	<hr>
+</div>

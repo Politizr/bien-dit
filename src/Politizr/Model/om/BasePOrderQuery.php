@@ -31,6 +31,8 @@ use Politizr\Model\PUser;
  * @method POrderQuery orderByPOSubscriptionId($order = Criteria::ASC) Order by the p_o_subscription_id column
  * @method POrderQuery orderBySubscriptionTitle($order = Criteria::ASC) Order by the subscription_title column
  * @method POrderQuery orderBySubscriptionDescription($order = Criteria::ASC) Order by the subscription_description column
+ * @method POrderQuery orderBySubscriptionBeginAt($order = Criteria::ASC) Order by the subscription_begin_at column
+ * @method POrderQuery orderBySubscriptionEndAt($order = Criteria::ASC) Order by the subscription_end_at column
  * @method POrderQuery orderByInformation($order = Criteria::ASC) Order by the information column
  * @method POrderQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method POrderQuery orderByPromotion($order = Criteria::ASC) Order by the promotion column
@@ -40,10 +42,11 @@ use Politizr\Model\PUser;
  * @method POrderQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method POrderQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method POrderQuery orderByEmail($order = Criteria::ASC) Order by the email column
- * @method POrderQuery orderByElectiveMandates($order = Criteria::ASC) Order by the elective_mandates column
  * @method POrderQuery orderByInvoiceRef($order = Criteria::ASC) Order by the invoice_ref column
  * @method POrderQuery orderByInvoiceAt($order = Criteria::ASC) Order by the invoice_at column
  * @method POrderQuery orderByInvoiceFilename($order = Criteria::ASC) Order by the invoice_filename column
+ * @method POrderQuery orderBySupportingDocument($order = Criteria::ASC) Order by the supporting_document column
+ * @method POrderQuery orderByElectiveMandates($order = Criteria::ASC) Order by the elective_mandates column
  * @method POrderQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method POrderQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -55,6 +58,8 @@ use Politizr\Model\PUser;
  * @method POrderQuery groupByPOSubscriptionId() Group by the p_o_subscription_id column
  * @method POrderQuery groupBySubscriptionTitle() Group by the subscription_title column
  * @method POrderQuery groupBySubscriptionDescription() Group by the subscription_description column
+ * @method POrderQuery groupBySubscriptionBeginAt() Group by the subscription_begin_at column
+ * @method POrderQuery groupBySubscriptionEndAt() Group by the subscription_end_at column
  * @method POrderQuery groupByInformation() Group by the information column
  * @method POrderQuery groupByPrice() Group by the price column
  * @method POrderQuery groupByPromotion() Group by the promotion column
@@ -64,10 +69,11 @@ use Politizr\Model\PUser;
  * @method POrderQuery groupByFirstname() Group by the firstname column
  * @method POrderQuery groupByPhone() Group by the phone column
  * @method POrderQuery groupByEmail() Group by the email column
- * @method POrderQuery groupByElectiveMandates() Group by the elective_mandates column
  * @method POrderQuery groupByInvoiceRef() Group by the invoice_ref column
  * @method POrderQuery groupByInvoiceAt() Group by the invoice_at column
  * @method POrderQuery groupByInvoiceFilename() Group by the invoice_filename column
+ * @method POrderQuery groupBySupportingDocument() Group by the supporting_document column
+ * @method POrderQuery groupByElectiveMandates() Group by the elective_mandates column
  * @method POrderQuery groupByCreatedAt() Group by the created_at column
  * @method POrderQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -109,6 +115,8 @@ use Politizr\Model\PUser;
  * @method POrder findOneByPOSubscriptionId(int $p_o_subscription_id) Return the first POrder filtered by the p_o_subscription_id column
  * @method POrder findOneBySubscriptionTitle(string $subscription_title) Return the first POrder filtered by the subscription_title column
  * @method POrder findOneBySubscriptionDescription(string $subscription_description) Return the first POrder filtered by the subscription_description column
+ * @method POrder findOneBySubscriptionBeginAt(string $subscription_begin_at) Return the first POrder filtered by the subscription_begin_at column
+ * @method POrder findOneBySubscriptionEndAt(string $subscription_end_at) Return the first POrder filtered by the subscription_end_at column
  * @method POrder findOneByInformation(string $information) Return the first POrder filtered by the information column
  * @method POrder findOneByPrice(string $price) Return the first POrder filtered by the price column
  * @method POrder findOneByPromotion(string $promotion) Return the first POrder filtered by the promotion column
@@ -118,10 +126,11 @@ use Politizr\Model\PUser;
  * @method POrder findOneByFirstname(string $firstname) Return the first POrder filtered by the firstname column
  * @method POrder findOneByPhone(string $phone) Return the first POrder filtered by the phone column
  * @method POrder findOneByEmail(string $email) Return the first POrder filtered by the email column
- * @method POrder findOneByElectiveMandates(string $elective_mandates) Return the first POrder filtered by the elective_mandates column
  * @method POrder findOneByInvoiceRef(string $invoice_ref) Return the first POrder filtered by the invoice_ref column
  * @method POrder findOneByInvoiceAt(string $invoice_at) Return the first POrder filtered by the invoice_at column
  * @method POrder findOneByInvoiceFilename(string $invoice_filename) Return the first POrder filtered by the invoice_filename column
+ * @method POrder findOneBySupportingDocument(string $supporting_document) Return the first POrder filtered by the supporting_document column
+ * @method POrder findOneByElectiveMandates(string $elective_mandates) Return the first POrder filtered by the elective_mandates column
  * @method POrder findOneByCreatedAt(string $created_at) Return the first POrder filtered by the created_at column
  * @method POrder findOneByUpdatedAt(string $updated_at) Return the first POrder filtered by the updated_at column
  *
@@ -133,6 +142,8 @@ use Politizr\Model\PUser;
  * @method array findByPOSubscriptionId(int $p_o_subscription_id) Return POrder objects filtered by the p_o_subscription_id column
  * @method array findBySubscriptionTitle(string $subscription_title) Return POrder objects filtered by the subscription_title column
  * @method array findBySubscriptionDescription(string $subscription_description) Return POrder objects filtered by the subscription_description column
+ * @method array findBySubscriptionBeginAt(string $subscription_begin_at) Return POrder objects filtered by the subscription_begin_at column
+ * @method array findBySubscriptionEndAt(string $subscription_end_at) Return POrder objects filtered by the subscription_end_at column
  * @method array findByInformation(string $information) Return POrder objects filtered by the information column
  * @method array findByPrice(string $price) Return POrder objects filtered by the price column
  * @method array findByPromotion(string $promotion) Return POrder objects filtered by the promotion column
@@ -142,10 +153,11 @@ use Politizr\Model\PUser;
  * @method array findByFirstname(string $firstname) Return POrder objects filtered by the firstname column
  * @method array findByPhone(string $phone) Return POrder objects filtered by the phone column
  * @method array findByEmail(string $email) Return POrder objects filtered by the email column
- * @method array findByElectiveMandates(string $elective_mandates) Return POrder objects filtered by the elective_mandates column
  * @method array findByInvoiceRef(string $invoice_ref) Return POrder objects filtered by the invoice_ref column
  * @method array findByInvoiceAt(string $invoice_at) Return POrder objects filtered by the invoice_at column
  * @method array findByInvoiceFilename(string $invoice_filename) Return POrder objects filtered by the invoice_filename column
+ * @method array findBySupportingDocument(string $supporting_document) Return POrder objects filtered by the supporting_document column
+ * @method array findByElectiveMandates(string $elective_mandates) Return POrder objects filtered by the elective_mandates column
  * @method array findByCreatedAt(string $created_at) Return POrder objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return POrder objects filtered by the updated_at column
  */
@@ -249,7 +261,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `phone`, `email`, `elective_mandates`, `invoice_ref`, `invoice_at`, `invoice_filename`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `subscription_begin_at`, `subscription_end_at`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `phone`, `email`, `invoice_ref`, `invoice_at`, `invoice_filename`, `supporting_document`, `elective_mandates`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -659,6 +671,92 @@ abstract class BasePOrderQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the subscription_begin_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySubscriptionBeginAt('2011-03-14'); // WHERE subscription_begin_at = '2011-03-14'
+     * $query->filterBySubscriptionBeginAt('now'); // WHERE subscription_begin_at = '2011-03-14'
+     * $query->filterBySubscriptionBeginAt(array('max' => 'yesterday')); // WHERE subscription_begin_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $subscriptionBeginAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POrderQuery The current query, for fluid interface
+     */
+    public function filterBySubscriptionBeginAt($subscriptionBeginAt = null, $comparison = null)
+    {
+        if (is_array($subscriptionBeginAt)) {
+            $useMinMax = false;
+            if (isset($subscriptionBeginAt['min'])) {
+                $this->addUsingAlias(POrderPeer::SUBSCRIPTION_BEGIN_AT, $subscriptionBeginAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($subscriptionBeginAt['max'])) {
+                $this->addUsingAlias(POrderPeer::SUBSCRIPTION_BEGIN_AT, $subscriptionBeginAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(POrderPeer::SUBSCRIPTION_BEGIN_AT, $subscriptionBeginAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the subscription_end_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySubscriptionEndAt('2011-03-14'); // WHERE subscription_end_at = '2011-03-14'
+     * $query->filterBySubscriptionEndAt('now'); // WHERE subscription_end_at = '2011-03-14'
+     * $query->filterBySubscriptionEndAt(array('max' => 'yesterday')); // WHERE subscription_end_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $subscriptionEndAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POrderQuery The current query, for fluid interface
+     */
+    public function filterBySubscriptionEndAt($subscriptionEndAt = null, $comparison = null)
+    {
+        if (is_array($subscriptionEndAt)) {
+            $useMinMax = false;
+            if (isset($subscriptionEndAt['min'])) {
+                $this->addUsingAlias(POrderPeer::SUBSCRIPTION_END_AT, $subscriptionEndAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($subscriptionEndAt['max'])) {
+                $this->addUsingAlias(POrderPeer::SUBSCRIPTION_END_AT, $subscriptionEndAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(POrderPeer::SUBSCRIPTION_END_AT, $subscriptionEndAt, $comparison);
+    }
+
+    /**
      * Filter the query on the information column
      *
      * Example usage:
@@ -957,35 +1055,6 @@ abstract class BasePOrderQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the elective_mandates column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByElectiveMandates('fooValue');   // WHERE elective_mandates = 'fooValue'
-     * $query->filterByElectiveMandates('%fooValue%'); // WHERE elective_mandates LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $electiveMandates The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return POrderQuery The current query, for fluid interface
-     */
-    public function filterByElectiveMandates($electiveMandates = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($electiveMandates)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $electiveMandates)) {
-                $electiveMandates = str_replace('*', '%', $electiveMandates);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(POrderPeer::ELECTIVE_MANDATES, $electiveMandates, $comparison);
-    }
-
-    /**
      * Filter the query on the invoice_ref column
      *
      * Example usage:
@@ -1084,6 +1153,64 @@ abstract class BasePOrderQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(POrderPeer::INVOICE_FILENAME, $invoiceFilename, $comparison);
+    }
+
+    /**
+     * Filter the query on the supporting_document column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySupportingDocument('fooValue');   // WHERE supporting_document = 'fooValue'
+     * $query->filterBySupportingDocument('%fooValue%'); // WHERE supporting_document LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $supportingDocument The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POrderQuery The current query, for fluid interface
+     */
+    public function filterBySupportingDocument($supportingDocument = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($supportingDocument)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $supportingDocument)) {
+                $supportingDocument = str_replace('*', '%', $supportingDocument);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(POrderPeer::SUPPORTING_DOCUMENT, $supportingDocument, $comparison);
+    }
+
+    /**
+     * Filter the query on the elective_mandates column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByElectiveMandates('fooValue');   // WHERE elective_mandates = 'fooValue'
+     * $query->filterByElectiveMandates('%fooValue%'); // WHERE elective_mandates LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $electiveMandates The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POrderQuery The current query, for fluid interface
+     */
+    public function filterByElectiveMandates($electiveMandates = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($electiveMandates)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $electiveMandates)) {
+                $electiveMandates = str_replace('*', '%', $electiveMandates);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(POrderPeer::ELECTIVE_MANDATES, $electiveMandates, $comparison);
     }
 
     /**

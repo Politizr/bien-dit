@@ -26,7 +26,9 @@ use Politizr\Model\PUFollowU;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUReputationRA;
 use Politizr\Model\PUReputationRB;
+use Politizr\Model\PUStatus;
 use Politizr\Model\PUTaggedT;
+use Politizr\Model\PUType;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
@@ -53,8 +55,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByCredentialsExpired($order = Criteria::ASC) Order by the credentials_expired column
  * @method PUserQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
- * @method PUserQuery orderByType($order = Criteria::ASC) Order by the type column
- * @method PUserQuery orderByStatus($order = Criteria::ASC) Order by the status column
+ * @method PUserQuery orderByPUTypeId($order = Criteria::ASC) Order by the p_u_type_id column
+ * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
@@ -67,8 +69,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByFacebook($order = Criteria::ASC) Order by the facebook column
  * @method PUserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method PUserQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
- * @method PUserQuery orderBySupportingDocument($order = Criteria::ASC) Order by the supporting_document column
- * @method PUserQuery orderByElectiveMandates($order = Criteria::ASC) Order by the elective_mandates column
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -96,8 +96,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByCredentialsExpired() Group by the credentials_expired column
  * @method PUserQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserQuery groupByRoles() Group by the roles column
- * @method PUserQuery groupByType() Group by the type column
- * @method PUserQuery groupByStatus() Group by the status column
+ * @method PUserQuery groupByPUTypeId() Group by the p_u_type_id column
+ * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
@@ -110,8 +110,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByFacebook() Group by the facebook column
  * @method PUserQuery groupByPhone() Group by the phone column
  * @method PUserQuery groupByNewsletter() Group by the newsletter column
- * @method PUserQuery groupBySupportingDocument() Group by the supporting_document column
- * @method PUserQuery groupByElectiveMandates() Group by the elective_mandates column
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
@@ -121,6 +119,14 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PUserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PUserQuery leftJoinPUType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUType relation
+ * @method PUserQuery rightJoinPUType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUType relation
+ * @method PUserQuery innerJoinPUType($relationAlias = null) Adds a INNER JOIN clause to the query using the PUType relation
+ *
+ * @method PUserQuery leftJoinPUStatus($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUStatus relation
+ * @method PUserQuery rightJoinPUStatus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUStatus relation
+ * @method PUserQuery innerJoinPUStatus($relationAlias = null) Adds a INNER JOIN clause to the query using the PUStatus relation
  *
  * @method PUserQuery leftJoinPOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the POrder relation
  * @method PUserQuery rightJoinPOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the POrder relation
@@ -197,8 +203,8 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByCredentialsExpired(boolean $credentials_expired) Return the first PUser filtered by the credentials_expired column
  * @method PUser findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUser filtered by the credentials_expire_at column
  * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
- * @method PUser findOneByType(int $type) Return the first PUser filtered by the type column
- * @method PUser findOneByStatus(int $status) Return the first PUser filtered by the status column
+ * @method PUser findOneByPUTypeId(int $p_u_type_id) Return the first PUser filtered by the p_u_type_id column
+ * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
@@ -211,8 +217,6 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByFacebook(string $facebook) Return the first PUser filtered by the facebook column
  * @method PUser findOneByPhone(string $phone) Return the first PUser filtered by the phone column
  * @method PUser findOneByNewsletter(boolean $newsletter) Return the first PUser filtered by the newsletter column
- * @method PUser findOneBySupportingDocument(string $supporting_document) Return the first PUser filtered by the supporting_document column
- * @method PUser findOneByElectiveMandates(string $elective_mandates) Return the first PUser filtered by the elective_mandates column
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
@@ -240,8 +244,8 @@ use Politizr\Model\PUserQuery;
  * @method array findByCredentialsExpired(boolean $credentials_expired) Return PUser objects filtered by the credentials_expired column
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUser objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
- * @method array findByType(int $type) Return PUser objects filtered by the type column
- * @method array findByStatus(int $status) Return PUser objects filtered by the status column
+ * @method array findByPUTypeId(int $p_u_type_id) Return PUser objects filtered by the p_u_type_id column
+ * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
@@ -254,8 +258,6 @@ use Politizr\Model\PUserQuery;
  * @method array findByFacebook(string $facebook) Return PUser objects filtered by the facebook column
  * @method array findByPhone(string $phone) Return PUser objects filtered by the phone column
  * @method array findByNewsletter(boolean $newsletter) Return PUser objects filtered by the newsletter column
- * @method array findBySupportingDocument(string $supporting_document) Return PUser objects filtered by the supporting_document column
- * @method array findByElectiveMandates(string $elective_mandates) Return PUser objects filtered by the elective_mandates column
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
@@ -362,7 +364,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `type`, `status`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `supporting_document`, `elective_mandates`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1174,17 +1176,19 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the type column
+     * Filter the query on the p_u_type_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByType(1234); // WHERE type = 1234
-     * $query->filterByType(array(12, 34)); // WHERE type IN (12, 34)
-     * $query->filterByType(array('min' => 12)); // WHERE type >= 12
-     * $query->filterByType(array('max' => 12)); // WHERE type <= 12
+     * $query->filterByPUTypeId(1234); // WHERE p_u_type_id = 1234
+     * $query->filterByPUTypeId(array(12, 34)); // WHERE p_u_type_id IN (12, 34)
+     * $query->filterByPUTypeId(array('min' => 12)); // WHERE p_u_type_id >= 12
+     * $query->filterByPUTypeId(array('max' => 12)); // WHERE p_u_type_id <= 12
      * </code>
      *
-     * @param     mixed $type The value to use as filter.
+     * @see       filterByPUType()
+     *
+     * @param     mixed $pUTypeId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -1192,16 +1196,16 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function filterByType($type = null, $comparison = null)
+    public function filterByPUTypeId($pUTypeId = null, $comparison = null)
     {
-        if (is_array($type)) {
+        if (is_array($pUTypeId)) {
             $useMinMax = false;
-            if (isset($type['min'])) {
-                $this->addUsingAlias(PUserPeer::TYPE, $type['min'], Criteria::GREATER_EQUAL);
+            if (isset($pUTypeId['min'])) {
+                $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($type['max'])) {
-                $this->addUsingAlias(PUserPeer::TYPE, $type['max'], Criteria::LESS_EQUAL);
+            if (isset($pUTypeId['max'])) {
+                $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -1212,21 +1216,23 @@ abstract class BasePUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUserPeer::TYPE, $type, $comparison);
+        return $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId, $comparison);
     }
 
     /**
-     * Filter the query on the status column
+     * Filter the query on the p_u_status_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByStatus(1234); // WHERE status = 1234
-     * $query->filterByStatus(array(12, 34)); // WHERE status IN (12, 34)
-     * $query->filterByStatus(array('min' => 12)); // WHERE status >= 12
-     * $query->filterByStatus(array('max' => 12)); // WHERE status <= 12
+     * $query->filterByPUStatusId(1234); // WHERE p_u_status_id = 1234
+     * $query->filterByPUStatusId(array(12, 34)); // WHERE p_u_status_id IN (12, 34)
+     * $query->filterByPUStatusId(array('min' => 12)); // WHERE p_u_status_id >= 12
+     * $query->filterByPUStatusId(array('max' => 12)); // WHERE p_u_status_id <= 12
      * </code>
      *
-     * @param     mixed $status The value to use as filter.
+     * @see       filterByPUStatus()
+     *
+     * @param     mixed $pUStatusId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -1234,16 +1240,16 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function filterByStatus($status = null, $comparison = null)
+    public function filterByPUStatusId($pUStatusId = null, $comparison = null)
     {
-        if (is_array($status)) {
+        if (is_array($pUStatusId)) {
             $useMinMax = false;
-            if (isset($status['min'])) {
-                $this->addUsingAlias(PUserPeer::STATUS, $status['min'], Criteria::GREATER_EQUAL);
+            if (isset($pUStatusId['min'])) {
+                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($status['max'])) {
-                $this->addUsingAlias(PUserPeer::STATUS, $status['max'], Criteria::LESS_EQUAL);
+            if (isset($pUStatusId['max'])) {
+                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -1254,7 +1260,7 @@ abstract class BasePUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUserPeer::STATUS, $status, $comparison);
+        return $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId, $comparison);
     }
 
     /**
@@ -1616,64 +1622,6 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the supporting_document column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySupportingDocument('fooValue');   // WHERE supporting_document = 'fooValue'
-     * $query->filterBySupportingDocument('%fooValue%'); // WHERE supporting_document LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $supportingDocument The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterBySupportingDocument($supportingDocument = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($supportingDocument)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $supportingDocument)) {
-                $supportingDocument = str_replace('*', '%', $supportingDocument);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PUserPeer::SUPPORTING_DOCUMENT, $supportingDocument, $comparison);
-    }
-
-    /**
-     * Filter the query on the elective_mandates column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByElectiveMandates('fooValue');   // WHERE elective_mandates = 'fooValue'
-     * $query->filterByElectiveMandates('%fooValue%'); // WHERE elective_mandates LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $electiveMandates The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterByElectiveMandates($electiveMandates = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($electiveMandates)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $electiveMandates)) {
-                $electiveMandates = str_replace('*', '%', $electiveMandates);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PUserPeer::ELECTIVE_MANDATES, $electiveMandates, $comparison);
-    }
-
-    /**
      * Filter the query on the last_connect column
      *
      * Example usage:
@@ -1856,6 +1804,158 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PUType object
+     *
+     * @param   PUType|PropelObjectCollection $pUType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUType($pUType, $comparison = null)
+    {
+        if ($pUType instanceof PUType) {
+            return $this
+                ->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUType->getId(), $comparison);
+        } elseif ($pUType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUType() only accepts arguments of type PUType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUType relation PUType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePUTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUType', '\Politizr\Model\PUTypeQuery');
+    }
+
+    /**
+     * Filter the query by a related PUStatus object
+     *
+     * @param   PUStatus|PropelObjectCollection $pUStatus The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUStatus($pUStatus, $comparison = null)
+    {
+        if ($pUStatus instanceof PUStatus) {
+            return $this
+                ->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatus->getId(), $comparison);
+        } elseif ($pUStatus instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatus->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUStatus() only accepts arguments of type PUStatus or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUStatus relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUStatus($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUStatus');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUStatus');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUStatus relation PUStatus object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUStatusQuery A secondary query class using the current class as primary query
+     */
+    public function usePUStatusQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUStatus($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUStatus', '\Politizr\Model\PUStatusQuery');
     }
 
     /**

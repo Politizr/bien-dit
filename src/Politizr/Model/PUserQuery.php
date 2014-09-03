@@ -5,6 +5,8 @@ namespace Politizr\Model;
 use Politizr\Model\om\BasePUserQuery;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
+use Politizr\Model\PUStatus;
 
 class PUserQuery extends BasePUserQuery
 {
@@ -16,7 +18,7 @@ class PUserQuery extends BasePUserQuery
      * Cumule les contraintes associés à un objet en ligne
      */
     public function online() {
-    	return $this->filterByOnline(true)->filterByStatus(PUser::STATUS_ACTIV);
+    	return $this->filterByOnline(true)->filterByPUStatusId(PUStatus::STATUS_ACTIV);
     }
 
 	/**
@@ -25,6 +27,6 @@ class PUserQuery extends BasePUserQuery
 	 *
 	 */
 	public function popularity($limit = 10) {
-		return $this->filterByStatus(PUser::STATUS_ACTIV)->filterByType(PUser::TYPE_QUALIFIE)->setLimit($limit);
+		return $this->filterByPUStatusId(PUStatus::STATUS_ACTIV)->filterByPUTypeId(PUType::TYPE_QUALIFIE)->setLimit($limit);
 	}
 }

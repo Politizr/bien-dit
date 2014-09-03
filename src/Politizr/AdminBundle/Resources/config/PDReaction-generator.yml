@@ -66,7 +66,8 @@ builders:
                     "Brouillons":
                         filters:
                             filterByPublished:  false
-            display:                            [ id, p_user, p_d_debate, p_d_reaction_related_by_p_d_reaction_id, title, summary, note_pos, note_neg, online, published, published_at ]
+            # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
+            display:                            [ id, p_user, p_d_reaction_id, title, summary, note_pos, note_neg, online, published, published_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -88,9 +89,11 @@ builders:
         params:
             title:                              "Création d'un contenu réaction"
             display:
-                "Champs principaux":            [ [ p_user, p_d_debate ], [ title ] ]
-                "Champs complémentaires":       [ [ p_d_reaction_related_by_p_d_reaction_id ], [ note_pos, note_neg ] ]
+                "Champs principaux":            [ p_user, p_d_debate_id, title ]
+                "Champs complémentaires":       [ summary ]
             fields:
+                p_d_debate_id:
+                    formType:                   hidden
                 p_user:
                     addFormOptions:
                         empty_value:            ""
@@ -99,22 +102,22 @@ builders:
                 p_d_debate:
                     addFormOptions:
                         empty_value:            ""
-                p_d_reaction_related_by_p_d_reaction_id:
+                        query:                  \Politizr\Model\PDDebateQuery::create()->filterByPublished(true)->orderByPublishedAt(\Criteria::DESC) 
+                summary:
                     addFormOptions:
-                        empty_value:            ""
-                        required:               false
+                        attr:                   { class : tinymce }
             actions:
-              save:                             ~
-              list:                             ~
+                save:                           ~
+                list:
+                    label:                      Retour au débat
     edit:
         params:
             title:                              "Edition du contenu réaction '{{ PDReaction.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ title ], [ description, more_info ] ]
+                    "Texte":                    [ p_d_debate_id, title, summary, description, more_info ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
-                    "Débat":                    [ [ p_d_debate ] ]
                     "Réaction":                 [ [ p_d_reaction_related_by_p_d_reaction_id ] ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
@@ -122,18 +125,20 @@ builders:
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
+                p_d_debate_id:
+                    formType:                   hidden
                 p_user:
                     addFormOptions:
                         empty_value:            ""
                         required:               false
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                p_d_debate:
-                    addFormOptions:
-                        empty_value:            ""
                 p_d_reaction_related_by_p_d_reaction_id:
                     addFormOptions:
                         empty_value:            ""
                         required:               false
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
                 description:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -151,46 +156,36 @@ builders:
                     addFormOptions:
                       widget:                   single_text
             actions:
-                save: ~
-                list: ~
+                save:                           ~
+                show:                           ~
+                list:
+                    label:                      Retour au débat
     show:
         params:
-            title:                              "Visualisation du contenu débat '{{ PDReaction.title }}'"
+            title:                              "Visualisation du contenu réaction '{{ PDReaction.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ title ], [ description, more_info ] ]
-                "Réactions":
-                    "Contenus associés":        [ block_reactions, block_comments ]
-                "Abonnés":
-                    "Utilisateurs":             [ block_followers_q, block_followers_c ]
+                    "Texte":                    [ title, summary, description, more_info ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
                     "Débat":                    [ [ p_d_debate ] ]
                     "Réaction":                 [ [ p_d_reaction_related_by_p_d_reaction_id ] ]
+                "Commentaires":
+                    "Commentaires associés":    [ block_comments ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                block_reactions:
-                    label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_comments:
                     label:                      "Commentaires"
                     formType:                   hidden
                     dbType:                     VARCHAR
-                block_followers_q:
-                    label:                      "Qualifiés"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                block_followers_c:
-                    label:                      "Citoyens"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
             actions:
-              list:                             ~
-              delete:                           ~
+                list:
+                    label:                      Retour au débat
+                edit:                           ~
+                delete:                         ~
     actions:
         params:
             object_actions:

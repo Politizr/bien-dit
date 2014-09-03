@@ -10,11 +10,11 @@ class PRBadgeType extends BasePRBadgeType
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-	const DEBAT = 1;
-	const COMMENTAIRE = 2;
-	const PARTICIPATION = 3;
-	const MODERATION = 4;
-	const AUTRE = 5;
+	const TYPE_DEBATE = 1;
+	const TYPE_COMMENT = 2;
+	const TYPE_PARTICIPATION = 3;
+	const TYPE_MODERATION = 4;
+	const TYPE_OTHER = 5;
 
 
 	// *****************************  OBJET / STRING  ****************** //

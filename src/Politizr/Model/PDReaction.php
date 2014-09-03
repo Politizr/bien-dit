@@ -59,36 +59,40 @@ class PDReaction extends BasePDReaction
     	parent::save($con);
 	}
 	
-	/******************************************************************************/
+	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
 
-	/**
-	 * 	Surcharge simplification du nom de la méthode
-	 */
-	public function countPDReactions(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::countPDReactionsRelatedById($con, $doQuery);
+	public function getBlockComments() {
 	}
 
+
+	// ************************************************************************************ //
+	//										METHODES 
+	// ************************************************************************************ //
+
+    // *****************************    DEBAT   ************************* //
+
 	/**
-	 * 	Surcharge simplification du nom de la méthode
+	 * Renvoit le débat associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
 	 */
-	public function getPDReactions(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::getPDReactionRelatedByPDReactionId($con, $doQuery);
+	public function getDebate() {
+		return parent::getPDDebate();
 	}
+
+    // *****************************    USERS   ************************* //
 
 	/**
 	 * Renvoie les abonnés qualifiés - au débat associé à la réaction courante.
 	 *
      * @return     PropelObjectCollection PUser[] List
 	 */
-	public function getPUsersQ() {
-		// TODO: exception à retravailler
-		$pdDebate = $this->getPDDebate();
-		if ($pdDebate == null) {
-			throw new InconsistentDataException('PDReaction pk-'.$this->getId().' PDDebate object not found.');
-		} else {
-			$pUsers = $this->getPDDebate()->getPUsersQ();
+	public function getPUserFollowersQ() {
+		$pdDebate = parent::getPDDebate();
+
+		$pUsers = null;
+		if ($pdDebate) {
+			$pUsers = $this->getPDDebate()->getPUserFollowersQ();
 		}
 
 		return $pUsers;
@@ -99,34 +103,45 @@ class PDReaction extends BasePDReaction
 	 *
      * @return     PropelObjectCollection PUser[] List
 	 */
-	public function getPUsersC() {
-		// TODO: exception à retravailler
-		$pdDebate = $this->getPDDebate();
-		if ($pdDebate == null) {
-			throw new InconsistentDataException('PDReaction pk-'.$this->getId().' PDDebate object not found.');
-		} else {
-			$pUsers = $this->getPDDebate()->getPUsersC();
+	public function getPUserFollowersC() {
+		$pdDebate = parent::getPDDebate();
+
+		$pUsers = null;
+		if ($pdDebate) {
+			$pUsers = $this->getPDDebate()->getPUserFollowersC();
 		}
 
 		return $pUsers;
 	}
 
 
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-	public function getBlockReactions() {
-	}
-	public function getBlockComments() {
-	}
-	public function getBlockFollowersQ() {
-	}
-	public function getBlockFollowersC() {
+    // *****************************    COMMENTAIRES   ************************* //
+
+	/**
+	 *	Renvoit le nombre de commentaires de la réaction courante.
+	 *
+	 * @return 	integer 	Nombre de commentaires
+	 */
+	public function countComments() {
+		$query = PDRCommentQuery::create()
+					->filterByOnline(true);
+		
+		return parent::countPDRComments($query);
 	}
 
+	/**
+	 *	Renvoit les commentaires associés à la réaction
+	 *
+	 * @return PropelCollection d'objets PDDComment 
+	 */
+	public function getComments($online = true) {
+		$query = PDRCommentQuery::create()
+					->filterByOnline($online)
+					->orderByNotePos(\Criteria::DESC);
 
-
-	// ************************************************************************************ //
-	//										METHODES 
-	// ************************************************************************************ //
+		return parent::getPDRComments($query);
+	}
+	
 
 	/**
 	 *	Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
@@ -167,33 +182,56 @@ class PDReaction extends BasePDReaction
 		return parent::getPDRComments($query);
 	}
 
+    // *****************************    REACTIONS   ************************* //
+
 	/**
-	 *	Renvoit les réactions publiées associées à la réaction
+	 *	Renvoit les réactions enfants associées à la réaction courante.
+	 *  TODO: niveau d'inspection à gérer
+	 *
+	 * @param 	integer 	$level 		Niveau d'inspection
 	 *
 	 * @return PropelCollection d'objets PDReaction
 	 */
-	public function getReactions() {
+	public function getChildrenReactions($level = 1) {
 		$query = PDReactionQuery::create()
 					->filterByPDReactionId($this->getId())
 					->filterByOnline(true)
 					->filterByPublished(true)
 					->orderByPublishedAt(\Criteria::DESC);
 
-		return parent::getPDReactions($query);
+		return parent::getPDReactionsRelatedById($query);
 	}
 
 	/**
-	 *	Renvoir l'objet PDReaction associé à la réaction courante
+	 *	Renvoit l'objet PDReaction associé à la réaction courante
 	 *
 	 * @return PDReaction
 	 */
-	public function getReactionTo() {
+	public function getParentReaction() {
 		$query = PDReactionQuery::create()
 					->filterByOnline(true)
 					->filterByPublished(true)
 					->filterByPublished(true);
 
 		return parent::getPDReactionRelatedByPDReactionId(null, $query);
+	}
+
+	/**
+	 *Renvoit le nombre de réactions publiées associées à la réaction courante.
+	 * TODO: niveau d'inspection à gérer
+	 *
+	 * @param 	integer 	$level 		Niveau d'inspection
+	 *
+	 * @return PropelCollection d'objets PDReaction
+	 */
+	public function countChildrenReactions($level = 1) {
+		$query = PDReactionQuery::create()
+					->filterByPDDebateId($this->getId())
+					->filterByOnline(true)
+					->filterByPublished(true)
+					->orderByPublishedAt(\Criteria::DESC);
+
+		return parent::countPDReactionsRelatedById($query);
 	}
 
 }

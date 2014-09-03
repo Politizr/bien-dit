@@ -1,0 +1,16 @@
+<div class="pdDebate">
+	<div class="pdDebate-title"><b>{{ pdDebate.title }}</b></div>
+	<div class="pdDebate-summary">{{ pdDebate.summary | striptags | slice(0, 250) | raw }}...</div>
+	<div class="pdDebate-description">{{ pdDebate.description | striptags | slice(0, 250) | raw }}...</div>
+	<hr>
+	<div class="pdDebate-online">{% if pdDebate.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+	<div class="pdDebate-published">{% if pdDebate.published %}Publié le {{ pdDebate.publishedAt | date('d/m/Y H:i') }}{% else %}Brouillon{% endif %}</div>
+	<hr>
+	<div class="pdDebate-nbReactions">{{ pdDebate.countReactions }} réactions</div>
+	<div class="pdDebate-nbFollowers">{{ pdDebate.countFollowers }} followers</div>
+	<div class="pdDebate-nbFollowers">{{ pdDebate.countComments }} commentaires</div>
+	<hr>
+	<a href="{{ path('Politizr_AdminBundle_PDDebate_edit', { 'pk': pdDebate.id }) }}">Editer</a>&nbsp;-&nbsp; 
+	<a href="{{ path('Politizr_AdminBundle_PDDebate_show', { 'pk': pdDebate.id }) }}">Consulter</a>
+	<hr>
+</div>

@@ -1,1 +1,6 @@
 {% extends_admingenerated "PolitizrAdminBundle:PRActionList:row.html.twig" %}
+
+
+{% block list_td_column_nb_users %}
+	{{ PRAction.countPUsers }} fois
+{% endblock %}

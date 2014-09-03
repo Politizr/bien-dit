@@ -28,13 +28,15 @@ builders:
             title:                              Liste des actions
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, description, score_evolution ]
+            display:                            [ title, description, score_evolution, nb_users ]
             actions:
                 new:                            ~
             object_actions:
-                show:                           ~
                 edit:                           ~
                 delete:                         ~
+            fields:
+                nb_users:
+                    label:                      Utilisée
     excel:
         params: ~
         filename: ~
@@ -69,22 +71,22 @@ builders:
             actions:
                 save: ~
                 list: ~
-    show:
-        params:
-            title:                              "Visualisation de l'action '{{ PRAction.title }}'"
-            tabs:
-                "Contenu":
-                    "Texte":                    [ [ title, score_evolution ], [ description ] ]
-                "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
-            fields:
-                block_badges:
-                    label:                      "Badges"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-            actions:
-              list:                             ~
-              delete:                           ~
+    # show:
+    #     params:
+    #         title:                              "Visualisation de l'action '{{ PRAction.title }}'"
+    #         tabs:
+    #             "Contenu":
+    #                 "Texte":                    [ [ title, score_evolution ], [ description ] ]
+    #             "Attributs":
+    #                 "Création":                 [ [ created_at, updated_at ] ]
+    #         fields:
+    #             block_badges:
+    #                 label:                      "Badges"
+    #                 formType:                   hidden
+    #                 dbType:                     VARCHAR
+    #         actions:
+    #           list:                             ~
+    #           delete:                           ~
     actions:
         params:
             object_actions:

@@ -63,8 +63,8 @@ class PUserTableMap extends TableMap
         $this->addColumn('credentials_expired', 'CredentialsExpired', 'BOOLEAN', false, 1, false);
         $this->addColumn('credentials_expire_at', 'CredentialsExpireAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('roles', 'Roles', 'ARRAY', false, null, null);
-        $this->addColumn('type', 'Type', 'INTEGER', true, null, null);
-        $this->addColumn('status', 'Status', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_u_type_id', 'PUTypeId', 'INTEGER', 'p_u_type', 'id', true, null, null);
+        $this->addForeignKey('p_u_status_id', 'PUStatusId', 'INTEGER', 'p_u_status', 'id', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('gender', 'Gender', 'ENUM', false, null, null);
         $this->getColumn('gender', false)->setValueSet(array (
@@ -81,8 +81,6 @@ class PUserTableMap extends TableMap
         $this->addColumn('facebook', 'Facebook', 'VARCHAR', false, 150, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
-        $this->addColumn('supporting_document', 'SupportingDocument', 'VARCHAR', false, 150, null);
-        $this->addColumn('elective_mandates', 'ElectiveMandates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
@@ -96,6 +94,8 @@ class PUserTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PUType', 'Politizr\\Model\\PUType', RelationMap::MANY_TO_ONE, array('p_u_type_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUStatus', 'Politizr\\Model\\PUStatus', RelationMap::MANY_TO_ONE, array('p_u_status_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PUQualification', 'Politizr\\Model\\PUQualification', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUQualifications');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');

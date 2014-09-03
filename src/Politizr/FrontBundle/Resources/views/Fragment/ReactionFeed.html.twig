@@ -10,17 +10,17 @@
 		<a class="readZen" objectId="{{ pDocument.id }}" type="reaction">Lire l'intégralité de la réaction</a>
 	</div>
 	<hr>
-	<div class="reactionTo">
-		{% if reactionTo %}
+	<div class="parentReaction">
+		{% if parentReaction %}
 			En réaction à la réaction<br/>
-			<i>"{{ reactionTo.title }}"</i> par {{ reactionTo.pUser }}
+			<i>"{{ parentReaction.title }}"</i> par {{ parentReaction.pUser }}
 		{% endif %} 
 	</div>
 	<hr>
-	{% if linkDebate and reactionTo.pDDebate %}
+	{% if linkDebate and parentReaction.pDDebate %}
 		<div class="linkedDebate">
 			Débat associé<br/>
-			<i>"<a href="{{ path('DebateDetail', { 'id': reactionTo.pDDebate.id, 'slug': reactionTo.pDDebate.slug }) }}">{{ reactionTo.pDDebate.title }}</a>"</i> par <a href="{{ path('AuthorDetail', { 'id': reactionTo.pDDebate.pUser.id, 'slug': reactionTo.pDDebate.pUser.slug }) }}">{{ reactionTo.pDDebate.pUser }}</a>
+			<i>"<a href="{{ path('DebateDetail', { 'id': parentReaction.pDDebate.id, 'slug': parentReaction.pDDebate.slug }) }}">{{ parentReaction.pDDebate.title }}</a>"</i> par <a href="{{ path('AuthorDetail', { 'id': parentReaction.pDDebate.pUser.id, 'slug': parentReaction.pDDebate.pUser.slug }) }}">{{ parentReaction.pDDebate.pUser }}</a>
 		</div>
 	{% endif %} 
 	<hr>

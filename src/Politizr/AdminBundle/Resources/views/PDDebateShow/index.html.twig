@@ -1,51 +1,57 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateShow:index.html.twig" %}
 
-{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
+{# Autocomplete CSS #}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+{% endblock %}
+
+
+{# Contenus #}
+{% block show_column_summary %}
+	{{ PDDebate.summary | raw }}
+{% endblock %}
+
+{% block show_column_description %}
+	{{ PDDebate.description | raw }}
+{% endblock %}
+
+{% block show_column_more_info %}
+	{{ PDDebate.moreInfo | raw }}
+{% endblock %}
+
+
+{# Image #}
+{% block show_column_file_name %}
+	<img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDDebate.fileName }}" />
+{% endblock %}
 
 {# Bloc réactions #}
 {% block show_column_block_reactions %}
-	Nombre de réactions: {{ PDDebate.countPDReactions }}<br/>
-	<br/>
-	{% for pdReaction in PDDebate.PDReactions %}
-		id-{{ pdReaction.id }} / <b>{{ pdReaction.title }}</b><br/>
-		{{ pdReaction.summary | raw }}<br/>
-		Note: {{ pdReaction.notePos }} + / {{ pdReaction.noteNeg }} -<br/>
-	{% endfor %}
-{% endblock %}
+	{{ adminDebateReactions(PDDebate, 'show') }}
+{% endblock show_column_block_reactions %}
 
 {# Bloc commentaires #}
 {% block show_column_block_comments %}
-	Nombre de commentaires: {{ PDDebate.countPDDComments }}<br/>
-	<br/>
-	{% for pddComment in PDDebate.PDDComments %}
-		<b>Commentaire id-{{ pddComment.id }}</b><br/>
-		{{ pddComment.description | raw }}<br/>
-		Note: {{ pddComment.notePos }} + / {{ pddComment.noteNeg }} -<br/>
-		<a href="#">Modérer</a>
-	{% endfor %}
+	{{ adminDebateComments(PDDebate) }}
 {% endblock %}
 
 
-{# Bloc tags #}
-{% block show_column_block_tags %}
-	{% for pTag in PDDebate.PddTaggedTPTags %}
-		<b>{{ pTag.title }}</b><br/>
-		<a href="#">Supprimer</a>
-	{% endfor %}
-	<a href="#">Ajouter un tag</a>
+{# Blocs tags #}
+{% block show_column_block_tags_geo %}
+	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'show') }}
 {% endblock %}
 
+{% block show_column_block_tags_theme %}
+	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'show') }}
+{% endblock %}
 
 {# Bloc followers qualifiés #}
 {% block show_column_block_followers_q %}
-	{% for pUser in PDDebate.PUsersQ %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminDebateFollowersQ(PDDebate) }}
 {% endblock %}
 
 {# Bloc followers citoyens #}
 {% block show_column_block_followers_c %}
-	{% for pUser in PDDebate.PUsersC %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminDebateFollowersC(PDDebate) }}
 {% endblock %}

@@ -13,9 +13,13 @@ params:
     fields:
         id:
             label:          ID
-        type:
+        p_u_type_id:
             label:          Type
-        status:
+        p_u_status_id:
+            label:          Statut
+        p_u_type:
+            label:          Type
+        p_u_status:
             label:          Statut
         file_name:
             label:          Image
@@ -43,6 +47,8 @@ params:
             label:          Dernière connexion
         p_u_qualifications:
             label:          Qualifications
+        p_r_badges:
+            label:          Badges
         online:
             label:          En ligne
         created_at:
@@ -65,11 +71,11 @@ builders:
                     "Qualifiés":
                         default:                true
                         filters: 
-                            filterByType:       2
+                            filterByPUTypeId:   2
                     "Citoyens":
                         filters: 
-                            filterByType:       1
-            display:                            [ file_name, name, firstname, type, status, online, last_connect ]
+                            filterByPUTypeId:   1
+            display:                            [ file_name, name, firstname, p_u_type, p_u_status, online, last_connect ]
             actions:
                 new:                            ~
             object_actions:
@@ -82,13 +88,13 @@ builders:
         filetype:                               ~
     filters:
         params:
-            display:                            [ name, firstname, type, status, online, last_connect ]
+            display:                            [ name, firstname, p_u_type, p_u_status, online, last_connect ]
     new:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ type, status], [ firstname, name ] ]
-                "Champs complémentaires":       [ [ summary, biography ] ]
+                "Champs principaux":            [ [ p_u_type, p_u_status ], [ gender ], [ firstname, name ] ]
+                "Champs complémentaires":       [ summary, biography ]
             fields:
                 summary:
                     addFormOptions:
@@ -104,21 +110,25 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ type ]
-                    "Civilité":                 [ [ gender, firstname, name ], [ uploaded_file_name ] ]
-                    "Contacts":                 [ [ phone, email ], [ website, twitter, facebook ] ]
-                "Descriptifs":
-                    "Informations":             [ [ summary, biography ] ]
-                "Qualifications":
+                    "Type":                     [ p_u_type ]
+                    "Civilité":                 [ [ gender, firstname, name ], [ uploadedFileName ] ]
+                    "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
+                "Descriptif":
+                    "Informations":             [ summary, biography ]
+                "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
+                "Tag":
+                    "Tags du profil":           [ block_tags_mandat, block_tags_geo ]
+                "Réputation":
+                    "Badges":                   [ p_r_badges ]
                 "Statut":
-                    "Actuel":                   [ [ status ] ]
+                    "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
-                uploaded_file_name:
+                uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
                     formType:                   afe_single_upload
@@ -141,6 +151,22 @@ builders:
                         options:
                             # label:              Poste
                             data_class:         Politizr\Model\PUQualification
+                p_r_badges:
+                    dbType:                     model
+                    formType:                   model
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PRBadge
+                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
+                block_tags_mandat:
+                    label:                      "Tags mandat"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags_geo:
+                    label:                      "Tags géo"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -150,39 +176,43 @@ builders:
                 last_connect:
                     label:                      Date de dernière connexion
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
                 created_at:
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
                 updated_at:
                     addFormOptions:
-                      widget:                   single_text
+                        widget:                 single_text
             actions:
-              save:                             ~
-              list:                             ~
-              delete:                           ~
+                save:                           ~
+                show:                           ~
+                list:                           ~
+                delete:                         ~
     show:
         params:
             title:                              "Visualisation de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ type ]
+                    "Type":                     [ p_u_type ]
                     "Civilité":                 [ [ file_name, gender, firstname, name ] ]
-                    "Contacts":                 [ [ phone, email ], [ website, twitter, facebook ] ]
-                "Descriptifs":
+                    "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
+                "Descriptif":
                     "Informations":             [ [ summary, biography ] ]
-                "Qualifications":
+                "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
-                "Tags":
-                    "Tags associés":            [ block_tags ]
-                "Publications":
-                    "Contenus associés":        [ block_debates, block_reactions ]
+                "Tag":
+                    "Tags du profil":           [ block_tags_mandat, block_tags_geo ]
+                "Réputation":
+                    "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
+                "Publication":
+                    "Débats":                   [ block_debates ]
+                    "Réactions":                [ block_reactions ]
                     "Commentaires":             [ block_comments_d, block_comments_r ]
-                "Abonnements":
+                "Abonnement":
                     "Followers":                [ block_followers_q, block_followers_c ]
                     "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
                 "Statut":
-                    "Actuel":                   [ [ status ] ]
+                    "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
@@ -203,8 +233,36 @@ builders:
                         options:
                             # label:              Poste
                             data_class:         Politizr\Model\PUQualification
+                block_tags_mandat:
+                    label:                      "Tags mandat"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_tags_geo:
+                    label:                      "Tags géo"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
                 block_debates:
                     label:                      "Débats"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_badges_debat:
+                    label:                      "Débat"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_badges_comment:
+                    label:                      "Commentaire"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_badges_participation:
+                    label:                      "Participation"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_badges_moderation:
+                    label:                      "Modération"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                block_badges_autre:
+                    label:                      "Autres"
                     formType:                   hidden
                     dbType:                     VARCHAR
                 block_reactions:
@@ -217,10 +275,6 @@ builders:
                     dbType:                     VARCHAR
                 block_comments_r:
                     label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                block_tags:
-                    label:                      "Tags"
                     formType:                   hidden
                     dbType:                     VARCHAR
                 block_followers_q:
@@ -242,8 +296,9 @@ builders:
                 last_connect:
                     label:                      Date de dernière connexion
             actions:
-              list:                             ~
-              delete:                           ~
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
     actions:
         params:
             object_actions:

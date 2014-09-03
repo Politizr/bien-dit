@@ -43,11 +43,16 @@ builders:
                         default:                        true
                         filters:
                             filterByPTTagTypeId:        3
-            display:                            [ title, p_t_tag_type, online ]
+            display:                            [ title, p_t_tag_type, countPDDebates, countPUsers, online ]
+            fields:
+                countPDDebates:
+                    label:                      Débats taggés
+                countPUsers:
+                    label:                      Users taggés
             actions:
                 new:                            ~
             object_actions:
-                show:                           ~
+#                 show:                           ~
                 edit:                           ~
                 delete:                         ~
     excel:
@@ -62,6 +67,7 @@ builders:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
     new:
+        # TODO: contrôle d'univité du champs titre sur le type donné
         params:
             title:                              "Création d'un tag"
             display:
@@ -92,31 +98,20 @@ builders:
                     addFormOptions:
                       widget:                   single_text
             actions:
-                save: ~
-                list: ~
-    show:
-        params:
-            title:                              "Visualisation du tag '{{ PTag.title }}'"
-            tabs:
-                "Contenu":
-                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
-                "Utilisation":
-                    "Contenus taggés":          [ block_debates ]
-                    "Utilisateurs taggés":      [ block_users ]
-                "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
-            fields:
-                block_debates:
-                    label:                      "Débats"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                block_users:
-                    label:                      "Utilisateurs"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-            actions:
-              list:                             ~
-              delete:                           ~
+                save:                           ~
+                save_and_list:                  ~
+                list:                           ~
+#     show:
+#         params:
+#             title:                              "Visualisation du tag '{{ PTag.title }}'"
+#             tabs:
+#                 "Contenu":
+#                     "Texte":                    [ [ p_t_tag_type ], [ title ] ]]
+#                 "Attributs":
+#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+#             actions:
+#               list:                             ~
+#               delete:                           ~
     actions:
         params:
             object_actions:

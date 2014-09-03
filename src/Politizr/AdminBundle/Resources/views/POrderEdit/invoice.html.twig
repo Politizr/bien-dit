@@ -4,14 +4,13 @@
     POLITIZR (c) 2014
 </div>
 <div id="invoice_client">
-    {{ order.gender }} {{ order.name }} {{ order.firstname }}<br/>
-    {{ order.address }}<br/>
-    {{ order.zip }} {{ order.city }}
+    {{ order.gender }} {{ order.name }} {{ order.firstname }}
 </div>
 <div id="invoice_order">
     Mode de paiement : {{ order.POPaymentType }}<br/>
     Date de facturation : {{ nowAt | date("d/m/Y \\à G\\hi") }}<br/>
     Souscription : {{ order.subscriptionTitle }}<br/>
+    Durée: du {{ order.subscriptionBeginAt | date('d/m/Y') }} au {{ order.subscriptionEndAt | date('d/m/Y') }}<br/>
 </div>
 <div class="note">
     Facture en euros.<br>

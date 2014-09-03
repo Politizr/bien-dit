@@ -1,41 +1,22 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
-{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
-
-{# Bloc réactions #}
-{% block show_column_block_reactions %}
-	Nombre de réactions: {{ PDReaction.countPDReactions }}<br/>
-	<br/>
-	{% for pdReaction in PDReaction.PDReactions %}
-		id-{{ pdReaction.id }} / <b>{{ pdReaction.title }}</b><br/>
-		{{ pdReaction.summary | raw }}<br/>
-		Note: {{ pdReaction.notePos }} + / {{ pdReaction.noteNeg }} -<br/>
-	{% endfor %}
+{# Contenus #}
+{% block show_column_summary %}
+	{{ PDReaction.summary | raw }}
 {% endblock %}
+
+{% block show_column_description %}
+	{{ PDReaction.description | raw }}
+{% endblock %}
+
+{% block show_column_more_info %}
+	{{ PDReaction.moreInfo | raw }}
+{% endblock %}
+
+
+{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
 
 {# Bloc commentaires #}
 {% block show_column_block_comments %}
-	Nombre de commentaires: {{ PDReaction.countPDRComments }}<br/>
-	<br/>
-	{% for pdrComment in PDReaction.PDRComments %}
-		<b>Commentaire id-{{ pdrComment.id }}</b><br/>
-		{{ pdrComment.description | raw }}<br/>
-		Note: {{ pdrComment.notePos }} + / {{ pdrComment.noteNeg }} -<br/>
-		<a href="#">Modérer</a>
-	{% endfor %}
-{% endblock %}
-
-
-{# Bloc followers qualifiés #}
-{% block show_column_block_followers_q %}
-	{% for pUser in PDReaction.PUsersQ %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
-{% endblock %}
-
-{# Bloc followers citoyens #}
-{% block show_column_block_followers_c %}
-	{% for pUser in PDReaction.PUsersC %}
-		{{ pUser.firstName }} {{ pUser.name }}<br/>
-	{% endfor %}
+	{{ adminReactionComments(PDReaction) }}
 {% endblock %}

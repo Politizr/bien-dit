@@ -11,7 +11,7 @@
 	{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate } %}
 	<div class="debateReactionsFeed">
 		{% for reaction in debate.reactions %}
-			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': false, 'pDocument': reaction, 'reactionTo': reaction.reactionTo, 'globalComments': reaction.globalComments } only %}
+			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': false, 'pDocument': reaction, 'parentReaction': reaction.parentReaction, 'globalComments': reaction.globalComments } only %}
 		{% else %}
 			<div id="noResult">
 				Aucune réaction pour le moment

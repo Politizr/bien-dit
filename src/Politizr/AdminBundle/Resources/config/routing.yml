@@ -18,12 +18,15 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
+################################################################################
+#               CUSTOM ROUTES
+################################################################################
+
 # Accueil
 admin_homepage:
     pattern:  /
     defaults: { _controller: PolitizrAdminBundle:Homepage\AdminHomepage:index }
 
-# Spécifiques
 # Commandes
 Politizr_AdminBundle_POrder_invoice:
     pattern:  /POrder/{pk}/invoice
@@ -34,14 +37,28 @@ Politizr_AdminBundle_POrder_mail:
     defaults: { _controller: PolitizrAdminBundle:POrder/Actions:mail }
 
 
-# Admin generated routes
+# Débats
+Politizr_AdminBundle_PDDebate_Comments:
+    pattern:  /PDDebate/{pk}/comments
+    defaults: { _controller: PolitizrAdminBundle:PDDebate/Actions:comments }
+
+
+# Réactions
+Politizr_AdminBundle_PDReaction_Comments:
+    pattern:  /PDReaction/{pk}/comments
+    defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:comments }
+
+
+
+################################################################################
+#               ADMIN GENERATED ROUTES
+################################################################################
 
 # FOSUser (admin)
 Politizr_AdminBundle_User:
     resource: "@PolitizrAdminBundle/Controller/User/"
     type:     admingenerator
     prefix:   /User
-
 
 
 
@@ -138,4 +155,32 @@ Politizr_AdminBundle_POOrderState:
     resource: "@PolitizrAdminBundle/Controller/POOrderState/"
     type:     admingenerator
     prefix:   /POOrderState
+
+################################################################################
+#               ADMIN AJAX
+################################################################################
+AdminGetPTags:
+    pattern:  /getPTags.{_format}
+    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:getPTags, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AdminAddPUTaggedTPTag:
+    pattern:  /addPUTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:addPUTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AdminDeletePUTaggedTPTag:
+    pattern:  /deletePUTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:deletePUTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AdminAddPDDTaggedTPTag:
+    pattern:  /addPDDTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:addPDDTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+AdminDeletePDDTaggedTPTag:
+    pattern:  /deletePDDTaggedTPTag.{_format}
+    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:deletePDDTaggedTPTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
 

@@ -26,6 +26,8 @@ use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
+use Politizr\Model\PUStatus;
 use Politizr\Model\POrder;
 use Politizr\Model\POOrderState;
 use Politizr\Model\POPaymentState;
@@ -576,17 +578,26 @@ class SecurityController extends Controller {
                 $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
                 $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
 
-                // Gestion upload
+                // Save user
+                $pUser->save();
+
+                // *************************************** //
+                //      Gestion des justificatifs
+                //      TODO > champs à insérer dans la future commande
+                // *************************************** //
+
+                // 1/ gestion upload pièce ID
                 $file = $pUserForm['uploaded_supporting_document']->getData();
                 $logger->info('$file = '.print_r($file, true));
                 if ($file) {
                     $pUser->removeUpload(false, true);
                     $fileName = $pUser->upload($file);
-                    $pUser->setSupportingDocument($fileName);
+                    
+                    // $pUser->setSupportingDocument($fileName);
                 }
 
-                // Save user
-                $pUser->save();
+                // 2/ gestion mandats électifs
+                $electiveMandates = $pUserForm['elective_mandates']->getData();
 
                 // Connexion
                 $this->doPublicConnection($pUser);
@@ -778,7 +789,7 @@ class SecurityController extends Controller {
         $pUser->addRole('ROLE_ELECTED');
         $pUser->addRole('ROLE_PROFILE_COMPLETED');
         $pUser->removeRole('ROLE_ELECTED_INSCRIPTION');
-        $pUser->setStatus(PUser::STATUS_VALIDATION_PROCESS);
+        $pUser->setPUStatusId(PUStatus::STATUS_VALIDATION_PROCESS);
         $pUser->save();
 
         // Suppression des valeurs en session
@@ -1054,7 +1065,7 @@ class SecurityController extends Controller {
             if ($pUser->hasRole('ROLE_CITIZEN')) {
                 $redirectUrl = $this->generateUrl('HomepageC');
             } elseif($pUser->hasRole('ROLE_ELECTED')) {
-                if ($pUser->getStatus() == PUser::STATUS_ACTIV) {
+                if ($pUser->getPUStatusId() == PUStatus::STATUS_ACTIV) {
                     $redirectUrl = $this->generateUrl('HomepageE');
                 } else {
                     // TODO: authenticate access denied + redirection automatique si setToken(null)

@@ -1,0 +1,11 @@
+<div id="displayReactionsZone">
+	{% if pdReactions | length > 0 %}
+		<b>{{ pdReactions | length }} réactions ont été rédigés par {{ pUser }}</b>
+	{% else %}
+		<b>Aucune réaction rédigée par {{ pUser }}</b>
+	{% endif %}
+	<hr>
+	{% for pdReaction in pdReactions %}
+		{% include 'PolitizrAdminBundle:Fragment:UserReaction.html.twig' with { 'pdReaction': pdReaction } %}
+	{% endfor %}
+</div>
