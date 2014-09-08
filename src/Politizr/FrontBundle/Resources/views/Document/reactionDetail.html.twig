@@ -1,0 +1,51 @@
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with { 'pdReaction': reaction, 'full': true } %}
+		<div class="row text-center">
+			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
+		</div>
+		<hr>
+		<div class="debateReactionsFeed">
+			{% for reaction in reaction.childrenReactions %}
+				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'pdReaction': reaction, 'full': false } only %}
+				<div class="row text-center">
+					<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail de la réaction</a>
+				</div>
+				<hr>
+			{% else %}
+				<div id="noResult">
+					Aucune réaction pour le moment
+				</div>
+			{% endfor %}
+		</div>
+		<hr>
+		<div class="reactionComments">
+			{% for comment in reaction.comments %}
+				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'debateLink': false } %}
+				<hr>
+			{% else %}
+				<div id="noResult">
+					Aucun commentaire pour le moment
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:reactionDetail.js.twig' %}
+    
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

@@ -1,7 +1,19 @@
-<div id="menu">
-	<a href="{{ path('Homepage') }}">Accueil</a>
-	<a href="{{ path('Presentation') }}">Présentation</a>
-	<a href="{{ path('Inscription') }}">S'inscrire</a>
-	<hr>
-	<a class="connectMe">Connexion</a>
+<!-- Brand and toggle get grouped for better mobile display -->
+<div class="navbar-header">
+	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+	<a class="navbar-brand" href="{{ path('Homepage') }}">Politizr</a>
 </div>
+
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	<ul class="nav navbar-nav">
+		<li><a href="{{ path('Presentation') }}">Présentation</a></li>
+		<li><a href="{{ path('Inscription') }}">S'inscrire</a></li>
+	</ul>
+	<button id="connectMe" class="navbar-right btn btn-primary">Connexion</button>
+</div><!-- /.navbar-collapse -->

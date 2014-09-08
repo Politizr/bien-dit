@@ -5,54 +5,70 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
-		<h1>Accueil</h1>
+	<div id="main" class="container">
+		<div id="homeSlide" class="carousel slide" data-ride="carousel" style="width: 800px; margin: 0 auto">
+		  <!-- Indicators -->
+		  <ol class="carousel-indicators">
+		    <li data-target="#homeSlide" data-slide-to="0" class="active"></li>
+		    <li data-target="#homeSlide" data-slide-to="1"></li>
+		    <li data-target="#homeSlide" data-slide-to="2"></li>
+		  </ol>
 
-		<div id="homeSlide">
-			<ul>
-				<li>slide débat / réactions</li>
-				<li>slide profils</li>
-				<li>slide gestion de ma réputation</li>
-			</ul>
+		  <!-- Wrapper for slides -->
+		  <div class="carousel-inner">
+		    <div class="item active">
+		      <img src="{{ asset('bundles/politizrfront/images/p-slide1.jpg') }}" alt="Politizr" width="100%">
+		      <div class="carousel-caption">
+		        Politizr, des débats politiques
+		      </div>
+		    </div>
+		    <div class="item">
+		      <img src="{{ asset('bundles/politizrfront/images/p-slide2.jpg') }}" alt="Politizr" width="100%">
+		      <div class="carousel-caption">
+		        Suivez vos notifications dans votre espace personnel Politizr
+		      </div>
+		    </div>
+		    <div class="item">
+		      <img src="{{ asset('bundles/politizrfront/images/p-slide3.jpg') }}" alt="Politizr" width="100%">
+		      <div class="carousel-caption">
+		        Commentez les débats et les réactions des élus sur Politizr
+		      </div>
+		    </div>
+		  </div>
+
+		  <!-- Controls -->
+		  <a class="left carousel-control" href="#homeSlide" role="button" data-slide="prev">
+		    {{ icon('camera') }}
+		  </a>
+		  <a class="right carousel-control" href="#homeSlide" role="button" data-slide="next">
+		    {{ icon('camera') }}
+		  </a>
 		</div>
 
-		<div id="homeDebates">
-			<h2>Débats les plus actifs</h2>
+		<div id="debates">
+			<h2>Débats les plus suivis</h2>
 			<div>
-				{% for debate in homeDebates %}
-					{% set user = debate.pUser %}
-					<div>
-						<i>"<a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a>"</i> par <a href="{{ path('AuthorDetail', { 'id': user.id, 'slug': user.slug }) }}">{{ user }}</a><br/>
-					</div>
-				{% else %}
-					<div id="noResult">Aucun débat disponible</div>
+				{% for debate in debates %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
 				{% endfor %}
 			</div>
 		</div>
 		<hr>
-		<div id="homeUsers">
-			<h2>Profils les plus populaires</h2>
+		<div id="users">
+			<h2>Élus les plus suivis</h2>
 			<div>
-				{% for user in homeUsers %}
-					<div>
-						<a href="{{ path('AuthorDetail', { 'id': user.id, 'slug': user.slug }) }}">{{ user.firstname }} {{ user.name }}</a><br/>
-					</div>
-				{% else %}
-					<div id="noResult">Aucun profil disponible</div>
+				{% for user in users %}
+					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
 		<hr>
-		<div id="homeComments">
-			<h2>Vos derniers commentaires</h2>
+		<div id="comments">
+			<h2>Les derniers commentaires</h2>
 			<div>
-				{% for comment in homeComments %}
-					{% set debate = comment.pDDebate %}
-					<div>
-						<i>"{{ comment.description }}"</i> sur le débat <a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a><br/>
-					</div>
-				{% else %}
-					<div id="noResult">Aucun commentaire disponible</div>
+				{% for comment in comments %}
+					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'debateLink': true } %}
 				{% endfor %}
 			</div>
 		</div>
@@ -70,6 +86,9 @@
 
 {% block javascriptFooter %}
 	{{ parent() }}
+	{% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
+	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    
     {% include 'PolitizrFrontBundle:JS:homepage.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

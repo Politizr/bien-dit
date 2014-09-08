@@ -1,0 +1,13 @@
+{% if (ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_MANDAT')) %}
+	{% set twbLabel = "warning" %}
+{% elseif (ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) %}
+	{% set twbLabel = "success" %}
+{% elseif (ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'))%}
+	{% set twbLabel = "primary" %}
+{% else %}
+	{% set twbLabel = "default" %}
+{% endif %}
+
+{% for pTag in pTags %}
+	<span class="label label-{{ twbLabel }}">{{ pTag.title }}</span>
+{% endfor %}

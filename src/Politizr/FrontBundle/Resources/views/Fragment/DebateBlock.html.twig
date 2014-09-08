@@ -1,22 +1,113 @@
-<div class="debateBlock">
-	<h3>{{ debate.title }}</h3>
-	<h4>par {{ debate.pUser }}</h4>
-	<h5>publié le {{ debate.publishedAt('d/m/Y') }}</h5>
-
-	<div class="debateHeader">
-		<div class="star">
-			{{ linkFollow(debate.id, 'debate') }}
+<div class="debateHeader">
+	<div class="row">
+		<h3>
+			<div class="col-sm-10">
+				{% if not full %}
+					<a class="bg-info" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title | slice(0, 100)}}</a>
+				{% else %}
+					<span class="glyphicon glyphicon-bullhorn"></span>
+					{{ debate.title }}
+				{% endif %}
+			</div>
+		</h3>
+		<div class="col-sm-2 text-center">
+			<span class="label label-default pull-right">publié le {{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
-		<div class="debateSummary">
+	</div>
+	<h4>
+		<div action="userMoreInfo" class="row">
+			<a class="label label-info">par {{ debate.pUser }}</a>
+		</div>
+		<div class="row" action="userInfos">
+			<hr>
+			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': debate.pUser, 'full': false } only %}
+		</div>
+	</h4>
+</div>
+<hr>
+<div class="debateTags">
+	<!-- TAGS -->
+	<div class="row text-center">
+		<div class="col-sm-6">
+			{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+		</div>
+		<div class="col-sm-6">
+			{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row text-center">
+	<!-- FOLLOWERS -->
+	<div id="followers">
+		Suivi par <a action="showFollowersCList" class="label label-primary">{{ debate.countFollowersC }} citoyens</a> et <a action="showFollowersQList" class="label label-primary">{{ debate.countFollowersQ }} élus</a>
+		<div action="followersCList">
+			{% for follower in debate.followersC %}
+                {% if ((loop.index0%4) == 0) %}
+                    <div class="row">
+                {% endif %}
+				<div class="col-sm-3">
+					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
+						{% if (follower.fileName) %}
+				            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+				        {% else %}
+				            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			        	{% endif %}
+					</a>
+				</div>
+				{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div action="followersQList">
+			{% for follower in debate.followersQ %}
+                {% if ((loop.index0%4) == 0) %}
+                    <div class="row">
+                {% endif %}
+				<div class="col-sm-3">
+					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
+						{% if (follower.fileName) %}
+				            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+				        {% else %}
+				            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			        	{% endif %}
+					</a>
+				</div>
+				{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% if full %}
+	<hr>
+	<div class="debateImage">
+		<div class="row text-center">
+			<img src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
+		</div>
+	</div>
+{% endif %}
+<hr>
+<div class="debateSummary jumbotron">
+	<div class="debateSummary">
+		{{ debate.summary | raw }}
+	</div>
+	<div class="star">
+		{{ linkFollow(debate.id, 'debate') }}
+	</div>
+</div>
+{% if full %}
+	<hr>
+	<div class="debateBody">
+		<div class="debateDescription">
 			{{ debate.summary | raw }}
 		</div>
-		<a class="readZen" objectId="{{ debate.id }}" type="debate">Lire l'intégralité du débat</a>
-	</div>
-	<hr>
-	<div class="debateMoreInfos">
-		{% include 'PolitizrFrontBundle:Fragment:UserMiniBio.html.twig' with { 'pUser': debate.pUser } only %}
 		<hr>
-		{% include 'PolitizrFrontBundle:Fragment:DebateInfos.html.twig' with { 'pDocument': debate, 'pTags': debate.pTags, 'globalComments': debate.globalComments, 'paragraphComments': debate.paragraphComments } only %}
+		<div class="debateMoreInfo well">
+			{{ debate.moreInfo | raw }}
+		</div>
 	</div>
-	<hr>
-</div>
+{% endif %}
+<hr>

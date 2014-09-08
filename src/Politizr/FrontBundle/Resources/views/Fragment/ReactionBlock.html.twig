@@ -1,0 +1,49 @@
+<div class="reactionHeader">
+	<div class="row">
+		<h3>
+			<div class="col-sm-10">
+				{% if not full %}
+					<a class="bg-warning" href="{{ path('ReactionDetail', { 'id': pdReaction.id, 'slug': pdReaction.slug }) }}">{{ pdReaction.title | slice(0, 100) }}</a>
+				{% else %}
+					<span class="glyphicon glyphicon-bullhorn"></span>
+					{{ pdReaction.title }}
+				{% endif %}
+			</div>
+		</h3>
+		<div class="col-sm-2 text-center">
+			<span class="label label-default pull-right">publié le {{ pdReaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+		</div>
+	</div>
+	{% set parentReaction = pdReaction.parentReaction %}
+	{% if parentReaction %}
+		<h4 class="label label-default">En réaction à "<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>"</h4>
+	{% endif %}
+	<h4>
+		<div cssActionId="userMoreInfo" class="row">
+			<a class="label label-info">par {{ pdReaction.pUser }}</a>
+		</div>
+		<div class="row" action="userInfos">
+			<hr>
+			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': pdReaction.pUser, 'full': false } only %}
+		</div>
+	</h4>
+</div>
+<hr>
+<div class="reactionSummary well">
+	<div class="reactionSummary">
+		{{ pdReaction.summary | raw }}
+	</div>
+</div>
+{% if full %}
+	<hr>
+	<div class="reactionBody">
+		<div class="reactionDescription">
+			{{ pdReaction.summary | raw }}
+		</div>
+		<hr>
+		<div class="reactionMoreInfo well">
+			{{ pdReaction.moreInfo | raw }}
+		</div>
+	</div>
+{% endif %}
+<hr>

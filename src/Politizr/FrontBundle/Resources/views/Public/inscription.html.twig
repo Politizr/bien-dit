@@ -9,47 +9,31 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
+	<div id="main" class="container">
 		<h1>Inscription</h1>
-		<p>Accélérez le processus d'inscription en utilisant les services de connexion OpenID de Facebook, Twitter ou Google...</p>
+		<p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
 		<div id="oAuthButtons">
 			{% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
 			{% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
 			{% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
 		</div>
 		<hr>
-		<p>... ou choisissez vos identifiants et mots de passe Politizr:</p>
-		{% if pUserForm.vars.errors|length %}
-			<div class="boxError">
-		    	{{ form_errors(pUserForm) }}
-		    </div>
-		{% endif %}
-		<form id="pUserForm" action="{{ path('InscriptionCheck') }}" method="POST">
-		    {% if pUserForm.username.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.username) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.username, {'attr': {'placeholder': 'Identifiant'}}) }}</div>
+		<p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
+		<div id="boxInscriptionStep1">
+			{{ form_start(pUserForm, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_errors(pUserForm) }}
 
-		    {% if pUserForm.plainPassword.vars.errors|length %}
-				<div class="boxError">{{ form_errors(plainPassword) }}</div>
-			{% endif %}
-			{% for passwordField in pUserForm.plainPassword %}
-		        {% if passwordField.vars.errors|length %}
-					<div class="boxError">{{ form_errors(passwordField) }}</div>
-		    	{% endif %}
-		    	{% if loop.index == 1 %}
-		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Mot de passe'}}) }}</div>
-		        {% else %}
-		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Confirmation mot de passe'}}) }}</div>
-		        {% endif %}
-			{% endfor %}
+			    {{ form_row(pUserForm.username) }}
+			    {{ form_row(pUserForm.plainPassword) }}
 
-			{{ form_rest(pUserForm) }}
-			<div class="form_mentions">Tous les champs sont obligatoires</div>
-			<div class="form_submit"><input type="submit" value="Je valide"></div>
-		</form>
+			    {{ form_row(pUserForm.actions) }}
+			{{ form_end(pUserForm) }}
+		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+		</div>
+		<hr>
 		<h1>Vous êtes un élu?</h1>
-		<p>Politizr vous offre la possibilité de disposer d'un compte permettant de débattre en créant votre <a href="{{ path('InscriptionElected') }}">compte élu</a>.</p>
+		<p class="bg-info">Politizr vous offre la possibilité de disposer d'un compte permettant de débattre en créant votre <a href="{{ path('InscriptionElected') }}">compte élu</a>.</p>
+		<hr>
 	</div>
 {% endblock main %}
 

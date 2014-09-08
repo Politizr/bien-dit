@@ -1,9 +1,26 @@
-<div id="steps">
-	Etapes de l'inscription
-	<ol>
-		<li>Identifiant</li>
-		<li>Coordonnées</li>
-		<li>Centres d'intérêt</li>
-	</ol>
+<div class="container">
+	<div class="row text-center">
+		<div class="col-sm-4">
+			<div class="label label-success">1 - Identification</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="label label-success">2 - Coordonnées</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="label label-success">3 - Centres d'intérêts</div>
+		</div>
+	</div>	
+	<hr>	
+	<div class="progress">
+		{% set progressbar = 25 %}
+		{% if step == 2 %}
+			{% set progressbar = 50 %}
+		{% elseif step == 3 %}
+			{% set progressbar = 75 %}
+		{% endif %}
+
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{ progressbar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressbar }}%;">
+		    {{ progressbar }}%
+		</div>
+	</div>
 </div>
-<hr>

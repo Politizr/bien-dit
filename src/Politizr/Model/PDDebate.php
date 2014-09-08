@@ -168,33 +168,6 @@ class PDDebate extends BasePDDebate
 		}
 	}
 	
-	/******************************************************************************/
-
-	/**
-	 * Renvoie les abonnés qualifiés
-	 *
-     * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserFollowersQ() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE);
-		$pUsers = parent::getPuFollowDdPUsers($query);
-
-		return $pUsers;
-	}
-
-	/**
-	 * Renvoie les abonnés citoyens
-	 *
-     * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserFollowersC() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_CITOYEN);
-		$pUsers = parent::getPuFollowDdPUsers($query);
-
-		return $pUsers;
-	}
-
-
 
 	// ************************************************************************************ //
 	//										METHODES
@@ -213,6 +186,7 @@ class PDDebate extends BasePDDebate
                         ->filterByPTTagTypeId($ptTagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
+                    ->setDistinct()
                     ;
 
 		return parent::getPddTaggedTPTags($query);
@@ -323,8 +297,30 @@ class PDDebate extends BasePDDebate
 		return parent::countPDReactions($query);
 	}
 
-    // *****************************    COMMENTAIRES   ************************* //
+    // *****************************    FOLLOWERS   ************************* //
 
+
+	/**
+	 *	Renvoit le nombre de followers du débat.
+	 *
+	 * @param 	$puStatusId 	integer 	Filtrage par rapport au status
+	 * @param 	$puTypeId 		integer 	Filtrage par rapport au type
+	 *
+	 * @return 	integer 	Nombre de followers
+	 */
+	public function getFollowers($puStatusId = PUStatus::STATUS_ACTIV, $puTypeId = null) {
+		$query = PUserQuery::create()
+					->_if($puStatusId)
+						->filterByPUStatusId($puStatusId)
+					->_endif()
+					->_if($puTypeId)
+						->filterByPUTypeId($puTypeId)
+					->_endif()
+					->filterByOnline(true)
+					->setDistinct();
+		
+		return parent::getPuFollowDdPUsers($query);
+	}
 
 	/**
 	 *	Renvoit le nombre de followers du débat.
@@ -342,9 +338,51 @@ class PDDebate extends BasePDDebate
 					->_if($puTypeId)
 						->filterByPUTypeId($puTypeId)
 					->_endif()
-					->filterByOnline(true);
+					->filterByOnline(true)
+					->setDistinct();
 		
 		return parent::countPuFollowDdPUsers($query);
 	}
+
+	/**
+     * Renvoie les followers qualifiés (élus)
+     *
+     * @return     PropelObjectCollection PUser[] List
+	 */
+	public function getFollowersQ() {
+		$pUsers = $this->getFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_QUALIFIE);
+
+		return $pUsers;
+	}
+
+    /**
+     * Nombre de followers qualifiés (élus)
+     *
+     * @return     integer
+     */
+    public function countFollowersQ() {
+        return $this->countFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_QUALIFIE);
+    }
+
+	/**
+	 * Renvoie les followers citoyens
+	 *
+     * @return     PropelObjectCollection PUser[] List
+	 */
+	public function getFollowersC() {
+		$pUsers = $this->getFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_CITOYEN);
+
+		return $pUsers;
+	}
+
+    /**
+     * Nombre de followers citoyens
+     *
+     * @return     integer
+     */
+    public function countFollowersC() {
+        return $this->countFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_CITOYEN);
+    }
+
 
 }

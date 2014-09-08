@@ -2,6 +2,15 @@
 <html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
     <title>{% block title %}{% endblock title %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+
+    <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+
+
     <meta name="description" content="{% block description %}{% endblock description %}">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -11,42 +20,65 @@
     {% endblock %}
 
     {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
     {% endblock %}
 
     {% block javascriptHeader %}
     {% endblock %}
 </head>
 {% block body %}
-    {% block bodyId %}
         <body>
-    {% endblock bodyId %}
-        {% include 'PolitizrFrontBundle:Navigation:analytics.html.twig' %}
-        <noscript>
-            <div id="no-js-box">
-                Désolé, vous devez activer Javascript pour naviguer sur ce site.
-            </div>
-        </noscript>
+            {% include 'PolitizrFrontBundle:Navigation:analytics.html.twig' %}
+            <noscript>
+                <div id="no-js-box">
+                    Désolé, vous devez activer Javascript pour naviguer sur ce site.
+                </div>
+            </noscript>
 
-        {% block genericBoxes %}
-        {% endblock %}
+            {% block genericBoxes %}
+                <!-- overlay ajax generique -->
+                <div id="ajaxLoader" style="display: none"></div>
 
-        {% block connexionBox %}
-        {% endblock %}
+                <!-- overlay ajax twitter bootstrap style -->
+                <div class="alert alert-warning" style="display: none">
+                    This is an alert flash message.
+                </div>
+                <div class="alert alert-danger" style="display: none">
+                    This is an error flash message.
+                </div>
+                <div class="alert alert-info" style="display: none">
+                    This is an info flash message.
+                </div>
+                <div class="alert alert-success" style="display: none">
+                    This is an success flash message.
+                </div>
 
-        {% block header %}
-        {% endblock %}
+                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+            {% endblock %}
 
-        {% block inscriptionSteps %}
-        {% endblock inscriptionSteps %}
+            {% block header %}
+            {% endblock %}
+            
+            {% block connexionBox %}
+            {% endblock %}
 
-        {% block main %}
-        {% endblock main %}
+            {% block inscriptionSteps %}
+            {% endblock inscriptionSteps %}
 
-        {% block footer %}
-        {% endblock %}
+            {% block main %}
+            {% endblock main %}
 
-        {% block javascriptFooter %}
-        {% endblock %}
+            {% block footer %}
+            {% endblock %}
+
+            {% block javascriptFooter %}
+                <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+                <script src="{{ asset('js/jquery.js') }}"></script>
+                <!-- Include all JavaScripts, compiled by Assetic -->
+                <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+                <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui-1.10.4.custom.min.js') }}"></script>
+            {% endblock %}
     </body>
 {% endblock body %}
 </html>

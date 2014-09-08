@@ -13,6 +13,8 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUStatus;
+use Politizr\Model\PUType;
 
 /**
  * TODO: commentaires
@@ -23,21 +25,22 @@ class PUserStep1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', 'hidden', array(
-            'attr'     => array( 'value' => '0' )
+        $builder->add('p_u_type_id', 'hidden', array(
+            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
             )
         );
-        $builder->add('status', 'hidden', array(
-            'attr'     => array( 'value' => '0' )
+        $builder->add('p_u_status_id', 'hidden', array(
+            'attr'     => array( 'value' => PUStatus::STATUS_ACTIV )
             )
         );
         $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => '0' )
+            'attr'     => array( 'value' => false )
             )
         );
 
         $builder->add('username', 'text', array(
             'required' => true,
+            'label' => 'Identifiant', 
             'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
             )
         );
@@ -45,13 +48,22 @@ class PUserStep1Type extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
+                'label' => 'Mot de passe', 
                 ),
             'second_options' =>   array(
+                'label' => 'Confirmation', 
                 ),
             'type' => 'password',
             'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
             )
         );
+
+        $builder->add('actions', 'form_actions', [
+            'buttons' => [
+                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
+                ]
+            ]);
+        
     }
 
     /**

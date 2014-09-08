@@ -1,5 +1,5 @@
 # TODO
-# - nouvelle table p_u_follow_t
+# - gestion username + password
 generator:                  admingenerator.generator.propel
 params:
     model:                  Politizr\Model\PUser

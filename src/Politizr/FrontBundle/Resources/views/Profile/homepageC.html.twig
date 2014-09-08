@@ -2,26 +2,33 @@
 
 
 {% block main %}
-	<h1>Accueil Citoyen</h1>
-	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
-	<div id="debateReactionsFeed">
-		{% for reaction in reactions %}
-			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': true, 'pDocument': reaction, 'reactionTo': reaction.reactionTo, 'globalComments': reaction.globalComments } only %}
+	<div id="main" class="container">
+		<h1>Timeline</h1>
+        {% set debates = pageDebates.CurrentPageResults %}
+        {% for debate in debates %}
+        {# TODO la req doit tout renvoyé sinon pb de dates de publication #}
+        	{% for reaction in debate.reactions %}
+				{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': 'PDReaction', 'withAuthor': true } %}
+        	{% endfor %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
 		{% else %}
-			<div id="noResult">
-				Aucune réaction pour le moment
+			<div class="box_no_results">
+				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat pour le moment</a>
 			</div>
 		{% endfor %}
+        {% if pageDebates.haveToPaginate %}
+            <div id="box_pagination">
+                {{ pagerfanta(pageDebates, 'default', pagerfanta_opts) }}
+            </div>
+        {% endif %}
 	</div>
 {% endblock main %}
-
-
 
 {% block javascriptFooter %}
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:homepageC.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 {% endblock javascriptFooter %}

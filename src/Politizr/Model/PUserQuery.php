@@ -24,9 +24,17 @@ class PUserQuery extends BasePUserQuery
 	/**
 	 *	Filtre à appliquer aux objets retournés en page d'accueil
 	 *  TODO qu'est ce qu'un auteur "populaire"? + requête
+	 *		> + gros score reputation?   /!\ pas de note pour les élus?
+	 *		> + de followers?
 	 *
 	 */
 	public function popularity($limit = 10) {
-		return $this->filterByPUStatusId(PUStatus::STATUS_ACTIV)->filterByPUTypeId(PUType::TYPE_QUALIFIE)->setLimit($limit);
+		// followers
+		return $this->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
+				->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
+				->groupBy('Id')
+				->setLimit($limit)
+				->orderBy('NbFollowers', \Criteria::DESC)
+				;
 	}
 }

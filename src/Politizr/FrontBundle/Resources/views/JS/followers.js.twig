@@ -1,0 +1,36 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        $("div[action='followersCList']").hide();
+        $("div[action='followersQList']").hide();
+    });
+
+    // **************************** //
+    //      Fonctions simples
+    // **************************** //
+
+    // Ouverture box followers
+    $("body").on("click", "a[action='showFollowersCList']", function() {
+        if ($(this).siblings("div[action='followersCList']").is(':visible')) {
+            $(this).siblings("div[action='followersCList']").slideUp();
+        } else {
+            $(this).siblings("div[action='followersQList']").slideUp();
+            $(this).siblings("div[action='followersCList']").slideDown();
+        }
+    });
+
+    $("body").on("click", "a[action='showFollowersQList']", function() {
+        if ($(this).siblings("div[action='followersQList']").is(':visible')) {
+            $(this).siblings("div[action='followersQList']").slideUp();
+        } else {
+            $(this).siblings("div[action='followersCList']").slideUp();
+            $(this).siblings("div[action='followersQList']").slideDown();
+        }
+    });
+
+    // **************************** //
+    //      POST
+    // **************************** //
+</script>

@@ -68,7 +68,12 @@
         "avocode/form-extensions-bundle": "dev-master",
         "liuggio/ExcelBundle": "2.0.0",
 
-        "liip/imagine-bundle": "0.11.*"
+        "liip/imagine-bundle": "0.11.*",
+
+        "twbs/bootstrap": "3.2.*",
+        "twbs/bootstrap-sass": "3.2.*",
+        "fortawesome/font-awesome": "~4.0",
+        "braincrafted/bootstrap-bundle": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

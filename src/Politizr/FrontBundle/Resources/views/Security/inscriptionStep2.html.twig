@@ -5,54 +5,29 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
-		<h1>Inscription - Etape 2 / 3</h1>
+	<div id="main" class="container">
 		{% if pUserForm.vars.errors|length %}
 			<div class="boxError">
 		    	{{ form_errors(pUserForm) }}
 		    </div>
 		{% endif %}
-		<form id="pUserForm" action="{{ path('InscriptionStep2Check') }}" method="POST">
-		    {% if pUserForm.gender.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.gender) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.gender, {'attr': {'placeholder': 'Civilité'}}) }}</div>
 
-		    {% if pUserForm.name.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.name) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.name, {'attr': {'placeholder': 'Nom'}}) }}</div>
+		<div id="boxInscriptionStep2">
+			{{ form_start(pUserForm, {'action': path('InscriptionStep2Check'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_errors(pUserForm) }}
 
-		    {% if pUserForm.firstname.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.firstname) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.firstname, {'attr': {'placeholder': 'Prénom'}}) }}</div>
+			    {{ form_row(pUserForm.gender) }}
+			    {{ form_row(pUserForm.name) }}
+			    {{ form_row(pUserForm.firstname) }}
+			    {{ form_row(pUserForm.birthday) }}
+			    {{ form_row(pUserForm.email) }}
+			    {{ form_row(pUserForm.newsletter) }}
 
-		    {% if pUserForm.birthday.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.birthday) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.birthday, {'attr': {'placeholder': 'Date de naissance jj/mm/aaaa'}}) }}</div>
+			    {{ form_row(pUserForm.actions) }}
+			{{ form_end(pUserForm) }}
+		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+		</div>
 
-		    {% if pUserForm.email.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.email) }}</div>
-			{% endif %}
-			{% for emailField in pUserForm.email %}
-		        {% if emailField.vars.errors|length %}
-					<div class="boxError">{{ form_errors(emailField) }}</div>
-		    	{% endif %}
-		    	{% if loop.index == 1 %}
-		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Email'}}) }}</div>
-		        {% else %}
-		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Confirmation d\'email'}}) }}</div>
-		        {% endif %}
-			{% endfor %}
-
-			<div id="withNewsletter">{{ form_widget(pUserForm.newsletter, {}) }}Je souhaite recevoir les news de Politizr.</div>
-
-			{{ form_rest(pUserForm) }}
-			<div class="form_mentions">Tous les champs sont obligatoires</div>
-			<div class="form_submit"><input type="submit" value="Je valide"></div>
-		</form>
 	</div>
 {% endblock main %}
 

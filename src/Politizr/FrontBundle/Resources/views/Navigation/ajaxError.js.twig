@@ -5,19 +5,19 @@
               statusCode: {
                 404: function() {
                   $('#ajaxLoader').hide();
-                  $('#notifErrorContent').html('Erreur 404: merci de recharger la page.');
-                  $('#notifError').show();
+                  $('.alert.alert-danger').html('Erreur 404: merci de recharger la page.');
+                  $('.alert.alert-danger').show();
                 },
                 500: function() {
                   $('#ajaxLoader').hide();
-                  $('#notifErrorContent').html('Erreur 500: merci de recharger la page.');
-                  $('#notifError').show();
+                  $('.alert.alert-danger').html('Erreur 500: merci de recharger la page.');
+                  $('#.alert.alert-danger').show();
                 }
               },            
               error: function(jqXHR, textStatus, errorThrown) {
                   $('#ajaxLoader').hide();
-                  $('#notifErrorContent').html('Erreur inconnue: merci de recharger la page.');
+                  $('.alert.alert-danger').html('Erreur inconnue: merci de recharger la page.');
                   console.log('textStatus - '+textStatus);
                   console.log('errorThrown - '+errorThrown);
-                  $('#notifError').show();
+                  $('.alert.alert-danger').show();
               },

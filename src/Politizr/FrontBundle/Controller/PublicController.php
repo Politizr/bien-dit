@@ -17,6 +17,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDCommentQuery;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
 
 /**
  *  Gestion du routing tout public
@@ -47,13 +48,13 @@ class PublicController extends Controller
         // *********************************** //
 
         // débats les plus populaires
-        $homeDebates = PDDebateQuery::create()->online()->popularity(10)->find();
+        $debates = PDDebateQuery::create()->online()->popularity(5)->find();
 
         // profils les plus populaires
-        $homeUsers = PUserQuery::create()->online()->popularity(10)->find();
+        $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
 
         // commentaires les plus populaires
-        $homeComments = PDDCommentQuery::create()->online()->last(10)->find();
+        $comments = PDDCommentQuery::create()->online()->last(10)->find();
 
         // débats locaux / adresse IP
         // $request = $this->get('request');
@@ -70,9 +71,9 @@ class PublicController extends Controller
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
-                'homeDebates' => $homeDebates,
-                'homeUsers' => $homeUsers,
-                'homeComments' => $homeComments,
+                'debates' => $debates,
+                'users' => $users,
+                'comments' => $comments,
                 // 'homeGeoDebates' => $homeGeoDebates
             ));
     }

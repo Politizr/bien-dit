@@ -9,89 +9,37 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
+	<div id="main" class="container">
 		<h1>Inscription Élu</h1>
-		<p>Vous disposez d'un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les autres élus sur Politizr.</p>
+		<p class="bg-info">Vous disposez d'un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les autres élus sur Politizr.</p>
 		<hr>
-		<p>Complétez le formulaire suivant</p>
-		{% if pUserForm.vars.errors|length %}
-			<div class="boxError">
-		    	{{ form_errors(pUserForm) }}
-		    </div>
-		{% endif %}
-		<form id="pUserForm" action="{{ path('InscriptionElectedCheck') }}" method="POST" enctype="multipart/form-data">
-			<h3>Civilité</h3>
-		    {% if pUserForm.gender.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.gender) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.gender, {'attr': {'placeholder': 'Civilité'}}) }}</div>
+		<div id="boxInscriptionElectedStep1">
+			{{ form_start(pUserForm, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
+			    {{ form_errors(pUserForm) }}
 
-		    {% if pUserForm.name.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.name) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.name, {'attr': {'placeholder': 'Nom'}}) }}</div>
+				<h3>Civilité</h3>
+			    {{ form_row(pUserForm.gender) }}
+			    {{ form_row(pUserForm.name) }}
+			    {{ form_row(pUserForm.firstname) }}
+			    {{ form_row(pUserForm.birthday) }}
+			    {{ form_row(pUserForm.email) }}
+			    {{ form_row(pUserForm.newsletter) }}
 
-		    {% if pUserForm.firstname.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.firstname) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.firstname, {'attr': {'placeholder': 'Prénom'}}) }}</div>
+				<h3>Mandats et justificatif</h3>
+			    {{ form_row(pUserForm.uploaded_supporting_document) }}
+			    {{ form_row(pUserForm.elective_mandates) }}
 
-		    {% if pUserForm.birthday.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.birthday) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.birthday, {'attr': {'placeholder': 'Date de naissance jj/mm/aaaa'}}) }}</div>
+				<h3>Identifiants Politizr</h3>
+			    {{ form_row(pUserForm.username) }}
+			    {{ form_row(pUserForm.plainPassword) }}
 
-		    {% if pUserForm.email.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.email) }}</div>
-			{% endif %}
-			{% for emailField in pUserForm.email %}
-		        {% if emailField.vars.errors|length %}
-					<div class="boxError">{{ form_errors(emailField) }}</div>
-		    	{% endif %}
-		    	{% if loop.index == 1 %}
-		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Email'}}) }}</div>
-		        {% else %}
-		        	<div>{{ form_widget(emailField, {'attr': {'placeholder': 'Confirmation d\'email'}}) }}</div>
-		        {% endif %}
-			{% endfor %}
-
-			<h3>Mandats et justificatif</h3>
-		    {% if pUserForm.uploaded_supporting_document.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.uploaded_supporting_document) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.uploaded_supporting_document, {'attr': {'placeholder': 'Scan pièce justificative'}}) }}</div>
-
-		    {% if pUserForm.elective_mandates.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.elective_mandates) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.elective_mandates, {'attr': {'placeholder': 'Liste des mandats actifs'}}) }}</div>
-
-			<h3>Identifiant Politizr</h3>
-		    {% if pUserForm.username.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(pUserForm.username) }}</div>
-			{% endif %}
-			<div>{{ form_widget(pUserForm.username, {'attr': {'placeholder': 'Identifiant'}}) }}</div>
-
-		    {% if pUserForm.plainPassword.vars.errors|length %}
-				<div class="boxError">{{ form_errors(plainPassword) }}</div>
-			{% endif %}
-			{% for passwordField in pUserForm.plainPassword %}
-		        {% if passwordField.vars.errors|length %}
-					<div class="boxError">{{ form_errors(passwordField) }}</div>
-		    	{% endif %}
-		    	{% if loop.index == 1 %}
-		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Mot de passe'}}) }}</div>
-		        {% else %}
-		        	<div>{{ form_widget(passwordField, {'attr': {'placeholder': 'Confirmation mot de passe'}}) }}</div>
-		        {% endif %}
-			{% endfor %}
-
-			<div id="withNewsletter">{{ form_widget(pUserForm.newsletter, {}) }}Je souhaite recevoir les news de Politizr.</div>
-
-			{{ form_rest(pUserForm) }}
-			<div class="form_mentions">Tous les champs sont obligatoires</div>
-			<div class="form_submit"><input type="submit" value="Je valide"></div>
-		</form>
+			    {{ form_row(pUserForm.actions) }}
+			{{ form_end(pUserForm) }}
+		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+		</div>
+		<hr>
+		<a class="btn btn-primary" href="{{ path('Inscription') }}">Retour à l'inscription citoyen</a>
+		<hr>
 	</div>
 {% endblock main %}
 

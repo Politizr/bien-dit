@@ -1,0 +1,22 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        $("div[action='userInfos']").hide();
+    });
+
+    // **************************** //
+    //      Fonctions simples
+    // **************************** //
+
+    // Plus d'infos
+    $("body").on("click", "div[action='userMoreInfo']", function() {
+        if ($(this).siblings("div[action='userInfos']").is(':visible')) {
+            $(this).siblings("div[action='userInfos']").slideUp();
+        } else {
+            $(this).siblings("div[action='userInfos']").slideDown();
+        }
+    });
+
+</script>

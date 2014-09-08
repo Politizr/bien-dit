@@ -8,22 +8,22 @@
 	// **************************** //
 	//      ACTIONS SIMPLES
 	// **************************** //
-	$("body").on("click", ".connectMe", function() {
-        $("#connexionBox").show();
-        $('#boxLogin').show();
-        $('#boxLostPassword').hide();
+	$("body").on("click", "#connectMe", function() {
+		if ($("#connexionBox").is(":visible")) {
+			$("#connexionBox").slideUp("slow");
+		} else {
+	        $("#connexionBox").slideDown("slow");
+	        $('#boxLogin').show();
+	        $('#boxLostPassword').hide();
+	    }
     });
 
-	$("body").on("click", "#closeConnectMe", function() {
-        $("#connexionBox").hide();
-    });
-
-	$("body").on("click", "#showLostPasswordBox", function() {
+	$("body").on("click", "#login_actions_lost_password", function() {
 		$('#boxLostPassword').show();
 		$('#boxLogin').hide();
     });
 
-	$("body").on("click", "#showLoginBox", function() {
+	$("body").on("click", "#lostPassword_actions_connect", function() {
 		$('#boxLostPassword').hide();
 		$('#boxLogin').show();
     });
@@ -32,7 +32,7 @@
 	//      POST
 	// **************************** //
 	// clic connexion
-	$("body").on("click", "#submitLogin", function() {
+	$("body").on("click", "#login_actions_save", function() {
 		$.ajax({
 		  	type: 'POST',
 		  	url: "{{ path('LoginCheck') }}",
@@ -42,8 +42,8 @@
 		  	success: function(data) {
 		    	if (data['error']) {
 		    	  	$('#ajaxLoader').hide();
-		    	  	$('#boxErrorLogin').html(data['error']);
-		    		$('#boxErrorLogin').show();
+		    	  	$('.alert.alert-danger').html(data['error']);
+		    		$('.alert.alert-danger').show();
 		    	} else {
 		    	  	// redirection
 		    	  	window.location = data['redirectUrl'];
@@ -53,7 +53,7 @@
 	});
 
 	// clic mot de passe oublié
-	$("body").on("click", "#submitLostPassword", function() {
+	$("body").on("click", "#lostPassword_actions_save", function() {
 		$.ajax({
 		  	type: 'POST',
 		  	url: "{{ path('LostPasswordCheck') }}",
@@ -63,16 +63,16 @@
 		  	success: function(data) {
 		    	if (data['error']) {
 		    	  	$('#ajaxLoader').hide();
-		    	  	$('#boxErrorLost').html(data['error']);
-		    		$('#boxErrorLost').show();
+		    	  	$('.alert.alert-danger').html(data['error']);
+		    		$('.alert.alert-danger').show();
 		    	} else {
 		    	  	$('#ajaxLoader').hide();
 
 		    	  	// fermeture overlay & notif
 		    	  	$("#connexionBox").hide();
 
-		    	  	$("#notifContent").html('Un nouveau mot de passe vient de vous être envoyé par email.');
-		    	  	$("#notif").show();
+		    	  	$(".alert.alert-success").html('Un nouveau mot de passe vient de vous être envoyé par email.');
+		    	  	$(".alert.alert-success").show();
 		    	}
 		    }
 		});

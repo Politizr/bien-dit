@@ -1,19 +1,20 @@
 {% extends 'PolitizrFrontBundle::layout.html.twig' %}
 
 {% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
+	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 4 } only %}
 {% endblock %}
 
 {% block main %}
-	<div id="main">
+	<div id="main" class="container">
 		<h1>Validation par nos services</h1>
 	    <div id="box_paiement">
 	        <h3>Récapitulatif paiement</h3>
-	        <p>succès / échec / en attente / etc.</p>
+	        <p class="bg-info">Merci de votre commande chez Politizr!</p>
 	        <h3>La suite</h3>
-	        <p>email de confirmation abonnement ok & vous pourrez vous connecter</p>
-	        <a href="{{ path('InscriptionElectedStep4Check') }}">Cliquez pour continuer</a>
-	    </div>			
+	        <p class="bg-info">Notre équipe va maintenant procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte. Vous recevrez un email dès que votre compte sera actif! Merci pour votre patience, et à bientôt pour les débats!</p>
+	        <a class="btn btn-success pull-right" href="{{ path('InscriptionElectedStep4Check') }}">Cliquez pour continuer</a>
+	    </div>
+	    <hr>
 	</div>
 {% endblock main %}
 

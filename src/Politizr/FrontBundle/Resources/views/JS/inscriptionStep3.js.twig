@@ -1,4 +1,6 @@
 <script>
+    // TODO > refonte check gestion dans l'admin, code à simplifier et à mutualiser + bootstrap
+
     // **************************** //
     //      Gestion des accents
     // **************************** //
@@ -29,8 +31,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     var availableGeoTags = [];
                     $.each( data['pTags'], function( key, val ) {
@@ -105,8 +107,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     var availableThemeTags = [];
                     $.each( data['pTags'], function( key, val ) {
@@ -156,8 +158,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     console.log('success');
 
@@ -176,8 +178,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     console.log('success');
 
@@ -196,8 +198,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     console.log('success');
 
@@ -228,8 +230,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     console.log('success');
 
@@ -254,8 +256,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     $('#ajaxLoader').hide();
 
@@ -287,8 +289,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#notifErrorContent').html(data['error']);
-                    $('#notifError').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     $('#ajaxLoader').hide();
 

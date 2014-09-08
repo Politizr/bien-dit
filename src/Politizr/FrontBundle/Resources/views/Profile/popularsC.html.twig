@@ -1,0 +1,44 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+
+{% block main %}
+	<div id="main" class="container">
+		<div id="debates">
+			<h2>Débats les plus suivis</h2>
+			<div>
+				{% for debate in debates %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
+				{% endfor %}
+			</div>
+		</div>
+		<hr>
+		<div id="users">
+			<h2>Élus les plus suivis</h2>
+			<div>
+				{% for user in users %}
+					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
+					<hr>
+				{% endfor %}
+			</div>
+		</div>
+		<hr>
+		<div id="comments">
+			<h2>Les derniers commentaires</h2>
+			<div>
+				{% for comment in comments %}
+					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'debateLink': true } %}
+				{% endfor %}
+			</div>
+		</div>	
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:suggestionsC.js.twig' %}
+    
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+{% endblock javascriptFooter %}

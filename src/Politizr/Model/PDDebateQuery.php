@@ -23,6 +23,7 @@ class PDDebateQuery extends BasePDDebateQuery
 	/**
 	 *	Filtre les objets par popularité
 	 *	TODO requête "populaire" à préciser et à affiner
+	 *		> + de followers?
 	 *
 	 * @param 	$limit 	integer
 	 *
@@ -30,6 +31,15 @@ class PDDebateQuery extends BasePDDebateQuery
 	 */
 	public function popularity($limit = 10) {
 		return $this->setLimit($limit);
+
+		// followers
+		return $this->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
+				->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
+				->groupBy('Id')
+				->setLimit($limit)
+				->orderBy('NbFollowers', \Criteria::DESC)
+				;
+
 	}
 
 	/**

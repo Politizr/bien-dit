@@ -102,16 +102,30 @@ InscriptionElectedStep4Check:
 ################################################################################
 #				ROUTING DOCUMENT
 ################################################################################
+DebateFeed:
+    pattern:  /{id}/debat/fil/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
+    requirements:
+        _method:        GET
+        id:             \d+
+
 DebateDetail:
-    pattern:  /{id}/debat/{slug}
+    pattern:  /{id}/debat/detail/{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
     requirements:
         _method:        GET
         id:             \d+
 
-AuthorDetail:
+ReactionDetail:
+    pattern:  /{id}/reaction/detail/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+UserDetail:
     pattern:  /{id}/auteur/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:authorDetail }
+    defaults: { _controller: PolitizrFrontBundle:Document:userDetail }
     requirements:
         _method:        GET
         id:             \d+
@@ -121,12 +135,19 @@ AuthorDetail:
 #               ROUTING CITOYEN
 ################################################################################
 HomepageC:
-    pattern:  /citoyen
+    pattern:  /citoyen-{page}
     defaults: { _controller: PolitizrFrontBundle:Profile:homepageC }
+    requirements:
+        _method:        GET
+        page:           \d+
 
 SuggestionsC:
     pattern:  /citoyen/suggestions
     defaults: { _controller: PolitizrFrontBundle:Profile:suggestionsC }
+
+PopularsC:
+    pattern:  /citoyen/populaires
+    defaults: { _controller: PolitizrFrontBundle:Profile:popularsC }
 
 
 ################################################################################

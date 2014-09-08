@@ -45,16 +45,36 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
-    use_controller: true
-    #bundles:        [ ]
-    #java: /usr/bin/java
     filters:
-        cssrewrite: ~
-        #closure:
-        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
-        #yui_css:
-        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        cssrewrite:         ~
+        sass:
+            bin:            /usr/local/bin/sass
+            apply_to:       "\.scss$"
+        less:
+            node:           /usr/bin/nodejs
+            node_paths:     [/usr/local/lib/node_modules]
+            apply_to:       "\.less$"
+
+# Twitter Bootstrap config
+braincrafted_bootstrap:
+    output_dir:             bootstrap
+    assets_dir:             %kernel.root_dir%/../vendor/twbs/bootstrap
+    jquery_path:            %kernel.root_dir%/../web/bundles/politizrfront/js/jquery-1.11.1.min.js
+    less_filter:            sass # "less", "lessphp", "sass" or "none"
+    fonts_dir:              %kernel.root_dir%/../web/fonts
+    icon_prefix:            fa
+    fontawesome_dir:        %kernel.root_dir%/../vendor/fortawesome/font-awesome
+    auto_configure:
+        assetic:            true
+        twig:               true
+        knp_menu:           true
+        knp_paginator:      true
+    customize:
+        variables_file:     ~
+        bootstrap_output:   %kernel.root_dir%/Resources/less/bootstrap.less
+        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -215,14 +235,22 @@ liip_imagine:
                 relative_resize:  { widen: 150 }
 
         # front
+        debate_header:
+            quality:              100
+            filters:
+                thumbnail:         { size: [640, 480], mode: outbound }
         user_bio_mini_thumb:
             quality:              100
             filters:
-                thumbnail:         { size: [50, 50], mode: outbound }
+                thumbnail:         { size: [100, 100], mode: outbound }
         user_bio_thumb:
             quality:              100
             filters:
                 thumbnail:         { size: [150, 150], mode: outbound }
+        user_mini_thumb:
+            quality:              100
+            filters:
+                thumbnail:         { size: [50, 50], mode: outbound }
         facebook_share:
             quality:              100
             filters:
@@ -240,7 +268,7 @@ bazinga_faker:
             number:                     50
             custom_formatters:
                 PUTypeId:               { method: numberBetween, parameters: [ 1, 2 ] }
-                PUStatusId:             { method: numberBetween, parameters: [ 1, 3 ] }
+                PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
@@ -273,7 +301,7 @@ bazinga_faker:
 
 
         Politizr\Model\PUQualification:
-            number:                     150
+            number:                     300
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 20 ] }
                 Description:            { method: paragraphs, parameters: [ 4, true ] }
@@ -342,7 +370,7 @@ bazinga_faker:
         Politizr\Model\PDDebate:
             number:                     50
             custom_formatters:
-                Title:                  { method: realText, parameters: [ 150 ] }
+                Title:                  { method: realText, parameters: [ 75 ] }
 
                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
@@ -371,7 +399,7 @@ bazinga_faker:
             custom_formatters:
                 PDReactionId:           { method: null }
 
-                Title:                  { method: realText, parameters: [ 150 ] }
+                Title:                  { method: realText, parameters: [ 60 ] }
 
                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }

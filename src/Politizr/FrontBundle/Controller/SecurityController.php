@@ -496,7 +496,7 @@ class SecurityController extends Controller {
         $this->doPublicConnection($pUser);
 
         // redirection
-        $url = $this->container->get('router')->generate('HomepageC');
+        $url = $this->container->get('router')->generate('HomepageC', array('page' => 1));
         return $this->redirect($url);
     }
 
@@ -638,12 +638,18 @@ class SecurityController extends Controller {
         $subscriptionForm = $this->createFormBuilder()
             ->add('p_o_subscription', 'model', array(
                 'required' => true,
+                'label' => 'Formule',
                 'class' => 'Politizr\\Model\\POSubscription',
                 'property' => 'titleAndPrice',
                 'multiple' => false,
                 'expanded' => true,
-                'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.'))
+                'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.')),
             ))
+            ->add('actions', 'form_actions', [
+                'buttons' => [
+                    'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
+                ]
+            ])            
             ->getForm();
 
         // *********************************** //
@@ -674,12 +680,18 @@ class SecurityController extends Controller {
         $subscriptionForm = $this->createFormBuilder()
             ->add('p_o_subscription', 'model', array(
                 'required' => true,
+                'label' => 'Formule',
                 'class' => 'Politizr\\Model\\POSubscription',
                 'property' => 'titleAndPrice',
                 'multiple' => false,
                 'expanded' => true,
-                'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.'))
+                'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.')),
             ))
+            ->add('actions', 'form_actions', [
+                'buttons' => [
+                    'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
+                ]
+            ])            
             ->getForm();
         
         // *********************************** //
@@ -696,6 +708,7 @@ class SecurityController extends Controller {
                 // TODO + de contrôle sur $pOSubscription?
 
                 // Mise en session de la formule choisie
+                // TODO normalisation des variables session type politizr/order/...
                 $this->get('session')->set('pOSubscription', $pOSubscription->getId());
 
                 // redirection
@@ -712,7 +725,7 @@ class SecurityController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Public:inscriptionElectedStep2.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', array(
                         'subscriptionForm' => $subscriptionForm->createView()
             ));
     }
@@ -754,7 +767,7 @@ class SecurityController extends Controller {
         $logger->info('*** inscriptionElectedStep4Action');
 
         // *********************************** //
-        //      Formulaire
+        //      Gestion user / order
         // *********************************** //
         $pUser = $this->getUser();
 
@@ -764,6 +777,7 @@ class SecurityController extends Controller {
         // MAJ commande
         $pOrder = POrderQuery::create()->findPk($pOrderId);
         if (!$pOrder) {
+            // TODO > redirection plutôt qu'exception (gestion reload de la page) ou refonte en 2 actions pour éviter le pb
             throw new \Exception('POrder id '.$pOrderId.' not found.');
         }
 
@@ -891,6 +905,8 @@ class SecurityController extends Controller {
 
             // MAJ objet
             $pUser->setEnabled(true);
+            $pUser->setPUStatusId(PUStatus::STATUS_ACTIV);
+            $pUser->setPUTypeId(PUType::TYPE_CITOYEN);
             $pUser->setLastLogin(new \DateTime());
 
             // MAJ droits
@@ -1063,7 +1079,7 @@ class SecurityController extends Controller {
             $pUser->save();
 
             if ($pUser->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('HomepageC');
+                $redirectUrl = $this->generateUrl('HomepageC', array('page' => 1));
             } elseif($pUser->hasRole('ROLE_ELECTED')) {
                 if ($pUser->getPUStatusId() == PUStatus::STATUS_ACTIV) {
                     $redirectUrl = $this->generateUrl('HomepageE');

@@ -10,12 +10,19 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\PropelAdapter;
+
+
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
+use Politizr\Model\PDDCommentQuery;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
@@ -45,7 +52,7 @@ class ProfileController extends Controller {
     /**
      *  Accueil
      */
-    public function homepageCAction()
+    public function homepageCAction($page)
     {
         $logger = $this->get('logger');
         $logger->info('*** homepageCAction');
@@ -57,15 +64,21 @@ class ProfileController extends Controller {
         //      Récupération objets vue
         // *********************************** //
 
-        // Récupération réactions associées aux débats suivis
-        $reactions = $pUser->getReactionsFollowedDebates();
+        // Récupération liste des débats ordre publication décroissante
+        // TODO + récupérer les débats rédigés par les puser suivis
+        // TODO + gestion les débats correspondants aux tags suivis? notifs?
+        // TODO req debats + réactions en 1 fois
+        // TODO MAJ vers le KnpPaginatorBundle https://github.com/KnpLabs/KnpPaginatorBundle
+        $maxPerPage = 10;
+        $query = PDDebateQuery::create()->filterByOnline(true)->orderByPublishedAt(\Criteria::DESC);
+        $pageDebates = $this->preparePagination($query, $maxPerPage);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Profile:homepageC.html.twig', array(
-                    'reactions' => $reactions
+                    'pageDebates' => $pageDebates
             ));
     }
 
@@ -84,9 +97,16 @@ class ProfileController extends Controller {
         //      Récupération objets vue
         // *********************************** //
 
+        //      Suggestions de documents
+
         // Récupération listing débat "match" tags géo
         // TODO: algo "match" à définir
-        $debatesGeo = $pUser->getDebatesTag(PTTagType::TYPE_GEO);
+        // TODO pagintion
+        $debatesGeo = $pUser->getTaggedDebates(PTTagType::TYPE_GEO);
+        $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
+
+        //      Suggestions d'utilisateurs élus
+        $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, PUType::TYPE_QUALIFIE);
 
 
         // *********************************** //
@@ -94,7 +114,70 @@ class ProfileController extends Controller {
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Profile:suggestionsC.html.twig', array(
-                    'debatesGeo' => $debatesGeo
+                    'debatesGeo' => $debatesGeo,
+                    'debatesTheme' => $debatesTheme,
+                    'usersGeo' => $usersGeo
+            ));
+    }
+
+    /**
+     *  Populaires
+     */
+    public function popularsCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** popularsCAction');
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // débats les plus populaires
+        $debates = PDDebateQuery::create()->online()->popularity(5)->find();
+
+        // profils les plus populaires
+        $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
+
+        // commentaires les plus populaires
+        $comments = PDDCommentQuery::create()->online()->last(10)->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:popularsC.html.twig', array(
+                'debates' => $debates,
+                'users' => $users,
+                'comments' => $comments,
+            ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                                      ÉLU                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     *  Accueil
+     */
+    public function homepageEAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** homepageEAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:homepageE.html.twig', array(
+                    'pageDebates' => $pageDebates
             ));
     }
 
@@ -571,4 +654,33 @@ class ProfileController extends Controller {
         return $response;
     }
 
+
+    /* ######################################################################################################## */
+    /*                                                  FONCTIONS PRIVÉES                                             */
+    /* ######################################################################################################## */
+
+
+    /**
+     * 
+     * @param type $query
+     * @return \Pagerfanta\Pagerfanta
+     * @throws type
+     */
+    private function preparePagination($query, $maxPerPage = 5) {
+        $adapter = new PropelAdapter($query);
+        $pagerfanta = new Pagerfanta($adapter);
+
+        try {
+            $pagerfanta->setMaxPerPage($maxPerPage)->setCurrentPage($this->getRequest()->get('page'));
+        } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
+            throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
+        } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
+            throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
+        } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
+            throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
+        }
+        
+        return $pagerfanta;
+    }
+    
 }

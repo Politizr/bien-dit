@@ -1,0 +1,41 @@
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': pUser, 'full': true } only %}
+		{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
+			<div id="authorDebatesBlock">
+				<h3>Liste des débats rédigés</h3>
+				{% for debate in debates %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': false } %}
+				{% else %}
+					<div id="noResult">
+						Aucun débat pour le moment
+					</div>
+				{% endfor %}
+			</div>
+			<div id="authorReactionsBlock">
+				<h3>Liste des réactions rédigées</h3>
+				{% for reaction in reactions %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': 'PDReaction', 'withAuthor': false } %}
+				{% else %}
+					<div id="noResult">
+						Aucune réaction pour le moment
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

@@ -4,8 +4,9 @@
     // **************************** //
 
     // Suivre
-    $("body").on("click", ".follow", function(e) {
-        console.log('*** click .follow');
+    // 'a[data-spinner="true"]'
+    $("body").on("click", "a[action='follow']", function(e) {
+        console.log('*** click follow');
         
         e.preventDefault();
 
@@ -19,8 +20,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#boxErrorLogin').html(data['error']);
-                    $('#boxErrorLogin').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     $(this).html(data['html']);
                 }
@@ -30,8 +31,8 @@
     });
 
     // Ne plus suivre
-    $("body").on("click", ".unfollow", function(e) {
-        console.log('*** click .unfollow');
+    $("body").on("click", "a[action='unfollow']", function(e) {
+        console.log('*** click unfollow');
         
         e.preventDefault();
 
@@ -45,8 +46,8 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajaxLoader').hide();
-                    $('#boxErrorLogin').html(data['error']);
-                    $('#boxErrorLogin').show();
+                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert.alert-danger').show();
                 } else {
                     $(this).html(data['html']);
                 }

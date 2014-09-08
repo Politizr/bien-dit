@@ -1,10 +1,31 @@
-<div id="steps">
-	Etapes de l'inscription
-	<ol>
-		<li>Votre identité</li>
-		<li>Choix de la formule</li>
-		<li>Paiement</li>
-		<li>Validation par nos services</li>
-	</ol>
+<div class="container">
+	<div class="row text-center">
+		<div class="col-sm-3">
+			<div class="label label-success">1 - Identification</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="label label-success">2 - Choix de la formule</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="label label-success">3 - Paiement</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="label label-success">4 - Validation par nos services</div>
+		</div>
+	</div>
+	<hr>	
+	<div class="progress">
+		{% set progressbar = 20 %}
+		{% if step == 2 %}
+			{% set progressbar = 40 %}
+		{% elseif step == 3 %}
+			{% set progressbar = 60 %}
+		{% elseif step == 4 %}
+			{% set progressbar = 80 %}
+		{% endif %}
+
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{ progressbar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressbar }}%;">
+		    {{ progressbar }}%
+		</div>
+	</div>
 </div>
-<hr>

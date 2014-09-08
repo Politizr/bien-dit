@@ -2,15 +2,54 @@
 
 
 {% block main %}
-	<h1>Suggestions</h1>
-	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
-	<h2>Des débats tags géo</h2>
-	{% for debate in debatesGeo %}
-		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate } %}
-	{% else %}
-		Aucun débat en cours ne correspond à vos préférences tag géo<br/>
-		> Ajouter des tags géo
-	{% endfor %}
+	<div id="main" class="container">
+		<h3>Suggestions de débats</h3>
+		<h4 class="bg-info">Liste de débat possédant au moins un des tags géographiques suivis</h4>
+		<div class="userTags">
+			<div class="row text-center">
+				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+			</div>
+		</div>
+		<hr>
+		{% for debate in debatesGeo %}
+			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
+			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
+		{% else %}
+			Aucun débat ne correspond à vos préférences tag géo<br/>
+			{# TODO lien ajouter des tags #}
+			> Ajouter des tags géo
+		{% endfor %}
+		<h4 class="bg-info">Liste de débat possédant au moins un des tags thème suivis</h4>
+		<div class="userTags">
+			<div class="row text-center">
+				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+			</div>
+		</div>
+		<hr>
+		{% for debate in debatesTheme %}
+			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
+			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
+		{% else %}
+			Aucun débat ne correspond à vos préférences tag theme<br/>
+			{# TODO lien ajouter des tags #}
+			> Ajouter des tags theme
+		{% endfor %}
+		<h3>Suggestions de personnalités</h3>
+		<h4 class="bg-info">Liste d'élus possédant au moins un des tags géographiques suivis</h4>
+		<div class="userTags">
+			<div class="row text-center">
+				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+			</div>
+		</div>
+		<hr>
+		{% for user in usersGeo %}
+			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
+		{% else %}
+			Aucun élu ne correspond à vos préférences tag géo<br/>
+			{# TODO lien ajouter des tags #}
+			> Ajouter des tags géo
+		{% endfor %}
+	</div>
 {% endblock main %}
 
 
@@ -18,7 +57,7 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:suggestionsC.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 {% endblock javascriptFooter %}

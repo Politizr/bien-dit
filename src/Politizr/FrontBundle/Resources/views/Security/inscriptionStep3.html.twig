@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
-		<h1>Inscription - Etape 3 / 3</h1>
+	<div id="main" class="container">
 		<h2>Taggez votre profil</h2>
 		<div id="myProfile">
 			<div id="profileChooseGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUTaggedTPTag') }}">
@@ -28,12 +27,12 @@
 				<div class="help">Indiquez les tags "thématiques" qui vous intéressent - si le thème n'est pas présent dans la liste, cliquez sur 'Ajouter' une fois saisie.</div>
 				<label>Thèmes suivis</label>
 				<input type="text" id="followChooseTheme" /><input type="hidden" id="followChooseThemeID" />
-				<a id="addNewTag">Ajouter</a>
+				<a id="addNewTag" class="btn btn-primary">Ajouter</a>
 			</div>
 			<div id="followSelectedThemeZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}"></div>
 		</div>
 		<hr>
-		<a href="{{ path('InscriptionStep3Check') }}">Finaliser mon inscription</a>
+		<a class="btn btn-primary pull-right" href="{{ path('InscriptionStep3Check') }}">Finaliser mon inscription</a>
 	</div>
 {% endblock main %}
 

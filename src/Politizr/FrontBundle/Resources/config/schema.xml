@@ -403,7 +403,7 @@
         <column name="p_user_id" type="integer" required="false" />
 
         <column name="file_name" type="varchar" size="150" />
-        <column name="title" type="varchar" size="150" />
+        <column name="title" type="varchar" size="100" />
 
         <column name="summary" type="longvarchar" />
         <column name="description" type="longvarchar" />
@@ -458,7 +458,7 @@
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="p_d_reaction_id" type="integer" required="false" />
 
-        <column name="title" type="varchar" size="150" />
+        <column name="title" type="varchar" size="100" />
 
         <column name="summary" type="longvarchar" />
         <column name="description" type="longvarchar" />

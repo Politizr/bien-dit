@@ -222,6 +222,8 @@ class PUser extends BasePUser implements UserInterface
         return serialize(
             array(
                 $this->id,
+                $this->p_u_type_id,
+                $this->p_u_status_id,
                 $this->username,
                 $this->name,
                 $this->firstname,
@@ -252,6 +254,8 @@ class PUser extends BasePUser implements UserInterface
 
         list(
                 $this->id,
+                $this->p_u_type_id,
+                $this->p_u_status_id,
                 $this->username,
                 $this->name,
                 $this->firstname,
@@ -331,6 +335,8 @@ class PUser extends BasePUser implements UserInterface
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
+        // /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
+        // TODO sortir la contrainte "unique email" vers PUserStep2Type
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',
             'message' => 'Cette adresse email existe déja.',
@@ -524,8 +530,6 @@ class PUser extends BasePUser implements UserInterface
         return count($pUsers);
     }
 
-
-
     // *****************************    QUALIFICATION    ************************* //
 
     /**
@@ -570,9 +574,28 @@ class PUser extends BasePUser implements UserInterface
                         ->filterByPTTagTypeId($ptTagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
+                    ->setDistinct()
                     ;
 
         return parent::getPuTaggedTPTags($query);
+    }
+
+    /**
+     * Renvoie les tags suivis par l'utilisateur
+     *
+     *
+     * @return PTag (collection)
+     */
+    public function getFollowPTags($ptTagTypeId = null, $online = true) {
+        $query = PTagQuery::create()
+                    ->_if($ptTagTypeId)
+                        ->filterByPTTagTypeId($ptTagTypeId)
+                    ->_endif()
+                    ->filterByOnline($online)
+                    ->setDistinct()
+                    ;
+
+        return parent::getPuFollowTPTags($query);
     }
 
     // *****************************    DOCUMENTS > DEBATS, REACTIONS    ************************* //
@@ -601,67 +624,6 @@ class PUser extends BasePUser implements UserInterface
                     ->orderByCreatedAt(\Criteria::DESC);
 
         return parent::getPDReactions($query);
-    }
-
-
-    /**
-     *  Renvoie la liste des réactions associées aux débats suivis par l'utilisateur
-     *  triée de la plus récente à la plus ancienne.
-     *
-     * @return PDReaction (collection)
-     */
-    public function getReactionsFollowedDebates() {
-        // Récupère la liste des IDs des débats suivis
-        $followedIds = PUFollowDDQuery::create()
-                            ->select('PDDebateId')
-                            ->filterByPUserId($this->getId())
-                            ->find();
-
-        // Récupère les réactions
-        $pDReactions = PDReactionQuery::create()
-            ->filterByPDDebateId($followedIds->getData())
-            ->online()
-            ->orderByPublishedAt(\Criteria::DESC)
-            ->find();
-
-        return $pDReactions;
-    }
-
-    /**
-     * Renvoie un ensemble de débats correspondant aux tags du type spécifié en argument
-     *
-     * TODO: algo à affiner > idée de ne conserver que les plus pertinents > dépend du nombre de tags et du nombre de résultats
-     *
-     * @param $typeId integer type de tag PTTagType id
-     * @param $notFollowed boolean  renvoie uniquement les débats non suivis
-     *
-     * @return PDDebate (collection)
-     */
-    public function getDebatesTag($typeId, $notFollowed = true) {
-        // Récupère la liste des IDs des tags suivis
-        $followedIds = PTagQuery::create()
-                            ->select('Id')
-                            ->filterByPTTagTypeId($typeId)
-                            ->usePuFollowTPTagQuery()
-                                ->filterByPUserId($this->getId())
-                            ->endUse()
-                            ->setDistinct()
-                            ->find();
-
-        // Récupère les débats
-        $pDDebates = PDDebateQuery::create()
-                        ->usePddTaggedTPDDebateQuery()
-                            ->filterByPTagId($followedIds->getData())
-                        ->endUse()
-                        ->online()
-                        ->popularity()
-                        ->_if($notFollowed)
-                            ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $this->getId())
-                        ->_endif()
-                        ->setDistinct()
-                        ->find();
-
-        return $pDDebates;
     }
 
     // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //
@@ -756,6 +718,85 @@ class PUser extends BasePUser implements UserInterface
 
         return $result[0]['score'];
     }
+
+
+    // *****************************    SUGGESTIONS    ************************* //
+
+    /**
+     * Renvoie un ensemble de débats correspondant aux tags du type spécifié en argument
+     *
+     * TODO: algo à affiner > idée de ne conserver que les plus pertinents > dépend du nombre de tags et du nombre de résultats
+     *
+     * @param $typeId integer type de tag PTTagType id
+     * @param $notFollowed boolean  renvoie uniquement les débats non suivis
+     *
+     * @return PDDebate (collection)
+     */
+    public function getTaggedDebates($typeId, $notFollowed = true) {
+        // Récupère la liste des IDs des tags suivis
+        $followedIds = PTagQuery::create()
+                            ->select('Id')
+                            ->filterByPTTagTypeId($typeId)
+                            ->usePuFollowTPTagQuery()
+                                ->filterByPUserId($this->getId())
+                            ->endUse()
+                            ->setDistinct()
+                            ->find();
+
+        // Récupère les débats
+        $pDDebates = PDDebateQuery::create()
+                        ->usePddTaggedTPDDebateQuery()
+                            ->filterByPTagId($followedIds->getData())
+                        ->endUse()
+                        ->_if($notFollowed)
+                            ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $this->getId())
+                        ->_endif()
+                        ->online()
+                        ->popularity()
+                        ->setDistinct()
+                        ->find();
+
+        return $pDDebates;
+    }
+
+
+    /**
+     * Renvoie les users taggés avec (au moins) un tag suivi par le user courant
+     *
+     *
+     * @return PUser (collection)
+     */
+    public function getTaggedPUsers($ptTagTypeId = null, $puType = null, $notFollowed = true) {
+        $followedTagsId = PTagQuery::create()
+                        ->select('Id')
+                        ->_if($ptTagTypeId)
+                            ->filterByPTTagTypeId($ptTagTypeId)
+                        ->_endif()
+                        ->filterByOnline(true)
+                        ->filterByPuFollowTPUser($this)
+                        ->find();
+
+        // $followedTagsId = $this->getFollowPTags($ptTagTypeId)->toArray();
+
+        $pUsers = PUserQuery::create()
+                        ->usePuTaggedTPUserQuery()
+                            ->filterByPTagId($followedTagsId->getData())
+                        ->endUse()
+                        ->_if($notFollowed)
+                            ->where('p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ?)', $this->getId())
+                        ->_endif()
+                        ->_if($puType)
+                            ->filterByPUTypeId($puType)
+                        ->_endif()
+                        ->filterById($this->getId(), \Criteria::NOT_EQUAL)
+                        ->online()
+                        ->popularity()
+                        ->setDistinct()
+                        ->find();
+
+        return $pUsers;
+    }
+    
 
 
 }

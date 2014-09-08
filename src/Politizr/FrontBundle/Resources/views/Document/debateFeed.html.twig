@@ -1,0 +1,39 @@
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		{# include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' #}
+		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
+		<div class="row text-center">
+			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">Détail du débat</a>
+		</div>
+		<hr>
+		<div class="debateReactionsFeed">
+			{% for reaction in debate.reactions %}
+				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'pdReaction': reaction, 'full': false } only %}
+			{% else %}
+				<div id="noResult">
+					Aucune réaction pour le moment
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
+    
+    {# include 'PolitizrFrontBundle:JS:overlayZen.js.twig' #}
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

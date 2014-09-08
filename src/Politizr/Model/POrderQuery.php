@@ -85,7 +85,10 @@ class POrderQuery extends BasePOrderQuery
     	$pOrder->setName($pUser->getName());
     	$pOrder->setPhone($pUser->getPhone());
     	$pOrder->setEmail($pUser->getEmail());
-    	$pOrder->setElectiveMandates($pUser->getElectiveMandates());
+
+        // TODO champs à MAJ
+        $pOrder->setElectiveMandates(null);
+    	$pOrder->setSupportingDocument(null);
 
     	$pOrder->save();
 

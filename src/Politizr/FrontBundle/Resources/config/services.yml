@@ -14,8 +14,8 @@ services:
         arguments: 							[ @service_container ]
 
     # Extension twig
-    politzr.twig.link_extension:
-        class: 								Politizr\FrontBundle\Twig\PLinkExtension
+    politzr.twig.politizr_extension:
+        class: 								Politizr\FrontBundle\Twig\PolitizrExtension
         arguments: 							[ @service_container ]
         tags:
                                             - { name: twig.extension }

@@ -12,14 +12,9 @@
 {% endblock metaopengraph %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
 {% endblock stylesheets %}
-
-{% block javascriptHeader %}
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.11.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui-1.10.4.custom.min.js') }}"></script>
-{% endblock javascriptHeader %}
 
 {% block genericBoxes %}      
     <!-- overlay ajax generique -->
@@ -39,7 +34,7 @@
 {% endblock genericBoxes %}
 
 {% block header %}
-	{% include 'PolitizrFrontBundle:Navigation:headerC.html.twig' %}
+	{% include 'PolitizrFrontBundle:Navigation:headerE.html.twig' %}
 {% endblock %}
 
 {% block main %}
@@ -50,6 +45,7 @@
 {% endblock %}
 
 {% block javascriptFooter %}
+    {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:share.js.twig' %}
 {% endblock javascriptFooter %}

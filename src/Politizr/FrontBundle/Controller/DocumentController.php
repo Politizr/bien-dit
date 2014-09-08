@@ -37,6 +37,35 @@ class DocumentController extends Controller {
     /* ######################################################################################################## */
 
     /**
+     * Fil débat
+     */
+    public function debateFeedAction($id, $slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** debateFeedAction');
+        $logger->info('$id = '.print_r($id, true));
+        $logger->info('$slug = '.print_r($slug, true));
+
+        // *********************************** //
+        //      Récupération objet
+        // *********************************** //
+        $debate = PDDebateQuery::create()->findPk($id);
+        if (!$debate) {
+            throw new NotFoundHttpException('pDDebate n°'.$id.' not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('pDDebate n°'.$id.' not online.');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:Document:debateFeed.html.twig', array(
+                    'debate' => $debate
+        ));
+    }
+
+    /**
      * Détail débat
      */
     public function debateDetailAction($id, $slug)
@@ -66,12 +95,50 @@ class DocumentController extends Controller {
     }
 
     /**
-     * Détail auteur
+     * Détail réaction
      */
-    public function authorDetailAction($id, $slug)
+    public function reactionDetailAction($id, $slug)
     {
         $logger = $this->get('logger');
-        $logger->info('*** authorDetailAction');
+        $logger->info('*** reactionDetailAction');
+        $logger->info('$id = '.print_r($id, true));
+        $logger->info('$slug = '.print_r($slug, true));
+
+        // *********************************** //
+        //      Récupération objet
+        // *********************************** //
+        $reaction = PDReactionQuery::create()->findPk($id);
+        if (!$reaction) {
+            throw new NotFoundHttpException('PDReaction n°'.$id.' not found.');
+        }
+        if (!$reaction->getOnline()) {
+            throw new NotFoundHttpException('PDReaction n°'.$id.' not online.');
+        }
+
+        $debate = $reaction ->getDebate();
+        if (!$debate) {
+            throw new NotFoundHttpException('PDDebate n°'.$id.' not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('PDDebate n°'.$id.' not online.');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
+                    'reaction' => $reaction,
+                    'debate' => $debate
+        ));
+    }
+
+    /**
+     * Détail auteur
+     */
+    public function userDetailAction($id, $slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** userDetailAction');
         $logger->info('$id = '.print_r($id, true));
         $logger->info('$slug = '.print_r($slug, true));
 
@@ -99,7 +166,7 @@ class DocumentController extends Controller {
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:Document:authorDetail.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Document:userDetail.html.twig', array(
                     'pUser' => $pUser,
                     'debates' => $debates,
                     'reactions' => $reactions
@@ -203,7 +270,7 @@ class DocumentController extends Controller {
                     $pUFollowDD->setPDDebateId($objectId);
 
                     $pUFollowDD->save();
-                } elseif ($objectType = 'puser') {
+                } elseif ($objectType = 'user') {
                     // TODO > contrôle élément non existant? / a priori exception dans ce cas
 
                     // Insertion nouvel élément
@@ -279,7 +346,7 @@ class DocumentController extends Controller {
                     foreach ($pUFollowDDList as $pUFollowDD) {
                         $pUFollowDD->delete();
                     }
-                } elseif ($objectType = 'puser') {
+                } elseif ($objectType = 'user') {
                     // Suppression élément
                     $pUFollowUList = PUFollowUQuery::create()
                                     ->filterByPUserId($objectId)

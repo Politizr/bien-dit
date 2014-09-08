@@ -30,6 +30,13 @@ class LostPasswordType extends AbstractType {
                 new NotBlank(array('message' => 'Champ obligatoire.')), 
                 new Email(array('message' => 'L\'email n\'a pas un format valide.')))
             ));
+
+        $builder->add('actions', 'form_actions', [
+            'buttons' => [
+                'save' => ['type' => 'button', 'options' => ['label' => 'Réinitialisation mot de passe', 'attr' => [ 'class' => 'btn-success' ] ]],
+                'connect' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-primary' ] ]],
+                ]
+            ]);
     }
 
     /**

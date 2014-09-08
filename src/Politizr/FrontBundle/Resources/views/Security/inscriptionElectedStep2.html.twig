@@ -5,25 +5,20 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main">
+	<div id="main" class="container">
 		<h1>Choix de la formule</h1>
-		<p>Complétez le formulaire suivant</p>
-		{% if subscriptionForm.vars.errors|length %}
-			<div class="boxError">
-		    	{{ form_errors(subscriptionForm) }}
-		    </div>
-		{% endif %}
-		<form id="subscriptionForm" action="{{ path('InscriptionElectedStep2Check') }}" method="POST">
-			<h3>Formule</h3>
-		    {% if subscriptionForm.p_o_subscription.vars.errors|length %}
-				<div class="fieldError">{{ form_errors(subscriptionForm.p_o_subscription) }}</div>
-			{% endif %}
-			<div>{{ form_widget(subscriptionForm.p_o_subscription) }}</div>
+		<p class="bg-info">Choisissez la formule la plus adaptée à vos besoins.</p>
+		<div id="boxInscriptionElectedStep2">
+			{{ form_start(subscriptionForm, {'action': path('InscriptionElectedStep2Check'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_errors(subscriptionForm) }}
 
-			
-			{{ form_rest(subscriptionForm) }}
-			<div class="form_submit"><input type="submit" value="Je valide"></div>
-		</form>
+			    {{ form_row(subscriptionForm.p_o_subscription) }}
+
+			    {{ form_row(subscriptionForm.actions) }}
+			{{ form_end(subscriptionForm) }}
+		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+		</div>
+		<hr>
 	</div>
 {% endblock main %}
 

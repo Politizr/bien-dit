@@ -38,6 +38,13 @@ class LoginType extends AbstractType {
             'required' => false, 
             'label' => 'Se souvenir de moi',
             ));
+
+        $builder->add('actions', 'form_actions', [
+            'buttons' => [
+                'save' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-success' ] ]],
+                'lost_password' => ['type' => 'button', 'options' => ['label' => 'Mot de passe oublié?', 'attr' => [ 'class' => 'btn-primary' ] ]],
+                ]
+            ]);
     }
 
     /**

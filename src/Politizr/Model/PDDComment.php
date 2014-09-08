@@ -41,4 +41,13 @@ class PDDComment extends BasePDDComment
 		return parent::getPDDebate();
 	}
 
+	/**
+	 * Renvoit le user associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getAuthor() {
+		return parent::getPUser();
+	}
+
 }

@@ -1,10 +1,11 @@
-<div id="header">
-	{% if is_granted('ROLE_CITIZEN_INSCRIPTION') %}
-		{% include 'PolitizrFrontBundle:Navigation:menuInscriptionC.html.twig' %}
-	{% elseif is_granted('ROLE_ELECTED_INSCRIPTION') %}
-		{% include 'PolitizrFrontBundle:Navigation:menuInscriptionE.html.twig' %}
-	{% else %}
-		{% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
-	{% endif %}
-	<hr>
+<div class="container">
+	<nav class="navbar navbar-default" role="navigation">
+		{% if is_granted('ROLE_CITIZEN_INSCRIPTION') %}
+			{% include 'PolitizrFrontBundle:Navigation:menuInscriptionC.html.twig' %}
+		{% elseif is_granted('ROLE_ELECTED_INSCRIPTION') %}
+			{% include 'PolitizrFrontBundle:Navigation:menuInscriptionE.html.twig' %}
+		{% else %}
+			{% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
+		{% endif %}
+	</nav>
 </div>

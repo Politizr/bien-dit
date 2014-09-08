@@ -7,16 +7,23 @@
 {% endblock %}
 
 {% block main %}
-	{% include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' %}
-	{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate } %}
-	<div class="debateReactionsFeed">
-		{% for reaction in debate.reactions %}
-			{% include 'PolitizrFrontBundle:Fragment:ReactionFeed.html.twig' with { 'linkDebate': false, 'pDocument': reaction, 'parentReaction': reaction.parentReaction, 'globalComments': reaction.globalComments } only %}
-		{% else %}
-			<div id="noResult">
-				Aucune réaction pour le moment
-			</div>
-		{% endfor %}
+	<div id="main" class="container">
+		{# include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' #}
+		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': true } %}
+		<div class="row text-center">
+			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
+		</div>
+		<hr>
+		<div class="debateComments">
+			{% for comment in debate.comments %}
+				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'debateLink': false } %}
+				<hr>
+			{% else %}
+				<div id="noResult">
+					Aucun commentaire pour le moment
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock main %}
 
@@ -24,9 +31,10 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:overlayZen.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:debateBlock.js.twig' %}
+    {# include 'PolitizrFrontBundle:JS:overlayZen.js.twig' #}
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}
