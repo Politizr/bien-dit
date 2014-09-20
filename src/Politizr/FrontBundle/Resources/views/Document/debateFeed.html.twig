@@ -8,17 +8,16 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{# include 'PolitizrFrontBundle:Fragment:OverlayZen.html.twig' #}
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
 		<div class="row text-center">
 			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">Détail du débat</a>
 		</div>
 		<hr>
-		<div class="debateReactionsFeed">
+		<div class="debate-reactions-feed">
 			{% for reaction in debate.reactions %}
 				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'pdReaction': reaction, 'full': false } only %}
 			{% else %}
-				<div id="noResult">
+				<div class="no-result">
 					Aucune réaction pour le moment
 				</div>
 			{% endfor %}
@@ -30,7 +29,6 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
     
-    {# include 'PolitizrFrontBundle:JS:overlayZen.js.twig' #}
     {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}

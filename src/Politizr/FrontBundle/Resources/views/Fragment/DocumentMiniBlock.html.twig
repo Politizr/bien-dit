@@ -1,4 +1,4 @@
-<div class="documentHeader">
+<div class="document-header">
 	<div class="row">
 		<h4>
 			{% if objectType == 'PDReaction' %}
@@ -20,10 +20,10 @@
 	</div>
 	{% if withAuthor %}
 		<h5>
-			<div class="row" action="userMoreInfo">
+			<div class="row" action="user-more-info">
 				<a class="label label-info">par {{ document.pUser }}</a>
 			</div>
-			<div class="row" action="userInfos">
+			<div class="row" action="user-infos">
 				<hr>
 				{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': document.pUser, 'full': false } only %}
 			</div>
@@ -31,7 +31,7 @@
 	{% endif %}
 	{% if objectType == 'PDDebate' %}
 		<hr>
-		<div class="debateTags">
+		<div class="debate-tags">
 			<!-- TAGS -->
 			<div class="row text-center">
 				<div class="col-sm-6">
@@ -46,8 +46,8 @@
 		<div class="row text-center">
 			<!-- FOLLOWERS -->
 			<div id="followers">
-				Suivi par <a action="showFollowersCList" class="label label-primary">{{ document.countFollowersC }} citoyens</a> et <a action="showFollowersQList" class="label label-primary">{{ document.countFollowersQ }} élus</a>
-				<div action="followersCList">
+				Suivi par <a action="show-followers-c-list" class="label label-primary">{{ document.countFollowersC }} citoyens</a> et <a action="show-followers-q-list" class="label label-primary">{{ document.countFollowersQ }} élus</a>
+				<div action="followers-c-list">
 					{% for follower in document.followersC %}
 		                {% if ((loop.index0%4) == 0) %}
 		                    <div class="row">
@@ -66,7 +66,7 @@
 						{% endif %}
 					{% endfor %}
 				</div>
-				<div action="followersQList">
+				<div action="followers-q-list">
 					{% for follower in document.followersQ %}
 		                {% if ((loop.index0%4) == 0) %}
 		                    <div class="row">

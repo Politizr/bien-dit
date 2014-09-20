@@ -1,4 +1,4 @@
-<div class="reactionHeader">
+<div class="reaction-header">
 	<div class="row">
 		<h3>
 			<div class="col-sm-10">
@@ -19,29 +19,29 @@
 		<h4 class="label label-default">En réaction à "<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>"</h4>
 	{% endif %}
 	<h4>
-		<div cssActionId="userMoreInfo" class="row">
+		<div cssActionId="user-more-info" class="row">
 			<a class="label label-info">par {{ pdReaction.pUser }}</a>
 		</div>
-		<div class="row" action="userInfos">
+		<div class="row" action="user-infos">
 			<hr>
 			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': pdReaction.pUser, 'full': false } only %}
 		</div>
 	</h4>
 </div>
 <hr>
-<div class="reactionSummary well">
-	<div class="reactionSummary">
+<div class="reaction-summary well">
+	<div class="reaction-summary">
 		{{ pdReaction.summary | raw }}
 	</div>
 </div>
 {% if full %}
 	<hr>
-	<div class="reactionBody">
-		<div class="reactionDescription">
+	<div class="reaction-body">
+		<div class="reaction-description">
 			{{ pdReaction.summary | raw }}
 		</div>
 		<hr>
-		<div class="reactionMoreInfo well">
+		<div class="reaction-more-info well">
 			{{ pdReaction.moreInfo | raw }}
 		</div>
 	</div>

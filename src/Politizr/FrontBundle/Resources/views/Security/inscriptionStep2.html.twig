@@ -7,12 +7,12 @@
 {% block main %}
 	<div id="main" class="container">
 		{% if pUserForm.vars.errors|length %}
-			<div class="boxError">
+			<div class="box-error">
 		    	{{ form_errors(pUserForm) }}
 		    </div>
 		{% endif %}
 
-		<div id="boxInscriptionStep2">
+		<div id="box-inscription-step-2">
 			{{ form_start(pUserForm, {'action': path('InscriptionStep2Check'), 'method': 'POST', 'style': 'horizontal'}) }}
 			    {{ form_errors(pUserForm) }}
 

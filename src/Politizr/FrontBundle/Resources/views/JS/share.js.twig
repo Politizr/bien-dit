@@ -8,15 +8,15 @@
     // **************************** //
     //      Partage Réseaux sociaux
     // **************************** //
-    $("#fb").click(function() {
+    $("body").on("click", "a[action='share-fb']", function(e) {
         window.open('http://www.facebook.com/sharer.php?u='+$(this).attr('url'), 'facebook_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
     });
 
-    $("#tw").click(function() {
+    $("body").on("click", "a[action='share-tw']", function(e) {
         window.open('http://twitter.com/share?url='+$(this).attr('url')+'&text='+$(this).attr('tweetText')+'&hashtags=Politizr&lang=fr&count=none', 'tweet_it', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
     });
 
-    $("#gg").click(function() {
+    $("body").on("click", "a[action='share-gg']", function(e) {
         window.open('https://plus.google.com/share?url='+$(this).attr('url'), 'google_plus_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
     });
 </script>

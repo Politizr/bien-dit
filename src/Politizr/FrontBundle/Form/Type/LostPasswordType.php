@@ -33,8 +33,8 @@ class LostPasswordType extends AbstractType {
 
         $builder->add('actions', 'form_actions', [
             'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Réinitialisation mot de passe', 'attr' => [ 'class' => 'btn-success' ] ]],
-                'connect' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-primary' ] ]],
+                'save' => ['type' => 'button', 'options' => ['label' => 'Réinitialisation mot de passe', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-lost-password' ] ]],
+                'connect' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-primary', 'action' => 'btn-login' ] ]],
                 ]
             ]);
     }

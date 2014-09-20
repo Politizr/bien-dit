@@ -7,29 +7,29 @@
 {% block main %}
 	<div id="main" class="container">
 		<h2>Taggez votre profil</h2>
-		<div id="myProfile">
-			<div id="profileChooseGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUTaggedTPTag') }}">
+		<div id="tag-my-profile">
+			<div id="profile-choose-geo-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUTaggedTPTag') }}">
 				<label>Votre zonage géographique</label>
-				<input type="text" id="profileChooseGeo" /><input type="hidden" id="profileChooseGeoID" />
+				<input type="text" id="profile-choose-geo" /><input type="hidden" id="profile-choose-geo-id" />
 			</div>
-			<div id="profileSelectedGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
+			<div id="profile-selected-geo-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
 		</div>
 		<h2>Vos centres d'intérêts</h2>
-		<div id="myFollow">
-			<div id="followChooseGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
+		<div id="tag-my-follow">
+			<div id="follow-choose-geo-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
 				<div class="help">Indiquez les tags "géo" qui vous intéressent</div>
 				<label>Zonages géographiques suivis</label>
-				<input type="text" id="followChooseGeo" /><input type="hidden" id="followChooseGeoID" />
+				<input type="text" id="follow-choose-geo" /><input type="hidden" id="follow-choose-geo-id" />
 			</div>
-			<div id="followSelectedGeoZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
+			<div id="follow-selected-geo-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_GEO') }}"></div>
 			<hr>
-			<div id="followChooseThemeZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
+			<div id="follow-choose-theme-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}" addUrl="{{ path('AddPUFollowTPTag') }}">
 				<div class="help">Indiquez les tags "thématiques" qui vous intéressent - si le thème n'est pas présent dans la liste, cliquez sur 'Ajouter' une fois saisie.</div>
 				<label>Thèmes suivis</label>
-				<input type="text" id="followChooseTheme" /><input type="hidden" id="followChooseThemeID" />
-				<a id="addNewTag" class="btn btn-primary">Ajouter</a>
+				<input type="text" id="follow-choose-theme" /><input type="hidden" id="follow-choose-theme-id" />
+				<a id="add-new-tag" class="btn btn-primary">Ajouter</a>
 			</div>
-			<div id="followSelectedThemeZone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}"></div>
+			<div id="follow-selected-theme-zone" pTTagTypeId="{{ constant('Politizr\\Model\\PTTagType::TYPE_THEME') }}"></div>
 		</div>
 		<hr>
 		<a class="btn btn-primary pull-right" href="{{ path('InscriptionStep3Check') }}">Finaliser mon inscription</a>

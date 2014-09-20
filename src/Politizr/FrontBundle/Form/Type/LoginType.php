@@ -41,8 +41,8 @@ class LoginType extends AbstractType {
 
         $builder->add('actions', 'form_actions', [
             'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-success' ] ]],
-                'lost_password' => ['type' => 'button', 'options' => ['label' => 'Mot de passe oublié?', 'attr' => [ 'class' => 'btn-primary' ] ]],
+                'save' => ['type' => 'button', 'options' => ['label' => 'Connexion', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-login' ] ]],
+                'lost_password' => ['type' => 'button', 'options' => ['label' => 'Mot de passe oublié?', 'attr' => [ 'class' => 'btn-primary', 'action' => 'btn-lost-password' ] ]],
                 ]
             ]);
     }

@@ -12,14 +12,14 @@
 	<div id="main" class="container">
 		<h1>Inscription</h1>
 		<p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
-		<div id="oAuthButtons">
+		<div id="o-auth-buttons">
 			{% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
 			{% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
 			{% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
 		</div>
 		<hr>
 		<p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
-		<div id="boxInscriptionStep1">
+		<div id="box-inscription-step-1">
 			{{ form_start(pUserForm, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
 			    {{ form_errors(pUserForm) }}
 

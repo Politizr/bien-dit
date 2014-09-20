@@ -1,21 +1,21 @@
               beforeSend: function ( xhr ) {
                 $('#notifError').hide();
-                $('#ajaxLoader').show();
+                $('#ajax-loader').show();
               },
               statusCode: {
                 404: function() {
-                  $('#ajaxLoader').hide();
+                  $('#ajax-loader').hide();
                   $('.alert.alert-danger').html('Erreur 404: merci de recharger la page.');
                   $('.alert.alert-danger').show();
                 },
                 500: function() {
-                  $('#ajaxLoader').hide();
+                  $('#ajax-loader').hide();
                   $('.alert.alert-danger').html('Erreur 500: merci de recharger la page.');
                   $('#.alert.alert-danger').show();
                 }
               },            
               error: function(jqXHR, textStatus, errorThrown) {
-                  $('#ajaxLoader').hide();
+                  $('#ajax-loader').hide();
                   $('.alert.alert-danger').html('Erreur inconnue: merci de recharger la page.');
                   console.log('textStatus - '+textStatus);
                   console.log('errorThrown - '+errorThrown);

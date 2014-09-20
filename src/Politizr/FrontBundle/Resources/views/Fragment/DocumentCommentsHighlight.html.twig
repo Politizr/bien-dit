@@ -1,4 +1,4 @@
-<div id="commentsHightlight">
+<div id="comments-hightlight">
 	{% for comment in globalComments | slice(0, 5) %}
 		<div id="comment">
 			<div id="description">{{ comment.description | raw }}</div>
@@ -6,7 +6,7 @@
 			<div id="noteNeg">{{ comment.noteNeg }} -</div>
 		</div>
 	{% else %}
-		<div id="noResult">
+		<div class="no-result">
 			Aucun commentaire pour le moment
 		</div>
 	{% endfor %}

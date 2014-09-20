@@ -1,12 +1,12 @@
-<div id="connexionBox" class="container" style="display: none">
-	<div id="oAuthButtons" class="inline">
+<div id="connexion-box" class="container" style="display: none">
+	<div id="o-auth-buttons" class="inline">
 		{% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
 		{% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
 		{% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
 	</div>
 	<hr>
-	<div id="boxLogin">
-		{{ form_start(formLogin, {'style': 'inline', 'attr': {'id': 'formLogin'} }) }}
+	<div id="box-login">
+		{{ form_start(formLogin, {'style': 'inline', 'attr': {'id': 'form-login'} }) }}
 		    {{ form_errors(formLogin) }}
 
 		    {{ form_row(formLogin.username) }}
@@ -16,8 +16,8 @@
 		    {{ form_row(formLogin.actions) }}
 		{{ form_end(formLogin) }}
 	</div>
-	<div id="boxLostPassword" style="display:none">
-		{{ form_start(formLostPassword, {'style': 'inline', 'attr': {'id': 'formLostPassword'} }) }}
+	<div id="box-lost-password" style="display:none">
+		{{ form_start(formLostPassword, {'style': 'inline', 'attr': {'id': 'form-lost-password'} }) }}
 		    {{ form_errors(formLostPassword) }}
 
 		    {{ form_row(formLostPassword.email) }}

@@ -3,8 +3,8 @@
     //      Initialisation
     // **************************** //
     $(document).ready(function () {
-        $("div[action='followersCList']").hide();
-        $("div[action='followersQList']").hide();
+        $("div[action='followers-c-list']").hide();
+        $("div[action='followers-q-list']").hide();
     });
 
     // **************************** //
@@ -12,21 +12,21 @@
     // **************************** //
 
     // Ouverture box followers
-    $("body").on("click", "a[action='showFollowersCList']", function() {
-        if ($(this).siblings("div[action='followersCList']").is(':visible')) {
-            $(this).siblings("div[action='followersCList']").slideUp();
+    $("body").on("click", "a[action='show-followers-c-list']", function() {
+        if ($(this).siblings("div[action='followers-c-list']").is(':visible')) {
+            $(this).siblings("div[action='followers-c-list']").slideUp();
         } else {
-            $(this).siblings("div[action='followersQList']").slideUp();
-            $(this).siblings("div[action='followersCList']").slideDown();
+            $(this).siblings("div[action='followers-q-list']").slideUp();
+            $(this).siblings("div[action='followers-c-list']").slideDown();
         }
     });
 
-    $("body").on("click", "a[action='showFollowersQList']", function() {
-        if ($(this).siblings("div[action='followersQList']").is(':visible')) {
-            $(this).siblings("div[action='followersQList']").slideUp();
+    $("body").on("click", "a[action='show-followers-q-list']", function() {
+        if ($(this).siblings("div[action='followers-q-list']").is(':visible')) {
+            $(this).siblings("div[action='followers-q-list']").slideUp();
         } else {
-            $(this).siblings("div[action='followersCList']").slideUp();
-            $(this).siblings("div[action='followersQList']").slideDown();
+            $(this).siblings("div[action='followers-c-list']").slideUp();
+            $(this).siblings("div[action='followers-q-list']").slideDown();
         }
     });
 

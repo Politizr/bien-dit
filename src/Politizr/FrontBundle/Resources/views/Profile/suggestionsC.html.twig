@@ -5,7 +5,7 @@
 	<div id="main" class="container">
 		<h3>Suggestions de débats</h3>
 		<h4 class="bg-info">Liste de débat possédant au moins un des tags géographiques suivis</h4>
-		<div class="userTags">
+		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 			</div>
@@ -20,7 +20,7 @@
 			> Ajouter des tags géo
 		{% endfor %}
 		<h4 class="bg-info">Liste de débat possédant au moins un des tags thème suivis</h4>
-		<div class="userTags">
+		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 			</div>
@@ -36,7 +36,7 @@
 		{% endfor %}
 		<h3>Suggestions de personnalités</h3>
 		<h4 class="bg-info">Liste d'élus possédant au moins un des tags géographiques suivis</h4>
-		<div class="userTags">
+		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 			</div>

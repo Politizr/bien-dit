@@ -1,5 +1,5 @@
 <div class="comment">
-	<div class="commentDescription row">
+	<div class="comment-description row">
 		<div class="col-sm-2 text-center">
 			<a href="{{ path('UserDetail', { 'id': comment.pUser.id, 'slug': comment.pUser.slug }) }}">
 				{% if (comment.pUser.fileName) %}
@@ -26,7 +26,7 @@
 			<span class="label label-default">publié le {{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
-	<div class="commentAuthor row text-center">
+	<div class="comment-author row text-center">
 		<div class="col-sm-12">
 			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': comment } only %}
 		</div>

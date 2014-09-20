@@ -12,7 +12,7 @@
         	{% endfor %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
 		{% else %}
-			<div class="box_no_results">
+			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat pour le moment</a>
 			</div>
 		{% endfor %}

@@ -3,7 +3,7 @@
     //      Initialisation
     // **************************** //
     $(document).ready(function () {
-        $("div[action='userInfos']").hide();
+        $("div[action='user-infos']").hide();
     });
 
     // **************************** //
@@ -11,11 +11,11 @@
     // **************************** //
 
     // Plus d'infos
-    $("body").on("click", "div[action='userMoreInfo']", function() {
-        if ($(this).siblings("div[action='userInfos']").is(':visible')) {
-            $(this).siblings("div[action='userInfos']").slideUp();
+    $("body").on("click", "div[action='user-more-info']", function() {
+        if ($(this).siblings("div[action='user-infos']").is(':visible')) {
+            $(this).siblings("div[action='user-infos']").slideUp();
         } else {
-            $(this).siblings("div[action='userInfos']").slideDown();
+            $(this).siblings("div[action='user-infos']").slideDown();
         }
     });
 

@@ -8,14 +8,14 @@
 	<div id="main" class="container">
 		<h1>Mode de paiement</h1>
 		<p class="bg-info">Choisissez le mode de paiement.</p>
-		<div id="boxInscriptionElectedStep3">
+		<div id="box-inscription-elected-step-3">
 	        {% for payment in payments %}
-                <div class="paymentChoice">
-                    <input type="radio" name="radioChoice"><label>{{ payment.title }}</label>
-                    <div class="paymentDetail">
+                <div class="payment-choice">
+                    <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
+                    <div class="payment-detail">
                         {{ payment.description | raw }}
                         <br/>
-                        <a class="paymentProcess btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
+                        <a action="payment-process" class="btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
                     </div>
                 </div>
 	        {% endfor %}
