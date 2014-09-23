@@ -102,12 +102,14 @@
 	<hr>
 	<div class="debate-body">
 		<div class="debate-description">
-			{{ debate.summary | raw }}
+			{{ debate.description | raw }}
 		</div>
-		<hr>
-		<div class="debate-more-info well">
-			{{ debate.moreInfo | raw }}
-		</div>
+		{% if debate.moreInfo | striptags | trim is not empty %}
+			<hr>
+			<div class="debate-more-info well">
+				{{ debate.moreInfo | raw }}
+			</div>
+		{% endif %}
 	</div>
 {% endif %}
 <hr>

@@ -1,0 +1,244 @@
+# USER DATAS
+Politizr\Model\PUType:
+    citoyen:
+        id:             1
+        title:          Citoyen
+    qualifie:
+        id:             2
+        title:          Qualifié
+
+Politizr\Model\PUStatus:
+    activ:
+        id:             1
+        title:          Actif
+    validation:
+        id:             2
+        title:          En cours de validation
+    archive:
+        id:             3
+        title:          Archivé
+
+
+Politizr\Model\PUser:
+
+    # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
+
+    depute1:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Damien
+        name:                   Abad
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute2:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Laurence
+        name:                   Abeille
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute3:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Ibrahim
+        name:                   Aboucar
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute4:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Elie
+        name:                   Aboud
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute5:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Bernard
+        name:                   Accoyer
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute6:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Patricia
+        name:                   Adam
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute7:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        gender:                 Monsieur
+        firstname:              Sylvian
+        name:                   Alaux
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute8:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Eric
+        name:                   Alauzet
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute9:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Yves
+        name:                   Albarello
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+    depute10:
+        pu_type_id:             2
+        pu_status_id:           1
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Brigitte
+        name:                   Allain
+
+        summary:                <?php $faker('paragraphs', 2, true); ?>
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        online:                 1
+
+

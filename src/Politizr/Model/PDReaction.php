@@ -186,34 +186,32 @@ class PDReaction extends BasePDReaction
 
 	/**
 	 *	Renvoit les réactions enfants associées à la réaction courante.
-	 *  TODO: niveau d'inspection à gérer
 	 *
-	 * @param 	integer 	$level 		Niveau d'inspection
 	 *
 	 * @return PropelCollection d'objets PDReaction
 	 */
-	public function getChildrenReactions($level = 1) {
+	public function getChildrenReactions($online = true, $published = true) {
 		$query = PDReactionQuery::create()
-					->filterByPDReactionId($this->getId())
-					->filterByOnline(true)
-					->filterByPublished(true)
+					->filterByOnline($online)
+					->filterByPublished($published)
 					->orderByPublishedAt(\Criteria::DESC);
 
-		return parent::getPDReactionsRelatedById($query);
+		return parent::getChildren($query);
 	}
 
 	/**
-	 *	Renvoit l'objet PDReaction associé à la réaction courante
+	 *	Renvoit les réactions descendantes associées à la réaction courante.
 	 *
-	 * @return PDReaction
+	 *
+	 * @return PropelCollection d'objets PDReaction
 	 */
-	public function getParentReaction() {
+	public function getDescendantsReactions($online = true, $published = true) {
 		$query = PDReactionQuery::create()
-					->filterByOnline(true)
-					->filterByPublished(true)
-					->filterByPublished(true);
+					->filterByOnline($online)
+					->filterByPublished($published)
+					->orderByPublishedAt(\Criteria::DESC);
 
-		return parent::getPDReactionRelatedByPDReactionId(null, $query);
+		return parent::getDescendants($query);
 	}
 
 	/**
@@ -224,14 +222,13 @@ class PDReaction extends BasePDReaction
 	 *
 	 * @return PropelCollection d'objets PDReaction
 	 */
-	public function countChildrenReactions($level = 1) {
+	public function countChildrenReactions($online = true, $published = true) {
 		$query = PDReactionQuery::create()
-					->filterByPDDebateId($this->getId())
-					->filterByOnline(true)
-					->filterByPublished(true)
+					->filterByOnline($online)
+					->filterByPublished($published)
 					->orderByPublishedAt(\Criteria::DESC);
 
-		return parent::countPDReactionsRelatedById($query);
+		return parent::countChildren($query);
 	}
 
 }

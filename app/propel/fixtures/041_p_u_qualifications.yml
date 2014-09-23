@@ -1,0 +1,50 @@
+Politizr\Model\PUQualification:
+    qualification1:
+        p_user_id:             	depute1
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification2:
+        p_user_id:             	depute2
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification3:
+        p_user_id:             	depute3
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification4:
+        p_user_id:             	depute4
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification5:
+        p_user_id:             	depute5
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification6:
+        p_user_id:             	depute6
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification7:
+        p_user_id:             	depute7
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification8:
+        p_user_id:             	depute8
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification9:
+        p_user_id:             	depute9
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+
+    qualification10:
+        p_user_id:             	depute10
+        title:					Député
+        begin_at:			    <?php $faker('dateTimeThisYear') ?>

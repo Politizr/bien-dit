@@ -29,11 +29,6 @@ class EditType extends BaseEditType
 
 		    // ID débat associé
 	        $formOptions = $this->getFormOption('p_d_debate_id', array( 'data' => $pdReaction->getPDDebateId(), 'label' => 'ID Débat',  'translation_domain' => 'Admin',));
-	        $form->add('p_d_reaction_related_by_p_d_reaction_id', 'hidden', $formOptions);
-
-		    // MAJ liste des réactions associés possibles > seulement sur le débat courant
-	        $formOptions = $this->getFormOption('p_d_reaction_related_by_p_d_reaction_id', array(  'class' => 'Politizr\\Model\\PDReaction',  'multiple' => false,  'empty_value' => '',  'required' => false,  'query' => \Politizr\Model\PDReactionQuery::create()->filterByPDDebateId($pdReaction->getPDDebateId())->filterById($pdReaction->getId(), \Criteria::NOT_EQUAL)->orderByCreatedAt(\Criteria::DESC),  'label' => 'Réaction associée',  'translation_domain' => 'Admin',));
-	        $form->add('p_d_reaction_related_by_p_d_reaction_id', 'model', $formOptions);
 	    });
 
 	}

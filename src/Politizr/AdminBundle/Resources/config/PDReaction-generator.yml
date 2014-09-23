@@ -16,12 +16,6 @@ params:
             label:          Débat associé
         p_d_debate:
             label:          Débat associé
-        p_d_reaction_related_by_p_d_reaction_id:
-            label:          Réaction associée
-        p_d_reaction_id:
-            label:          Réaction associée
-        p_d_reaction:
-            label:          Réaction associée
         title:
             label:          Titre
         summary:
@@ -67,7 +61,7 @@ builders:
                         filters:
                             filterByPublished:  false
             # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
-            display:                            [ id, p_user, p_d_reaction_id, title, summary, note_pos, note_neg, online, published, published_at ]
+            display:                            [ id, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -118,7 +112,6 @@ builders:
                     "Texte":                    [ p_d_debate_id, title, summary, description, more_info ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
-                    "Réaction":                 [ [ p_d_reaction_related_by_p_d_reaction_id ] ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
@@ -132,10 +125,6 @@ builders:
                         empty_value:            ""
                         required:               false
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                p_d_reaction_related_by_p_d_reaction_id:
-                    addFormOptions:
-                        empty_value:            ""
-                        required:               false
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -169,7 +158,6 @@ builders:
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
                     "Débat":                    [ [ p_d_debate ] ]
-                    "Réaction":                 [ [ p_d_reaction_related_by_p_d_reaction_id ] ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
                 "Statut":

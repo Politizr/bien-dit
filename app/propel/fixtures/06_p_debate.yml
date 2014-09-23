@@ -1,0 +1,288 @@
+# DOCUMENT DATAS
+Politizr\Model\PDDebate:
+    # http://www.rhonealpes.fr/261-groupe-ps.htm
+    debat1:
+        online:			true
+
+        title:			Climat : ne perdons plus de temps !
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        summary:        |
+            <p>
+                Les conseillers régionaux se sont, une nouvelle fois,
+                prononcés sur le Schéma Régional Climat Air Energie
+                (SRCAE) qui fixe les objectifs régionaux de diminution
+                des émissions de gaz à effet de serre aux horizons
+                2020 et 2050. Deux ans plus tôt, le vice-président
+                Benoît Leclair (EELV) et son groupe ne votaient pas le
+                SRCAE, sur une posture politicienne et d’affichage.
+                Cette position était d’autant plus absurde que ces
+                mêmes élus ont donc approuvé le même texte lors de la
+                dernière Assemblée plénière, à quelques ajouts près.
+                Les élus socialistes, qui avaient voté en
+                responsabilité ce schéma en 2012, ont renouvelé leur
+                vote lors de cette nouvelle présentation en
+                réaffirmant leur volonté d’agir vite en faveur du
+                climat.
+            </p>
+        description:    |
+            <p>
+                Les conseillers régionaux se sont, une nouvelle fois, prononcés sur le Schéma
+                Régional Climat Air Energie (SRCAE) qui fixe les objectifs régionaux de
+                diminution des émissions de gaz à effet de serre aux horizons 2020 et 2050.
+                Deux ans plus tôt, le vice-président Benoît Leclair (EELV) et son groupe ne
+                votaient pas le SRCAE, sur une posture politicienne et d’affichage. Cette
+                position était d’autant plus absurde que ces mêmes élus ont donc approuvé le
+                même texte lors de la dernière Assemblée plénière, à quelques ajouts près. Les
+                élus socialistes, qui avaient voté en responsabilité ce schéma en 2012, ont
+                renouvelé leur vote lors de cette nouvelle présentation en réaffirmant leur
+                volonté d’agir vite en faveur du climat.
+            </p>
+            <p>
+                L’urgence de lutter efficacement contre le changement climatique a été redite
+                la semaine dernière par le GIEC. Cette urgence, les élus socialistes l’ont
+                prise en compte dès 2004 dans la définition de leurs politiques. Sobriété
+                énergétique, développement des énergies renouvelables et efficacité
+                énergétique, nous mettons en pratique ce triptyque depuis 2005 et la mise en
+                place par Hervé Saulignac de la politique régionale de développement des
+                énergies. Nous avons par ailleurs voté avec enthousiasme en 2013 le Plan
+                Climat Régional qui formule les efforts de réduction des émissions de gaz à
+                effet de serre de la Région de 80 % à l’horizon 2050. Cet objectif sera
+                atteint notamment grâce aux politiques volontaristes menées par les vice-
+                présidentes socialistes Eliane Giraud aux transports et Sylvie Gillet de
+                Thorey aux lycées.
+            </p>
+            <p>
+                Plan Climat Régional, SRCAE, la Région dispose enfin de tous les outils pour
+                réduire son empreinte sur le climat. Les élus socialistes s’en réjouissent et
+                attendent désormais la nouvelle loi sur la transition énergétique qui donnera
+                aux Régions un nouveau rôle important dans la préservation du climat.
+            </p>
+        published:      1
+        published_at:	<?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:		10
+        note_neg:		1
+
+    # http://www.rhonealpes.fr/262-groupe-ump.htm
+    debat2:
+        online:         true
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        title:          Mars 2014 : les Rhônalpins ont fait le choix de la Droite rassemblée
+
+        summary:        |
+            <p>
+                Mais ces élections ont été aussi un avertissement très sérieux adressé au chef
+                de l’Etat et au gouvernement, un véritable carton rouge pour ceux qui ont été
+                incapables de répondre aux attentes des Français depuis deux ans.
+            </p>
+        description:    |
+            <p>
+                Les dernières élections municipales ont été un véritable succès en Rhône-
+                Alpes. En effet, au sein du groupe UDC-App, 15 de nos collègues conseillers
+                régionaux ont été élus maire. Au-delà de ces victoires, nous pouvons nous
+                réjouir des scores obtenus dans de nombreuses communes et en particulier dans
+                les villes préfectures telles que St Etienne, Valence ou Chambéry. A nous
+                désormais de capitaliser sur ces résultats afin d’en faire les tremplins d’une
+                reconquête nécessaire pour l’avenir de notre région et celui de notre pays.
+            </p>
+            <p>
+                Mais ces élections ont été aussi un avertissement très sérieux adressé au chef
+                de l’Etat et au gouvernement, un véritable carton rouge pour ceux qui ont été
+                incapables de répondre aux attentes des Français depuis deux ans.
+            </p>
+            <p>
+                Au Conseil régional, cela fait déjà 4 ans que nous assistons chaque jour à
+                l’incapacité d’agir d’une majorité paralysée par les désaccords entre
+                socialistes, écologistes et communistes. Nous sommes quotidiennement les
+                spectateurs de l’éclatement de cette majorité de façade comme en atteste par
+                exemple la lutte fratricide entre le candidat PS et celui des Verts à Grenoble
+                qui a vu la victoire de ce dernier. Deux candidats issus d’une même majorité
+                incapable de se mettre d’accord sur un projet dans une ville.
+            </p>
+            <p>
+                Ces élections municipales doivent aujourd’hui nous indiquer la direction à
+                suivre pour que nous puissions, dans un an, regagner la confiance des
+                Rhônalpins et donner enfin un nouvel élan à notre si belle région. Pour ce
+                faire, la mobilisation de tous est indispensable !
+            </p>
+        published:      <?php $faker('boolean', 90); ?>
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/257-groupe-les-verts.htm
+    debat3:
+        online:         true
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        title:          Traité transatlantique : la mort du conseil régional ?
+
+        summary:        |
+            <p>
+                Le traité affecterait le droit du travail, la sécurité alimentaire, les
+                législations environnementales, la culture... Pour le conseil régional de
+                Rhône-Alpes, ce serait la fin de très nombreuses actions.
+            </p>
+        description:    |
+            <p>
+                S’il était adopté, le Partenariat Transatlantique de Commerce et
+                d’Investissement (alias TTIP ou Tafta), actuellement en négociation, pourrait
+                bouleverser le fonctionnement de nos institutions.
+            </p>
+            <p>
+                Dans ce cas, si une collectivité persistait à aider une petite entreprise, ou
+                si un État s’entêtait à voter une norme pour protéger la santé de ses
+                citoyens, ils pourraient être traînés pour concurrence déloyale devant un
+                tribunal supra-national.
+            </p>
+            <p>
+                Le traité affecterait le droit du travail, la sécurité alimentaire, les
+                législations environnementales, la culture... Pour le conseil régional de
+                Rhône-Alpes, ce serait la fin de très nombreuses actions.
+            </p>
+            <ul>
+                <li> Transports. Le conseil régional ne pourrait plus financer les TER.</li>
+                <li> Formation. Dans un marché libre, la Région n’aurait plus vocation à
+                organiser l’offre pour les demandeurs d’emploi.</li>
+                <li> Enseignement. Les universités et lycées de tous les pays se feraient
+                concurrence. Les financements publics pourraient être jugés déloyaux.</li>
+                <li> Aides économiques. Une région ne pourrait plus aider des entreprises locales
+                sous peine de se voir attaquée pour entrave à la liberté du commerce.</li>
+                <li> Agriculture. La voie serait ouverte à une industrialisation totale de
+                l’agriculture sous l’égide de grandes entreprises et à l’introduction sans
+                réserve des OGM.</li>
+                <li> Gaz de schiste. La fracturation hydraulique, interdite en France du fait de
+                ses dangers pour l’environnement, deviendrait un «droit» pour des sociétés
+                pétrolières.</li>
+            </ul>
+            <p>
+                Heureusement, ce projet de traité n’a pas encore été adopté ni ratifié. Le
+                Parlement européen a le pouvoir de le repousser. Il s’agit d’un choix de
+                société.
+            </p>
+        published:      <?php $faker('boolean', 90); ?>
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/263-groupe-fn.htm
+    debat4:
+        online:         true
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        title:          Un nouveau pas vers la « démocrature »
+
+        summary:        |
+            <p>
+                Le nouveau gouvernement socialiste de Manuel Valls a fait connaître son
+                intention de supprimer les organes élus des départements et de regrouper les
+                régions. Ainsi, la Région Rhône-Alpes pourrait être contrainte de fusionner
+                avec l’Auvergne.
+            </p>
+        description:    |
+            <p>
+                Le nouveau gouvernement socialiste de Manuel Valls a fait connaître son
+                intention de supprimer les organes élus des départements et de regrouper les
+                régions. Ainsi, la Région Rhône-Alpes pourrait être contrainte de fusionner
+                avec l’Auvergne.
+            </p>
+            <p>
+                Le groupe Front National a donc présenté un vœu en Assemblée régionale
+                l’invitant à contester ce projet. D’abord parce que ce dernier a été annoncé
+                sans aucune concertation préalable. Ensuite, parce qu’il réduirait le
+                département à une circonscription purement administrative, loin des
+                préoccupations des habitants. De même, le regroupement des régions éloignerait
+                encore plus les élus de leurs électeurs ; il achèverait de priver les régions
+                de leurs identités historiques ou géographiques. Enfin, ce projet ne créerait
+                aucune économie dans les finances publiques : la preuve a été faite au niveau
+                municipal que les regroupements artificiels, loin de générer des économies
+                d’échelle, augmentent les coûts.
+            </p>
+            <p>
+                La gauche, se méfiant désormais du peuple pour garder le pouvoir, a évidemment
+                rejeté le vœu du FN. Les élus UMP n’ont pas fait mieux !
+            </p>
+        published:      <?php $faker('boolean', 90); ?>
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/265-groupe-fdg.htm
+    debat5:
+        online:         true
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        title:          Le Grand Marché Transatlantique, une menace pour les droits des citoyens
+
+        summary:        |
+            <p>
+                Son objectif est d’accentuer la dérégulation et la marchandisation par
+                l’ouverture à la concurrence.
+            </p>
+        description:    |
+            <p>
+                Le traité surnommé Grand Marché Transatlantique, en négociation entre les
+                Etats-Unis et l’Europe dans le plus grand secret, pourrait impacter nos
+                politiques régionales et les droits des citoyens. Il créerait un droit des
+                multinationales supérieur. Elles pourraient attaquer juridiquement les Etats
+                et collectivités en vertu du libre échange. Son objectif est d’accentuer la
+                dérégulation et la marchandisation par l’ouverture à la concurrence.
+            </p>
+            <p>
+                Nous avons souhaité, par le biais d’un vœu commun avec EELV, que la Région se
+                prémunisse des effets de ce traité en se déclarant « Zone hors TTIP ». Il
+                s’agirait de marquer notre refus face aux tentatives d’affaiblissement du
+                cadre législatif qui protège les citoyens. Malheureusement le PS a préféré
+                adopter un vœu au rabais avec les voix du FN. Nous regrettons ce choix mais la
+                mobilisation citoyenne continue, nous en serons !
+            </p>
+        published:      <?php $faker('boolean', 90); ?>
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/266-groupe-prg.htm
+    debat6:
+        online:         true
+
+        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+
+        title:          Vote du Schéma Régional Climat Air Energie : enfin !
+
+        summary:        |
+            <p>
+                Deux ans après son rejet en Assemblée plénière du fait d’un vote conjoint
+                UMP/EELV (!), le SRCAE a enfin été voté.
+            </p>
+        description:    |
+            <p>
+                Deux ans après son rejet en Assemblée plénière du fait d’un vote conjoint
+                UMP/EELV (!), le SRCAE a enfin été voté. Au regard de l’urgence de la lutte
+                contre le réchauffement climatique, on ne pourra que regretter ces deux années
+                perdues. D’autant qu’aucune amélioration significative n’a été apportée à
+                cette deuxième version (le volet éolien ayant même disparu, et désormais entre
+                les seules mains du Préfet !).
+            </p>
+            <p>
+                Cela étant, le groupe PRG se félicite de cette démarche ambitieuse (ayant
+                associé de nombreux acteurs économiques, environnementaux…) de transition
+                énergétique qui va au-delà des objectifs du Grenelle 1, en affichant par
+                exemple un objectif de moins 30 % de gaz à effet de serre à horizon 2020. Et
+                2020, c’est vraiment demain !
+            </p>
+        published:      <?php $faker('boolean', 90); ?>
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>

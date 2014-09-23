@@ -264,48 +264,48 @@ bazinga_faker:
         #################################################################################################################
         #                                   UTILISATEUR
         #################################################################################################################
-        Politizr\Model\PUser:
-            number:                     50
-            custom_formatters:
-                PUTypeId:               { method: numberBetween, parameters: [ 1, 2 ] }
-                PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
+#         Politizr\Model\PUser:
+#             number:                     50
+#             custom_formatters:
+#                 PUTypeId:               { method: numberBetween, parameters: [ 1, 2 ] }
+#                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
+# 
+#                 Firstname:              { method: firstname }
+#                 Name:                   { method: lastname }
+# 
+#                 Summary:                { method: paragraphs, parameters: [ 2, true ] }
+#                 Biography:              { method: paragraphs, parameters: [ 4, true ] }
+# 
+#                 Website:                { method: url }
+#                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
+#                 Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
+#                 Phone:                  { method: phoneNumber }
+# 
+#                 Email:                  { method: email }
+# 
+#                 Provider:               { method: null }
+#                 ProviderId:             { method: null }
+#                 Nickname:               { method: null }
+#                 Realname:               { method: null }
+# 
+#                 UsernameCanonical:      { method: null }
+#                 EmailCanonical:         { method: null }
+#                 Salt:                   { method: null }
+#                 Password:               { method: null }
+#                 ConfirmationToken:      { method: null }
+#                 PasswordRequestedAt:    { method: null }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+#                 Slug:                   { method: null }
+# 
 
-                Firstname:              { method: firstname }
-                Name:                   { method: lastname }
 
-                Summary:                { method: paragraphs, parameters: [ 2, true ] }
-                Biography:              { method: paragraphs, parameters: [ 4, true ] }
-
-                Website:                { method: url }
-                Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
-                Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
-                Phone:                  { method: phoneNumber }
-
-                Email:                  { method: email }
-
-                Provider:               { method: null }
-                ProviderId:             { method: null }
-                Nickname:               { method: null }
-                Realname:               { method: null }
-
-                UsernameCanonical:      { method: null }
-                EmailCanonical:         { method: null }
-                Salt:                   { method: null }
-                Password:               { method: null }
-                ConfirmationToken:      { method: null }
-                PasswordRequestedAt:    { method: null }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-                Slug:                   { method: null }
-
-
-
-        Politizr\Model\PUQualification:
-            number:                     300
-            custom_formatters:
-                Title:                  { method: realText, parameters: [ 20 ] }
-                Description:            { method: paragraphs, parameters: [ 4, true ] }
-
+#         Politizr\Model\PUQualification:
+#             number:                     300
+#             custom_formatters:
+#                 Title:                  { method: realText, parameters: [ 20 ] }
+#                 Description:            { method: paragraphs, parameters: [ 4, true ] }
+# 
         Politizr\Model\PUFollowU:
             number:                     1
 
@@ -367,84 +367,85 @@ bazinga_faker:
         #################################################################################################################
         #                                   DOCUMENTS
         #################################################################################################################
-        Politizr\Model\PDDebate:
-            number:                     50
-            custom_formatters:
-                Title:                  { method: realText, parameters: [ 75 ] }
-
-                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
-                Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
-                MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                Published:              { method: boolean, parameters: [ 90 ] }
-                PublishedAt:            { method: dateTimeThisYear }
-                PublishedBy:            { method: null }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-                Slug:                   { method: null }
-
-        Politizr\Model\PUFollowDD:
-            number:                     300
-
-        Politizr\Model\PDDTaggedT:
-            number:                     300
-            custom_formatters:
-                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-
-        Politizr\Model\PDReaction:
-            number:                     300
-            custom_formatters:
-                PDReactionId:           { method: null }
-
-                Title:                  { method: realText, parameters: [ 60 ] }
-
-                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
-                Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
-                MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                Published:              { method: boolean, parameters: [ 90 ] }
-                PublishedAt:            { method: dateTimeThisYear }
-                PublishedBy:            { method: null }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-                Slug:                   { method: null }
-                TreeLeft:               { method: 0 }
-                TreeRight:              { method: 0 }
-                TreeLevel:              { method: 1 }
-
-        Politizr\Model\PDDComment:
-            number:                     300
-            custom_formatters:
-                Description:            { method: realText, parameters: [ 250 ] }
-                ParagraphNo:            { method: randomDigit }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                PublishedBy:            { method: null }
-                PublishedAt:            { method: dateTimeThisYear }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-
-        Politizr\Model\PDRComment:
-            number:                     900
-            custom_formatters:
-                Description:            { method: realText, parameters: [ 150 ] }
-                ParagraphNo:            { method: randomDigit }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                PublishedBy:            { method: null }
-                PublishedAt:            { method: dateTimeThisYear }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
+#         Politizr\Model\PDDebate:
+#             number:                     50
+#             custom_formatters:
+#                 Title:                  { method: realText, parameters: [ 75 ] }
+# 
+#                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+#                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+#                 MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 Published:              { method: boolean, parameters: [ 90 ] }
+#                 PublishedAt:            { method: dateTimeThisYear }
+#                 PublishedBy:            { method: null }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+#                 Slug:                   { method: null }
+# 
+#         Politizr\Model\PUFollowDD:
+#             number:                     300
+# 
+#         Politizr\Model\PDDTaggedT:
+#             number:                     300
+#             custom_formatters:
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
+# 
+#         # TODO Faker ne remplit pas correctement PDDebateId ni les info nested set 
+#         Politizr\Model\PDReaction:
+#             number:                     300
+#             custom_formatters:
+#                 # TODO p_d_debate_id mal attribué
+#                 # PDDebateId:             { method: numberBetween, parameters: [ 1, 50 ] }
+#                 Title:                  { method: realText, parameters: [ 60 ] }
+# 
+#                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+#                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+#                 MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 Published:              { method: boolean, parameters: [ 90 ] }
+#                 PublishedAt:            { method: dateTimeThisYear }
+#                 PublishedBy:            { method: null }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+#                 Slug:                   { method: null }
+#                 TreeLeft:               { method: 0 }
+#                 TreeRight:              { method: 0 }
+#                 TreeLevel:              { method: 1 }
+# 
+#         Politizr\Model\PDDComment:
+#             number:                     300
+#             custom_formatters:
+#                 Description:            { method: realText, parameters: [ 250 ] }
+#                 ParagraphNo:            { method: randomDigit }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 PublishedBy:            { method: null }
+#                 PublishedAt:            { method: dateTimeThisYear }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+# 
+#         Politizr\Model\PDRComment:
+#             number:                     900
+#             custom_formatters:
+#                 Description:            { method: realText, parameters: [ 150 ] }
+#                 ParagraphNo:            { method: randomDigit }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 PublishedBy:            { method: null }
+#                 PublishedAt:            { method: dateTimeThisYear }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
 
 
         #################################################################################################################

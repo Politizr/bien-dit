@@ -1,0 +1,182 @@
+# DOCUMENT DATAS
+Politizr\Model\PDReaction:
+    reaction1:
+        tree_left:      1
+        tree_right:     2
+        tree_level:     1
+
+        online:			true
+
+        p_d_debate_id:  debat1
+
+        title:			<?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction2:
+        tree_left:      3
+        tree_right:     4
+        tree_level:     1
+
+        online:         true
+
+        p_d_debate_id:  debat1
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction3:
+        tree_left:      5
+        tree_right:     6
+        tree_level:     1
+
+        online:         true
+
+        p_d_debate_id:  debat1
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction4:
+        tree_left:      1
+        tree_right:     4
+        tree_level:     1
+
+        online:         true
+
+        p_d_debate_id:  debat2
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction5:
+        tree_left:      2
+        tree_right:     3
+        tree_level:     2
+
+        online:         true
+
+        p_d_debate_id:  debat2
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction6:
+        tree_left:      5
+        tree_right:     6
+        tree_level:     1
+
+        online:         true
+
+        p_d_debate_id:  debat2
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction7:
+        tree_left:      1
+        tree_right:     6
+        tree_level:     1
+
+        online:         true
+
+        p_d_debate_id:  debat3
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction8:
+        tree_left:      2
+        tree_right:     5
+        tree_level:     2
+
+        online:         true
+
+        p_d_debate_id:  debat3
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    reaction9:
+        tree_left:      3
+        tree_right:     4
+        tree_level:     3
+
+        online:         true
+
+        p_d_debate_id:  debat3
+
+        title:          <?php $faker('realText', 60) ?>
+
+        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
+
+        published:      true
+        published_at:   <?php $faker('dateTimeThisYear'); ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+

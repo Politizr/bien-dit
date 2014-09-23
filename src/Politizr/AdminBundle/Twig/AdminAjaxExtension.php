@@ -276,7 +276,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
                                 'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserFollowersQ(),
+                                'pUsers' => $pUser->getFollowersQ(),
                                 )
                     );
 
@@ -300,7 +300,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
                                 'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserFollowersC(),
+                                'pUsers' => $pUser->getFollowersC(),
                                 )
                     );
 
@@ -499,7 +499,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig', array(
                                 'pdDebate' => $pdDebate,
-                                'pUsers' => $pdDebate->getPUserFollowersQ(),
+                                'pUsers' => $pdDebate->getFollowersQ(),
                                 )
                     );
 
@@ -523,7 +523,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig', array(
                                 'pdDebate' => $pdDebate,
-                                'pUsers' => $pdDebate->getPUserFollowersC(),
+                                'pUsers' => $pdDebate->getFollowersC(),
                                 )
                     );
 

@@ -14,9 +14,23 @@
 			<span class="label label-default pull-right">publié le {{ pdReaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
-	{% set parentReaction = pdReaction.parentReaction %}
-	{% if parentReaction %}
-		<h4 class="label label-default">En réaction à "<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>"</h4>
+
+	<!--
+	<div>
+		<hr>
+		DEBUG NESTED SET - 
+		isRoot {{ pdReaction.isRoot }} - 
+		isLeaf {{ pdReaction.isLeaf }} - 
+		getLevel {{ pdReaction.getLevel }} - 
+		hasChildren {{ pdReaction.hasChildren }} - 
+		countChildren {{ pdReaction.countChildren }} - 
+		hasPrevSibling {{ pdReaction.hasPrevSibling }} - 
+		hasNextSibling {{ pdReaction.hasNextSibling }} - 
+	</div>
+	-->
+	{% if pdReaction.level > 1 %}
+		{% set parentReaction = pdReaction.getParent %}
+		<h4 class="label label-warning">En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>"</h4>
 	{% endif %}
 	<h4>
 		<div cssActionId="user-more-info" class="row">
@@ -38,12 +52,14 @@
 	<hr>
 	<div class="reaction-body">
 		<div class="reaction-description">
-			{{ pdReaction.summary | raw }}
+			{{ pdReaction.description | raw }}
 		</div>
-		<hr>
-		<div class="reaction-more-info well">
-			{{ pdReaction.moreInfo | raw }}
-		</div>
+		{% if reaction.moreInfo | striptags | trim is not empty %}
+			<hr>
+			<div class="reaction-more-info well">
+				{{ reaction.moreInfo | raw }}
+			</div>
+		{% endif %}
 	</div>
 {% endif %}
 <hr>
