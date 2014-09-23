@@ -65,12 +65,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $p_d_debate_id;
 
     /**
-     * The value for the p_d_reaction_id field.
-     * @var        int
-     */
-    protected $p_d_reaction_id;
-
-    /**
      * The value for the title field.
      * @var        string
      */
@@ -149,6 +143,24 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $slug;
 
     /**
+     * The value for the tree_left field.
+     * @var        int
+     */
+    protected $tree_left;
+
+    /**
+     * The value for the tree_right field.
+     * @var        int
+     */
+    protected $tree_right;
+
+    /**
+     * The value for the tree_level field.
+     * @var        int
+     */
+    protected $tree_level;
+
+    /**
      * @var        PUser
      */
     protected $aPUser;
@@ -157,17 +169,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var        PDDebate
      */
     protected $aPDDebate;
-
-    /**
-     * @var        PDReaction
-     */
-    protected $aPDReactionRelatedByPDReactionId;
-
-    /**
-     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
-     */
-    protected $collPDReactionsRelatedById;
-    protected $collPDReactionsRelatedByIdPartial;
 
     /**
      * @var        PropelObjectCollection|PDRComment[] Collection to store aggregation of PDRComment objects.
@@ -195,11 +196,26 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     protected $alreadyInClearAllReferencesDeep = false;
 
+    // nested_set behavior
+
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * Queries to be executed in the save transaction
+     * @var        array
      */
-    protected $pDReactionsRelatedByIdScheduledForDeletion = null;
+    protected $nestedSetQueries = array();
+
+    /**
+     * Internal cache for children nodes
+     * @var        null|PropelObjectCollection
+     */
+    protected $collNestedSetChildren = null;
+
+    /**
+     * Internal cache for parent node
+     * @var        null|PDReaction
+     */
+    protected $aNestedSetParent = null;
+
 
     /**
      * An array of objects scheduled for deletion.
@@ -235,16 +251,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     public function getPDDebateId()
     {
         return $this->p_d_debate_id;
-    }
-
-    /**
-     * Get the [p_d_reaction_id] column value.
-     *
-     * @return int
-     */
-    public function getPDReactionId()
-    {
-        return $this->p_d_reaction_id;
     }
 
     /**
@@ -468,6 +474,36 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [tree_left] column value.
+     *
+     * @return int
+     */
+    public function getTreeLeft()
+    {
+        return $this->tree_left;
+    }
+
+    /**
+     * Get the [tree_right] column value.
+     *
+     * @return int
+     */
+    public function getTreeRight()
+    {
+        return $this->tree_right;
+    }
+
+    /**
+     * Get the [tree_level] column value.
+     *
+     * @return int
+     */
+    public function getTreeLevel()
+    {
+        return $this->tree_level;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -537,31 +573,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
         return $this;
     } // setPDDebateId()
-
-    /**
-     * Set the value of [p_d_reaction_id] column.
-     *
-     * @param int $v new value
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function setPDReactionId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_d_reaction_id !== $v) {
-            $this->p_d_reaction_id = $v;
-            $this->modifiedColumns[] = PDReactionPeer::P_D_REACTION_ID;
-        }
-
-        if ($this->aPDReactionRelatedByPDReactionId !== null && $this->aPDReactionRelatedByPDReactionId->getId() !== $v) {
-            $this->aPDReactionRelatedByPDReactionId = null;
-        }
-
-
-        return $this;
-    } // setPDReactionId()
 
     /**
      * Set the value of [title] column.
@@ -859,6 +870,69 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     } // setSlug()
 
     /**
+     * Set the value of [tree_left] column.
+     *
+     * @param int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setTreeLeft($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_left !== $v) {
+            $this->tree_left = $v;
+            $this->modifiedColumns[] = PDReactionPeer::TREE_LEFT;
+        }
+
+
+        return $this;
+    } // setTreeLeft()
+
+    /**
+     * Set the value of [tree_right] column.
+     *
+     * @param int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setTreeRight($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_right !== $v) {
+            $this->tree_right = $v;
+            $this->modifiedColumns[] = PDReactionPeer::TREE_RIGHT;
+        }
+
+
+        return $this;
+    } // setTreeRight()
+
+    /**
+     * Set the value of [tree_level] column.
+     *
+     * @param int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setTreeLevel($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_level !== $v) {
+            $this->tree_level = $v;
+            $this->modifiedColumns[] = PDReactionPeer::TREE_LEVEL;
+        }
+
+
+        return $this;
+    } // setTreeLevel()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -893,20 +967,22 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->p_d_debate_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_d_reaction_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->summary = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->more_info = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->note_pos = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->note_neg = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->published = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->published_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->published_by = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->online = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->slug = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->more_info = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->note_pos = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->note_neg = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->online = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->slug = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->tree_left = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->tree_right = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+            $this->tree_level = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -915,7 +991,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 17; // 17 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 19; // 19 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -943,9 +1019,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ($this->aPDDebate !== null && $this->p_d_debate_id !== $this->aPDDebate->getId()) {
             $this->aPDDebate = null;
-        }
-        if ($this->aPDReactionRelatedByPDReactionId !== null && $this->p_d_reaction_id !== $this->aPDReactionRelatedByPDReactionId->getId()) {
-            $this->aPDReactionRelatedByPDReactionId = null;
         }
     } // ensureConsistency
 
@@ -988,9 +1061,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDDebate = null;
-            $this->aPDReactionRelatedByPDReactionId = null;
-            $this->collPDReactionsRelatedById = null;
-
             $this->collPDRComments = null;
 
         } // if (deep)
@@ -1021,9 +1091,24 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $deleteQuery = PDReactionQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // nested_set behavior
+            if ($this->isRoot()) {
+                throw new PropelException('Deletion of a root node is disabled for nested sets. Use PDReactionPeer::deleteTree($scope) instead to delete an entire tree');
+            }
+
+            if ($this->isInTree()) {
+                $this->deleteDescendants($con);
+            }
+
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
+                // nested_set behavior
+                if ($this->isInTree()) {
+                    // fill up the room that was used by the node
+                    PDReactionPeer::shiftRLValues(-2, $this->getRightValue() + 1, null, $this->getScopeValue(), $con);
+                }
+
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -1072,6 +1157,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             } elseif (!$this->getSlug()) {
                 $this->setSlug($this->createSlug());
             }
+            // nested_set behavior
+            if ($this->isNew() && $this->isRoot()) {
+                // check if no other root exist in, the tree
+                $nbRoots = PDReactionQuery::create()
+                    ->addUsingAlias(PDReactionPeer::LEFT_COL, 1, Criteria::EQUAL)
+                    ->addUsingAlias(PDReactionPeer::SCOPE_COL, $this->getScopeValue(), Criteria::EQUAL)
+                    ->count($con);
+                if ($nbRoots > 0) {
+                        throw new PropelException(sprintf('A root node already exists in this tree with scope "%s".', $this->getScopeValue()));
+                }
+            }
+            $this->processNestedSetQueries($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -1145,13 +1242,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setPDDebate($this->aPDDebate);
             }
 
-            if ($this->aPDReactionRelatedByPDReactionId !== null) {
-                if ($this->aPDReactionRelatedByPDReactionId->isModified() || $this->aPDReactionRelatedByPDReactionId->isNew()) {
-                    $affectedRows += $this->aPDReactionRelatedByPDReactionId->save($con);
-                }
-                $this->setPDReactionRelatedByPDReactionId($this->aPDReactionRelatedByPDReactionId);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1161,24 +1251,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->pDReactionsRelatedByIdScheduledForDeletion !== null) {
-                if (!$this->pDReactionsRelatedByIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pDReactionsRelatedByIdScheduledForDeletion as $pDReactionRelatedById) {
-                        // need to save related object because we set the relation to null
-                        $pDReactionRelatedById->save($con);
-                    }
-                    $this->pDReactionsRelatedByIdScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPDReactionsRelatedById !== null) {
-                foreach ($this->collPDReactionsRelatedById as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             if ($this->pDRCommentsScheduledForDeletion !== null) {
@@ -1233,9 +1305,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_D_DEBATE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_d_debate_id`';
         }
-        if ($this->isColumnModified(PDReactionPeer::P_D_REACTION_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_d_reaction_id`';
-        }
         if ($this->isColumnModified(PDReactionPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1275,6 +1344,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
         }
+        if ($this->isColumnModified(PDReactionPeer::TREE_LEFT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_left`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::TREE_RIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_right`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::TREE_LEVEL)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_level`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_d_reaction` (%s) VALUES (%s)',
@@ -1294,9 +1372,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                         break;
                     case '`p_d_debate_id`':
                         $stmt->bindValue($identifier, $this->p_d_debate_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_d_reaction_id`':
-                        $stmt->bindValue($identifier, $this->p_d_reaction_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1336,6 +1411,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                         break;
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`tree_left`':
+                        $stmt->bindValue($identifier, $this->tree_left, PDO::PARAM_INT);
+                        break;
+                    case '`tree_right`':
+                        $stmt->bindValue($identifier, $this->tree_right, PDO::PARAM_INT);
+                        break;
+                    case '`tree_level`':
+                        $stmt->bindValue($identifier, $this->tree_level, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1448,25 +1532,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aPDReactionRelatedByPDReactionId !== null) {
-                if (!$this->aPDReactionRelatedByPDReactionId->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPDReactionRelatedByPDReactionId->getValidationFailures());
-                }
-            }
-
 
             if (($retval = PDReactionPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collPDReactionsRelatedById !== null) {
-                    foreach ($this->collPDReactionsRelatedById as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
                 if ($this->collPDRComments !== null) {
                     foreach ($this->collPDRComments as $referrerFK) {
@@ -1521,46 +1591,52 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 return $this->getPDDebateId();
                 break;
             case 3:
-                return $this->getPDReactionId();
-                break;
-            case 4:
                 return $this->getTitle();
                 break;
-            case 5:
+            case 4:
                 return $this->getSummary();
                 break;
-            case 6:
+            case 5:
                 return $this->getDescription();
                 break;
-            case 7:
+            case 6:
                 return $this->getMoreInfo();
                 break;
-            case 8:
+            case 7:
                 return $this->getNotePos();
                 break;
-            case 9:
+            case 8:
                 return $this->getNoteNeg();
                 break;
-            case 10:
+            case 9:
                 return $this->getPublished();
                 break;
-            case 11:
+            case 10:
                 return $this->getPublishedAt();
                 break;
-            case 12:
+            case 11:
                 return $this->getPublishedBy();
                 break;
-            case 13:
+            case 12:
                 return $this->getOnline();
                 break;
-            case 14:
+            case 13:
                 return $this->getCreatedAt();
                 break;
-            case 15:
+            case 14:
                 return $this->getUpdatedAt();
                 break;
-            case 16:
+            case 15:
                 return $this->getSlug();
+                break;
+            case 16:
+                return $this->getTreeLeft();
+                break;
+            case 17:
+                return $this->getTreeRight();
+                break;
+            case 18:
+                return $this->getTreeLevel();
                 break;
             default:
                 return null;
@@ -1594,20 +1670,22 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getPDDebateId(),
-            $keys[3] => $this->getPDReactionId(),
-            $keys[4] => $this->getTitle(),
-            $keys[5] => $this->getSummary(),
-            $keys[6] => $this->getDescription(),
-            $keys[7] => $this->getMoreInfo(),
-            $keys[8] => $this->getNotePos(),
-            $keys[9] => $this->getNoteNeg(),
-            $keys[10] => $this->getPublished(),
-            $keys[11] => $this->getPublishedAt(),
-            $keys[12] => $this->getPublishedBy(),
-            $keys[13] => $this->getOnline(),
-            $keys[14] => $this->getCreatedAt(),
-            $keys[15] => $this->getUpdatedAt(),
-            $keys[16] => $this->getSlug(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getSummary(),
+            $keys[5] => $this->getDescription(),
+            $keys[6] => $this->getMoreInfo(),
+            $keys[7] => $this->getNotePos(),
+            $keys[8] => $this->getNoteNeg(),
+            $keys[9] => $this->getPublished(),
+            $keys[10] => $this->getPublishedAt(),
+            $keys[11] => $this->getPublishedBy(),
+            $keys[12] => $this->getOnline(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
+            $keys[15] => $this->getSlug(),
+            $keys[16] => $this->getTreeLeft(),
+            $keys[17] => $this->getTreeRight(),
+            $keys[18] => $this->getTreeLevel(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
@@ -1615,12 +1693,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if (null !== $this->aPDDebate) {
                 $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aPDReactionRelatedByPDReactionId) {
-                $result['PDReactionRelatedByPDReactionId'] = $this->aPDReactionRelatedByPDReactionId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collPDReactionsRelatedById) {
-                $result['PDReactionsRelatedById'] = $this->collPDReactionsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1669,46 +1741,52 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setPDDebateId($value);
                 break;
             case 3:
-                $this->setPDReactionId($value);
-                break;
-            case 4:
                 $this->setTitle($value);
                 break;
-            case 5:
+            case 4:
                 $this->setSummary($value);
                 break;
-            case 6:
+            case 5:
                 $this->setDescription($value);
                 break;
-            case 7:
+            case 6:
                 $this->setMoreInfo($value);
                 break;
-            case 8:
+            case 7:
                 $this->setNotePos($value);
                 break;
-            case 9:
+            case 8:
                 $this->setNoteNeg($value);
                 break;
-            case 10:
+            case 9:
                 $this->setPublished($value);
                 break;
-            case 11:
+            case 10:
                 $this->setPublishedAt($value);
                 break;
-            case 12:
+            case 11:
                 $this->setPublishedBy($value);
                 break;
-            case 13:
+            case 12:
                 $this->setOnline($value);
                 break;
-            case 14:
+            case 13:
                 $this->setCreatedAt($value);
                 break;
-            case 15:
+            case 14:
                 $this->setUpdatedAt($value);
                 break;
-            case 16:
+            case 15:
                 $this->setSlug($value);
+                break;
+            case 16:
+                $this->setTreeLeft($value);
+                break;
+            case 17:
+                $this->setTreeRight($value);
+                break;
+            case 18:
+                $this->setTreeLevel($value);
                 break;
         } // switch()
     }
@@ -1737,20 +1815,22 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPDDebateId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPDReactionId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setSummary($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setMoreInfo($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setNotePos($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setNoteNeg($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPublished($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPublishedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublishedBy($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setOnline($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setSlug($arr[$keys[16]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setMoreInfo($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNotePos($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNoteNeg($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setOnline($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setSlug($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setTreeLeft($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setTreeRight($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setTreeLevel($arr[$keys[18]]);
     }
 
     /**
@@ -1765,7 +1845,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::ID)) $criteria->add(PDReactionPeer::ID, $this->id);
         if ($this->isColumnModified(PDReactionPeer::P_USER_ID)) $criteria->add(PDReactionPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDReactionPeer::P_D_DEBATE_ID)) $criteria->add(PDReactionPeer::P_D_DEBATE_ID, $this->p_d_debate_id);
-        if ($this->isColumnModified(PDReactionPeer::P_D_REACTION_ID)) $criteria->add(PDReactionPeer::P_D_REACTION_ID, $this->p_d_reaction_id);
         if ($this->isColumnModified(PDReactionPeer::TITLE)) $criteria->add(PDReactionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionPeer::SUMMARY)) $criteria->add(PDReactionPeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PDReactionPeer::DESCRIPTION)) $criteria->add(PDReactionPeer::DESCRIPTION, $this->description);
@@ -1779,6 +1858,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::CREATED_AT)) $criteria->add(PDReactionPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDReactionPeer::UPDATED_AT)) $criteria->add(PDReactionPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDReactionPeer::SLUG)) $criteria->add(PDReactionPeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PDReactionPeer::TREE_LEFT)) $criteria->add(PDReactionPeer::TREE_LEFT, $this->tree_left);
+        if ($this->isColumnModified(PDReactionPeer::TREE_RIGHT)) $criteria->add(PDReactionPeer::TREE_RIGHT, $this->tree_right);
+        if ($this->isColumnModified(PDReactionPeer::TREE_LEVEL)) $criteria->add(PDReactionPeer::TREE_LEVEL, $this->tree_level);
 
         return $criteria;
     }
@@ -1844,7 +1926,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPDDebateId($this->getPDDebateId());
-        $copyObj->setPDReactionId($this->getPDReactionId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
@@ -1858,6 +1939,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setTreeLeft($this->getTreeLeft());
+        $copyObj->setTreeRight($this->getTreeRight());
+        $copyObj->setTreeLevel($this->getTreeLevel());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1865,12 +1949,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getPDReactionsRelatedById() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPDReactionRelatedById($relObj->copy($deepCopy));
-                }
-            }
 
             foreach ($this->getPDRComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -2032,58 +2110,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         return $this->aPDDebate;
     }
 
-    /**
-     * Declares an association between this object and a PDReaction object.
-     *
-     * @param             PDReaction $v
-     * @return PDReaction The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPDReactionRelatedByPDReactionId(PDReaction $v = null)
-    {
-        if ($v === null) {
-            $this->setPDReactionId(NULL);
-        } else {
-            $this->setPDReactionId($v->getId());
-        }
-
-        $this->aPDReactionRelatedByPDReactionId = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PDReaction object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPDReactionRelatedById($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated PDReaction object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return PDReaction The associated PDReaction object.
-     * @throws PropelException
-     */
-    public function getPDReactionRelatedByPDReactionId(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aPDReactionRelatedByPDReactionId === null && ($this->p_d_reaction_id !== null) && $doQuery) {
-            $this->aPDReactionRelatedByPDReactionId = PDReactionQuery::create()->findPk($this->p_d_reaction_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aPDReactionRelatedByPDReactionId->addPDReactionsRelatedById($this);
-             */
-        }
-
-        return $this->aPDReactionRelatedByPDReactionId;
-    }
-
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -2095,280 +2121,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PDReactionRelatedById' == $relationName) {
-            $this->initPDReactionsRelatedById();
-        }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
         }
-    }
-
-    /**
-     * Clears out the collPDReactionsRelatedById collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PDReaction The current object (for fluent API support)
-     * @see        addPDReactionsRelatedById()
-     */
-    public function clearPDReactionsRelatedById()
-    {
-        $this->collPDReactionsRelatedById = null; // important to set this to null since that means it is uninitialized
-        $this->collPDReactionsRelatedByIdPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPDReactionsRelatedById collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPDReactionsRelatedById($v = true)
-    {
-        $this->collPDReactionsRelatedByIdPartial = $v;
-    }
-
-    /**
-     * Initializes the collPDReactionsRelatedById collection.
-     *
-     * By default this just sets the collPDReactionsRelatedById collection to an empty array (like clearcollPDReactionsRelatedById());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPDReactionsRelatedById($overrideExisting = true)
-    {
-        if (null !== $this->collPDReactionsRelatedById && !$overrideExisting) {
-            return;
-        }
-        $this->collPDReactionsRelatedById = new PropelObjectCollection();
-        $this->collPDReactionsRelatedById->setModel('PDReaction');
-    }
-
-    /**
-     * Gets an array of PDReaction objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PDReaction is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     * @throws PropelException
-     */
-    public function getPDReactionsRelatedById($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPDReactionsRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collPDReactionsRelatedById || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPDReactionsRelatedById) {
-                // return empty collection
-                $this->initPDReactionsRelatedById();
-            } else {
-                $collPDReactionsRelatedById = PDReactionQuery::create(null, $criteria)
-                    ->filterByPDReactionRelatedByPDReactionId($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPDReactionsRelatedByIdPartial && count($collPDReactionsRelatedById)) {
-                      $this->initPDReactionsRelatedById(false);
-
-                      foreach($collPDReactionsRelatedById as $obj) {
-                        if (false == $this->collPDReactionsRelatedById->contains($obj)) {
-                          $this->collPDReactionsRelatedById->append($obj);
-                        }
-                      }
-
-                      $this->collPDReactionsRelatedByIdPartial = true;
-                    }
-
-                    $collPDReactionsRelatedById->getInternalIterator()->rewind();
-                    return $collPDReactionsRelatedById;
-                }
-
-                if($partial && $this->collPDReactionsRelatedById) {
-                    foreach($this->collPDReactionsRelatedById as $obj) {
-                        if($obj->isNew()) {
-                            $collPDReactionsRelatedById[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPDReactionsRelatedById = $collPDReactionsRelatedById;
-                $this->collPDReactionsRelatedByIdPartial = false;
-            }
-        }
-
-        return $this->collPDReactionsRelatedById;
-    }
-
-    /**
-     * Sets a collection of PDReactionRelatedById objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pDReactionsRelatedById A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function setPDReactionsRelatedById(PropelCollection $pDReactionsRelatedById, PropelPDO $con = null)
-    {
-        $pDReactionsRelatedByIdToDelete = $this->getPDReactionsRelatedById(new Criteria(), $con)->diff($pDReactionsRelatedById);
-
-        $this->pDReactionsRelatedByIdScheduledForDeletion = unserialize(serialize($pDReactionsRelatedByIdToDelete));
-
-        foreach ($pDReactionsRelatedByIdToDelete as $pDReactionRelatedByIdRemoved) {
-            $pDReactionRelatedByIdRemoved->setPDReactionRelatedByPDReactionId(null);
-        }
-
-        $this->collPDReactionsRelatedById = null;
-        foreach ($pDReactionsRelatedById as $pDReactionRelatedById) {
-            $this->addPDReactionRelatedById($pDReactionRelatedById);
-        }
-
-        $this->collPDReactionsRelatedById = $pDReactionsRelatedById;
-        $this->collPDReactionsRelatedByIdPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PDReaction objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PDReaction objects.
-     * @throws PropelException
-     */
-    public function countPDReactionsRelatedById(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPDReactionsRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collPDReactionsRelatedById || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPDReactionsRelatedById) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getPDReactionsRelatedById());
-            }
-            $query = PDReactionQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPDReactionRelatedByPDReactionId($this)
-                ->count($con);
-        }
-
-        return count($this->collPDReactionsRelatedById);
-    }
-
-    /**
-     * Method called to associate a PDReaction object to this object
-     * through the PDReaction foreign key attribute.
-     *
-     * @param    PDReaction $l PDReaction
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function addPDReactionRelatedById(PDReaction $l)
-    {
-        if ($this->collPDReactionsRelatedById === null) {
-            $this->initPDReactionsRelatedById();
-            $this->collPDReactionsRelatedByIdPartial = true;
-        }
-        if (!in_array($l, $this->collPDReactionsRelatedById->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPDReactionRelatedById($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PDReactionRelatedById $pDReactionRelatedById The pDReactionRelatedById object to add.
-     */
-    protected function doAddPDReactionRelatedById($pDReactionRelatedById)
-    {
-        $this->collPDReactionsRelatedById[]= $pDReactionRelatedById;
-        $pDReactionRelatedById->setPDReactionRelatedByPDReactionId($this);
-    }
-
-    /**
-     * @param	PDReactionRelatedById $pDReactionRelatedById The pDReactionRelatedById object to remove.
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function removePDReactionRelatedById($pDReactionRelatedById)
-    {
-        if ($this->getPDReactionsRelatedById()->contains($pDReactionRelatedById)) {
-            $this->collPDReactionsRelatedById->remove($this->collPDReactionsRelatedById->search($pDReactionRelatedById));
-            if (null === $this->pDReactionsRelatedByIdScheduledForDeletion) {
-                $this->pDReactionsRelatedByIdScheduledForDeletion = clone $this->collPDReactionsRelatedById;
-                $this->pDReactionsRelatedByIdScheduledForDeletion->clear();
-            }
-            $this->pDReactionsRelatedByIdScheduledForDeletion[]= $pDReactionRelatedById;
-            $pDReactionRelatedById->setPDReactionRelatedByPDReactionId(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PDReaction is new, it will return
-     * an empty collection; or if this PDReaction has previously
-     * been saved, it will retrieve related PDReactionsRelatedById from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PDReaction.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     */
-    public function getPDReactionsRelatedByIdJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDReactionQuery::create(null, $criteria);
-        $query->joinWith('PUser', $join_behavior);
-
-        return $this->getPDReactionsRelatedById($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PDReaction is new, it will return
-     * an empty collection; or if this PDReaction has previously
-     * been saved, it will retrieve related PDReactionsRelatedById from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PDReaction.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     */
-    public function getPDReactionsRelatedByIdJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDReactionQuery::create(null, $criteria);
-        $query->joinWith('PDDebate', $join_behavior);
-
-        return $this->getPDReactionsRelatedById($query, $con);
     }
 
     /**
@@ -2622,7 +2377,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->id = null;
         $this->p_user_id = null;
         $this->p_d_debate_id = null;
-        $this->p_d_reaction_id = null;
         $this->title = null;
         $this->summary = null;
         $this->description = null;
@@ -2636,6 +2390,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
+        $this->tree_left = null;
+        $this->tree_right = null;
+        $this->tree_level = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2658,11 +2415,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPDReactionsRelatedById) {
-                foreach ($this->collPDReactionsRelatedById as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collPDRComments) {
                 foreach ($this->collPDRComments as $o) {
                     $o->clearAllReferences($deep);
@@ -2674,24 +2426,19 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             if ($this->aPDDebate instanceof Persistent) {
               $this->aPDDebate->clearAllReferences($deep);
             }
-            if ($this->aPDReactionRelatedByPDReactionId instanceof Persistent) {
-              $this->aPDReactionRelatedByPDReactionId->clearAllReferences($deep);
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPDReactionsRelatedById instanceof PropelCollection) {
-            $this->collPDReactionsRelatedById->clearIterator();
-        }
-        $this->collPDReactionsRelatedById = null;
+        // nested_set behavior
+        $this->collNestedSetChildren = null;
+        $this->aNestedSetParent = null;
         if ($this->collPDRComments instanceof PropelCollection) {
             $this->collPDRComments->clearIterator();
         }
         $this->collPDRComments = null;
         $this->aPUser = null;
         $this->aPDDebate = null;
-        $this->aPDReactionRelatedByPDReactionId = null;
     }
 
     /**
@@ -2859,6 +2606,915 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
 
         return $slug2 . ($slugNum + 1);
+    }
+
+    // nested_set behavior
+
+    /**
+     * Execute queries that were saved to be run inside the save transaction
+     */
+    protected function processNestedSetQueries($con)
+    {
+        foreach ($this->nestedSetQueries as $query) {
+            $query['arguments'][]= $con;
+            call_user_func_array($query['callable'], $query['arguments']);
+        }
+        $this->nestedSetQueries = array();
+    }
+
+    /**
+     * Proxy getter method for the left value of the nested set model.
+     * It provides a generic way to get the value, whatever the actual column name is.
+     *
+     * @return     int The nested set left value
+     */
+    public function getLeftValue()
+    {
+        return $this->tree_left;
+    }
+
+    /**
+     * Proxy getter method for the right value of the nested set model.
+     * It provides a generic way to get the value, whatever the actual column name is.
+     *
+     * @return     int The nested set right value
+     */
+    public function getRightValue()
+    {
+        return $this->tree_right;
+    }
+
+    /**
+     * Proxy getter method for the level value of the nested set model.
+     * It provides a generic way to get the value, whatever the actual column name is.
+     *
+     * @return     int The nested set level value
+     */
+    public function getLevel()
+    {
+        return $this->tree_level;
+    }
+
+    /**
+     * Proxy getter method for the scope value of the nested set model.
+     * It provides a generic way to get the value, whatever the actual column name is.
+     *
+     * @return     int The nested set scope value
+     */
+    public function getScopeValue()
+    {
+        return $this->p_d_debate_id;
+    }
+
+    /**
+     * Proxy setter method for the left value of the nested set model.
+     * It provides a generic way to set the value, whatever the actual column name is.
+     *
+     * @param      int $v The nested set left value
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function setLeftValue($v)
+    {
+        return $this->setTreeLeft($v);
+    }
+
+    /**
+     * Proxy setter method for the right value of the nested set model.
+     * It provides a generic way to set the value, whatever the actual column name is.
+     *
+     * @param      int $v The nested set right value
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function setRightValue($v)
+    {
+        return $this->setTreeRight($v);
+    }
+
+    /**
+     * Proxy setter method for the level value of the nested set model.
+     * It provides a generic way to set the value, whatever the actual column name is.
+     *
+     * @param      int $v The nested set level value
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function setLevel($v)
+    {
+        return $this->setTreeLevel($v);
+    }
+
+    /**
+     * Proxy setter method for the scope value of the nested set model.
+     * It provides a generic way to set the value, whatever the actual column name is.
+     *
+     * @param      int $v The nested set scope value
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function setScopeValue($v)
+    {
+        return $this->setPDDebateId($v);
+    }
+
+    /**
+     * Creates the supplied node as the root node.
+     *
+     * @return     PDReaction The current object (for fluent API support)
+     * @throws     PropelException
+     */
+    public function makeRoot()
+    {
+        if ($this->getLeftValue() || $this->getRightValue()) {
+            throw new PropelException('Cannot turn an existing node into a root node.');
+        }
+
+        $this->setLeftValue(1);
+        $this->setRightValue(2);
+        $this->setLevel(0);
+
+        return $this;
+    }
+
+    /**
+     * Tests if onbject is a node, i.e. if it is inserted in the tree
+     *
+     * @return     bool
+     */
+    public function isInTree()
+    {
+        return $this->getLeftValue() > 0 && $this->getRightValue() > $this->getLeftValue();
+    }
+
+    /**
+     * Tests if node is a root
+     *
+     * @return     bool
+     */
+    public function isRoot()
+    {
+        return $this->isInTree() && $this->getLeftValue() == 1;
+    }
+
+    /**
+     * Tests if node is a leaf
+     *
+     * @return     bool
+     */
+    public function isLeaf()
+    {
+        return $this->isInTree() &&  ($this->getRightValue() - $this->getLeftValue()) == 1;
+    }
+
+    /**
+     * Tests if node is a descendant of another node
+     *
+     * @param      PDReaction $node Propel node object
+     * @return     bool
+     */
+    public function isDescendantOf($parent)
+    {
+        if ($this->getScopeValue() !== $parent->getScopeValue()) {
+            return false; //since the `this` and $parent are in different scopes, there's no way that `this` is be a descendant of $parent.
+        }
+
+        return $this->isInTree() && $this->getLeftValue() > $parent->getLeftValue() && $this->getRightValue() < $parent->getRightValue();
+    }
+
+    /**
+     * Tests if node is a ancestor of another node
+     *
+     * @param      PDReaction $node Propel node object
+     * @return     bool
+     */
+    public function isAncestorOf($child)
+    {
+        return $child->isDescendantOf($this);
+    }
+
+    /**
+     * Tests if object has an ancestor
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     bool
+     */
+    public function hasParent(PropelPDO $con = null)
+    {
+        return $this->getLevel() > 0;
+    }
+
+    /**
+     * Sets the cache for parent node of the current object.
+     * Warning: this does not move the current object in the tree.
+     * Use moveTofirstChildOf() or moveToLastChildOf() for that purpose
+     *
+     * @param      PDReaction $parent
+     * @return     PDReaction The current object, for fluid interface
+     */
+    public function setParent($parent = null)
+    {
+        $this->aNestedSetParent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Gets parent node for the current object if it exists
+     * The result is cached so further calls to the same method don't issue any queries
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     mixed 		Propel object if exists else false
+     */
+    public function getParent(PropelPDO $con = null)
+    {
+        if ($this->aNestedSetParent === null && $this->hasParent()) {
+            $this->aNestedSetParent = PDReactionQuery::create()
+                ->ancestorsOf($this)
+                ->orderByLevel(true)
+                ->findOne($con);
+        }
+
+        return $this->aNestedSetParent;
+    }
+
+    /**
+     * Determines if the node has previous sibling
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     bool
+     */
+    public function hasPrevSibling(PropelPDO $con = null)
+    {
+        if (!PDReactionPeer::isValid($this)) {
+            return false;
+        }
+
+        return PDReactionQuery::create()
+            ->filterByTreeRight($this->getLeftValue() - 1)
+            ->inTree($this->getScopeValue())
+            ->count($con) > 0;
+    }
+
+    /**
+     * Gets previous sibling for the given node if it exists
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     mixed 		Propel object if exists else false
+     */
+    public function getPrevSibling(PropelPDO $con = null)
+    {
+        return PDReactionQuery::create()
+            ->filterByTreeRight($this->getLeftValue() - 1)
+            ->inTree($this->getScopeValue())
+            ->findOne($con);
+    }
+
+    /**
+     * Determines if the node has next sibling
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     bool
+     */
+    public function hasNextSibling(PropelPDO $con = null)
+    {
+        if (!PDReactionPeer::isValid($this)) {
+            return false;
+        }
+
+        return PDReactionQuery::create()
+            ->filterByTreeLeft($this->getRightValue() + 1)
+            ->inTree($this->getScopeValue())
+            ->count($con) > 0;
+    }
+
+    /**
+     * Gets next sibling for the given node if it exists
+     *
+     * @param      PropelPDO $con Connection to use.
+     * @return     mixed 		Propel object if exists else false
+     */
+    public function getNextSibling(PropelPDO $con = null)
+    {
+        return PDReactionQuery::create()
+            ->filterByTreeLeft($this->getRightValue() + 1)
+            ->inTree($this->getScopeValue())
+            ->findOne($con);
+    }
+
+    /**
+     * Clears out the $collNestedSetChildren collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return     void
+     */
+    public function clearNestedSetChildren()
+    {
+        $this->collNestedSetChildren = null;
+    }
+
+    /**
+     * Initializes the $collNestedSetChildren collection.
+     *
+     * @return     void
+     */
+    public function initNestedSetChildren()
+    {
+        $this->collNestedSetChildren = new PropelObjectCollection();
+        $this->collNestedSetChildren->setModel('PDReaction');
+    }
+
+    /**
+     * Adds an element to the internal $collNestedSetChildren collection.
+     * Beware that this doesn't insert a node in the tree.
+     * This method is only used to facilitate children hydration.
+     *
+     * @param      PDReaction $pDReaction
+     *
+     * @return     void
+     */
+    public function addNestedSetChild($pDReaction)
+    {
+        if ($this->collNestedSetChildren === null) {
+            $this->initNestedSetChildren();
+        }
+        if (!in_array($pDReaction, $this->collNestedSetChildren->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->collNestedSetChildren[]= $pDReaction;
+            $pDReaction->setParent($this);
+        }
+    }
+
+    /**
+     * Tests if node has children
+     *
+     * @return     bool
+     */
+    public function hasChildren()
+    {
+        return ($this->getRightValue() - $this->getLeftValue()) > 1;
+    }
+
+    /**
+     * Gets the children of the given node
+     *
+     * @param      Criteria  $criteria Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array     List of PDReaction objects
+     */
+    public function getChildren($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collNestedSetChildren || null !== $criteria) {
+            if ($this->isLeaf() || ($this->isNew() && null === $this->collNestedSetChildren)) {
+                // return empty collection
+                $this->initNestedSetChildren();
+            } else {
+                $collNestedSetChildren = PDReactionQuery::create(null, $criteria)
+                  ->childrenOf($this)
+                  ->orderByBranch()
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collNestedSetChildren;
+                }
+                $this->collNestedSetChildren = $collNestedSetChildren;
+            }
+        }
+
+        return $this->collNestedSetChildren;
+    }
+
+    /**
+     * Gets number of children for the given node
+     *
+     * @param      Criteria  $criteria Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     int       Number of children
+     */
+    public function countChildren($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collNestedSetChildren || null !== $criteria) {
+            if ($this->isLeaf() || ($this->isNew() && null === $this->collNestedSetChildren)) {
+                return 0;
+            } else {
+                return PDReactionQuery::create(null, $criteria)
+                    ->childrenOf($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collNestedSetChildren);
+        }
+    }
+
+    /**
+     * Gets the first child of the given node
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array 		List of PDReaction objects
+     */
+    public function getFirstChild($query = null, PropelPDO $con = null)
+    {
+        if ($this->isLeaf()) {
+            return array();
+        } else {
+            return PDReactionQuery::create(null, $query)
+                ->childrenOf($this)
+                ->orderByBranch()
+                ->findOne($con);
+        }
+    }
+
+    /**
+     * Gets the last child of the given node
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array 		List of PDReaction objects
+     */
+    public function getLastChild($query = null, PropelPDO $con = null)
+    {
+        if ($this->isLeaf()) {
+            return array();
+        } else {
+            return PDReactionQuery::create(null, $query)
+                ->childrenOf($this)
+                ->orderByBranch(true)
+                ->findOne($con);
+        }
+    }
+
+    /**
+     * Gets the siblings of the given node
+     *
+     * @param      bool			$includeNode Whether to include the current node or not
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     *
+     * @return     array 		List of PDReaction objects
+     */
+    public function getSiblings($includeNode = false, $query = null, PropelPDO $con = null)
+    {
+        if ($this->isRoot()) {
+            return array();
+        } else {
+             $query = PDReactionQuery::create(null, $query)
+                    ->childrenOf($this->getParent($con))
+                    ->orderByBranch();
+            if (!$includeNode) {
+                $query->prune($this);
+            }
+
+            return $query->find($con);
+        }
+    }
+
+    /**
+     * Gets descendants for the given node
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array 		List of PDReaction objects
+     */
+    public function getDescendants($query = null, PropelPDO $con = null)
+    {
+        if ($this->isLeaf()) {
+            return array();
+        } else {
+            return PDReactionQuery::create(null, $query)
+                ->descendantsOf($this)
+                ->orderByBranch()
+                ->find($con);
+        }
+    }
+
+    /**
+     * Gets number of descendants for the given node
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     int 		Number of descendants
+     */
+    public function countDescendants($query = null, PropelPDO $con = null)
+    {
+        if ($this->isLeaf()) {
+            // save one query
+            return 0;
+        } else {
+            return PDReactionQuery::create(null, $query)
+                ->descendantsOf($this)
+                ->count($con);
+        }
+    }
+
+    /**
+     * Gets descendants for the given node, plus the current node
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array 		List of PDReaction objects
+     */
+    public function getBranch($query = null, PropelPDO $con = null)
+    {
+        return PDReactionQuery::create(null, $query)
+            ->branchOf($this)
+            ->orderByBranch()
+            ->find($con);
+    }
+
+    /**
+     * Gets ancestors for the given node, starting with the root node
+     * Use it for breadcrumb paths for instance
+     *
+     * @param      Criteria $query Criteria to filter results.
+     * @param      PropelPDO $con Connection to use.
+     * @return     array 		List of PDReaction objects
+     */
+    public function getAncestors($query = null, PropelPDO $con = null)
+    {
+        if ($this->isRoot()) {
+            // save one query
+            return array();
+        } else {
+            return PDReactionQuery::create(null, $query)
+                ->ancestorsOf($this)
+                ->orderByBranch()
+                ->find($con);
+        }
+    }
+
+    /**
+     * Inserts the given $child node as first child of current
+     * The modifications in the current object and the tree
+     * are not persisted until the child object is saved.
+     *
+     * @param      PDReaction $child	Propel object for child node
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function addChild(PDReaction $child)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('A PDReaction object must not be new to accept children.');
+        }
+        $child->insertAsFirstChildOf($this);
+
+        return $this;
+    }
+
+    /**
+     * Inserts the current node as first child of given $parent node
+     * The modifications in the current object and the tree
+     * are not persisted until the current object is saved.
+     *
+     * @param      PDReaction $parent	Propel object for parent node
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function insertAsFirstChildOf($parent)
+    {
+        if ($this->isInTree()) {
+            throw new PropelException('A PDReaction object must not already be in the tree to be inserted. Use the moveToFirstChildOf() instead.');
+        }
+        $left = $parent->getLeftValue() + 1;
+        // Update node properties
+        $this->setLeftValue($left);
+        $this->setRightValue($left + 1);
+        $this->setLevel($parent->getLevel() + 1);
+        $scope = $parent->getScopeValue();
+        $this->setScopeValue($scope);
+        // update the children collection of the parent
+        $parent->addNestedSetChild($this);
+
+        // Keep the tree modification query for the save() transaction
+        $this->nestedSetQueries []= array(
+            'callable'  => array('\\Politizr\Model\\PDReactionPeer', 'makeRoomForLeaf'),
+            'arguments' => array($left, $scope, $this->isNew() ? null : $this)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Inserts the current node as last child of given $parent node
+     * The modifications in the current object and the tree
+     * are not persisted until the current object is saved.
+     *
+     * @param      PDReaction $parent	Propel object for parent node
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function insertAsLastChildOf($parent)
+    {
+        if ($this->isInTree()) {
+            throw new PropelException('A PDReaction object must not already be in the tree to be inserted. Use the moveToLastChildOf() instead.');
+        }
+        $left = $parent->getRightValue();
+        // Update node properties
+        $this->setLeftValue($left);
+        $this->setRightValue($left + 1);
+        $this->setLevel($parent->getLevel() + 1);
+        $scope = $parent->getScopeValue();
+        $this->setScopeValue($scope);
+        // update the children collection of the parent
+        $parent->addNestedSetChild($this);
+
+        // Keep the tree modification query for the save() transaction
+        $this->nestedSetQueries []= array(
+            'callable'  => array('\\Politizr\Model\\PDReactionPeer', 'makeRoomForLeaf'),
+            'arguments' => array($left, $scope, $this->isNew() ? null : $this)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Inserts the current node as prev sibling given $sibling node
+     * The modifications in the current object and the tree
+     * are not persisted until the current object is saved.
+     *
+     * @param      PDReaction $sibling	Propel object for parent node
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function insertAsPrevSiblingOf($sibling)
+    {
+        if ($this->isInTree()) {
+            throw new PropelException('A PDReaction object must not already be in the tree to be inserted. Use the moveToPrevSiblingOf() instead.');
+        }
+        $left = $sibling->getLeftValue();
+        // Update node properties
+        $this->setLeftValue($left);
+        $this->setRightValue($left + 1);
+        $this->setLevel($sibling->getLevel());
+        $scope = $sibling->getScopeValue();
+        $this->setScopeValue($scope);
+        // Keep the tree modification query for the save() transaction
+        $this->nestedSetQueries []= array(
+            'callable'  => array('\\Politizr\Model\\PDReactionPeer', 'makeRoomForLeaf'),
+            'arguments' => array($left, $scope, $this->isNew() ? null : $this)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Inserts the current node as next sibling given $sibling node
+     * The modifications in the current object and the tree
+     * are not persisted until the current object is saved.
+     *
+     * @param      PDReaction $sibling	Propel object for parent node
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function insertAsNextSiblingOf($sibling)
+    {
+        if ($this->isInTree()) {
+            throw new PropelException('A PDReaction object must not already be in the tree to be inserted. Use the moveToNextSiblingOf() instead.');
+        }
+        $left = $sibling->getRightValue() + 1;
+        // Update node properties
+        $this->setLeftValue($left);
+        $this->setRightValue($left + 1);
+        $this->setLevel($sibling->getLevel());
+        $scope = $sibling->getScopeValue();
+        $this->setScopeValue($scope);
+        // Keep the tree modification query for the save() transaction
+        $this->nestedSetQueries []= array(
+            'callable'  => array('\\Politizr\Model\\PDReactionPeer', 'makeRoomForLeaf'),
+            'arguments' => array($left, $scope, $this->isNew() ? null : $this)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Moves current node and its subtree to be the first child of $parent
+     * The modifications in the current object and the tree are immediate
+     *
+     * @param      PDReaction $parent	Propel object for parent node
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function moveToFirstChildOf($parent, PropelPDO $con = null)
+    {
+        if (!$this->isInTree()) {
+            throw new PropelException('A PDReaction object must be already in the tree to be moved. Use the insertAsFirstChildOf() instead.');
+        }
+        if ($parent->isDescendantOf($this)) {
+            throw new PropelException('Cannot move a node as child of one of its subtree nodes.');
+        }
+
+        $this->moveSubtreeTo($parent->getLeftValue() + 1, $parent->getLevel() - $this->getLevel() + 1, $parent->getScopeValue(), $con);
+
+        return $this;
+    }
+
+    /**
+     * Moves current node and its subtree to be the last child of $parent
+     * The modifications in the current object and the tree are immediate
+     *
+     * @param      PDReaction $parent	Propel object for parent node
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function moveToLastChildOf($parent, PropelPDO $con = null)
+    {
+        if (!$this->isInTree()) {
+            throw new PropelException('A PDReaction object must be already in the tree to be moved. Use the insertAsLastChildOf() instead.');
+        }
+        if ($parent->isDescendantOf($this)) {
+            throw new PropelException('Cannot move a node as child of one of its subtree nodes.');
+        }
+
+        $this->moveSubtreeTo($parent->getRightValue(), $parent->getLevel() - $this->getLevel() + 1, $parent->getScopeValue(), $con);
+
+        return $this;
+    }
+
+    /**
+     * Moves current node and its subtree to be the previous sibling of $sibling
+     * The modifications in the current object and the tree are immediate
+     *
+     * @param      PDReaction $sibling	Propel object for sibling node
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function moveToPrevSiblingOf($sibling, PropelPDO $con = null)
+    {
+        if (!$this->isInTree()) {
+            throw new PropelException('A PDReaction object must be already in the tree to be moved. Use the insertAsPrevSiblingOf() instead.');
+        }
+        if ($sibling->isRoot()) {
+            throw new PropelException('Cannot move to previous sibling of a root node.');
+        }
+        if ($sibling->isDescendantOf($this)) {
+            throw new PropelException('Cannot move a node as sibling of one of its subtree nodes.');
+        }
+
+        $this->moveSubtreeTo($sibling->getLeftValue(), $sibling->getLevel() - $this->getLevel(), $sibling->getScopeValue(), $con);
+
+        return $this;
+    }
+
+    /**
+     * Moves current node and its subtree to be the next sibling of $sibling
+     * The modifications in the current object and the tree are immediate
+     *
+     * @param      PDReaction $sibling	Propel object for sibling node
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     PDReaction The current Propel object
+     */
+    public function moveToNextSiblingOf($sibling, PropelPDO $con = null)
+    {
+        if (!$this->isInTree()) {
+            throw new PropelException('A PDReaction object must be already in the tree to be moved. Use the insertAsNextSiblingOf() instead.');
+        }
+        if ($sibling->isRoot()) {
+            throw new PropelException('Cannot move to next sibling of a root node.');
+        }
+        if ($sibling->isDescendantOf($this)) {
+            throw new PropelException('Cannot move a node as sibling of one of its subtree nodes.');
+        }
+
+        $this->moveSubtreeTo($sibling->getRightValue() + 1, $sibling->getLevel() - $this->getLevel(), $sibling->getScopeValue(), $con);
+
+        return $this;
+    }
+
+    /**
+     * Move current node and its children to location $destLeft and updates rest of tree
+     *
+     * @param      int	$destLeft Destination left value
+     * @param      int	$levelDelta Delta to add to the levels
+     * @param      PropelPDO $con		Connection to use.
+     */
+    protected function moveSubtreeTo($destLeft, $levelDelta, $targetScope = null, PropelPDO $con = null)
+    {
+        $preventDefault = false;
+        $left  = $this->getLeftValue();
+        $right = $this->getRightValue();
+        $scope = $this->getScopeValue();
+
+        if ($targetScope === null){
+            $targetScope = $scope;
+        }
+
+
+        $treeSize = $right - $left +1;
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $con->beginTransaction();
+        try {
+
+            // make room next to the target for the subtree
+            PDReactionPeer::shiftRLValues($treeSize, $destLeft, null, $targetScope, $con);
+
+
+
+            if ($targetScope != $scope){
+
+                //move subtree to < 0, so the items are out of scope.
+                PDReactionPeer::shiftRLValues(-$right, $left, $right, $scope, $con);
+
+                //update scopes
+                PDReactionPeer::setNegativeScope($targetScope, $con);
+
+                //update levels
+                PDReactionPeer::shiftLevel($levelDelta, $left - $right, 0, $targetScope, $con);
+
+                //move the subtree to the target
+                PDReactionPeer::shiftRLValues(($right - $left) + $destLeft, $left - $right, 0, $targetScope, $con);
+
+
+                $preventDefault = true;
+            }
+
+
+            if (!$preventDefault){
+
+
+                if ($left >= $destLeft) { // src was shifted too?
+                    $left += $treeSize;
+                    $right += $treeSize;
+                }
+
+                if ($levelDelta) {
+                    // update the levels of the subtree
+                    PDReactionPeer::shiftLevel($levelDelta, $left, $right, $scope, $con);
+                }
+
+                // move the subtree to the target
+                PDReactionPeer::shiftRLValues($destLeft - $left, $left, $right, $scope, $con);
+            }
+
+            // remove the empty room at the previous location of the subtree
+            PDReactionPeer::shiftRLValues(-$treeSize, $right + 1, null, $scope, $con);
+
+            // update all loaded nodes
+            PDReactionPeer::updateLoadedNodes(null, $con);
+
+            $con->commit();
+        } catch (PropelException $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Deletes all descendants for the given node
+     * Instance pooling is wiped out by this command,
+     * so existing PDReaction instances are probably invalid (except for the current one)
+     *
+     * @param      PropelPDO $con Connection to use.
+     *
+     * @return     int 		number of deleted nodes
+     */
+    public function deleteDescendants(PropelPDO $con = null)
+    {
+        if ($this->isLeaf()) {
+            // save one query
+            return;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+        $left = $this->getLeftValue();
+        $right = $this->getRightValue();
+        $scope = $this->getScopeValue();
+        $con->beginTransaction();
+        try {
+            // delete descendant nodes (will empty the instance pool)
+            $ret = PDReactionQuery::create()
+                ->descendantsOf($this)
+                ->delete($con);
+
+            // fill up the room that was used by descendants
+            PDReactionPeer::shiftRLValues($left - $right + 1, $right, null, $scope, $con);
+
+            // fix the right value for the current node, which is now a leaf
+            $this->setRightValue($left + 1);
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Returns a pre-order iterator for this node and its children.
+     *
+     * @return     RecursiveIterator
+     */
+    public function getIterator()
+    {
+        return new NestedSetRecursiveIterator($this);
     }
 
 }

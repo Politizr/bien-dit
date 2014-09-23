@@ -32,13 +32,13 @@ abstract class BasePDReactionPeer
     const TM_CLASS = 'PDReactionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 19;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 19;
 
     /** the column name for the id field */
     const ID = 'p_d_reaction.id';
@@ -48,9 +48,6 @@ abstract class BasePDReactionPeer
 
     /** the column name for the p_d_debate_id field */
     const P_D_DEBATE_ID = 'p_d_reaction.p_d_debate_id';
-
-    /** the column name for the p_d_reaction_id field */
-    const P_D_REACTION_ID = 'p_d_reaction.p_d_reaction_id';
 
     /** the column name for the title field */
     const TITLE = 'p_d_reaction.title';
@@ -91,6 +88,15 @@ abstract class BasePDReactionPeer
     /** the column name for the slug field */
     const SLUG = 'p_d_reaction.slug';
 
+    /** the column name for the tree_left field */
+    const TREE_LEFT = 'p_d_reaction.tree_left';
+
+    /** the column name for the tree_right field */
+    const TREE_RIGHT = 'p_d_reaction.tree_right';
+
+    /** the column name for the tree_level field */
+    const TREE_LEVEL = 'p_d_reaction.tree_level';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -103,6 +109,28 @@ abstract class BasePDReactionPeer
     public static $instances = array();
 
 
+    // nested_set behavior
+
+    /**
+     * Left column for the set
+     */
+    const LEFT_COL = 'p_d_reaction.tree_left';
+
+    /**
+     * Right column for the set
+     */
+    const RIGHT_COL = 'p_d_reaction.tree_right';
+
+    /**
+     * Level column for the set
+     */
+    const LEVEL_COL = 'p_d_reaction.tree_level';
+
+    /**
+     * Scope column for the set
+     */
+    const SCOPE_COL = 'p_d_reaction.p_d_debate_id';
+
     /**
      * holds an array of fieldnames
      *
@@ -110,12 +138,12 @@ abstract class BasePDReactionPeer
      * e.g. PDReactionPeer::$fieldNames[PDReactionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'PDReactionId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'pDReactionId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDReactionPeer::ID, PDReactionPeer::P_USER_ID, PDReactionPeer::P_D_DEBATE_ID, PDReactionPeer::P_D_REACTION_ID, PDReactionPeer::TITLE, PDReactionPeer::SUMMARY, PDReactionPeer::DESCRIPTION, PDReactionPeer::MORE_INFO, PDReactionPeer::NOTE_POS, PDReactionPeer::NOTE_NEG, PDReactionPeer::PUBLISHED, PDReactionPeer::PUBLISHED_AT, PDReactionPeer::PUBLISHED_BY, PDReactionPeer::ONLINE, PDReactionPeer::CREATED_AT, PDReactionPeer::UPDATED_AT, PDReactionPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'P_D_REACTION_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'p_d_reaction_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'TreeLeft', 'TreeRight', 'TreeLevel', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'slug', 'treeLeft', 'treeRight', 'treeLevel', ),
+        BasePeer::TYPE_COLNAME => array (PDReactionPeer::ID, PDReactionPeer::P_USER_ID, PDReactionPeer::P_D_DEBATE_ID, PDReactionPeer::TITLE, PDReactionPeer::SUMMARY, PDReactionPeer::DESCRIPTION, PDReactionPeer::MORE_INFO, PDReactionPeer::NOTE_POS, PDReactionPeer::NOTE_NEG, PDReactionPeer::PUBLISHED, PDReactionPeer::PUBLISHED_AT, PDReactionPeer::PUBLISHED_BY, PDReactionPeer::ONLINE, PDReactionPeer::CREATED_AT, PDReactionPeer::UPDATED_AT, PDReactionPeer::SLUG, PDReactionPeer::TREE_LEFT, PDReactionPeer::TREE_RIGHT, PDReactionPeer::TREE_LEVEL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'slug', 'tree_left', 'tree_right', 'tree_level', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
     );
 
     /**
@@ -125,12 +153,12 @@ abstract class BasePDReactionPeer
      * e.g. PDReactionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'PDReactionId' => 3, 'Title' => 4, 'Summary' => 5, 'Description' => 6, 'MoreInfo' => 7, 'NotePos' => 8, 'NoteNeg' => 9, 'Published' => 10, 'PublishedAt' => 11, 'PublishedBy' => 12, 'Online' => 13, 'CreatedAt' => 14, 'UpdatedAt' => 15, 'Slug' => 16, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'pDReactionId' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'moreInfo' => 7, 'notePos' => 8, 'noteNeg' => 9, 'published' => 10, 'publishedAt' => 11, 'publishedBy' => 12, 'online' => 13, 'createdAt' => 14, 'updatedAt' => 15, 'slug' => 16, ),
-        BasePeer::TYPE_COLNAME => array (PDReactionPeer::ID => 0, PDReactionPeer::P_USER_ID => 1, PDReactionPeer::P_D_DEBATE_ID => 2, PDReactionPeer::P_D_REACTION_ID => 3, PDReactionPeer::TITLE => 4, PDReactionPeer::SUMMARY => 5, PDReactionPeer::DESCRIPTION => 6, PDReactionPeer::MORE_INFO => 7, PDReactionPeer::NOTE_POS => 8, PDReactionPeer::NOTE_NEG => 9, PDReactionPeer::PUBLISHED => 10, PDReactionPeer::PUBLISHED_AT => 11, PDReactionPeer::PUBLISHED_BY => 12, PDReactionPeer::ONLINE => 13, PDReactionPeer::CREATED_AT => 14, PDReactionPeer::UPDATED_AT => 15, PDReactionPeer::SLUG => 16, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'P_D_REACTION_ID' => 3, 'TITLE' => 4, 'SUMMARY' => 5, 'DESCRIPTION' => 6, 'MORE_INFO' => 7, 'NOTE_POS' => 8, 'NOTE_NEG' => 9, 'PUBLISHED' => 10, 'PUBLISHED_AT' => 11, 'PUBLISHED_BY' => 12, 'ONLINE' => 13, 'CREATED_AT' => 14, 'UPDATED_AT' => 15, 'SLUG' => 16, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'p_d_reaction_id' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'more_info' => 7, 'note_pos' => 8, 'note_neg' => 9, 'published' => 10, 'published_at' => 11, 'published_by' => 12, 'online' => 13, 'created_at' => 14, 'updated_at' => 15, 'slug' => 16, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'MoreInfo' => 6, 'NotePos' => 7, 'NoteNeg' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Online' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, 'Slug' => 15, 'TreeLeft' => 16, 'TreeRight' => 17, 'TreeLevel' => 18, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'moreInfo' => 6, 'notePos' => 7, 'noteNeg' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'online' => 12, 'createdAt' => 13, 'updatedAt' => 14, 'slug' => 15, 'treeLeft' => 16, 'treeRight' => 17, 'treeLevel' => 18, ),
+        BasePeer::TYPE_COLNAME => array (PDReactionPeer::ID => 0, PDReactionPeer::P_USER_ID => 1, PDReactionPeer::P_D_DEBATE_ID => 2, PDReactionPeer::TITLE => 3, PDReactionPeer::SUMMARY => 4, PDReactionPeer::DESCRIPTION => 5, PDReactionPeer::MORE_INFO => 6, PDReactionPeer::NOTE_POS => 7, PDReactionPeer::NOTE_NEG => 8, PDReactionPeer::PUBLISHED => 9, PDReactionPeer::PUBLISHED_AT => 10, PDReactionPeer::PUBLISHED_BY => 11, PDReactionPeer::ONLINE => 12, PDReactionPeer::CREATED_AT => 13, PDReactionPeer::UPDATED_AT => 14, PDReactionPeer::SLUG => 15, PDReactionPeer::TREE_LEFT => 16, PDReactionPeer::TREE_RIGHT => 17, PDReactionPeer::TREE_LEVEL => 18, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'MORE_INFO' => 6, 'NOTE_POS' => 7, 'NOTE_NEG' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'ONLINE' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, 'SLUG' => 15, 'TREE_LEFT' => 16, 'TREE_RIGHT' => 17, 'TREE_LEVEL' => 18, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'more_info' => 6, 'note_pos' => 7, 'note_neg' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'online' => 12, 'created_at' => 13, 'updated_at' => 14, 'slug' => 15, 'tree_left' => 16, 'tree_right' => 17, 'tree_level' => 18, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
     );
 
     /**
@@ -207,7 +235,6 @@ abstract class BasePDReactionPeer
             $criteria->addSelectColumn(PDReactionPeer::ID);
             $criteria->addSelectColumn(PDReactionPeer::P_USER_ID);
             $criteria->addSelectColumn(PDReactionPeer::P_D_DEBATE_ID);
-            $criteria->addSelectColumn(PDReactionPeer::P_D_REACTION_ID);
             $criteria->addSelectColumn(PDReactionPeer::TITLE);
             $criteria->addSelectColumn(PDReactionPeer::SUMMARY);
             $criteria->addSelectColumn(PDReactionPeer::DESCRIPTION);
@@ -221,11 +248,13 @@ abstract class BasePDReactionPeer
             $criteria->addSelectColumn(PDReactionPeer::CREATED_AT);
             $criteria->addSelectColumn(PDReactionPeer::UPDATED_AT);
             $criteria->addSelectColumn(PDReactionPeer::SLUG);
+            $criteria->addSelectColumn(PDReactionPeer::TREE_LEFT);
+            $criteria->addSelectColumn(PDReactionPeer::TREE_RIGHT);
+            $criteria->addSelectColumn(PDReactionPeer::TREE_LEVEL);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_d_debate_id');
-            $criteria->addSelectColumn($alias . '.p_d_reaction_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
@@ -239,6 +268,9 @@ abstract class BasePDReactionPeer
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.tree_left');
+            $criteria->addSelectColumn($alias . '.tree_right');
+            $criteria->addSelectColumn($alias . '.tree_level');
         }
     }
 
@@ -445,9 +477,6 @@ abstract class BasePDReactionPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PDReactionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDReactionPeer::clearInstancePool();
         // Invalidate objects in PDRCommentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRCommentPeer::clearInstancePool();
@@ -1032,59 +1061,6 @@ abstract class BasePDReactionPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PDReactionRelatedByPDReactionId table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptPDReactionRelatedByPDReactionId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PDReactionPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PDReactionPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PDReactionPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PDReactionPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
-
-        $criteria->addJoin(PDReactionPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Selects a collection of PDReaction objects pre-filled with all related objects except PUser.
      *
      * @param      Criteria  $criteria
@@ -1221,104 +1197,6 @@ abstract class BasePDReactionPeer
 
                 // Add the $obj1 (PDReaction) to the collection in $obj2 (PUser)
                 $obj2->addPDReaction($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of PDReaction objects pre-filled with all related objects except PDReactionRelatedByPDReactionId.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PDReaction objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptPDReactionRelatedByPDReactionId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PDReactionPeer::DATABASE_NAME);
-        }
-
-        PDReactionPeer::addSelectColumns($criteria);
-        $startcol2 = PDReactionPeer::NUM_HYDRATE_COLUMNS;
-
-        PUserPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
-
-        PDDebatePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + PDDebatePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PDReactionPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
-
-        $criteria->addJoin(PDReactionPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PDReactionPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PDReactionPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PDReactionPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PDReactionPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined PUser rows
-
-                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = PUserPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = PUserPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PUserPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (PDReaction) to the collection in $obj2 (PUser)
-                $obj2->addPDReaction($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined PDDebate rows
-
-                $key3 = PDDebatePeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = PDDebatePeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = PDDebatePeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    PDDebatePeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (PDReaction) to the collection in $obj3 (PDDebate)
-                $obj3->addPDReaction($obj1);
 
             } // if joined row is not null
 
@@ -1624,6 +1502,285 @@ abstract class BasePDReactionPeer
         }
 
         return $objs;
+    }
+
+    // nested_set behavior
+
+    /**
+     * Returns the root nodes for the tree
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @return     PDReaction			Propel object for root node
+     */
+    public static function retrieveRoots(Criteria $criteria = null, PropelPDO $con = null)
+    {
+        if ($criteria === null) {
+            $criteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        }
+        $criteria->add(PDReactionPeer::LEFT_COL, 1, Criteria::EQUAL);
+
+        return PDReactionPeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Returns the root node for a given scope
+     *
+     * @param      int $scope		Scope to determine which root node to return
+     * @param      PropelPDO $con	Connection to use.
+     * @return     PDReaction			Propel object for root node
+     */
+    public static function retrieveRoot($scope = null, PropelPDO $con = null)
+    {
+        $c = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $c->add(PDReactionPeer::LEFT_COL, 1, Criteria::EQUAL);
+        $c->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        return PDReactionPeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Returns the whole tree node for a given scope
+     *
+     * @param      int $scope		Scope to determine which root node to return
+     * @param      Criteria $criteria	Optional Criteria to filter the query
+     * @param      PropelPDO $con	Connection to use.
+     * @return     PDReaction			Propel object for root node
+     */
+    public static function retrieveTree($scope = null, Criteria $criteria = null, PropelPDO $con = null)
+    {
+        if ($criteria === null) {
+            $criteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        }
+        $criteria->addAscendingOrderByColumn(PDReactionPeer::LEFT_COL);
+        $criteria->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        return PDReactionPeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Tests if node is valid
+     *
+     * @param      PDReaction $node	Propel object for src node
+     * @return     bool
+     */
+    public static function isValid(PDReaction $node = null)
+    {
+        if (is_object($node) && $node->getRightValue() > $node->getLeftValue()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Delete an entire tree
+     *
+     * @param      int $scope		Scope to determine which tree to delete
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     int  The number of deleted nodes
+     */
+    public static function deleteTree($scope = null, PropelPDO $con = null)
+    {
+        $c = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $c->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        return PDReactionPeer::doDelete($c, $con);
+    }
+
+    /**
+     * Adds $delta to all L and R values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta		Value to be shifted by, can be negative
+     * @param      int $first		First node to be shifted
+     * @param      int $last			Last node to be shifted (optional)
+     * @param      int $scope		Scope to use for the shift
+     * @param      PropelPDO $con		Connection to use.
+     */
+    public static function shiftRLValues($delta, $first, $last = null, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        // Shift left column values
+        $whereCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $criterion = $whereCriteria->getNewCriterion(PDReactionPeer::LEFT_COL, $first, Criteria::GREATER_EQUAL);
+        if (null !== $last) {
+            $criterion->addAnd($whereCriteria->getNewCriterion(PDReactionPeer::LEFT_COL, $last, Criteria::LESS_EQUAL));
+        }
+        $whereCriteria->add($criterion);
+        $whereCriteria->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        $valuesCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $valuesCriteria->add(PDReactionPeer::LEFT_COL, array('raw' => PDReactionPeer::LEFT_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+
+        // Shift right column values
+        $whereCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $criterion = $whereCriteria->getNewCriterion(PDReactionPeer::RIGHT_COL, $first, Criteria::GREATER_EQUAL);
+        if (null !== $last) {
+            $criterion->addAnd($whereCriteria->getNewCriterion(PDReactionPeer::RIGHT_COL, $last, Criteria::LESS_EQUAL));
+        }
+        $whereCriteria->add($criterion);
+        $whereCriteria->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        $valuesCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $valuesCriteria->add(PDReactionPeer::RIGHT_COL, array('raw' => PDReactionPeer::RIGHT_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+    }
+
+    /**
+     * Adds $delta to level for nodes having left value >= $first and right value <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta		Value to be shifted by, can be negative
+     * @param      int $first		First node to be shifted
+     * @param      int $last			Last node to be shifted
+     * @param      int $scope		Scope to use for the shift
+     * @param      PropelPDO $con		Connection to use.
+     */
+    public static function shiftLevel($delta, $first, $last, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $whereCriteria->add(PDReactionPeer::LEFT_COL, $first, Criteria::GREATER_EQUAL);
+        $whereCriteria->add(PDReactionPeer::RIGHT_COL, $last, Criteria::LESS_EQUAL);
+        $whereCriteria->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        $valuesCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $valuesCriteria->add(PDReactionPeer::LEVEL_COL, array('raw' => PDReactionPeer::LEVEL_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+    }
+
+    /**
+     * Reload all already loaded nodes to sync them with updated db
+     *
+     * @param      PDReaction $prune		Object to prune from the update
+     * @param      PropelPDO $con		Connection to use.
+     */
+    public static function updateLoadedNodes($prune = null, PropelPDO $con = null)
+    {
+        if (Propel::isInstancePoolingEnabled()) {
+            $keys = array();
+            foreach (PDReactionPeer::$instances as $obj) {
+                if (!$prune || !$prune->equals($obj)) {
+                    $keys[] = $obj->getPrimaryKey();
+                }
+            }
+
+            if (!empty($keys)) {
+                // We don't need to alter the object instance pool; we're just modifying these ones
+                // already in the pool.
+                $criteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+                $criteria->add(PDReactionPeer::ID, $keys, Criteria::IN);
+                $stmt = PDReactionPeer::doSelectStmt($criteria, $con);
+                while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+                    $key = PDReactionPeer::getPrimaryKeyHashFromRow($row, 0);
+                    if (null !== ($object = PDReactionPeer::getInstanceFromPool($key))) {
+                        $object->setScopeValue($row[2]);
+                        $object->setLeftValue($row[16]);
+                        $object->setRightValue($row[17]);
+                        $object->setLevel($row[18]);
+                        $object->clearNestedSetChildren();
+                    }
+                }
+                $stmt->closeCursor();
+            }
+        }
+    }
+
+    /**
+     * Update the tree to allow insertion of a leaf at the specified position
+     *
+     * @param      int $left	left column value
+     * @param      integer $scope	scope column value
+     * @param      mixed $prune	Object to prune from the shift
+     * @param      PropelPDO $con	Connection to use.
+     */
+    public static function makeRoomForLeaf($left, $scope, $prune = null, PropelPDO $con = null)
+    {
+        // Update database nodes
+        PDReactionPeer::shiftRLValues(2, $left, null, $scope, $con);
+
+        // Update all loaded nodes
+        PDReactionPeer::updateLoadedNodes($prune, $con);
+    }
+
+    /**
+     * Update the tree to allow insertion of a leaf at the specified position
+     *
+     * @param      integer $scope	scope column value
+     * @param      PropelPDO $con	Connection to use.
+     */
+    public static function fixLevels($scope, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        $c->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+        $c->addAscendingOrderByColumn(PDReactionPeer::LEFT_COL);
+        $stmt = PDReactionPeer::doSelectStmt($c, $con);
+
+        // set the class once to avoid overhead in the loop
+        $cls = PDReactionPeer::getOMClass(false);
+        $level = null;
+        // iterate over the statement
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+
+            // hydrate object
+            $key = PDReactionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null === ($obj = PDReactionPeer::getInstanceFromPool($key))) {
+                $obj = new $cls();
+                $obj->hydrate($row);
+                PDReactionPeer::addInstanceToPool($obj, $key);
+            }
+
+            // compute level
+            // Algorithm shamelessly stolen from sfPropelActAsNestedSetBehaviorPlugin
+            // Probably authored by Tristan Rivoallan
+            if ($level === null) {
+                $level = 0;
+                $i = 0;
+                $prev = array($obj->getRightValue());
+            } else {
+                while ($obj->getRightValue() > $prev[$i]) {
+                    $i--;
+                }
+                $level = ++$i;
+                $prev[$i] = $obj->getRightValue();
+            }
+
+            // update level in node if necessary
+            if ($obj->getLevel() !== $level) {
+                $obj->setLevel($level);
+                $obj->save($con);
+            }
+        }
+        $stmt->closeCursor();
+    }
+
+    /**
+     * Updates all scope values for items that has negative left (<=0) values.
+     *
+     * @param      mixed     $scope
+     * @param      PropelPDO $con	Connection to use.
+     */
+    public static function setNegativeScope($scope, PropelPDO $con = null)
+    {
+        //adjust scope value to $scope
+        $whereCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $whereCriteria->add(PDReactionPeer::LEFT_COL, 0, Criteria::LESS_EQUAL);
+
+        $valuesCriteria = new Criteria(PDReactionPeer::DATABASE_NAME);
+        $valuesCriteria->add(PDReactionPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
     }
 
 } // BasePDReactionPeer

@@ -452,11 +452,14 @@
         <behavior name="sluggable">
           <parameter name="slug_pattern" value="{title}" />
         </behavior>
-        
+        <behavior name="nested_set">
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_d_debate_id" />
+        </behavior>
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
         <column name="p_d_debate_id" type="integer" required="true" />
-        <column name="p_d_reaction_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
 
@@ -476,9 +479,6 @@
         </foreign-key>
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
-        </foreign-key>
-        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_d_reaction_id" foreign="id" />
         </foreign-key>
     </table>
 

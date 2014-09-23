@@ -26,7 +26,6 @@ class PolitizrExtension extends \Twig_Extension
      */
     public function __construct($serviceContainer) {
         $this->logger = $serviceContainer->get('logger');
-
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
 

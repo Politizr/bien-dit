@@ -414,6 +414,9 @@ bazinga_faker:
 
                 Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
+                TreeLeft:               { method: 0 }
+                TreeRight:              { method: 0 }
+                TreeLevel:              { method: 1 }
 
         Politizr\Model\PDDComment:
             number:                     300

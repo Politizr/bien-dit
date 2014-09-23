@@ -63,6 +63,8 @@
         
         "ensepar/html2pdf-bundle": "1.0.0",
         
+        "elao/web-profiler-extra-bundle" : "~2.3@dev",
+
         "cedriclombardot/admingenerator-generator-bundle": "~1.1",
         "cedriclombardot/admingenerator-user-bundle": "~1.1",
         "avocode/form-extensions-bundle": "dev-master",

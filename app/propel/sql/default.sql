@@ -732,7 +732,6 @@ CREATE TABLE `p_d_reaction`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER,
     `p_d_debate_id` INTEGER NOT NULL,
-    `p_d_reaction_id` INTEGER,
     `title` VARCHAR(100),
     `summary` TEXT,
     `description` TEXT,
@@ -746,11 +745,13 @@ CREATE TABLE `p_d_reaction`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `tree_left` INTEGER,
+    `tree_right` INTEGER,
+    `tree_level` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_d_reaction_slug` (`slug`(255)),
     INDEX `p_d_reaction_FI_1` (`p_user_id`),
     INDEX `p_d_reaction_FI_2` (`p_d_debate_id`),
-    INDEX `p_d_reaction_FI_3` (`p_d_reaction_id`),
     CONSTRAINT `p_d_reaction_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
@@ -759,11 +760,6 @@ CREATE TABLE `p_d_reaction`
     CONSTRAINT `p_d_reaction_FK_2`
         FOREIGN KEY (`p_d_debate_id`)
         REFERENCES `p_d_debate` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_d_reaction_FK_3`
-        FOREIGN KEY (`p_d_reaction_id`)
-        REFERENCES `p_d_reaction` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

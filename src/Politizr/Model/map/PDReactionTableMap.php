@@ -45,7 +45,6 @@ class PDReactionTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
-        $this->addForeignKey('p_d_reaction_id', 'PDReactionId', 'INTEGER', 'p_d_reaction', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
@@ -59,6 +58,9 @@ class PDReactionTableMap extends TableMap
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('tree_left', 'TreeLeft', 'INTEGER', false, null, null);
+        $this->addColumn('tree_right', 'TreeRight', 'INTEGER', false, null, null);
+        $this->addColumn('tree_level', 'TreeLevel', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 
@@ -69,8 +71,6 @@ class PDReactionTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PDReactionRelatedByPDReactionId', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_ONE, array('p_d_reaction_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PDReactionRelatedById', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDReactionsRelatedById');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRComments');
     } // buildRelations()
 
@@ -100,6 +100,14 @@ class PDReactionTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'nested_set' =>  array (
+  'left_column' => 'tree_left',
+  'right_column' => 'tree_right',
+  'level_column' => 'tree_level',
+  'use_scope' => 'true',
+  'scope_column' => 'p_d_debate_id',
+  'method_proxies' => 'false',
 ),
         );
     } // getBehaviors()

@@ -30,22 +30,22 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 class PUser extends BasePUser implements UserInterface
 {
-	// ************************************************************************************ //
-	//										CONSTANTES
-	// ************************************************************************************ //
+	  // ************************************************************************************ //
+	  //										CONSTANTES
+	  // ************************************************************************************ //
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
 
 
 
-	// *****************************  OBJET / STRING  ****************** //
+	  // *****************************  OBJET / STRING  ****************** //
 
-	/**
-	 *
-	 */
-	public function __toString() {
-		return $this->getFirstname().' '.$this->getName();
-	}
+    /**
+     *
+     */
+    public function __toString() {
+      return trim($this->getFirstname().' '.$this->getName());
+    }
 
     /**
      *
@@ -56,25 +56,25 @@ class PUser extends BasePUser implements UserInterface
 
 
 
- 	/**
-	 * Override to manage accented characters
+    /**
+     * Override to manage accented characters
      *
-	 * @return string
-	 */
-	protected function createRawSlug()
-	{
-        $slug = parent::createRawSlug();
-        
-        if ($firstname = $this->getFirstname() && $name = $this->getName()) {
-    		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($firstname.'-'.$name);
-    		$slug = $this->cleanupSlugPart($toSlug);
+     * @return string
+     */
+    public function createRawSlug()
+    {
+        if ($this->getFirstname() && $this->getName()) {
+            $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getFirstname() . '-' . $this->getName());
+
+        		$slug = $this->cleanupSlugPart($toSlug);
         } elseif($realname = $this->getRealname()) {
             $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($realname);
+
             $slug = $this->cleanupSlugPart($toSlug);
         }
 
-		return $slug;
-	}
+        return $slug;
+    }
 
     /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
 
@@ -151,54 +151,54 @@ class PUser extends BasePUser implements UserInterface
     /**
      *  Gestion physique de l'upload
      */
-	public function upload($file = null)
-	{
-		if (null === $file) {
-		  	return;
-		}
+    public function upload($file = null)
+    {
+  		  if (null === $file) {
+  		    	return;
+  		  }
+  
+		    // Extension et nom de fichier
+		    $extension = $file->guessExtension();
+		    if (!$extension) {
+		    	  $extension = 'bin';
+		    }
+		    $fileName = 'p-u-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+    
+		    // move takes the target directory and then the target filename to move to
+		    $fileUploaded = $file->move(__DIR__ . PUser::UPLOAD_PATH, $fileName);
+    
+		    // file_name
+		    return $fileName;
+    }    
 
-		// Extension et nom de fichier
-		$extension = $file->guessExtension();
-		if (!$extension) {
-			  $extension = 'bin';
-		}
-		$fileName = 'p-u-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+    /**
+     *	Surcharge pour gérer la suppression physique.
+     */
+    public function setFileName($v)
+    {
+      	if (!$v) {
+      		$this->removeUpload();
+      	}
+      	parent::setFileName($v);
+    }
 
-		// move takes the target directory and then the target filename to move to
-		$fileUploaded = $file->move(__DIR__ . PUser::UPLOAD_PATH, $fileName);
+    /**
+     *  Surcharge pour gérer la suppression physique.
+     */
+    public function postDelete(\PropelPDO $con = null)
+    {
+    	 $this->removeUpload();
+    }
 
-		// file_name
-		return $fileName;
-	}    
-
-	/**
-	 *	Surcharge pour gérer la suppression physique.
-	 */
-	public function setFileName($v)
-	{
-		if (!$v) {
-			$this->removeUpload();
-		}
-		parent::setFileName($v);
-	}
-
-	/**
-	 *  Surcharge pour gérer la suppression physique.
-	 */
-	public function postDelete(\PropelPDO $con = null)
-	{
-		$this->removeUpload();
-	}
-
-	/**
-	 * 	Suppression physique des fichiers.
-	 */
-	public function removeUpload($uploadedFileName = true)
-	{
-		if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
-		  	unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
-		}
-	}
+    /**
+     * 	Suppression physique des fichiers.
+     */
+    public function removeUpload($uploadedFileName = true)
+    {
+      	if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
+      	  	unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
+      	}
+    }
 
 
     // ************************************************************************************ //
@@ -229,7 +229,6 @@ class PUser extends BasePUser implements UserInterface
                 $this->firstname,
                 $this->birthday,
                 $this->email,
-                $this->profile_completed,
                 $this->salt,
                 $this->password,
                 $this->expired,
@@ -261,7 +260,6 @@ class PUser extends BasePUser implements UserInterface
                 $this->firstname,
                 $this->birthday,
                 $this->email,
-                $this->profile_completed,
                 $this->salt,
                 $this->password,
                 $this->expired,
