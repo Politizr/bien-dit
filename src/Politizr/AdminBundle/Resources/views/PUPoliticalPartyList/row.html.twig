@@ -1,0 +1,25 @@
+{% extends_admingenerated "PolitizrAdminBundle:PUPoliticalPartyList:row.html.twig" %}
+
+
+{% block list_td_column_file_name %}
+    <img src="{{ asset('uploads/political/'~PUPoliticalParty.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PUPoliticalParty.fileName }}" />
+{% endblock list_td_column_file_name %}
+
+
+{% block object_action_moveUp %}
+    {% spaceless %}
+        {% if not PUPoliticalParty.isFirst() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PUPoliticalParty_object", { 'pk': PUPoliticalParty.Id, action: 'moveUp' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip"><img src="/bundles/politizradmin/images/pos-up.png" /></a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_moveUp %}
+
+{% block object_action_moveDown %}
+    {% spaceless %}
+        {% if not PUPoliticalParty.isLast() %}
+            <a  class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PUPoliticalParty_object", { 'pk': PUPoliticalParty.Id, action: 'moveDown' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip"><img src="/bundles/politizradmin/images/pos-down.png" /></a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_moveDown %}

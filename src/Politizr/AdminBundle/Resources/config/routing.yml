@@ -131,6 +131,16 @@ Politizr_AdminBundle_PRAction:
 
 
 # Réglages des types
+Politizr_AdminBundle_PUPoliticalParty:
+    resource: "@PolitizrAdminBundle/Controller/PUPoliticalParty/"
+    type:     admingenerator
+    prefix:   /PUPoliticalParty
+
+Politizr_AdminBundle_PUMandateType:
+    resource: "@PolitizrAdminBundle/Controller/PUMandateType/"
+    type:     admingenerator
+    prefix:   /PUMandateType
+
 Politizr_AdminBundle_PTTagType:
     resource: "@PolitizrAdminBundle/Controller/PTTagType/"
     type:     admingenerator
@@ -140,6 +150,11 @@ Politizr_AdminBundle_PRBadgeType:
     resource: "@PolitizrAdminBundle/Controller/PRBadgeType/"
     type:     admingenerator
     prefix:   /PRBadgeType
+
+Politizr_AdminBundle_POSubscription:
+    resource: "@PolitizrAdminBundle/Controller/POSubscription/"
+    type:     admingenerator
+    prefix:   /POSubscription
 
 Politizr_AdminBundle_POPaymentType:
     resource: "@PolitizrAdminBundle/Controller/POPaymentType/"

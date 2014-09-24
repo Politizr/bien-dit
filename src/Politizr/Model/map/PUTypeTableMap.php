@@ -71,6 +71,10 @@ class PUTypeTableMap extends TableMap
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
 ),
+            'query_cache' =>  array (
+  'backend' => 'apc',
+  'lifetime' => 3600,
+),
         );
     } // getBehaviors()
 

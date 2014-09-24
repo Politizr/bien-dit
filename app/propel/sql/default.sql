@@ -493,21 +493,73 @@ CREATE TABLE `p_u_qualification`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
-    `title` VARCHAR(250),
+    `p_u_political_party_id` INTEGER,
+    `p_u_mandate_type_id` INTEGER,
     `description` TEXT,
     `begin_at` DATE,
     `end_at` DATE,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    `slug` VARCHAR(255),
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `p_u_qualification_slug` (`slug`(255)),
     INDEX `p_u_qualification_FI_1` (`p_user_id`),
+    INDEX `p_u_qualification_FI_2` (`p_u_political_party_id`),
+    INDEX `p_u_qualification_FI_3` (`p_u_mandate_type_id`),
     CONSTRAINT `p_u_qualification_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_qualification_FK_2`
+        FOREIGN KEY (`p_u_political_party_id`)
+        REFERENCES `p_u_political_party` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_u_qualification_FK_3`
+        FOREIGN KEY (`p_u_mandate_type_id`)
+        REFERENCES `p_u_mandate_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_political_party
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_political_party`;
+
+CREATE TABLE `p_u_political_party`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `initials` VARCHAR(50),
+    `file_name` VARCHAR(150),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_u_political_party_slug` (`slug`(255))
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_mandate_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_mandate_type`;
+
+CREATE TABLE `p_u_mandate_type`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_u_mandate_type_slug` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -825,6 +877,296 @@ CREATE TABLE `p_d_d_tagged_t`
         REFERENCES `p_tag` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_tag_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_tag_archive`;
+
+CREATE TABLE `p_tag_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_t_tag_type_id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_tag_archive_I_1` (`p_t_tag_type_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_archive`;
+
+CREATE TABLE `p_r_badge_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_r_badge_type_id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `grade` TINYINT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_r_badge_archive_I_1` (`p_r_badge_type_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_order_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_order_archive`;
+
+CREATE TABLE `p_order_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_o_order_state_id` INTEGER,
+    `p_o_payment_state_id` INTEGER,
+    `p_o_payment_type_id` INTEGER,
+    `p_o_subscription_id` INTEGER,
+    `subscription_title` VARCHAR(150),
+    `subscription_description` TEXT,
+    `subscription_begin_at` DATE,
+    `subscription_end_at` DATE,
+    `information` TEXT,
+    `price` DECIMAL(10,2),
+    `promotion` DECIMAL(10,2),
+    `total` DECIMAL(10,2),
+    `gender` TINYINT,
+    `name` VARCHAR(150),
+    `firstname` VARCHAR(150),
+    `phone` VARCHAR(30),
+    `email` VARCHAR(255),
+    `invoice_ref` VARCHAR(250),
+    `invoice_at` DATETIME,
+    `invoice_filename` VARCHAR(250),
+    `supporting_document` VARCHAR(250),
+    `elective_mandates` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_order_archive_I_1` (`p_user_id`),
+    INDEX `p_order_archive_I_2` (`p_o_order_state_id`),
+    INDEX `p_order_archive_I_3` (`p_o_payment_state_id`),
+    INDEX `p_order_archive_I_4` (`p_o_payment_type_id`),
+    INDEX `p_order_archive_I_5` (`p_o_subscription_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_user_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_user_archive`;
+
+CREATE TABLE `p_user_archive`
+(
+    `id` INTEGER NOT NULL,
+    `provider` VARCHAR(255),
+    `provider_id` VARCHAR(255),
+    `nickname` VARCHAR(255),
+    `realname` VARCHAR(255),
+    `username` VARCHAR(255),
+    `username_canonical` VARCHAR(255),
+    `email` VARCHAR(255),
+    `email_canonical` VARCHAR(255),
+    `enabled` TINYINT(1) DEFAULT 0,
+    `salt` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `last_login` DATETIME,
+    `locked` TINYINT(1) DEFAULT 0,
+    `expired` TINYINT(1) DEFAULT 0,
+    `expires_at` DATETIME,
+    `confirmation_token` VARCHAR(255),
+    `password_requested_at` DATETIME,
+    `credentials_expired` TINYINT(1) DEFAULT 0,
+    `credentials_expire_at` DATETIME,
+    `roles` TEXT,
+    `p_u_type_id` INTEGER NOT NULL,
+    `p_u_status_id` INTEGER NOT NULL,
+    `file_name` VARCHAR(150),
+    `gender` TINYINT,
+    `firstname` VARCHAR(150),
+    `name` VARCHAR(150),
+    `birthday` DATE,
+    `summary` TEXT,
+    `biography` TEXT,
+    `website` VARCHAR(150),
+    `twitter` VARCHAR(150),
+    `facebook` VARCHAR(150),
+    `phone` VARCHAR(30),
+    `newsletter` TINYINT(1),
+    `last_connect` DATETIME,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_user_archive_I_1` (`p_u_type_id`),
+    INDEX `p_user_archive_I_2` (`p_u_status_id`),
+    INDEX `p_user_archive_I_3` (`username_canonical`),
+    INDEX `p_user_archive_I_4` (`email_canonical`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_qualification_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_qualification_archive`;
+
+CREATE TABLE `p_u_qualification_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER NOT NULL,
+    `p_u_political_party_id` INTEGER,
+    `p_u_mandate_type_id` INTEGER,
+    `description` TEXT,
+    `begin_at` DATE,
+    `end_at` DATE,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_qualification_archive_I_1` (`p_user_id`),
+    INDEX `p_u_qualification_archive_I_2` (`p_u_political_party_id`),
+    INDEX `p_u_qualification_archive_I_3` (`p_u_mandate_type_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_debate_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_debate_archive`;
+
+CREATE TABLE `p_d_debate_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `file_name` VARCHAR(150),
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_debate_archive_I_1` (`p_user_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_d_comment_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_d_comment_archive`;
+
+CREATE TABLE `p_d_d_comment_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_d_debate_id` INTEGER NOT NULL,
+    `description` TEXT,
+    `paragraph_no` INTEGER,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_d_comment_archive_I_1` (`p_user_id`),
+    INDEX `p_d_d_comment_archive_I_2` (`p_d_debate_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_reaction_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_reaction_archive`;
+
+CREATE TABLE `p_d_reaction_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_d_debate_id` INTEGER NOT NULL,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_reaction_archive_I_1` (`p_user_id`),
+    INDEX `p_d_reaction_archive_I_2` (`p_d_debate_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_r_comment_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_r_comment_archive`;
+
+CREATE TABLE `p_d_r_comment_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `description` TEXT,
+    `paragraph_no` INTEGER,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_r_comment_archive_I_1` (`p_user_id`),
+    INDEX `p_d_r_comment_archive_I_2` (`p_d_reaction_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_d_tagged_t_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_d_tagged_t_archive`;
+
+CREATE TABLE `p_d_d_tagged_t_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_d_debate_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_d_tagged_t_archive_I_1` (`p_d_debate_id`),
+    INDEX `p_d_d_tagged_t_archive_I_2` (`p_tag_id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

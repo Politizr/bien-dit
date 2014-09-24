@@ -118,7 +118,7 @@ builders:
                 "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
                 "Tag":
-                    "Tags du profil":           [ block_tags_mandat, block_tags_geo ]
+                    "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
                     "Badges":                   [ p_r_badges ]
                 "Statut":
@@ -159,10 +159,6 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PRBadge
                         query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
-                block_tags_mandat:
-                    label:                      "Tags mandat"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_tags_geo:
                     label:                      "Tags géo"
                     formType:                   hidden

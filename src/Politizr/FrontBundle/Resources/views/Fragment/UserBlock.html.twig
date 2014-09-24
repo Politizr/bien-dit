@@ -37,8 +37,14 @@
 						{% set puQualification = pUser.currentQualification %}
 						<div class="qualification">
 							{% if puQualification %}
-								<span class="label label-success">{{ puQualification.title }}</span>
-								<div>{{ puQualification.description | raw }}</div>
+								<span class="label label-success">{{ puQualification.mandateTypeTitle }}</span>
+								<span class="label">{{ puQualification.politicalPartyInitials }}</span>
+								{% if (puQualification.politicalPartyLogo) %}
+						            <img src="{{ asset('uploads/political/'~puQualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ puQualification.politicalPartyInitials }}">
+					        	{% endif %}
+								{% if full %}
+									<p>{{ puQualification.description | raw  }}</p>
+								{% endif %}
 							{% else %}
 								<span class="label label-danger">Aucun mandat renseigné</span>
 							{% endif %}
@@ -58,13 +64,10 @@
 		<div class="user-tags">
 			<!-- TAGS -->
 			<div class="row text-center">
-				<div class="col-sm-4">
-					{{ userTaggedTags(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_MANDAT')) }}
-				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					{{ userTaggedTags(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					{{ userTaggedTags(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 				</div>
 			</div>

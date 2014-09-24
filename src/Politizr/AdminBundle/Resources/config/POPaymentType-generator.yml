@@ -27,7 +27,7 @@ builders:
         params:
             title:                              Liste des types de paiement
             max_per_page:                       50
-            sort:                               [ title, ASC ]
+            sort:                               [ sortable_rank, ASC ]
             display:                            [ title, description, online ]
             actions:
                 new:                            ~
@@ -35,6 +35,8 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
     excel:
         params: ~
         filename: ~
@@ -83,6 +85,8 @@ builders:
     actions:
         params:
             object_actions:
-                delete: ~
+                moveUp:                         ~
+                moveDown:                       ~
+                delete:                         ~
             batch_actions:
-                delete: ~
+                delete:                         ~

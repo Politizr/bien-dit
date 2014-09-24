@@ -59,8 +59,18 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PRAction_list'
         );
 
-        // Réglages des types:  types de paiement, types de commandes, types de tags
+        // Réglages des types:  tags, badges, mode & statut paiement, statut commande, partis politiques, mandats électifs
         $documents = $this->addDropdown($menu, 'Type');
+        $this->addLinkRoute(
+            $documents,
+            'Parti politique',
+            'Politizr_AdminBundle_PUPoliticalParty_list'
+        );
+        $this->addLinkRoute(
+            $documents,
+            'Mandat électif',
+            'Politizr_AdminBundle_PUMandateType_list'
+        );
         $this->addLinkRoute(
             $documents,
             'Tag',
@@ -70,6 +80,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $documents,
             'Badge',
             'Politizr_AdminBundle_PRBadgeType_list'
+        );
+        $this->addLinkRoute(
+            $documents,
+            'Formule d\'abonnement',
+            'Politizr_AdminBundle_POSubscription_list'
         );
         $this->addLinkRoute(
             $documents,

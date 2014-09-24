@@ -1,0 +1,106 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PUPoliticalParty
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        initials:
+            label:          Initiales
+        file_name:
+            label:          Logo
+        description:
+            label:          Description
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des partis politiques
+            max_per_page:                       50
+            sort:                               [ sortable_rank, ASC ]
+            display:                            [ file_name, initials, title, online ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ initials, created_at ]
+    new:
+        params:
+            title:                              "Création d'un parti politique"
+            display:
+                "Champs principaux":            [ [ title, initials ] ]
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du parti politique '{{ PUPoliticalParty.title }}'"
+            tabs:
+                "Contenu":
+                    "En-tête":                  [ [ title, initials ], [ uploadedFileName ] ]
+                    "Description":              [ description ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   afe_single_upload
+                    addFormOptions:
+                        # nameable:               fileName
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du parti politique '{{ PUPoliticalParty.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ] ]
+                "Utilisateurs":
+                    "Députés":                  [ ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                moveUp:                         ~
+                moveDown:                       ~
+                delete:                         ~
+            batch_actions:
+                delete:                         ~

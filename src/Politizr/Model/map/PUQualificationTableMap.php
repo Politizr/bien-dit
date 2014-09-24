@@ -44,13 +44,13 @@ class PUQualificationTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
+        $this->addForeignKey('p_u_political_party_id', 'PUPoliticalPartyId', 'INTEGER', 'p_u_political_party', 'id', false, null, null);
+        $this->addForeignKey('p_u_mandate_type_id', 'PUMandateTypeId', 'INTEGER', 'p_u_mandate_type', 'id', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('begin_at', 'BeginAt', 'DATE', false, null, null);
         $this->addColumn('end_at', 'EndAt', 'DATE', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 
@@ -60,6 +60,8 @@ class PUQualificationTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUPoliticalParty', 'Politizr\\Model\\PUPoliticalParty', RelationMap::MANY_TO_ONE, array('p_u_political_party_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PUMandateType', 'Politizr\\Model\\PUMandateType', RelationMap::MANY_TO_ONE, array('p_u_mandate_type_id' => 'id', ), 'SET NULL', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -76,15 +78,19 @@ class PUQualificationTableMap extends TableMap
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
 ),
-            'sluggable' =>  array (
-  'add_cleanup' => 'true',
-  'slug_column' => 'slug',
-  'slug_pattern' => '{title}',
-  'replace_pattern' => '/\\W+/',
-  'replacement' => '-',
-  'separator' => '-',
-  'permanent' => 'false',
-  'scope_column' => '',
+            'query_cache' =>  array (
+  'backend' => 'apc',
+  'lifetime' => 3600,
+),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
 ),
         );
     } // getBehaviors()

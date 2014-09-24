@@ -251,6 +251,10 @@ liip_imagine:
             quality:              100
             filters:
                 thumbnail:         { size: [50, 50], mode: outbound }
+        political_party_mini_thumb:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 50 }
         facebook_share:
             quality:              100
             filters:
@@ -306,33 +310,33 @@ bazinga_faker:
 #                 Title:                  { method: realText, parameters: [ 20 ] }
 #                 Description:            { method: paragraphs, parameters: [ 4, true ] }
 # 
-        Politizr\Model\PUFollowU:
-            number:                     1
-
-        Politizr\Model\PUFollowT:
-            number:                     150
-            custom_formatters:
-                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-
-        Politizr\Model\PUTaggedT:
-            number:                     150
-            custom_formatters:
-                PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-
-        #################################################################################################################
-        #                                   REPUTATION
-        #################################################################################################################
-        Politizr\Model\PUReputationRB:
-            number:                     50
-            custom_formatters:
-                PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
-
-        Politizr\Model\PUReputationRA:
-            number:                     150
-            custom_formatters:
-                PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
-
-
+#         Politizr\Model\PUFollowU:
+#             number:                     1
+# 
+#         Politizr\Model\PUFollowT:
+#             number:                     150
+#             custom_formatters:
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
+# 
+#         Politizr\Model\PUTaggedT:
+#             number:                     150
+#             custom_formatters:
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
+# 
+#         #################################################################################################################
+#         #                                   REPUTATION
+#         #################################################################################################################
+#         Politizr\Model\PUReputationRB:
+#             number:                     50
+#             custom_formatters:
+#                 PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
+# 
+#         Politizr\Model\PUReputationRA:
+#             number:                     150
+#             custom_formatters:
+#                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
+# 
+# 
         #################################################################################################################
         #                                   COMMANDE
         #################################################################################################################

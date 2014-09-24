@@ -13,7 +13,13 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PUMandateType;
+use Politizr\Model\PUMandateTypeQuery;
+use Politizr\Model\PUPoliticalParty;
+use Politizr\Model\PUPoliticalPartyQuery;
 use Politizr\Model\PUQualification;
+use Politizr\Model\PUQualificationArchive;
+use Politizr\Model\PUQualificationArchiveQuery;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUQualificationQuery;
 use Politizr\Model\PUser;
@@ -53,10 +59,16 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
-     * The value for the title field.
-     * @var        string
+     * The value for the p_u_political_party_id field.
+     * @var        int
      */
-    protected $title;
+    protected $p_u_political_party_id;
+
+    /**
+     * The value for the p_u_mandate_type_id field.
+     * @var        int
+     */
+    protected $p_u_mandate_type_id;
 
     /**
      * The value for the description field.
@@ -89,15 +101,19 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * The value for the slug field.
-     * @var        string
-     */
-    protected $slug;
-
-    /**
      * @var        PUser
      */
     protected $aPUser;
+
+    /**
+     * @var        PUPoliticalParty
+     */
+    protected $aPUPoliticalParty;
+
+    /**
+     * @var        PUMandateType
+     */
+    protected $aPUMandateType;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -118,6 +134,9 @@ abstract class BasePUQualification extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
 
     /**
      * Get the [id] column value.
@@ -140,13 +159,23 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [title] column value.
+     * Get the [p_u_political_party_id] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function getPUPoliticalPartyId()
     {
-        return $this->title;
+        return $this->p_u_political_party_id;
+    }
+
+    /**
+     * Get the [p_u_mandate_type_id] column value.
+     *
+     * @return int
+     */
+    public function getPUMandateTypeId()
+    {
+        return $this->p_u_mandate_type_id;
     }
 
     /**
@@ -320,16 +349,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [slug] column value.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -376,25 +395,54 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
-     * Set the value of [title] column.
+     * Set the value of [p_u_political_party_id] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return PUQualification The current object (for fluent API support)
      */
-    public function setTitle($v)
+    public function setPUPoliticalPartyId($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = PUQualificationPeer::TITLE;
+        if ($this->p_u_political_party_id !== $v) {
+            $this->p_u_political_party_id = $v;
+            $this->modifiedColumns[] = PUQualificationPeer::P_U_POLITICAL_PARTY_ID;
+        }
+
+        if ($this->aPUPoliticalParty !== null && $this->aPUPoliticalParty->getId() !== $v) {
+            $this->aPUPoliticalParty = null;
         }
 
 
         return $this;
-    } // setTitle()
+    } // setPUPoliticalPartyId()
+
+    /**
+     * Set the value of [p_u_mandate_type_id] column.
+     *
+     * @param int $v new value
+     * @return PUQualification The current object (for fluent API support)
+     */
+    public function setPUMandateTypeId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_u_mandate_type_id !== $v) {
+            $this->p_u_mandate_type_id = $v;
+            $this->modifiedColumns[] = PUQualificationPeer::P_U_MANDATE_TYPE_ID;
+        }
+
+        if ($this->aPUMandateType !== null && $this->aPUMandateType->getId() !== $v) {
+            $this->aPUMandateType = null;
+        }
+
+
+        return $this;
+    } // setPUMandateTypeId()
 
     /**
      * Set the value of [description] column.
@@ -510,27 +558,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
-     * Set the value of [slug] column.
-     *
-     * @param string $v new value
-     * @return PUQualification The current object (for fluent API support)
-     */
-    public function setSlug($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->slug !== $v) {
-            $this->slug = $v;
-            $this->modifiedColumns[] = PUQualificationPeer::SLUG;
-        }
-
-
-        return $this;
-    } // setSlug()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -564,13 +591,13 @@ abstract class BasePUQualification extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->begin_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->end_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->slug = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->p_u_political_party_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_u_mandate_type_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->begin_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->end_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -604,6 +631,12 @@ abstract class BasePUQualification extends BaseObject implements Persistent
 
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
+        }
+        if ($this->aPUPoliticalParty !== null && $this->p_u_political_party_id !== $this->aPUPoliticalParty->getId()) {
+            $this->aPUPoliticalParty = null;
+        }
+        if ($this->aPUMandateType !== null && $this->p_u_mandate_type_id !== $this->aPUMandateType->getId()) {
+            $this->aPUMandateType = null;
         }
     } // ensureConsistency
 
@@ -645,6 +678,8 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPUser = null;
+            $this->aPUPoliticalParty = null;
+            $this->aPUMandateType = null;
         } // if (deep)
     }
 
@@ -673,6 +708,16 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             $deleteQuery = PUQualificationQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // archivable behavior
+            if ($ret) {
+                if ($this->archiveOnDelete) {
+                    // do nothing yet. The object will be archived later when calling PUQualificationQuery::delete().
+                } else {
+                    $deleteQuery->setArchiveOnDelete(false);
+                    $this->archiveOnDelete = true;
+                }
+            }
+
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -715,15 +760,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // sluggable behavior
-
-            if ($this->isColumnModified(PUQualificationPeer::SLUG) && $this->getSlug()) {
-                $this->setSlug($this->makeSlugUnique($this->getSlug()));
-            } elseif ($this->isColumnModified(PUQualificationPeer::TITLE)) {
-                $this->setSlug($this->createSlug());
-            } elseif (!$this->getSlug()) {
-                $this->setSlug($this->createSlug());
-            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -790,6 +826,20 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 $this->setPUser($this->aPUser);
             }
 
+            if ($this->aPUPoliticalParty !== null) {
+                if ($this->aPUPoliticalParty->isModified() || $this->aPUPoliticalParty->isNew()) {
+                    $affectedRows += $this->aPUPoliticalParty->save($con);
+                }
+                $this->setPUPoliticalParty($this->aPUPoliticalParty);
+            }
+
+            if ($this->aPUMandateType !== null) {
+                if ($this->aPUMandateType->isModified() || $this->aPUMandateType->isNew()) {
+                    $affectedRows += $this->aPUMandateType->save($con);
+                }
+                $this->setPUMandateType($this->aPUMandateType);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -833,8 +883,11 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUQualificationPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PUQualificationPeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
+        if ($this->isColumnModified(PUQualificationPeer::P_U_POLITICAL_PARTY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_u_political_party_id`';
+        }
+        if ($this->isColumnModified(PUQualificationPeer::P_U_MANDATE_TYPE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_u_mandate_type_id`';
         }
         if ($this->isColumnModified(PUQualificationPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
@@ -850,9 +903,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PUQualificationPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
-        if ($this->isColumnModified(PUQualificationPeer::SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`slug`';
         }
 
         $sql = sprintf(
@@ -871,8 +921,11 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case '`p_u_political_party_id`':
+                        $stmt->bindValue($identifier, $this->p_u_political_party_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_u_mandate_type_id`':
+                        $stmt->bindValue($identifier, $this->p_u_mandate_type_id, PDO::PARAM_INT);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -888,9 +941,6 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
-                    case '`slug`':
-                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -997,6 +1047,18 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aPUPoliticalParty !== null) {
+                if (!$this->aPUPoliticalParty->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUPoliticalParty->getValidationFailures());
+                }
+            }
+
+            if ($this->aPUMandateType !== null) {
+                if (!$this->aPUMandateType->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUMandateType->getValidationFailures());
+                }
+            }
+
 
             if (($retval = PUQualificationPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -1045,25 +1107,25 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPUPoliticalPartyId();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getPUMandateTypeId();
                 break;
             case 4:
-                return $this->getBeginAt();
+                return $this->getDescription();
                 break;
             case 5:
-                return $this->getEndAt();
+                return $this->getBeginAt();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getEndAt();
                 break;
             case 7:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 8:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             default:
                 return null;
@@ -1096,17 +1158,23 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getBeginAt(),
-            $keys[5] => $this->getEndAt(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
-            $keys[8] => $this->getSlug(),
+            $keys[2] => $this->getPUPoliticalPartyId(),
+            $keys[3] => $this->getPUMandateTypeId(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getBeginAt(),
+            $keys[6] => $this->getEndAt(),
+            $keys[7] => $this->getCreatedAt(),
+            $keys[8] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPUPoliticalParty) {
+                $result['PUPoliticalParty'] = $this->aPUPoliticalParty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPUMandateType) {
+                $result['PUMandateType'] = $this->aPUMandateType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1149,25 +1217,25 @@ abstract class BasePUQualification extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPUPoliticalPartyId($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setPUMandateTypeId($value);
                 break;
             case 4:
-                $this->setBeginAt($value);
+                $this->setDescription($value);
                 break;
             case 5:
-                $this->setEndAt($value);
+                $this->setBeginAt($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setEndAt($value);
                 break;
             case 7:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 8:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
         } // switch()
     }
@@ -1195,13 +1263,13 @@ abstract class BasePUQualification extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setBeginAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setEndAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setSlug($arr[$keys[8]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUPoliticalPartyId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPUMandateTypeId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setBeginAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setEndAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
     }
 
     /**
@@ -1215,13 +1283,13 @@ abstract class BasePUQualification extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PUQualificationPeer::ID)) $criteria->add(PUQualificationPeer::ID, $this->id);
         if ($this->isColumnModified(PUQualificationPeer::P_USER_ID)) $criteria->add(PUQualificationPeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PUQualificationPeer::TITLE)) $criteria->add(PUQualificationPeer::TITLE, $this->title);
+        if ($this->isColumnModified(PUQualificationPeer::P_U_POLITICAL_PARTY_ID)) $criteria->add(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $this->p_u_political_party_id);
+        if ($this->isColumnModified(PUQualificationPeer::P_U_MANDATE_TYPE_ID)) $criteria->add(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $this->p_u_mandate_type_id);
         if ($this->isColumnModified(PUQualificationPeer::DESCRIPTION)) $criteria->add(PUQualificationPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PUQualificationPeer::BEGIN_AT)) $criteria->add(PUQualificationPeer::BEGIN_AT, $this->begin_at);
         if ($this->isColumnModified(PUQualificationPeer::END_AT)) $criteria->add(PUQualificationPeer::END_AT, $this->end_at);
         if ($this->isColumnModified(PUQualificationPeer::CREATED_AT)) $criteria->add(PUQualificationPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUQualificationPeer::UPDATED_AT)) $criteria->add(PUQualificationPeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PUQualificationPeer::SLUG)) $criteria->add(PUQualificationPeer::SLUG, $this->slug);
 
         return $criteria;
     }
@@ -1286,13 +1354,13 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPUserId($this->getPUserId());
-        $copyObj->setTitle($this->getTitle());
+        $copyObj->setPUPoliticalPartyId($this->getPUPoliticalPartyId());
+        $copyObj->setPUMandateTypeId($this->getPUMandateTypeId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setBeginAt($this->getBeginAt());
         $copyObj->setEndAt($this->getEndAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setSlug($this->getSlug());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1404,19 +1472,123 @@ abstract class BasePUQualification extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a PUPoliticalParty object.
+     *
+     * @param             PUPoliticalParty $v
+     * @return PUQualification The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUPoliticalParty(PUPoliticalParty $v = null)
+    {
+        if ($v === null) {
+            $this->setPUPoliticalPartyId(NULL);
+        } else {
+            $this->setPUPoliticalPartyId($v->getId());
+        }
+
+        $this->aPUPoliticalParty = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUPoliticalParty object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUQualification($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUPoliticalParty object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUPoliticalParty The associated PUPoliticalParty object.
+     * @throws PropelException
+     */
+    public function getPUPoliticalParty(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUPoliticalParty === null && ($this->p_u_political_party_id !== null) && $doQuery) {
+            $this->aPUPoliticalParty = PUPoliticalPartyQuery::create()->findPk($this->p_u_political_party_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUPoliticalParty->addPUQualifications($this);
+             */
+        }
+
+        return $this->aPUPoliticalParty;
+    }
+
+    /**
+     * Declares an association between this object and a PUMandateType object.
+     *
+     * @param             PUMandateType $v
+     * @return PUQualification The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUMandateType(PUMandateType $v = null)
+    {
+        if ($v === null) {
+            $this->setPUMandateTypeId(NULL);
+        } else {
+            $this->setPUMandateTypeId($v->getId());
+        }
+
+        $this->aPUMandateType = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUMandateType object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUQualification($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUMandateType object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUMandateType The associated PUMandateType object.
+     * @throws PropelException
+     */
+    public function getPUMandateType(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUMandateType === null && ($this->p_u_mandate_type_id !== null) && $doQuery) {
+            $this->aPUMandateType = PUMandateTypeQuery::create()->findPk($this->p_u_mandate_type_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUMandateType->addPUQualifications($this);
+             */
+        }
+
+        return $this->aPUMandateType;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
         $this->p_user_id = null;
-        $this->title = null;
+        $this->p_u_political_party_id = null;
+        $this->p_u_mandate_type_id = null;
         $this->description = null;
         $this->begin_at = null;
         $this->end_at = null;
         $this->created_at = null;
         $this->updated_at = null;
-        $this->slug = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1442,11 +1614,19 @@ abstract class BasePUQualification extends BaseObject implements Persistent
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
+            if ($this->aPUPoliticalParty instanceof Persistent) {
+              $this->aPUPoliticalParty->clearAllReferences($deep);
+            }
+            if ($this->aPUMandateType instanceof Persistent) {
+              $this->aPUMandateType->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aPUser = null;
+        $this->aPUPoliticalParty = null;
+        $this->aPUMandateType = null;
     }
 
     /**
@@ -1483,137 +1663,112 @@ abstract class BasePUQualification extends BaseObject implements Persistent
         return $this;
     }
 
-    // sluggable behavior
+    // archivable behavior
 
     /**
-     * Create a unique slug based on the object
+     * Get an archived version of the current object.
      *
-     * @return string The object slug
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PUQualificationArchive An archive object, or null if the current object was never archived
      */
-    protected function createSlug()
+    public function getArchive(PropelPDO $con = null)
     {
-        $slug = $this->createRawSlug();
-        $slug = $this->limitSlugSize($slug);
-        $slug = $this->makeSlugUnique($slug);
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PUQualificationArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
 
-        return $slug;
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PUQualificationArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PUQualificationArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
     }
 
     /**
-     * Create the slug from the appropriate columns
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
      *
-     * @return string
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PUQualification The current object (for fluent API support)
      */
-    protected function createRawSlug()
+    public function restoreFromArchive(PropelPDO $con = null)
     {
-        return '' . $this->cleanupSlugPart($this->gettitle()) . '';
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
     }
 
     /**
-     * Cleanup a string to make a slug of it
-     * Removes special characters, replaces blanks with a separator, and trim it
+     * Populates the the current object based on a $archiveTablePhpName archive object.
      *
-     * @param     string $slug        the text to slugify
-     * @param     string $replacement the separator used by slug
-     * @return    string               the slugified text
+     * @param      PUQualificationArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PUQualification The current object (for fluent API support)
      */
-    protected static function cleanupSlugPart($slug, $replacement = '-')
-    {
-        // transliterate
-        if (function_exists('iconv')) {
-            $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
         }
+        $this->setPUserId($archive->getPUserId());
+        $this->setPUPoliticalPartyId($archive->getPUPoliticalPartyId());
+        $this->setPUMandateTypeId($archive->getPUMandateTypeId());
+        $this->setDescription($archive->getDescription());
+        $this->setBeginAt($archive->getBeginAt());
+        $this->setEndAt($archive->getEndAt());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
 
-        // lowercase
-        if (function_exists('mb_strtolower')) {
-            $slug = mb_strtolower($slug);
-        } else {
-            $slug = strtolower($slug);
-        }
-
-        // remove accents resulting from OSX's iconv
-        $slug = str_replace(array('\'', '`', '^'), '', $slug);
-
-        // replace non letter or digits with separator
-        $slug = preg_replace('/\W+/', $replacement, $slug);
-
-        // trim
-        $slug = trim($slug, $replacement);
-
-        if (empty($slug)) {
-            return 'n-a';
-        }
-
-        return $slug;
+        return $this;
     }
 
-
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Removes the object from the database without archiving it.
      *
-     * @param    string $slug                   the slug to check
-     * @param    int    $incrementReservedSpace the number of characters to keep empty
+     * @param PropelPDO $con Optional connection object
      *
-     * @return string                            the truncated slug
+     * @return     PUQualification The current object (for fluent API support)
      */
-    protected static function limitSlugSize($slug, $incrementReservedSpace = 3)
+    public function deleteWithoutArchive(PropelPDO $con = null)
     {
-        // check length, as suffix could put it over maximum
-        if (strlen($slug) > (255 - $incrementReservedSpace)) {
-            $slug = substr($slug, 0, 255 - $incrementReservedSpace);
-        }
+        $this->archiveOnDelete = false;
 
-        return $slug;
-    }
-
-
-    /**
-     * Get the slug, ensuring its uniqueness
-     *
-     * @param    string $slug            the slug to check
-     * @param    string $separator       the separator used by slug
-     * @param    int    $alreadyExists   false for the first try, true for the second, and take the high count + 1
-     * @return   string                   the unique slug
-     */
-    protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
-    {
-        if (!$alreadyExists) {
-            $slug2 = $slug;
-        } else {
-            $slug2 = $slug . $separator;
-        }
-
-        $query = PUQualificationQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
-        ;
-
-        if (!$alreadyExists) {
-            $count = $query->count();
-            if ($count > 0) {
-                return $this->makeSlugUnique($slug, $separator, true);
-            }
-
-            return $slug2;
-        }
-
-        // Already exists
-        $object = $query
-            ->addDescendingOrderByColumn('LENGTH(slug)')
-            ->addDescendingOrderByColumn('slug')
-        ->findOne();
-
-        // First duplicate slug
-        if (null == $object) {
-            return $slug2 . '1';
-        }
-
-        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
-            $slugNum[0] = 1;
-        }
-
-        return $slug2 . ($slugNum + 1);
+        return $this->delete($con);
     }
 
 }

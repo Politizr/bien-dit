@@ -1,0 +1,111 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\POSubscription
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        price:
+            label:          Prix
+        description:
+            label:          Description
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des formules d'abonnement
+            max_per_page:                       50
+            sort:                               [ sortable_rank, ASC ]
+            display:                            [ title, price, description ]
+            fields:
+                price:
+                    formType:                   money
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    filters:
+        params:
+            display:                            [ title, created_at ]
+    new:
+        params:
+            title:                              "Création d'une formule d'abonnement"
+            display:
+                "Champs principaux":            [ [ title, price ] ]
+                "Champs complémentaires":       [ [ description ] ]
+            fields:
+                price:
+                    formType:                   money
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de la formule d'abonnement '{{ POSubscription.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Tarif":
+                    "Prix":                     [ price ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                price:
+                    formType:                   money
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation de la formule d'abonnement '{{ POSubscription.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Tarif":
+                    "Prix":                     [ price ]
+                "Utilisateurs":
+                    "Souscription":             [ ]
+                "Attributs":
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                price:
+                    formType:                   money
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                moveUp:                         ~
+                moveDown:                       ~
+                delete:                         ~
+            batch_actions:
+                delete:                         ~

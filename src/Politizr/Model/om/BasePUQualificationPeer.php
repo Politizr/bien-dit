@@ -9,6 +9,8 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PUMandateTypePeer;
+use Politizr\Model\PUPoliticalPartyPeer;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUserPeer;
@@ -44,8 +46,11 @@ abstract class BasePUQualificationPeer
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_u_qualification.p_user_id';
 
-    /** the column name for the title field */
-    const TITLE = 'p_u_qualification.title';
+    /** the column name for the p_u_political_party_id field */
+    const P_U_POLITICAL_PARTY_ID = 'p_u_qualification.p_u_political_party_id';
+
+    /** the column name for the p_u_mandate_type_id field */
+    const P_U_MANDATE_TYPE_ID = 'p_u_qualification.p_u_mandate_type_id';
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_u_qualification.description';
@@ -61,9 +66,6 @@ abstract class BasePUQualificationPeer
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_u_qualification.updated_at';
-
-    /** the column name for the slug field */
-    const SLUG = 'p_u_qualification.slug';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -84,11 +86,11 @@ abstract class BasePUQualificationPeer
      * e.g. PUQualificationPeer::$fieldNames[PUQualificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Description', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'description', 'beginAt', 'endAt', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID, PUQualificationPeer::P_USER_ID, PUQualificationPeer::TITLE, PUQualificationPeer::DESCRIPTION, PUQualificationPeer::BEGIN_AT, PUQualificationPeer::END_AT, PUQualificationPeer::CREATED_AT, PUQualificationPeer::UPDATED_AT, PUQualificationPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'description', 'begin_at', 'end_at', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PUPoliticalPartyId', 'PUMandateTypeId', 'Description', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pUPoliticalPartyId', 'pUMandateTypeId', 'description', 'beginAt', 'endAt', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID, PUQualificationPeer::P_USER_ID, PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUQualificationPeer::DESCRIPTION, PUQualificationPeer::BEGIN_AT, PUQualificationPeer::END_AT, PUQualificationPeer::CREATED_AT, PUQualificationPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_U_POLITICAL_PARTY_ID', 'P_U_MANDATE_TYPE_ID', 'DESCRIPTION', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_u_political_party_id', 'p_u_mandate_type_id', 'description', 'begin_at', 'end_at', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -99,11 +101,11 @@ abstract class BasePUQualificationPeer
      * e.g. PUQualificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Description' => 3, 'BeginAt' => 4, 'EndAt' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Slug' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'description' => 3, 'beginAt' => 4, 'endAt' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'slug' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID => 0, PUQualificationPeer::P_USER_ID => 1, PUQualificationPeer::TITLE => 2, PUQualificationPeer::DESCRIPTION => 3, PUQualificationPeer::BEGIN_AT => 4, PUQualificationPeer::END_AT => 5, PUQualificationPeer::CREATED_AT => 6, PUQualificationPeer::UPDATED_AT => 7, PUQualificationPeer::SLUG => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'BEGIN_AT' => 4, 'END_AT' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'SLUG' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'description' => 3, 'begin_at' => 4, 'end_at' => 5, 'created_at' => 6, 'updated_at' => 7, 'slug' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PUPoliticalPartyId' => 2, 'PUMandateTypeId' => 3, 'Description' => 4, 'BeginAt' => 5, 'EndAt' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pUPoliticalPartyId' => 2, 'pUMandateTypeId' => 3, 'description' => 4, 'beginAt' => 5, 'endAt' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PUQualificationPeer::ID => 0, PUQualificationPeer::P_USER_ID => 1, PUQualificationPeer::P_U_POLITICAL_PARTY_ID => 2, PUQualificationPeer::P_U_MANDATE_TYPE_ID => 3, PUQualificationPeer::DESCRIPTION => 4, PUQualificationPeer::BEGIN_AT => 5, PUQualificationPeer::END_AT => 6, PUQualificationPeer::CREATED_AT => 7, PUQualificationPeer::UPDATED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_U_POLITICAL_PARTY_ID' => 2, 'P_U_MANDATE_TYPE_ID' => 3, 'DESCRIPTION' => 4, 'BEGIN_AT' => 5, 'END_AT' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_u_political_party_id' => 2, 'p_u_mandate_type_id' => 3, 'description' => 4, 'begin_at' => 5, 'end_at' => 6, 'created_at' => 7, 'updated_at' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -180,23 +182,23 @@ abstract class BasePUQualificationPeer
         if (null === $alias) {
             $criteria->addSelectColumn(PUQualificationPeer::ID);
             $criteria->addSelectColumn(PUQualificationPeer::P_USER_ID);
-            $criteria->addSelectColumn(PUQualificationPeer::TITLE);
+            $criteria->addSelectColumn(PUQualificationPeer::P_U_POLITICAL_PARTY_ID);
+            $criteria->addSelectColumn(PUQualificationPeer::P_U_MANDATE_TYPE_ID);
             $criteria->addSelectColumn(PUQualificationPeer::DESCRIPTION);
             $criteria->addSelectColumn(PUQualificationPeer::BEGIN_AT);
             $criteria->addSelectColumn(PUQualificationPeer::END_AT);
             $criteria->addSelectColumn(PUQualificationPeer::CREATED_AT);
             $criteria->addSelectColumn(PUQualificationPeer::UPDATED_AT);
-            $criteria->addSelectColumn(PUQualificationPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
-            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.p_u_political_party_id');
+            $criteria->addSelectColumn($alias . '.p_u_mandate_type_id');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.begin_at');
             $criteria->addSelectColumn($alias . '.end_at');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
-            $criteria->addSelectColumn($alias . '.slug');
         }
     }
 
@@ -552,6 +554,108 @@ abstract class BasePUQualificationPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related PUPoliticalParty table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPUPoliticalParty(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUQualificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUQualificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUMandateType table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPUMandateType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUQualificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUQualificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of PUQualification objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -619,6 +723,140 @@ abstract class BasePUQualificationPeer
 
 
     /**
+     * Selects a collection of PUQualification objects pre-filled with their PUPoliticalParty objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUQualification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPUPoliticalParty(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+        }
+
+        PUQualificationPeer::addSelectColumns($criteria);
+        $startcol = PUQualificationPeer::NUM_HYDRATE_COLUMNS;
+        PUPoliticalPartyPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUQualificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUQualificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PUQualificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUQualificationPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PUPoliticalPartyPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PUPoliticalPartyPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PUPoliticalPartyPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PUPoliticalPartyPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PUQualification) to $obj2 (PUPoliticalParty)
+                $obj2->addPUQualification($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUQualification objects pre-filled with their PUMandateType objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUQualification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPUMandateType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+        }
+
+        PUQualificationPeer::addSelectColumns($criteria);
+        $startcol = PUQualificationPeer::NUM_HYDRATE_COLUMNS;
+        PUMandateTypePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUQualificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUQualificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PUQualificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUQualificationPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PUMandateTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PUMandateTypePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PUMandateTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PUMandateTypePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PUQualification) to $obj2 (PUMandateType)
+                $obj2->addPUQualification($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -655,6 +893,10 @@ abstract class BasePUQualificationPeer
         }
 
         $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -693,7 +935,17 @@ abstract class BasePUQualificationPeer
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
+        PUPoliticalPartyPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUPoliticalPartyPeer::NUM_HYDRATE_COLUMNS;
+
+        PUMandateTypePeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + PUMandateTypePeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -729,6 +981,495 @@ abstract class BasePUQualificationPeer
                 // Add the $obj1 (PUQualification) to the collection in $obj2 (PUser)
                 $obj2->addPUQualification($obj1);
             } // if joined row not null
+
+            // Add objects for joined PUPoliticalParty rows
+
+            $key3 = PUPoliticalPartyPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = PUPoliticalPartyPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = PUPoliticalPartyPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUPoliticalPartyPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj3 (PUPoliticalParty)
+                $obj3->addPUQualification($obj1);
+            } // if joined row not null
+
+            // Add objects for joined PUMandateType rows
+
+            $key4 = PUMandateTypePeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = PUMandateTypePeer::getInstanceFromPool($key4);
+                if (!$obj4) {
+
+                    $cls = PUMandateTypePeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    PUMandateTypePeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj4 (PUMandateType)
+                $obj4->addPUQualification($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUser table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUQualificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUQualificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUPoliticalParty table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPUPoliticalParty(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUQualificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUQualificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUMandateType table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPUMandateType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUQualificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUQualificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PUQualification objects pre-filled with all related objects except PUser.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUQualification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+        }
+
+        PUQualificationPeer::addSelectColumns($criteria);
+        $startcol2 = PUQualificationPeer::NUM_HYDRATE_COLUMNS;
+
+        PUPoliticalPartyPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUPoliticalPartyPeer::NUM_HYDRATE_COLUMNS;
+
+        PUMandateTypePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUMandateTypePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUQualificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUQualificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUQualificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUQualificationPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUPoliticalParty rows
+
+                $key2 = PUPoliticalPartyPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUPoliticalPartyPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUPoliticalPartyPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUPoliticalPartyPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj2 (PUPoliticalParty)
+                $obj2->addPUQualification($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PUMandateType rows
+
+                $key3 = PUMandateTypePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = PUMandateTypePeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = PUMandateTypePeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUMandateTypePeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj3 (PUMandateType)
+                $obj3->addPUQualification($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUQualification objects pre-filled with all related objects except PUPoliticalParty.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUQualification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPUPoliticalParty(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+        }
+
+        PUQualificationPeer::addSelectColumns($criteria);
+        $startcol2 = PUQualificationPeer::NUM_HYDRATE_COLUMNS;
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        PUMandateTypePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUMandateTypePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_MANDATE_TYPE_ID, PUMandateTypePeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUQualificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUQualificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUQualificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUQualificationPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUser rows
+
+                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj2 (PUser)
+                $obj2->addPUQualification($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PUMandateType rows
+
+                $key3 = PUMandateTypePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = PUMandateTypePeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = PUMandateTypePeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUMandateTypePeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj3 (PUMandateType)
+                $obj3->addPUQualification($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUQualification objects pre-filled with all related objects except PUMandateType.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUQualification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPUMandateType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUQualificationPeer::DATABASE_NAME);
+        }
+
+        PUQualificationPeer::addSelectColumns($criteria);
+        $startcol2 = PUQualificationPeer::NUM_HYDRATE_COLUMNS;
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        PUPoliticalPartyPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUPoliticalPartyPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUQualificationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, PUPoliticalPartyPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUQualificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUQualificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUQualificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUQualificationPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUser rows
+
+                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj2 (PUser)
+                $obj2->addPUQualification($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PUPoliticalParty rows
+
+                $key3 = PUPoliticalPartyPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = PUPoliticalPartyPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = PUPoliticalPartyPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUPoliticalPartyPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (PUQualification) to the collection in $obj3 (PUPoliticalParty)
+                $obj3->addPUQualification($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }

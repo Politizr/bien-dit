@@ -1,1 +1,19 @@
 {% extends_admingenerated "PolitizrAdminBundle:POPaymentTypeList:row.html.twig" %}
+
+{% block object_action_moveUp %}
+    {% spaceless %}
+        {% if not POPaymentType.isFirst() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_POPaymentType_object", { 'pk': POPaymentType.Id, action: 'moveUp' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip"><img src="/bundles/politizradmin/images/pos-up.png" /></a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_moveUp %}
+
+{% block object_action_moveDown %}
+    {% spaceless %}
+        {% if not POPaymentType.isLast() %}
+            <a  class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_POPaymentType_object", { 'pk': POPaymentType.Id, action: 'moveDown' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip"><img src="/bundles/politizradmin/images/pos-down.png" /></a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_moveDown %}

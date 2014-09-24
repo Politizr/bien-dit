@@ -51,6 +51,8 @@ use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUType;
 use Politizr\Model\PUTypeQuery;
 use Politizr\Model\PUser;
+use Politizr\Model\PUserArchive;
+use Politizr\Model\PUserArchiveQuery;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
 
@@ -458,6 +460,9 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
 
     // equal_nest_parent behavior
 
@@ -2448,6 +2453,16 @@ abstract class BasePUser extends BaseObject implements Persistent
             $deleteQuery = PUserQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // archivable behavior
+            if ($ret) {
+                if ($this->archiveOnDelete) {
+                    // do nothing yet. The object will be archived later when calling PUserQuery::delete().
+                } else {
+                    $deleteQuery->setArchiveOnDelete(false);
+                    $this->archiveOnDelete = true;
+                }
+            }
+
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -4914,6 +4929,56 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PUQualifications from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUQualification[] List of PUQualification objects
+     */
+    public function getPUQualificationsJoinPUPoliticalParty($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUQualificationQuery::create(null, $criteria);
+        $query->joinWith('PUPoliticalParty', $join_behavior);
+
+        return $this->getPUQualifications($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PUQualifications from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUQualification[] List of PUQualification objects
+     */
+    public function getPUQualificationsJoinPUMandateType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUQualificationQuery::create(null, $criteria);
+        $query->joinWith('PUMandateType', $join_behavior);
+
+        return $this->getPUQualifications($query, $con);
     }
 
     /**
@@ -8689,6 +8754,145 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->modifiedColumns[] = PUserPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PUserArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PUserArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PUserArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PUserArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PUser The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      PUserArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PUser The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setProvider($archive->getProvider());
+        $this->setProviderId($archive->getProviderId());
+        $this->setNickname($archive->getNickname());
+        $this->setRealname($archive->getRealname());
+        $this->setUsername($archive->getUsername());
+        $this->setUsernameCanonical($archive->getUsernameCanonical());
+        $this->setEmail($archive->getEmail());
+        $this->setEmailCanonical($archive->getEmailCanonical());
+        $this->setEnabled($archive->getEnabled());
+        $this->setSalt($archive->getSalt());
+        $this->setPassword($archive->getPassword());
+        $this->setLastLogin($archive->getLastLogin());
+        $this->setLocked($archive->getLocked());
+        $this->setExpired($archive->getExpired());
+        $this->setExpiresAt($archive->getExpiresAt());
+        $this->setConfirmationToken($archive->getConfirmationToken());
+        $this->setPasswordRequestedAt($archive->getPasswordRequestedAt());
+        $this->setCredentialsExpired($archive->getCredentialsExpired());
+        $this->setCredentialsExpireAt($archive->getCredentialsExpireAt());
+        $this->setRoles($archive->getRoles());
+        $this->setPUTypeId($archive->getPUTypeId());
+        $this->setPUStatusId($archive->getPUStatusId());
+        $this->setFileName($archive->getFileName());
+        $this->setGender($archive->getGender());
+        $this->setFirstname($archive->getFirstname());
+        $this->setName($archive->getName());
+        $this->setBirthday($archive->getBirthday());
+        $this->setSummary($archive->getSummary());
+        $this->setBiography($archive->getBiography());
+        $this->setWebsite($archive->getWebsite());
+        $this->setTwitter($archive->getTwitter());
+        $this->setFacebook($archive->getFacebook());
+        $this->setPhone($archive->getPhone());
+        $this->setNewsletter($archive->getNewsletter());
+        $this->setLastConnect($archive->getLastConnect());
+        $this->setOnline($archive->getOnline());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSlug($archive->getSlug());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PUser The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
     // sluggable behavior

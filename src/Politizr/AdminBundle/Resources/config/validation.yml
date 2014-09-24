@@ -93,12 +93,24 @@ Politizr\Model\PRAction:
         title:
             - NotBlank:     ~
         score_evolution:
+            - NotBlank:     ~
             - Type:
                 type:       integer 
                 message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
-            - NotBlank:     ~
 
 ##################################### TYPES #####################################
+
+Politizr\Model\PUPoliticalParty:
+    properties:
+        title:
+            - NotBlank:     ~
+        initials:
+            - NotBlank:     ~
+
+Politizr\Model\PUMandateType:
+    properties:
+        title:
+            - NotBlank:     ~
 
 Politizr\Model\PTTagType:
     properties:
@@ -109,6 +121,17 @@ Politizr\Model\PRBadgeType:
     properties:
         title:
             - NotBlank:     ~
+
+Politizr\Model\POSubscription:
+    properties:
+        title:
+            - NotBlank:     ~
+        price:
+            - NotBlank:     ~
+            - Type:
+                type:       numeric 
+                message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
+
 
 Politizr\Model\POPaymentType:
     properties:
@@ -124,4 +147,3 @@ Politizr\Model\POOrderState:
     properties:
         title:
             - NotBlank:     ~
-

@@ -1,9 +1,5 @@
 # TAG DATAS
 Politizr\Model\PTTagType:
-    elu:
-        title:			Mandat
-        description:	|
-            Exemples: député, maire, conseiller régional, etc.
     geo:
         title:			Zonage
         description:	|
@@ -15,61 +11,6 @@ Politizr\Model\PTTagType:
 
 
 Politizr\Model\PTag:
-
-    # LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
-    president:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Président de la République
-    depute:
-        online:				true
-        p_t_tag_type_id:	elu
-        title:				Député
-    senateur:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Sénateur
-    depute_europeen:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Député Européen
-    conseiller_regional:
-        online:				true
-        p_t_tag_type_id:	elu
-        title:				Conseiller Régional
-    president_conseiller_regional:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Président du Conseil Régional
-    conseiller_departemental:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Conseiller Général
-    president_conseiller_departemental:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Président du Conseil Général
-    conseiller_communautaire:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Conseiller Communautaire
-    president_conseiller_communautaire:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Président du Conseil Communautaire
-    conseiller_municipal:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Conseiller Municipal
-    maire:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Maire
-    adjoint_maire:
-        online:             true
-        p_t_tag_type_id:    elu
-        title:              Adjoint au Maire
-
 
     # LISTE DE TOUS LES ZONAGES: TODO: script pour insertion régions / départements / villes
     monde:

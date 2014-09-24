@@ -73,13 +73,14 @@ class PRActionTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'online' =>  array (
-  'online_column' => 'online',
-),
             'timestampable' =>  array (
   'create_column' => 'created_at',
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
+),
+            'query_cache' =>  array (
+  'backend' => 'apc',
+  'lifetime' => 3600,
 ),
             'sluggable' =>  array (
   'add_cleanup' => 'true',

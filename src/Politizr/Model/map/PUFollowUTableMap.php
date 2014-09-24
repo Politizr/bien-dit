@@ -72,6 +72,10 @@ class PUFollowUTableMap extends TableMap
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
 ),
+            'query_cache' =>  array (
+  'backend' => 'apc',
+  'lifetime' => 3600,
+),
             'equal_nest' =>  array (
   'parent_table' => 'p_user',
   'reference_column_1' => 'p_user_id',

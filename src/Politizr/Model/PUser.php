@@ -30,15 +30,15 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 class PUser extends BasePUser implements UserInterface
 {
-	  // ************************************************************************************ //
-	  //										CONSTANTES
-	  // ************************************************************************************ //
+	// ************************************************************************************ //
+	//										CONSTANTES
+	// ************************************************************************************ //
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
 
 
 
-	  // *****************************  OBJET / STRING  ****************** //
+    // *****************************  OBJET / STRING  ****************** //
 
     /**
      *
@@ -93,8 +93,6 @@ class PUser extends BasePUser implements UserInterface
     public function getBlockSubscribersQ() {
     }
     public function getBlockSubscribersC() {
-    }
-    public function getBlockTagsMandat() {
     }
     public function getBlockTagsGeo() {
     }

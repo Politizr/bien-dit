@@ -26,6 +26,8 @@ use Politizr\Model\POPaymentTypeQuery;
 use Politizr\Model\POSubscription;
 use Politizr\Model\POSubscriptionQuery;
 use Politizr\Model\POrder;
+use Politizr\Model\POrderArchive;
+use Politizr\Model\POrderArchiveQuery;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\PUser;
@@ -258,6 +260,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1443,6 +1448,16 @@ abstract class BasePOrder extends BaseObject implements Persistent
             $deleteQuery = POrderQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // archivable behavior
+            if ($ret) {
+                if ($this->archiveOnDelete) {
+                    // do nothing yet. The object will be archived later when calling POrderQuery::delete().
+                } else {
+                    $deleteQuery->setArchiveOnDelete(false);
+                    $this->archiveOnDelete = true;
+                }
+            }
+
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -3200,6 +3215,131 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $this->modifiedColumns[] = POrderPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     POrderArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = POrderArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     POrderArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new POrderArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return POrder The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      POrderArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     POrder The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setPUserId($archive->getPUserId());
+        $this->setPOOrderStateId($archive->getPOOrderStateId());
+        $this->setPOPaymentStateId($archive->getPOPaymentStateId());
+        $this->setPOPaymentTypeId($archive->getPOPaymentTypeId());
+        $this->setPOSubscriptionId($archive->getPOSubscriptionId());
+        $this->setSubscriptionTitle($archive->getSubscriptionTitle());
+        $this->setSubscriptionDescription($archive->getSubscriptionDescription());
+        $this->setSubscriptionBeginAt($archive->getSubscriptionBeginAt());
+        $this->setSubscriptionEndAt($archive->getSubscriptionEndAt());
+        $this->setInformation($archive->getInformation());
+        $this->setPrice($archive->getPrice());
+        $this->setPromotion($archive->getPromotion());
+        $this->setTotal($archive->getTotal());
+        $this->setGender($archive->getGender());
+        $this->setName($archive->getName());
+        $this->setFirstname($archive->getFirstname());
+        $this->setPhone($archive->getPhone());
+        $this->setEmail($archive->getEmail());
+        $this->setInvoiceRef($archive->getInvoiceRef());
+        $this->setInvoiceAt($archive->getInvoiceAt());
+        $this->setInvoiceFilename($archive->getInvoiceFilename());
+        $this->setSupportingDocument($archive->getSupportingDocument());
+        $this->setElectiveMandates($archive->getElectiveMandates());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     POrder The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
 }

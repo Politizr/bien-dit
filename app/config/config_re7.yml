@@ -25,9 +25,9 @@ swiftmailer:
 bazinga_faker:
     locale:                             fr_FR
     entities:
-        Politizr\Model\PUser:
-            custom_formatters:
-                FileName:               { method: image, parameters: [ '/var/www/politizr.v2.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
+#         Politizr\Model\PUser:
+#             custom_formatters:
+#                 FileName:               { method: image, parameters: [ '/var/www/politizr.v2.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
 
 #         Politizr\Model\PDDebate:
 #             custom_formatters:

@@ -2,16 +2,19 @@
 <database name="default" namespace="Politizr\Model" defaultIdMethod="native">
 
     <table name="p_tag">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
 
         <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_t_tag_type_id" foreign="id" />
@@ -20,6 +23,7 @@
 
     <table name="p_t_tag_type">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
@@ -33,10 +37,11 @@
 
 
     <table name="p_r_badge">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -47,6 +52,8 @@
 
         <column name="grade"  type="enum" valueSet="Or, Argent, Bronze" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_r_badge_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_type_id" foreign="id" />
         </foreign-key>        
@@ -54,6 +61,7 @@
 
     <table name="p_r_badge_type">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
@@ -62,10 +70,10 @@
     </table>
 
     <table name="p_r_action">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -77,6 +85,8 @@
         <column name="p_object_id" type="integer" />
 
         <column name="score_evolution" type="integer" />
+
+        <column name="online" type="boolean" />
     </table>
 
 
@@ -85,6 +95,8 @@
 
     <table name="p_order">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
@@ -135,6 +147,7 @@
 
     <table name="p_o_order_state">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
@@ -143,6 +156,7 @@
 
     <table name="p_o_payment_state">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
@@ -150,20 +164,22 @@
     </table>
 
     <table name="p_o_payment_type">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         <behavior name="sortable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
+
+        <column name="online" type="boolean" />
     </table>
 
     <table name="p_o_subscription">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="sortable" />
         
@@ -173,10 +189,14 @@
         <column name="description" type="longvarchar" />
 
         <column name="price" type="decimal" size="10" scale="2" />
+
+        <column name="online" type="boolean" />
     </table>
     
     <table name="p_o_email">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_order_id" required="true" type="integer" />
         <column name="p_o_order_state_id" type="integer" />
@@ -209,8 +229,9 @@
 
 
     <table name="p_user">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable"/>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -266,6 +287,8 @@
         
         <column name="last_connect" type="timestamp" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_u_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_type_id" foreign="id" />
         </foreign-key>        
@@ -276,6 +299,7 @@
 
     <table name="p_u_type">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
@@ -283,6 +307,7 @@
 
     <table name="p_u_status">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" />
         <column name="title" type="varchar" size="150" />
@@ -292,6 +317,7 @@
 
     <table name="p_u_follow_u">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
         <behavior name="equal_nest">
             <parameter name="parent_table" value="p_user" />
             <parameter name="reference_column_1" value="p_user_id" />
@@ -301,14 +327,15 @@
 
     <table name="p_u_qualification">
         <behavior name="timestampable" />
-        <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
-        </behavior>
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="p_user_id" type="integer" required="true" />
 
-        <column name="title" type="varchar" size="250" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_u_political_party_id" type="integer" />
+        <column name="p_u_mandate_type_id" type="integer" />
+
         <column name="description" type="longvarchar" />
 
         <column name="begin_at" type="date" />
@@ -317,14 +344,59 @@
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>        
+        <foreign-key foreignTable="p_u_political_party" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_u_political_party_id" foreign="id" />
+        </foreign-key>        
+        <foreign-key foreignTable="p_u_mandate_type" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_u_mandate_type_id" foreign="id" />
+        </foreign-key>        
     </table>
+
+    <table name="p_u_political_party">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="sortable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="title" type="varchar" size="250" />
+        <column name="initials" type="varchar" size="50" />
+
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="description" type="longvarchar" />
+
+        <column name="online" type="boolean" />
+    </table>
+
+    <table name="p_u_mandate_type">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="sortable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="title" type="varchar" size="250" />
+
+        <column name="online" type="boolean" />
+    </table>
+
 
 
     <table name="p_u_follow_d_d" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_d_debate_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuFollowDdPUser" refPhpName="PuFollowDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -335,9 +407,12 @@
 
     <table name="p_u_reputation_r_b" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_r_badge_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuReputationRbPUser" refPhpName="PuReputationRbPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -348,9 +423,12 @@
 
     <table name="p_u_reputation_r_a" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_r_action_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuReputationRaPUser" refPhpName="PuReputationRaPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -364,9 +442,12 @@
 
     <table name="p_u_tagged_t" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_tag_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuTaggedTPUser" refPhpName="PuTaggedTPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -377,9 +458,12 @@
 
     <table name="p_u_follow_t" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_tag_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuFollowTPUser" refPhpName="PuFollowTPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -393,10 +477,11 @@
 
 
     <table name="p_d_debate">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -416,14 +501,17 @@
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
     </table>
 
     <table name="p_d_d_comment">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
@@ -438,6 +526,8 @@
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -447,10 +537,11 @@
     </table>
 
     <table name="p_d_reaction">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable">
-          <parameter name="slug_pattern" value="{title}" />
+            <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="nested_set">
             <parameter name="use_scope" value="true" />
@@ -474,6 +565,8 @@
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -483,8 +576,9 @@
     </table>
 
     <table name="p_d_r_comment">
-        <behavior name="online" />
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
@@ -499,6 +593,8 @@
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />
 
+        <column name="online" type="boolean" />
+
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -509,9 +605,13 @@
 
     <table name="p_d_d_tagged_t" isCrossRef="true">
         <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="p_tag_id" type="integer" required="true" />
+
         <foreign-key foreignTable="p_d_debate" phpName="PddTaggedTPDDebate" refPhpName="PddTaggedTPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>

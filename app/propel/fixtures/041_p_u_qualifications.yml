@@ -1,50 +1,231 @@
+# LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+# http://www.france-politique.fr/partis-politiques.htm
+Politizr\Model\PUPoliticalParty:
+    parti0:
+        online:              true
+        title:               Indépendant
+        initials:            Indépendant
+        description:        |
+            Indépendant, pas d'affiliation à un parti politique
+    parti1:
+        online:              true
+        title:               Parti Communiste Français
+        initials:            PCF
+        file_name:           pcf.gif
+        description:        |
+            Parti Communiste Français
+    parti2:
+        online:              true
+        title:               Parti de Gauche
+        initials:            PG
+        file_name:           pg.jpg
+        description:        |
+            Parti de Gauche
+    parti3:
+        online:              true
+        title:               Mouvement Républicain et Citoyen
+        initials:            MRC
+        file_name:           mrc.jpg
+        description:        |
+            Mouvement Républicain et Citoyen
+    parti4:
+        online:              true
+        title:               Parti Socialiste
+        initials:            PS
+        file_name:           ps.gif
+        description:        |
+            Parti Socialiste
+    parti5:
+        online:              true
+        title:               Parti Radical de Gauche
+        initials:            PRG
+        file_name:           prg.gif
+        description:        |
+            Parti Radical de Gauche
+    parti6:
+        online:              true
+        title:               Europe écologie - Les Verts
+        initials:            EELV
+        file_name:           eelv.gif
+        description:        |
+            Europe écologie - Les Verts
+    parti7:
+        online:              true
+        title:               Citoyenneté Action Participation pour le 21e siècle
+        initials:            CAP21
+        file_name:           cap21.gif
+        description:        |
+            Citoyenneté Action Participation pour le 21e siècle
+    parti8:
+        online:              true
+        title:               Mouvement Démocrate
+        initials:            MODEM
+        file_name:           modem.gif
+        description:        |
+            Mouvement Démocrate
+    parti9:
+        online:              true
+        title:               Union des Démocrates et Indépendants
+        initials:            UDI
+        file_name:           udi.gif
+        description:        |
+            Union des Démocrates et Indépendants
+    parti10:
+        online:              true
+        title:               Union pour un Mouvement Populaire
+        initials:            UMP
+        file_name:           ump.gif
+        description:        |
+            Union pour un Mouvement Populaire
+    parti11:
+        online:              true
+        title:               Parti Chrétien-démocrate
+        initials:            PCD
+        file_name:           pcd.jpg
+        description:        |
+            Parti Chrétien-démocrate
+    parti12:
+        online:              true
+        title:               Centre National des Indépendants et Paysans
+        initials:            CNIP
+        file_name:           cnip.jpg
+        description:        |
+            Centre National des Indépendants et Paysans
+    parti13:
+        online:              true
+        title:               Debout la République
+        initials:            DLR
+        file_name:           dlr.gif
+        description:        |
+            Debout la République
+    parti14:
+        online:              true
+        title:               Mouvement pour la France
+        initials:            MPF
+        file_name:           mpf.jpg
+        description:        |
+            Mouvement pour la France
+    parti15:
+        online:              true
+        title:               Front National
+        initials:            FN
+        file_name:           fn.gif
+        description:        |
+            Front National
+
+
+# LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+Politizr\Model\PUMandateType:
+    president:
+        online:             true
+        title:              Président de la République
+    depute:
+        online:             true
+        title:              Député
+    senateur:
+        online:             true
+        title:              Sénateur
+    depute_europeen:
+        online:             true
+        title:              Député Européen
+    conseiller_regional:
+        online:             true
+        title:              Conseiller Régional
+    president_conseiller_regional:
+        online:             true
+        title:              Président du Conseil Régional
+    conseiller_departemental:
+        online:             true
+        title:              Conseiller Général
+    president_conseiller_departemental:
+        online:             true
+        title:              Président du Conseil Général
+    conseiller_communautaire:
+        online:             true
+        title:              Conseiller Communautaire
+    president_conseiller_communautaire:
+        online:             true
+        title:              Président du Conseil Communautaire
+    conseiller_municipal:
+        online:             true
+        title:              Conseiller Municipal
+    maire:
+        online:             true
+        title:              Maire
+    adjoint_maire:
+        online:             true
+        title:              Adjoint au Maire
+
+
+
+# LISTE DE DONNEES JEUX D'ESSAIS
 Politizr\Model\PUQualification:
     qualification1:
-        p_user_id:             	depute1
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute1
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti2
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification2:
-        p_user_id:             	depute2
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute2
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti3
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification3:
-        p_user_id:             	depute3
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute3
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti4
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification4:
-        p_user_id:             	depute4
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute4
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti5
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification5:
-        p_user_id:             	depute5
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute5
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti6
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification6:
-        p_user_id:             	depute6
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute6
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti7
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification7:
-        p_user_id:             	depute7
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute7
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti8
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification8:
-        p_user_id:             	depute8
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute8
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti9
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification9:
-        p_user_id:             	depute9
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute9
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti11
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
     qualification10:
-        p_user_id:             	depute10
-        title:					Député
-        begin_at:			    <?php $faker('dateTimeThisYear') ?>
+        p_user_id:               depute10
+        p_u_mandate_type_id:     depute
+        p_u_political_party_id:  parti15
+        begin_at:                <?php $faker('dateTimeThisYear') ?>
+        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>

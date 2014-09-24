@@ -2,6 +2,7 @@
 
 namespace Politizr\Model\om;
 
+use \BasePeer;
 use \Criteria;
 use \Exception;
 use \ModelCriteria;
@@ -12,6 +13,8 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PUMandateType;
+use Politizr\Model\PUPoliticalParty;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationPeer;
 use Politizr\Model\PUQualificationQuery;
@@ -20,23 +23,23 @@ use Politizr\Model\PUser;
 /**
  * @method PUQualificationQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUQualificationQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUQualificationQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PUQualificationQuery orderByPUPoliticalPartyId($order = Criteria::ASC) Order by the p_u_political_party_id column
+ * @method PUQualificationQuery orderByPUMandateTypeId($order = Criteria::ASC) Order by the p_u_mandate_type_id column
  * @method PUQualificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PUQualificationQuery orderByBeginAt($order = Criteria::ASC) Order by the begin_at column
  * @method PUQualificationQuery orderByEndAt($order = Criteria::ASC) Order by the end_at column
  * @method PUQualificationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUQualificationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method PUQualificationQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PUQualificationQuery groupById() Group by the id column
  * @method PUQualificationQuery groupByPUserId() Group by the p_user_id column
- * @method PUQualificationQuery groupByTitle() Group by the title column
+ * @method PUQualificationQuery groupByPUPoliticalPartyId() Group by the p_u_political_party_id column
+ * @method PUQualificationQuery groupByPUMandateTypeId() Group by the p_u_mandate_type_id column
  * @method PUQualificationQuery groupByDescription() Group by the description column
  * @method PUQualificationQuery groupByBeginAt() Group by the begin_at column
  * @method PUQualificationQuery groupByEndAt() Group by the end_at column
  * @method PUQualificationQuery groupByCreatedAt() Group by the created_at column
  * @method PUQualificationQuery groupByUpdatedAt() Group by the updated_at column
- * @method PUQualificationQuery groupBySlug() Group by the slug column
  *
  * @method PUQualificationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PUQualificationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -46,30 +49,44 @@ use Politizr\Model\PUser;
  * @method PUQualificationQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PUQualificationQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
+ * @method PUQualificationQuery leftJoinPUPoliticalParty($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUPoliticalParty relation
+ * @method PUQualificationQuery rightJoinPUPoliticalParty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUPoliticalParty relation
+ * @method PUQualificationQuery innerJoinPUPoliticalParty($relationAlias = null) Adds a INNER JOIN clause to the query using the PUPoliticalParty relation
+ *
+ * @method PUQualificationQuery leftJoinPUMandateType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUMandateType relation
+ * @method PUQualificationQuery rightJoinPUMandateType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUMandateType relation
+ * @method PUQualificationQuery innerJoinPUMandateType($relationAlias = null) Adds a INNER JOIN clause to the query using the PUMandateType relation
+ *
  * @method PUQualification findOne(PropelPDO $con = null) Return the first PUQualification matching the query
  * @method PUQualification findOneOrCreate(PropelPDO $con = null) Return the first PUQualification matching the query, or a new PUQualification object populated from the query conditions when no match is found
  *
  * @method PUQualification findOneByPUserId(int $p_user_id) Return the first PUQualification filtered by the p_user_id column
- * @method PUQualification findOneByTitle(string $title) Return the first PUQualification filtered by the title column
+ * @method PUQualification findOneByPUPoliticalPartyId(int $p_u_political_party_id) Return the first PUQualification filtered by the p_u_political_party_id column
+ * @method PUQualification findOneByPUMandateTypeId(int $p_u_mandate_type_id) Return the first PUQualification filtered by the p_u_mandate_type_id column
  * @method PUQualification findOneByDescription(string $description) Return the first PUQualification filtered by the description column
  * @method PUQualification findOneByBeginAt(string $begin_at) Return the first PUQualification filtered by the begin_at column
  * @method PUQualification findOneByEndAt(string $end_at) Return the first PUQualification filtered by the end_at column
  * @method PUQualification findOneByCreatedAt(string $created_at) Return the first PUQualification filtered by the created_at column
  * @method PUQualification findOneByUpdatedAt(string $updated_at) Return the first PUQualification filtered by the updated_at column
- * @method PUQualification findOneBySlug(string $slug) Return the first PUQualification filtered by the slug column
  *
  * @method array findById(int $id) Return PUQualification objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUQualification objects filtered by the p_user_id column
- * @method array findByTitle(string $title) Return PUQualification objects filtered by the title column
+ * @method array findByPUPoliticalPartyId(int $p_u_political_party_id) Return PUQualification objects filtered by the p_u_political_party_id column
+ * @method array findByPUMandateTypeId(int $p_u_mandate_type_id) Return PUQualification objects filtered by the p_u_mandate_type_id column
  * @method array findByDescription(string $description) Return PUQualification objects filtered by the description column
  * @method array findByBeginAt(string $begin_at) Return PUQualification objects filtered by the begin_at column
  * @method array findByEndAt(string $end_at) Return PUQualification objects filtered by the end_at column
  * @method array findByCreatedAt(string $created_at) Return PUQualification objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUQualification objects filtered by the updated_at column
- * @method array findBySlug(string $slug) Return PUQualification objects filtered by the slug column
  */
 abstract class BasePUQualificationQuery extends ModelCriteria
 {
+    // query_cache behavior
+    protected $queryKey = '';
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
+
     /**
      * Initializes internal state of BasePUQualificationQuery object.
      *
@@ -168,7 +185,7 @@ abstract class BasePUQualificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `description`, `begin_at`, `end_at`, `created_at`, `updated_at`, `slug` FROM `p_u_qualification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_u_political_party_id`, `p_u_mandate_type_id`, `description`, `begin_at`, `end_at`, `created_at`, `updated_at` FROM `p_u_qualification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -344,32 +361,91 @@ abstract class BasePUQualificationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the title column
+     * Filter the query on the p_u_political_party_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
-     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
+     * $query->filterByPUPoliticalPartyId(1234); // WHERE p_u_political_party_id = 1234
+     * $query->filterByPUPoliticalPartyId(array(12, 34)); // WHERE p_u_political_party_id IN (12, 34)
+     * $query->filterByPUPoliticalPartyId(array('min' => 12)); // WHERE p_u_political_party_id >= 12
+     * $query->filterByPUPoliticalPartyId(array('max' => 12)); // WHERE p_u_political_party_id <= 12
      * </code>
      *
-     * @param     string $title The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByPUPoliticalParty()
+     *
+     * @param     mixed $pUPoliticalPartyId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return PUQualificationQuery The current query, for fluid interface
      */
-    public function filterByTitle($title = null, $comparison = null)
+    public function filterByPUPoliticalPartyId($pUPoliticalPartyId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($title)) {
+        if (is_array($pUPoliticalPartyId)) {
+            $useMinMax = false;
+            if (isset($pUPoliticalPartyId['min'])) {
+                $this->addUsingAlias(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $pUPoliticalPartyId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUPoliticalPartyId['max'])) {
+                $this->addUsingAlias(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $pUPoliticalPartyId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $title)) {
-                $title = str_replace('*', '%', $title);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(PUQualificationPeer::TITLE, $title, $comparison);
+        return $this->addUsingAlias(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $pUPoliticalPartyId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_u_mandate_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPUMandateTypeId(1234); // WHERE p_u_mandate_type_id = 1234
+     * $query->filterByPUMandateTypeId(array(12, 34)); // WHERE p_u_mandate_type_id IN (12, 34)
+     * $query->filterByPUMandateTypeId(array('min' => 12)); // WHERE p_u_mandate_type_id >= 12
+     * $query->filterByPUMandateTypeId(array('max' => 12)); // WHERE p_u_mandate_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPUMandateType()
+     *
+     * @param     mixed $pUMandateTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUQualificationQuery The current query, for fluid interface
+     */
+    public function filterByPUMandateTypeId($pUMandateTypeId = null, $comparison = null)
+    {
+        if (is_array($pUMandateTypeId)) {
+            $useMinMax = false;
+            if (isset($pUMandateTypeId['min'])) {
+                $this->addUsingAlias(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $pUMandateTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUMandateTypeId['max'])) {
+                $this->addUsingAlias(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $pUMandateTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $pUMandateTypeId, $comparison);
     }
 
     /**
@@ -574,35 +650,6 @@ abstract class BasePUQualificationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the slug column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
-     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $slug The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUQualificationQuery The current query, for fluid interface
-     */
-    public function filterBySlug($slug = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($slug)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $slug)) {
-                $slug = str_replace('*', '%', $slug);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PUQualificationPeer::SLUG, $slug, $comparison);
-    }
-
-    /**
      * Filter the query by a related PUser object
      *
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
@@ -679,6 +726,158 @@ abstract class BasePUQualificationQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUPoliticalParty object
+     *
+     * @param   PUPoliticalParty|PropelObjectCollection $pUPoliticalParty The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUQualificationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUPoliticalParty($pUPoliticalParty, $comparison = null)
+    {
+        if ($pUPoliticalParty instanceof PUPoliticalParty) {
+            return $this
+                ->addUsingAlias(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $pUPoliticalParty->getId(), $comparison);
+        } elseif ($pUPoliticalParty instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PUQualificationPeer::P_U_POLITICAL_PARTY_ID, $pUPoliticalParty->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUPoliticalParty() only accepts arguments of type PUPoliticalParty or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUPoliticalParty relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUQualificationQuery The current query, for fluid interface
+     */
+    public function joinPUPoliticalParty($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUPoliticalParty');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUPoliticalParty');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUPoliticalParty relation PUPoliticalParty object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUPoliticalPartyQuery A secondary query class using the current class as primary query
+     */
+    public function usePUPoliticalPartyQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPUPoliticalParty($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUPoliticalParty', '\Politizr\Model\PUPoliticalPartyQuery');
+    }
+
+    /**
+     * Filter the query by a related PUMandateType object
+     *
+     * @param   PUMandateType|PropelObjectCollection $pUMandateType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUQualificationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUMandateType($pUMandateType, $comparison = null)
+    {
+        if ($pUMandateType instanceof PUMandateType) {
+            return $this
+                ->addUsingAlias(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $pUMandateType->getId(), $comparison);
+        } elseif ($pUMandateType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PUQualificationPeer::P_U_MANDATE_TYPE_ID, $pUMandateType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUMandateType() only accepts arguments of type PUMandateType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUMandateType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUQualificationQuery The current query, for fluid interface
+     */
+    public function joinPUMandateType($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUMandateType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUMandateType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUMandateType relation PUMandateType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUMandateTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePUMandateTypeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPUMandateType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUMandateType', '\Politizr\Model\PUMandateTypeQuery');
+    }
+
+    /**
      * Exclude object from result
      *
      * @param   PUQualification $pUQualification Object to remove from the list of results
@@ -692,6 +891,25 @@ abstract class BasePUQualificationQuery extends ModelCriteria
         }
 
         return $this;
+    }
+
+    /**
+     * Code to execute before every DELETE statement
+     *
+     * @param     PropelPDO $con The connection object used by the query
+     */
+    protected function basePreDelete(PropelPDO $con)
+    {
+        // archivable behavior
+
+        if ($this->archiveOnDelete) {
+            $this->archive($con);
+        } else {
+            $this->archiveOnDelete = true;
+        }
+
+
+        return $this->preDelete($con);
     }
 
     // timestampable behavior
@@ -759,19 +977,209 @@ abstract class BasePUQualificationQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(PUQualificationPeer::CREATED_AT);
     }
-    // sluggable behavior
+    // query_cache behavior
+
+    public function setQueryKey($key)
+    {
+        $this->queryKey = $key;
+
+        return $this;
+    }
+
+    public function getQueryKey()
+    {
+        return $this->queryKey;
+    }
+
+    public function cacheContains($key)
+    {
+
+        return apc_fetch($key);
+    }
+
+    public function cacheFetch($key)
+    {
+
+        return apc_fetch($key);
+    }
+
+    public function cacheStore($key, $value, $lifetime = 3600)
+    {
+        apc_store($key, $value, $lifetime);
+    }
+
+    protected function doSelect($con)
+    {
+        // check that the columns of the main class are already added (if this is the primary ModelCriteria)
+        if (!$this->hasSelectClause() && !$this->getPrimaryCriteria()) {
+            $this->addSelfSelectColumns();
+        }
+        $this->configureSelectColumns();
+
+        $dbMap = Propel::getDatabaseMap(PUQualificationPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUQualificationPeer::DATABASE_NAME);
+
+        $key = $this->getQueryKey();
+        if ($key && $this->cacheContains($key)) {
+            $params = $this->getParams();
+            $sql = $this->cacheFetch($key);
+        } else {
+            $params = array();
+            $sql = BasePeer::createSelectSql($this, $params);
+            if ($key) {
+                $this->cacheStore($key, $sql);
+            }
+        }
+
+        try {
+            $stmt = $con->prepare($sql);
+            $db->bindValues($stmt, $params, $dbMap);
+            $stmt->execute();
+            } catch (Exception $e) {
+                Propel::log($e->getMessage(), Propel::LOG_ERR);
+                throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), $e);
+            }
+
+        return $stmt;
+    }
+
+    protected function doCount($con)
+    {
+        $dbMap = Propel::getDatabaseMap($this->getDbName());
+        $db = Propel::getDB($this->getDbName());
+
+        $key = $this->getQueryKey();
+        if ($key && $this->cacheContains($key)) {
+            $params = $this->getParams();
+            $sql = $this->cacheFetch($key);
+        } else {
+            // check that the columns of the main class are already added (if this is the primary ModelCriteria)
+            if (!$this->hasSelectClause() && !$this->getPrimaryCriteria()) {
+                $this->addSelfSelectColumns();
+            }
+
+            $this->configureSelectColumns();
+
+            $needsComplexCount = $this->getGroupByColumns()
+                || $this->getOffset()
+                || $this->getLimit()
+                || $this->getHaving()
+                || in_array(Criteria::DISTINCT, $this->getSelectModifiers());
+
+            $params = array();
+            if ($needsComplexCount) {
+                if (BasePeer::needsSelectAliases($this)) {
+                    if ($this->getHaving()) {
+                        throw new PropelException('Propel cannot create a COUNT query when using HAVING and  duplicate column names in the SELECT part');
+                    }
+                    $db->turnSelectColumnsToAliases($this);
+                }
+                $selectSql = BasePeer::createSelectSql($this, $params);
+                $sql = 'SELECT COUNT(*) FROM (' . $selectSql . ') propelmatch4cnt';
+            } else {
+                // Replace SELECT columns with COUNT(*)
+                $this->clearSelectColumns()->addSelectColumn('COUNT(*)');
+                $sql = BasePeer::createSelectSql($this, $params);
+            }
+
+            if ($key) {
+                $this->cacheStore($key, $sql);
+            }
+        }
+
+        try {
+            $stmt = $con->prepare($sql);
+            $db->bindValues($stmt, $params, $dbMap);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute COUNT statement [%s]', $sql), $e);
+        }
+
+        return $stmt;
+    }
+
+    // archivable behavior
 
     /**
-     * Find one object based on its slug
+     * Copy the data of the objects satisfying the query into PUQualificationArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
      *
-     * @param     string $slug The value to use as filter.
-     * @param     PropelPDO $con The optional connection object
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
      *
-     * @return    PUQualification the result, formatted by the current formatter
+     * @return     int the number of archived objects
+     * @throws     PropelException
      */
-    public function findOneBySlug($slug, $con = null)
+    public function archive($con = null, $useLittleMemory = true)
     {
-        return $this->filterBySlug($slug)->findOne($con);
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PUQualificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (PropelException $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
     }
 
 }

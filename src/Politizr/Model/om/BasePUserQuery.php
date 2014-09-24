@@ -2,6 +2,7 @@
 
 namespace Politizr\Model\om;
 
+use \BasePeer;
 use \Criteria;
 use \Exception;
 use \ModelCriteria;
@@ -266,6 +267,12 @@ use Politizr\Model\PUserQuery;
  */
 abstract class BasePUserQuery extends ModelCriteria
 {
+    // query_cache behavior
+    protected $queryKey = '';
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
+
     /**
      * Initializes internal state of BasePUserQuery object.
      *
@@ -3021,6 +3028,25 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this;
     }
 
+    /**
+     * Code to execute before every DELETE statement
+     *
+     * @param     PropelPDO $con The connection object used by the query
+     */
+    protected function basePreDelete(PropelPDO $con)
+    {
+        // archivable behavior
+
+        if ($this->archiveOnDelete) {
+            $this->archive($con);
+        } else {
+            $this->archiveOnDelete = true;
+        }
+
+
+        return $this->preDelete($con);
+    }
+
     // timestampable behavior
 
     /**
@@ -3086,6 +3112,211 @@ abstract class BasePUserQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(PUserPeer::CREATED_AT);
     }
+    // query_cache behavior
+
+    public function setQueryKey($key)
+    {
+        $this->queryKey = $key;
+
+        return $this;
+    }
+
+    public function getQueryKey()
+    {
+        return $this->queryKey;
+    }
+
+    public function cacheContains($key)
+    {
+
+        return apc_fetch($key);
+    }
+
+    public function cacheFetch($key)
+    {
+
+        return apc_fetch($key);
+    }
+
+    public function cacheStore($key, $value, $lifetime = 3600)
+    {
+        apc_store($key, $value, $lifetime);
+    }
+
+    protected function doSelect($con)
+    {
+        // check that the columns of the main class are already added (if this is the primary ModelCriteria)
+        if (!$this->hasSelectClause() && !$this->getPrimaryCriteria()) {
+            $this->addSelfSelectColumns();
+        }
+        $this->configureSelectColumns();
+
+        $dbMap = Propel::getDatabaseMap(PUserPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUserPeer::DATABASE_NAME);
+
+        $key = $this->getQueryKey();
+        if ($key && $this->cacheContains($key)) {
+            $params = $this->getParams();
+            $sql = $this->cacheFetch($key);
+        } else {
+            $params = array();
+            $sql = BasePeer::createSelectSql($this, $params);
+            if ($key) {
+                $this->cacheStore($key, $sql);
+            }
+        }
+
+        try {
+            $stmt = $con->prepare($sql);
+            $db->bindValues($stmt, $params, $dbMap);
+            $stmt->execute();
+            } catch (Exception $e) {
+                Propel::log($e->getMessage(), Propel::LOG_ERR);
+                throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), $e);
+            }
+
+        return $stmt;
+    }
+
+    protected function doCount($con)
+    {
+        $dbMap = Propel::getDatabaseMap($this->getDbName());
+        $db = Propel::getDB($this->getDbName());
+
+        $key = $this->getQueryKey();
+        if ($key && $this->cacheContains($key)) {
+            $params = $this->getParams();
+            $sql = $this->cacheFetch($key);
+        } else {
+            // check that the columns of the main class are already added (if this is the primary ModelCriteria)
+            if (!$this->hasSelectClause() && !$this->getPrimaryCriteria()) {
+                $this->addSelfSelectColumns();
+            }
+
+            $this->configureSelectColumns();
+
+            $needsComplexCount = $this->getGroupByColumns()
+                || $this->getOffset()
+                || $this->getLimit()
+                || $this->getHaving()
+                || in_array(Criteria::DISTINCT, $this->getSelectModifiers());
+
+            $params = array();
+            if ($needsComplexCount) {
+                if (BasePeer::needsSelectAliases($this)) {
+                    if ($this->getHaving()) {
+                        throw new PropelException('Propel cannot create a COUNT query when using HAVING and  duplicate column names in the SELECT part');
+                    }
+                    $db->turnSelectColumnsToAliases($this);
+                }
+                $selectSql = BasePeer::createSelectSql($this, $params);
+                $sql = 'SELECT COUNT(*) FROM (' . $selectSql . ') propelmatch4cnt';
+            } else {
+                // Replace SELECT columns with COUNT(*)
+                $this->clearSelectColumns()->addSelectColumn('COUNT(*)');
+                $sql = BasePeer::createSelectSql($this, $params);
+            }
+
+            if ($key) {
+                $this->cacheStore($key, $sql);
+            }
+        }
+
+        try {
+            $stmt = $con->prepare($sql);
+            $db->bindValues($stmt, $params, $dbMap);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute COUNT statement [%s]', $sql), $e);
+        }
+
+        return $stmt;
+    }
+
+    // archivable behavior
+
+    /**
+     * Copy the data of the objects satisfying the query into PUserArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
+     *
+     * @return     int the number of archived objects
+     * @throws     PropelException
+     */
+    public function archive($con = null, $useLittleMemory = true)
+    {
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (PropelException $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
+    }
+
     // sluggable behavior
 
     /**
