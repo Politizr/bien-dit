@@ -262,6 +262,27 @@ class PDDebate extends BasePDDebate
     // *****************************    DOCUMENTS   ************************* //
 
 	/**
+	 *	Renvoit les réactions associées en mode arbre / nested set
+	 *
+	 * @return PropelCollection d'objets PDReaction
+	 */
+	public function getTreeReactions($online = false, $published = false) {
+		$treeReactions = PDReactionQuery::create()
+					->_if($online)
+						->filterByOnline(true)
+					->_endif()
+					->_if($published)
+						->filterByPublished(true)
+					->_endif()
+					->filterByPDDebateId($this->getId())
+					->findTree($this->getId())
+					;
+
+		return $treeReactions;
+	}
+
+
+	/**
 	 *	Renvoit les réactions associées au débat
 	 *
 	 * @return PropelCollection d'objets PDReaction

@@ -6,6 +6,8 @@ use Admingenerated\PolitizrAdminBundle\BasePDReactionController\ListController a
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * ListController
  */
@@ -22,7 +24,7 @@ class ListController extends BaseListController
         $action = $session->get('PDDebate/action');
 
         if (!$pk) {
-            throw new NotFoundHttpException("The pk of Politizr\Model\PDDebate can't be retrieve from session.");
+            throw new NotFoundHttpException("The pk of Politizr\Model\PDDebate can't be retrieve from session: reload reaction page from debate page.");
         }
 
         if (!$action) {
@@ -31,4 +33,5 @@ class ListController extends BaseListController
 
         return new RedirectResponse($this->generateUrl("Politizr_AdminBundle_PDDebate_".$action, array('pk' => $pk)));
     }
+
 }

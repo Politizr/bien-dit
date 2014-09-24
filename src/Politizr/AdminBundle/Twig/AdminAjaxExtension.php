@@ -412,7 +412,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:'.$template, array(
                                 'pdDebate' => $pdDebate,
-                                'PDReactions' => $pdDebate->getReactions(false, false),
+                                'PDReactions' => $pdDebate->getTreeReactions(false, false),
                                 )
                     );
 

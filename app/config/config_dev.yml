@@ -14,13 +14,13 @@ web_profiler:
 
 web_profiler_extra:
     routing:
-        enabled:        true
+        enabled:        false
         display_in_wdt: true
     container:
-        enabled:        true
+        enabled:        false
         display_in_wdt: true
     assetic:
-        enabled:        true
+        enabled:        false
         display_in_wdt: true
     twig:
         enabled:        true

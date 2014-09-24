@@ -44,6 +44,10 @@ Politizr_AdminBundle_PDDebate_Comments:
 
 
 # Réactions
+# Politizr_AdminBundle_PDReaction_NewNode:
+#     pattern:  /PDReaction/{pk}/new_node
+#     defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:newNode }
+
 Politizr_AdminBundle_PDReaction_Comments:
     pattern:  /PDReaction/{pk}/comments
     defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:comments }
@@ -91,9 +95,8 @@ Politizr_AdminBundle_PDDebate:
 
 Politizr_AdminBundle_PDReaction:
     resource: "@PolitizrAdminBundle/Controller/PDReaction/"
-    type:     admingenerator
+    type:     admingenerator_nested
     prefix:   /PDReaction
-
 
 
 # Contenus / Commantaires

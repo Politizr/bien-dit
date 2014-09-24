@@ -1,10 +1,12 @@
 {# TODO largeur du tableau à maj 100% #}
-<table id="table-list-PDReaction" class="table table-striped table-hover table-condensed object-actions-PDReaction">
+{# branchement d'un JS nested set http://johnny.github.io/jquery-sortable/ #}
+<table id="table-list-PDReaction" class="table table-sortable table-striped table-hover table-condensed object-actions-PDReaction">
 	<thead>
         <tr class="list_thead">
             <th class="list_thead_column">ID</th>
-            <th class="list_thead_column">User</th>
+            <th class="list_thead_column">Niveau</th>
             <th class="list_thead_column">En réaction à</th>
+            <th class="list_thead_column">Auteur</th>
             <th class="list_thead_column">Titre</th>
             <th class="list_thead_column">Résumé</th>
             <th class="list_thead_column">Note +</th>
@@ -19,15 +21,16 @@
         {% if PDReactions|length > 0 %}
             {% for PDReaction in PDReactions %}
                 {% include "PolitizrAdminBundle:PDReactionList:row.html.twig" with {  } %}
-            {% endfor %}    {% block object_actions_script %}
-            <script src="{{ asset("bundles/admingeneratorgenerator/js/admingenerator/object-actions.js") }}"></script>
-            <script type="text/javascript">
-                ;(function(window, $, undefined){
-                   $(".object-actions-PDReaction").agen$objectActions({
-                       actionsSelector: '.object_actions a'
-                   });
-               })(this, jQuery);
-           </script>
+            {% endfor %}
+            {% block object_actions_script %}
+                <script src="{{ asset("bundles/admingeneratorgenerator/js/admingenerator/object-actions.js") }}"></script>
+                <script type="text/javascript">
+                    ;(function(window, $, undefined){
+                       $(".object-actions-PDReaction").agen$objectActions({
+                           actionsSelector: '.object_actions a'
+                       });
+                   })(this, jQuery);
+               </script>
            {% endblock object_actions_script %}
         {% else %}
             <tr class="list_trow no_results_row">

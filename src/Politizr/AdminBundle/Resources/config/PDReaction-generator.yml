@@ -8,6 +8,12 @@ params:
     fields:
         id:
             label:          ID
+        tree_level:
+            label:          Arbre / Niveau
+        tree_left:
+            label:          Arbre / Gauche
+        tree_right:
+            label:          Arbre / Droite
         p_user_id:
             label:          Utilisateur
         p_user:
@@ -48,26 +54,16 @@ builders:
     list:
         params:
             title:                              Liste des réactions
-            max_per_page:                       50
-            sort:                               [ published_at, DESC ]
-            scopes:
-                group_1: 
-                    "Tous":                     ~
-                    "Publiés":
-                        default:                true
-                        filters:
-                            filterByPublished:  true
-                    "Brouillons":
-                        filters:
-                            filterByPublished:  false
             # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
-            display:                            [ id, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
+            display:                            [ id, tree_level, parent, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
             actions:
                 new:                            ~
             object_actions:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+#                 new_node:
+#                     label:                      Nouvelle réaction
     excel:
         params: ~
         filename: ~
@@ -83,7 +79,7 @@ builders:
         params:
             title:                              "Création d'un contenu réaction"
             display:
-                "Champs principaux":            [ p_user, p_d_debate_id, title ]
+                "Champs principaux":            [ p_user, parent_node, p_d_debate_id, title ]
                 "Champs complémentaires":       [ summary ]
             fields:
                 p_d_debate_id:
@@ -92,11 +88,14 @@ builders:
                     addFormOptions:
                         empty_value:            ""
                         required:               false
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                p_d_debate:
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
+                parent_node:
+                    label:                      Réaction
+                    formType:                   choice
+                    dbType:                     collection
                     addFormOptions:
-                        empty_value:            ""
-                        query:                  \Politizr\Model\PDDebateQuery::create()->filterByPublished(true)->orderByPublishedAt(\Criteria::DESC) 
+                        mapped:                 false
+                        choices:                \Politizr\Model\PDReactionQuery::create()->find()->toKeyValue()
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -177,6 +176,7 @@ builders:
     actions:
         params:
             object_actions:
-                delete: ~
+                delete:                         ~
             batch_actions:
-                delete: ~
+                delete:                         ~
+#                 new_node:                       ~
