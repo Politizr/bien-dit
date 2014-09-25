@@ -1,14 +1,17 @@
 <div class="comment">
 	<div class="comment-description row">
-		<div class="col-sm-2 text-center">
-			<a href="{{ path('UserDetail', { 'id': comment.pUser.id, 'slug': comment.pUser.slug }) }}">
-				{% if (comment.pUser.fileName) %}
-		            <img src="{{ asset('uploads/users/'~comment.pUser.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ comment.pUser.name }}">
-		        {% else %}
-		            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ comment.pUser.name }}">
-	        	{% endif %}
-			</a>
-		</div>
+		{% set user = comment.pUser %}
+		{% if user %}
+			<div class="col-sm-2 text-center">
+				<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
+					{% if (user.fileName) %}
+			            <img src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
+			        {% else %}
+			            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
+		        	{% endif %}
+				</a>
+			</div>
+		{% endif %}
 		<div class="col-sm-8">
 			{% if (debateLink) %}
 				{% set debate = comment.debate %}

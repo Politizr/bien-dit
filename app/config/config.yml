@@ -268,41 +268,39 @@ bazinga_faker:
         #################################################################################################################
         #                                   UTILISATEUR
         #################################################################################################################
-#         Politizr\Model\PUser:
-#             number:                     50
-#             custom_formatters:
-#                 PUTypeId:               { method: numberBetween, parameters: [ 1, 2 ] }
-#                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
-# 
-#                 Firstname:              { method: firstname }
-#                 Name:                   { method: lastname }
-# 
-#                 Summary:                { method: paragraphs, parameters: [ 2, true ] }
-#                 Biography:              { method: paragraphs, parameters: [ 4, true ] }
-# 
-#                 Website:                { method: url }
-#                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
-#                 Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
-#                 Phone:                  { method: phoneNumber }
-# 
-#                 Email:                  { method: email }
-# 
-#                 Provider:               { method: null }
-#                 ProviderId:             { method: null }
-#                 Nickname:               { method: null }
-#                 Realname:               { method: null }
-# 
-#                 UsernameCanonical:      { method: null }
-#                 EmailCanonical:         { method: null }
-#                 Salt:                   { method: null }
-#                 Password:               { method: null }
-#                 ConfirmationToken:      { method: null }
-#                 PasswordRequestedAt:    { method: null }
-# 
-#                 Online:                 { method: boolean, parameters: [ 100 ] }
-#                 Slug:                   { method: null }
-# 
+        Politizr\Model\PUser:
+            number:                     50
+            custom_formatters:
+                PUTypeId:               { method: numberBetween, parameters: [ 1, 1 ] }
+                PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
+                Firstname:              { method: firstname }
+                Name:                   { method: lastname }
+
+                Summary:                { method: paragraphs, parameters: [ 2, true ] }
+                Biography:              { method: paragraphs, parameters: [ 4, true ] }
+
+                Website:                { method: url }
+                Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
+                Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
+                Phone:                  { method: phoneNumber }
+
+                Email:                  { method: email }
+
+                Provider:               { method: null }
+                ProviderId:             { method: null }
+                Nickname:               { method: null }
+                Realname:               { method: null }
+
+                UsernameCanonical:      { method: null }
+                EmailCanonical:         { method: null }
+                Salt:                   { method: null }
+                Password:               { method: null }
+                ConfirmationToken:      { method: null }
+                PasswordRequestedAt:    { method: null }
+
+                Online:                 { method: boolean, parameters: [ 100 ] }
+                Slug:                   { method: null }
 
 #         Politizr\Model\PUQualification:
 #             number:                     300
@@ -313,31 +311,35 @@ bazinga_faker:
 #         Politizr\Model\PUFollowU:
 #             number:                     1
 # 
-#         Politizr\Model\PUFollowT:
-#             number:                     150
-#             custom_formatters:
-#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-# 
-#         Politizr\Model\PUTaggedT:
-#             number:                     150
-#             custom_formatters:
-#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-# 
-#         #################################################################################################################
-#         #                                   REPUTATION
-#         #################################################################################################################
-#         Politizr\Model\PUReputationRB:
-#             number:                     50
-#             custom_formatters:
-#                 PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
-# 
-#         Politizr\Model\PUReputationRA:
-#             number:                     150
-#             custom_formatters:
-#                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
-# 
-# 
+        Politizr\Model\PUFollowT:
+            number:                     150
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+
+        Politizr\Model\PUTaggedT:
+            number:                     150
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+
         #################################################################################################################
+        #                                   REPUTATION
+        #################################################################################################################
+        Politizr\Model\PUReputationRB:
+            number:                     50
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
+
+        Politizr\Model\PUReputationRA:
+            number:                     150
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
+
+
+      #################################################################################################################
         #                                   COMMANDE
         #################################################################################################################
         Politizr\Model\POrder:
@@ -390,14 +392,18 @@ bazinga_faker:
 #                 Online:                 { method: boolean, parameters: [ 100 ] }
 #                 Slug:                   { method: null }
 # 
-#         Politizr\Model\PUFollowDD:
-#             number:                     300
-# 
-#         Politizr\Model\PDDTaggedT:
-#             number:                     300
-#             custom_formatters:
-#                 PTagId:                 { method: numberBetween, parameters: [ 1, 48 ] }
-# 
+        Politizr\Model\PUFollowDD:
+            number:                     300
+            custom_formatters:
+                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+
+        Politizr\Model\PDDTaggedT:
+            number:                     30
+            custom_formatters:
+                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+
 #         # TODO Faker ne remplit pas correctement PDDebateId ni les info nested set 
 #         Politizr\Model\PDReaction:
 #             number:                     300
@@ -423,33 +429,39 @@ bazinga_faker:
 #                 TreeRight:              { method: 0 }
 #                 TreeLevel:              { method: 1 }
 # 
-#         Politizr\Model\PDDComment:
-#             number:                     300
-#             custom_formatters:
-#                 Description:            { method: realText, parameters: [ 250 ] }
-#                 ParagraphNo:            { method: randomDigit }
-# 
-#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-# 
-#                 PublishedBy:            { method: null }
-#                 PublishedAt:            { method: dateTimeThisYear }
-# 
-#                 Online:                 { method: boolean, parameters: [ 100 ] }
-# 
-#         Politizr\Model\PDRComment:
-#             number:                     900
-#             custom_formatters:
-#                 Description:            { method: realText, parameters: [ 150 ] }
-#                 ParagraphNo:            { method: randomDigit }
-# 
-#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-# 
-#                 PublishedBy:            { method: null }
-#                 PublishedAt:            { method: dateTimeThisYear }
-# 
-#                 Online:                 { method: boolean, parameters: [ 100 ] }
+        Politizr\Model\PDDComment:
+            number:                     300
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+
+                Description:            { method: realText, parameters: [ 250 ] }
+                ParagraphNo:            { method: randomDigit }
+
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+
+                PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
+
+                Online:                 { method: boolean, parameters: [ 100 ] }
+
+        Politizr\Model\PDRComment:
+            number:                     900
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
+
+                Description:            { method: realText, parameters: [ 150 ] }
+                ParagraphNo:            { method: randomDigit }
+
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+
+                PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
+
+                Online:                 { method: boolean, parameters: [ 100 ] }
 
 
         #################################################################################################################

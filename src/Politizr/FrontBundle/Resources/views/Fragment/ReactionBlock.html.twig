@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-	<!--
+	{#
 	<div>
 		<hr>
 		DEBUG NESTED SET - 
@@ -27,13 +27,13 @@
 		hasPrevSibling {{ pdReaction.hasPrevSibling }} - 
 		hasNextSibling {{ pdReaction.hasNextSibling }} - 
 	</div>
-	-->
+	#}
 	{% if pdReaction.level > 1 %}
 		{% set parentReaction = pdReaction.getParent %}
 		<h4 class="label label-warning">En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>"</h4>
 	{% endif %}
 	<h4>
-		<div cssActionId="user-more-info" class="row">
+		<div action="user-more-info" class="row">
 			<a class="label label-info">par {{ pdReaction.pUser }}</a>
 		</div>
 		<div class="row" action="user-infos">
