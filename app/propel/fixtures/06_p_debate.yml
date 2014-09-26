@@ -3,10 +3,9 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/261-groupe-ps.htm
     debat1:
         online:			true
+        p_user_id:      depute1
 
         title:			Climat : ne perdons plus de temps !
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
 
         summary:        |
             <p>
@@ -60,7 +59,6 @@ Politizr\Model\PDDebate:
                 aux Régions un nouveau rôle important dans la préservation du climat.
             </p>
         published:      1
-        published_at:	<?php $faker('dateTimeThisYear'); ?>
 
         note_pos:		10
         note_neg:		1
@@ -68,8 +66,7 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/262-groupe-ump.htm
     debat2:
         online:         true
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        p_user_id:      depute2
 
         title:          Mars 2014 : les Rhônalpins ont fait le choix de la Droite rassemblée
 
@@ -110,7 +107,6 @@ Politizr\Model\PDDebate:
                 faire, la mobilisation de tous est indispensable !
             </p>
         published:      <?php $faker('boolean', 90); ?>
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -118,8 +114,7 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/257-groupe-les-verts.htm
     debat3:
         online:         true
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        p_user_id:      depute3
 
         title:          Traité transatlantique : la mort du conseil régional ?
 
@@ -167,7 +162,6 @@ Politizr\Model\PDDebate:
                 société.
             </p>
         published:      <?php $faker('boolean', 90); ?>
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -175,8 +169,7 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/263-groupe-fn.htm
     debat4:
         online:         true
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        p_user_id:      depute4
 
         title:          Un nouveau pas vers la « démocrature »
 
@@ -211,7 +204,6 @@ Politizr\Model\PDDebate:
                 rejeté le vœu du FN. Les élus UMP n’ont pas fait mieux !
             </p>
         published:      <?php $faker('boolean', 90); ?>
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -219,8 +211,7 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/265-groupe-fdg.htm
     debat5:
         online:         true
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        p_user_id:      depute5
 
         title:          Le Grand Marché Transatlantique, une menace pour les droits des citoyens
 
@@ -247,7 +238,6 @@ Politizr\Model\PDDebate:
                 mobilisation citoyenne continue, nous en serons !
             </p>
         published:      <?php $faker('boolean', 90); ?>
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -255,8 +245,7 @@ Politizr\Model\PDDebate:
     # http://www.rhonealpes.fr/266-groupe-prg.htm
     debat6:
         online:         true
-
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        p_user_id:      depute6
 
         title:          Vote du Schéma Régional Climat Air Energie : enfin !
 
@@ -282,7 +271,6 @@ Politizr\Model\PDDebate:
                 2020, c’est vraiment demain !
             </p>
         published:      <?php $faker('boolean', 90); ?>
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>

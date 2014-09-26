@@ -5,15 +5,15 @@ Politizr\Model\PDReaction:
         tree_right:     2
         tree_level:     1
 
-        online:			true
-
         p_d_debate_id:  debat1
+        p_user_id:      depute2
 
         title:			<?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -25,15 +25,15 @@ Politizr\Model\PDReaction:
         tree_right:     4
         tree_level:     1
 
-        online:         true
-
         p_d_debate_id:  debat1
+        p_user_id:      depute2
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -45,15 +45,15 @@ Politizr\Model\PDReaction:
         tree_right:     6
         tree_level:     1
 
-        online:         true
-
         p_d_debate_id:  debat1
+        p_user_id:      depute2
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -65,15 +65,15 @@ Politizr\Model\PDReaction:
         tree_right:     4
         tree_level:     1
 
-        online:         true
-
         p_d_debate_id:  debat2
+        p_user_id:      depute3
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -85,15 +85,15 @@ Politizr\Model\PDReaction:
         tree_right:     3
         tree_level:     2
 
-        online:         true
-
         p_d_debate_id:  debat2
+        p_user_id:      depute4
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -105,15 +105,15 @@ Politizr\Model\PDReaction:
         tree_right:     6
         tree_level:     1
 
-        online:         true
-
         p_d_debate_id:  debat2
+        p_user_id:      depute5
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -125,15 +125,15 @@ Politizr\Model\PDReaction:
         tree_right:     6
         tree_level:     1
 
-        online:         true
-
         p_d_debate_id:  debat3
+        p_user_id:      depute6
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -145,15 +145,15 @@ Politizr\Model\PDReaction:
         tree_right:     5
         tree_level:     2
 
-        online:         true
-
         p_d_debate_id:  debat3
+        p_user_id:      depute7
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 
@@ -165,15 +165,15 @@ Politizr\Model\PDReaction:
         tree_right:     4
         tree_level:     3
 
-        online:         true
-
         p_d_debate_id:  debat3
+        p_user_id:      depute8
 
         title:          <?php $faker('realText', 60) ?>
 
         summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
+        online:         true
         published:      true
         published_at:   <?php $faker('dateTimeThisYear'); ?>
 

@@ -15,6 +15,7 @@ use Pagerfanta\Adapter\PropelAdapter;
 
 
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUTaggedTQuery;
@@ -65,20 +66,22 @@ class ProfileController extends Controller {
         // *********************************** //
 
         // Récupération liste des débats ordre publication décroissante
-        // TODO + récupérer les débats rédigés par les puser suivis
-        // TODO + gestion les débats correspondants aux tags suivis? notifs?
-        // TODO req debats + réactions en 1 fois
+        // TODO + commentaires?
         // TODO MAJ vers le KnpPaginatorBundle https://github.com/KnpLabs/KnpPaginatorBundle
         $maxPerPage = 10;
-        $query = PDDebateQuery::create()->filterByOnline(true)->orderByPublishedAt(\Criteria::DESC);
-        $pageDebates = $this->preparePagination($query, $maxPerPage);
+        $query = PDocumentQuery::create()
+                    ->filterByOnline(true)
+                    ->filterByPublished(true)
+                    ->orderByPublishedAt(\Criteria::DESC)
+                    ;
+        $pageDocuments = $this->preparePagination($query, $maxPerPage);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Profile:homepageC.html.twig', array(
-                    'pageDebates' => $pageDebates
+                    'pageDocuments' => $pageDocuments
             ));
     }
 

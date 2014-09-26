@@ -111,18 +111,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
-
-    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -296,86 +284,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
     public function getOnline()
     {
         return $this->online;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [created_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedAt($format = null)
-    {
-        if ($this->created_at === null) {
-            return null;
-        }
-
-        if ($this->created_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->created_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getUpdatedAt($format = null)
-    {
-        if ($this->updated_at === null) {
-            return null;
-        }
-
-        if ($this->updated_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->updated_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
     }
 
     /**
@@ -689,52 +597,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDocumentArchive The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PDocumentArchivePeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDocumentArchive The current object (for fluent API support)
-     */
-    public function setUpdatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PDocumentArchivePeer::UPDATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
-
-    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -801,9 +663,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->published_by = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->online = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->archived_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -812,7 +672,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 15; // 15 = PDocumentArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PDocumentArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDocumentArchive object", $e);
@@ -1056,12 +916,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
-        if ($this->isColumnModified(PDocumentArchivePeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`created_at`';
-        }
-        if ($this->isColumnModified(PDocumentArchivePeer::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
         if ($this->isColumnModified(PDocumentArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -1111,12 +965,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
-                        break;
-                    case '`created_at`':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
-                    case '`updated_at`':
-                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1285,12 +1133,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 12:
-                return $this->getCreatedAt();
-                break;
-            case 13:
-                return $this->getUpdatedAt();
-                break;
-            case 14:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1333,9 +1175,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
             $keys[9] => $this->getPublishedAt(),
             $keys[10] => $this->getPublishedBy(),
             $keys[11] => $this->getOnline(),
-            $keys[12] => $this->getCreatedAt(),
-            $keys[13] => $this->getUpdatedAt(),
-            $keys[14] => $this->getArchivedAt(),
+            $keys[12] => $this->getArchivedAt(),
         );
 
         return $result;
@@ -1407,12 +1247,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 12:
-                $this->setCreatedAt($value);
-                break;
-            case 13:
-                $this->setUpdatedAt($value);
-                break;
-            case 14:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1451,9 +1285,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[9], $arr)) $this->setPublishedAt($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setPublishedBy($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setOnline($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setArchivedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
     }
 
     /**
@@ -1477,8 +1309,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentArchivePeer::PUBLISHED_AT)) $criteria->add(PDocumentArchivePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDocumentArchivePeer::PUBLISHED_BY)) $criteria->add(PDocumentArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDocumentArchivePeer::ONLINE)) $criteria->add(PDocumentArchivePeer::ONLINE, $this->online);
-        if ($this->isColumnModified(PDocumentArchivePeer::CREATED_AT)) $criteria->add(PDocumentArchivePeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PDocumentArchivePeer::UPDATED_AT)) $criteria->add(PDocumentArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDocumentArchivePeer::ARCHIVED_AT)) $criteria->add(PDocumentArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1554,8 +1384,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
-        $copyObj->setCreatedAt($this->getCreatedAt());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1620,8 +1448,6 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
-        $this->created_at = null;
-        $this->updated_at = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

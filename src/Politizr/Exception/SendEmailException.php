@@ -1,6 +1,6 @@
 <?php
 
-namespace Exception;
+namespace Politizr\Exception;
 
 class SendEmailException extends \Exception implements SendEmailExceptionInterface
 {

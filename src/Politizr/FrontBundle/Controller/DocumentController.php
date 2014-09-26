@@ -178,68 +178,6 @@ class DocumentController extends Controller {
     /* ######################################################################################################## */
 
     /**
-     *      Renvoit le contenu complet d'un debat ou reaction
-     */
-    public function getDescriptionPDocumentAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** getDescriptionPDocumentAction');
-        
-        try {
-            if ($request->isXmlHttpRequest()) {
-                // Récupération args
-                $id = $request->get('objectId');
-                $logger->info('$id = ' . print_r($id, true));
-                $type = $request->get('type');
-                $logger->info('$type = ' . print_r($type, true));
-
-                if ($type == 'debate') {
-                    $pDocument = PDDebateQuery::create()->findPk($id);
-                    if (!$pDocument) {
-                        throw new NotFoundHttpException('pDDebate n°'.$id.' not found.');
-                    }
-                    if (!$pDocument->getOnline()) {
-                        throw new NotFoundHttpException('pDDebate n°'.$id.' not online.');
-                    }
-                } else {
-                    $pDocument = PDReactionQuery::create()->findPk($id);
-                    if (!$pDocument) {
-                        throw new NotFoundHttpException('pDReaction n°'.$id.' not found.');
-                    }
-                    if (!$pDocument->getOnline()) {
-                        throw new NotFoundHttpException('pDReaction n°'.$id.' not online.');
-                    }
-                }
-
-                // Construction du rendu du tag
-                $templating = $this->get('templating');
-                $htmlZen = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:DocumentZen.html.twig', array(
-                                        'pDocument' => $pDocument
-                                        )
-                            );
-                
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true,
-                    'htmlZen' => $htmlZen
-                );
-            } else {
-                throw $this->createNotFoundException('Not a XHR request');
-            }
-        } catch (NotFoundHttpException $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        } catch (\Exception $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        }
-
-        // JSON formatted success/error message
-        $response = new Response(json_encode($jsonResponse));
-        return $response;
-    }
-
-    /**
      *      Suivi d'un débat / profil
      */
     public function followAction(Request $request) {

@@ -111,7 +111,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ p_u_type ]
-                    "Civilité":                 [ [ gender, firstname, name ], [ uploadedFileName ] ]
+                    "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ summary, biography ]
@@ -163,6 +163,8 @@ builders:
                     label:                      "Tags géo"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -197,13 +199,13 @@ builders:
                 "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
                 "Tag":
-                    "Tags du profil":           [ block_tags_mandat, block_tags_geo ]
+                    "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
                     "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                     "Réactions":                [ block_reactions ]
-                    "Commentaires":             [ block_comments_d, block_comments_r ]
+                    "Commentaires":             [ block_comments ]
                 "Abonnement":
                     "Followers":                [ block_followers_q, block_followers_c ]
                     "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
@@ -229,66 +231,84 @@ builders:
                         options:
                             # label:              Poste
                             data_class:         Politizr\Model\PUQualification
-                block_tags_mandat:
-                    label:                      "Tags mandat"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_tags_geo:
                     label:                      "Tags géo"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_debates:
                     label:                      "Débats"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_badges_debat:
                     label:                      "Débat"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_badges_comment:
                     label:                      "Commentaire"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_badges_participation:
                     label:                      "Participation"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_badges_moderation:
                     label:                      "Modération"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_badges_autre:
                     label:                      "Autres"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_reactions:
                     label:                      "Réactions"
                     formType:                   hidden
                     dbType:                     VARCHAR
-                block_comments_d:
-                    label:                      "Débats"
+                    addFormOptions:
+                        mapped:                 false
+                block_comments:
+                    label:                      "Commentaires"
                     formType:                   hidden
                     dbType:                     VARCHAR
-                block_comments_r:
-                    label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_followers_q:
                     label:                      "Qualifiés"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_followers_c:
                     label:                      "Citoyens"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_subscribers_q:
                     label:                      "Qualifiés"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_subscribers_c:
                     label:                      "Citoyens"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 last_connect:
                     label:                      Date de dernière connexion
             actions:

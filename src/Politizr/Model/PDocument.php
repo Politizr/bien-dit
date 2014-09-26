@@ -5,6 +5,10 @@ namespace Politizr\Model;
 use Politizr\Model\om\BasePDocument;
 
 use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+
+use Politizr\Exception\InconsistentDataException;
 
 /**
  *	Classe mère de débat et réaction
@@ -28,91 +32,49 @@ class PDocument extends BasePDocument
 		return $this->getTitle();
 	}
 
- 	/**
-	 * Override to manage accented characters
-	 * @return string
-	 */
-	protected function createRawSlug()
-	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
-		$slug = $this->cleanupSlugPart($toSlug);
-		return $slug;
-	}
-
-	/**
-	 *	Surcharge pour gérer la date et l'auteur de la publication.
-	 *
-	 *
-	 */
-    public function save(\PropelPDO $con = null)
-    {
-    	// Date publication
-    	if ($this->published && in_array(PDocumentPeer::PUBLISHED, $this->modifiedColumns)) {
-    		$this->setPublishedAt(time());
-    	} else {
-    		$this->setPublishedAt(null);
-    	}
-
-    	// User associé
-    	// TODO: /!\ chaine en dur
-		$publisher = $this->getPUser();
-		if ($publisher) {
-			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
-		} else {
-			$this->setPublishedBy('Auteur inconnu');
-		}
-
-    	parent::save($con);
-	}
-
 	// *****************************  DEBAT / REACTION  ****************** //
 
 
 	/**
-	 *	Renvoit le type du document courant
+	 * Renvoit le type "enfant" du document associé
 	 *
-	 * 	@return string
+	 * @return 	string
 	 */
 	public function getType() {
-		$debates = parent::countPDDebates();
-		if ($debates > 0) {
+		$object = $this->getDescendantClass();
+
+		if ($object == 'Politizr\Model\PDDebate') {
 			return PDocument::TYPE_DEBATE;
-		}
-
-		$reactions = parent::countPDReactions();
-		if ($reactions > 0) {
+		} elseif ($object == 'Politizr\Model\PDReaction') {
 			return PDocument::TYPE_REACTION;
-		}
-
-		// TODO > Exception?
-		return 'Type non défini';
-	}
-
-	/**
-	 *	Renvoit l'objet débat associé
-	 *
-	 * 	@return string
-	 */
-	public function getPDDebate() {
-		$type = $this->getType();
-		if ($type == PDocument::TYPE_DEBATE) {
-			return $this->getPDocument()->getPDDebates()->getFirst();
 		} else {
-			return null;
+			throw new InconsistentDataException('PDocument child object unknown or null.');
 		}
 	}
 
 	/**
-	 *	Renvoit l'objet réaction associé
+	 *	Renvoit l'objet PDDebate associé.
 	 *
-	 * 	@return string
+	 * 	@return 	PDDebate
 	 */
-	public function getPDReaction() {
-		$type = $this->getType();
-		if ($type == PDocument::TYPE_REACTION) {
-			return $this->getPDocument()->getPDReactions()->getFirst();
+	public function getDebate() {
+		if ($type = $this->getType() == PDocument::TYPE_DEBATE) {
+			return PDDebateQuery::create()->findPk($this->getId());
 		} else {
-			return null;
+			throw new InconsistentDataException('PDocument child object is not of PDDebate type.');
+		}
+	}
+
+	/**
+	 *	Renvoit l'objet PDReaction associé.
+	 *
+	 * 	@return 	PDReaction
+	 */
+	public function getReaction() {
+		if ($type = $this->getType() == PDocument::TYPE_REACTION) {
+			return PDReactionQuery::create()->findPk($this->getId());
+		} else {
+			throw new InconsistentDataException('PDocument child object is not of PDReaction type.');
 		}
 	}
 

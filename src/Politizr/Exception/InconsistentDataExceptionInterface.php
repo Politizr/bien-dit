@@ -1,6 +1,6 @@
 <?php
 
-namespace Exception;
+namespace Politizr\Exception;
 
 /**
  * Interface for my bundle exceptions.

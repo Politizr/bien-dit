@@ -496,8 +496,8 @@ CREATE TABLE `p_u_qualification`
     `p_u_political_party_id` INTEGER,
     `p_u_mandate_type_id` INTEGER,
     `description` TEXT,
-    `begin_at` DATE,
-    `end_at` DATE,
+    `begin_at` DATETIME,
+    `end_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -724,11 +724,8 @@ CREATE TABLE `p_document`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
+    `descendant_class` VARCHAR(100),
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `p_document_slug` (`slug`(255)),
     INDEX `p_document_FI_1` (`p_user_id`),
     CONSTRAINT `p_document_FK_1`
         FOREIGN KEY (`p_user_id`)
@@ -745,18 +742,34 @@ DROP TABLE IF EXISTS `p_d_debate`;
 
 CREATE TABLE `p_d_debate`
 (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `file_name` VARCHAR(150),
-    `p_document_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
     PRIMARY KEY (`id`),
-    INDEX `p_d_debate_FI_1` (`p_document_id`),
+    UNIQUE INDEX `p_d_debate_slug` (`slug`(255)),
+    INDEX `p_d_debate_I_1` (`p_user_id`),
     CONSTRAINT `p_d_debate_FK_1`
-        FOREIGN KEY (`p_document_id`)
+        FOREIGN KEY (`id`)
         REFERENCES `p_document` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `p_d_debate_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -767,27 +780,43 @@ DROP TABLE IF EXISTS `p_d_reaction`;
 
 CREATE TABLE `p_d_reaction`
 (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_d_debate_id` INTEGER NOT NULL,
-    `p_document_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `tree_left` INTEGER,
     `tree_right` INTEGER,
     `tree_level` INTEGER,
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_d_reaction_slug` (`slug`(255)),
     INDEX `p_d_reaction_FI_1` (`p_d_debate_id`),
-    INDEX `p_d_reaction_FI_2` (`p_document_id`),
+    INDEX `p_d_reaction_I_2` (`p_user_id`),
     CONSTRAINT `p_d_reaction_FK_1`
         FOREIGN KEY (`p_d_debate_id`)
         REFERENCES `p_d_debate` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `p_d_reaction_FK_2`
-        FOREIGN KEY (`p_document_id`)
+        FOREIGN KEY (`id`)
         REFERENCES `p_document` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `p_d_reaction_FK_3`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1004,8 +1033,8 @@ CREATE TABLE `p_u_qualification_archive`
     `p_u_political_party_id` INTEGER,
     `p_u_mandate_type_id` INTEGER,
     `description` TEXT,
-    `begin_at` DATE,
-    `end_at` DATE,
+    `begin_at` DATETIME,
+    `end_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `archived_at` DATETIME,
@@ -1035,8 +1064,6 @@ CREATE TABLE `p_document_archive`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_document_archive_I_1` (`p_user_id`)
@@ -1050,14 +1077,26 @@ DROP TABLE IF EXISTS `p_d_debate_archive`;
 
 CREATE TABLE `p_d_debate_archive`
 (
-    `id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
-    `p_document_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_d_debate_archive_I_1` (`p_document_id`)
+    INDEX `p_d_debate_archive_I_1` (`p_user_id`),
+    INDEX `p_d_debate_archive_I_2` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1068,15 +1107,30 @@ DROP TABLE IF EXISTS `p_d_reaction_archive`;
 
 CREATE TABLE `p_d_reaction_archive`
 (
-    `id` INTEGER NOT NULL,
     `p_d_debate_id` INTEGER NOT NULL,
-    `p_document_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `tree_left` INTEGER,
+    `tree_right` INTEGER,
+    `tree_level` INTEGER,
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `more_info` TEXT,
+    `note_pos` INTEGER,
+    `note_neg` INTEGER,
+    `published` TINYINT(1),
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_d_reaction_archive_I_1` (`p_d_debate_id`),
-    INDEX `p_d_reaction_archive_I_2` (`p_document_id`)
+    INDEX `p_d_reaction_archive_I_2` (`p_user_id`),
+    INDEX `p_d_reaction_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

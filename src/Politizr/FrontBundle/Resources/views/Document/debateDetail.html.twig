@@ -10,11 +10,11 @@
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': true } %}
 		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.getSlug }) }}">Fil du débat</a>
+			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>
 		<hr>
 		<div class="debate-comments">
-			{% for comment in debate.getComments %}
+			{% for comment in debate.document.comments %}
 				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
 				<hr>
 			{% else %}

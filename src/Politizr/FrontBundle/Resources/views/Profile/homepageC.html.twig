@@ -4,21 +4,17 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Timeline</h1>
-        {% set debates = pageDebates.CurrentPageResults %}
-        {% for debate in debates %}
-        {# TODO la req doit tout renvoyé sinon pb de dates de publication #}
-        	{% for reaction in debate.reactions %}
-				{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': 'PDReaction', 'withAuthor': true } %}
-        	{% endfor %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
+        {% set documents = pageDocuments.CurrentPageResults %}
+        {% for document in documents %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat pour le moment</a>
 			</div>
 		{% endfor %}
-        {% if pageDebates.haveToPaginate %}
+        {% if pageDocuments.haveToPaginate %}
             <div id="box_pagination">
-                {{ pagerfanta(pageDebates, 'default', pagerfanta_opts) }}
+                {{ pagerfanta(pageDocuments, 'default', pagerfanta_opts) }}
             </div>
         {% endif %}
 	</div>

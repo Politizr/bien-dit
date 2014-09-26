@@ -18,25 +18,49 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentQuery;
+use Politizr\Model\PUser;
 
 /**
- * @method PDReactionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDReactionQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
- * @method PDReactionQuery orderByPDocumentId($order = Criteria::ASC) Order by the p_document_id column
  * @method PDReactionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PDReactionQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PDReactionQuery orderByTreeLeft($order = Criteria::ASC) Order by the tree_left column
  * @method PDReactionQuery orderByTreeRight($order = Criteria::ASC) Order by the tree_right column
  * @method PDReactionQuery orderByTreeLevel($order = Criteria::ASC) Order by the tree_level column
+ * @method PDReactionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDReactionQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDReactionQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PDReactionQuery orderBySummary($order = Criteria::ASC) Order by the summary column
+ * @method PDReactionQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PDReactionQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
+ * @method PDReactionQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
+ * @method PDReactionQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
+ * @method PDReactionQuery orderByPublished($order = Criteria::ASC) Order by the published column
+ * @method PDReactionQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
+ * @method PDReactionQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
+ * @method PDReactionQuery orderByOnline($order = Criteria::ASC) Order by the online column
  *
- * @method PDReactionQuery groupById() Group by the id column
  * @method PDReactionQuery groupByPDDebateId() Group by the p_d_debate_id column
- * @method PDReactionQuery groupByPDocumentId() Group by the p_document_id column
  * @method PDReactionQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PDReactionQuery groupBySlug() Group by the slug column
  * @method PDReactionQuery groupByTreeLeft() Group by the tree_left column
  * @method PDReactionQuery groupByTreeRight() Group by the tree_right column
  * @method PDReactionQuery groupByTreeLevel() Group by the tree_level column
+ * @method PDReactionQuery groupById() Group by the id column
+ * @method PDReactionQuery groupByPUserId() Group by the p_user_id column
+ * @method PDReactionQuery groupByTitle() Group by the title column
+ * @method PDReactionQuery groupBySummary() Group by the summary column
+ * @method PDReactionQuery groupByDescription() Group by the description column
+ * @method PDReactionQuery groupByMoreInfo() Group by the more_info column
+ * @method PDReactionQuery groupByNotePos() Group by the note_pos column
+ * @method PDReactionQuery groupByNoteNeg() Group by the note_neg column
+ * @method PDReactionQuery groupByPublished() Group by the published column
+ * @method PDReactionQuery groupByPublishedAt() Group by the published_at column
+ * @method PDReactionQuery groupByPublishedBy() Group by the published_by column
+ * @method PDReactionQuery groupByOnline() Group by the online column
  *
  * @method PDReactionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDReactionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,27 +74,53 @@ use Politizr\Model\PDocument;
  * @method PDReactionQuery rightJoinPDocument($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDocument relation
  * @method PDReactionQuery innerJoinPDocument($relationAlias = null) Adds a INNER JOIN clause to the query using the PDocument relation
  *
+ * @method PDReactionQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PDReactionQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PDReactionQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ *
  * @method PDReaction findOne(PropelPDO $con = null) Return the first PDReaction matching the query
  * @method PDReaction findOneOrCreate(PropelPDO $con = null) Return the first PDReaction matching the query, or a new PDReaction object populated from the query conditions when no match is found
  *
  * @method PDReaction findOneByPDDebateId(int $p_d_debate_id) Return the first PDReaction filtered by the p_d_debate_id column
- * @method PDReaction findOneByPDocumentId(int $p_document_id) Return the first PDReaction filtered by the p_document_id column
  * @method PDReaction findOneByCreatedAt(string $created_at) Return the first PDReaction filtered by the created_at column
  * @method PDReaction findOneByUpdatedAt(string $updated_at) Return the first PDReaction filtered by the updated_at column
+ * @method PDReaction findOneBySlug(string $slug) Return the first PDReaction filtered by the slug column
  * @method PDReaction findOneByTreeLeft(int $tree_left) Return the first PDReaction filtered by the tree_left column
  * @method PDReaction findOneByTreeRight(int $tree_right) Return the first PDReaction filtered by the tree_right column
  * @method PDReaction findOneByTreeLevel(int $tree_level) Return the first PDReaction filtered by the tree_level column
+ * @method PDReaction findOneByPUserId(int $p_user_id) Return the first PDReaction filtered by the p_user_id column
+ * @method PDReaction findOneByTitle(string $title) Return the first PDReaction filtered by the title column
+ * @method PDReaction findOneBySummary(string $summary) Return the first PDReaction filtered by the summary column
+ * @method PDReaction findOneByDescription(string $description) Return the first PDReaction filtered by the description column
+ * @method PDReaction findOneByMoreInfo(string $more_info) Return the first PDReaction filtered by the more_info column
+ * @method PDReaction findOneByNotePos(int $note_pos) Return the first PDReaction filtered by the note_pos column
+ * @method PDReaction findOneByNoteNeg(int $note_neg) Return the first PDReaction filtered by the note_neg column
+ * @method PDReaction findOneByPublished(boolean $published) Return the first PDReaction filtered by the published column
+ * @method PDReaction findOneByPublishedAt(string $published_at) Return the first PDReaction filtered by the published_at column
+ * @method PDReaction findOneByPublishedBy(string $published_by) Return the first PDReaction filtered by the published_by column
+ * @method PDReaction findOneByOnline(boolean $online) Return the first PDReaction filtered by the online column
  *
- * @method array findById(int $id) Return PDReaction objects filtered by the id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReaction objects filtered by the p_d_debate_id column
- * @method array findByPDocumentId(int $p_document_id) Return PDReaction objects filtered by the p_document_id column
  * @method array findByCreatedAt(string $created_at) Return PDReaction objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReaction objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PDReaction objects filtered by the slug column
  * @method array findByTreeLeft(int $tree_left) Return PDReaction objects filtered by the tree_left column
  * @method array findByTreeRight(int $tree_right) Return PDReaction objects filtered by the tree_right column
  * @method array findByTreeLevel(int $tree_level) Return PDReaction objects filtered by the tree_level column
+ * @method array findById(int $id) Return PDReaction objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PDReaction objects filtered by the p_user_id column
+ * @method array findByTitle(string $title) Return PDReaction objects filtered by the title column
+ * @method array findBySummary(string $summary) Return PDReaction objects filtered by the summary column
+ * @method array findByDescription(string $description) Return PDReaction objects filtered by the description column
+ * @method array findByMoreInfo(string $more_info) Return PDReaction objects filtered by the more_info column
+ * @method array findByNotePos(int $note_pos) Return PDReaction objects filtered by the note_pos column
+ * @method array findByNoteNeg(int $note_neg) Return PDReaction objects filtered by the note_neg column
+ * @method array findByPublished(boolean $published) Return PDReaction objects filtered by the published column
+ * @method array findByPublishedAt(string $published_at) Return PDReaction objects filtered by the published_at column
+ * @method array findByPublishedBy(string $published_by) Return PDReaction objects filtered by the published_by column
+ * @method array findByOnline(boolean $online) Return PDReaction objects filtered by the online column
  */
-abstract class BasePDReactionQuery extends ModelCriteria
+abstract class BasePDReactionQuery extends PDocumentQuery
 {
     // query_cache behavior
     protected $queryKey = '';
@@ -176,7 +226,7 @@ abstract class BasePDReactionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_d_debate_id`, `p_document_id`, `created_at`, `updated_at`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -266,48 +316,6 @@ abstract class BasePDReactionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterById(1234); // WHERE id = 1234
-     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id >= 12
-     * $query->filterById(array('max' => 12)); // WHERE id <= 12
-     * </code>
-     *
-     * @param     mixed $id The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function filterById($id = null, $comparison = null)
-    {
-        if (is_array($id)) {
-            $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(PDReactionPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(PDReactionPeer::ID, $id['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDReactionPeer::ID, $id, $comparison);
-    }
-
-    /**
      * Filter the query on the p_d_debate_id column
      *
      * Example usage:
@@ -349,50 +357,6 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::P_D_DEBATE_ID, $pDDebateId, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_document_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPDocumentId(1234); // WHERE p_document_id = 1234
-     * $query->filterByPDocumentId(array(12, 34)); // WHERE p_document_id IN (12, 34)
-     * $query->filterByPDocumentId(array('min' => 12)); // WHERE p_document_id >= 12
-     * $query->filterByPDocumentId(array('max' => 12)); // WHERE p_document_id <= 12
-     * </code>
-     *
-     * @see       filterByPDocument()
-     *
-     * @param     mixed $pDocumentId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function filterByPDocumentId($pDocumentId = null, $comparison = null)
-    {
-        if (is_array($pDocumentId)) {
-            $useMinMax = false;
-            if (isset($pDocumentId['min'])) {
-                $this->addUsingAlias(PDReactionPeer::P_DOCUMENT_ID, $pDocumentId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pDocumentId['max'])) {
-                $this->addUsingAlias(PDReactionPeer::P_DOCUMENT_ID, $pDocumentId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDReactionPeer::P_DOCUMENT_ID, $pDocumentId, $comparison);
     }
 
     /**
@@ -479,6 +443,35 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::SLUG, $slug, $comparison);
     }
 
     /**
@@ -608,6 +601,420 @@ abstract class BasePDReactionQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
+     * </code>
+     *
+     * @see       filterByPDocument()
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(PDReactionPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(PDReactionPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_user_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPUserId(1234); // WHERE p_user_id = 1234
+     * $query->filterByPUserId(array(12, 34)); // WHERE p_user_id IN (12, 34)
+     * $query->filterByPUserId(array('min' => 12)); // WHERE p_user_id >= 12
+     * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
+     * </code>
+     *
+     * @see       filterByPUser()
+     *
+     * @param     mixed $pUserId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByPUserId($pUserId = null, $comparison = null)
+    {
+        if (is_array($pUserId)) {
+            $useMinMax = false;
+            if (isset($pUserId['min'])) {
+                $this->addUsingAlias(PDReactionPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUserId['max'])) {
+                $this->addUsingAlias(PDReactionPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the title column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $title The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByTitle($title = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($title)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the summary column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySummary('fooValue');   // WHERE summary = 'fooValue'
+     * $query->filterBySummary('%fooValue%'); // WHERE summary LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $summary The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterBySummary($summary = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($summary)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $summary)) {
+                $summary = str_replace('*', '%', $summary);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::SUMMARY, $summary, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $description The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByDescription($description = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($description)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $description)) {
+                $description = str_replace('*', '%', $description);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the more_info column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMoreInfo('fooValue');   // WHERE more_info = 'fooValue'
+     * $query->filterByMoreInfo('%fooValue%'); // WHERE more_info LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $moreInfo The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByMoreInfo($moreInfo = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($moreInfo)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $moreInfo)) {
+                $moreInfo = str_replace('*', '%', $moreInfo);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::MORE_INFO, $moreInfo, $comparison);
+    }
+
+    /**
+     * Filter the query on the note_pos column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNotePos(1234); // WHERE note_pos = 1234
+     * $query->filterByNotePos(array(12, 34)); // WHERE note_pos IN (12, 34)
+     * $query->filterByNotePos(array('min' => 12)); // WHERE note_pos >= 12
+     * $query->filterByNotePos(array('max' => 12)); // WHERE note_pos <= 12
+     * </code>
+     *
+     * @param     mixed $notePos The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByNotePos($notePos = null, $comparison = null)
+    {
+        if (is_array($notePos)) {
+            $useMinMax = false;
+            if (isset($notePos['min'])) {
+                $this->addUsingAlias(PDReactionPeer::NOTE_POS, $notePos['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($notePos['max'])) {
+                $this->addUsingAlias(PDReactionPeer::NOTE_POS, $notePos['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::NOTE_POS, $notePos, $comparison);
+    }
+
+    /**
+     * Filter the query on the note_neg column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNoteNeg(1234); // WHERE note_neg = 1234
+     * $query->filterByNoteNeg(array(12, 34)); // WHERE note_neg IN (12, 34)
+     * $query->filterByNoteNeg(array('min' => 12)); // WHERE note_neg >= 12
+     * $query->filterByNoteNeg(array('max' => 12)); // WHERE note_neg <= 12
+     * </code>
+     *
+     * @param     mixed $noteNeg The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByNoteNeg($noteNeg = null, $comparison = null)
+    {
+        if (is_array($noteNeg)) {
+            $useMinMax = false;
+            if (isset($noteNeg['min'])) {
+                $this->addUsingAlias(PDReactionPeer::NOTE_NEG, $noteNeg['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($noteNeg['max'])) {
+                $this->addUsingAlias(PDReactionPeer::NOTE_NEG, $noteNeg['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::NOTE_NEG, $noteNeg, $comparison);
+    }
+
+    /**
+     * Filter the query on the published column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublished(true); // WHERE published = true
+     * $query->filterByPublished('yes'); // WHERE published = true
+     * </code>
+     *
+     * @param     boolean|string $published The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByPublished($published = null, $comparison = null)
+    {
+        if (is_string($published)) {
+            $published = in_array(strtolower($published), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::PUBLISHED, $published, $comparison);
+    }
+
+    /**
+     * Filter the query on the published_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublishedAt('2011-03-14'); // WHERE published_at = '2011-03-14'
+     * $query->filterByPublishedAt('now'); // WHERE published_at = '2011-03-14'
+     * $query->filterByPublishedAt(array('max' => 'yesterday')); // WHERE published_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $publishedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByPublishedAt($publishedAt = null, $comparison = null)
+    {
+        if (is_array($publishedAt)) {
+            $useMinMax = false;
+            if (isset($publishedAt['min'])) {
+                $this->addUsingAlias(PDReactionPeer::PUBLISHED_AT, $publishedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($publishedAt['max'])) {
+                $this->addUsingAlias(PDReactionPeer::PUBLISHED_AT, $publishedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::PUBLISHED_AT, $publishedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the published_by column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublishedBy('fooValue');   // WHERE published_by = 'fooValue'
+     * $query->filterByPublishedBy('%fooValue%'); // WHERE published_by LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $publishedBy The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByPublishedBy($publishedBy = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($publishedBy)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $publishedBy)) {
+                $publishedBy = str_replace('*', '%', $publishedBy);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::PUBLISHED_BY, $publishedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the online column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOnline(true); // WHERE online = true
+     * $query->filterByOnline('yes'); // WHERE online = true
+     * </code>
+     *
+     * @param     boolean|string $online The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByOnline($online = null, $comparison = null)
+    {
+        if (is_string($online)) {
+            $online = in_array(strtolower($online), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
      * Filter the query by a related PDDebate object
      *
      * @param   PDDebate|PropelObjectCollection $pDDebate The related object(s) to use as filter
@@ -696,14 +1103,14 @@ abstract class BasePDReactionQuery extends ModelCriteria
     {
         if ($pDocument instanceof PDocument) {
             return $this
-                ->addUsingAlias(PDReactionPeer::P_DOCUMENT_ID, $pDocument->getId(), $comparison);
+                ->addUsingAlias(PDReactionPeer::ID, $pDocument->getId(), $comparison);
         } elseif ($pDocument instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PDReactionPeer::P_DOCUMENT_ID, $pDocument->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PDReactionPeer::ID, $pDocument->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPDocument() only accepts arguments of type PDocument or PropelCollection');
         }
@@ -757,6 +1164,82 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $this
             ->joinPDocument($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDocument', '\Politizr\Model\PDocumentQuery');
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     *
+     * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDReactionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUser($pUser, $comparison = null)
+    {
+        if ($pUser instanceof PUser) {
+            return $this
+                ->addUsingAlias(PDReactionPeer::P_USER_ID, $pUser->getId(), $comparison);
+        } elseif ($pUser instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDReactionPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function joinPUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUser relation PUser object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
+     */
+    public function usePUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
     }
 
     /**
@@ -981,87 +1464,19 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $stmt;
     }
 
-    // archivable behavior
+    // sluggable behavior
 
     /**
-     * Copy the data of the objects satisfying the query into PDReactionArchive archive objects.
-     * The archived objects are then saved.
-     * If any of the objects has already been archived, the archived object
-     * is updated and not duplicated.
-     * Warning: This termination methods issues 2n+1 queries.
+     * Find one object based on its slug
      *
-     * @param      PropelPDO $con	Connection to use.
-     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
-     *               Set to false if the identity map matters.
-     *               Set to true (default) to use less memory.
+     * @param     string $slug The value to use as filter.
+     * @param     PropelPDO $con The optional connection object
      *
-     * @return     int the number of archived objects
-     * @throws     PropelException
+     * @return    PDReaction the result, formatted by the current formatter
      */
-    public function archive($con = null, $useLittleMemory = true)
+    public function findOneBySlug($slug, $con = null)
     {
-        $totalArchivedObjects = 0;
-        $criteria = clone $this;
-        // prepare the query
-        $criteria->setWith(array());
-        if ($useLittleMemory) {
-            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
-        }
-        $con->beginTransaction();
-        try {
-            // archive all results one by one
-            foreach ($criteria->find($con) as $object) {
-                $object->archive($con);
-                $totalArchivedObjects++;
-            }
-            $con->commit();
-        } catch (PropelException $e) {
-            $con->rollBack();
-            throw $e;
-        }
-
-        return $totalArchivedObjects;
-    }
-
-    /**
-     * Enable/disable auto-archiving on delete for the next query.
-     *
-     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
-     */
-    public function setArchiveOnDelete($archiveOnDelete)
-    {
-        $this->archiveOnDelete = $archiveOnDelete;
-    }
-
-    /**
-     * Delete records matching the current query without archiving them.
-     *
-     * @param      PropelPDO $con	Connection to use.
-     *
-     * @return integer the number of deleted rows
-     */
-    public function deleteWithoutArchive($con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
-    /**
-     * Delete all records without archiving them.
-     *
-     * @param      PropelPDO $con	Connection to use.
-     *
-     * @return integer the number of deleted rows
-     */
-    public function deleteAllWithoutArchive($con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->deleteAll($con);
+        return $this->filterBySlug($slug)->findOne($con);
     }
 
     // nested_set behavior
@@ -1265,6 +1680,89 @@ abstract class BasePDReactionQuery extends ModelCriteria
             ->inTree($scope)
             ->orderByBranch()
             ->find($con);
+    }
+
+    // archivable behavior
+
+    /**
+     * Copy the data of the objects satisfying the query into PDReactionArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
+     *
+     * @return     int the number of archived objects
+     * @throws     PropelException
+     */
+    public function archive($con = null, $useLittleMemory = true)
+    {
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (PropelException $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
     }
 
 }

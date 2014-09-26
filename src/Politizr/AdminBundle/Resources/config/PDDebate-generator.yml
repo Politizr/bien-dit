@@ -10,54 +10,30 @@ params:
             label:          ID
         p_user_id:
             label:          ID Utilisateur
-            getter:         PDocument.PUserId
-            dbType:         INTEGER
         p_user:
             label:          Utilisateur
-            getter:         PDocument.PUser
-            dbType:         VARCHAR
         file_name:
             label:          Image
         title:
             label:          Titre
-            getter:         PDocument.Title
-            dbType:         VARCHAR
         summary:
             label:          Résumé
-            getter:         PDocument.Summary
-            dbType:         LONGVARCHAR
         description:
             label:          Description
-            getter:         PDocument.Description
-            dbType:         LONGVARCHAR
         more_info:
             label:          Encart
-            getter:         PDocument.MoreInfo
-            dbType:         LONGVARCHAR
         note_pos:
             label:          Notes +
-            getter:         PDocument.NotePos
-            dbType:         INTEGER
         note_neg:
             label:          Notes -
-            getter:         PDocument.NoteNeg
-            dbType:         INTEGER
         published:
             label:          Publié
-            getter:         PDocument.Published
-            dbType:         BOOLEAN
         published_at:
             label:          Publication
-            getter:         PDocument.PublishedAt
-            dbType:         TIMESTAMP
         published_by:
             label:          Auteur
-            getter:         PDocument.PublishedBy
-            dbType:         VARCHAR
         online:
             label:          En ligne
-            getter:         PDocument.Online
-            dbType:         BOOLEAN
         created_at:
             label:          Création
         updated_at:
@@ -124,7 +100,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du contenu débat '{{ PDDebate.getTitle }}'"
+            title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ uploadedFileName, title, summary, description, more_info ]

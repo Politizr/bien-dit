@@ -10,7 +10,7 @@
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
 		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.getSlug }) }}">Détail du débat</a>
+			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">Détail du débat</a>
 		</div>
 		<hr>
 		<div class="debate-reactions-feed">

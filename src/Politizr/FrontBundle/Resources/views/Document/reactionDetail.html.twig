@@ -10,14 +10,14 @@
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with { 'reaction': reaction, 'full': true } %}
 		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.getSlug }) }}">Fil du débat</a>
+			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>
 		<hr>
 		<div class="debate-reactions-feed">
 			{% for reaction in reaction.childrenReactions %}
 				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
 				<div class="row text-center">
-					<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.getSlug }) }}">Détail de la réaction</a>
+					<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail de la réaction</a>
 				</div>
 				<hr>
 			{% else %}

@@ -27,8 +27,6 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDocumentArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
- * @method PDocumentArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PDocumentArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDocumentArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDocumentArchiveQuery groupById() Group by the id column
@@ -43,8 +41,6 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDocumentArchiveQuery groupByOnline() Group by the online column
- * @method PDocumentArchiveQuery groupByCreatedAt() Group by the created_at column
- * @method PDocumentArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDocumentArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDocumentArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -65,8 +61,6 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchive findOneByPublishedAt(string $published_at) Return the first PDocumentArchive filtered by the published_at column
  * @method PDocumentArchive findOneByPublishedBy(string $published_by) Return the first PDocumentArchive filtered by the published_by column
  * @method PDocumentArchive findOneByOnline(boolean $online) Return the first PDocumentArchive filtered by the online column
- * @method PDocumentArchive findOneByCreatedAt(string $created_at) Return the first PDocumentArchive filtered by the created_at column
- * @method PDocumentArchive findOneByUpdatedAt(string $updated_at) Return the first PDocumentArchive filtered by the updated_at column
  * @method PDocumentArchive findOneByArchivedAt(string $archived_at) Return the first PDocumentArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDocumentArchive objects filtered by the id column
@@ -81,8 +75,6 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method array findByPublishedAt(string $published_at) Return PDocumentArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocumentArchive objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDocumentArchive objects filtered by the online column
- * @method array findByCreatedAt(string $created_at) Return PDocumentArchive objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PDocumentArchive objects filtered by the updated_at column
  * @method array findByArchivedAt(string $archived_at) Return PDocumentArchive objects filtered by the archived_at column
  */
 abstract class BasePDocumentArchiveQuery extends ModelCriteria
@@ -185,7 +177,7 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -682,92 +674,6 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentArchivePeer::ONLINE, $online, $comparison);
-    }
-
-    /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentArchiveQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PDocumentArchivePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PDocumentArchivePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDocumentArchivePeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentArchiveQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PDocumentArchivePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PDocumentArchivePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDocumentArchivePeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**

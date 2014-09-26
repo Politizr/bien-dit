@@ -33,13 +33,13 @@ abstract class BasePDocumentPeer
     const TM_CLASS = 'PDocumentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_document.id';
@@ -77,14 +77,8 @@ abstract class BasePDocumentPeer
     /** the column name for the online field */
     const ONLINE = 'p_document.online';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'p_document.created_at';
-
-    /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_document.updated_at';
-
-    /** the column name for the slug field */
-    const SLUG = 'p_document.slug';
+    /** the column name for the descendant_class field */
+    const DESCENDANT_CLASS = 'p_document.descendant_class';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -105,12 +99,12 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[PDocumentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::MORE_INFO, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::ONLINE, PDocumentPeer::CREATED_AT, PDocumentPeer::UPDATED_AT, PDocumentPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'DescendantClass', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'descendantClass', ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::MORE_INFO, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::ONLINE, PDocumentPeer::DESCENDANT_CLASS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'DESCENDANT_CLASS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'descendant_class', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -120,12 +114,12 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'Slug' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::SUMMARY => 3, PDocumentPeer::DESCRIPTION => 4, PDocumentPeer::MORE_INFO => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::PUBLISHED => 8, PDocumentPeer::PUBLISHED_AT => 9, PDocumentPeer::PUBLISHED_BY => 10, PDocumentPeer::ONLINE => 11, PDocumentPeer::CREATED_AT => 12, PDocumentPeer::UPDATED_AT => 13, PDocumentPeer::SLUG => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, 'SLUG' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'created_at' => 12, 'updated_at' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'DescendantClass' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'descendantClass' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::SUMMARY => 3, PDocumentPeer::DESCRIPTION => 4, PDocumentPeer::MORE_INFO => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::PUBLISHED => 8, PDocumentPeer::PUBLISHED_AT => 9, PDocumentPeer::PUBLISHED_BY => 10, PDocumentPeer::ONLINE => 11, PDocumentPeer::DESCENDANT_CLASS => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'DESCENDANT_CLASS' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'descendant_class' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -211,9 +205,7 @@ abstract class BasePDocumentPeer
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_BY);
             $criteria->addSelectColumn(PDocumentPeer::ONLINE);
-            $criteria->addSelectColumn(PDocumentPeer::CREATED_AT);
-            $criteria->addSelectColumn(PDocumentPeer::UPDATED_AT);
-            $criteria->addSelectColumn(PDocumentPeer::SLUG);
+            $criteria->addSelectColumn(PDocumentPeer::DESCENDANT_CLASS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
@@ -227,9 +219,7 @@ abstract class BasePDocumentPeer
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');
             $criteria->addSelectColumn($alias . '.online');
-            $criteria->addSelectColumn($alias . '.created_at');
-            $criteria->addSelectColumn($alias . '.updated_at');
-            $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.descendant_class');
         }
     }
 
@@ -436,15 +426,15 @@ abstract class BasePDocumentPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PDCommentPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDCommentPeer::clearInstancePool();
         // Invalidate objects in PDDebatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDebatePeer::clearInstancePool();
         // Invalidate objects in PDReactionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDReactionPeer::clearInstancePool();
-        // Invalidate objects in PDCommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDCommentPeer::clearInstancePool();
     }
 
     /**

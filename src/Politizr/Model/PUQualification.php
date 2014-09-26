@@ -11,7 +11,15 @@ class PUQualification extends BasePUQualification
 	 */
 	public function __toString()
 	{
-		return $this->getTitle() . " du " . $this->getBeginAt('d/m/Y') . " au " . $this->getEndAt('d/m/Y');
+		$mandate =  $this->getPUMandateType() . " 	(" . $this->getPoliticalPartyInitials() . ")";
+
+		if ($this->getBeginAt() && $this->getEndAt()) {
+			$mandate .= " du " . $this->getBeginAt('d/m/Y') . " au " . $this->getEndAt('d/m/Y');
+		} elseif ($this->getBeginAt()) {
+			$mandate .= " depuis le " . $this->getBeginAt('d/m/Y');
+		}
+
+		return $mandate;
 	}
 
     // ************************************************************************************ //

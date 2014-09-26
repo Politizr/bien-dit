@@ -338,8 +338,8 @@
 
         <column name="description" type="longvarchar" />
 
-        <column name="begin_at" type="date" />
-        <column name="end_at" type="date" />
+        <column name="begin_at" type="timestamp" />
+        <column name="end_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -477,12 +477,8 @@
 
 
     <table name="p_document">
-        <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
-        <behavior name="sluggable">
-            <parameter name="slug_pattern" value="{title}" />
-        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />
@@ -510,45 +506,35 @@
     <table name="p_d_debate">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
-
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="p_document" />
+        </behavior>
 
         <column name="file_name" type="varchar" size="150" />
-
-        <column name="p_document_id" type="integer" required="true" />
-        <foreign-key foreignTable="p_document" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_document_id" foreign="id" />
-        </foreign-key>
-        <behavior name="delegate">
-            <parameter name="to" value="p_document" />
-        </behavior>
     </table>
 
     <table name="p_d_reaction">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
         <behavior name="nested_set">
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_d_debate_id" />
         </behavior>
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="p_document" />
+        </behavior>
 
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_d_debate_id" type="integer" required="true" />
-
 
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
-
-        <column name="p_document_id" type="integer" required="true" />
-        <foreign-key foreignTable="p_document" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_document_id" foreign="id" />
-        </foreign-key>
-        <behavior name="delegate">
-            <parameter name="to" value="p_document" />
-        </behavior>
     </table>
 
     <table name="p_d_comment">

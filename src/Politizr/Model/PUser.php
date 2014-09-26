@@ -9,18 +9,6 @@ use \Propel;
 use \PropelPDO;
 use \Criteria;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PUType;
-use Politizr\Model\PUStatus;
-use Politizr\Model\PUserPeer;
-use Politizr\Model\PRBadge;
-
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PUFollowDDQuery;
-
-use Politizr\Model\PUQualificationQuery;
-
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -78,37 +66,6 @@ class PUser extends BasePUser implements UserInterface
         }
 
         return $slug;
-    }
-
-    /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-
-    public function getBlockDebates() {
-    }
-    public function getBlockReactions() {
-    }
-    public function getBlockCommentsD() {
-    }
-    public function getBlockCommentsR() {
-    }
-    public function getBlockFollowersQ() {
-    }
-    public function getBlockFollowersC() {
-    }
-    public function getBlockSubscribersQ() {
-    }
-    public function getBlockSubscribersC() {
-    }
-    public function getBlockTagsGeo() {
-    }
-    public function getBlockBadgesDebat() {
-    }
-    public function getBlockBadgesComment() {
-    }
-    public function getBlockBadgesParticipation() {
-    }
-    public function getBlockBadgesModeration() {
-    }
-    public function getBlockBadgesAutres() {
     }
 
 
@@ -601,32 +558,45 @@ class PUser extends BasePUser implements UserInterface
     // *****************************    DOCUMENTS > DEBATS, REACTIONS    ************************* //
 
     /**
-     * Renvoie les débats actifs associés à l'utilisateur
+     * Renvoie les documents associés à l'utilisateur
      *
      * @return PDDebate (collection)
      */
-    public function getDebates() {
-        $query = PDDebateQuery::create()
-                    ->leftJoinPDocument('PDocument')
-                    ->where('PDocument.PUserId = ?', $this->getId())
-                    ->where('PDocument.Online = ?', true)
-                    ->where('PDocument.Published = ?', true)
+    public function getDocuments($online = true, $published = true) {
+        $query = PDocumentQuery::create()
+                    ->filterByPUserId($this->getId())
+                    ->filterByOnline($online)
+                    ->filterByPublished($published)
                     ->orderByCreatedAt(\Criteria::DESC);
 
         return $query->find();
     }
 
     /**
-     * Renvoie les réactions actives associées à l'utilisateur
+     * Renvoie les débats associés à l'utilisateur
      *
      * @return PDDebate (collection)
      */
-    public function getReactions() {
+    public function getDebates($online = true, $published = true) {
+        $query = PDDebateQuery::create()
+                    ->filterByPUserId($this->getId())
+                    ->filterByOnline($online)
+                    ->filterByPublished($published)
+                    ->orderByCreatedAt(\Criteria::DESC);
+
+        return $query->find();
+    }
+
+    /**
+     * Renvoie les réactions associées à l'utilisateur
+     *
+     * @return PDDebate (collection)
+     */
+    public function getReactions($online = true, $published = true) {
         $query = PDReactionQuery::create()
-                    ->joinPDocument('PDocument', 'left join')
-                    ->where('PDocument.PUserId = ?', $this->getId())
-                    ->where('PDocument.Online = ?', true)
-                    ->where('PDocument.Published = ?', true)
+                    ->filterByPUserId($this->getId())
+                    ->filterByOnline($online)
+                    ->filterByPublished($published)
                     ->orderByCreatedAt(\Criteria::DESC);
 
         return $query->find();
@@ -635,34 +605,18 @@ class PUser extends BasePUser implements UserInterface
     // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //
 
     /**
-     * Renvoit les commentaires associés à des débats pour le user courant.
+     * Renvoit les commentaires associés à des documents (débats + réactions) pour le user courant.
      *
      * @param   $online     boolean     Renvoit uniquement les commentaires en ligne
      *
      * @return array    Liste d'objets PDDComment
      */
-    public function getCommentsD($online = true) {
-        $query = PDDCommentQuery::create()
+    public function getComments($online = true) {
+        $query = PDCommentQuery::create()
                     ->filterByOnline($online);
 
-        return parent::getPDDComments($query);
+        return parent::getPDComments($query);
     }
-
-
-    /**
-     * Renvoit les commentaires associés à des réactions pour le user courant.
-     *
-     * @param   $online     boolean     Renvoit uniquement les commentaires en ligne
-     *
-     * @return array    Liste d'objets PDRComment
-     */
-    public function getCommentsR($online = true) {
-        $query = PDRCommentQuery::create()
-                    ->filterByOnline($online);
-
-        return parent::getPDRComments($query);
-    }
-
 
 
     // *****************************    BADGES / REPUTATION    ************************* //

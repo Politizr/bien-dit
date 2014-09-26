@@ -14,40 +14,63 @@ use Politizr\Model\PDRCommentQuery;
 
 class PDReaction extends BasePDReaction
 {	
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
+	// *****************************  OBJET / STRING  ****************** //
 
 	/**
 	 *
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->getTitle();
 	}
 
-	/**
-	 *	Getter magique pour gérer l'héritage PDocument
+ 	/**
+	 * Override to manage accented characters
+	 * @return string
 	 */
-    public function __get($name)
-    {
-    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
-        return parent::__call('get'.ucfirst($name), array());
-    }
+	protected function createRawSlug()
+	{
+		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+		$slug = $this->cleanupSlugPart($toSlug);
+		return $slug;
+	}
 
 	/**
-	 *	Setter magique pour gérer l'héritage PDocument
+	 *	Surcharge pour gérer la date et l'auteur de la publication.
+	 *
+	 *
 	 */
-    public function __set($name, $value)
+    public function preSave(\PropelPDO $con = null)
     {
-    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
-        return parent::__call('set'.ucfirst($name), array($value));
-    }
+    	// TODO > à revoir mode création / date publication
+    	if ($this->published && ($this->isNew() || in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns))) {
+    		$this->setPublishedAt(time());
+    	} else {
+    		$this->setPublishedAt(null);
+    	}
 
+    	// User associé
+    	// TODO > chaine en dur
+		$publisher = $this->getPUser();
+		if ($publisher) {
+			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
+		} else {
+			$this->setPublishedBy('Auteur inconnu');
+		}
 
+    	return parent::preSave($con);
+	}
 
-	// ************************************************************************************ //
-	//										METHODES 
-	// ************************************************************************************ //
+	// *****************************  DEBAT / REACTION  ****************** //
 
-    // *****************************    DEBAT   ************************* //
+	/**
+	 * Renvoit le document associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getDocument() {
+		return parent::getPDocument();
+	}
 
 	/**
 	 * Renvoit le débat associé à la réaction

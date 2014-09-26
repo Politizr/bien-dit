@@ -1,16 +1,16 @@
 <div class="pdReaction">
 	<div class="pdReaction-parentDebateTitle">Associé au débat <b>{{ pdReaction.debate.title }}</b></div>
 	<div class="pdReaction-parentReactionTitle">
-		{% if pdReaction.parentReaction %}
-			Associé à la réaction <b>{{ pdReaction.parentReaction.title }}</b>
+		{% set parentReaction = pdReaction.getParent %}
+		{% if parentReaction %}
+			Associé à la réaction <b>{{ parentReaction.title }}</b>
 		{% else %}
 			<b>Pas de réaction parente</b>
 		{% endif %}
 	</div>
 	<hr>
 	<div class="pdReaction-title"><b>{{ pdReaction.title }}</b></div>
-	<div class="pdReaction-summary">{{ pdReaction.summary | striptags | slice(0, 250) | raw }}...</div>
-	<div class="pdReaction-description">{{ pdReaction.description | striptags | slice(0, 250) | raw }}...</div>
+	<div class="pdReaction-summary">{{ pdReaction.summary | raw }}</div>
 	<hr>
 	<div class="pdReaction-online">{% if pdReaction.online %}En ligne{% else %}Hors ligne{% endif %}</div>
 	<div class="pdReaction-published">{% if pdReaction.published %}Publié le {{ pdReaction.publishedAt | date('d/m/Y H:i') }}{% else %}Brouillon{% endif %}</div>

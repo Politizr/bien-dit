@@ -47,8 +47,8 @@ class PUQualificationArchiveTableMap extends TableMap
         $this->addColumn('p_u_political_party_id', 'PUPoliticalPartyId', 'INTEGER', false, null, null);
         $this->addColumn('p_u_mandate_type_id', 'PUMandateTypeId', 'INTEGER', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('begin_at', 'BeginAt', 'DATE', false, null, null);
-        $this->addColumn('end_at', 'EndAt', 'DATE', false, null, null);
+        $this->addColumn('begin_at', 'BeginAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('end_at', 'EndAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);

@@ -29,13 +29,13 @@ abstract class BasePDocumentArchivePeer
     const TM_CLASS = 'PDocumentArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_document_archive.id';
@@ -73,12 +73,6 @@ abstract class BasePDocumentArchivePeer
     /** the column name for the online field */
     const ONLINE = 'p_document_archive.online';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'p_document_archive.created_at';
-
-    /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_document_archive.updated_at';
-
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_document_archive.archived_at';
 
@@ -101,12 +95,12 @@ abstract class BasePDocumentArchivePeer
      * e.g. PDocumentArchivePeer::$fieldNames[PDocumentArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDocumentArchivePeer::ID, PDocumentArchivePeer::P_USER_ID, PDocumentArchivePeer::TITLE, PDocumentArchivePeer::SUMMARY, PDocumentArchivePeer::DESCRIPTION, PDocumentArchivePeer::MORE_INFO, PDocumentArchivePeer::NOTE_POS, PDocumentArchivePeer::NOTE_NEG, PDocumentArchivePeer::PUBLISHED, PDocumentArchivePeer::PUBLISHED_AT, PDocumentArchivePeer::PUBLISHED_BY, PDocumentArchivePeer::ONLINE, PDocumentArchivePeer::CREATED_AT, PDocumentArchivePeer::UPDATED_AT, PDocumentArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDocumentArchivePeer::ID, PDocumentArchivePeer::P_USER_ID, PDocumentArchivePeer::TITLE, PDocumentArchivePeer::SUMMARY, PDocumentArchivePeer::DESCRIPTION, PDocumentArchivePeer::MORE_INFO, PDocumentArchivePeer::NOTE_POS, PDocumentArchivePeer::NOTE_NEG, PDocumentArchivePeer::PUBLISHED, PDocumentArchivePeer::PUBLISHED_AT, PDocumentArchivePeer::PUBLISHED_BY, PDocumentArchivePeer::ONLINE, PDocumentArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -116,12 +110,12 @@ abstract class BasePDocumentArchivePeer
      * e.g. PDocumentArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'ArchivedAt' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'archivedAt' => 14, ),
-        BasePeer::TYPE_COLNAME => array (PDocumentArchivePeer::ID => 0, PDocumentArchivePeer::P_USER_ID => 1, PDocumentArchivePeer::TITLE => 2, PDocumentArchivePeer::SUMMARY => 3, PDocumentArchivePeer::DESCRIPTION => 4, PDocumentArchivePeer::MORE_INFO => 5, PDocumentArchivePeer::NOTE_POS => 6, PDocumentArchivePeer::NOTE_NEG => 7, PDocumentArchivePeer::PUBLISHED => 8, PDocumentArchivePeer::PUBLISHED_AT => 9, PDocumentArchivePeer::PUBLISHED_BY => 10, PDocumentArchivePeer::ONLINE => 11, PDocumentArchivePeer::CREATED_AT => 12, PDocumentArchivePeer::UPDATED_AT => 13, PDocumentArchivePeer::ARCHIVED_AT => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, 'ARCHIVED_AT' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'created_at' => 12, 'updated_at' => 13, 'archived_at' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'ArchivedAt' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'archivedAt' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PDocumentArchivePeer::ID => 0, PDocumentArchivePeer::P_USER_ID => 1, PDocumentArchivePeer::TITLE => 2, PDocumentArchivePeer::SUMMARY => 3, PDocumentArchivePeer::DESCRIPTION => 4, PDocumentArchivePeer::MORE_INFO => 5, PDocumentArchivePeer::NOTE_POS => 6, PDocumentArchivePeer::NOTE_NEG => 7, PDocumentArchivePeer::PUBLISHED => 8, PDocumentArchivePeer::PUBLISHED_AT => 9, PDocumentArchivePeer::PUBLISHED_BY => 10, PDocumentArchivePeer::ONLINE => 11, PDocumentArchivePeer::ARCHIVED_AT => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'ARCHIVED_AT' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'archived_at' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -207,8 +201,6 @@ abstract class BasePDocumentArchivePeer
             $criteria->addSelectColumn(PDocumentArchivePeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDocumentArchivePeer::PUBLISHED_BY);
             $criteria->addSelectColumn(PDocumentArchivePeer::ONLINE);
-            $criteria->addSelectColumn(PDocumentArchivePeer::CREATED_AT);
-            $criteria->addSelectColumn(PDocumentArchivePeer::UPDATED_AT);
             $criteria->addSelectColumn(PDocumentArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -223,8 +215,6 @@ abstract class BasePDocumentArchivePeer
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');
             $criteria->addSelectColumn($alias . '.online');
-            $criteria->addSelectColumn($alias . '.created_at');
-            $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.archived_at');
         }
     }

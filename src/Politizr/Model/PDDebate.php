@@ -20,32 +20,53 @@ class PDDebate extends BasePDDebate
   	const UPLOAD_PATH = '/../../../web/uploads/documents/';
   	const UPLOAD_WEB_PATH = '/uploads/documents/';
 
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
+	// *****************************  OBJET / STRING  ****************** //
 
 	/**
 	 *
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->getTitle();
 	}
 
-	/**
-	 *	Getter magique pour gérer l'héritage PDocument
+ 	/**
+	 * Override to manage accented characters
+	 * @return string
 	 */
-    public function __get($name)
-    {
-    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
-        return parent::__call('get'.ucfirst($name), array());
-    }
+	protected function createRawSlug()
+	{
+		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+		$slug = $this->cleanupSlugPart($toSlug);
+		return $slug;
+	}
 
 	/**
-	 *	Setter magique pour gérer l'héritage PDocument
+	 *	Surcharge pour gérer la date et l'auteur de la publication.
+	 *
+	 *
 	 */
-    public function __set($name, $value)
+    public function preSave(\PropelPDO $con = null)
     {
-    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
-        return parent::__call('set'.ucfirst($name), array($value));
-    }
+    	// TODO > à revoir mode création / date publication
+    	if ($this->published && ($this->isNew() || in_array(PDDebatePeer::PUBLISHED, $this->modifiedColumns))) {
+    		$this->setPublishedAt(time());
+    	} else {
+    		$this->setPublishedAt(null);
+    	}
+
+    	// User associé
+    	// TODO > chaine en dur
+		$publisher = $this->getPUser();
+		if ($publisher) {
+			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
+		} else {
+			$this->setPublishedBy('Auteur inconnu');
+		}
+
+    	return parent::preSave($con);
+	}
+
 
 	// ******************* SIMPLE UPLOAD MANAGEMENT **************** //
 	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
@@ -160,6 +181,15 @@ class PDDebate extends BasePDDebate
     // *****************************    DOCUMENTS   ************************* //
 
 	/**
+	 * Renvoit le document associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getDocument() {
+		return parent::getPDocument();
+	}
+
+	/**
 	 *	Renvoit les réactions associées en mode arbre / nested set
 	 *
 	 * @return PropelCollection d'objets PDReaction
@@ -177,6 +207,23 @@ class PDDebate extends BasePDDebate
 					;
 
 		return $treeReactions;
+	}
+
+	/**
+	 *	Renvoit le nombre de réactions associées au débat
+	 *
+	 */
+	public function countReactions($online = false, $published = false) {
+		$query = PDReactionQuery::create()
+					->_if($online)
+						->filterByOnline(true)
+					->_endif()
+					->_if($published)
+						->filterByPublished(true)
+					->_endif()
+					;
+
+		return parent::countPDReactions();
 	}
 
 

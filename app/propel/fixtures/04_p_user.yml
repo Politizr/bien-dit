@@ -24,10 +24,8 @@ Politizr\Model\PUser:
     # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
 
     depute1:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Damien
@@ -35,7 +33,6 @@ Politizr\Model\PUser:
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
-
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -46,10 +43,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute2:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Madame
         firstname:              Laurence
@@ -57,7 +52,6 @@ Politizr\Model\PUser:
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
-
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -68,10 +62,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute3:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Ibrahim
@@ -79,7 +71,6 @@ Politizr\Model\PUser:
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
-
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -90,10 +81,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute4:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Elie
@@ -112,10 +101,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute5:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Bernard
@@ -134,10 +121,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute6:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Madame
         firstname:              Patricia
@@ -156,8 +141,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute7:
-        pu_type_id:             2
-        pu_status_id:           1
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Sylvian
@@ -176,10 +161,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute8:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Eric
@@ -198,10 +181,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute9:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Monsieur
         firstname:              Yves
@@ -220,10 +201,8 @@ Politizr\Model\PUser:
         online:                 1
 
     depute10:
-        pu_type_id:             2
-        pu_status_id:           1
-
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
         gender:                 Madame
         firstname:              Brigitte
@@ -240,5 +219,4 @@ Politizr\Model\PUser:
         email:                  <?php $faker('email'); ?>
 
         online:                 1
-
 

@@ -59,14 +59,9 @@
 {% endblock %}
 
 
-{# Bloc commentaires débats #}
-{% block show_column_block_comments_d %}
-	{{ adminUserCommentsD(PUser) }}
-{% endblock %}
-
-{# Bloc commentaires réactions #}
-{% block show_column_block_comments_r %}
-	{{ adminUserCommentsR(PUser) }}
+{# Bloc commentaires documents #}
+{% block show_column_block_comments %}
+	{{ adminUserComments(PUser) }}
 {% endblock %}
 
 

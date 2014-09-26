@@ -1,7 +1,6 @@
 <div class="pdDebate">
 	<div class="pdDebate-title"><b>{{ pdDebate.title }}</b></div>
-	<div class="pdDebate-summary">{{ pdDebate.summary | striptags | slice(0, 250) | raw }}...</div>
-	<div class="pdDebate-description">{{ pdDebate.description | striptags | slice(0, 250) | raw }}...</div>
+	<div class="pdDebate-summary">{{ pdDebate.summary | raw }}</div>
 	<hr>
 	<div class="pdDebate-online">{% if pdDebate.online %}En ligne{% else %}Hors ligne{% endif %}</div>
 	<div class="pdDebate-published">{% if pdDebate.published %}Publié le {{ pdDebate.publishedAt | date('d/m/Y H:i') }}{% else %}Brouillon{% endif %}</div>

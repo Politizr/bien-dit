@@ -33,16 +33,13 @@ builders:
             scopes:
                 group_1: 
                     "Tous":                     ~
-                    "Mandats":
-                        filters:
-                            filterByPTTagTypeId:        1
                     "Zonage":
                         filters:
-                            filterByPTTagTypeId:        2
+                            filterByPTTagTypeId:        1
                     "Thèmes":
                         default:                        true
                         filters:
-                            filterByPTTagTypeId:        3
+                            filterByPTTagTypeId:        2
             display:                            [ title, p_t_tag_type, countPDDebates, countPUsers, online ]
             fields:
                 countPDDebates:

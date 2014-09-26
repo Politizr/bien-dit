@@ -3,24 +3,24 @@
 		<h3>
 			<div class="col-sm-10">
 				{% if not full %}
-					<a class="bg-info" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.getSlug }) }}">{{ debate.getTitle | slice(0, 100)}}</a>
+					<a class="bg-info" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title | slice(0, 100)}}</a>
 				{% else %}
 					<span class="glyphicon glyphicon-bullhorn"></span>
-					{{ debate.getTitle }}
+					{{ debate.title }}
 				{% endif %}
 			</div>
 		</h3>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default pull-right">publié le {{ debate.getPublishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			<span class="label label-default pull-right">publié le {{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
 	<h4>
 		<div action="user-more-info" class="row">
-			<a class="label label-info">par {{ debate.getPUser }}</a>
+			<a class="label label-info">par {{ debate.pUser }}</a>
 		</div>
 		<div class="row" action="user-infos">
 			<hr>
-			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': debate.getPUser, 'full': false } only %}
+			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': debate.pUser, 'full': false } only %}
 		</div>
 	</h4>
 </div>
@@ -85,14 +85,18 @@
 	<hr>
 	<div class="debate-image">
 		<div class="row text-center">
-			<img src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
+			{% if debate.fileName %}
+				<img src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
+			{% else %}
+				<img src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}">
+			{% endif %}
 		</div>
 	</div>
 {% endif %}
 <hr>
 <div class="debate-summary jumbotron">
 	<div class="debate-summary">
-		{{ debate.getSummary | raw }}
+		{{ debate.summary | raw }}
 	</div>
 	<div class="star">
 		{{ linkFollow(debate.id, 'debate') }}
@@ -102,12 +106,12 @@
 	<hr>
 	<div class="debate-body">
 		<div class="debate-description">
-			{{ debate.getDescription | raw }}
+			{{ debate.description | raw }}
 		</div>
-		{% if debate.getMoreInfo | striptags | trim is not empty %}
+		{% if debate.moreInfo | striptags | trim is not empty %}
 			<hr>
 			<div class="debate-more-info well">
-				{{ debate.getMoreInfo | raw }}
+				{{ debate.moreInfo | raw }}
 			</div>
 		{% endif %}
 	</div>

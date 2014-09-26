@@ -7,7 +7,7 @@
 			<h2>Débats les plus suivis</h2>
 			<div>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true } %}
 				{% endfor %}
 			</div>
 		</div>

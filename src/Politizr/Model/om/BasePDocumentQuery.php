@@ -34,9 +34,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDocumentQuery orderByOnline($order = Criteria::ASC) Order by the online column
- * @method PDocumentQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PDocumentQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method PDocumentQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PDocumentQuery orderByDescendantClass($order = Criteria::ASC) Order by the descendant_class column
  *
  * @method PDocumentQuery groupById() Group by the id column
  * @method PDocumentQuery groupByPUserId() Group by the p_user_id column
@@ -50,9 +48,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentQuery groupByPublishedBy() Group by the published_by column
  * @method PDocumentQuery groupByOnline() Group by the online column
- * @method PDocumentQuery groupByCreatedAt() Group by the created_at column
- * @method PDocumentQuery groupByUpdatedAt() Group by the updated_at column
- * @method PDocumentQuery groupBySlug() Group by the slug column
+ * @method PDocumentQuery groupByDescendantClass() Group by the descendant_class column
  *
  * @method PDocumentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDocumentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -62,6 +58,10 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PDocumentQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
+ * @method PDocumentQuery leftJoinPDComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDComment relation
+ * @method PDocumentQuery rightJoinPDComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDComment relation
+ * @method PDocumentQuery innerJoinPDComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDComment relation
+ *
  * @method PDocumentQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
  * @method PDocumentQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
  * @method PDocumentQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
@@ -69,10 +69,6 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery leftJoinPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReaction relation
  * @method PDocumentQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
  * @method PDocumentQuery innerJoinPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReaction relation
- *
- * @method PDocumentQuery leftJoinPDComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDComment relation
- * @method PDocumentQuery rightJoinPDComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDComment relation
- * @method PDocumentQuery innerJoinPDComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDComment relation
  *
  * @method PDocument findOne(PropelPDO $con = null) Return the first PDocument matching the query
  * @method PDocument findOneOrCreate(PropelPDO $con = null) Return the first PDocument matching the query, or a new PDocument object populated from the query conditions when no match is found
@@ -88,9 +84,7 @@ use Politizr\Model\PUser;
  * @method PDocument findOneByPublishedAt(string $published_at) Return the first PDocument filtered by the published_at column
  * @method PDocument findOneByPublishedBy(string $published_by) Return the first PDocument filtered by the published_by column
  * @method PDocument findOneByOnline(boolean $online) Return the first PDocument filtered by the online column
- * @method PDocument findOneByCreatedAt(string $created_at) Return the first PDocument filtered by the created_at column
- * @method PDocument findOneByUpdatedAt(string $updated_at) Return the first PDocument filtered by the updated_at column
- * @method PDocument findOneBySlug(string $slug) Return the first PDocument filtered by the slug column
+ * @method PDocument findOneByDescendantClass(string $descendant_class) Return the first PDocument filtered by the descendant_class column
  *
  * @method array findById(int $id) Return PDocument objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDocument objects filtered by the p_user_id column
@@ -104,9 +98,7 @@ use Politizr\Model\PUser;
  * @method array findByPublishedAt(string $published_at) Return PDocument objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocument objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDocument objects filtered by the online column
- * @method array findByCreatedAt(string $created_at) Return PDocument objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PDocument objects filtered by the updated_at column
- * @method array findBySlug(string $slug) Return PDocument objects filtered by the slug column
+ * @method array findByDescendantClass(string $descendant_class) Return PDocument objects filtered by the descendant_class column
  */
 abstract class BasePDocumentQuery extends ModelCriteria
 {
@@ -214,7 +206,7 @@ abstract class BasePDocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `created_at`, `updated_at`, `slug` FROM `p_document` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -716,118 +708,32 @@ abstract class BasePDocumentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
+     * Filter the query on the descendant_class column
      *
      * Example usage:
      * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * $query->filterByDescendantClass('fooValue');   // WHERE descendant_class = 'fooValue'
+     * $query->filterByDescendantClass('%fooValue%'); // WHERE descendant_class LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PDocumentPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PDocumentPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDocumentPeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PDocumentPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PDocumentPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDocumentPeer::UPDATED_AT, $updatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the slug column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
-     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $slug The value to use as filter.
+     * @param     string $descendantClass The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return PDocumentQuery The current query, for fluid interface
      */
-    public function filterBySlug($slug = null, $comparison = null)
+    public function filterByDescendantClass($descendantClass = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($slug)) {
+            if (is_array($descendantClass)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $slug)) {
-                $slug = str_replace('*', '%', $slug);
+            } elseif (preg_match('/[\%\*]/', $descendantClass)) {
+                $descendantClass = str_replace('*', '%', $descendantClass);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(PDocumentPeer::SLUG, $slug, $comparison);
+        return $this->addUsingAlias(PDocumentPeer::DESCENDANT_CLASS, $descendantClass, $comparison);
     }
 
     /**
@@ -907,154 +813,6 @@ abstract class BasePDocumentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PDDebate object
-     *
-     * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDocumentQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDDebate($pDDebate, $comparison = null)
-    {
-        if ($pDDebate instanceof PDDebate) {
-            return $this
-                ->addUsingAlias(PDocumentPeer::ID, $pDDebate->getPDocumentId(), $comparison);
-        } elseif ($pDDebate instanceof PropelObjectCollection) {
-            return $this
-                ->usePDDebateQuery()
-                ->filterByPrimaryKeys($pDDebate->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDDebate relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function joinPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDDebate');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDDebate');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDDebate relation PDDebate object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
-     */
-    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPDDebate($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
-    }
-
-    /**
-     * Filter the query by a related PDReaction object
-     *
-     * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDocumentQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDReaction($pDReaction, $comparison = null)
-    {
-        if ($pDReaction instanceof PDReaction) {
-            return $this
-                ->addUsingAlias(PDocumentPeer::ID, $pDReaction->getPDocumentId(), $comparison);
-        } elseif ($pDReaction instanceof PropelObjectCollection) {
-            return $this
-                ->usePDReactionQuery()
-                ->filterByPrimaryKeys($pDReaction->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPDReaction() only accepts arguments of type PDReaction or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDReaction relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function joinPDReaction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDReaction');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDReaction');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDReaction relation PDReaction object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
-     */
-    public function usePDReactionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPDReaction($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
-    }
-
-    /**
      * Filter the query by a related PDComment object
      *
      * @param   PDComment|PropelObjectCollection $pDComment  the related object to use as filter
@@ -1129,6 +887,154 @@ abstract class BasePDocumentQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PDDebate object
+     *
+     * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDocumentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDDebate($pDDebate, $comparison = null)
+    {
+        if ($pDDebate instanceof PDDebate) {
+            return $this
+                ->addUsingAlias(PDocumentPeer::ID, $pDDebate->getId(), $comparison);
+        } elseif ($pDDebate instanceof PropelObjectCollection) {
+            return $this
+                ->usePDDebateQuery()
+                ->filterByPrimaryKeys($pDDebate->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDDebate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function joinPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDDebate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDDebate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDDebate relation PDDebate object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
+     */
+    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
+    }
+
+    /**
+     * Filter the query by a related PDReaction object
+     *
+     * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDocumentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDReaction($pDReaction, $comparison = null)
+    {
+        if ($pDReaction instanceof PDReaction) {
+            return $this
+                ->addUsingAlias(PDocumentPeer::ID, $pDReaction->getId(), $comparison);
+        } elseif ($pDReaction instanceof PropelObjectCollection) {
+            return $this
+                ->usePDReactionQuery()
+                ->filterByPrimaryKeys($pDReaction->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDReaction() only accepts arguments of type PDReaction or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDReaction relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function joinPDReaction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDReaction');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDReaction');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDReaction relation PDReaction object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
+     */
+    public function usePDReactionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPDReaction($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
+    }
+
+    /**
      * Exclude object from result
      *
      * @param   PDocument $pDocument Object to remove from the list of results
@@ -1163,71 +1069,6 @@ abstract class BasePDocumentQuery extends ModelCriteria
         return $this->preDelete($con);
     }
 
-    // timestampable behavior
-
-    /**
-     * Filter by the latest updated
-     *
-     * @param      int $nbDays Maximum age of the latest update in days
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function recentlyUpdated($nbDays = 7)
-    {
-        return $this->addUsingAlias(PDocumentPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
-    }
-
-    /**
-     * Order by update date desc
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function lastUpdatedFirst()
-    {
-        return $this->addDescendingOrderByColumn(PDocumentPeer::UPDATED_AT);
-    }
-
-    /**
-     * Order by update date asc
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function firstUpdatedFirst()
-    {
-        return $this->addAscendingOrderByColumn(PDocumentPeer::UPDATED_AT);
-    }
-
-    /**
-     * Filter by the latest created
-     *
-     * @param      int $nbDays Maximum age of in days
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function recentlyCreated($nbDays = 7)
-    {
-        return $this->addUsingAlias(PDocumentPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
-    }
-
-    /**
-     * Order by create date desc
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function lastCreatedFirst()
-    {
-        return $this->addDescendingOrderByColumn(PDocumentPeer::CREATED_AT);
-    }
-
-    /**
-     * Order by create date asc
-     *
-     * @return     PDocumentQuery The current query, for fluid interface
-     */
-    public function firstCreatedFirst()
-    {
-        return $this->addAscendingOrderByColumn(PDocumentPeer::CREATED_AT);
-    }
     // query_cache behavior
 
     public function setQueryKey($key)
@@ -1431,21 +1272,6 @@ abstract class BasePDocumentQuery extends ModelCriteria
         $this->archiveOnDelete = false;
 
         return $this->deleteAll($con);
-    }
-
-    // sluggable behavior
-
-    /**
-     * Find one object based on its slug
-     *
-     * @param     string $slug The value to use as filter.
-     * @param     PropelPDO $con The optional connection object
-     *
-     * @return    PDocument the result, formatted by the current formatter
-     */
-    public function findOneBySlug($slug, $con = null)
-    {
-        return $this->filterBySlug($slug)->findOne($con);
     }
 
 }

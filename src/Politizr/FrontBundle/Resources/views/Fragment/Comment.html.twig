@@ -15,9 +15,9 @@
 		<div class="col-sm-8">
 			{% if (docLink) %}
 				{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-					<a href="{{ path('DebateDetail', { 'id': comment.document.id, 'slug': comment.document.slug }) }}">
+					<a href="{{ path('DebateDetail', { 'id': comment.document.id, 'slug': comment.debate.slug }) }}">
 				{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-					<a href="{{ path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.document.slug }) }}">
+					<a href="{{ path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.reaction.slug }) }}">
 				{% endif %}
 			{% endif %}
 				<em>"{{ comment.description }}"</em>

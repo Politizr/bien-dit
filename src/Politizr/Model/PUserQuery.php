@@ -4,10 +4,6 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUserQuery;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PUType;
-use Politizr\Model\PUStatus;
-
 class PUserQuery extends BasePUserQuery
 {
 

@@ -13,7 +13,7 @@
 			<div id="author-debates-block">
 				<h3>Liste des débats rédigés</h3>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': false } %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false } %}
 				{% else %}
 					<div class="no-result">
 						Aucun débat pour le moment
@@ -23,7 +23,7 @@
 			<div id="author-reactions-block">
 				<h3>Liste des réactions rédigées</h3>
 				{% for reaction in reactions %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': 'PDReaction', 'withAuthor': false } %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false } %}
 				{% else %}
 					<div class="no-result">
 						Aucune réaction pour le moment

@@ -302,6 +302,8 @@ bazinga_faker:
                 Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
 
+                FileName:               { method: null }
+
 #         Politizr\Model\PUQualification:
 #             number:                     300
 #             custom_formatters:

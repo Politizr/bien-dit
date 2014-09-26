@@ -10,6 +10,8 @@ use \Propel;
 use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PDCommentPeer;
+use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\PUFollowDDPeer;
@@ -658,6 +660,12 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();
+        // Invalidate objects in PDDebatePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDDebatePeer::clearInstancePool();
+        // Invalidate objects in PDReactionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDReactionPeer::clearInstancePool();
     }
 
     /**

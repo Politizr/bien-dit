@@ -15,9 +15,10 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDocumentPeer;
 use Politizr\Model\PUFollowDDPeer;
+use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PDDebateTableMap;
 
-abstract class BasePDDebatePeer
+abstract class BasePDDebatePeer extends PDocumentPeer
 {
 
     /** the default database name for this class */
@@ -33,28 +34,61 @@ abstract class BasePDDebatePeer
     const TM_CLASS = 'PDDebateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 16;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
-
-    /** the column name for the id field */
-    const ID = 'p_d_debate.id';
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /** the column name for the file_name field */
     const FILE_NAME = 'p_d_debate.file_name';
-
-    /** the column name for the p_document_id field */
-    const P_DOCUMENT_ID = 'p_d_debate.p_document_id';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_d_debate.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_d_debate.updated_at';
+
+    /** the column name for the slug field */
+    const SLUG = 'p_d_debate.slug';
+
+    /** the column name for the id field */
+    const ID = 'p_d_debate.id';
+
+    /** the column name for the p_user_id field */
+    const P_USER_ID = 'p_d_debate.p_user_id';
+
+    /** the column name for the title field */
+    const TITLE = 'p_d_debate.title';
+
+    /** the column name for the summary field */
+    const SUMMARY = 'p_d_debate.summary';
+
+    /** the column name for the description field */
+    const DESCRIPTION = 'p_d_debate.description';
+
+    /** the column name for the more_info field */
+    const MORE_INFO = 'p_d_debate.more_info';
+
+    /** the column name for the note_pos field */
+    const NOTE_POS = 'p_d_debate.note_pos';
+
+    /** the column name for the note_neg field */
+    const NOTE_NEG = 'p_d_debate.note_neg';
+
+    /** the column name for the published field */
+    const PUBLISHED = 'p_d_debate.published';
+
+    /** the column name for the published_at field */
+    const PUBLISHED_AT = 'p_d_debate.published_at';
+
+    /** the column name for the published_by field */
+    const PUBLISHED_BY = 'p_d_debate.published_by';
+
+    /** the column name for the online field */
+    const ONLINE = 'p_d_debate.online';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -75,12 +109,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[PDDebatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'FileName', 'PDocumentId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'fileName', 'pDocumentId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::FILE_NAME, PDDebatePeer::P_DOCUMENT_ID, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'FILE_NAME', 'P_DOCUMENT_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'file_name', 'p_document_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('FileName', 'CreatedAt', 'UpdatedAt', 'Slug', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName', 'createdAt', 'updatedAt', 'slug', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::FILE_NAME, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, PDDebatePeer::ID, PDDebatePeer::P_USER_ID, PDDebatePeer::TITLE, PDDebatePeer::SUMMARY, PDDebatePeer::DESCRIPTION, PDDebatePeer::MORE_INFO, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::ONLINE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', ),
+        BasePeer::TYPE_FIELDNAME => array ('file_name', 'created_at', 'updated_at', 'slug', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -90,12 +124,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FileName' => 1, 'PDocumentId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'fileName' => 1, 'pDocumentId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::FILE_NAME => 1, PDDebatePeer::P_DOCUMENT_ID => 2, PDDebatePeer::CREATED_AT => 3, PDDebatePeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'FILE_NAME' => 1, 'P_DOCUMENT_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'file_name' => 1, 'p_document_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('FileName' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'Id' => 4, 'PUserId' => 5, 'Title' => 6, 'Summary' => 7, 'Description' => 8, 'MoreInfo' => 9, 'NotePos' => 10, 'NoteNeg' => 11, 'Published' => 12, 'PublishedAt' => 13, 'PublishedBy' => 14, 'Online' => 15, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'id' => 4, 'pUserId' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'moreInfo' => 9, 'notePos' => 10, 'noteNeg' => 11, 'published' => 12, 'publishedAt' => 13, 'publishedBy' => 14, 'online' => 15, ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::FILE_NAME => 0, PDDebatePeer::CREATED_AT => 1, PDDebatePeer::UPDATED_AT => 2, PDDebatePeer::SLUG => 3, PDDebatePeer::ID => 4, PDDebatePeer::P_USER_ID => 5, PDDebatePeer::TITLE => 6, PDDebatePeer::SUMMARY => 7, PDDebatePeer::DESCRIPTION => 8, PDDebatePeer::MORE_INFO => 9, PDDebatePeer::NOTE_POS => 10, PDDebatePeer::NOTE_NEG => 11, PDDebatePeer::PUBLISHED => 12, PDDebatePeer::PUBLISHED_AT => 13, PDDebatePeer::PUBLISHED_BY => 14, PDDebatePeer::ONLINE => 15, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'ID' => 4, 'P_USER_ID' => 5, 'TITLE' => 6, 'SUMMARY' => 7, 'DESCRIPTION' => 8, 'MORE_INFO' => 9, 'NOTE_POS' => 10, 'NOTE_NEG' => 11, 'PUBLISHED' => 12, 'PUBLISHED_AT' => 13, 'PUBLISHED_BY' => 14, 'ONLINE' => 15, ),
+        BasePeer::TYPE_FIELDNAME => array ('file_name' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'id' => 4, 'p_user_id' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'more_info' => 9, 'note_pos' => 10, 'note_neg' => 11, 'published' => 12, 'published_at' => 13, 'published_by' => 14, 'online' => 15, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -169,17 +203,39 @@ abstract class BasePDDebatePeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PDDebatePeer::ID);
             $criteria->addSelectColumn(PDDebatePeer::FILE_NAME);
-            $criteria->addSelectColumn(PDDebatePeer::P_DOCUMENT_ID);
             $criteria->addSelectColumn(PDDebatePeer::CREATED_AT);
             $criteria->addSelectColumn(PDDebatePeer::UPDATED_AT);
+            $criteria->addSelectColumn(PDDebatePeer::SLUG);
+            $criteria->addSelectColumn(PDDebatePeer::ID);
+            $criteria->addSelectColumn(PDDebatePeer::P_USER_ID);
+            $criteria->addSelectColumn(PDDebatePeer::TITLE);
+            $criteria->addSelectColumn(PDDebatePeer::SUMMARY);
+            $criteria->addSelectColumn(PDDebatePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PDDebatePeer::MORE_INFO);
+            $criteria->addSelectColumn(PDDebatePeer::NOTE_POS);
+            $criteria->addSelectColumn(PDDebatePeer::NOTE_NEG);
+            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED);
+            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_AT);
+            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_BY);
+            $criteria->addSelectColumn(PDDebatePeer::ONLINE);
         } else {
-            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.file_name');
-            $criteria->addSelectColumn($alias . '.p_document_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.p_user_id');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.summary');
+            $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.more_info');
+            $criteria->addSelectColumn($alias . '.note_pos');
+            $criteria->addSelectColumn($alias . '.note_neg');
+            $criteria->addSelectColumn($alias . '.published');
+            $criteria->addSelectColumn($alias . '.published_at');
+            $criteria->addSelectColumn($alias . '.published_by');
+            $criteria->addSelectColumn($alias . '.online');
         }
     }
 
@@ -410,11 +466,11 @@ abstract class BasePDDebatePeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null) {
+        if ($row[$startcol + 4] === null) {
             return null;
         }
 
-        return (string) $row[$startcol];
+        return (string) $row[$startcol + 4];
     }
 
     /**
@@ -429,7 +485,7 @@ abstract class BasePDDebatePeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return (int) $row[$startcol + 4];
     }
 
     /**
@@ -528,7 +584,58 @@ abstract class BasePDDebatePeer
             $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PDDebatePeer::P_DOCUMENT_ID, PDocumentPeer::ID, $join_behavior);
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUser table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PDDebatePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -565,7 +672,7 @@ abstract class BasePDDebatePeer
         $startcol = PDDebatePeer::NUM_HYDRATE_COLUMNS;
         PDocumentPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PDDebatePeer::P_DOCUMENT_ID, PDocumentPeer::ID, $join_behavior);
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -598,6 +705,74 @@ abstract class BasePDDebatePeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PDDebate) to $obj2 (PDocument)
+                // one to one relationship
+                $obj1->setPDocument($obj2);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PDDebate objects pre-filled with their PUser objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PDDebate objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        }
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+        PUserPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PDDebatePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PDDebatePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PUserPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PDDebate) to $obj2 (PUser)
                 $obj2->addPDDebate($obj1);
 
             } // if joined row was not null
@@ -646,7 +821,9 @@ abstract class BasePDDebatePeer
             $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PDDebatePeer::P_DOCUMENT_ID, PDocumentPeer::ID, $join_behavior);
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -685,7 +862,12 @@ abstract class BasePDDebatePeer
         PDocumentPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PDocumentPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PDDebatePeer::P_DOCUMENT_ID, PDocumentPeer::ID, $join_behavior);
+        PUserPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -719,8 +901,276 @@ abstract class BasePDDebatePeer
                 } // if obj2 loaded
 
                 // Add the $obj1 (PDDebate) to the collection in $obj2 (PDocument)
-                $obj2->addPDDebate($obj1);
+                $obj1->setPDocument($obj2);
             } // if joined row not null
+
+            // Add objects for joined PUser rows
+
+            $key3 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = PUserPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = PUserPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUserPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj3 (PUser)
+                $obj3->addPDDebate($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PDocument table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPDocument(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PDDebatePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUser table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PDDebatePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PDDebate objects pre-filled with all related objects except PDocument.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PDDebate objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPDocument(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        }
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol2 = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PDDebatePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PDDebatePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUser rows
+
+                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj2 (PUser)
+                $obj2->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PDDebate objects pre-filled with all related objects except PUser.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PDDebate objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        }
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol2 = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+
+        PDocumentPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PDocumentPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PDDebatePeer::ID, PDocumentPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PDDebatePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PDDebatePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PDocument rows
+
+                $key2 = PDocumentPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PDocumentPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PDocumentPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PDocumentPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj2 (PDocument)
+                $obj1->setPDocument($obj2);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }
@@ -782,10 +1232,6 @@ abstract class BasePDDebatePeer
             $criteria = clone $values; // rename for clarity
         } else {
             $criteria = $values->buildCriteria(); // build Criteria from PDDebate object
-        }
-
-        if ($criteria->containsKey(PDDebatePeer::ID) && $criteria->keyContainsValue(PDDebatePeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PDDebatePeer::ID.')');
         }
 
 

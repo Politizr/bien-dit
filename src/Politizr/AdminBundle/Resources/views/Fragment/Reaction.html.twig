@@ -1,14 +1,14 @@
 <div class="pdReaction">
-	<div class="pdReaction-description">{{ pdReaction.getDescription | striptags | slice(0, 250) | raw }}...</div>
+	<div class="pdReaction-description">{{ pdReaction.summary | raw }}</div>
 	<hr>
-	<div class="pdReaction-online">{% if pdReaction.getOnline %}En ligne{% else %}Hors ligne{% endif %}</div>
-	<div class="pdReaction-published">Publié le {{ pdReaction.getPublishedAt | date('d/m/Y H:i') }}</div>
+	<div class="pdReaction-online">{% if pdReaction.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+	<div class="pdReaction-published">Publié le {{ pdReaction.publishedAt | date('d/m/Y H:i') }}</div>
 	<hr>
-	{% set user = pdReaction.getPUser %}
+	{% set user = pdReaction.pUser %}
 	{% if user %}
 		<div class="pdReaction-author"><a href="{{ path('Politizr_AdminBundle_PUser_edit', { 'pk': user.id }) }}">{{ user }}</a>&nbsp;({{ user.PUType }} / {{ user.PUStatus }})</div>
 	{% endif %}
-	<div class="pdReaction-note"><b>{{ pdReaction.getNotePos }} +</b> &nbsp; <b>{{ pdReaction.getNoteNeg }} -</b></div>
+	<div class="pdReaction-note"><b>{{ pdReaction.notePos }} +</b> &nbsp; <b>{{ pdReaction.noteNeg }} -</b></div>
 	<hr>
 	<a href="{{ path('Politizr_AdminBundle_PDReaction_edit', { 'pk': pdReaction.id }) }}">Editer</a>&nbsp;-&nbsp; 
 	<a href="{{ path('Politizr_AdminBundle_PDReaction_show', { 'pk': pdReaction.id }) }}">Consulter</a>

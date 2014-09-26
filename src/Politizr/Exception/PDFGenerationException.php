@@ -1,6 +1,6 @@
 <?php
 
-namespace Exception;
+namespace Politizr\Exception;
 
 class PDFGenerationException extends \Exception implements PDFGenerationExceptionInterface
 {

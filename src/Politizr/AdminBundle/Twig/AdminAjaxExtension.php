@@ -64,11 +64,7 @@ class AdminAjaxExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserCommentsD'  => new \Twig_Function_Method($this, 'adminUserCommentsD', array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'adminUserCommentsR'  => new \Twig_Function_Method($this, 'adminUserCommentsR', array(
+            'adminUserComments'  => new \Twig_Function_Method($this, 'adminUserComments', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -202,7 +198,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserReactions.html.twig', array(
                                 'pUser' => $pUser,
-                                'pdReactions' => $pUser->getPDReactions(),
+                                'pdReactions' => $pUser->getReactions(),
                                 )
                     );
 
@@ -214,20 +210,20 @@ class AdminAjaxExtension extends \Twig_Extension
     /**
      *  Gestion des commentaires sur un débat d'un user
      *
-     * @param $pUser        PUser
+     *  @param $pUser        PUser
      *
-     * @return string
+     *  @return string
      */
-    public function adminUserCommentsD($pUser)
+    public function adminUserComments($pUser)
     {
-        $this->logger->info('*** adminUserCommentsD');
+        $this->logger->info('*** adminUserComments');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserCommentsD.html.twig', array(
+                            'PolitizrAdminBundle:Fragment:UserComments.html.twig', array(
                                 'pUser' => $pUser,
-                                'pddComments' => $pUser->getCommentsD(),
+                                'pdComments' => $pUser->getComments(),
                                 )
                     );
 
@@ -276,7 +272,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
                                 'pUser' => $pUser,
-                                'pUsers' => $pUser->getFollowersQ(),
+                                'pUsers' => $pUser->getPUserFollowersQ(),
                                 )
                     );
 
@@ -300,7 +296,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
                                 'pUser' => $pUser,
-                                'pUsers' => $pUser->getFollowersC(),
+                                'pUsers' => $pUser->getPUserFollowersC(),
                                 )
                     );
 

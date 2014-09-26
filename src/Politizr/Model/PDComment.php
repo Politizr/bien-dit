@@ -58,12 +58,7 @@ class PDComment extends BasePDComment
 	 * @return 	PDDebate 	Objet débat
 	 */
 	public function getDebate() {
-		$type = $this->getType();
-		if ($type == PDocument::TYPE_DEBATE) {
-			return $this->getDocument()->getPDDebate();
-		} else {
-			return null;
-		}
+		return $this->getDocument()->getDebate();
 	}
 
 	/**
@@ -72,12 +67,7 @@ class PDComment extends BasePDComment
 	 * @return 	PDDebate 	Objet débat
 	 */
 	public function getReaction() {
-		$type = $this->getType();
-		if ($type == PDocument::TYPE_REACTION) {
-			return $this->getDocument()->getPDReaction();
-		} else {
-			return null;
-		}
+		return $this->getDocument()->getReaction();
 	}
 
 	/**

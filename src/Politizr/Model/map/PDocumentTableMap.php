@@ -54,9 +54,7 @@ class PDocumentTableMap extends TableMap
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('descendant_class', 'DescendantClass', 'VARCHAR', false, 100, null);
         // validators
     } // initialize()
 
@@ -66,9 +64,9 @@ class PDocumentTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDDebates');
-        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
         $this->addRelation('PDComment', 'Politizr\\Model\\PDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDComments');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -80,11 +78,6 @@ class PDocumentTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'timestampable' =>  array (
-  'create_column' => 'created_at',
-  'update_column' => 'updated_at',
-  'disable_updated_at' => 'false',
-),
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
@@ -99,15 +92,8 @@ class PDocumentTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
-            'sluggable' =>  array (
-  'add_cleanup' => 'true',
-  'slug_column' => 'slug',
-  'slug_pattern' => '{title}',
-  'replace_pattern' => '/\\W+/',
-  'replacement' => '-',
-  'separator' => '-',
-  'permanent' => 'false',
-  'scope_column' => '',
+            'concrete_inheritance_parent' =>  array (
+  'descendant_column' => 'descendant_class',
 ),
         );
     } // getBehaviors()
