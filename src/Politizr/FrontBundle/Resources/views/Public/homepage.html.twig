@@ -68,7 +68,7 @@
 			<h2>Les derniers commentaires</h2>
 			<div>
 				{% for comment in comments %}
-					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'debateLink': true } %}
+					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
 				{% endfor %}
 			</div>
 		</div>

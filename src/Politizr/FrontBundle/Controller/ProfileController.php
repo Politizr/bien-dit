@@ -19,7 +19,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
-use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDCommentQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUType;
@@ -139,7 +139,7 @@ class ProfileController extends Controller {
         $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
 
         // commentaires les plus populaires
-        $comments = PDDCommentQuery::create()->online()->last(10)->find();
+        $comments = PDCommentQuery::create()->online()->last(10)->find();
 
         // *********************************** //
         //      Affichage de la vue

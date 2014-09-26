@@ -45,76 +45,16 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the p_user_id field.
-     * @var        int
-     */
-    protected $p_user_id;
-
-    /**
      * The value for the file_name field.
      * @var        string
      */
     protected $file_name;
 
     /**
-     * The value for the title field.
-     * @var        string
-     */
-    protected $title;
-
-    /**
-     * The value for the summary field.
-     * @var        string
-     */
-    protected $summary;
-
-    /**
-     * The value for the description field.
-     * @var        string
-     */
-    protected $description;
-
-    /**
-     * The value for the more_info field.
-     * @var        string
-     */
-    protected $more_info;
-
-    /**
-     * The value for the note_pos field.
+     * The value for the p_document_id field.
      * @var        int
      */
-    protected $note_pos;
-
-    /**
-     * The value for the note_neg field.
-     * @var        int
-     */
-    protected $note_neg;
-
-    /**
-     * The value for the published field.
-     * @var        boolean
-     */
-    protected $published;
-
-    /**
-     * The value for the published_at field.
-     * @var        string
-     */
-    protected $published_at;
-
-    /**
-     * The value for the published_by field.
-     * @var        string
-     */
-    protected $published_by;
-
-    /**
-     * The value for the online field.
-     * @var        boolean
-     */
-    protected $online;
+    protected $p_document_id;
 
     /**
      * The value for the created_at field.
@@ -165,16 +105,6 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_user_id] column value.
-     *
-     * @return int
-     */
-    public function getPUserId()
-    {
-        return $this->p_user_id;
-    }
-
-    /**
      * Get the [file_name] column value.
      *
      * @return string
@@ -185,133 +115,13 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [title] column value.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Get the [summary] column value.
-     *
-     * @return string
-     */
-    public function getSummary()
-    {
-        return $this->summary;
-    }
-
-    /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the [more_info] column value.
-     *
-     * @return string
-     */
-    public function getMoreInfo()
-    {
-        return $this->more_info;
-    }
-
-    /**
-     * Get the [note_pos] column value.
+     * Get the [p_document_id] column value.
      *
      * @return int
      */
-    public function getNotePos()
+    public function getPDocumentId()
     {
-        return $this->note_pos;
-    }
-
-    /**
-     * Get the [note_neg] column value.
-     *
-     * @return int
-     */
-    public function getNoteNeg()
-    {
-        return $this->note_neg;
-    }
-
-    /**
-     * Get the [published] column value.
-     *
-     * @return boolean
-     */
-    public function getPublished()
-    {
-        return $this->published;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [published_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getPublishedAt($format = null)
-    {
-        if ($this->published_at === null) {
-            return null;
-        }
-
-        if ($this->published_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->published_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->published_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [published_by] column value.
-     *
-     * @return string
-     */
-    public function getPublishedBy()
-    {
-        return $this->published_by;
-    }
-
-    /**
-     * Get the [online] column value.
-     *
-     * @return boolean
-     */
-    public function getOnline()
-    {
-        return $this->online;
+        return $this->p_document_id;
     }
 
     /**
@@ -456,27 +266,6 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [p_user_id] column.
-     *
-     * @param int $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setPUserId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_user_id !== $v) {
-            $this->p_user_id = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::P_USER_ID;
-        }
-
-
-        return $this;
-    } // setPUserId()
-
-    /**
      * Set the value of [file_name] column.
      *
      * @param string $v new value
@@ -498,232 +287,25 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     } // setFileName()
 
     /**
-     * Set the value of [title] column.
-     *
-     * @param string $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setTitle($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::TITLE;
-        }
-
-
-        return $this;
-    } // setTitle()
-
-    /**
-     * Set the value of [summary] column.
-     *
-     * @param string $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setSummary($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->summary !== $v) {
-            $this->summary = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::SUMMARY;
-        }
-
-
-        return $this;
-    } // setSummary()
-
-    /**
-     * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::DESCRIPTION;
-        }
-
-
-        return $this;
-    } // setDescription()
-
-    /**
-     * Set the value of [more_info] column.
-     *
-     * @param string $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setMoreInfo($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->more_info !== $v) {
-            $this->more_info = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::MORE_INFO;
-        }
-
-
-        return $this;
-    } // setMoreInfo()
-
-    /**
-     * Set the value of [note_pos] column.
+     * Set the value of [p_document_id] column.
      *
      * @param int $v new value
      * @return PDDebateArchive The current object (for fluent API support)
      */
-    public function setNotePos($v)
+    public function setPDocumentId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->note_pos !== $v) {
-            $this->note_pos = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::NOTE_POS;
+        if ($this->p_document_id !== $v) {
+            $this->p_document_id = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::P_DOCUMENT_ID;
         }
 
 
         return $this;
-    } // setNotePos()
-
-    /**
-     * Set the value of [note_neg] column.
-     *
-     * @param int $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setNoteNeg($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->note_neg !== $v) {
-            $this->note_neg = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::NOTE_NEG;
-        }
-
-
-        return $this;
-    } // setNoteNeg()
-
-    /**
-     * Sets the value of the [published] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setPublished($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->published !== $v) {
-            $this->published = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::PUBLISHED;
-        }
-
-
-        return $this;
-    } // setPublished()
-
-    /**
-     * Sets the value of [published_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setPublishedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->published_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->published_at !== null && $tmpDt = new DateTime($this->published_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->published_at = $newDateAsString;
-                $this->modifiedColumns[] = PDDebateArchivePeer::PUBLISHED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setPublishedAt()
-
-    /**
-     * Set the value of [published_by] column.
-     *
-     * @param string $v new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setPublishedBy($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->published_by !== $v) {
-            $this->published_by = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::PUBLISHED_BY;
-        }
-
-
-        return $this;
-    } // setPublishedBy()
-
-    /**
-     * Sets the value of the [online] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PDDebateArchive The current object (for fluent API support)
-     */
-    public function setOnline($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->online !== $v) {
-            $this->online = $v;
-            $this->modifiedColumns[] = PDDebateArchivePeer::ONLINE;
-        }
-
-
-        return $this;
-    } // setOnline()
+    } // setPDocumentId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -827,21 +409,11 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->file_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->more_info = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->note_pos = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->note_neg = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->online = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->archived_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->file_name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_document_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->archived_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -850,7 +422,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 16; // 16 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebateArchive object", $e);
@@ -1061,41 +633,11 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PDDebateArchivePeer::P_USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
-        }
         if ($this->isColumnModified(PDDebateArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
-        if ($this->isColumnModified(PDDebateArchivePeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::SUMMARY)) {
-            $modifiedColumns[':p' . $index++]  = '`summary`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`description`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::MORE_INFO)) {
-            $modifiedColumns[':p' . $index++]  = '`more_info`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::NOTE_POS)) {
-            $modifiedColumns[':p' . $index++]  = '`note_pos`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::NOTE_NEG)) {
-            $modifiedColumns[':p' . $index++]  = '`note_neg`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED)) {
-            $modifiedColumns[':p' . $index++]  = '`published`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`published_at`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_BY)) {
-            $modifiedColumns[':p' . $index++]  = '`published_by`';
-        }
-        if ($this->isColumnModified(PDDebateArchivePeer::ONLINE)) {
-            $modifiedColumns[':p' . $index++]  = '`online`';
+        if ($this->isColumnModified(PDDebateArchivePeer::P_DOCUMENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_document_id`';
         }
         if ($this->isColumnModified(PDDebateArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -1120,41 +662,11 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`p_user_id`':
-                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
-                        break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
-                        break;
-                    case '`summary`':
-                        $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
-                        break;
-                    case '`description`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case '`more_info`':
-                        $stmt->bindValue($identifier, $this->more_info, PDO::PARAM_STR);
-                        break;
-                    case '`note_pos`':
-                        $stmt->bindValue($identifier, $this->note_pos, PDO::PARAM_INT);
-                        break;
-                    case '`note_neg`':
-                        $stmt->bindValue($identifier, $this->note_neg, PDO::PARAM_INT);
-                        break;
-                    case '`published`':
-                        $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
-                        break;
-                    case '`published_at`':
-                        $stmt->bindValue($identifier, $this->published_at, PDO::PARAM_STR);
-                        break;
-                    case '`published_by`':
-                        $stmt->bindValue($identifier, $this->published_by, PDO::PARAM_STR);
-                        break;
-                    case '`online`':
-                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                    case '`p_document_id`':
+                        $stmt->bindValue($identifier, $this->p_document_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1296,48 +808,18 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
-                break;
-            case 2:
                 return $this->getFileName();
                 break;
+            case 2:
+                return $this->getPDocumentId();
+                break;
             case 3:
-                return $this->getTitle();
-                break;
-            case 4:
-                return $this->getSummary();
-                break;
-            case 5:
-                return $this->getDescription();
-                break;
-            case 6:
-                return $this->getMoreInfo();
-                break;
-            case 7:
-                return $this->getNotePos();
-                break;
-            case 8:
-                return $this->getNoteNeg();
-                break;
-            case 9:
-                return $this->getPublished();
-                break;
-            case 10:
-                return $this->getPublishedAt();
-                break;
-            case 11:
-                return $this->getPublishedBy();
-                break;
-            case 12:
-                return $this->getOnline();
-                break;
-            case 13:
                 return $this->getCreatedAt();
                 break;
-            case 14:
+            case 4:
                 return $this->getUpdatedAt();
                 break;
-            case 15:
+            case 5:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1369,21 +851,11 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $keys = PDDebateArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getFileName(),
-            $keys[3] => $this->getTitle(),
-            $keys[4] => $this->getSummary(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getMoreInfo(),
-            $keys[7] => $this->getNotePos(),
-            $keys[8] => $this->getNoteNeg(),
-            $keys[9] => $this->getPublished(),
-            $keys[10] => $this->getPublishedAt(),
-            $keys[11] => $this->getPublishedBy(),
-            $keys[12] => $this->getOnline(),
-            $keys[13] => $this->getCreatedAt(),
-            $keys[14] => $this->getUpdatedAt(),
-            $keys[15] => $this->getArchivedAt(),
+            $keys[1] => $this->getFileName(),
+            $keys[2] => $this->getPDocumentId(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
+            $keys[5] => $this->getArchivedAt(),
         );
 
         return $result;
@@ -1422,48 +894,18 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
-                break;
-            case 2:
                 $this->setFileName($value);
                 break;
+            case 2:
+                $this->setPDocumentId($value);
+                break;
             case 3:
-                $this->setTitle($value);
-                break;
-            case 4:
-                $this->setSummary($value);
-                break;
-            case 5:
-                $this->setDescription($value);
-                break;
-            case 6:
-                $this->setMoreInfo($value);
-                break;
-            case 7:
-                $this->setNotePos($value);
-                break;
-            case 8:
-                $this->setNoteNeg($value);
-                break;
-            case 9:
-                $this->setPublished($value);
-                break;
-            case 10:
-                $this->setPublishedAt($value);
-                break;
-            case 11:
-                $this->setPublishedBy($value);
-                break;
-            case 12:
-                $this->setOnline($value);
-                break;
-            case 13:
                 $this->setCreatedAt($value);
                 break;
-            case 14:
+            case 4:
                 $this->setUpdatedAt($value);
                 break;
-            case 15:
+            case 5:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1491,21 +933,11 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $keys = PDDebateArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setFileName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setMoreInfo($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setNotePos($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setNoteNeg($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setOnline($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setArchivedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[1], $arr)) $this->setFileName($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPDocumentId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setArchivedAt($arr[$keys[5]]);
     }
 
     /**
@@ -1518,18 +950,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $criteria = new Criteria(PDDebateArchivePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PDDebateArchivePeer::ID)) $criteria->add(PDDebateArchivePeer::ID, $this->id);
-        if ($this->isColumnModified(PDDebateArchivePeer::P_USER_ID)) $criteria->add(PDDebateArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDDebateArchivePeer::FILE_NAME)) $criteria->add(PDDebateArchivePeer::FILE_NAME, $this->file_name);
-        if ($this->isColumnModified(PDDebateArchivePeer::TITLE)) $criteria->add(PDDebateArchivePeer::TITLE, $this->title);
-        if ($this->isColumnModified(PDDebateArchivePeer::SUMMARY)) $criteria->add(PDDebateArchivePeer::SUMMARY, $this->summary);
-        if ($this->isColumnModified(PDDebateArchivePeer::DESCRIPTION)) $criteria->add(PDDebateArchivePeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PDDebateArchivePeer::MORE_INFO)) $criteria->add(PDDebateArchivePeer::MORE_INFO, $this->more_info);
-        if ($this->isColumnModified(PDDebateArchivePeer::NOTE_POS)) $criteria->add(PDDebateArchivePeer::NOTE_POS, $this->note_pos);
-        if ($this->isColumnModified(PDDebateArchivePeer::NOTE_NEG)) $criteria->add(PDDebateArchivePeer::NOTE_NEG, $this->note_neg);
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED)) $criteria->add(PDDebateArchivePeer::PUBLISHED, $this->published);
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_AT)) $criteria->add(PDDebateArchivePeer::PUBLISHED_AT, $this->published_at);
-        if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_BY)) $criteria->add(PDDebateArchivePeer::PUBLISHED_BY, $this->published_by);
-        if ($this->isColumnModified(PDDebateArchivePeer::ONLINE)) $criteria->add(PDDebateArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebateArchivePeer::P_DOCUMENT_ID)) $criteria->add(PDDebateArchivePeer::P_DOCUMENT_ID, $this->p_document_id);
         if ($this->isColumnModified(PDDebateArchivePeer::CREATED_AT)) $criteria->add(PDDebateArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDDebateArchivePeer::UPDATED_AT)) $criteria->add(PDDebateArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDDebateArchivePeer::ARCHIVED_AT)) $criteria->add(PDDebateArchivePeer::ARCHIVED_AT, $this->archived_at);
@@ -1596,18 +1018,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setPUserId($this->getPUserId());
         $copyObj->setFileName($this->getFileName());
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setSummary($this->getSummary());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setMoreInfo($this->getMoreInfo());
-        $copyObj->setNotePos($this->getNotePos());
-        $copyObj->setNoteNeg($this->getNoteNeg());
-        $copyObj->setPublished($this->getPublished());
-        $copyObj->setPublishedAt($this->getPublishedAt());
-        $copyObj->setPublishedBy($this->getPublishedBy());
-        $copyObj->setOnline($this->getOnline());
+        $copyObj->setPDocumentId($this->getPDocumentId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setArchivedAt($this->getArchivedAt());
@@ -1663,18 +1075,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->p_user_id = null;
         $this->file_name = null;
-        $this->title = null;
-        $this->summary = null;
-        $this->description = null;
-        $this->more_info = null;
-        $this->note_pos = null;
-        $this->note_neg = null;
-        $this->published = null;
-        $this->published_at = null;
-        $this->published_by = null;
-        $this->online = null;
+        $this->p_document_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->archived_at = null;

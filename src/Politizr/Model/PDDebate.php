@@ -11,7 +11,6 @@ use Politizr\Model\PUStatus;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDDCommentQuery;
 
 class PDDebate extends BasePDDebate
 {
@@ -23,65 +22,30 @@ class PDDebate extends BasePDDebate
 
 	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
 
-	public function getBlockReactions() {
-	}
-	public function getBlockComments() {
-	}
-	public function getBlockTagsGeo() {
-	}
-	public function getBlockTagsTheme() {
-	}
-	public function getBlockFollowersQ() {
-	}
-	public function getBlockFollowersC() {
-	}
-
-	// *****************************  OBJET / STRING  ****************** //
-
 	/**
 	 *
 	 */
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getTitle();
 	}
 
- 	/**
-	 * Override to manage accented characters
-	 * @return string
+	/**
+	 *	Getter magique pour gérer l'héritage PDocument
 	 */
-	protected function createRawSlug()
-	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
-		$slug = $this->cleanupSlugPart($toSlug);
-		return $slug;
-	}
+    public function __get($name)
+    {
+    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
+        return parent::__call('get'.ucfirst($name), array());
+    }
 
 	/**
-	 *	Surcharge pour gérer la date et l'auteur de la publication.
-	 *
-	 *
+	 *	Setter magique pour gérer l'héritage PDocument
 	 */
-    public function save(\PropelPDO $con = null)
+    public function __set($name, $value)
     {
-    	// Date publication
-    	if ($this->published && in_array(PDDebatePeer::PUBLISHED, $this->modifiedColumns)) {
-    		$this->setPublishedAt(time());
-    	} else {
-    		$this->setPublishedAt(null);
-    	}
-
-    	// User associé
-    	// TODO: /!\ chaine en dur
-		$publisher = $this->getPUser();
-		if ($publisher) {
-			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
-		} else {
-			$this->setPublishedBy('Auteur inconnu');
-		}
-
-    	parent::save($con);
-	}
+    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
+        return parent::__call('set'.ucfirst($name), array($value));
+    }
 
 	// ******************* SIMPLE UPLOAD MANAGEMENT **************** //
 	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
@@ -176,7 +140,7 @@ class PDDebate extends BasePDDebate
     // *****************************    TAGS   ************************* //
 
 	/**
-	 * Renvoit les tags associés au document
+	 * Renvoit les tags associés au débat
 	 *
 	 * @return PropelCollection d'objets PTag
 	 */
@@ -192,72 +156,6 @@ class PDDebate extends BasePDDebate
 		return parent::getPddTaggedTPTags($query);
 	}
 
-
-    // *****************************    COMMENTAIRES   ************************* //
-
-	/**
-	 *	Renvoit le nombre de commentaires du débat.
-	 *
-	 * @return 	integer 	Nombre de commentaires
-	 */
-	public function countComments() {
-		$query = PDDCommentQuery::create()
-					->filterByOnline(true);
-		
-		return parent::countPDDComments($query);
-	}
-
-
-	/**
-	 *	Renvoit les commentaires associés au débat
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getComments($online = true) {
-		$query = PDDCommentQuery::create()
-					->filterByOnline($online)
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDDComments($query);
-	}
-	
-
-	/**
-	 *	Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getGlobalComments() {
-		$query = PDDCommentQuery::create()
-					->filterByOnline(true)
-					->filterByParagraphNo(0)
-						->_or()
-					->filterByParagraphNo(null)
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDDComments($query);
-	}
-	
-
-	/**
-	 *	Renvoit les commentaires du débat associés à un paragraphe
-	 *
-	 * @param $paragraphNo 	Numéro du paragraphe ou null pour tous
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getParagraphComments($paragraphNo = null) {
-		$query = PDDCommentQuery::create()
-					->filterByOnline(true)
-					->_if($paragraphNo)
-						->filterByParagraphNo($paragraphNo)
-					->_else()
-						->filterByParagraphNo(array('min' => 1))
-					->_endif()
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDDComments($query);
-	}
 
     // *****************************    DOCUMENTS   ************************* //
 
@@ -281,42 +179,6 @@ class PDDebate extends BasePDDebate
 		return $treeReactions;
 	}
 
-
-	/**
-	 *	Renvoit les réactions associées au débat
-	 *
-	 * @return PropelCollection d'objets PDReaction
-	 */
-	public function getReactions($online = true, $published = true) {
-		$query = PDReactionQuery::create()
-					->_if($online)
-						->filterByOnline(true)
-					->_endif()
-					->_if($published)
-						->filterByPublished(true)
-						->orderByPublishedAt(\Criteria::DESC)
-					->_endif()
-					->_if(!$published)
-						->orderByCreatedAt(\Criteria::DESC)
-					->_endif()
-					;
-
-		return parent::getPDReactions($query);
-	}
-
-	/**
-	 *	Renvoit le nombre de réactions publiées associées au débat
-	 *
-	 * @return PropelCollection d'objets PDReaction
-	 */
-	public function countReactions() {
-		$query = PDReactionQuery::create()
-					->filterByPDDebateId($this->getId())
-					->filterByOnline(true)
-					->orderByPublishedAt(\Criteria::DESC);
-
-		return parent::countPDReactions($query);
-	}
 
     // *****************************    FOLLOWERS   ************************* //
 

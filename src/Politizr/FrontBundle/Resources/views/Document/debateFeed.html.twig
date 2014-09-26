@@ -10,12 +10,12 @@
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
 		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">Détail du débat</a>
+			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.getSlug }) }}">Détail du débat</a>
 		</div>
 		<hr>
 		<div class="debate-reactions-feed">
-			{% for reaction in debate.reactions %}
-				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'pdReaction': reaction, 'full': false } only %}
+			{% for reaction in debate.treeReactions %}
+				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
 			{% else %}
 				<div class="no-result">
 					Aucune réaction pour le moment

@@ -27,20 +27,10 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
-        $users = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
+        $documents = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
 
         // Commentaires
-        $comments = $this->addDropdown($menu, 'Commentaire');
-        $this->addLinkRoute(
-            $comments,
-            'Débat',
-            'Politizr_AdminBundle_PDDComment_list'
-        );
-        $this->addLinkRoute(
-            $comments,
-            'Réaction',
-            'Politizr_AdminBundle_PDRComment_list'
-        );
+        $documents = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
 
         // Tags
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');

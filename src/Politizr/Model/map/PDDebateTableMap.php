@@ -43,21 +43,10 @@ class PDDebateTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
-        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('more_info', 'MoreInfo', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
-        $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, null);
-        $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
-        $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addForeignKey('p_document_id', 'PDocumentId', 'INTEGER', 'p_document', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 
@@ -66,9 +55,8 @@ class PDDebateTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PDocument', 'Politizr\\Model\\PDocument', RelationMap::MANY_TO_ONE, array('p_document_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
-        $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDComments');
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
         $this->addRelation('PddTaggedTPDDebate', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PddTaggedTPDDebates');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
@@ -103,15 +91,8 @@ class PDDebateTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
-            'sluggable' =>  array (
-  'add_cleanup' => 'true',
-  'slug_column' => 'slug',
-  'slug_pattern' => '{title}',
-  'replace_pattern' => '/\\W+/',
-  'replacement' => '-',
-  'separator' => '-',
-  'permanent' => 'false',
-  'scope_column' => '',
+            'delegate' =>  array (
+  'to' => 'p_document',
 ),
         );
     } // getBehaviors()

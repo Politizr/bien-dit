@@ -7,6 +7,26 @@ use Politizr\Model\om\BasePDReactionQuery;
 class PDReactionQuery extends BasePDReactionQuery
 {
 
+    // *****************************    SURCHARGE / DOCUMENT    ************************* //
+    
+	/**
+	 *
+	 */
+	public function filterByOnline($bool = true) {
+		return $this->join('PDocument')
+  					->where('PDocument.Online = ?', $bool);
+
+	}
+
+	/**
+	 *
+	 */
+	public function filterByPublished($bool = true) {
+		return $this->join('PDocument')
+  					->where('PDocument.Published = ?', $bool);
+
+	}
+
     // *****************************    AGGREGATIONS / UTILES    ************************* //
     
     /**

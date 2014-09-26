@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_d_r_comment' table.
+ * This class defines the structure of the 'p_d_comment' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PDRCommentTableMap extends TableMap
+class PDCommentTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PDRCommentTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PDCommentTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,15 +36,15 @@ class PDRCommentTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_d_r_comment');
-        $this->setPhpName('PDRComment');
-        $this->setClassname('Politizr\\Model\\PDRComment');
+        $this->setName('p_d_comment');
+        $this->setPhpName('PDComment');
+        $this->setClassname('Politizr\\Model\\PDComment');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
-        $this->addForeignKey('p_d_reaction_id', 'PDReactionId', 'INTEGER', 'p_d_reaction', 'id', true, null, null);
+        $this->addForeignKey('p_document_id', 'PDocumentId', 'INTEGER', 'p_document', 'id', true, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('paragraph_no', 'ParagraphNo', 'INTEGER', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
@@ -63,7 +63,7 @@ class PDRCommentTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_ONE, array('p_d_reaction_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PDocument', 'Politizr\\Model\\PDocument', RelationMap::MANY_TO_ONE, array('p_document_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -97,4 +97,4 @@ class PDRCommentTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PDRCommentTableMap
+} // PDCommentTableMap

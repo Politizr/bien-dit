@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_d_d_comment' table.
+ * This class defines the structure of the 'p_document' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PDDCommentTableMap extends TableMap
+class PDocumentTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PDDCommentTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PDocumentTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,24 +36,27 @@ class PDDCommentTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_d_d_comment');
-        $this->setPhpName('PDDComment');
-        $this->setClassname('Politizr\\Model\\PDDComment');
+        $this->setName('p_document');
+        $this->setPhpName('PDocument');
+        $this->setClassname('Politizr\\Model\\PDocument');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
-        $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
+        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('paragraph_no', 'ParagraphNo', 'INTEGER', false, null, null);
+        $this->addColumn('more_info', 'MoreInfo', 'LONGVARCHAR', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, null);
+        $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 
@@ -63,7 +66,9 @@ class PDDCommentTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDDebates');
+        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
+        $this->addRelation('PDComment', 'Politizr\\Model\\PDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_document_id', ), 'CASCADE', 'CASCADE', 'PDComments');
     } // buildRelations()
 
     /**
@@ -94,7 +99,17 @@ class PDDCommentTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
+            'sluggable' =>  array (
+  'add_cleanup' => 'true',
+  'slug_column' => 'slug',
+  'slug_pattern' => '{title}',
+  'replace_pattern' => '/\\W+/',
+  'replacement' => '-',
+  'separator' => '-',
+  'permanent' => 'false',
+  'scope_column' => '',
+),
         );
     } // getBehaviors()
 
-} // PDDCommentTableMap
+} // PDocumentTableMap

@@ -429,30 +429,13 @@ bazinga_faker:
 #                 TreeRight:              { method: 0 }
 #                 TreeLevel:              { method: 1 }
 # 
-        Politizr\Model\PDDComment:
-            number:                     300
+        Politizr\Model\PDComment:
+            number:                     500
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+                PDocumentId:            { method: numberBetween, parameters: [ 1, 15 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }
-                ParagraphNo:            { method: randomDigit }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                PublishedBy:            { method: null }
-                PublishedAt:            { method: dateTimeThisYear }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-
-        Politizr\Model\PDRComment:
-            number:                     900
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
-                PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
-
-                Description:            { method: realText, parameters: [ 150 ] }
                 ParagraphNo:            { method: randomDigit }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }

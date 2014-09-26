@@ -5,5 +5,5 @@
 {% endblock list_td_column_file_name %}
 
 {% block list_td_column_summary %}
-    {{ PDDebate.summary | striptags | slice(0, 150) | raw }}...
+    {{ PDDebate.PDocument.summary | striptags | slice(0, 150) | raw }}...
 {% endblock %}

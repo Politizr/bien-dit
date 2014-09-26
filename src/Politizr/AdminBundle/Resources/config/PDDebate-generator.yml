@@ -10,30 +10,54 @@ params:
             label:          ID
         p_user_id:
             label:          ID Utilisateur
+            getter:         PDocument.PUserId
+            dbType:         INTEGER
         p_user:
             label:          Utilisateur
+            getter:         PDocument.PUser
+            dbType:         VARCHAR
         file_name:
             label:          Image
         title:
             label:          Titre
+            getter:         PDocument.Title
+            dbType:         VARCHAR
         summary:
             label:          Résumé
+            getter:         PDocument.Summary
+            dbType:         LONGVARCHAR
         description:
             label:          Description
+            getter:         PDocument.Description
+            dbType:         LONGVARCHAR
         more_info:
             label:          Encart
+            getter:         PDocument.MoreInfo
+            dbType:         LONGVARCHAR
         note_pos:
             label:          Notes +
+            getter:         PDocument.NotePos
+            dbType:         INTEGER
         note_neg:
             label:          Notes -
+            getter:         PDocument.NoteNeg
+            dbType:         INTEGER
         published:
             label:          Publié
+            getter:         PDocument.Published
+            dbType:         BOOLEAN
         published_at:
             label:          Publication
+            getter:         PDocument.PublishedAt
+            dbType:         TIMESTAMP
         published_by:
             label:          Auteur
+            getter:         PDocument.PublishedBy
+            dbType:         VARCHAR
         online:
             label:          En ligne
+            getter:         PDocument.Online
+            dbType:         BOOLEAN
         created_at:
             label:          Création
         updated_at:
@@ -47,7 +71,7 @@ builders:
         params:
             title:                              Liste des débats
             max_per_page:                       50
-            sort:                               [ published_at, DESC ]
+            sort:                               [ created_at, DESC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
@@ -83,14 +107,15 @@ builders:
         params:
             title:                              "Création d'un contenu débat"
             display:
-                "Champs principaux":            [ [ p_user ], [ title ] ]
+                "Champs principaux":            [ [ p_user_id ], [ title ] ]
                 "Champs complémentaires":       [ [ summary ] ]
             fields:
-                p_user:
+                p_user_id:
+                    label:                      Utilisateur
+                    formType:                   choice
+                    dbType:                     VARCHAR
                     addFormOptions:
-                        empty_value:            ""
-                        required:               false
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -99,12 +124,12 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
+            title:                              "Edition du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ uploadedFileName, title, summary, description, more_info ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
+                    "Utilisateur":              [ [ p_user_id ] ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Tags":
@@ -123,11 +148,12 @@ builders:
                         # nameable:               fileName
                         deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
-                p_user:
+                p_user_id:
+                    label:                      Utilisateur
+                    formType:                   choice
+                    dbType:                     VARCHAR
                     addFormOptions:
-                        empty_value:            ""
-                        required:               false
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
                 summary:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -141,14 +167,20 @@ builders:
                     label:                      "Réactions"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_tags_geo:
                     label:                      "Tags Géo"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_tags_theme:
                     label:                      "Tags Thématiques"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 published_at:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
@@ -166,7 +198,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du contenu débat '{{ PDDebate.title }}'"
+            title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ file_name, title, summary, description, more_info ]
@@ -187,28 +219,16 @@ builders:
             fields:
                 block_reactions:
                     label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_comments:
                     label:                      "Commentaires"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_tags_geo:
                     label:                      "Tags Géo"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_tags_theme:
                     label:                      "Tags Thématiques"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_followers_q:
                     label:                      "Qualifiés"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
                 block_followers_c:
                     label:                      "Citoyens"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
             actions:
                 list:                           ~
                 edit:                           ~

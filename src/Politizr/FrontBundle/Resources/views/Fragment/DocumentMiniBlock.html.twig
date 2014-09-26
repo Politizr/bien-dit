@@ -3,29 +3,29 @@
 		<h4>
 			{% if objectType == 'PDReaction' %}
 				<div class="col-sm-5">
-					<a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
+					<a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.getSlug }) }}">{{ document.getTitle }}</a>
 				</div>
 				<div class="col-sm-5">
-					> <a class="bg-info" href="{{ path('DebateDetail', { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ document.debate.title }}</a>
+					> <a class="bg-info" href="{{ path('DebateDetail', { 'id': document.debate.id, 'slug': document.debate.getSlug }) }}">{{ document.debate.getTitle }}</a>
 				</div>
 			{% elseif objectType == 'PDDebate' %}
 				<div class="col-sm-10">
-					<a class="bg-info" href="{{ path('DebateDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
+					<a class="bg-info" href="{{ path('DebateDetail', { 'id': document.id, 'slug': document.getSlug }) }}">{{ document.getTitle }}</a>
 				</div>
 			{% endif %}
 		</h4>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default pull-right">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			<span class="label label-default pull-right">publié le {{ document.getPublishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
 	{% if withAuthor %}
 		<h5>
 			<div class="row" action="user-more-info">
-				<a class="label label-info">par {{ document.pUser }}</a>
+				<a class="label label-info">par {{ document.getPUser }}</a>
 			</div>
 			<div class="row" action="user-infos">
 				<hr>
-				{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': document.pUser, 'full': false } only %}
+				{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': document.getPUser, 'full': false } only %}
 			</div>
 		</h5>
 	{% endif %}

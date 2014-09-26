@@ -10,6 +10,27 @@ class PDDebateQuery extends BasePDDebateQuery
 {
 
 
+    // *****************************    SURCHARGE / DOCUMENT    ************************* //
+    
+	/**
+	 *
+	 */
+	public function filterByOnline($bool = true) {
+		return $this->join('PDocument', 'left join')
+  					->where('PDocument.Online = ?', $bool);
+
+	}
+
+	/**
+	 *
+	 */
+	public function filterByPublished($bool = true) {
+		return $this->join('PDocument', 'left join')
+  					->where('PDocument.Published = ?', $bool);
+
+	}
+
+
 
     // *****************************    AGGREGATIONS / UTILES    ************************* //
     

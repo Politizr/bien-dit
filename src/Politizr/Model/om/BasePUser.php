@@ -15,14 +15,12 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PDDComment;
-use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDComment;
+use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDRComment;
-use Politizr\Model\PDRCommentQuery;
-use Politizr\Model\PDReaction;
-use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentQuery;
 use Politizr\Model\POrder;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\PRAction;
@@ -381,28 +379,16 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuFollowTPUsersPartial;
 
     /**
-     * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
+     * @var        PropelObjectCollection|PDocument[] Collection to store aggregation of PDocument objects.
      */
-    protected $collPDDebates;
-    protected $collPDDebatesPartial;
+    protected $collPDocuments;
+    protected $collPDocumentsPartial;
 
     /**
-     * @var        PropelObjectCollection|PDDComment[] Collection to store aggregation of PDDComment objects.
+     * @var        PropelObjectCollection|PDComment[] Collection to store aggregation of PDComment objects.
      */
-    protected $collPDDComments;
-    protected $collPDDCommentsPartial;
-
-    /**
-     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
-     */
-    protected $collPDReactions;
-    protected $collPDReactionsPartial;
-
-    /**
-     * @var        PropelObjectCollection|PDRComment[] Collection to store aggregation of PDRComment objects.
-     */
-    protected $collPDRComments;
-    protected $collPDRCommentsPartial;
+    protected $collPDComments;
+    protected $collPDCommentsPartial;
 
     /**
      * @var        PropelObjectCollection|PUFollowU[] Collection to store aggregation of PUFollowU objects.
@@ -555,25 +541,13 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pDDebatesScheduledForDeletion = null;
+    protected $pDocumentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pDDCommentsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pDReactionsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pDRCommentsScheduledForDeletion = null;
+    protected $pDCommentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2408,13 +2382,9 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPuFollowTPUsers = null;
 
-            $this->collPDDebates = null;
+            $this->collPDocuments = null;
 
-            $this->collPDDComments = null;
-
-            $this->collPDReactions = null;
-
-            $this->collPDRComments = null;
+            $this->collPDComments = null;
 
             $this->collPUFollowUsRelatedByPUserId = null;
 
@@ -2849,72 +2819,36 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pDDebatesScheduledForDeletion !== null) {
-                if (!$this->pDDebatesScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pDDebatesScheduledForDeletion as $pDDebate) {
+            if ($this->pDocumentsScheduledForDeletion !== null) {
+                if (!$this->pDocumentsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pDocumentsScheduledForDeletion as $pDocument) {
                         // need to save related object because we set the relation to null
-                        $pDDebate->save($con);
+                        $pDocument->save($con);
                     }
-                    $this->pDDebatesScheduledForDeletion = null;
+                    $this->pDocumentsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPDDebates !== null) {
-                foreach ($this->collPDDebates as $referrerFK) {
+            if ($this->collPDocuments !== null) {
+                foreach ($this->collPDocuments as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->pDDCommentsScheduledForDeletion !== null) {
-                if (!$this->pDDCommentsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pDDCommentsScheduledForDeletion as $pDDComment) {
+            if ($this->pDCommentsScheduledForDeletion !== null) {
+                if (!$this->pDCommentsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pDCommentsScheduledForDeletion as $pDComment) {
                         // need to save related object because we set the relation to null
-                        $pDDComment->save($con);
+                        $pDComment->save($con);
                     }
-                    $this->pDDCommentsScheduledForDeletion = null;
+                    $this->pDCommentsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPDDComments !== null) {
-                foreach ($this->collPDDComments as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->pDReactionsScheduledForDeletion !== null) {
-                if (!$this->pDReactionsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pDReactionsScheduledForDeletion as $pDReaction) {
-                        // need to save related object because we set the relation to null
-                        $pDReaction->save($con);
-                    }
-                    $this->pDReactionsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPDReactions !== null) {
-                foreach ($this->collPDReactions as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->pDRCommentsScheduledForDeletion !== null) {
-                if (!$this->pDRCommentsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pDRCommentsScheduledForDeletion as $pDRComment) {
-                        // need to save related object because we set the relation to null
-                        $pDRComment->save($con);
-                    }
-                    $this->pDRCommentsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPDRComments !== null) {
-                foreach ($this->collPDRComments as $referrerFK) {
+            if ($this->collPDComments !== null) {
+                foreach ($this->collPDComments as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3405,32 +3339,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPDDebates !== null) {
-                    foreach ($this->collPDDebates as $referrerFK) {
+                if ($this->collPDocuments !== null) {
+                    foreach ($this->collPDocuments as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
                     }
                 }
 
-                if ($this->collPDDComments !== null) {
-                    foreach ($this->collPDDComments as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collPDReactions !== null) {
-                    foreach ($this->collPDReactions as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collPDRComments !== null) {
-                    foreach ($this->collPDRComments as $referrerFK) {
+                if ($this->collPDComments !== null) {
+                    foreach ($this->collPDComments as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -3706,17 +3624,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPuFollowTPUsers) {
                 $result['PuFollowTPUsers'] = $this->collPuFollowTPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPDDebates) {
-                $result['PDDebates'] = $this->collPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPDocuments) {
+                $result['PDocuments'] = $this->collPDocuments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPDDComments) {
-                $result['PDDComments'] = $this->collPDDComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPDReactions) {
-                $result['PDReactions'] = $this->collPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPDRComments) {
-                $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPDComments) {
+                $result['PDComments'] = $this->collPDComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPUFollowUsRelatedByPUserId) {
                 $result['PUFollowUsRelatedByPUserId'] = $this->collPUFollowUsRelatedByPUserId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -4153,27 +4065,15 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPDDebates() as $relObj) {
+            foreach ($this->getPDocuments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPDDebate($relObj->copy($deepCopy));
+                    $copyObj->addPDocument($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getPDDComments() as $relObj) {
+            foreach ($this->getPDComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPDDComment($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPDReactions() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPDReaction($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPDRComments() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPDRComment($relObj->copy($deepCopy));
+                    $copyObj->addPDComment($relObj->copy($deepCopy));
                 }
             }
 
@@ -4375,17 +4275,11 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ('PuFollowTPUser' == $relationName) {
             $this->initPuFollowTPUsers();
         }
-        if ('PDDebate' == $relationName) {
-            $this->initPDDebates();
+        if ('PDocument' == $relationName) {
+            $this->initPDocuments();
         }
-        if ('PDDComment' == $relationName) {
-            $this->initPDDComments();
-        }
-        if ('PDReaction' == $relationName) {
-            $this->initPDReactions();
-        }
-        if ('PDRComment' == $relationName) {
-            $this->initPDRComments();
+        if ('PDComment' == $relationName) {
+            $this->initPDComments();
         }
         if ('PUFollowURelatedByPUserId' == $relationName) {
             $this->initPUFollowUsRelatedByPUserId();
@@ -6197,36 +6091,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPDDebates collection
+     * Clears out the collPDocuments collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPDDebates()
+     * @see        addPDocuments()
      */
-    public function clearPDDebates()
+    public function clearPDocuments()
     {
-        $this->collPDDebates = null; // important to set this to null since that means it is uninitialized
-        $this->collPDDebatesPartial = null;
+        $this->collPDocuments = null; // important to set this to null since that means it is uninitialized
+        $this->collPDocumentsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPDDebates collection loaded partially
+     * reset is the collPDocuments collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPDDebates($v = true)
+    public function resetPartialPDocuments($v = true)
     {
-        $this->collPDDebatesPartial = $v;
+        $this->collPDocumentsPartial = $v;
     }
 
     /**
-     * Initializes the collPDDebates collection.
+     * Initializes the collPDocuments collection.
      *
-     * By default this just sets the collPDDebates collection to an empty array (like clearcollPDDebates());
+     * By default this just sets the collPDocuments collection to an empty array (like clearcollPDocuments());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -6235,17 +6129,17 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPDDebates($overrideExisting = true)
+    public function initPDocuments($overrideExisting = true)
     {
-        if (null !== $this->collPDDebates && !$overrideExisting) {
+        if (null !== $this->collPDocuments && !$overrideExisting) {
             return;
         }
-        $this->collPDDebates = new PropelObjectCollection();
-        $this->collPDDebates->setModel('PDDebate');
+        $this->collPDocuments = new PropelObjectCollection();
+        $this->collPDocuments->setModel('PDocument');
     }
 
     /**
-     * Gets an array of PDDebate objects which contain a foreign key that references this object.
+     * Gets an array of PDocument objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -6255,105 +6149,105 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     * @return PropelObjectCollection|PDocument[] List of PDocument objects
      * @throws PropelException
      */
-    public function getPDDebates($criteria = null, PropelPDO $con = null)
+    public function getPDocuments($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPDDebatesPartial && !$this->isNew();
-        if (null === $this->collPDDebates || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPDDebates) {
+        $partial = $this->collPDocumentsPartial && !$this->isNew();
+        if (null === $this->collPDocuments || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDocuments) {
                 // return empty collection
-                $this->initPDDebates();
+                $this->initPDocuments();
             } else {
-                $collPDDebates = PDDebateQuery::create(null, $criteria)
+                $collPDocuments = PDocumentQuery::create(null, $criteria)
                     ->filterByPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPDDebatesPartial && count($collPDDebates)) {
-                      $this->initPDDebates(false);
+                    if (false !== $this->collPDocumentsPartial && count($collPDocuments)) {
+                      $this->initPDocuments(false);
 
-                      foreach($collPDDebates as $obj) {
-                        if (false == $this->collPDDebates->contains($obj)) {
-                          $this->collPDDebates->append($obj);
+                      foreach($collPDocuments as $obj) {
+                        if (false == $this->collPDocuments->contains($obj)) {
+                          $this->collPDocuments->append($obj);
                         }
                       }
 
-                      $this->collPDDebatesPartial = true;
+                      $this->collPDocumentsPartial = true;
                     }
 
-                    $collPDDebates->getInternalIterator()->rewind();
-                    return $collPDDebates;
+                    $collPDocuments->getInternalIterator()->rewind();
+                    return $collPDocuments;
                 }
 
-                if($partial && $this->collPDDebates) {
-                    foreach($this->collPDDebates as $obj) {
+                if($partial && $this->collPDocuments) {
+                    foreach($this->collPDocuments as $obj) {
                         if($obj->isNew()) {
-                            $collPDDebates[] = $obj;
+                            $collPDocuments[] = $obj;
                         }
                     }
                 }
 
-                $this->collPDDebates = $collPDDebates;
-                $this->collPDDebatesPartial = false;
+                $this->collPDocuments = $collPDocuments;
+                $this->collPDocumentsPartial = false;
             }
         }
 
-        return $this->collPDDebates;
+        return $this->collPDocuments;
     }
 
     /**
-     * Sets a collection of PDDebate objects related by a one-to-many relationship
+     * Sets a collection of PDocument objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pDDebates A Propel collection.
+     * @param PropelCollection $pDocuments A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPDDebates(PropelCollection $pDDebates, PropelPDO $con = null)
+    public function setPDocuments(PropelCollection $pDocuments, PropelPDO $con = null)
     {
-        $pDDebatesToDelete = $this->getPDDebates(new Criteria(), $con)->diff($pDDebates);
+        $pDocumentsToDelete = $this->getPDocuments(new Criteria(), $con)->diff($pDocuments);
 
-        $this->pDDebatesScheduledForDeletion = unserialize(serialize($pDDebatesToDelete));
+        $this->pDocumentsScheduledForDeletion = unserialize(serialize($pDocumentsToDelete));
 
-        foreach ($pDDebatesToDelete as $pDDebateRemoved) {
-            $pDDebateRemoved->setPUser(null);
+        foreach ($pDocumentsToDelete as $pDocumentRemoved) {
+            $pDocumentRemoved->setPUser(null);
         }
 
-        $this->collPDDebates = null;
-        foreach ($pDDebates as $pDDebate) {
-            $this->addPDDebate($pDDebate);
+        $this->collPDocuments = null;
+        foreach ($pDocuments as $pDocument) {
+            $this->addPDocument($pDocument);
         }
 
-        $this->collPDDebates = $pDDebates;
-        $this->collPDDebatesPartial = false;
+        $this->collPDocuments = $pDocuments;
+        $this->collPDocumentsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PDDebate objects.
+     * Returns the number of related PDocument objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PDDebate objects.
+     * @return int             Count of related PDocument objects.
      * @throws PropelException
      */
-    public function countPDDebates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPDocuments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPDDebatesPartial && !$this->isNew();
-        if (null === $this->collPDDebates || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPDDebates) {
+        $partial = $this->collPDocumentsPartial && !$this->isNew();
+        if (null === $this->collPDocuments || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDocuments) {
                 return 0;
             }
 
             if($partial && !$criteria) {
-                return count($this->getPDDebates());
+                return count($this->getPDocuments());
             }
-            $query = PDDebateQuery::create(null, $criteria);
+            $query = PDocumentQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -6363,88 +6257,88 @@ abstract class BasePUser extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPDDebates);
+        return count($this->collPDocuments);
     }
 
     /**
-     * Method called to associate a PDDebate object to this object
-     * through the PDDebate foreign key attribute.
+     * Method called to associate a PDocument object to this object
+     * through the PDocument foreign key attribute.
      *
-     * @param    PDDebate $l PDDebate
+     * @param    PDocument $l PDocument
      * @return PUser The current object (for fluent API support)
      */
-    public function addPDDebate(PDDebate $l)
+    public function addPDocument(PDocument $l)
     {
-        if ($this->collPDDebates === null) {
-            $this->initPDDebates();
-            $this->collPDDebatesPartial = true;
+        if ($this->collPDocuments === null) {
+            $this->initPDocuments();
+            $this->collPDocumentsPartial = true;
         }
-        if (!in_array($l, $this->collPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPDDebate($l);
+        if (!in_array($l, $this->collPDocuments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDocument($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	PDDebate $pDDebate The pDDebate object to add.
+     * @param	PDocument $pDocument The pDocument object to add.
      */
-    protected function doAddPDDebate($pDDebate)
+    protected function doAddPDocument($pDocument)
     {
-        $this->collPDDebates[]= $pDDebate;
-        $pDDebate->setPUser($this);
+        $this->collPDocuments[]= $pDocument;
+        $pDocument->setPUser($this);
     }
 
     /**
-     * @param	PDDebate $pDDebate The pDDebate object to remove.
+     * @param	PDocument $pDocument The pDocument object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePDDebate($pDDebate)
+    public function removePDocument($pDocument)
     {
-        if ($this->getPDDebates()->contains($pDDebate)) {
-            $this->collPDDebates->remove($this->collPDDebates->search($pDDebate));
-            if (null === $this->pDDebatesScheduledForDeletion) {
-                $this->pDDebatesScheduledForDeletion = clone $this->collPDDebates;
-                $this->pDDebatesScheduledForDeletion->clear();
+        if ($this->getPDocuments()->contains($pDocument)) {
+            $this->collPDocuments->remove($this->collPDocuments->search($pDocument));
+            if (null === $this->pDocumentsScheduledForDeletion) {
+                $this->pDocumentsScheduledForDeletion = clone $this->collPDocuments;
+                $this->pDocumentsScheduledForDeletion->clear();
             }
-            $this->pDDebatesScheduledForDeletion[]= $pDDebate;
-            $pDDebate->setPUser(null);
+            $this->pDocumentsScheduledForDeletion[]= $pDocument;
+            $pDocument->setPUser(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collPDDComments collection
+     * Clears out the collPDComments collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPDDComments()
+     * @see        addPDComments()
      */
-    public function clearPDDComments()
+    public function clearPDComments()
     {
-        $this->collPDDComments = null; // important to set this to null since that means it is uninitialized
-        $this->collPDDCommentsPartial = null;
+        $this->collPDComments = null; // important to set this to null since that means it is uninitialized
+        $this->collPDCommentsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPDDComments collection loaded partially
+     * reset is the collPDComments collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPDDComments($v = true)
+    public function resetPartialPDComments($v = true)
     {
-        $this->collPDDCommentsPartial = $v;
+        $this->collPDCommentsPartial = $v;
     }
 
     /**
-     * Initializes the collPDDComments collection.
+     * Initializes the collPDComments collection.
      *
-     * By default this just sets the collPDDComments collection to an empty array (like clearcollPDDComments());
+     * By default this just sets the collPDComments collection to an empty array (like clearcollPDComments());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -6453,17 +6347,17 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPDDComments($overrideExisting = true)
+    public function initPDComments($overrideExisting = true)
     {
-        if (null !== $this->collPDDComments && !$overrideExisting) {
+        if (null !== $this->collPDComments && !$overrideExisting) {
             return;
         }
-        $this->collPDDComments = new PropelObjectCollection();
-        $this->collPDDComments->setModel('PDDComment');
+        $this->collPDComments = new PropelObjectCollection();
+        $this->collPDComments->setModel('PDComment');
     }
 
     /**
-     * Gets an array of PDDComment objects which contain a foreign key that references this object.
+     * Gets an array of PDComment objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -6473,105 +6367,105 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
+     * @return PropelObjectCollection|PDComment[] List of PDComment objects
      * @throws PropelException
      */
-    public function getPDDComments($criteria = null, PropelPDO $con = null)
+    public function getPDComments($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPDDCommentsPartial && !$this->isNew();
-        if (null === $this->collPDDComments || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPDDComments) {
+        $partial = $this->collPDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDComments || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDComments) {
                 // return empty collection
-                $this->initPDDComments();
+                $this->initPDComments();
             } else {
-                $collPDDComments = PDDCommentQuery::create(null, $criteria)
+                $collPDComments = PDCommentQuery::create(null, $criteria)
                     ->filterByPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPDDCommentsPartial && count($collPDDComments)) {
-                      $this->initPDDComments(false);
+                    if (false !== $this->collPDCommentsPartial && count($collPDComments)) {
+                      $this->initPDComments(false);
 
-                      foreach($collPDDComments as $obj) {
-                        if (false == $this->collPDDComments->contains($obj)) {
-                          $this->collPDDComments->append($obj);
+                      foreach($collPDComments as $obj) {
+                        if (false == $this->collPDComments->contains($obj)) {
+                          $this->collPDComments->append($obj);
                         }
                       }
 
-                      $this->collPDDCommentsPartial = true;
+                      $this->collPDCommentsPartial = true;
                     }
 
-                    $collPDDComments->getInternalIterator()->rewind();
-                    return $collPDDComments;
+                    $collPDComments->getInternalIterator()->rewind();
+                    return $collPDComments;
                 }
 
-                if($partial && $this->collPDDComments) {
-                    foreach($this->collPDDComments as $obj) {
+                if($partial && $this->collPDComments) {
+                    foreach($this->collPDComments as $obj) {
                         if($obj->isNew()) {
-                            $collPDDComments[] = $obj;
+                            $collPDComments[] = $obj;
                         }
                     }
                 }
 
-                $this->collPDDComments = $collPDDComments;
-                $this->collPDDCommentsPartial = false;
+                $this->collPDComments = $collPDComments;
+                $this->collPDCommentsPartial = false;
             }
         }
 
-        return $this->collPDDComments;
+        return $this->collPDComments;
     }
 
     /**
-     * Sets a collection of PDDComment objects related by a one-to-many relationship
+     * Sets a collection of PDComment objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pDDComments A Propel collection.
+     * @param PropelCollection $pDComments A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPDDComments(PropelCollection $pDDComments, PropelPDO $con = null)
+    public function setPDComments(PropelCollection $pDComments, PropelPDO $con = null)
     {
-        $pDDCommentsToDelete = $this->getPDDComments(new Criteria(), $con)->diff($pDDComments);
+        $pDCommentsToDelete = $this->getPDComments(new Criteria(), $con)->diff($pDComments);
 
-        $this->pDDCommentsScheduledForDeletion = unserialize(serialize($pDDCommentsToDelete));
+        $this->pDCommentsScheduledForDeletion = unserialize(serialize($pDCommentsToDelete));
 
-        foreach ($pDDCommentsToDelete as $pDDCommentRemoved) {
-            $pDDCommentRemoved->setPUser(null);
+        foreach ($pDCommentsToDelete as $pDCommentRemoved) {
+            $pDCommentRemoved->setPUser(null);
         }
 
-        $this->collPDDComments = null;
-        foreach ($pDDComments as $pDDComment) {
-            $this->addPDDComment($pDDComment);
+        $this->collPDComments = null;
+        foreach ($pDComments as $pDComment) {
+            $this->addPDComment($pDComment);
         }
 
-        $this->collPDDComments = $pDDComments;
-        $this->collPDDCommentsPartial = false;
+        $this->collPDComments = $pDComments;
+        $this->collPDCommentsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PDDComment objects.
+     * Returns the number of related PDComment objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PDDComment objects.
+     * @return int             Count of related PDComment objects.
      * @throws PropelException
      */
-    public function countPDDComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPDComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPDDCommentsPartial && !$this->isNew();
-        if (null === $this->collPDDComments || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPDDComments) {
+        $partial = $this->collPDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDComments || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDComments) {
                 return 0;
             }
 
             if($partial && !$criteria) {
-                return count($this->getPDDComments());
+                return count($this->getPDComments());
             }
-            $query = PDDCommentQuery::create(null, $criteria);
+            $query = PDCommentQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -6581,52 +6475,52 @@ abstract class BasePUser extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPDDComments);
+        return count($this->collPDComments);
     }
 
     /**
-     * Method called to associate a PDDComment object to this object
-     * through the PDDComment foreign key attribute.
+     * Method called to associate a PDComment object to this object
+     * through the PDComment foreign key attribute.
      *
-     * @param    PDDComment $l PDDComment
+     * @param    PDComment $l PDComment
      * @return PUser The current object (for fluent API support)
      */
-    public function addPDDComment(PDDComment $l)
+    public function addPDComment(PDComment $l)
     {
-        if ($this->collPDDComments === null) {
-            $this->initPDDComments();
-            $this->collPDDCommentsPartial = true;
+        if ($this->collPDComments === null) {
+            $this->initPDComments();
+            $this->collPDCommentsPartial = true;
         }
-        if (!in_array($l, $this->collPDDComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPDDComment($l);
+        if (!in_array($l, $this->collPDComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDComment($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	PDDComment $pDDComment The pDDComment object to add.
+     * @param	PDComment $pDComment The pDComment object to add.
      */
-    protected function doAddPDDComment($pDDComment)
+    protected function doAddPDComment($pDComment)
     {
-        $this->collPDDComments[]= $pDDComment;
-        $pDDComment->setPUser($this);
+        $this->collPDComments[]= $pDComment;
+        $pDComment->setPUser($this);
     }
 
     /**
-     * @param	PDDComment $pDDComment The pDDComment object to remove.
+     * @param	PDComment $pDComment The pDComment object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePDDComment($pDDComment)
+    public function removePDComment($pDComment)
     {
-        if ($this->getPDDComments()->contains($pDDComment)) {
-            $this->collPDDComments->remove($this->collPDDComments->search($pDDComment));
-            if (null === $this->pDDCommentsScheduledForDeletion) {
-                $this->pDDCommentsScheduledForDeletion = clone $this->collPDDComments;
-                $this->pDDCommentsScheduledForDeletion->clear();
+        if ($this->getPDComments()->contains($pDComment)) {
+            $this->collPDComments->remove($this->collPDComments->search($pDComment));
+            if (null === $this->pDCommentsScheduledForDeletion) {
+                $this->pDCommentsScheduledForDeletion = clone $this->collPDComments;
+                $this->pDCommentsScheduledForDeletion->clear();
             }
-            $this->pDDCommentsScheduledForDeletion[]= $pDDComment;
-            $pDDComment->setPUser(null);
+            $this->pDCommentsScheduledForDeletion[]= $pDComment;
+            $pDComment->setPUser(null);
         }
 
         return $this;
@@ -6638,7 +6532,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PDDComments from storage.
+     * been saved, it will retrieve related PDComments from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -6647,500 +6541,14 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
+     * @return PropelObjectCollection|PDComment[] List of PDComment objects
      */
-    public function getPDDCommentsJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPDCommentsJoinPDocument($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PDDCommentQuery::create(null, $criteria);
-        $query->joinWith('PDDebate', $join_behavior);
+        $query = PDCommentQuery::create(null, $criteria);
+        $query->joinWith('PDocument', $join_behavior);
 
-        return $this->getPDDComments($query, $con);
-    }
-
-    /**
-     * Clears out the collPDReactions collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUser The current object (for fluent API support)
-     * @see        addPDReactions()
-     */
-    public function clearPDReactions()
-    {
-        $this->collPDReactions = null; // important to set this to null since that means it is uninitialized
-        $this->collPDReactionsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPDReactions collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPDReactions($v = true)
-    {
-        $this->collPDReactionsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPDReactions collection.
-     *
-     * By default this just sets the collPDReactions collection to an empty array (like clearcollPDReactions());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPDReactions($overrideExisting = true)
-    {
-        if (null !== $this->collPDReactions && !$overrideExisting) {
-            return;
-        }
-        $this->collPDReactions = new PropelObjectCollection();
-        $this->collPDReactions->setModel('PDReaction');
-    }
-
-    /**
-     * Gets an array of PDReaction objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     * @throws PropelException
-     */
-    public function getPDReactions($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPDReactionsPartial && !$this->isNew();
-        if (null === $this->collPDReactions || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPDReactions) {
-                // return empty collection
-                $this->initPDReactions();
-            } else {
-                $collPDReactions = PDReactionQuery::create(null, $criteria)
-                    ->filterByPUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPDReactionsPartial && count($collPDReactions)) {
-                      $this->initPDReactions(false);
-
-                      foreach($collPDReactions as $obj) {
-                        if (false == $this->collPDReactions->contains($obj)) {
-                          $this->collPDReactions->append($obj);
-                        }
-                      }
-
-                      $this->collPDReactionsPartial = true;
-                    }
-
-                    $collPDReactions->getInternalIterator()->rewind();
-                    return $collPDReactions;
-                }
-
-                if($partial && $this->collPDReactions) {
-                    foreach($this->collPDReactions as $obj) {
-                        if($obj->isNew()) {
-                            $collPDReactions[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPDReactions = $collPDReactions;
-                $this->collPDReactionsPartial = false;
-            }
-        }
-
-        return $this->collPDReactions;
-    }
-
-    /**
-     * Sets a collection of PDReaction objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pDReactions A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setPDReactions(PropelCollection $pDReactions, PropelPDO $con = null)
-    {
-        $pDReactionsToDelete = $this->getPDReactions(new Criteria(), $con)->diff($pDReactions);
-
-        $this->pDReactionsScheduledForDeletion = unserialize(serialize($pDReactionsToDelete));
-
-        foreach ($pDReactionsToDelete as $pDReactionRemoved) {
-            $pDReactionRemoved->setPUser(null);
-        }
-
-        $this->collPDReactions = null;
-        foreach ($pDReactions as $pDReaction) {
-            $this->addPDReaction($pDReaction);
-        }
-
-        $this->collPDReactions = $pDReactions;
-        $this->collPDReactionsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PDReaction objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PDReaction objects.
-     * @throws PropelException
-     */
-    public function countPDReactions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPDReactionsPartial && !$this->isNew();
-        if (null === $this->collPDReactions || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPDReactions) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getPDReactions());
-            }
-            $query = PDReactionQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPUser($this)
-                ->count($con);
-        }
-
-        return count($this->collPDReactions);
-    }
-
-    /**
-     * Method called to associate a PDReaction object to this object
-     * through the PDReaction foreign key attribute.
-     *
-     * @param    PDReaction $l PDReaction
-     * @return PUser The current object (for fluent API support)
-     */
-    public function addPDReaction(PDReaction $l)
-    {
-        if ($this->collPDReactions === null) {
-            $this->initPDReactions();
-            $this->collPDReactionsPartial = true;
-        }
-        if (!in_array($l, $this->collPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPDReaction($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PDReaction $pDReaction The pDReaction object to add.
-     */
-    protected function doAddPDReaction($pDReaction)
-    {
-        $this->collPDReactions[]= $pDReaction;
-        $pDReaction->setPUser($this);
-    }
-
-    /**
-     * @param	PDReaction $pDReaction The pDReaction object to remove.
-     * @return PUser The current object (for fluent API support)
-     */
-    public function removePDReaction($pDReaction)
-    {
-        if ($this->getPDReactions()->contains($pDReaction)) {
-            $this->collPDReactions->remove($this->collPDReactions->search($pDReaction));
-            if (null === $this->pDReactionsScheduledForDeletion) {
-                $this->pDReactionsScheduledForDeletion = clone $this->collPDReactions;
-                $this->pDReactionsScheduledForDeletion->clear();
-            }
-            $this->pDReactionsScheduledForDeletion[]= $pDReaction;
-            $pDReaction->setPUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUser is new, it will return
-     * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PDReactions from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUser.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     */
-    public function getPDReactionsJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDReactionQuery::create(null, $criteria);
-        $query->joinWith('PDDebate', $join_behavior);
-
-        return $this->getPDReactions($query, $con);
-    }
-
-    /**
-     * Clears out the collPDRComments collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUser The current object (for fluent API support)
-     * @see        addPDRComments()
-     */
-    public function clearPDRComments()
-    {
-        $this->collPDRComments = null; // important to set this to null since that means it is uninitialized
-        $this->collPDRCommentsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPDRComments collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPDRComments($v = true)
-    {
-        $this->collPDRCommentsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPDRComments collection.
-     *
-     * By default this just sets the collPDRComments collection to an empty array (like clearcollPDRComments());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPDRComments($overrideExisting = true)
-    {
-        if (null !== $this->collPDRComments && !$overrideExisting) {
-            return;
-        }
-        $this->collPDRComments = new PropelObjectCollection();
-        $this->collPDRComments->setModel('PDRComment');
-    }
-
-    /**
-     * Gets an array of PDRComment objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PDRComment[] List of PDRComment objects
-     * @throws PropelException
-     */
-    public function getPDRComments($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPDRCommentsPartial && !$this->isNew();
-        if (null === $this->collPDRComments || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPDRComments) {
-                // return empty collection
-                $this->initPDRComments();
-            } else {
-                $collPDRComments = PDRCommentQuery::create(null, $criteria)
-                    ->filterByPUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPDRCommentsPartial && count($collPDRComments)) {
-                      $this->initPDRComments(false);
-
-                      foreach($collPDRComments as $obj) {
-                        if (false == $this->collPDRComments->contains($obj)) {
-                          $this->collPDRComments->append($obj);
-                        }
-                      }
-
-                      $this->collPDRCommentsPartial = true;
-                    }
-
-                    $collPDRComments->getInternalIterator()->rewind();
-                    return $collPDRComments;
-                }
-
-                if($partial && $this->collPDRComments) {
-                    foreach($this->collPDRComments as $obj) {
-                        if($obj->isNew()) {
-                            $collPDRComments[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPDRComments = $collPDRComments;
-                $this->collPDRCommentsPartial = false;
-            }
-        }
-
-        return $this->collPDRComments;
-    }
-
-    /**
-     * Sets a collection of PDRComment objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pDRComments A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setPDRComments(PropelCollection $pDRComments, PropelPDO $con = null)
-    {
-        $pDRCommentsToDelete = $this->getPDRComments(new Criteria(), $con)->diff($pDRComments);
-
-        $this->pDRCommentsScheduledForDeletion = unserialize(serialize($pDRCommentsToDelete));
-
-        foreach ($pDRCommentsToDelete as $pDRCommentRemoved) {
-            $pDRCommentRemoved->setPUser(null);
-        }
-
-        $this->collPDRComments = null;
-        foreach ($pDRComments as $pDRComment) {
-            $this->addPDRComment($pDRComment);
-        }
-
-        $this->collPDRComments = $pDRComments;
-        $this->collPDRCommentsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PDRComment objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PDRComment objects.
-     * @throws PropelException
-     */
-    public function countPDRComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPDRCommentsPartial && !$this->isNew();
-        if (null === $this->collPDRComments || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPDRComments) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getPDRComments());
-            }
-            $query = PDRCommentQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPUser($this)
-                ->count($con);
-        }
-
-        return count($this->collPDRComments);
-    }
-
-    /**
-     * Method called to associate a PDRComment object to this object
-     * through the PDRComment foreign key attribute.
-     *
-     * @param    PDRComment $l PDRComment
-     * @return PUser The current object (for fluent API support)
-     */
-    public function addPDRComment(PDRComment $l)
-    {
-        if ($this->collPDRComments === null) {
-            $this->initPDRComments();
-            $this->collPDRCommentsPartial = true;
-        }
-        if (!in_array($l, $this->collPDRComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPDRComment($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PDRComment $pDRComment The pDRComment object to add.
-     */
-    protected function doAddPDRComment($pDRComment)
-    {
-        $this->collPDRComments[]= $pDRComment;
-        $pDRComment->setPUser($this);
-    }
-
-    /**
-     * @param	PDRComment $pDRComment The pDRComment object to remove.
-     * @return PUser The current object (for fluent API support)
-     */
-    public function removePDRComment($pDRComment)
-    {
-        if ($this->getPDRComments()->contains($pDRComment)) {
-            $this->collPDRComments->remove($this->collPDRComments->search($pDRComment));
-            if (null === $this->pDRCommentsScheduledForDeletion) {
-                $this->pDRCommentsScheduledForDeletion = clone $this->collPDRComments;
-                $this->pDRCommentsScheduledForDeletion->clear();
-            }
-            $this->pDRCommentsScheduledForDeletion[]= $pDRComment;
-            $pDRComment->setPUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUser is new, it will return
-     * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PDRComments from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUser.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDRComment[] List of PDRComment objects
-     */
-    public function getPDRCommentsJoinPDReaction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDRCommentQuery::create(null, $criteria);
-        $query->joinWith('PDReaction', $join_behavior);
-
-        return $this->getPDRComments($query, $con);
+        return $this->getPDComments($query, $con);
     }
 
     /**
@@ -8568,23 +7976,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPDDebates) {
-                foreach ($this->collPDDebates as $o) {
+            if ($this->collPDocuments) {
+                foreach ($this->collPDocuments as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPDDComments) {
-                foreach ($this->collPDDComments as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPDReactions) {
-                foreach ($this->collPDReactions as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPDRComments) {
-                foreach ($this->collPDRComments as $o) {
+            if ($this->collPDComments) {
+                foreach ($this->collPDComments as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -8674,22 +8072,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowTPUsers->clearIterator();
         }
         $this->collPuFollowTPUsers = null;
-        if ($this->collPDDebates instanceof PropelCollection) {
-            $this->collPDDebates->clearIterator();
+        if ($this->collPDocuments instanceof PropelCollection) {
+            $this->collPDocuments->clearIterator();
         }
-        $this->collPDDebates = null;
-        if ($this->collPDDComments instanceof PropelCollection) {
-            $this->collPDDComments->clearIterator();
+        $this->collPDocuments = null;
+        if ($this->collPDComments instanceof PropelCollection) {
+            $this->collPDComments->clearIterator();
         }
-        $this->collPDDComments = null;
-        if ($this->collPDReactions instanceof PropelCollection) {
-            $this->collPDReactions->clearIterator();
-        }
-        $this->collPDReactions = null;
-        if ($this->collPDRComments instanceof PropelCollection) {
-            $this->collPDRComments->clearIterator();
-        }
-        $this->collPDRComments = null;
+        $this->collPDComments = null;
         if ($this->collPUFollowUsRelatedByPUserId instanceof PropelCollection) {
             $this->collPUFollowUsRelatedByPUserId->clearIterator();
         }

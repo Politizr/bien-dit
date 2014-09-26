@@ -2,15 +2,15 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-	{{ PDReaction.summary | raw }}
+	{{ PDReaction.getSummary | raw }}
 {% endblock %}
 
 {% block show_column_description %}
-	{{ PDReaction.description | raw }}
+	{{ PDReaction.getDescription | raw }}
 {% endblock %}
 
 {% block show_column_more_info %}
-	{{ PDReaction.moreInfo | raw }}
+	{{ PDReaction.getMoreInfo | raw }}
 {% endblock %}
 
 

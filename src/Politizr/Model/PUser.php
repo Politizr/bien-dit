@@ -607,10 +607,13 @@ class PUser extends BasePUser implements UserInterface
      */
     public function getDebates() {
         $query = PDDebateQuery::create()
-                    ->online()
+                    ->leftJoinPDocument('PDocument')
+                    ->where('PDocument.PUserId = ?', $this->getId())
+                    ->where('PDocument.Online = ?', true)
+                    ->where('PDocument.Published = ?', true)
                     ->orderByCreatedAt(\Criteria::DESC);
 
-        return parent::getPDDebates($query);
+        return $query->find();
     }
 
     /**
@@ -620,10 +623,13 @@ class PUser extends BasePUser implements UserInterface
      */
     public function getReactions() {
         $query = PDReactionQuery::create()
-                    ->online()
+                    ->joinPDocument('PDocument', 'left join')
+                    ->where('PDocument.PUserId = ?', $this->getId())
+                    ->where('PDocument.Online = ?', true)
+                    ->where('PDocument.Published = ?', true)
                     ->orderByCreatedAt(\Criteria::DESC);
 
-        return parent::getPDReactions($query);
+        return $query->find();
     }
 
     // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //

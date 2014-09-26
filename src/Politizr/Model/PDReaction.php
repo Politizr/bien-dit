@@ -13,56 +13,34 @@ use Politizr\Model\PDRCommentQuery;
 
 
 class PDReaction extends BasePDReaction
-{
+{	
+	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
+
 	/**
 	 *
 	 */
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getTitle();
 	}
 
- 	/**
-	 * Override to manage accented characters
-	 * @return string
+	/**
+	 *	Getter magique pour gérer l'héritage PDocument
 	 */
-	protected function createRawSlug()
-	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
-		$slug = $this->cleanupSlugPart($toSlug);
-		return $slug;
-	}
+    public function __get($name)
+    {
+    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
+        return parent::__call('get'.ucfirst($name), array());
+    }
 
 	/**
-	 *	Surcharge pour gérer la date et l'auteur de la publication.
-	 *
-	 *
+	 *	Setter magique pour gérer l'héritage PDocument
 	 */
-    public function save(\PropelPDO $con = null)
+    public function __set($name, $value)
     {
-    	// Date publication
-    	if ($this->published && in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns)) {
-    		$this->setPublishedAt(time());
-    	} else {
-    		$this->setPublishedAt(null);
-    	}
+    	$name = \Symfony\Component\DependencyInjection\Container::camelize($name);
+        return parent::__call('set'.ucfirst($name), array($value));
+    }
 
-    	// User associé
-    	// TODO: /!\ chaine en dur
-		$publisher = $this->getPUser();
-		if ($publisher) {
-			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
-		} else {
-			$this->setPublishedBy('Auteur inconnu');
-		}
-
-    	parent::save($con);
-	}
-	
-	/*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-
-	public function getBlockComments() {
-	}
 
 
 	// ************************************************************************************ //
@@ -115,72 +93,6 @@ class PDReaction extends BasePDReaction
 	}
 
 
-    // *****************************    COMMENTAIRES   ************************* //
-
-	/**
-	 *	Renvoit le nombre de commentaires de la réaction courante.
-	 *
-	 * @return 	integer 	Nombre de commentaires
-	 */
-	public function countComments() {
-		$query = PDRCommentQuery::create()
-					->filterByOnline(true);
-		
-		return parent::countPDRComments($query);
-	}
-
-	/**
-	 *	Renvoit les commentaires associés à la réaction
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getComments($online = true) {
-		$query = PDRCommentQuery::create()
-					->filterByOnline($online)
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDRComments($query);
-	}
-	
-
-	/**
-	 *	Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
-	 *
-	 * @return PropelCollection d'objets PDRComment 
-	 */
-	public function getGlobalComments() {
-		$query = PDRCommentQuery::create()
-					->filterByPDReactionId($this->getId())
-					->filterByOnline(true)
-					->filterByParagraphNo(0)
-						->_or()
-					->filterByParagraphNo(null)
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDRComments($query);
-	}
-	
-
-	/**
-	 *	Renvoit les commentaires du débat associés à un paragraphe
-	 *
-	 * @param $paragraphNo 	Numéro du paragraphe ou null pour tous
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getParagraphComments($paragraphNo = null) {
-		$query = PDRCommentQuery::create()
-					->filterByPDReactionId($this->getId())
-					->filterByOnline(true)
-					->_if($paragraphNo)
-						->filterByParagraphNo($paragraphNo)
-					->_else()
-						->filterByParagraphNo(array('min' => 1))
-					->_endif()
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDRComments($query);
-	}
 
     // *****************************    REACTIONS   ************************* //
 
@@ -193,8 +105,7 @@ class PDReaction extends BasePDReaction
 	public function getChildrenReactions($online = true, $published = true) {
 		$query = PDReactionQuery::create()
 					->filterByOnline($online)
-					->filterByPublished($published)
-					->orderByPublishedAt(\Criteria::DESC);
+					->filterByPublished($published);
 
 		return parent::getChildren($query);
 	}
@@ -208,8 +119,7 @@ class PDReaction extends BasePDReaction
 	public function getDescendantsReactions($online = true, $published = true) {
 		$query = PDReactionQuery::create()
 					->filterByOnline($online)
-					->filterByPublished($published)
-					->orderByPublishedAt(\Criteria::DESC);
+					->filterByPublished($published);
 
 		return parent::getDescendants($query);
 	}

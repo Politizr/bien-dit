@@ -13,12 +13,15 @@
 			</div>
 		{% endif %}
 		<div class="col-sm-8">
-			{% if (debateLink) %}
-				{% set debate = comment.debate %}
-				<a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">
+			{% if (docLink) %}
+				{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+					<a href="{{ path('DebateDetail', { 'id': comment.document.id, 'slug': comment.document.slug }) }}">
+				{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+					<a href="{{ path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.document.slug }) }}">
+				{% endif %}
 			{% endif %}
 				<em>"{{ comment.description }}"</em>
-			{% if (debateLink) %}
+			{% if (docLink) %}
 				</a>
 			{% endif %}
 			{% if comment.paragraphNo != 0 %}

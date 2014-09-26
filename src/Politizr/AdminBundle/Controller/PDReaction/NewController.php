@@ -6,6 +6,8 @@ use Admingenerated\PolitizrAdminBundle\BasePDReactionController\NewController as
 
 use Politizr\AdminBundle\Form\Type\PDReaction\NewType;
 
+use Politizr\Model\PDReaction;
+
 use Politizr\Model\PDReactionQuery;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,13 +48,25 @@ class NewController extends BaseNewController
         $logger = $this->get('logger');
         $parentNodeId = $form['parent_node']->getData();
         
-        $logger->debug('*** preSave');
-        $logger->debug('parentNodeId = '.print_r($parentNodeId, true));
+        // $logger->debug('*** preSave');
+        // $logger->debug('parentNodeId = '.print_r($parentNodeId, true));
 
         if ($parentNodeId) {
             $node = PDReactionQuery::create()->findPk($parentNodeId);
 
             $node->insertAsLastChildOf($PDReaction);
-        } 
+        } else {
+            $tree = PDReactionQuery::create()->findTree($PDReaction->getPDDebateId());
+
+            if ($tree->isEmpty()) {
+                $PDReaction->setLevel(1);
+                $PDReaction->setTreeLeft(1);
+                $PDReaction->setTreeRight(2);
+            } else {
+                $sibling = $tree->getLast();
+
+                $PDReaction->insertAsNextSiblingOf($tree->getLast());
+            }
+        }
     }
 }

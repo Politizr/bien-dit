@@ -2,9 +2,11 @@
 
 namespace Politizr\Model;
 
-use Politizr\Model\om\BasePDDComment;
+use Politizr\Model\om\BasePDComment;
 
-class PDDComment extends BasePDDComment
+use Politizr\Model\PDocument;
+
+class PDComment extends BasePDComment
 {
 	/**
 	 *	Surcharge pour gérer la date et l'auteur de la publication.
@@ -33,12 +35,49 @@ class PDDComment extends BasePDDComment
 	/******************************************************************************/
 
 	/**
+	 * Renvoit le type de document associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getType() {
+		return parent::getPDocument()->getType();
+	}
+
+	/**
+	 * Renvoit le document associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getDocument() {
+		return parent::getPDocument();
+	}
+
+	/**
 	 * Renvoit le débat associé à la réaction
 	 *
 	 * @return 	PDDebate 	Objet débat
 	 */
 	public function getDebate() {
-		return parent::getPDDebate();
+		$type = $this->getType();
+		if ($type == PDocument::TYPE_DEBATE) {
+			return $this->getDocument()->getPDDebate();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Renvoit la réaction associé à la réaction
+	 *
+	 * @return 	PDDebate 	Objet débat
+	 */
+	public function getReaction() {
+		$type = $this->getType();
+		if ($type == PDocument::TYPE_REACTION) {
+			return $this->getDocument()->getPDReaction();
+		} else {
+			return null;
+		}
 	}
 
 	/**

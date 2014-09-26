@@ -9,10 +9,8 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PDDCommentPeer;
-use Politizr\Model\PDDebatePeer;
-use Politizr\Model\PDRCommentPeer;
-use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PDCommentPeer;
+use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowTPeer;
@@ -648,18 +646,12 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowTPeer::clearInstancePool();
-        // Invalidate objects in PDDebatePeer instance pool,
+        // Invalidate objects in PDocumentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDDebatePeer::clearInstancePool();
-        // Invalidate objects in PDDCommentPeer instance pool,
+        PDocumentPeer::clearInstancePool();
+        // Invalidate objects in PDCommentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDDCommentPeer::clearInstancePool();
-        // Invalidate objects in PDReactionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDReactionPeer::clearInstancePool();
-        // Invalidate objects in PDRCommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDRCommentPeer::clearInstancePool();
+        PDCommentPeer::clearInstancePool();
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();

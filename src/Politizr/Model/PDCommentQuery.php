@@ -2,11 +2,10 @@
 
 namespace Politizr\Model;
 
-use Politizr\Model\om\BasePDDCommentQuery;
+use Politizr\Model\om\BasePDCommentQuery;
 
-class PDDCommentQuery extends BasePDDCommentQuery
+class PDCommentQuery extends BasePDCommentQuery
 {
-
 
     // *****************************    AGGREGATIONS / UTILES    ************************* //
     

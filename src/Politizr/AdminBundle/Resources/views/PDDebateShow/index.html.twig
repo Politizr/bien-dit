@@ -9,15 +9,15 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-	{{ PDDebate.summary | raw }}
+	{{ PDDebate.getSummary | raw }}
 {% endblock %}
 
 {% block show_column_description %}
-	{{ PDDebate.description | raw }}
+	{{ PDDebate.getDescription | raw }}
 {% endblock %}
 
 {% block show_column_more_info %}
-	{{ PDDebate.moreInfo | raw }}
+	{{ PDDebate.getMoreInfo | raw }}
 {% endblock %}
 
 

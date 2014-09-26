@@ -1,6 +1,6 @@
 generator:                  admingenerator.generator.propel
 params:
-    model:                  Politizr\Model\PDDComment
+    model:                  Politizr\Model\PDComment
     namespace_prefix:       Politizr
     concurrency_lock:       ~
     bundle_name:            AdminBundle
@@ -12,10 +12,10 @@ params:
             label:          ID Utilisateur
         p_user:
             label:          Utilisateur
-        p_d_debate_id:
-            label:          ID Débat associé
-        p_d_debate:
-            label:          Débat associé
+        p_document_id:
+            label:          ID Document associé
+        p_document:
+            label:          Document associé
         description:
             label:          Description
         paragraph_no:
@@ -43,11 +43,16 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des commentaires de débat
+            title:                              Liste des commentaires
             max_per_page:                       50
             sort:                               [ published_at, DESC ]
             scopes:
-            display:                            [ id, p_user, p_d_debate, description, paragraph_no, note_pos, note_neg, online, published_at ]
+            display:                            [ id, p_user, p_document, type, description, paragraph_no, note_pos, note_neg, online, published_at ]
+            fields:
+                type:
+                    label:          Type
+                    getter:         PDocument.Type
+                    dbType:         VARCHAR
 #             actions:
 #                 new:                            ~
             object_actions:
@@ -61,7 +66,7 @@ builders:
         filetype: ~
     filters:
         params:
-            display:                            [ id, p_user_id, p_d_debate_id, published_at, online, created_at ]
+            display:                            [ id, p_user_id, p_document_id, published_at, online, created_at ]
             fields:
                 p_user:
                     addFormOptions:
@@ -70,7 +75,7 @@ builders:
 #         params:
 #             title:                              "Création d'un commentaire de débat"
 #             display:
-#                 "Champs principaux":            [ [ p_user, p_d_debate ], [ description ] ]
+#                 "Champs principaux":            [ [ p_user, p_document ], [ description ] ]
 #                 "Champs complémentaires":       [ [ paragraph_no ], [ note_pos, note_neg ] ]
 #             fields:
 #                 p_user:
@@ -78,9 +83,6 @@ builders:
 #                         empty_value:            ""
 #                         required:               false
 #                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-#                 p_d_debate:
-#                     addFormOptions:
-#                         empty_value:            ""
 #                 description:
 #                     addFormOptions:
 #                         attr:                   { class : tinymce }
@@ -89,14 +91,14 @@ builders:
 #               list:                             ~
     edit:
         params:
-            title:                              "Edition du commentaire id-{{ PDDComment.id }} du débat '{{ PDDComment.PDDebate }}'"
+            title:                              "Edition du commentaire id-{{ PDComment.id }} sur {{ PDComment.PDocument.Type }} '{{ PDComment.PDocument }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ description ] ]
                     "Paragraphe":               [ [ paragraph_no ] ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
-                    "Débat":                    [ [ p_d_debate ] ]
+                    "Document":                 [ [ p_document ] ]
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
@@ -108,9 +110,6 @@ builders:
                         empty_value:            ""
                         required:               false
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                p_d_debate:
-                    addFormOptions:
-                        empty_value:            ""
                 description:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -129,14 +128,14 @@ builders:
                 list: ~
 #     show:
 #         params:
-#             title:                              "Visualisation du commentaire id-{{ PDDComment.id }} du débat '{{ PDDComment.PDDebate }}'"
+#             title:                              "Visualisation du commentaire id-{{ PDComment.id }} du débat '{{ PDComment.PDocument }}'"
 #             tabs:
 #                 "Contenu":
 #                     "Texte":                    [ [ description ] ]
 #                     "Paragraphe":               [ [ paragraph_no ] ]
 #                 "Objets":
 #                     "Utilisateur":              [ [ p_user ] ]
-#                     "Débat":                    [ [ p_d_debate ] ]
+#                     "Document":                    [ [ p_document ] ]
 #                 "Statut":
 #                     "Publication":              [ [ published_by ], [ published_at ] ]
 #                     "Notes":                    [ [ note_pos, note_neg ] ]
