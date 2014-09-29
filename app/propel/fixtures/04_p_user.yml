@@ -27,12 +27,15 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Monsieur
         firstname:              Damien
         name:                   Abad
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
+
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -46,12 +49,15 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Madame
         firstname:              Laurence
         name:                   Abeille
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
+
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -65,12 +71,15 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Monsieur
         firstname:              Ibrahim
         name:                   Aboucar
 
         summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
+
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
@@ -83,6 +92,8 @@ Politizr\Model\PUser:
     depute4:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Elie
@@ -104,6 +115,8 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Monsieur
         firstname:              Bernard
         name:                   Accoyer
@@ -123,6 +136,8 @@ Politizr\Model\PUser:
     depute6:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Patricia
@@ -164,6 +179,8 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Monsieur
         firstname:              Eric
         name:                   Alauzet
@@ -183,6 +200,8 @@ Politizr\Model\PUser:
     depute9:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Yves
@@ -204,6 +223,8 @@ Politizr\Model\PUser:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
         gender:                 Madame
         firstname:              Brigitte
         name:                   Allain
@@ -219,4 +240,5 @@ Politizr\Model\PUser:
         email:                  <?php $faker('email'); ?>
 
         online:                 1
+
 

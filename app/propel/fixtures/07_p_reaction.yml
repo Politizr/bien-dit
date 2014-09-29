@@ -15,7 +15,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-09-10 20:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -35,7 +35,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-08-10 20:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -55,7 +55,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-07-10 21:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -75,7 +75,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-06-10 22:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -95,7 +95,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-06-10 23:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -115,7 +115,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-06-10 18:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -135,7 +135,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-05-10 17:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -155,7 +155,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-04-10 15:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -175,7 +175,7 @@ Politizr\Model\PDReaction:
 
         online:         true
         published:      true
-        published_at:   <?php $faker('dateTimeThisYear'); ?>
+        published_at:   '2014-03-10 12:00:00'
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>

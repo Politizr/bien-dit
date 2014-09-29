@@ -62,10 +62,10 @@ swiftmailer:
 # Bazinga Faker
 bazinga_faker:
     locale:                             fr_FR
-#     entities:
-#         Politizr\Model\PUser:
-#             custom_formatters:
-#                 FileName:               { method: image, parameters: [ '/home/lionel/www/Politizr v2.0/web/uploads/users', '150', '150', 'people', false ] }
+    entities:
+        Politizr\Model\PUser:
+            custom_formatters:
+                FileName:               { method: image, parameters: [ '/home/lionel/www/Politizr v2.0/web/uploads/users', '150', '150', 'people', false ] }
 
 #         Politizr\Model\PDDebate:
 #             custom_formatters:

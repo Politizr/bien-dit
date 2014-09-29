@@ -1,0 +1,75 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+
+	{# medium clone editor #}
+	<link rel="stylesheet" href="{{ asset('medium-editor/css/medium-editor.css') }}">
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h1>Mes contributions</h1>
+		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement puis publier le! Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
+		<div id="box-edit-debate">
+			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-debate-update'}}) }}
+			    {{ form_errors(form) }}
+
+			    {{ form_row(form.summary) }}
+			    {{ form_row(form.description) }}
+			    {{ form_row(form.more_info) }}
+
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Titre</p>
+					    {{ form_widget(form.title) }}
+					</div>
+				</div>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Résumé</p>
+					    <div class="summary-editable">
+					    	{{ debate.summary | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Description</p>
+					    <div class="description-editable">
+					    	{{ debate.description | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Plus d'informations</p>
+					    <div class="moreInfo-editable">
+					    	{{ debate.moreInfo | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+				<div class="col-lg-offset-2 col-lg-10">
+					<button type="submit" class="btn-success btn btn-primary">Enregistrer</button>
+					<a action="debate-publish" class="btn-success btn btn-default">Publier</a>
+					<a action="debate-delete" class="btn-success btn btn-default">Supprimer</a>
+					<a action="debate-list" class="btn-warning btn btn-default">Retour</a>
+				</div>	
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+
+    {# medium clone editor #}
+    <script src="{{ asset('medium-editor/js/medium-editor.min.js') }}"></script>
+    <script src="{{ asset('classList/classList.min.js') }}"></script> <!-- IE9 compatibility -->
+
+    {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
+{% endblock javascriptFooter %}

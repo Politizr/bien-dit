@@ -224,7 +224,7 @@ liip_imagine:
 #    controller_action:    liip_imagine.controller:filterAction
 #    formats:              []
     filter_sets:
-        # admin
+        # ADMIN
         admin_list_thumb:
             quality:              100
             filters:
@@ -234,7 +234,12 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 150 }
 
-        # front
+        # FRONT / GENERAL
+        facebook_share:
+            quality:              100
+            filters:
+                thumbnail:         { size: [90, 90], mode: outbound }
+
         debate_header:
             quality:              100
             filters:
@@ -255,10 +260,12 @@ liip_imagine:
             quality:              100
             filters:
                 relative_resize:  { widen: 50 }
-        facebook_share:
+
+        # FRONT / ESPACE CITOYEN
+        c_document_list_thumb:
             quality:              100
             filters:
-                thumbnail:         { size: [90, 90], mode: outbound }
+                relative_resize:  { widen: 100 }
 
 
 # Bazinga Faker
@@ -301,8 +308,6 @@ bazinga_faker:
 
                 Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
-
-                FileName:               { method: null }
 
 #         Politizr\Model\PUQualification:
 #             number:                     300

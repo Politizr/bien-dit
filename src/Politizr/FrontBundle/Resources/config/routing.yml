@@ -135,11 +135,12 @@ UserDetail:
 #               ROUTING CITOYEN
 ################################################################################
 HomepageC:
-    pattern:  /citoyen-{page}
+    pattern:  /citoyen
     defaults: { _controller: PolitizrFrontBundle:Profile:homepageC }
-    requirements:
-        _method:        GET
-        page:           \d+
+
+TimelineC:
+    pattern:  /citoyen/timeline
+    defaults: { _controller: PolitizrFrontBundle:Profile:timelineC }
 
 SuggestionsC:
     pattern:  /citoyen/suggestions
@@ -148,6 +149,33 @@ SuggestionsC:
 PopularsC:
     pattern:  /citoyen/populaires
     defaults: { _controller: PolitizrFrontBundle:Profile:popularsC }
+
+MyRatesC:
+    pattern:  /citoyen/mes-contributions
+    defaults: { _controller: PolitizrFrontBundle:Profile:myRatesC }
+
+MyDraftsC:
+    pattern:  /citoyen/mes-contributions/brouillons
+    defaults: { _controller: PolitizrFrontBundle:Profile:myDraftsC }
+
+MyDraftsNewC:
+    pattern:  /citoyen/mes-contributions/nouveau
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateNew }
+
+MyDraftsEditC:
+    pattern:  /citoyen/mes-contributions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+MyDebatesC:
+    pattern:  /citoyen/mes-contributions/debats
+    defaults: { _controller: PolitizrFrontBundle:Profile:myDebatesC }
+
+MyCommentsC:
+    pattern:  /citoyen/mes-contributions/commentaires
+    defaults: { _controller: PolitizrFrontBundle:Profile:myCommentsC }
 
 
 ################################################################################
@@ -250,4 +278,22 @@ Follow:
 Unfollow:
     pattern:  /u/unfollow.{_format}
     defaults: { _controller: PolitizrFrontBundle:Document:unfollow, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# EDITION DEBAT
+################################################################################
+DebateUpdate:
+    pattern:  /profil/debat/update.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DebatePublish:
+    pattern:  /profil/debat/publish.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePublish, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DebateDelete:
+    pattern:  /profil/debat/delete.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }

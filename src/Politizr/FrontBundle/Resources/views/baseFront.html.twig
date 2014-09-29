@@ -36,23 +36,29 @@
             </noscript>
 
             {% block genericBoxes %}
-                <!-- overlay ajax generique -->
-                <div id="ajax-loader" style="display: none"></div>
-
-                <!-- overlay ajax twitter bootstrap style -->
+                <!-- box alert JS twitter bootstrap -->
                 <div class="alert alert-warning" style="display: none">
-                    This is an alert flash message.
-                </div>
-                <div class="alert alert-danger" style="display: none">
-                    This is an error flash message.
-                </div>
-                <div class="alert alert-info" style="display: none">
-                    This is an info flash message.
-                </div>
-                <div class="alert alert-success" style="display: none">
-                    This is an success flash message.
-                </div>
+                    <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
+                    <div class="alert-warning-msg">this is an alert message</div>
+                </div>                
 
+                <div class="alert alert-danger" style="display: none">
+                    <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
+                    <div class="alert-danger-msg">this is an alert message</div>
+                </div>                
+
+                <div class="alert alert-info" style="display: none">
+                    <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
+                    <div class="alert-info-msg">this is an alert message</div>
+                </div>                
+
+                <div class="alert alert-success" style="display: none">
+                    <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
+                    <div class="alert-success-msg">this is an alert message</div>
+                </div>                
+
+                <!-- les box alert serveur sont générés automatiquement via braincrafted/bootstrap-bundle -->
+                <!-- via session bag: success, error, alert, info -->
                 {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
             {% endblock %}
 

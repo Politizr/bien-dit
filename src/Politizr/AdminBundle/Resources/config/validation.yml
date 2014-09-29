@@ -37,12 +37,12 @@ Politizr\Model\POrder:
 
 ##################################### DOCUMENT #####################################
 
-Politizr\Model\PDocument:
-    properties:
-        p_user_id:
-            - NotBlank:     ~
-        title:
-            - NotBlank:     ~
+# Politizr\Model\PDocument:
+#     properties:
+#         p_user_id:
+#             - NotBlank:     ~
+#         title:
+#             - NotBlank:     ~
 
 # Politizr\Model\PDDebate:
 #     properties:

@@ -32,6 +32,22 @@ class PDocument extends BasePDocument
 		return $this->getTitle();
 	}
 
+
+	// *****************************  USER  ****************** //
+
+	/**
+	 *	Vérifie que le document courant a été rédigé par le user dont l'ID est passé en argument.
+	 *
+	 * 	@return boolean
+	 */
+	public function isOwner($pUserId) {
+		if ($this->getPUserId() == $pUserId) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// *****************************  DEBAT / REACTION  ****************** //
 
 

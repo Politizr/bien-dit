@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\PropelAdapter;
+use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Model\PDocumentPeer;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDocumentQuery;
@@ -20,15 +20,19 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
+use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUType;
 use Politizr\Model\PTag;
+use Politizr\Model\PDDebate;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
 
+use Politizr\FrontBundle\Form\Type\PDDebateType;
 
 /**
  * Gestion des profils
@@ -53,10 +57,21 @@ class ProfileController extends Controller {
     /**
      *  Accueil
      */
-    public function homepageCAction($page)
+    public function homepageCAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** homepageCAction');
+
+        return $this->redirect($this->generateUrl('TimelineC'));
+    }
+
+    /**
+     *  Timeline
+     */
+    public function timelineCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** timelineCAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -65,23 +80,110 @@ class ProfileController extends Controller {
         //      Récupération objets vue
         // *********************************** //
 
-        // Récupération liste des débats ordre publication décroissante
-        // TODO + commentaires?
-        // TODO MAJ vers le KnpPaginatorBundle https://github.com/KnpLabs/KnpPaginatorBundle
+        // TODO
+        // + réactions sur les débats rédigés par le user courant
+
+
+        // Requête MYSQL
+        /*
+
+( SELECT p_document.title, p_document.published_at
+FROM p_document
+    LEFT JOIN p_d_reaction 
+        ON p_document.id = p_d_reaction.id
+WHERE p_d_reaction.p_d_debate_id IN (1, 2, 3) )
+
+UNION DISTINCT
+
+( SELECT p_document.title, p_document.published_at
+FROM p_document
+WHERE p_document.p_user_id IN (1, 2, 3) )
+
+ORDER BY published DESC
+
+        */
+
+        // Récupération d'un tableau des ids des débats suivis
+        $debateIds = PUFollowDDQuery::create()
+                        ->filterByPUserId($pUser->getId())
+                        ->find()
+                        ->toKeyValue('PDDebateId', 'PDDebateId')
+                        // ->getPrimaryKeys()
+                        ;
+        $debateIds = array_keys($debateIds);
+        $inQueryDebateIds = implode(',', $debateIds);
+        $logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
+
+        // Récupération d'un tableau des ids des users suivis
+        $userIds = PUFollowUQuery::create()
+                        ->filterByPUserFollowerId($pUser->getId())
+                        ->find()
+                        ->toKeyValue('PUserId', 'PUserId')
+                        // ->getPrimaryKeys()
+                        ;
+        $userIds = array_keys($userIds);
+        $inQueryUserIds = implode(',', $userIds);
+        $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
+
+        // Préparation requête SQL
+        if (!empty($debateIds) && !empty($userIds)) {
+            $sql = "
+    ( SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_reaction 
+            ON p_document.id = p_d_reaction.id
+    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.") )
+
+    UNION DISTINCT
+
+    ( SELECT p_document.id
+    FROM p_document
+    WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+        ";
+        } elseif(!empty($debateIds)) {
+            $sql = "
+    SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_reaction 
+            ON p_document.id = p_d_reaction.id
+    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+        ";
+        } elseif(!empty($debateIds)) {
+            $sql = "
+    SELECT p_document.id
+    FROM p_document
+    WHERE p_document.p_user_id IN (".$inQueryUserIds.")
+        ";
+        } else {
+            $sql = null;
+            $listPKs = array();
+        }
+
+        if ($sql) {
+            // Exécution de la requête timeline brute
+            $con = \Propel::getConnection(PDocumentPeer::DATABASE_NAME, \Propel::CONNECTION_READ);
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+
+            $listPKs = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            $logger->info('listPKs = '.print_r($listPKs, true));
+        }
+
+        // Préparation d'une requête "objet" ordonnancée
+        // TODO > pagination ajax vis scrolling
         $maxPerPage = 10;
         $query = PDocumentQuery::create()
-                    ->filterByOnline(true)
-                    ->filterByPublished(true)
-                    ->orderByPublishedAt(\Criteria::DESC)
+                    ->addUsingAlias(PDocumentPeer::ID, $listPKs, \Criteria::IN)
+                    ->orderByPublishedAt('desc')
                     ;
-        $pageDocuments = $this->preparePagination($query, $maxPerPage);
+        $documents = $query->find();
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:homepageC.html.twig', array(
-                    'pageDocuments' => $pageDocuments
+        return $this->render('PolitizrFrontBundle:Profile:timelineC.html.twig', array(
+                    'documents' => $documents
             ));
     }
 
@@ -104,7 +206,7 @@ class ProfileController extends Controller {
 
         // Récupération listing débat "match" tags géo
         // TODO: algo "match" à définir
-        // TODO pagintion
+        // TODO > pagination ajax vis scrolling
         $debatesGeo = $pUser->getTaggedDebates(PTTagType::TYPE_GEO);
         $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
 
@@ -152,6 +254,115 @@ class ProfileController extends Controller {
                 'debates' => $debates,
                 'users' => $users,
                 'comments' => $comments,
+            ));
+    }
+
+    /**
+     *  Mes contributions - Accueil
+     */
+    public function myRatesCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myRatesCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // Débats brouillons en attente de finalisation
+        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+
+        // Débats rédigés
+        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+
+        // Commentaires rédigés
+        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:myRatesC.html.twig', array(
+            'drafts' => $drafts,
+            'debates' => $debates,
+            'comments' => $comments,
+            ));
+    }
+
+    /**
+     *  Mes contributions - Brouillons
+     */
+    public function myDraftsCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myDraftsCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // Débats brouillons en attente de finalisation
+        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:myDraftsC.html.twig', array(
+            'drafts' => $drafts,
+            ));
+    }
+
+
+    /**
+     *  Mes contributions - Débats
+     */
+    public function myDebatesCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myDebatesCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:myDebatesC.html.twig', array(
+            ));
+    }
+
+    /**
+     *  Mes contributions - Commentaires
+     */
+    public function myCommentsCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myCommentsCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Profile:myCommentsC.html.twig', array(
             ));
     }
 

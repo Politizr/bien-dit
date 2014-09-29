@@ -33,7 +33,7 @@
             success: function(data) {
                 if (data['error']) {
                     $('#ajax-loader').hide();
-                    $('.alert.alert-danger').html(data['error']);
+                    $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
                     if (data['redirect']) {

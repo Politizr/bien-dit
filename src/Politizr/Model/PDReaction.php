@@ -42,12 +42,12 @@ class PDReaction extends BasePDReaction
 	 */
     public function preSave(\PropelPDO $con = null)
     {
-    	// TODO > à revoir mode création / date publication
-    	if ($this->published && ($this->isNew() || in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns))) {
-    		$this->setPublishedAt(time());
-    	} else {
-    		$this->setPublishedAt(null);
-    	}
+    	// TODO > en commentaire pour avoir des fixtures variées (à supprimer)
+    	// if ($this->published && ($this->isNew() || in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns))) {
+    	// 	$this->setPublishedAt(time());
+    	// } else {
+    	// 	$this->setPublishedAt(null);
+    	// }
 
     	// User associé
     	// TODO > chaine en dur

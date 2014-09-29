@@ -325,6 +325,7 @@ class SecurityController extends Controller {
         //      Traitement du POST
         // *********************************** //
         $request = $this->get('request');
+        // TODO > migrer le contrôle POST au niveau du routing (_method = POST) + supprimer le contrôle if POST dans le code
         if ($request->getMethod() == 'POST') {
             $pUserForm->bind($this->getRequest());
 

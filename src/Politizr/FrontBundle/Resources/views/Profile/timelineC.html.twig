@@ -1,28 +1,21 @@
 {% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
-
 {% block main %}
 	<div id="main" class="container">
 		<h1>Timeline</h1>
-        {% set documents = pageDocuments.CurrentPageResults %}
         {% for document in documents %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true } %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat ou utilisateur pour le moment</a>
 			</div>
 		{% endfor %}
-        {% if pageDocuments.haveToPaginate %}
-            <div id="box_pagination">
-                {{ pagerfanta(pageDocuments, 'default', pagerfanta_opts) }}
-            </div>
-        {% endif %}
 	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:homepageC.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:timelineC.js.twig' %}
     
     {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}

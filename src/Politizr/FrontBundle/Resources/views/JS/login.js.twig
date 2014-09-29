@@ -42,7 +42,7 @@
 		  	success: function(data) {
 		    	if (data['error']) {
 		    	  	$('#ajax-loader').hide();
-		    	  	$('.alert.alert-danger').html(data['error']);
+		    	  	$('.alert-danger-msg').html(data['error']);
 		    		$('.alert.alert-danger').show();
 		    	} else {
 		    	  	// redirection
@@ -63,7 +63,7 @@
 		  	success: function(data) {
 		    	if (data['error']) {
 		    	  	$('#ajax-loader').hide();
-		    	  	$('.alert.alert-danger').html(data['error']);
+		    	  	$('.alert-danger-msg').html(data['error']);
 		    		$('.alert.alert-danger').show();
 		    	} else {
 		    	  	$('#ajax-loader').hide();
@@ -71,7 +71,7 @@
 		    	  	// fermeture overlay & notif
 		    	  	$("#connexion-box").hide();
 
-		    	  	$(".alert.alert-success").html('Un nouveau mot de passe vient de vous être envoyé par email.');
+		    	  	$(".alert-danger-success").html('Un nouveau mot de passe vient de vous être envoyé par email.');
 		    	  	$(".alert.alert-success").show();
 		    	}
 		    }

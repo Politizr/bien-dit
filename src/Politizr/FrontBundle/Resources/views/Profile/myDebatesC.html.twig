@@ -1,0 +1,12 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h1>Mes débats</h1>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:myDebatesC.js.twig' %}
+{% endblock javascriptFooter %}

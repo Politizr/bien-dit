@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f583856f9a2fe2c869ee0122f8be58d6",
+    "hash": "3778fd5496a00fd2948e8b3b166bbac2",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -322,6 +322,39 @@
                 "twig"
             ],
             "time": "2012-11-09 23:18:09"
+        },
+        {
+            "name": "components/bootbox",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tubssp/bootbox.git",
+                "reference": "e00ca093db4419c6b6e6e7aff8fbdd2710e667af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tubssp/bootbox/zipball/e00ca093db4419c6b6e6e7aff8fbdd2710e667af",
+                "reference": "e00ca093db4419c6b6e6e7aff8fbdd2710e667af",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "name": "bootbox",
+                    "files": [
+                        "bootbox.js"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Payne Digital Ltd",
+                    "email": "nick@kurai.co.uk"
+                }
+            ],
+            "description": "Wrappers for JavaScript alert(), confirm() and other flexible dialogs using Twitter's bootstrap framework",
+            "time": "2014-06-16 23:38:43"
         },
         {
             "name": "components/bootstrap",
@@ -2122,16 +2155,16 @@
         },
         {
             "name": "kriswallsmith/buzz",
-            "version": "v0.12",
+            "version": "v0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "9d56d36a58c47e2f612f4b856ff9baa0e3375ff6"
+                "reference": "487760b05d6269a4c2c374364325326cfa65b12c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/9d56d36a58c47e2f612f4b856ff9baa0e3375ff6",
-                "reference": "9d56d36a58c47e2f612f4b856ff9baa0e3375ff6",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/487760b05d6269a4c2c374364325326cfa65b12c",
+                "reference": "487760b05d6269a4c2c374364325326cfa65b12c",
                 "shasum": ""
             },
             "require": {
@@ -2166,7 +2199,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2014-07-29 23:52:21"
+            "time": "2014-09-15 12:42:36"
         },
         {
             "name": "liip/imagine-bundle",
@@ -3196,16 +3229,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.19",
+            "version": "v2.3.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "1fc05758044fa1cf54460d7d4aff5f55b0f1b0db"
+                "reference": "5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/1fc05758044fa1cf54460d7d4aff5f55b0f1b0db",
-                "reference": "1fc05758044fa1cf54460d7d4aff5f55b0f1b0db",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c",
+                "reference": "5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c",
                 "shasum": ""
             },
             "require": {
@@ -3300,7 +3333,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-09-03 09:45:27"
+            "time": "2014-09-28 16:24:47"
         },
         {
             "name": "twbs/bootstrap",
@@ -4153,7 +4186,8 @@
         "hwi/oauth-bundle": 20,
         "facebook/php-sdk": 20,
         "elao/web-profiler-extra-bundle": 20,
-        "avocode/form-extensions-bundle": 20
+        "avocode/form-extensions-bundle": 20,
+        "components/bootbox": 20
     },
     "prefer-stable": false,
     "platform": {
