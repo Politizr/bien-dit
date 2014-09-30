@@ -57,6 +57,21 @@
 							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
 						{% endif %}
 					</div>
+				{% else %}
+					<div class="col-sm-6">
+						{% if full %}
+							<p>{{ pUser.summary | raw  }}</p>
+						{% else %}
+							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
+						{% endif %}
+					</div>
+					<div class="col-sm-6">
+						{% if full %}
+							<p>{{ pUser.biography | raw  }}</p>
+						{% else %}
+							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
+						{% endif %}
+					</div>
 				{% endif %}
 			</div>
 		</div>

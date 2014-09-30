@@ -149,7 +149,7 @@ class AdminAjaxExtension extends \Twig_Extension
                                 'pUser' => $pUser,
                                 'ptTagTypeId' => $ptTagTypeId,
                                 'zoneId' => $zoneId,
-                                'pTags' => $pUser->getTaggedPTags($ptTagTypeId)
+                                'pTags' => $pUser->getTaggedTags($ptTagTypeId)
                                 )
                     );
 
@@ -173,7 +173,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserDebates.html.twig', array(
                                 'pUser' => $pUser,
-                                'pdDebates' => $pUser->getPDDebates(),
+                                'pdDebates' => $pUser->getDebates(),
                                 )
                     );
 
