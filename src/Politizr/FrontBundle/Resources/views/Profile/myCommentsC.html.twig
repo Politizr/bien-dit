@@ -3,6 +3,13 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Mes commentaires</h1>
+        {% for comment in comments %}
+			{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('TimelineC') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
+			</div>
+		{% endfor %}
 	</div>
 {% endblock main %}
 

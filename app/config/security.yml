@@ -78,6 +78,6 @@ security:
         - { path: ^/v/, role: ROLE_ELECTED_INSCRIPTION }                    # Process d'inscription elu
         - { path: ^/citoyen/, role: ROLE_CITIZEN }                          # Espace citoyen
         - { path: ^/elu/, role: ROLE_ELECTED }                              # Espace élu
-        - { path: ^/profil, role: ROLE_PROFILE_COMPLETED }                  # Profil citoyen ou élu complet
+        - { path: ^/profil/, role: ROLE_PROFILE_COMPLETED }                  # Profil citoyen ou élu complet
         - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }                  # Process d'inscription OAuth

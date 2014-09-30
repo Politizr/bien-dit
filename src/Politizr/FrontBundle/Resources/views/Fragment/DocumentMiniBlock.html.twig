@@ -1,3 +1,8 @@
+{% if document.published %}
+	{% set debateRoute = 'DebateDetail' %}
+{% else %}
+	{% set debateRoute = 'DebateDraft' %}
+{% endif %}
 <div class="document-header">
 	<div class="row">
 		<h4>
@@ -6,11 +11,11 @@
 					<a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
 				</div>
 				<div class="col-sm-5">
-					> <a class="bg-info" href="{{ path('DebateDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.debate.title }}</a>
+					> <a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.debate.title }}</a>
 				</div>
 			{% elseif objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
 				<div class="col-sm-10">
-					<a class="bg-info" href="{{ path('DebateDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
+					<a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
 				</div>
 			{% endif %}
 		</h4>

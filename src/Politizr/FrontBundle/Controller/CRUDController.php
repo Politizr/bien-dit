@@ -14,6 +14,10 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDocumentQuery;
+use Politizr\Model\PTagQuery;
+use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PUFollowTQuery;
 
 use Politizr\Model\PDDebate;
 
@@ -82,11 +86,11 @@ class CRUDController extends Controller {
         if (!$document) {
             throw new InconsistentDataException('Document n°'.$id.' not found.');
         }
+        if (!$document->isOwner($pUser->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
         if ($document->getPublished()) {
             throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
-        }
-        if (!$document->isOwner($pUser->getId())) {
-            return $this->redirect('MyDraftsC');
         }
 
         $debate = PDDebateQuery::create()->findPk($id);
@@ -101,70 +105,12 @@ class CRUDController extends Controller {
             ));
     }
 
-    // /**
-    //  * 	Mise à jour d'un débat
-    //  *  DEPRECATED > post via ajax / medium-editor
-    //  *
-    //  */
-    // public function debateUpdateAction($id)
-    // {
-    //     $logger = $this->get('logger');
-    //     $logger->info('*** debateEditAction');
-    //     $logger->info('$id = '.print_r($id, true));
-// 
-    //     // Récupération user courant
-    //     $pUser = $this->getUser();
-// 
-    //     // *********************************** //
-    //     //      Récupération objets vue
-    //     // *********************************** //
-    //     $document = PDocumentQuery::create()->findPk($id);
-    //     if (!$document) {
-    //         throw new InconsistentDataException('Document n°'.$id.' not found.');
-    //     }
-    //     if ($document->getPublished()) {
-    //         throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
-    //     }
-    //     if (!$document->isOwner($pUser->getId())) {
-    //         return $this->redirect('MyDraftsC');
-    //     }
-// 
-    //     $debate = PDDebateQuery::create()->findPk($id);
-    //     $debateFormType = new PDDebateType();
-    //     $form = $this->createForm($debateFormType, $debate);
-// 
-    //     $form->bind($this->get('request'));
-    //     if ($form->isValid()) {
-    //         try {
-    //         	// Gestion file upload
-	// 	        $file = $form['uploadedFileName']->getData();
-	// 	        if ($file) {
-	// 	          $debate->removeUpload(true);
-	// 	          $fileName = $debate->upload($file);
-	// 	          $debate->setFileName($fileName);
-	// 	        }
-// 
-	// 	        // Sauvegarde
-    //             $debate->save();
-// 
-    //             // Redirection
-    //             $this->get('session')->getFlashBag()->add('success', 'Objet sauvegardé avec succès.');
-    //             return $this->redirect($this->generateUrl('MyDraftsEditC', array('id' => $debate->getId())));
-    //         } catch (\Exception $e) {
-    //             throw $e;
-    //         }
-    //     } else {
-    //         $this->get('session')->getFlashBag()->add('error',  'Formulaire non valide');
-    //     }
-// 
-    //     return $this->render('PolitizrFrontBundle:Profile\CRUD:debateEdit.html.twig', array(
-    //         'debate' => $debate,
-    //         'form' => $form->createView(),
-    //         ));
-    // }
-
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */
+    /* ######################################################################################################## */
+
+    /* ######################################################################################################## */
+    /*                                                  GESTION DEBAT                                           */
     /* ######################################################################################################## */
 
     /**
@@ -186,11 +132,11 @@ class CRUDController extends Controller {
 		        if (!$document) {
 		            throw new InconsistentDataException('Document n°'.$id.' not found.');
 		        }
-		        if ($document->getPublished()) {
-		            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
-		        }
 		        if (!$document->isOwner($pUser->getId())) {
 		            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+		        }
+		        if ($document->getPublished()) {
+		            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
 		        }
 
 		        $debate = PDDebateQuery::create()->findPk($id);
@@ -199,9 +145,6 @@ class CRUDController extends Controller {
                 $form->bind($request);
                 if ($form->isValid()) {
                     $debate = $form->getData();
-
-                    $logger->info('*** debateUpdateAction');
-
 					$debate->save();
 
 	                // Construction de la réponse
@@ -253,11 +196,11 @@ class CRUDController extends Controller {
 		        if (!$document) {
 		            throw new InconsistentDataException('Document n°'.$id.' not found.');
 		        }
-		        if ($document->getPublished()) {
-		            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
-		        }
 		        if (!$document->isOwner($pUser->getId())) {
 		            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+		        }
+		        if ($document->getPublished()) {
+		            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
 		        }
 
 		        // MAJ de l'objet
@@ -344,5 +287,337 @@ class CRUDController extends Controller {
         return $response;
     }
 
+    /* ######################################################################################################## */
+    /*                                                  GESTION TAGS                                            */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Ajoute un tag à un débat.
+     *
+     */
+    public function debateAddTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** debateAddTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagTitle = $request->get('tagTitle');
+                $tagId = $request->get('tagId');
+                $tagTypeId = $request->get('tagTypeId');
+                $objectId = $request->get('objectId');
+                $newTag = $request->get('newTag');
+
+                // Gestion tag non existant
+                $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+
+                // Association du tag au debat
+                $created = PDDTaggedTQuery::create()->addElement($objectId, $tagId);
+
+                if (!$created) {
+                    $htmlTag = null;
+                } else  {
+                    // Construction du rendu du tag
+                    $tag = PTagQuery::create()->findPk($tagId);
+                    $templating = $this->get('templating');
+                    $htmlTag = $templating->render(
+                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                            'objectId' => $objectId,
+                                            'tag' => $tag,
+                                            'deleteUrl' => $this->container->get('router')->generate('DebateDeleteTag')
+                                            )
+                                );
+                }
+
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'created' => $created,
+                    'htmlTag' => $htmlTag
+                );
+
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *  Supprime un tag associé au débat courant et renvoit le rendu associé
+     */
+    public function debateDeleteTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** debateDeleteTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagId = $request->get('tagId');
+                $objectId = $request->get('objectId');
+
+                // Suppression du tag / profil
+                $deleted = PDDTaggedTQuery::create()->deleteElement($objectId, $tagId);
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *	Ajoute un tag au taggage d'un utilisateur.
+     *
+     */
+    public function userFollowAddTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userFollowAddTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagTitle = $request->get('tagTitle');
+                $tagId = $request->get('tagId');
+                $tagTypeId = $request->get('tagTypeId');
+                $objectId = $request->get('objectId');
+                $newTag = $request->get('newTag');
+
+                // Gestion tag non existant
+                $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+
+                // Association du tag au user
+                $created = PUFollowTQuery::create()->addElement($objectId, $tagId);
+
+                if (!$created) {
+                    $htmlTag = null;
+                } else  {
+                    // Construction du rendu du tag
+                    $tag = PTagQuery::create()->findPk($tagId);
+                    $templating = $this->get('templating');
+                    $htmlTag = $templating->render(
+                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                            'objectId' => $objectId,
+                                            'tag' => $tag,
+                                            'deleteUrl' => $this->container->get('router')->generate('UserFollowDeleteTag')
+                                            )
+                                );
+                }
+
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'created' => $created,
+                    'htmlTag' => $htmlTag
+                );
+
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *     Supprime un tag associé au puser courant et renvoit le rendu associé
+     */
+    public function userFollowDeleteTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userFollowDeleteTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagId = $request->get('tagId');
+                $objectId = $request->get('objectId');
+
+                // Suppression du tag / profil
+                $deleted = PUTaggedTQuery::create()->deleteElement($objectId, $tagId);
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+
+    /**
+     *	Ajoute un tag au taggage d'un utilisateur.
+     *
+     */
+    public function userTaggedAddTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userTaggedAddTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagTitle = $request->get('tagTitle');
+                $tagId = $request->get('tagId');
+                $tagTypeId = $request->get('tagTypeId');
+                $objectId = $request->get('objectId');
+                $newTag = $request->get('newTag');
+
+                // Gestion tag non existant
+                $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+
+                // Association du tag au user
+                $created = PUTaggedTQuery::create()->addElement($objectId, $tagId);
+
+                if (!$created) {
+                    $htmlTag = null;
+                } else  {
+                    // Construction du rendu du tag
+                    $tag = PTagQuery::create()->findPk($tagId);
+                    $templating = $this->get('templating');
+                    $htmlTag = $templating->render(
+                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                            'objectId' => $objectId,
+                                            'tag' => $tag,
+                                            'deleteUrl' => $this->container->get('router')->generate('UserFollowDeleteTag')
+                                            )
+                                );
+                }
+
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'created' => $created,
+                    'htmlTag' => $htmlTag
+                );
+
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *     Supprime un tag associé au puser courant et renvoit le rendu associé
+     */
+    public function userTaggedDeleteTagAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userTaggedDeleteTagAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagId = $request->get('tagId');
+                $objectId = $request->get('objectId');
+
+                // Suppression du tag / profil
+                $deleted = PUTaggedTQuery::create()->deleteElement($objectId, $tagId);
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               FONCTIONS PRIVÉES                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * 	Gestion des différents cas de figure suite à l'ajout d'un tag: tag sélectionné depuis la liste, tag existant mais non sélectionné, tag non existant.
+     *
+     * 	@param $tagId 		integer
+	 *	@param $tagtTitle	string
+	 *	@param $tagTypeId 	integer
+	 * 	@param $newTag 		boolean 	création de tag autorisée ou pas
+	 *
+	 * 	@return integer 	id du tag sélectionné / retrouvé / créé
+     */
+    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag = false) {
+        if (!$tagId) {
+        	// Récupération via slug
+        	$slug = \StudioEcho\Lib\StudioEchoUtils::generateSlug($tagTitle);
+        	$tag = PTagQuery::create()->filterByPTTagTypeId($tagTypeId)->filterBySlug($slug)->findOne();
+
+        	if ($tag) {
+        		$tagId = $tag->getId();
+            } elseif($newTag) {
+            	$tagId = PTagQuery::create()->addTag($tagTitle, $tagTypeId, true);
+            	
+            } else {
+            	throw new \Exception('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
+            }
+        }
+
+        return $tagId;
+    }
 
 }

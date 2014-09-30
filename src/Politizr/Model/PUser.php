@@ -525,7 +525,7 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PTag (collection)
      */
-    public function getTaggedPTags($ptTagTypeId = null, $online = true) {
+    public function getTaggedTags($ptTagTypeId = null, $online = true) {
         $query = PTagQuery::create()
                     ->_if($ptTagTypeId)
                         ->filterByPTTagTypeId($ptTagTypeId)
@@ -543,7 +543,7 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PTag (collection)
      */
-    public function getFollowPTags($ptTagTypeId = null, $online = true) {
+    public function getFollowTags($ptTagTypeId = null, $online = true) {
         $query = PTagQuery::create()
                     ->_if($ptTagTypeId)
                         ->filterByPTTagTypeId($ptTagTypeId)
@@ -735,8 +735,6 @@ class PUser extends BasePUser implements UserInterface
                         ->filterByOnline(true)
                         ->filterByPuFollowTPUser($this)
                         ->find();
-
-        // $followedTagsId = $this->getFollowPTags($ptTagTypeId)->toArray();
 
         $pUsers = PUserQuery::create()
                         ->usePuTaggedTPUserQuery()

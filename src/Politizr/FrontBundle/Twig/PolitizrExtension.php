@@ -75,11 +75,23 @@ class PolitizrExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'debateTagsEdit'  => new \Twig_Function_Method($this, 'debateTagsEdit', array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'userFollowTags'  => new \Twig_Function_Method($this, 'userFollowTags', array(
                     'is_safe' => array('html')
                     )
             ),
+            'userFollowTagsEdit'  => new \Twig_Function_Method($this, 'userFollowTagsEdit', array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'userTaggedTags'  => new \Twig_Function_Method($this, 'userTaggedTags', array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'userTaggedTagsEdit'  => new \Twig_Function_Method($this, 'userTaggedTagsEdit', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -144,22 +156,22 @@ class PolitizrExtension extends \Twig_Extension
    /**
      *  Affiche les tags d'un débat suivant le type fourni
      *
-     * @param $pdDebate     PDDebate    PDDebate
-     * @param $ptTagTypeId  integer     ID type de tag
+     * @param $debate     PDDebate    PDDebate
+     * @param $tagTypeId  integer     ID type de tag
      *
      * @return string
      */
-    public function debateTags($pdDebate, $ptTagTypeId)
+    public function debateTags($debate, $tagTypeId)
     {
         $this->logger->info('*** debateTags');
-        // $this->logger->info('$pdDebate = '.print_r($pdDebate, true));
+        // $this->logger->info('$debate = '.print_r($debate, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
-                                'pTags' => $pdDebate->getPTags($ptTagTypeId),
-                                'ptTagTypeId' => $ptTagTypeId
+                                'tags' => $debate->getTags($tagTypeId),
+                                'tagTypeId' => $tagTypeId
                                 )
                     );
 
@@ -167,15 +179,50 @@ class PolitizrExtension extends \Twig_Extension
 
     }
 
+    /**
+     *  Gestion des tags d'un débat
+     *
+     *  @param $debate      PDDebate    PDDebate
+     *  @param $tagTypeId   integer     ID type de tag
+     *  @param $zoneId      integer     ID de la zone CSS
+     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
+     *
+     *  @return string
+     */
+    public function debateTagsEdit($debate, $tagTypeId, $zoneId = 1, $newTag = false)
+    {
+        $this->logger->info('*** debateTagsEdit');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                                'object' => $debate,
+                                'tagTypeId' => $tagTypeId,
+                                'zoneId' => $zoneId,
+                                'newTag' => $newTag,
+                                'tags' => $debate->getTags($tagTypeId),
+                                'addPath' => 'DebateAddTag',
+                                'deletePath' => 'DebateDeleteTag',
+                                )
+                    );
+
+        return $html;
+    }
+
+
+
    /**
      *  Affiche les tags suivis par un user suivant le type fourni
      *
      * @param $pUser        pUser       PDDebate
-     * @param $ptTagTypeId  integer     ID type de tag
+     * @param $tagTypeId  integer     ID type de tag
      *
      * @return string
      */
-    public function userFollowTags($pUser, $ptTagTypeId)
+    public function userFollowTags($pUser, $tagTypeId)
     {
         $this->logger->info('*** userFollowTags');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
@@ -184,8 +231,8 @@ class PolitizrExtension extends \Twig_Extension
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
-                                'pTags' => $pUser->getFollowPTags($ptTagTypeId),
-                                'ptTagTypeId' => $ptTagTypeId
+                                'tags' => $pUser->getFollowTags($tagTypeId),
+                                'tagTypeId' => $tagTypeId
                                 )
                     );
 
@@ -193,31 +240,103 @@ class PolitizrExtension extends \Twig_Extension
 
     }
 
+    /**
+     *  Gestion des tags suivi d'un user
+     *
+     *  @param $user        PUser      PUser
+     *  @param $tagTypeId   integer    ID type de tag
+     *  @param $zoneId      integer    ID de la zone CSS
+     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
+     *
+     *  @return string
+     */
+    public function userFollowTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
+    {
+        $this->logger->info('*** userFollowTagsEdit');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                                'object' => $user,
+                                'tagTypeId' => $tagTypeId,
+                                'zoneId' => $zoneId,
+                                'newTag' => $newTag,
+                                'tags' => $user->getFollowTags($tagTypeId),
+                                'addPath' => 'UserFollowAddTag',
+                                'deletePath' => 'UserFollowDeleteTag',
+                                )
+                    );
+
+        return $html;
+    }
+
+
+
+
    /**
      *  Affiche les tags associés à un user suivant le type fourni
      *
-     * @param $pUser        pUser       PDDebate
-     * @param $ptTagTypeId  integer     ID type de tag
+     * @param $uiser        uiser       PDDebate
+     * @param $tagTypeId  integer     ID type de tag
      *
      * @return string
      */
-    public function userTaggedTags($pUser, $ptTagTypeId)
+    public function userTaggedTags($user, $tagTypeId)
     {
         $this->logger->info('*** userTaggedTags');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$uiser = '.print_r($uiser, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
-                                'pTags' => $pUser->getTaggedPTags($ptTagTypeId),
-                                'ptTagTypeId' => $ptTagTypeId
+                                'tags' => $user->getTaggedTags($tagTypeId),
+                                'tagTypeId' => $tagTypeId
                                 )
                     );
 
         return $html;
 
     }
+
+
+    /**
+     *  Gestion des tags associé à un user
+     *
+     *  @param $user        PUser       PUser
+     *  @param $tagTypeId   integer     ID type de tag
+     *  @param $zoneId      integer     ID de la zone CSS
+     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
+     *
+     *  @return string
+     */
+    public function userTaggedTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
+    {
+        $this->logger->info('*** userTaggedTagsEdit');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                                'object' => $user,
+                                'tagTypeId' => $tagTypeId,
+                                'zoneId' => $zoneId,
+                                'newTag' => $newTag,
+                                'tags' => $user->getTaggedTags($tagTypeId),
+                                'addPath' => 'UserTaggedAddTag',
+                                'deletePath' => 'UserTaggedDeleteTag',
+                                )
+                    );
+
+        return $html;
+    }
+
+
 
     public function getName()
     {

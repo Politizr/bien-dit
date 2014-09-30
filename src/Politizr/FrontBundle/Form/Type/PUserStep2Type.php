@@ -45,7 +45,7 @@ class PUserStep2Type extends AbstractType
 
         $builder->add('gender', 'choice', array(
             'required' => true,
-            'label' => 'Genre', 
+            'label' => 'Civilité', 
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'empty_value' => 'Civilité',
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))

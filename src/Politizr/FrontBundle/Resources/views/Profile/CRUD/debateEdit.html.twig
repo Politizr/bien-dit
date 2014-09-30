@@ -4,14 +4,20 @@
 	{{ parent() }}
 
 	{# medium clone editor #}
-	<link rel="stylesheet" href="{{ asset('medium-editor/css/medium-editor.css') }}">
+	<link rel="stylesheet" href="{{ asset('medium-editor/css/themes/bootstrap.css') }}"> {# theme #}
 {% endblock %}
 
 {% block main %}
 	<div id="main" class="container">
 		<h1>Mes contributions</h1>
-		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement puis publier le! Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
+		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, taggez le puis publiez le. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
 		<div id="box-edit-debate">
+			<p class="text-muted">Tags géographiques</p>
+			{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
+		    <hr>
+		    <p class="text-muted">Tags thématiques</p>
+			{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
+		    <hr>
 			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-debate-update'}}) }}
 			    {{ form_errors(form) }}
 
@@ -53,12 +59,11 @@
 				</div>
 			    <hr>
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn-success btn btn-primary">Enregistrer</button>
-					<a action="debate-publish" class="btn-success btn btn-default">Publier</a>
-					<a action="debate-delete" class="btn-success btn btn-default">Supprimer</a>
-					<a action="debate-list" class="btn-warning btn btn-default">Retour</a>
+					<button type="submit" class="btn btn-success btn-primary">Enregistrer</button>
+					<a action="debate-publish" class="btn btn-success btn-default">Publier</a>
+					<a action="debate-delete" class="btn btn-success btn-default">Supprimer</a>
+					<a action="debate-list" class="btn btn-warning btn-default">Retour</a>
 				</div>	
-
 			{{ form_end(form) }}
 		</div>
 	</div>
@@ -67,9 +72,12 @@
 {% block javascriptFooter %}
 	{{ parent() }}
 
+	{# Tags #}
+	{% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 2 } %}
+
     {# medium clone editor #}
     <script src="{{ asset('medium-editor/js/medium-editor.min.js') }}"></script>
     <script src="{{ asset('classList/classList.min.js') }}"></script> <!-- IE9 compatibility -->
-
+    
     {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
 {% endblock javascriptFooter %}

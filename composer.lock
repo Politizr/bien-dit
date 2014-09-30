@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3778fd5496a00fd2948e8b3b166bbac2",
+    "hash": "bc6a16335b48c9108b776ca6556ec7e2",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -97,7 +97,7 @@
         },
         {
             "name": "braincrafted/bootstrap-bundle",
-            "version": "v2.1.0",
+            "version": "dev-master",
             "target-dir": "Braincrafted/Bundle/BootstrapBundle",
             "source": {
                 "type": "git",
@@ -1274,7 +1274,7 @@
         },
         {
             "name": "fortawesome/font-awesome",
-            "version": "v4.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
@@ -3337,16 +3337,16 @@
         },
         {
             "name": "twbs/bootstrap",
-            "version": "v3.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "c068162161154a4b85110ea1e7dd3d7897ce2b72"
+                "reference": "121b204b146a799f65c412b7d2cbddb9fe79dc10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/c068162161154a4b85110ea1e7dd3d7897ce2b72",
-                "reference": "c068162161154a4b85110ea1e7dd3d7897ce2b72",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/121b204b146a799f65c412b7d2cbddb9fe79dc10",
+                "reference": "121b204b146a799f65c412b7d2cbddb9fe79dc10",
                 "shasum": ""
             },
             "replace": {
@@ -3384,20 +3384,20 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-06-26 16:36:48"
+            "time": "2014-09-26 20:48:31"
         },
         {
             "name": "twbs/bootstrap-sass",
-            "version": "v3.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap-sass.git",
-                "reference": "a5f5954268779ce0faf7607b3c35191a8d0fdfe6"
+                "reference": "c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/a5f5954268779ce0faf7607b3c35191a8d0fdfe6",
-                "reference": "a5f5954268779ce0faf7607b3c35191a8d0fdfe6",
+                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc",
+                "reference": "c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc",
                 "shasum": ""
             },
             "type": "library",
@@ -3412,6 +3412,9 @@
             ],
             "authors": [
                 {
+                    "name": "Mark Otto"
+                },
+                {
                     "name": "Thomas McDonald"
                 },
                 {
@@ -3424,9 +3427,6 @@
                     "name": "Gleb Mazovetskiy"
                 },
                 {
-                    "name": "Mark Otto"
-                },
-                {
                     "name": "Jacob Thornton"
                 }
             ],
@@ -3437,7 +3437,7 @@
                 "css",
                 "sass"
             ],
-            "time": "2014-06-26 16:54:15"
+            "time": "2014-09-18 18:46:05"
         },
         {
             "name": "twig/extensions",
@@ -4187,6 +4187,10 @@
         "facebook/php-sdk": 20,
         "elao/web-profiler-extra-bundle": 20,
         "avocode/form-extensions-bundle": 20,
+        "twbs/bootstrap": 20,
+        "twbs/bootstrap-sass": 20,
+        "fortawesome/font-awesome": 20,
+        "braincrafted/bootstrap-bundle": 20,
         "components/bootbox": 20
     },
     "prefer-stable": false,

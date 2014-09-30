@@ -186,6 +186,17 @@ HomepageE:
     defaults: { _controller: PolitizrFrontBundle:Profile:homepageE }
 
 
+################################################################################
+#               ROUTING CITOYEN OU ELU
+################################################################################
+DebateDraft:
+    pattern:  /profil/{id}/debat/detail/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:debateDraft }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+
 
 ################################################################################
 ################################################################################
@@ -205,50 +216,6 @@ LoginCheck:
 LostPasswordCheck:
     pattern:  /connexion/mot-de-passe-perdu.{_format}
     defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-
-################################################################################
-# INSCRIPTION CITOYEN STEP 3 / TAGS PROFIL
-################################################################################
-GetPTags:
-    pattern:  /u/getPTags.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:getPTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-GetPUTaggedTPTags:
-    pattern:  /u/getPUTaggedTPTags.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:getPUTaggedTPTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-AddPUTaggedTPTag:
-    pattern:  /u/addPUTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:addPUTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-RemovePUTaggedTPTag:
-    pattern:  /u/removePUTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:removePUTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-GetPUFollowTPTags:
-    pattern:  /u/getPUFollowTPTags.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:getPUFollowTPTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-AddPUFollowTPTag:
-    pattern:  /u/addPUFollowTPTag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:addPUFollowTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-RemovePUFollowTPTag:
-    pattern:  /u/removePUFollowTPTag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:removePUFollowTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-AddNewPTag:
-    pattern:  /u/addNewPTag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:addNewPTag, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -296,4 +263,42 @@ DebatePublish:
 DebateDelete:
     pattern:  /profil/debat/delete.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# GESTION TAGS
+################################################################################
+GetTags:
+    pattern:  /u/getTags.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Public:getTags, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DebateAddTag:
+    pattern:  /profil/debat/addtag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateAddTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DebateDeleteTag:
+    pattern:  /profil/debat/deletetag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateDeleteTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserFollowAddTag:
+    pattern:  /u/user/follow/addtag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userFollowAddTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserFollowDeleteTag:
+    pattern:  /u/user/follow/deletetag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userFollowDeleteTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserTaggedAddTag:
+    pattern:  /u/user/tagged/addtag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userTaggedAddTag, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserTaggedDeleteTag:
+    pattern:  /u/user/tagged/deletetag.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userTaggedDeleteTag, _format: json }
     requirements: { _format: (xml|json), _method: POST }

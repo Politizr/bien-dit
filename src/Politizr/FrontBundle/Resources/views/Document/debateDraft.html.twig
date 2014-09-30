@@ -1,0 +1,24 @@
+{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block connexionBox %}
+	{% if not is_granted('ROLE_CITIZEN') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		{% include 'PolitizrFrontBundle:Fragment:DebateDraftBlock.html.twig' with { 'debate': debate } %}
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
+    
+    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
+	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

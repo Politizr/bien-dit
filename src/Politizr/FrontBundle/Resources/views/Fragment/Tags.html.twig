@@ -1,11 +1,11 @@
-{% if (ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) %}
+{% if (tagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) %}
 	{% set twbLabel = "success" %}
-{% elseif (ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'))%}
+{% elseif (tagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'))%}
 	{% set twbLabel = "primary" %}
 {% else %}
 	{% set twbLabel = "default" %}
 {% endif %}
 
-{% for pTag in pTags %}
-	<span class="label label-{{ twbLabel }}">{{ pTag.title }}</span>
+{% for tag in tags %}
+	<span class="tag label label-{{ twbLabel }}">{{ tag.title }}</span>
 {% endfor %}

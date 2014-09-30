@@ -471,7 +471,7 @@ class AdminAjaxExtension extends \Twig_Extension
                                 'pdDebate' => $pdDebate,
                                 'ptTagTypeId' => $ptTagTypeId,
                                 'zoneId' => $zoneId,
-                                'pTags' => $pdDebate->getPTags($ptTagTypeId)
+                                'pTags' => $pdDebate->getTags($ptTagTypeId)
                                 )
                     );
 

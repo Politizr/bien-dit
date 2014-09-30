@@ -85,8 +85,6 @@ class AdminAjaxController extends Controller {
      *     Ajoute un tag au taggage d'un utilisateur.
      *     Si le tag n'existe pas, il est préalablement créé.
      *
-     *     TODO: /!\ Logique différente du front / bouton "ajouter" systématique
-     *
      */
     public function addPUTaggedTPTagAction(Request $request) {
         $logger = $this->get('logger');
@@ -106,12 +104,12 @@ class AdminAjaxController extends Controller {
 
                 // Gestion tag non existant
                 if (!$pTagId) {
-                    $pTagId = PTagQuery::create()->addPTag($pTagTitle, $ptTagTypeId, true);
+                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, true);
                 }
 
                 // Association du tag au user
                 if ($pTagId) {
-                    $created = PUTaggedTQuery::create()->addPUserPTag($pUserId, $pTagId);
+                    $created = PUTaggedTQuery::create()->addElement($pUserId, $pTagId);
                 }
 
                 if (!$created) {
@@ -170,7 +168,7 @@ class AdminAjaxController extends Controller {
                 $logger->info('$pUserId = ' . print_r($pUserId, true));
 
                 // Suppression du tag / profil
-                $deleted = PUTaggedTQuery::create()->deletePUserPTag($pUserId, $pTagId);
+                $deleted = PUTaggedTQuery::create()->deleteElement($pUserId, $pTagId);
                 $logger->info('$deleted = ' . print_r($deleted, true));
 
                 // Construction de la réponse
@@ -216,12 +214,12 @@ class AdminAjaxController extends Controller {
 
                 // Gestion tag non existant
                 if (!$pTagId) {
-                    $pTagId = PTagQuery::create()->addPTag($pTagTitle, $ptTagTypeId, true);
+                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, true);
                 }
 
                 // Association du tag au debat
                 if ($pTagId) {
-                    $created = PDDTaggedTQuery::create()->addPDDebatePTag($pdDebateId, $pTagId);
+                    $created = PDDTaggedTQuery::create()->addElement($pdDebateId, $pTagId);
                     $logger->info('$created = ' . print_r($created, true));
                 }
 
@@ -281,7 +279,7 @@ class AdminAjaxController extends Controller {
                 $logger->info('$pdDebateId = ' . print_r($pdDebateId, true));
 
                 // Suppression du tag / profil
-                $deleted = PDDTaggedTQuery::create()->deletePDDebatePTag($pdDebateId, $pTagId);
+                $deleted = PDDTaggedTQuery::create()->deleteElement($pdDebateId, $pTagId);
                 $logger->info('$deleted = ' . print_r($deleted, true));
 
                 // Construction de la réponse

@@ -72,10 +72,10 @@
 
         "liip/imagine-bundle": "0.11.*",
 
-        "twbs/bootstrap": "3.2.*",
-        "twbs/bootstrap-sass": "3.2.*",
-        "fortawesome/font-awesome": "~4.0",
-        "braincrafted/bootstrap-bundle": "~2.0",
+        "twbs/bootstrap": "dev-master",
+        "twbs/bootstrap-sass": "dev-master",
+        "fortawesome/font-awesome": "dev-master",
+        "braincrafted/bootstrap-bundle": "dev-master",
 
         "components/bootbox": "dev-master"
     },

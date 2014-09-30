@@ -80,10 +80,13 @@ class DocumentController extends Controller {
         // *********************************** //
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
-            throw new NotFoundHttpException('pDDebate n°'.$id.' not found.');
+            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
         }
         if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('pDDebate n°'.$id.' not online.');
+            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
+        }
+        if (!$debate->getPublished()) {
+            throw new NotFoundHttpException('Debate n°'.$id.' not published.');
         }
 
         // *********************************** //
@@ -91,6 +94,42 @@ class DocumentController extends Controller {
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
         			'debate' => $debate
+        ));
+    }
+
+
+    /**
+     * Détail brouillon débat
+     */
+    public function debateDraftAction($id, $slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** debateDraftAction');
+        $logger->info('$id = '.print_r($id, true));
+        $logger->info('$slug = '.print_r($slug, true));
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objet
+        // *********************************** //
+        $debate = PDDebateQuery::create()->findPk($id);
+        if (!$debate) {
+            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
+        }
+        if ($debate->getPublished()) {
+            throw new NotFoundHttpException('Debate n°'.$id.' has been published.');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:Document:debateDraft.html.twig', array(
+                    'debate' => $debate
         ));
     }
 

@@ -165,10 +165,10 @@ class PDDebate extends BasePDDebate
 	 *
 	 * @return PropelCollection d'objets PTag
 	 */
-	public function getPTags($ptTagTypeId = null, $online = true) {
+	public function getTags($tagTypeId = null, $online = true) {
 		$query = PTagQuery::create()
-                    ->_if($ptTagTypeId)
-                        ->filterByPTTagTypeId($ptTagTypeId)
+                    ->_if($tagTypeId)
+                        ->filterByPTTagTypeId($tagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
                     ->setDistinct()

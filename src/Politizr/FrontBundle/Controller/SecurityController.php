@@ -458,12 +458,15 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionStep3Action');
 
+        $pUser = $this->getUser();
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionStep3.html.twig', 
                 array(
+                    "pUser" => $pUser
                     ));
     }
 

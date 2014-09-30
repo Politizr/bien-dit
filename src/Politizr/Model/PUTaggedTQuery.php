@@ -4,6 +4,11 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUTaggedTQuery;
 
+/**
+ *
+ *
+ *  @author Lionel Bouzonville
+ */
 class PUTaggedTQuery extends BasePUTaggedTQuery
 {
 	/**
@@ -14,9 +19,9 @@ class PUTaggedTQuery extends BasePUTaggedTQuery
 	 *
 	 *  @return 	integer 	ID de l'entrée créé, ou false si l'entrée n'a pas pu être créée
 	 */
-	public function addPUserPTag($pUserId = null, $pTagId = null) {
+	public function addElement($pUserId = null, $pTagId = null) {
         $pUTaggedT = PUTaggedTQuery::create()->filterByPUserId($pUserId)->filterByPTagId($pTagId)->findOne();
-        if (!$pUTaggedT) {
+        if (!$pUTaggedT && $pUserId != null && $pTagId != null) {
             $pUTaggedT = new PUTaggedT();
 
             $pUTaggedT->setPUserId($pUserId);
@@ -39,7 +44,7 @@ class PUTaggedTQuery extends BasePUTaggedTQuery
 	 *
 	 *  @return 	boolean 	Vrai si l'entrée a pu être supprimée, faux sinon	
 	 */
-	public function deletePUserPTag($pUserId = null, $pTagId = null) {
+	public function deleteElement($pUserId = null, $pTagId = null) {
         $pUTaggedT = PUTaggedTQuery::create()->filterByPUserId($pUserId)->filterByPTagId($pTagId)->findOne();
         if (!$pUTaggedT) {
             return false;

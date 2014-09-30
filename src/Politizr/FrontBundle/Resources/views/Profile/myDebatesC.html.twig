@@ -3,6 +3,13 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Mes débats</h1>
+        {% for debate in debates %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false } %}
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez débat en ligne pour le moment</a>
+			</div>
+		{% endfor %}
 	</div>
 {% endblock main %}
 

@@ -15,6 +15,7 @@ use Pagerfanta\Adapter\PropelAdapter;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUType;
@@ -100,6 +101,58 @@ class PublicController extends Controller
 
         return $this->render('PolitizrFrontBundle:Public:eluActivationProcess.html.twig', array(
             ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                                  FONCTIONS AJAX                                          */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Renvoit un tableau contenant les tags
+     */
+    public function getTagsAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** getTagsAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $tagTypeId = $request->get('tagTypeId');
+                $logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+                $zoneId = $request->get('zoneId');
+                $logger->info('$zoneId = ' . print_r($zoneId, true));
+
+                // Récupération des tags
+                $tags = PTagQuery::create()
+                    ->select(array('id', 'title'))
+                    ->filterByOnline(true)
+                    ->filterByPTTagTypeId($tagTypeId)
+                    ->orderByTitle()
+                    ->find()
+                    ->toArray();
+                // $logger->info('$pTags = ' . print_r($pTags, true));
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'tags' => $tags,
+                    'zoneId' => $zoneId
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
     }
 
 

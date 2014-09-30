@@ -1,0 +1,16 @@
+<div id="edit-tag-zone-{{ zoneId }}">
+	{# Variables #}
+	<div class="tagsAttr" tag-type-id="{{ tagTypeId }}" object-id="{{ object.id }}" new-tag="{{ newTag }}" path="{{ path(addPath) }}"></div>
+	
+	{# Sélection #}
+	<input type="text" class="selectedTag" />
+	<input type="hidden" class="selectedTagID" />
+	<button action="addTag" class="btn btn-success btn-default">Ajouter</button>
+
+	{# Affichage #}
+	<div class="displayTagsZone">
+		{% for tag in tags %}
+			{% include 'PolitizrFrontBundle:Fragment:Tag.html.twig' with { 'objectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
+		{% endfor %}
+	</div>
+</div>

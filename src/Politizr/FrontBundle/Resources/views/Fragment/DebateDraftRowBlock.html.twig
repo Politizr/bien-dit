@@ -4,5 +4,6 @@
 	<td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
 	<td>
 		<a class="btn btn-primary" href="{{ path('MyDraftsEditC', { 'id': document.id }) }}">Editer</a>
+		<a class="btn btn-info" href="{{ path('DebateDraft', { 'id': document.id, 'slug': document.slug }) }}">Prévisualiser</a>
 	</td>
 </tr>
