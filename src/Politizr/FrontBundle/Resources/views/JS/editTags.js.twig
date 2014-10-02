@@ -35,8 +35,8 @@
                 // context: $('#edit-tag-zone-'+i),
                 {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                 success: function(data) {
+                    $('#ajax-loader').hide();
                     if (data['error']) {
-                        $('#ajaxLoader').hide();
                         $('.alert-danger-msg').html(data['error']);
                         $('.alert.alert-danger').show();
                     } else {
@@ -107,8 +107,8 @@
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             context: this,
             success: function(data) {
+                $('#ajax-loader').hide();
                 if (data['error']) {
-                    $('#ajaxLoader').hide();
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
@@ -147,8 +147,8 @@
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             context: $(this).parent(),
             success: function(data) {
+                $('#ajax-loader').hide();
                 if (data['error']) {
-                    $('#ajaxLoader').hide();
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {

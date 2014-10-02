@@ -56,8 +56,8 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
+                $('#ajax-loader').hide();
                 if (data['error']) {
-                    $('#ajax-loader').hide();
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
@@ -83,8 +83,8 @@
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
+                        $('#ajax-loader').hide();
                         if (data['error']) {
-                            $('#ajax-loader').hide();
                             $('.alert-danger-msg').html(data['error']);
                             $('.alert.alert-danger').show();
                         } else {
@@ -112,8 +112,8 @@
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
+                        $('#ajax-loader').hide();
                         if (data['error']) {
-                            $('#ajax-loader').hide();
                             $('.alert-danger-msg').html(data['error']);
                             $('.alert.alert-danger').show();
                         } else {
