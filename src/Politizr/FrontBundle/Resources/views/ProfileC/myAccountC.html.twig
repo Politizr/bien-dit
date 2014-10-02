@@ -1,0 +1,12 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h3>Mon compte</h3>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:myAccountC.js.twig' %}
+{% endblock javascriptFooter %}

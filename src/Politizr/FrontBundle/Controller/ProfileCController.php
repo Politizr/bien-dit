@@ -35,7 +35,7 @@ use Politizr\Model\PUFollowT;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 
 /**
- * Gestion des profils
+ * Gestion profil citoyen
  *
  * TODO:
  *	- gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
@@ -44,14 +44,14 @@ use Politizr\FrontBundle\Form\Type\PDDebateType;
  *
  * @author Lionel Bouzonville
  */
-class ProfileController extends Controller {
+class ProfileCController extends Controller {
 
     /* ######################################################################################################## */
     /*                                                 ROUTING CLASSIQUE                                        */
     /* ######################################################################################################## */
 
     /* ######################################################################################################## */
-    /*                                                      CITOYEN                                             */
+    /*                                                    ACTUALITES                                            */
     /* ######################################################################################################## */
 
     /**
@@ -182,7 +182,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:timelineC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:timelineC.html.twig', array(
                     'documents' => $documents
             ));
     }
@@ -218,7 +218,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:suggestionsC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:suggestionsC.html.twig', array(
                     'debatesGeo' => $debatesGeo,
                     'debatesTheme' => $debatesTheme,
                     'usersGeo' => $usersGeo
@@ -250,12 +250,17 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:popularsC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:popularsC.html.twig', array(
                 'debates' => $debates,
                 'users' => $users,
                 'comments' => $comments,
             ));
     }
+
+    /* ######################################################################################################## */
+    /*                                                 CONTRIBUTIONS                                            */
+    /* ######################################################################################################## */
+
 
     /**
      *  Mes contributions - Accueil
@@ -285,7 +290,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:myRatesC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:myRatesC.html.twig', array(
             'drafts' => $drafts,
             'debates' => $debates,
             'comments' => $comments,
@@ -314,7 +319,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:myDraftsC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:myDraftsC.html.twig', array(
             'drafts' => $drafts,
             ));
     }
@@ -341,7 +346,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:myDebatesC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:myDebatesC.html.twig', array(
             'debates' => $debates
             ));
     }
@@ -368,22 +373,23 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:myCommentsC.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileC:myCommentsC.html.twig', array(
             'comments' => $comments
             ));
     }
 
+
     /* ######################################################################################################## */
-    /*                                                      ÉLU                                                 */
+    /*                                                    ACTUALITES                                            */
     /* ######################################################################################################## */
 
     /**
-     *  Accueil
+     *  Mon compte - Accueil
      */
-    public function homepageEAction()
+    public function myAccountCAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** homepageEAction');
+        $logger->info('*** myAccountCAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -392,15 +398,87 @@ ORDER BY published DESC
         //      Récupération objets vue
         // *********************************** //
 
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:ProfileC:myAccountC.html.twig', array(
+            ));
+    }
+
+
+    /**
+     *  Mon compte - Mes Tags
+     */
+    public function myTagsCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myTagsCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Profile:homepageE.html.twig', array(
-                    'pageDebates' => $pageDebates
+        return $this->render('PolitizrFrontBundle:ProfileC:myTagsC.html.twig', array(
+                'pUser' => $pUser,
             ));
     }
+
+
+    /**
+     *  Mon compte - Ma réputation
+     */
+    public function myReputationCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myReputationCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:ProfileC:myReputationC.html.twig', array(
+            ));
+    }
+
+
+    /**
+     *  Mon compte - Mes informations personnelles
+     */
+    public function myPersoCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myPersoCAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:ProfileC:myPersoC.html.twig', array(
+            ));
+    }
+
 
 
 

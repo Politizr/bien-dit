@@ -99,7 +99,7 @@ class CRUDController extends Controller {
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:Profile\CRUD:debateEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:CRUD:debateEdit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
             ));

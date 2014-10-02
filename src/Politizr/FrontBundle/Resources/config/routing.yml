@@ -136,27 +136,29 @@ UserDetail:
 ################################################################################
 HomepageC:
     pattern:  /citoyen
-    defaults: { _controller: PolitizrFrontBundle:Profile:homepageC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:homepageC }
 
 TimelineC:
     pattern:  /citoyen/timeline
-    defaults: { _controller: PolitizrFrontBundle:Profile:timelineC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:timelineC }
 
 SuggestionsC:
     pattern:  /citoyen/suggestions
-    defaults: { _controller: PolitizrFrontBundle:Profile:suggestionsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestionsC }
 
 PopularsC:
     pattern:  /citoyen/populaires
-    defaults: { _controller: PolitizrFrontBundle:Profile:popularsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:popularsC }
+
+
 
 MyRatesC:
     pattern:  /citoyen/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:Profile:myRatesC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myRatesC }
 
 MyDraftsC:
     pattern:  /citoyen/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:Profile:myDraftsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDraftsC }
 
 MyDraftsNewC:
     pattern:  /citoyen/mes-contributions/nouveau
@@ -171,19 +173,35 @@ MyDraftsEditC:
 
 MyDebatesC:
     pattern:  /citoyen/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:Profile:myDebatesC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDebatesC }
 
 MyCommentsC:
     pattern:  /citoyen/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:Profile:myCommentsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myCommentsC }
 
+
+MyAccountC:
+    pattern:  /citoyen/mon-compte
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myAccountC }
+
+MyTagsC:
+    pattern:  /citoyen/mon-compte/mes-tags
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myTagsC }
+
+MyReputationC:
+    pattern:  /citoyen/mon-compte/ma-reputation
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputationC }
+
+MyPersoC:
+    pattern:  /citoyen/mon-compte/mes-informations-personnelles
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myPersoC }
 
 ################################################################################
 #               ROUTING ELU
 ################################################################################
 HomepageE:
     pattern:  /elu
-    defaults: { _controller: PolitizrFrontBundle:Profile:homepageE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:homepageE }
 
 
 ################################################################################

@@ -1,0 +1,12 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h3>Ma réputation</h3>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:myReputationC.js.twig' %}
+{% endblock javascriptFooter %}
