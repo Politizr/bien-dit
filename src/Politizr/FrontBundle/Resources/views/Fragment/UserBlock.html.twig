@@ -5,9 +5,9 @@
 			<div class="col-sm-4">
 				<div class="image">
 					{% if (pUser.fileName) %}
-			            <img src="{{ asset('uploads/users/'~pUser.fileName) | imagine_filter('user_bio_mini_thumb') }}" alt="{{ pUser.name }}">
+			            <img class="img-rounded" src="{{ asset('uploads/users/'~pUser.fileName) | imagine_filter('user_bio_mini_thumb') }}" alt="{{ pUser.name }}">
 			        {% else %}
-			            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ pUser.name }}">
+			            <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ pUser.name }}">
 		        	{% endif %}
 		        </div>
 			</div>

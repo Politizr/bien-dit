@@ -11,7 +11,7 @@
 			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': reaction } only %}
 		</div>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default text-center">vu {{ reaction.nbViews }} fois</span>
+			<span class="label label-info text-center">vu {{ reaction.nbViews }} fois</span>
 		</div>
 		<div class="col-sm-2 text-center">
 			<span class="label label-default pull-right">publié le {{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
@@ -44,7 +44,7 @@
 	</div>
 </div>
 <hr>
-<div class="reaction-summary well">
+<div class="reaction-summary jumbotron">
 	<div class="reaction-summary">
 		{{ reaction.getSummary | raw }}
 	</div>
@@ -52,7 +52,7 @@
 {% if full %}
 	<hr>
 	<div class="reaction-body">
-		<div class="reaction-description">
+		<div class="reaction-description sizeup">
 			{{ reaction.getDescription | raw }}
 		</div>
 		{% if reaction.getMoreInfo | striptags | trim is not empty %}

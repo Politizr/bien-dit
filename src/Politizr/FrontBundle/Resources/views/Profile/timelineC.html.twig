@@ -2,9 +2,10 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Timeline</h1>
+		<h3>Timeline</h3>
         {% for document in documents %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true, 'withMoreInfos': false } %}
+			<div class="border-row">&nbsp;</div>
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat ou utilisateur pour le moment</a>

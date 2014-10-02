@@ -6,22 +6,34 @@
 <div class="document-header">
 	<div class="row">
 		{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<h4><a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
 			</div>
-			<div class="col-sm-4">
-				à propos de <h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.debate.title }}</a></h4>
+			<div class="col-sm-3">
+				sur le débat <h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ document.debate.title }}</a></h4>
 			</div>
 		{% elseif objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-			<div class="col-sm-8">
+			<div class="col-sm-6">
 				<h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
 			</div>
 		{% endif %}
 		<div class="col-sm-2 text-center">
+			<span class="count-reactions">
+				{% set nbReactions = document.countReactions %}
+				<span class="badge alert-info">
+					{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+						<a href="{{ path('DebateFeed', { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ nbReactions }} réactions</a>
+					{% else %}
+						<a href="{{ path('DebateFeed', { 'id': document.id, 'slug': document.slug }) }}">{{ nbReactions }} réactions</a>
+					{% endif %}
+				</span>
+			</span>
+		</div>
+		<div class="col-sm-2 text-center">
 			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': document } only %}
 		</div>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default pull-right">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			<span class="label label-default text-center">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
 	{% if withAuthor %}
@@ -34,7 +46,7 @@
 	{% if withMoreInfos %}
 		{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
 			<hr>
-			<div class="row debate-tags">
+			<div class="row debate-tags text-center">
 				<!-- TAGS -->
 				<div class="col-sm-6">
 					{{ debateTags(document, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
@@ -51,4 +63,3 @@
 		{% endif %}
 	{% endif %}
 </div>
-<hr>

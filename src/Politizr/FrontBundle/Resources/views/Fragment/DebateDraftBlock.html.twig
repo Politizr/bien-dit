@@ -36,9 +36,9 @@
 <div class="debate-image">
 	<div class="row text-center">
 		{% if debate.fileName %}
-			<img src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
+			<img class="img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
 		{% else %}
-			<img src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}">
+			<img class="img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}">
 		{% endif %}
 	</div>
 </div>

@@ -2,8 +2,26 @@
 /*				POLITIZR FRONT STYLE
 /**************************************************************************/
 
+/*
+ * Styles Politizr
+ */
+
+ /* styles génériques */
 .tag {
-  margin: 3px;
+    margin: 3px;
+}
+
+.sizeup {
+    font-size: 1.3em;
+}
+
+.border-row {
+    border-bottom: 2px solid #0088cc;
+    margin-bottom: 4px;
+}
+
+.debate-image .img-responsive {
+    margin: 0 auto;
 }
 
 /*

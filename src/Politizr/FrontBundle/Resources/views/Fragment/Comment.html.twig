@@ -5,9 +5,9 @@
 			<div class="col-sm-2 text-center">
 				<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
 					{% if (user.fileName) %}
-			            <img src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
+			            <img class="img-circle" src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
 			        {% else %}
-			            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
+			            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ user.name }}">
 		        	{% endif %}
 				</a>
 			</div>
@@ -28,7 +28,7 @@
 				(paragraphe n°{{ comment.paragraphNo }})
 			{% endif %}		
 		</div>
-		<div class="col-sm-2">
+		<div class="col-sm-2 text-center">
 			<span class="label label-default">publié le {{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
@@ -38,4 +38,3 @@
 		</div>
 	</div>
 </div>
-<hr>

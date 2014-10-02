@@ -2,7 +2,6 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Mes contributions</h1>
 		<h3>Mes brouillons</h3>
         {% for draft in drafts %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}

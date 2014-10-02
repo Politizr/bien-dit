@@ -148,10 +148,10 @@ class PDReaction extends BasePDReaction
 	}
 
 	/**
-	 *Renvoit le nombre de réactions publiées associées à la réaction courante.
-	 * TODO: niveau d'inspection à gérer
+	 *	Renvoit le nombre de réactions publiées associées à la réaction courante.
 	 *
-	 * @param 	integer 	$level 		Niveau d'inspection
+	 * 	@param 	integer 	$online 		réactions en ligne
+	 * 	@param 	integer 	$published  	réactions publiées
 	 *
 	 * @return PropelCollection d'objets PDReaction
 	 */
@@ -162,6 +162,13 @@ class PDReaction extends BasePDReaction
 					->orderByPublishedAt(\Criteria::DESC);
 
 		return parent::countChildren($query);
+	}
+
+	/**
+	 * 	@see countChildrenReactions
+	 */
+	public function countReactions() {
+		return $this->countChildrenReactions(true, true);
 	}
 
 }

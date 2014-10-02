@@ -11,10 +11,10 @@
 			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': debate } only %}
 		</div>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default text-center">vu {{ debate.nbViews }} fois</span>
+			<span class="label label-info text-center">vu {{ debate.nbViews }} fois</span>
 		</div>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default pull-right">publié le {{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			<span class="label label-default text-center">publié le {{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
 	<div class="row" action="user-more-info">
@@ -45,9 +45,9 @@
 	<div class="debate-image">
 		<div class="row text-center">
 			{% if debate.fileName %}
-				<img src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
+				<img class="img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" />
 			{% else %}
-				<img src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}">
+				<img class="img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}">
 			{% endif %}
 		</div>
 	</div>
@@ -57,14 +57,14 @@
 	<div class="debate-summary">
 		{{ debate.summary | raw }}
 	</div>
-	<div class="star">
+	<div class="star text-center">
 		{{ linkFollow(debate.id, 'debate') }}
 	</div>
 </div>
 {% if full %}
 	<hr>
 	<div class="debate-body">
-		<div class="debate-description">
+		<div class="debate-description sizeup">
 			{{ debate.description | raw }}
 		</div>
 		{% if debate.moreInfo | striptags | trim is not empty %}

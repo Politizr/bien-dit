@@ -2,7 +2,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Mes commentaires</h1>
+		<h3>Mes commentaires</h3>
         {% for comment in comments %}
 			{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
 		{% else %}

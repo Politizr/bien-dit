@@ -17,6 +17,7 @@
 		<div class="debate-reactions-feed">
 			{% for reaction in debate.treeReactions %}
 				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
+				<div class="border-row">&nbsp;</div>
 			{% else %}
 				<div class="no-result">
 					Aucune réaction pour le moment

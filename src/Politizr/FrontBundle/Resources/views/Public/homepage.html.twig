@@ -50,6 +50,7 @@
 			<div>
 				{% for debate in debates %}
 					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true, 'withMoreInfos': true } %}
+					<div class="border-row">&nbsp;</div>
 				{% endfor %}
 			</div>
 		</div>
@@ -59,7 +60,7 @@
 			<div>
 				{% for user in users %}
 					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
-					<hr>
+					<div class="border-row">&nbsp;</div>
 				{% endfor %}
 			</div>
 		</div>
@@ -69,6 +70,7 @@
 			<div>
 				{% for comment in comments %}
 					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
