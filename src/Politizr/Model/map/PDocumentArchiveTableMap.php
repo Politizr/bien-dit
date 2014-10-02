@@ -50,6 +50,7 @@ class PDocumentArchiveTableMap extends TableMap
         $this->addColumn('more_info', 'MoreInfo', 'LONGVARCHAR', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, null);
+        $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);

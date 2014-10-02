@@ -30,6 +30,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDocumentQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDocumentQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
+ * @method PDocumentQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDocumentQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDocumentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -44,6 +45,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery groupByMoreInfo() Group by the more_info column
  * @method PDocumentQuery groupByNotePos() Group by the note_pos column
  * @method PDocumentQuery groupByNoteNeg() Group by the note_neg column
+ * @method PDocumentQuery groupByNbViews() Group by the nb_views column
  * @method PDocumentQuery groupByPublished() Group by the published column
  * @method PDocumentQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentQuery groupByPublishedBy() Group by the published_by column
@@ -80,6 +82,7 @@ use Politizr\Model\PUser;
  * @method PDocument findOneByMoreInfo(string $more_info) Return the first PDocument filtered by the more_info column
  * @method PDocument findOneByNotePos(int $note_pos) Return the first PDocument filtered by the note_pos column
  * @method PDocument findOneByNoteNeg(int $note_neg) Return the first PDocument filtered by the note_neg column
+ * @method PDocument findOneByNbViews(int $nb_views) Return the first PDocument filtered by the nb_views column
  * @method PDocument findOneByPublished(boolean $published) Return the first PDocument filtered by the published column
  * @method PDocument findOneByPublishedAt(string $published_at) Return the first PDocument filtered by the published_at column
  * @method PDocument findOneByPublishedBy(string $published_by) Return the first PDocument filtered by the published_by column
@@ -94,6 +97,7 @@ use Politizr\Model\PUser;
  * @method array findByMoreInfo(string $more_info) Return PDocument objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDocument objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDocument objects filtered by the note_neg column
+ * @method array findByNbViews(int $nb_views) Return PDocument objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDocument objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDocument objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocument objects filtered by the published_by column
@@ -206,7 +210,7 @@ abstract class BasePDocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -579,6 +583,48 @@ abstract class BasePDocumentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentPeer::NOTE_NEG, $noteNeg, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_views column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbViews(1234); // WHERE nb_views = 1234
+     * $query->filterByNbViews(array(12, 34)); // WHERE nb_views IN (12, 34)
+     * $query->filterByNbViews(array('min' => 12)); // WHERE nb_views >= 12
+     * $query->filterByNbViews(array('max' => 12)); // WHERE nb_views <= 12
+     * </code>
+     *
+     * @param     mixed $nbViews The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByNbViews($nbViews = null, $comparison = null)
+    {
+        if (is_array($nbViews)) {
+            $useMinMax = false;
+            if (isset($nbViews['min'])) {
+                $this->addUsingAlias(PDocumentPeer::NB_VIEWS, $nbViews['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbViews['max'])) {
+                $this->addUsingAlias(PDocumentPeer::NB_VIEWS, $nbViews['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::NB_VIEWS, $nbViews, $comparison);
     }
 
     /**

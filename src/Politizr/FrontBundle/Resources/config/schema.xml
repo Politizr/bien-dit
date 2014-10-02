@@ -275,7 +275,6 @@
         <column name="name" type="varchar" size="150" />
         <column name="birthday" type="date" />
 
-        <column name="summary" type="longvarchar" />
         <column name="biography" type="longvarchar" />
 
         <column name="website" type="varchar" size="150" />
@@ -286,6 +285,8 @@
         <column name="newsletter" type="boolean" />
         
         <column name="last_connect" type="timestamp" />
+
+        <column name="nb_views" type="integer" />
 
         <column name="online" type="boolean" />
 
@@ -491,6 +492,8 @@
 
         <column name="note_pos" type="integer" />
         <column name="note_neg" type="integer" />
+
+        <column name="nb_views" type="integer" />
 
         <column name="published" type="boolean" />
         <column name="published_at" type="timestamp" />

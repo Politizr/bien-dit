@@ -5,40 +5,37 @@
 {% endif %}
 <div class="document-header">
 	<div class="row">
-		<h4>
-			{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-				<div class="col-sm-5">
-					<a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
-				</div>
-				<div class="col-sm-5">
-					> <a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.debate.title }}</a>
-				</div>
-			{% elseif objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-				<div class="col-sm-10">
-					<a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a>
-				</div>
-			{% endif %}
-		</h4>
+		{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+			<div class="col-sm-4">
+				<h4><a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
+			</div>
+			<div class="col-sm-4">
+				à propos de <h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.debate.title }}</a></h4>
+			</div>
+		{% elseif objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+			<div class="col-sm-8">
+				<h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
+			</div>
+		{% endif %}
+		<div class="col-sm-2 text-center">
+			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': document } only %}
+		</div>
 		<div class="col-sm-2 text-center">
 			<span class="label label-default pull-right">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 		</div>
 	</div>
 	{% if withAuthor %}
-		<h5>
-			<div class="row" action="user-more-info">
-				<a class="label label-info">par {{ document.pUser }}</a>
+		<div class="row" action="user-more-info">
+			<div class="author-mini-block col-sm-12">
+				{% include 'PolitizrFrontBundle:Fragment:UserMiniBlock.html.twig' with {'user': document.pUser } only %}
 			</div>
-			<div class="row" action="user-infos">
-				<hr>
-				{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': document.pUser, 'full': false } only %}
-			</div>
-		</h5>
+		</div>				
 	{% endif %}
-	{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-		<hr>
-		<div class="debate-tags">
-			<!-- TAGS -->
-			<div class="row text-center">
+	{% if withMoreInfos %}
+		{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+			<hr>
+			<div class="row debate-tags">
+				<!-- TAGS -->
 				<div class="col-sm-6">
 					{{ debateTags(document, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 				</div>
@@ -46,52 +43,12 @@
 					{{ debateTags(document, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 				</div>
 			</div>
-		</div>
-		<hr>
-		<div class="row text-center">
-			<!-- FOLLOWERS -->
-			<div id="followers">
-				Suivi par <a action="show-followers-c-list" class="label label-primary">{{ document.countFollowersC }} citoyens</a> et <a action="show-followers-q-list" class="label label-primary">{{ document.countFollowersQ }} élus</a>
-				<div action="followers-c-list">
-					{% for follower in document.followersC %}
-		                {% if ((loop.index0%4) == 0) %}
-		                    <div class="row">
-		                {% endif %}
-						<div class="col-sm-3">
-							<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-								{% if (follower.fileName) %}
-						            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-						        {% else %}
-						            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-					        	{% endif %}
-							</a>
-						</div>
-						{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
-				<div action="followers-q-list">
-					{% for follower in document.followersQ %}
-		                {% if ((loop.index0%4) == 0) %}
-		                    <div class="row">
-		                {% endif %}
-						<div class="col-sm-3">
-							<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-								{% if (follower.fileName) %}
-						            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-						        {% else %}
-						            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-					        	{% endif %}
-							</a>
-						</div>
-						{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
+			<hr>
+			<div class="row text-center">
+				<!-- FOLLOWERS -->
+				{% include 'PolitizrFrontBundle:Fragment:FollowersBlock.html.twig' with {'nbC': document.countFollowersC, 'nbQ': document.countFollowersQ, 'followersC': document.followersC, 'followersQ': document.followersQ } only %}
 			</div>
-		</div>
+		{% endif %}
 	{% endif %}
 </div>
 <hr>

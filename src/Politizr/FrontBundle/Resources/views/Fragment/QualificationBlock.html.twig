@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-sm-4 text-center">
+    	{% if (qualification.isCurrent) %}
+    		<span class="label label-info">Depuis le {{ qualification.beginAt | date('d/m/Y') }}</span>
+    	{% else %}
+    		<span class="label label-info">Du {{ qualification.beginAt | date('d/m/Y') }} au {{ qualification.endAt | date('d/m/Y') }}</span>
+    	{% endif %}
+    </div>
+	<div class="col-sm-4 text-center">
+		<span class="label label-success">{{ qualification.mandateTypeTitle }}</span>
+	</div>
+	<div class="col-sm-4 text-center">
+		{% if (qualification.politicalPartyLogo) %}
+            <img src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
+    	{% endif %}
+    </div>
+</div>
+{% if full %}
+    <div class="row">
+    	{{ qualification.description | raw  }}
+    </div>
+{% endif %}

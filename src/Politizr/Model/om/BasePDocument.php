@@ -100,6 +100,12 @@ abstract class BasePDocument extends BaseObject implements Persistent
     protected $note_neg;
 
     /**
+     * The value for the nb_views field.
+     * @var        int
+     */
+    protected $nb_views;
+
+    /**
      * The value for the published field.
      * @var        boolean
      */
@@ -269,6 +275,16 @@ abstract class BasePDocument extends BaseObject implements Persistent
     public function getNoteNeg()
     {
         return $this->note_neg;
+    }
+
+    /**
+     * Get the [nb_views] column value.
+     *
+     * @return int
+     */
+    public function getNbViews()
+    {
+        return $this->nb_views;
     }
 
     /**
@@ -524,6 +540,27 @@ abstract class BasePDocument extends BaseObject implements Persistent
     } // setNoteNeg()
 
     /**
+     * Set the value of [nb_views] column.
+     *
+     * @param int $v new value
+     * @return PDocument The current object (for fluent API support)
+     */
+    public function setNbViews($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->nb_views !== $v) {
+            $this->nb_views = $v;
+            $this->modifiedColumns[] = PDocumentPeer::NB_VIEWS;
+        }
+
+
+        return $this;
+    } // setNbViews()
+
+    /**
      * Sets the value of the [published] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -686,11 +723,12 @@ abstract class BasePDocument extends BaseObject implements Persistent
             $this->more_info = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->published = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->published_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->published_by = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->online = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->descendant_class = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->nb_views = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->online = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->descendant_class = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -699,7 +737,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 13; // 13 = PDocumentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PDocumentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDocument object", $e);
@@ -1014,6 +1052,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentPeer::NOTE_NEG)) {
             $modifiedColumns[':p' . $index++]  = '`note_neg`';
         }
+        if ($this->isColumnModified(PDocumentPeer::NB_VIEWS)) {
+            $modifiedColumns[':p' . $index++]  = '`nb_views`';
+        }
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED)) {
             $modifiedColumns[':p' . $index++]  = '`published`';
         }
@@ -1063,6 +1104,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
                         break;
                     case '`note_neg`':
                         $stmt->bindValue($identifier, $this->note_neg, PDO::PARAM_INT);
+                        break;
+                    case '`nb_views`':
+                        $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
                         break;
                     case '`published`':
                         $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
@@ -1270,18 +1314,21 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 return $this->getNoteNeg();
                 break;
             case 8:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 9:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 10:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 11:
-                return $this->getOnline();
+                return $this->getPublishedBy();
                 break;
             case 12:
+                return $this->getOnline();
+                break;
+            case 13:
                 return $this->getDescendantClass();
                 break;
             default:
@@ -1321,11 +1368,12 @@ abstract class BasePDocument extends BaseObject implements Persistent
             $keys[5] => $this->getMoreInfo(),
             $keys[6] => $this->getNotePos(),
             $keys[7] => $this->getNoteNeg(),
-            $keys[8] => $this->getPublished(),
-            $keys[9] => $this->getPublishedAt(),
-            $keys[10] => $this->getPublishedBy(),
-            $keys[11] => $this->getOnline(),
-            $keys[12] => $this->getDescendantClass(),
+            $keys[8] => $this->getNbViews(),
+            $keys[9] => $this->getPublished(),
+            $keys[10] => $this->getPublishedAt(),
+            $keys[11] => $this->getPublishedBy(),
+            $keys[12] => $this->getOnline(),
+            $keys[13] => $this->getDescendantClass(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
@@ -1399,18 +1447,21 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 $this->setNoteNeg($value);
                 break;
             case 8:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 9:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 10:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 11:
-                $this->setOnline($value);
+                $this->setPublishedBy($value);
                 break;
             case 12:
+                $this->setOnline($value);
+                break;
+            case 13:
                 $this->setDescendantClass($value);
                 break;
         } // switch()
@@ -1445,11 +1496,12 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setMoreInfo($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setPublished($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPublishedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPublishedBy($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setOnline($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setDescendantClass($arr[$keys[12]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNbViews($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setOnline($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setDescendantClass($arr[$keys[13]]);
     }
 
     /**
@@ -1469,6 +1521,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentPeer::MORE_INFO)) $criteria->add(PDocumentPeer::MORE_INFO, $this->more_info);
         if ($this->isColumnModified(PDocumentPeer::NOTE_POS)) $criteria->add(PDocumentPeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDocumentPeer::NOTE_NEG)) $criteria->add(PDocumentPeer::NOTE_NEG, $this->note_neg);
+        if ($this->isColumnModified(PDocumentPeer::NB_VIEWS)) $criteria->add(PDocumentPeer::NB_VIEWS, $this->nb_views);
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED)) $criteria->add(PDocumentPeer::PUBLISHED, $this->published);
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED_AT)) $criteria->add(PDocumentPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED_BY)) $criteria->add(PDocumentPeer::PUBLISHED_BY, $this->published_by);
@@ -1544,6 +1597,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $copyObj->setMoreInfo($this->getMoreInfo());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
+        $copyObj->setNbViews($this->getNbViews());
         $copyObj->setPublished($this->getPublished());
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
@@ -2019,6 +2073,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $this->more_info = null;
         $this->note_pos = null;
         $this->note_neg = null;
+        $this->nb_views = null;
         $this->published = null;
         $this->published_at = null;
         $this->published_by = null;
@@ -2188,6 +2243,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $this->setMoreInfo($archive->getMoreInfo());
         $this->setNotePos($archive->getNotePos());
         $this->setNoteNeg($archive->getNoteNeg());
+        $this->setNbViews($archive->getNbViews());
         $this->setPublished($archive->getPublished());
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());

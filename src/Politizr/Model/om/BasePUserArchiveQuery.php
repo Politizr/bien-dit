@@ -43,7 +43,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserArchiveQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method PUserArchiveQuery orderByBirthday($order = Criteria::ASC) Order by the birthday column
- * @method PUserArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PUserArchiveQuery orderByBiography($order = Criteria::ASC) Order by the biography column
  * @method PUserArchiveQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method PUserArchiveQuery orderByTwitter($order = Criteria::ASC) Order by the twitter column
@@ -51,6 +50,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method PUserArchiveQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserArchiveQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
+ * @method PUserArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -84,7 +84,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByFirstname() Group by the firstname column
  * @method PUserArchiveQuery groupByName() Group by the name column
  * @method PUserArchiveQuery groupByBirthday() Group by the birthday column
- * @method PUserArchiveQuery groupBySummary() Group by the summary column
  * @method PUserArchiveQuery groupByBiography() Group by the biography column
  * @method PUserArchiveQuery groupByWebsite() Group by the website column
  * @method PUserArchiveQuery groupByTwitter() Group by the twitter column
@@ -92,6 +91,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByPhone() Group by the phone column
  * @method PUserArchiveQuery groupByNewsletter() Group by the newsletter column
  * @method PUserArchiveQuery groupByLastConnect() Group by the last_connect column
+ * @method PUserArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PUserArchiveQuery groupByOnline() Group by the online column
  * @method PUserArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PUserArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -131,7 +131,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByFirstname(string $firstname) Return the first PUserArchive filtered by the firstname column
  * @method PUserArchive findOneByName(string $name) Return the first PUserArchive filtered by the name column
  * @method PUserArchive findOneByBirthday(string $birthday) Return the first PUserArchive filtered by the birthday column
- * @method PUserArchive findOneBySummary(string $summary) Return the first PUserArchive filtered by the summary column
  * @method PUserArchive findOneByBiography(string $biography) Return the first PUserArchive filtered by the biography column
  * @method PUserArchive findOneByWebsite(string $website) Return the first PUserArchive filtered by the website column
  * @method PUserArchive findOneByTwitter(string $twitter) Return the first PUserArchive filtered by the twitter column
@@ -139,6 +138,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByPhone(string $phone) Return the first PUserArchive filtered by the phone column
  * @method PUserArchive findOneByNewsletter(boolean $newsletter) Return the first PUserArchive filtered by the newsletter column
  * @method PUserArchive findOneByLastConnect(string $last_connect) Return the first PUserArchive filtered by the last_connect column
+ * @method PUserArchive findOneByNbViews(int $nb_views) Return the first PUserArchive filtered by the nb_views column
  * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
  * @method PUserArchive findOneByCreatedAt(string $created_at) Return the first PUserArchive filtered by the created_at column
  * @method PUserArchive findOneByUpdatedAt(string $updated_at) Return the first PUserArchive filtered by the updated_at column
@@ -172,7 +172,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByFirstname(string $firstname) Return PUserArchive objects filtered by the firstname column
  * @method array findByName(string $name) Return PUserArchive objects filtered by the name column
  * @method array findByBirthday(string $birthday) Return PUserArchive objects filtered by the birthday column
- * @method array findBySummary(string $summary) Return PUserArchive objects filtered by the summary column
  * @method array findByBiography(string $biography) Return PUserArchive objects filtered by the biography column
  * @method array findByWebsite(string $website) Return PUserArchive objects filtered by the website column
  * @method array findByTwitter(string $twitter) Return PUserArchive objects filtered by the twitter column
@@ -180,6 +179,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByPhone(string $phone) Return PUserArchive objects filtered by the phone column
  * @method array findByNewsletter(boolean $newsletter) Return PUserArchive objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUserArchive objects filtered by the last_connect column
+ * @method array findByNbViews(int $nb_views) Return PUserArchive objects filtered by the nb_views column
  * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUserArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUserArchive objects filtered by the updated_at column
@@ -285,7 +285,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `summary`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1338,35 +1338,6 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the summary column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySummary('fooValue');   // WHERE summary = 'fooValue'
-     * $query->filterBySummary('%fooValue%'); // WHERE summary LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $summary The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserArchiveQuery The current query, for fluid interface
-     */
-    public function filterBySummary($summary = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($summary)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $summary)) {
-                $summary = str_replace('*', '%', $summary);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PUserArchivePeer::SUMMARY, $summary, $comparison);
-    }
-
-    /**
      * Filter the query on the biography column
      *
      * Example usage:
@@ -1579,6 +1550,48 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::LAST_CONNECT, $lastConnect, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_views column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbViews(1234); // WHERE nb_views = 1234
+     * $query->filterByNbViews(array(12, 34)); // WHERE nb_views IN (12, 34)
+     * $query->filterByNbViews(array('min' => 12)); // WHERE nb_views >= 12
+     * $query->filterByNbViews(array('max' => 12)); // WHERE nb_views <= 12
+     * </code>
+     *
+     * @param     mixed $nbViews The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByNbViews($nbViews = null, $comparison = null)
+    {
+        if (is_array($nbViews)) {
+            $useMinMax = false;
+            if (isset($nbViews['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::NB_VIEWS, $nbViews['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbViews['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::NB_VIEWS, $nbViews['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::NB_VIEWS, $nbViews, $comparison);
     }
 
     /**

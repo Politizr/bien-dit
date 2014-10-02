@@ -26,6 +26,23 @@ class PUQualification extends BasePUQualification
     //                      METHODES PUBLIQUES
     // ************************************************************************************ //
 
+    // *****************************    RACCOURCIS    ************************* //
+
+	/**
+	 *	Vérifie si l'objet courant est le mandat courant ou pas en se basant sur la date de fin, qui
+	 *	doit être null ou > à la date du jour si c'est le cas.
+	 *
+	 *	@return 	boolean
+	 */
+	public function isCurrent() {
+		$now = new \DateTime('now');
+
+		if ($this->getEndAt() == null || $this->getEndAt() > $now) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
     // *****************************    RACCOURCIS PARTIS / MANDATS    ************************* //
 

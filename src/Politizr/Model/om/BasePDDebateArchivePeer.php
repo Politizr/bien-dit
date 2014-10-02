@@ -29,13 +29,13 @@ abstract class BasePDDebateArchivePeer
     const TM_CLASS = 'PDDebateArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 18;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 18;
 
     /** the column name for the file_name field */
     const FILE_NAME = 'p_d_debate_archive.file_name';
@@ -73,6 +73,9 @@ abstract class BasePDDebateArchivePeer
     /** the column name for the note_neg field */
     const NOTE_NEG = 'p_d_debate_archive.note_neg';
 
+    /** the column name for the nb_views field */
+    const NB_VIEWS = 'p_d_debate_archive.nb_views';
+
     /** the column name for the published field */
     const PUBLISHED = 'p_d_debate_archive.published';
 
@@ -107,12 +110,12 @@ abstract class BasePDDebateArchivePeer
      * e.g. PDDebateArchivePeer::$fieldNames[PDDebateArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('FileName', 'CreatedAt', 'UpdatedAt', 'Slug', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName', 'createdAt', 'updatedAt', 'slug', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::FILE_NAME, PDDebateArchivePeer::CREATED_AT, PDDebateArchivePeer::UPDATED_AT, PDDebateArchivePeer::SLUG, PDDebateArchivePeer::ID, PDDebateArchivePeer::P_USER_ID, PDDebateArchivePeer::TITLE, PDDebateArchivePeer::SUMMARY, PDDebateArchivePeer::DESCRIPTION, PDDebateArchivePeer::MORE_INFO, PDDebateArchivePeer::NOTE_POS, PDDebateArchivePeer::NOTE_NEG, PDDebateArchivePeer::PUBLISHED, PDDebateArchivePeer::PUBLISHED_AT, PDDebateArchivePeer::PUBLISHED_BY, PDDebateArchivePeer::ONLINE, PDDebateArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('file_name', 'created_at', 'updated_at', 'slug', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('FileName', 'CreatedAt', 'UpdatedAt', 'Slug', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName', 'createdAt', 'updatedAt', 'slug', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::FILE_NAME, PDDebateArchivePeer::CREATED_AT, PDDebateArchivePeer::UPDATED_AT, PDDebateArchivePeer::SLUG, PDDebateArchivePeer::ID, PDDebateArchivePeer::P_USER_ID, PDDebateArchivePeer::TITLE, PDDebateArchivePeer::SUMMARY, PDDebateArchivePeer::DESCRIPTION, PDDebateArchivePeer::MORE_INFO, PDDebateArchivePeer::NOTE_POS, PDDebateArchivePeer::NOTE_NEG, PDDebateArchivePeer::NB_VIEWS, PDDebateArchivePeer::PUBLISHED, PDDebateArchivePeer::PUBLISHED_AT, PDDebateArchivePeer::PUBLISHED_BY, PDDebateArchivePeer::ONLINE, PDDebateArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('file_name', 'created_at', 'updated_at', 'slug', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -122,12 +125,12 @@ abstract class BasePDDebateArchivePeer
      * e.g. PDDebateArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('FileName' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'Id' => 4, 'PUserId' => 5, 'Title' => 6, 'Summary' => 7, 'Description' => 8, 'MoreInfo' => 9, 'NotePos' => 10, 'NoteNeg' => 11, 'Published' => 12, 'PublishedAt' => 13, 'PublishedBy' => 14, 'Online' => 15, 'ArchivedAt' => 16, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'id' => 4, 'pUserId' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'moreInfo' => 9, 'notePos' => 10, 'noteNeg' => 11, 'published' => 12, 'publishedAt' => 13, 'publishedBy' => 14, 'online' => 15, 'archivedAt' => 16, ),
-        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::FILE_NAME => 0, PDDebateArchivePeer::CREATED_AT => 1, PDDebateArchivePeer::UPDATED_AT => 2, PDDebateArchivePeer::SLUG => 3, PDDebateArchivePeer::ID => 4, PDDebateArchivePeer::P_USER_ID => 5, PDDebateArchivePeer::TITLE => 6, PDDebateArchivePeer::SUMMARY => 7, PDDebateArchivePeer::DESCRIPTION => 8, PDDebateArchivePeer::MORE_INFO => 9, PDDebateArchivePeer::NOTE_POS => 10, PDDebateArchivePeer::NOTE_NEG => 11, PDDebateArchivePeer::PUBLISHED => 12, PDDebateArchivePeer::PUBLISHED_AT => 13, PDDebateArchivePeer::PUBLISHED_BY => 14, PDDebateArchivePeer::ONLINE => 15, PDDebateArchivePeer::ARCHIVED_AT => 16, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'ID' => 4, 'P_USER_ID' => 5, 'TITLE' => 6, 'SUMMARY' => 7, 'DESCRIPTION' => 8, 'MORE_INFO' => 9, 'NOTE_POS' => 10, 'NOTE_NEG' => 11, 'PUBLISHED' => 12, 'PUBLISHED_AT' => 13, 'PUBLISHED_BY' => 14, 'ONLINE' => 15, 'ARCHIVED_AT' => 16, ),
-        BasePeer::TYPE_FIELDNAME => array ('file_name' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'id' => 4, 'p_user_id' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'more_info' => 9, 'note_pos' => 10, 'note_neg' => 11, 'published' => 12, 'published_at' => 13, 'published_by' => 14, 'online' => 15, 'archived_at' => 16, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('FileName' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'Id' => 4, 'PUserId' => 5, 'Title' => 6, 'Summary' => 7, 'Description' => 8, 'MoreInfo' => 9, 'NotePos' => 10, 'NoteNeg' => 11, 'NbViews' => 12, 'Published' => 13, 'PublishedAt' => 14, 'PublishedBy' => 15, 'Online' => 16, 'ArchivedAt' => 17, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('fileName' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'id' => 4, 'pUserId' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'moreInfo' => 9, 'notePos' => 10, 'noteNeg' => 11, 'nbViews' => 12, 'published' => 13, 'publishedAt' => 14, 'publishedBy' => 15, 'online' => 16, 'archivedAt' => 17, ),
+        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::FILE_NAME => 0, PDDebateArchivePeer::CREATED_AT => 1, PDDebateArchivePeer::UPDATED_AT => 2, PDDebateArchivePeer::SLUG => 3, PDDebateArchivePeer::ID => 4, PDDebateArchivePeer::P_USER_ID => 5, PDDebateArchivePeer::TITLE => 6, PDDebateArchivePeer::SUMMARY => 7, PDDebateArchivePeer::DESCRIPTION => 8, PDDebateArchivePeer::MORE_INFO => 9, PDDebateArchivePeer::NOTE_POS => 10, PDDebateArchivePeer::NOTE_NEG => 11, PDDebateArchivePeer::NB_VIEWS => 12, PDDebateArchivePeer::PUBLISHED => 13, PDDebateArchivePeer::PUBLISHED_AT => 14, PDDebateArchivePeer::PUBLISHED_BY => 15, PDDebateArchivePeer::ONLINE => 16, PDDebateArchivePeer::ARCHIVED_AT => 17, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('FILE_NAME' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'ID' => 4, 'P_USER_ID' => 5, 'TITLE' => 6, 'SUMMARY' => 7, 'DESCRIPTION' => 8, 'MORE_INFO' => 9, 'NOTE_POS' => 10, 'NOTE_NEG' => 11, 'NB_VIEWS' => 12, 'PUBLISHED' => 13, 'PUBLISHED_AT' => 14, 'PUBLISHED_BY' => 15, 'ONLINE' => 16, 'ARCHIVED_AT' => 17, ),
+        BasePeer::TYPE_FIELDNAME => array ('file_name' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'id' => 4, 'p_user_id' => 5, 'title' => 6, 'summary' => 7, 'description' => 8, 'more_info' => 9, 'note_pos' => 10, 'note_neg' => 11, 'nb_views' => 12, 'published' => 13, 'published_at' => 14, 'published_by' => 15, 'online' => 16, 'archived_at' => 17, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -213,6 +216,7 @@ abstract class BasePDDebateArchivePeer
             $criteria->addSelectColumn(PDDebateArchivePeer::MORE_INFO);
             $criteria->addSelectColumn(PDDebateArchivePeer::NOTE_POS);
             $criteria->addSelectColumn(PDDebateArchivePeer::NOTE_NEG);
+            $criteria->addSelectColumn(PDDebateArchivePeer::NB_VIEWS);
             $criteria->addSelectColumn(PDDebateArchivePeer::PUBLISHED);
             $criteria->addSelectColumn(PDDebateArchivePeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDDebateArchivePeer::PUBLISHED_BY);
@@ -231,6 +235,7 @@ abstract class BasePDDebateArchivePeer
             $criteria->addSelectColumn($alias . '.more_info');
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');
+            $criteria->addSelectColumn($alias . '.nb_views');
             $criteria->addSelectColumn($alias . '.published');
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');

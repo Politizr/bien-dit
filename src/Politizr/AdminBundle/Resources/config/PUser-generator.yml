@@ -29,8 +29,6 @@ params:
             label:          Prénom
         name:
             label:          Nom
-        summary:
-            label:          Résumé
         biography:
             label:          Biographie
         website:
@@ -94,11 +92,8 @@ builders:
             title:                              "Création d'un utilisateur"
             display:
                 "Champs principaux":            [ [ p_u_type, p_u_status ], [ gender ], [ firstname, name ] ]
-                "Champs complémentaires":       [ summary, biography ]
+                "Champs complémentaires":       [ biography ]
             fields:
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 biography:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -114,7 +109,7 @@ builders:
                     "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
-                    "Informations":             [ summary, biography ]
+                    "Informations":             [ biography ]
                 "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
                 "Tag":
@@ -165,9 +160,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 biography:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -195,7 +187,7 @@ builders:
                     "Civilité":                 [ [ file_name, gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
-                    "Informations":             [ [ summary, biography ] ]
+                    "Informations":             [ biography ]
                 "Qualification":
                     "Qualifications":           [ p_u_qualifications ]
                 "Tag":

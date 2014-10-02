@@ -137,6 +137,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $note_neg;
 
     /**
+     * The value for the nb_views field.
+     * @var        int
+     */
+    protected $nb_views;
+
+    /**
      * The value for the published field.
      * @var        boolean
      */
@@ -427,6 +433,16 @@ abstract class BasePDReaction extends PDocument implements Persistent
     public function getNoteNeg()
     {
         return $this->note_neg;
+    }
+
+    /**
+     * Get the [nb_views] column value.
+     *
+     * @return int
+     */
+    public function getNbViews()
+    {
+        return $this->nb_views;
     }
 
     /**
@@ -831,6 +847,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
     } // setNoteNeg()
 
     /**
+     * Set the value of [nb_views] column.
+     *
+     * @param int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setNbViews($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->nb_views !== $v) {
+            $this->nb_views = $v;
+            $this->modifiedColumns[] = PDReactionPeer::NB_VIEWS;
+        }
+
+
+        return $this;
+    } // setNbViews()
+
+    /**
      * Sets the value of the [published] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -979,10 +1016,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $this->more_info = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->note_pos = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
             $this->note_neg = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->published = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->published_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->published_by = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->online = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->nb_views = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->published = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -991,7 +1029,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 19; // 19 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1347,6 +1385,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::NOTE_NEG)) {
             $modifiedColumns[':p' . $index++]  = '`note_neg`';
         }
+        if ($this->isColumnModified(PDReactionPeer::NB_VIEWS)) {
+            $modifiedColumns[':p' . $index++]  = '`nb_views`';
+        }
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED)) {
             $modifiedColumns[':p' . $index++]  = '`published`';
         }
@@ -1414,6 +1455,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
                         break;
                     case '`note_neg`':
                         $stmt->bindValue($identifier, $this->note_neg, PDO::PARAM_INT);
+                        break;
+                    case '`nb_views`':
+                        $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
                         break;
                     case '`published`':
                         $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
@@ -1624,15 +1668,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 return $this->getNoteNeg();
                 break;
             case 15:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 16:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 17:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 18:
+                return $this->getPublishedBy();
+                break;
+            case 19:
                 return $this->getOnline();
                 break;
             default:
@@ -1679,10 +1726,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $keys[12] => $this->getMoreInfo(),
             $keys[13] => $this->getNotePos(),
             $keys[14] => $this->getNoteNeg(),
-            $keys[15] => $this->getPublished(),
-            $keys[16] => $this->getPublishedAt(),
-            $keys[17] => $this->getPublishedBy(),
-            $keys[18] => $this->getOnline(),
+            $keys[15] => $this->getNbViews(),
+            $keys[16] => $this->getPublished(),
+            $keys[17] => $this->getPublishedAt(),
+            $keys[18] => $this->getPublishedBy(),
+            $keys[19] => $this->getOnline(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPDDebate) {
@@ -1774,15 +1822,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 $this->setNoteNeg($value);
                 break;
             case 15:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 16:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 17:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 18:
+                $this->setPublishedBy($value);
+                break;
+            case 19:
                 $this->setOnline($value);
                 break;
         } // switch()
@@ -1824,10 +1875,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if (array_key_exists($keys[12], $arr)) $this->setMoreInfo($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setNotePos($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setNoteNeg($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setPublished($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublishedAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublishedBy($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setOnline($arr[$keys[18]]);
+        if (array_key_exists($keys[15], $arr)) $this->setNbViews($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPublished($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
     }
 
     /**
@@ -1854,6 +1906,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::MORE_INFO)) $criteria->add(PDReactionPeer::MORE_INFO, $this->more_info);
         if ($this->isColumnModified(PDReactionPeer::NOTE_POS)) $criteria->add(PDReactionPeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDReactionPeer::NOTE_NEG)) $criteria->add(PDReactionPeer::NOTE_NEG, $this->note_neg);
+        if ($this->isColumnModified(PDReactionPeer::NB_VIEWS)) $criteria->add(PDReactionPeer::NB_VIEWS, $this->nb_views);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED)) $criteria->add(PDReactionPeer::PUBLISHED, $this->published);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_AT)) $criteria->add(PDReactionPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_BY)) $criteria->add(PDReactionPeer::PUBLISHED_BY, $this->published_by);
@@ -1935,6 +1988,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $copyObj->setMoreInfo($this->getMoreInfo());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
+        $copyObj->setNbViews($this->getNbViews());
         $copyObj->setPublished($this->getPublished());
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
@@ -2172,6 +2226,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->more_info = null;
         $this->note_pos = null;
         $this->note_neg = null;
+        $this->nb_views = null;
         $this->published = null;
         $this->published_at = null;
         $this->published_by = null;
@@ -3344,6 +3399,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $parent->setMoreInfo($this->getMoreInfo());
         $parent->setNotePos($this->getNotePos());
         $parent->setNoteNeg($this->getNoteNeg());
+        $parent->setNbViews($this->getNbViews());
         $parent->setPublished($this->getPublished());
         $parent->setPublishedAt($this->getPublishedAt());
         $parent->setPublishedBy($this->getPublishedBy());
@@ -3447,6 +3503,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->setMoreInfo($archive->getMoreInfo());
         $this->setNotePos($archive->getNotePos());
         $this->setNoteNeg($archive->getNoteNeg());
+        $this->setNbViews($archive->getNbViews());
         $this->setPublished($archive->getPublished());
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());

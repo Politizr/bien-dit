@@ -33,13 +33,13 @@ abstract class BasePDocumentPeer
     const TM_CLASS = 'PDocumentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the id field */
     const ID = 'p_document.id';
@@ -64,6 +64,9 @@ abstract class BasePDocumentPeer
 
     /** the column name for the note_neg field */
     const NOTE_NEG = 'p_document.note_neg';
+
+    /** the column name for the nb_views field */
+    const NB_VIEWS = 'p_document.nb_views';
 
     /** the column name for the published field */
     const PUBLISHED = 'p_document.published';
@@ -99,12 +102,12 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[PDocumentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'DescendantClass', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', 'descendantClass', ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::MORE_INFO, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::ONLINE, PDocumentPeer::DESCENDANT_CLASS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'DESCENDANT_CLASS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', 'descendant_class', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'DescendantClass', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', 'descendantClass', ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::MORE_INFO, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::NB_VIEWS, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::ONLINE, PDocumentPeer::DESCENDANT_CLASS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'DESCENDANT_CLASS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', 'descendant_class', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -114,12 +117,12 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'Published' => 8, 'PublishedAt' => 9, 'PublishedBy' => 10, 'Online' => 11, 'DescendantClass' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'published' => 8, 'publishedAt' => 9, 'publishedBy' => 10, 'online' => 11, 'descendantClass' => 12, ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::SUMMARY => 3, PDocumentPeer::DESCRIPTION => 4, PDocumentPeer::MORE_INFO => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::PUBLISHED => 8, PDocumentPeer::PUBLISHED_AT => 9, PDocumentPeer::PUBLISHED_BY => 10, PDocumentPeer::ONLINE => 11, PDocumentPeer::DESCENDANT_CLASS => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED' => 8, 'PUBLISHED_AT' => 9, 'PUBLISHED_BY' => 10, 'ONLINE' => 11, 'DESCENDANT_CLASS' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published' => 8, 'published_at' => 9, 'published_by' => 10, 'online' => 11, 'descendant_class' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'NbViews' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Online' => 12, 'DescendantClass' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'nbViews' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'online' => 12, 'descendantClass' => 13, ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::SUMMARY => 3, PDocumentPeer::DESCRIPTION => 4, PDocumentPeer::MORE_INFO => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::NB_VIEWS => 8, PDocumentPeer::PUBLISHED => 9, PDocumentPeer::PUBLISHED_AT => 10, PDocumentPeer::PUBLISHED_BY => 11, PDocumentPeer::ONLINE => 12, PDocumentPeer::DESCENDANT_CLASS => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'NB_VIEWS' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'ONLINE' => 12, 'DESCENDANT_CLASS' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'nb_views' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'online' => 12, 'descendant_class' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -201,6 +204,7 @@ abstract class BasePDocumentPeer
             $criteria->addSelectColumn(PDocumentPeer::MORE_INFO);
             $criteria->addSelectColumn(PDocumentPeer::NOTE_POS);
             $criteria->addSelectColumn(PDocumentPeer::NOTE_NEG);
+            $criteria->addSelectColumn(PDocumentPeer::NB_VIEWS);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_BY);
@@ -215,6 +219,7 @@ abstract class BasePDocumentPeer
             $criteria->addSelectColumn($alias . '.more_info');
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');
+            $criteria->addSelectColumn($alias . '.nb_views');
             $criteria->addSelectColumn($alias . '.published');
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');

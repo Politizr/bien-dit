@@ -12,7 +12,7 @@
 		<div class="row text-center">
 			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>
-		<hr>
+		<hr>		
 		<div class="debate-comments">
 			{% for comment in debate.document.comments %}
 				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
@@ -30,7 +30,6 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:debateDetail.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
 	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 

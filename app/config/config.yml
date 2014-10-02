@@ -284,7 +284,6 @@ bazinga_faker:
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 
-                Summary:                { method: paragraphs, parameters: [ 2, true ] }
                 Biography:              { method: paragraphs, parameters: [ 4, true ] }
 
                 Website:                { method: url }
@@ -306,6 +305,7 @@ bazinga_faker:
                 ConfirmationToken:      { method: null }
                 PasswordRequestedAt:    { method: null }
 
+                NbViews:                { method: numberBetween, parameters: [ 150, 1500 ] }
                 Online:                 { method: boolean, parameters: [ 100 ] }
                 Slug:                   { method: null }
 
@@ -321,13 +321,13 @@ bazinga_faker:
         Politizr\Model\PUFollowT:
             number:                     150
             custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
         Politizr\Model\PUTaggedT:
             number:                     150
             custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
         #################################################################################################################
@@ -336,13 +336,13 @@ bazinga_faker:
         Politizr\Model\PUReputationRB:
             number:                     50
             custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
 
         Politizr\Model\PUReputationRA:
             number:                     150
             custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
 
 
@@ -403,7 +403,7 @@ bazinga_faker:
             number:                     300
             custom_formatters:
                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
 
         Politizr\Model\PDDTaggedT:
             number:                     30
@@ -417,7 +417,7 @@ bazinga_faker:
 #             custom_formatters:
 #                 # TODO p_d_debate_id mal attribué
 #                 # PDDebateId:             { method: numberBetween, parameters: [ 1, 50 ] }
-#                 Title:                  { method: realText, parameters: [ 60 ] }
+#                 Title:                  { method: realText, parameters: [ 70 ] }
 # 
 #                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
 #                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
@@ -439,7 +439,7 @@ bazinga_faker:
         Politizr\Model\PDComment:
             number:                     500
             custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 60 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PDocumentId:            { method: numberBetween, parameters: [ 1, 15 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }

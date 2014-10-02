@@ -32,13 +32,13 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     const TM_CLASS = 'PDReactionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 20;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 20;
 
     /** the column name for the p_d_debate_id field */
     const P_D_DEBATE_ID = 'p_d_reaction.p_d_debate_id';
@@ -84,6 +84,9 @@ abstract class BasePDReactionPeer extends PDocumentPeer
 
     /** the column name for the note_neg field */
     const NOTE_NEG = 'p_d_reaction.note_neg';
+
+    /** the column name for the nb_views field */
+    const NB_VIEWS = 'p_d_reaction.nb_views';
 
     /** the column name for the published field */
     const PUBLISHED = 'p_d_reaction.published';
@@ -138,12 +141,12 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * e.g. PDReactionPeer::$fieldNames[PDReactionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('PDDebateId', 'CreatedAt', 'UpdatedAt', 'Slug', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'Published', 'PublishedAt', 'PublishedBy', 'Online', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId', 'createdAt', 'updatedAt', 'slug', 'treeLeft', 'treeRight', 'treeLevel', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'published', 'publishedAt', 'publishedBy', 'online', ),
-        BasePeer::TYPE_COLNAME => array (PDReactionPeer::P_D_DEBATE_ID, PDReactionPeer::CREATED_AT, PDReactionPeer::UPDATED_AT, PDReactionPeer::SLUG, PDReactionPeer::TREE_LEFT, PDReactionPeer::TREE_RIGHT, PDReactionPeer::TREE_LEVEL, PDReactionPeer::ID, PDReactionPeer::P_USER_ID, PDReactionPeer::TITLE, PDReactionPeer::SUMMARY, PDReactionPeer::DESCRIPTION, PDReactionPeer::MORE_INFO, PDReactionPeer::NOTE_POS, PDReactionPeer::NOTE_NEG, PDReactionPeer::PUBLISHED, PDReactionPeer::PUBLISHED_AT, PDReactionPeer::PUBLISHED_BY, PDReactionPeer::ONLINE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', ),
-        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id', 'created_at', 'updated_at', 'slug', 'tree_left', 'tree_right', 'tree_level', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'published', 'published_at', 'published_by', 'online', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('PDDebateId', 'CreatedAt', 'UpdatedAt', 'Slug', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId', 'createdAt', 'updatedAt', 'slug', 'treeLeft', 'treeRight', 'treeLevel', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', ),
+        BasePeer::TYPE_COLNAME => array (PDReactionPeer::P_D_DEBATE_ID, PDReactionPeer::CREATED_AT, PDReactionPeer::UPDATED_AT, PDReactionPeer::SLUG, PDReactionPeer::TREE_LEFT, PDReactionPeer::TREE_RIGHT, PDReactionPeer::TREE_LEVEL, PDReactionPeer::ID, PDReactionPeer::P_USER_ID, PDReactionPeer::TITLE, PDReactionPeer::SUMMARY, PDReactionPeer::DESCRIPTION, PDReactionPeer::MORE_INFO, PDReactionPeer::NOTE_POS, PDReactionPeer::NOTE_NEG, PDReactionPeer::NB_VIEWS, PDReactionPeer::PUBLISHED, PDReactionPeer::PUBLISHED_AT, PDReactionPeer::PUBLISHED_BY, PDReactionPeer::ONLINE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', ),
+        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id', 'created_at', 'updated_at', 'slug', 'tree_left', 'tree_right', 'tree_level', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -153,12 +156,12 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * e.g. PDReactionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('PDDebateId' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'TreeLeft' => 4, 'TreeRight' => 5, 'TreeLevel' => 6, 'Id' => 7, 'PUserId' => 8, 'Title' => 9, 'Summary' => 10, 'Description' => 11, 'MoreInfo' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'Published' => 15, 'PublishedAt' => 16, 'PublishedBy' => 17, 'Online' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'treeLeft' => 4, 'treeRight' => 5, 'treeLevel' => 6, 'id' => 7, 'pUserId' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'moreInfo' => 12, 'notePos' => 13, 'noteNeg' => 14, 'published' => 15, 'publishedAt' => 16, 'publishedBy' => 17, 'online' => 18, ),
-        BasePeer::TYPE_COLNAME => array (PDReactionPeer::P_D_DEBATE_ID => 0, PDReactionPeer::CREATED_AT => 1, PDReactionPeer::UPDATED_AT => 2, PDReactionPeer::SLUG => 3, PDReactionPeer::TREE_LEFT => 4, PDReactionPeer::TREE_RIGHT => 5, PDReactionPeer::TREE_LEVEL => 6, PDReactionPeer::ID => 7, PDReactionPeer::P_USER_ID => 8, PDReactionPeer::TITLE => 9, PDReactionPeer::SUMMARY => 10, PDReactionPeer::DESCRIPTION => 11, PDReactionPeer::MORE_INFO => 12, PDReactionPeer::NOTE_POS => 13, PDReactionPeer::NOTE_NEG => 14, PDReactionPeer::PUBLISHED => 15, PDReactionPeer::PUBLISHED_AT => 16, PDReactionPeer::PUBLISHED_BY => 17, PDReactionPeer::ONLINE => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'TREE_LEFT' => 4, 'TREE_RIGHT' => 5, 'TREE_LEVEL' => 6, 'ID' => 7, 'P_USER_ID' => 8, 'TITLE' => 9, 'SUMMARY' => 10, 'DESCRIPTION' => 11, 'MORE_INFO' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'PUBLISHED' => 15, 'PUBLISHED_AT' => 16, 'PUBLISHED_BY' => 17, 'ONLINE' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'tree_left' => 4, 'tree_right' => 5, 'tree_level' => 6, 'id' => 7, 'p_user_id' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'more_info' => 12, 'note_pos' => 13, 'note_neg' => 14, 'published' => 15, 'published_at' => 16, 'published_by' => 17, 'online' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('PDDebateId' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'TreeLeft' => 4, 'TreeRight' => 5, 'TreeLevel' => 6, 'Id' => 7, 'PUserId' => 8, 'Title' => 9, 'Summary' => 10, 'Description' => 11, 'MoreInfo' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'NbViews' => 15, 'Published' => 16, 'PublishedAt' => 17, 'PublishedBy' => 18, 'Online' => 19, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'treeLeft' => 4, 'treeRight' => 5, 'treeLevel' => 6, 'id' => 7, 'pUserId' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'moreInfo' => 12, 'notePos' => 13, 'noteNeg' => 14, 'nbViews' => 15, 'published' => 16, 'publishedAt' => 17, 'publishedBy' => 18, 'online' => 19, ),
+        BasePeer::TYPE_COLNAME => array (PDReactionPeer::P_D_DEBATE_ID => 0, PDReactionPeer::CREATED_AT => 1, PDReactionPeer::UPDATED_AT => 2, PDReactionPeer::SLUG => 3, PDReactionPeer::TREE_LEFT => 4, PDReactionPeer::TREE_RIGHT => 5, PDReactionPeer::TREE_LEVEL => 6, PDReactionPeer::ID => 7, PDReactionPeer::P_USER_ID => 8, PDReactionPeer::TITLE => 9, PDReactionPeer::SUMMARY => 10, PDReactionPeer::DESCRIPTION => 11, PDReactionPeer::MORE_INFO => 12, PDReactionPeer::NOTE_POS => 13, PDReactionPeer::NOTE_NEG => 14, PDReactionPeer::NB_VIEWS => 15, PDReactionPeer::PUBLISHED => 16, PDReactionPeer::PUBLISHED_AT => 17, PDReactionPeer::PUBLISHED_BY => 18, PDReactionPeer::ONLINE => 19, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'TREE_LEFT' => 4, 'TREE_RIGHT' => 5, 'TREE_LEVEL' => 6, 'ID' => 7, 'P_USER_ID' => 8, 'TITLE' => 9, 'SUMMARY' => 10, 'DESCRIPTION' => 11, 'MORE_INFO' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'NB_VIEWS' => 15, 'PUBLISHED' => 16, 'PUBLISHED_AT' => 17, 'PUBLISHED_BY' => 18, 'ONLINE' => 19, ),
+        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'tree_left' => 4, 'tree_right' => 5, 'tree_level' => 6, 'id' => 7, 'p_user_id' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'more_info' => 12, 'note_pos' => 13, 'note_neg' => 14, 'nb_views' => 15, 'published' => 16, 'published_at' => 17, 'published_by' => 18, 'online' => 19, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -247,6 +250,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
             $criteria->addSelectColumn(PDReactionPeer::MORE_INFO);
             $criteria->addSelectColumn(PDReactionPeer::NOTE_POS);
             $criteria->addSelectColumn(PDReactionPeer::NOTE_NEG);
+            $criteria->addSelectColumn(PDReactionPeer::NB_VIEWS);
             $criteria->addSelectColumn(PDReactionPeer::PUBLISHED);
             $criteria->addSelectColumn(PDReactionPeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDReactionPeer::PUBLISHED_BY);
@@ -267,6 +271,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
             $criteria->addSelectColumn($alias . '.more_info');
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');
+            $criteria->addSelectColumn($alias . '.nb_views');
             $criteria->addSelectColumn($alias . '.published');
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');

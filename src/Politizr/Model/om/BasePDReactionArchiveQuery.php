@@ -30,6 +30,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDReactionArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDReactionArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
+ * @method PDReactionArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDReactionArchiveQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDReactionArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -51,6 +52,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByMoreInfo() Group by the more_info column
  * @method PDReactionArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDReactionArchiveQuery groupByNoteNeg() Group by the note_neg column
+ * @method PDReactionArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PDReactionArchiveQuery groupByPublished() Group by the published column
  * @method PDReactionArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionArchiveQuery groupByPublishedBy() Group by the published_by column
@@ -78,6 +80,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByMoreInfo(string $more_info) Return the first PDReactionArchive filtered by the more_info column
  * @method PDReactionArchive findOneByNotePos(int $note_pos) Return the first PDReactionArchive filtered by the note_pos column
  * @method PDReactionArchive findOneByNoteNeg(int $note_neg) Return the first PDReactionArchive filtered by the note_neg column
+ * @method PDReactionArchive findOneByNbViews(int $nb_views) Return the first PDReactionArchive filtered by the nb_views column
  * @method PDReactionArchive findOneByPublished(boolean $published) Return the first PDReactionArchive filtered by the published column
  * @method PDReactionArchive findOneByPublishedAt(string $published_at) Return the first PDReactionArchive filtered by the published_at column
  * @method PDReactionArchive findOneByPublishedBy(string $published_by) Return the first PDReactionArchive filtered by the published_by column
@@ -99,6 +102,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByMoreInfo(string $more_info) Return PDReactionArchive objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDReactionArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDReactionArchive objects filtered by the note_neg column
+ * @method array findByNbViews(int $nb_views) Return PDReactionArchive objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDReactionArchive objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDReactionArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReactionArchive objects filtered by the published_by column
@@ -205,7 +209,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -859,6 +863,48 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::NOTE_NEG, $noteNeg, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_views column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbViews(1234); // WHERE nb_views = 1234
+     * $query->filterByNbViews(array(12, 34)); // WHERE nb_views IN (12, 34)
+     * $query->filterByNbViews(array('min' => 12)); // WHERE nb_views >= 12
+     * $query->filterByNbViews(array('max' => 12)); // WHERE nb_views <= 12
+     * </code>
+     *
+     * @param     mixed $nbViews The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByNbViews($nbViews = null, $comparison = null)
+    {
+        if (is_array($nbViews)) {
+            $useMinMax = false;
+            if (isset($nbViews['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::NB_VIEWS, $nbViews['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbViews['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::NB_VIEWS, $nbViews['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::NB_VIEWS, $nbViews, $comparison);
     }
 
     /**

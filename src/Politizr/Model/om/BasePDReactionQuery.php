@@ -37,6 +37,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDReactionQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDReactionQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
+ * @method PDReactionQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDReactionQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDReactionQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -57,6 +58,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByMoreInfo() Group by the more_info column
  * @method PDReactionQuery groupByNotePos() Group by the note_pos column
  * @method PDReactionQuery groupByNoteNeg() Group by the note_neg column
+ * @method PDReactionQuery groupByNbViews() Group by the nb_views column
  * @method PDReactionQuery groupByPublished() Group by the published column
  * @method PDReactionQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionQuery groupByPublishedBy() Group by the published_by column
@@ -95,6 +97,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByMoreInfo(string $more_info) Return the first PDReaction filtered by the more_info column
  * @method PDReaction findOneByNotePos(int $note_pos) Return the first PDReaction filtered by the note_pos column
  * @method PDReaction findOneByNoteNeg(int $note_neg) Return the first PDReaction filtered by the note_neg column
+ * @method PDReaction findOneByNbViews(int $nb_views) Return the first PDReaction filtered by the nb_views column
  * @method PDReaction findOneByPublished(boolean $published) Return the first PDReaction filtered by the published column
  * @method PDReaction findOneByPublishedAt(string $published_at) Return the first PDReaction filtered by the published_at column
  * @method PDReaction findOneByPublishedBy(string $published_by) Return the first PDReaction filtered by the published_by column
@@ -115,6 +118,7 @@ use Politizr\Model\PUser;
  * @method array findByMoreInfo(string $more_info) Return PDReaction objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDReaction objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDReaction objects filtered by the note_neg column
+ * @method array findByNbViews(int $nb_views) Return PDReaction objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDReaction objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDReaction objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReaction objects filtered by the published_by column
@@ -226,7 +230,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -886,6 +890,48 @@ abstract class BasePDReactionQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDReactionPeer::NOTE_NEG, $noteNeg, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_views column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbViews(1234); // WHERE nb_views = 1234
+     * $query->filterByNbViews(array(12, 34)); // WHERE nb_views IN (12, 34)
+     * $query->filterByNbViews(array('min' => 12)); // WHERE nb_views >= 12
+     * $query->filterByNbViews(array('max' => 12)); // WHERE nb_views <= 12
+     * </code>
+     *
+     * @param     mixed $nbViews The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByNbViews($nbViews = null, $comparison = null)
+    {
+        if (is_array($nbViews)) {
+            $useMinMax = false;
+            if (isset($nbViews['min'])) {
+                $this->addUsingAlias(PDReactionPeer::NB_VIEWS, $nbViews['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbViews['max'])) {
+                $this->addUsingAlias(PDReactionPeer::NB_VIEWS, $nbViews['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::NB_VIEWS, $nbViews, $comparison);
     }
 
     /**

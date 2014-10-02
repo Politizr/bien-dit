@@ -21,8 +21,33 @@ Politizr\Model\PUStatus:
 
 Politizr\Model\PUser:
 
-    # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
+    # LISTE USER TEST
+    usertest1:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
 
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Lorem
+        name:                   Ipsum
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+
+
+    # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
     depute1:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -33,7 +58,6 @@ Politizr\Model\PUser:
         firstname:              Damien
         name:                   Abad
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -43,7 +67,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute2:
         p_u_type_id:            qualifie
@@ -55,7 +82,6 @@ Politizr\Model\PUser:
         firstname:              Laurence
         name:                   Abeille
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -65,7 +91,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute3:
         p_u_type_id:            qualifie
@@ -77,7 +106,6 @@ Politizr\Model\PUser:
         firstname:              Ibrahim
         name:                   Aboucar
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -87,7 +115,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute4:
         p_u_type_id:            qualifie
@@ -99,7 +130,6 @@ Politizr\Model\PUser:
         firstname:              Elie
         name:                   Aboud
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -109,7 +139,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute5:
         p_u_type_id:            qualifie
@@ -121,7 +154,6 @@ Politizr\Model\PUser:
         firstname:              Bernard
         name:                   Accoyer
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -131,7 +163,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute6:
         p_u_type_id:            qualifie
@@ -143,7 +178,6 @@ Politizr\Model\PUser:
         firstname:              Patricia
         name:                   Adam
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -153,7 +187,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute7:
         p_u_type_id:            qualifie
@@ -163,7 +200,6 @@ Politizr\Model\PUser:
         firstname:              Sylvian
         name:                   Alaux
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -173,7 +209,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute8:
         p_u_type_id:            qualifie
@@ -185,7 +224,6 @@ Politizr\Model\PUser:
         firstname:              Eric
         name:                   Alauzet
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -195,7 +233,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute9:
         p_u_type_id:            qualifie
@@ -207,7 +248,6 @@ Politizr\Model\PUser:
         firstname:              Yves
         name:                   Albarello
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -217,7 +257,10 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
 
     depute10:
         p_u_type_id:            qualifie
@@ -229,7 +272,6 @@ Politizr\Model\PUser:
         firstname:              Brigitte
         name:                   Allain
 
-        summary:                <?php $faker('paragraphs', 2, true); ?>
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -239,6 +281,239 @@ Politizr\Model\PUser:
 
         email:                  <?php $faker('email'); ?>
 
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
         online:                 1
+
+    depute11:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Jean-Pierre
+        name:                   Allossery
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute12:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Nicole
+        name:                   Ameline
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute13:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Pouria
+        name:                   Amirshahi
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute14:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              François
+        name:                   André
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute15:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Sylvie
+        name:                   Andrieux
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute16:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Benoist
+        name:                   Apparu
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute17:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Nathalie
+        name:                   Appéré
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute18:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Madame
+        firstname:              Laurence
+        name:                   Arribagé
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute19:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              François
+        name:                   Asensi
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
+    depute20:
+        p_u_type_id:            qualifie
+        p_u_status_id:          activ
+
+        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
+
+        gender:                 Monsieur
+        firstname:              Christian
+        name:                   Assaf
+
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
+
+        email:                  <?php $faker('email'); ?>
+
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        online:                 1
+
 
 

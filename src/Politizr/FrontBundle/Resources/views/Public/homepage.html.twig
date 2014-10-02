@@ -49,7 +49,7 @@
 			<h2>Débats les plus suivis</h2>
 			<div>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true } %}
+					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true, 'withMoreInfos': true } %}
 				{% endfor %}
 			</div>
 		</div>
@@ -86,7 +86,6 @@
 
 {% block javascriptFooter %}
 	{{ parent() }}
-	{% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
 	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     
     {% include 'PolitizrFrontBundle:JS:homepage.js.twig' %}

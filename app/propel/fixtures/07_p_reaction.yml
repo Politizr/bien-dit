@@ -6,7 +6,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat1
-        p_user_id:      depute2
+        p_user_id:      depute7
 
         title:			<?php $faker('realText', 60) ?>
 
@@ -16,6 +16,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-09-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -26,7 +27,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat1
-        p_user_id:      depute2
+        p_user_id:      depute8
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -36,6 +37,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-08-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -46,7 +48,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat1
-        p_user_id:      depute2
+        p_user_id:      depute9
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -56,6 +58,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-07-10 21:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -66,7 +69,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat2
-        p_user_id:      depute3
+        p_user_id:      depute10
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -76,6 +79,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-06-10 22:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -86,7 +90,7 @@ Politizr\Model\PDReaction:
         tree_level:     2
 
         p_d_debate_id:  debat2
-        p_user_id:      depute4
+        p_user_id:      depute11
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -96,6 +100,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-06-10 23:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -106,7 +111,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat2
-        p_user_id:      depute5
+        p_user_id:      depute12
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -116,6 +121,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-06-10 18:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -126,7 +132,7 @@ Politizr\Model\PDReaction:
         tree_level:     1
 
         p_d_debate_id:  debat3
-        p_user_id:      depute6
+        p_user_id:      depute13
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -136,6 +142,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-05-10 17:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -146,7 +153,7 @@ Politizr\Model\PDReaction:
         tree_level:     2
 
         p_d_debate_id:  debat3
-        p_user_id:      depute7
+        p_user_id:      depute14
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -156,6 +163,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-04-10 15:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
@@ -166,7 +174,7 @@ Politizr\Model\PDReaction:
         tree_level:     3
 
         p_d_debate_id:  debat3
-        p_user_id:      depute8
+        p_user_id:      depute15
 
         title:          <?php $faker('realText', 60) ?>
 
@@ -176,6 +184,7 @@ Politizr\Model\PDReaction:
         online:         true
         published:      true
         published_at:   '2014-03-10 12:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>

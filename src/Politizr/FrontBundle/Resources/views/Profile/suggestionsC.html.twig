@@ -13,7 +13,7 @@
 		<hr>
 		{% for debate in debatesGeo %}
 			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
-			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
+			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
 		{% else %}
 			Aucun débat ne correspond à vos préférences tag géo<br/>
 			{# TODO lien ajouter des tags #}
@@ -28,7 +28,7 @@
 		<hr>
 		{% for debate in debatesTheme %}
 			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
-			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
+			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
 		{% else %}
 			Aucun débat ne correspond à vos préférences tag theme<br/>
 			{# TODO lien ajouter des tags #}
@@ -57,7 +57,6 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:suggestionsC.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 {% endblock javascriptFooter %}

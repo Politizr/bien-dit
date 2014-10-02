@@ -74,7 +74,6 @@ class PUserTableMap extends TableMap
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 150, null);
         $this->addColumn('name', 'Name', 'VARCHAR', false, 150, null);
         $this->addColumn('birthday', 'Birthday', 'DATE', false, null, null);
-        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('biography', 'Biography', 'LONGVARCHAR', false, null, null);
         $this->addColumn('website', 'Website', 'VARCHAR', false, 150, null);
         $this->addColumn('twitter', 'Twitter', 'VARCHAR', false, 150, null);
@@ -82,6 +81,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
+        $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

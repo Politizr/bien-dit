@@ -30,50 +30,34 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="bio">
-				{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
-					<div class="col-sm-4 text-center">
-						{% set puQualification = pUser.currentQualification %}
-						<div class="qualification">
-							{% if puQualification %}
-								<span class="label label-success">{{ puQualification.mandateTypeTitle }}</span>
-								<span class="label">{{ puQualification.politicalPartyInitials }}</span>
-								{% if (puQualification.politicalPartyLogo) %}
-						            <img src="{{ asset('uploads/political/'~puQualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ puQualification.politicalPartyInitials }}">
-					        	{% endif %}
-								{% if full %}
-									<p>{{ puQualification.description | raw  }}</p>
-								{% endif %}
-							{% else %}
-								<span class="label label-danger">Aucun mandat renseigné</span>
-							{% endif %}
-						</div>
-					</div>
-					<div class="col-sm-8">
-						{% if full %}
-							<p>{{ pUser.biography | raw  }}</p>
-						{% else %}
-							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
-						{% endif %}
-					</div>
-				{% else %}
-					<div class="col-sm-6">
-						{% if full %}
-							<p>{{ pUser.summary | raw  }}</p>
-						{% else %}
-							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
-						{% endif %}
-					</div>
-					<div class="col-sm-6">
-						{% if full %}
-							<p>{{ pUser.biography | raw  }}</p>
-						{% else %}
-							<p>{{ pUser.biography | striptags | raw | slice(0, 200) }}...</p>
-						{% endif %}
-					</div>
-				{% endif %}
+		<hr>
+		{% if full %}
+			<div class="row">
+				<div class="bio">
+						<p>{{ pUser.biography | raw  }}</p>
+				</div>
 			</div>
+			<hr>
+		{% endif %}	
+		<div class="row">
+			{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
+				{% if full %}
+					{% set qualifications = pUser.qualifications %}
+					{% for qualification in qualifications %}
+						{% include 'PolitizrFrontBundle:Fragment:QualificationBlock.html.twig' with {'qualification': qualification, 'full': full } only %}
+						{% if not loop.last %}<hr>{% endif %}
+					{% else %}
+						<span class="label label-danger">Aucun mandat renseigné</span>
+					{% endfor %}
+				{% else %}
+					{% set qualification = pUser.currentQualification %}
+					{% if qualification %}
+						{% include 'PolitizrFrontBundle:Fragment:QualificationBlock.html.twig' with {'qualification': qualification, 'full': full } only %}
+					{% else %}
+						<span class="label label-danger">Aucun mandat renseigné</span>
+					{% endif %}
+				{% endif %}
+			{% endif %}
 		</div>
 		<hr>
 		<div class="user-tags">
@@ -94,53 +78,15 @@
 				{% for prBadge in pUser.prBadges %}
 					{# TODO extraire le grade dans une table séparée #}
 					<span class="label label-warning">{{ prBadge.title }} ({{ prBadge.grade }})</span>
+				{% else %}
+					<span class="label label-default">Aucun badge</span>
 				{% endfor %}
 			</div>
 		</div>
 		<hr>
 		<div class="row text-center">
 			<!-- FOLLOWERS -->
-			<div id="followers">
-				Suivi par <a action="show-followers-c-list" class="label label-primary">{{ pUser.countPUserFollowersC }} citoyens</a> et <a action="show-followers-q-list" class="label label-primary">{{ pUser.countPUserFollowersQ }} élus</a>
-				<div action="followers-c-list">
-					{% for follower in pUser.pUserFollowersC %}
-		                {% if ((loop.index0%4) == 0) %}
-		                    <div class="row">
-		                {% endif %}
-						<div class="col-sm-3">
-							<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-								{% if (follower.fileName) %}
-						            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-						        {% else %}
-						            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-					        	{% endif %}
-							</a>
-						</div>
-						{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
-				<div action="followers-q-list">
-					{% for follower in pUser.pUserFollowersQ %}
-		                {% if ((loop.index0%4) == 0) %}
-		                    <div class="row">
-		                {% endif %}
-						<div class="col-sm-3">
-							<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-								{% if (follower.fileName) %}
-						            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-						        {% else %}
-						            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
-					        	{% endif %}
-							</a>
-						</div>
-						{% if ((loop.index%4) == 0 or loop.length == loop.index) %}
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
-			</div>
+			{% include 'PolitizrFrontBundle:Fragment:FollowersBlock.html.twig' with {'nbC': pUser.countPUserFollowersC, 'nbQ': pUser.countPUserFollowersQ, 'followersC': pUser.pUserFollowersC, 'followersQ': pUser.pUserFollowersQ } only %}
 		</div>
 		<hr>
 		<div class="row text-center">

@@ -23,6 +23,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDocumentArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDocumentArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
+ * @method PDocumentArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDocumentArchiveQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDocumentArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -37,6 +38,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery groupByMoreInfo() Group by the more_info column
  * @method PDocumentArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDocumentArchiveQuery groupByNoteNeg() Group by the note_neg column
+ * @method PDocumentArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PDocumentArchiveQuery groupByPublished() Group by the published column
  * @method PDocumentArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentArchiveQuery groupByPublishedBy() Group by the published_by column
@@ -57,6 +59,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchive findOneByMoreInfo(string $more_info) Return the first PDocumentArchive filtered by the more_info column
  * @method PDocumentArchive findOneByNotePos(int $note_pos) Return the first PDocumentArchive filtered by the note_pos column
  * @method PDocumentArchive findOneByNoteNeg(int $note_neg) Return the first PDocumentArchive filtered by the note_neg column
+ * @method PDocumentArchive findOneByNbViews(int $nb_views) Return the first PDocumentArchive filtered by the nb_views column
  * @method PDocumentArchive findOneByPublished(boolean $published) Return the first PDocumentArchive filtered by the published column
  * @method PDocumentArchive findOneByPublishedAt(string $published_at) Return the first PDocumentArchive filtered by the published_at column
  * @method PDocumentArchive findOneByPublishedBy(string $published_by) Return the first PDocumentArchive filtered by the published_by column
@@ -71,6 +74,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method array findByMoreInfo(string $more_info) Return PDocumentArchive objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDocumentArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDocumentArchive objects filtered by the note_neg column
+ * @method array findByNbViews(int $nb_views) Return PDocumentArchive objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDocumentArchive objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDocumentArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocumentArchive objects filtered by the published_by column
@@ -177,7 +181,7 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -548,6 +552,48 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentArchivePeer::NOTE_NEG, $noteNeg, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_views column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbViews(1234); // WHERE nb_views = 1234
+     * $query->filterByNbViews(array(12, 34)); // WHERE nb_views IN (12, 34)
+     * $query->filterByNbViews(array('min' => 12)); // WHERE nb_views >= 12
+     * $query->filterByNbViews(array('max' => 12)); // WHERE nb_views <= 12
+     * </code>
+     *
+     * @param     mixed $nbViews The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByNbViews($nbViews = null, $comparison = null)
+    {
+        if (is_array($nbViews)) {
+            $useMinMax = false;
+            if (isset($nbViews['min'])) {
+                $this->addUsingAlias(PDocumentArchivePeer::NB_VIEWS, $nbViews['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbViews['max'])) {
+                $this->addUsingAlias(PDocumentArchivePeer::NB_VIEWS, $nbViews['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDocumentArchivePeer::NB_VIEWS, $nbViews, $comparison);
     }
 
     /**

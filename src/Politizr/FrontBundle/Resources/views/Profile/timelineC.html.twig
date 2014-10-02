@@ -4,7 +4,7 @@
 	<div id="main" class="container">
 		<h1>Timeline</h1>
         {% for document in documents %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true } %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true, 'withMoreInfos': false } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Vous ne suivez aucun débat ou utilisateur pour le moment</a>
@@ -17,7 +17,6 @@
 	{{ parent() }}
     {% include 'PolitizrFrontBundle:JS:timelineC.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:documentBlock.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
 {% endblock javascriptFooter %}

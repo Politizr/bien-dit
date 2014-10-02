@@ -5,7 +5,7 @@
 		<h1>Mes contributions</h1>
 		<h3>Mes brouillons</h3>
         {% for draft in drafts %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false } %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
@@ -13,7 +13,7 @@
 		{% endfor %}
 		<h3>Mes débats publiés</h3>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false } %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez débat en ligne pour le moment</a>
