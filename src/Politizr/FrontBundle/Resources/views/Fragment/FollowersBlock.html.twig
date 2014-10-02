@@ -9,9 +9,9 @@
 			<div class="col-sm-1">
 				<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
 					{% if (follower.fileName) %}
-			            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			            <img class="img-circle" src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower }}" title="{{ follower }}">
 			        {% else %}
-			            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower }}" title="{{ follower }}">
 		        	{% endif %}
 				</a>
 			</div>
@@ -29,9 +29,9 @@
 			<div class="col-sm-1">
 				<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
 					{% if (follower.fileName) %}
-			            <img src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			            <img class="img-circle" src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ follower }}" title="{{ follower }}">
 			        {% else %}
-			            <img src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower.name }}">
+			            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" alt="{{ follower }}" title="{{ follower }}">
 		        	{% endif %}
 				</a>
 			</div>
