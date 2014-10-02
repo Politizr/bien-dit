@@ -3,8 +3,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h3>Suggestions de débats</h3>
-		<h4 class="bg-info">Liste de débat possédant au moins un des tags géographiques suivis</h4>
+		<h3>Suggestions de débats par tags géographiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
@@ -15,11 +14,12 @@
 			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
 			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
 		{% else %}
-			Aucun débat ne correspond à vos préférences tag géo<br/>
-			{# TODO lien ajouter des tags #}
-			> Ajouter des tags géo
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
+			</div>
 		{% endfor %}
-		<h4 class="bg-info">Liste de débat possédant au moins un des tags thème suivis</h4>
+		<div class="border-row">&nbsp;</div>
+		<h3>Suggestions de débats par tags thématiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
@@ -30,12 +30,12 @@
 			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
 			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
 		{% else %}
-			Aucun débat ne correspond à vos préférences tag theme<br/>
-			{# TODO lien ajouter des tags #}
-			> Ajouter des tags theme
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
+			</div>
 		{% endfor %}
-		<h3>Suggestions de personnalités</h3>
-		<h4 class="bg-info">Liste d'élus possédant au moins un des tags géographiques suivis</h4>
+		<div class="border-row">&nbsp;</div>
+		<h3>Suggestions d'élus par tags géographiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
 				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
@@ -45,9 +45,9 @@
 		{% for user in usersGeo %}
 			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
 		{% else %}
-			Aucun élu ne correspond à vos préférences tag géo<br/>
-			{# TODO lien ajouter des tags #}
-			> Ajouter des tags géo
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun élu ne correspond à vos tags suivis</a>
+			</div>
 		{% endfor %}
 	</div>
 {% endblock main %}
