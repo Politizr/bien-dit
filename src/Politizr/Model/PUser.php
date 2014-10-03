@@ -628,12 +628,15 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PRBadge (collection)
      */
-    public function getPRBadges($prBadgeTypeId = null, $online = true) {
+    public function getBadges($prBadgeTypeId = null, $online = true) {
         $query = PRBadgeQuery::create()
             ->filterByOnline($online)
             ->_if($prBadgeTypeId)
                 ->filterByPRBadgeTypeId($prBadgeTypeId)
-            ->_endif();
+            ->_endif()
+            ->orderByPRBadgeTypeId()
+            ->orderByTitle()
+            ;
 
         return parent::getPuReputationRbPRBadges($query);
     }
@@ -641,14 +644,14 @@ class PUser extends BasePUser implements UserInterface
     /**
      * @see addPuReputationRbPRBadge
      */
-    public function addPRBadge(PRBadge $prBadge) {
+    public function addBadge(PRBadge $prBadge) {
         return parent::addPuReputationRbPRBadge($prBadge);
     }
 
     /**
      * @see removePuReputationRbPRBadge
      */
-    public function removePRBadge(PRBadge $prBadge) {
+    public function removeBadge(PRBadge $prBadge) {
         return parent::removePuReputationRbPRBadge($prBadge);
     }
 
@@ -676,7 +679,12 @@ class PUser extends BasePUser implements UserInterface
 
         $result = $stmt->fetchAll();
 
-        return $result[0]['score'];
+        $score = $result[0]['score'];
+        if ($score == null) {
+            $score = 0;
+        }
+
+        return $score;
     }
 
 

@@ -1,0 +1,19 @@
+{% for type in badgeTypes %}
+	<tr>
+	    <td colspan="2">{{ type.title }}</td>
+	</tr>
+	{% for badge in type.badges %}
+		<tr>
+			<td>
+				<span class="label label-warning">{{ badge.title }} ({{ badge.grade }})</span>
+			</td>
+			<td>
+				{% if badge.id in badgeIds %}
+					<i class="glyphicon glyphicon-ok"></i>
+				{% else %}
+					<i class="glyphicon glyphicon-remove"></i>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+{% endfor %}

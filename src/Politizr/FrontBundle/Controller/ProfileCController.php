@@ -23,6 +23,8 @@ use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PRBadgeTypeQuery;
+use Politizr\Model\PUReputationRBQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUType;
@@ -447,11 +449,34 @@ ORDER BY published DESC
         //      Récupération objets vue
         // *********************************** //
 
+        // score de réputation
+        $reputationScore = $pUser->getReputationScore();
+        
+        // badges
+        // type
+        $badgeTypes = PRBadgeTypeQuery::create()
+                        ->orderByTitle()
+                        ->find()
+                        ;
+
+        // ids des badges du user
+        $badgeIds = array();
+        $badgeIds = PUReputationRBQuery::create()
+                        ->filterByPUserId($pUser->getId())
+                        ->find()
+                        ->toKeyValue('PRBadgeId', 'PRBadgeId')
+                        // ->getPrimaryKeys()
+                        ;
+        $badgeIds = array_keys($badgeIds);
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileC:myReputationC.html.twig', array(
+            'reputationScore' => $reputationScore,
+            'badgeTypes' => $badgeTypes,
+            'badgeIds' => $badgeIds,
             ));
     }
 

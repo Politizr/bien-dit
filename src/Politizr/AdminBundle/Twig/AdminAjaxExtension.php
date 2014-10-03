@@ -370,7 +370,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserBadges.html.twig', array(
                                 'pUser' => $pUser,
-                                'prBadges' => $pUser->getPRBadges($prBadgeType),
+                                'badges' => $pUser->getBadges($prBadgeType),
                                 'zoneId' => $zoneId,
                                 )
                     );

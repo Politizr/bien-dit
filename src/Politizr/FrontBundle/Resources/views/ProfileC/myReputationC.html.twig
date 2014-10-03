@@ -3,7 +3,21 @@
 {% block main %}
 	<div id="main" class="container">
 		<h3>Ma réputation</h3>
-	</div>
+		<span class="badge alert-success">{{ reputationScore }}</span>
+		<h3>Mes badges</h3>
+
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+			        <tr>
+			            <th>Badges</th>
+			            <th>&nbsp;</th>
+			        </tr>
+		      	</thead>				
+				{% include 'PolitizrFrontBundle:Fragment:BadgeRowBlock.html.twig' with { 'badgeTypes': badgeTypes, 'badgeIds': badgeIds } %}
+			</table>
+		</div>
+</div>
 {% endblock main %}
 
 {% block javascriptFooter %}

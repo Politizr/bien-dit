@@ -25,4 +25,20 @@ class PRBadgeType extends BasePRBadgeType
 	public function __toString() {
 		return $this->getTitle();
 	}
+
+
+	// *****************************  BADGES  ****************** //
+
+	/**
+	 *
+	 */
+	public function getBadges($online = true) {
+		$query = PRBadgeQuery::create()
+				->_if($online)
+					->filterByOnline($online)
+				->_endif()
+				->orderByTitle();
+
+		return parent::getPRBadges($query);
+	}
 }

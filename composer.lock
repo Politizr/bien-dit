@@ -3345,12 +3345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "0e236586aaf5bcb6a6b420a03144a295569cfc7b"
+                "reference": "33afb8a37bda2fc9131bf8b853b6b185c22ee483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0e236586aaf5bcb6a6b420a03144a295569cfc7b",
-                "reference": "0e236586aaf5bcb6a6b420a03144a295569cfc7b",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/33afb8a37bda2fc9131bf8b853b6b185c22ee483",
+                "reference": "33afb8a37bda2fc9131bf8b853b6b185c22ee483",
                 "shasum": ""
             },
             "replace": {
@@ -3388,7 +3388,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-10-01 02:38:00"
+            "time": "2014-10-02 05:02:22"
         },
         {
             "name": "twbs/bootstrap-sass",
@@ -3396,12 +3396,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap-sass.git",
-                "reference": "c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc"
+                "reference": "452506d6be0827ca1451e3732ce6eec9f87ce547"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc",
-                "reference": "c9f2e89f826db06e058ac2a97da4dd7fd6b10ccc",
+                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/452506d6be0827ca1451e3732ce6eec9f87ce547",
+                "reference": "452506d6be0827ca1451e3732ce6eec9f87ce547",
                 "shasum": ""
             },
             "type": "library",
@@ -3441,7 +3441,7 @@
                 "css",
                 "sass"
             ],
-            "time": "2014-09-18 18:46:05"
+            "time": "2014-10-02 07:57:56"
         },
         {
             "name": "twig/extensions",

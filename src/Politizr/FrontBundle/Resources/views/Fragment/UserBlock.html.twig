@@ -75,9 +75,9 @@
 		<div class="row text-center">
 			<!-- REPUTATION / BADGES -->
 			<div id="badges">
-				{% for prBadge in pUser.prBadges %}
+				{% for badge in pUser.badges %}
 					{# TODO extraire le grade dans une table séparée #}
-					<span class="label label-warning">{{ prBadge.title }} ({{ prBadge.grade }})</span>
+					<span class="label label-warning">{{ badge.title }} ({{ badge.grade }})</span>
 				{% else %}
 					<span class="label label-default">Aucun badge</span>
 				{% endfor %}
