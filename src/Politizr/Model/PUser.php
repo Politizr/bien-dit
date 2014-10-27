@@ -518,6 +518,23 @@ class PUser extends BasePUser implements UserInterface
         return $puQualification;
     }
 
+    // *****************************    AFFINITÉS POLITIQUES    ************************* //
+
+    /**
+     *  Renvoie les parties politiques affinité par ordre sortable
+     *
+     * @return array    PUPoliticalParty
+     */
+    public function getPoliticalParties($online = true) {
+        $query = PUPoliticalPartyQuery::create()
+                    ->filterByOnline($online)
+                    ->setDistinct()
+                    ->orderByRank();
+
+        return parent::getPuAffinityUppPUPoliticalParties($query);
+    }
+
+
     // *****************************    TAGS   ************************* //
 
     /**

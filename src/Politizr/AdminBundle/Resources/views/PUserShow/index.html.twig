@@ -85,6 +85,11 @@
 	{{ adminUserSubscribersC(PUser) }}
 {% endblock %}
 
+{# Bloc affinités politiques #}
+{% block show_column_block_affinities %}
+	{{ adminUserAffinities(PUser) }}
+{% endblock %}
+
 
 {% block generic_actions_script %}
 	{% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}

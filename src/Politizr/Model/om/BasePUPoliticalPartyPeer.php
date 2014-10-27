@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PUAffinityUPPPeer;
 use Politizr\Model\PUPoliticalParty;
 use Politizr\Model\PUPoliticalPartyPeer;
 use Politizr\Model\PUPoliticalPartyQuery;
@@ -419,6 +420,9 @@ abstract class BasePUPoliticalPartyPeer
         // Invalidate objects in PUQualificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUQualificationPeer::clearInstancePool();
+        // Invalidate objects in PUAffinityUPPPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUAffinityUPPPeer::clearInstancePool();
     }
 
     /**

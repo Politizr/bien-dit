@@ -88,6 +88,10 @@ class AdminAjaxExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminUserAffinities'  => new \Twig_Function_Method($this, 'adminUserAffinities', array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminDebateReactions'  => new \Twig_Function_Method($this, 'adminDebateReactions', array(
                     'is_safe' => array('html')
                     )
@@ -377,6 +381,29 @@ class AdminAjaxExtension extends \Twig_Extension
 
         return $html;
 
+    }
+
+    /**
+     *  Gestion des affinités politiques d'un user
+     *
+     * @param $pUser        PUser
+     *
+     * @return string
+     */
+    public function adminUserAffinities($pUser)
+    {
+        $this->logger->info('*** adminUserAffinities');
+        // $this->logger->info('$pUser = '.print_r($pUser, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrAdminBundle:Fragment:UserPoliticalParties.html.twig', array(
+                                'pUser' => $pUser,
+                                'politicalParties' => $pUser->getPoliticalParties(),
+                                )
+                    );
+
+        return $html;
     }
 
 

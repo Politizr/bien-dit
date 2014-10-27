@@ -103,6 +103,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PuReputationRaPUser', 'Politizr\\Model\\PUReputationRA', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuReputationRaPUsers');
         $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
         $this->addRelation('PuFollowTPUser', 'Politizr\\Model\\PUFollowT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowTPUsers');
+        $this->addRelation('PuAffinityUppPUser', 'Politizr\\Model\\PUAffinityUPP', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuAffinityUppPUsers');
         $this->addRelation('PDocument', 'Politizr\\Model\\PDocument', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDocuments');
         $this->addRelation('PDComment', 'Politizr\\Model\\PDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDComments');
         $this->addRelation('PUFollowURelatedByPUserId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserId');
@@ -114,6 +115,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PuReputationRaPRBadge', 'Politizr\\Model\\PRAction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuReputationRaPRBadges');
         $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
         $this->addRelation('PuFollowTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowTPTags');
+        $this->addRelation('PuAffinityUppPUPoliticalParty', 'Politizr\\Model\\PUPoliticalParty', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuAffinityUppPUPoliticalParties');
     } // buildRelations()
 
     /**

@@ -15,11 +15,15 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PUAffinityUPP;
+use Politizr\Model\PUAffinityUPPQuery;
 use Politizr\Model\PUPoliticalParty;
 use Politizr\Model\PUPoliticalPartyPeer;
 use Politizr\Model\PUPoliticalPartyQuery;
 use Politizr\Model\PUQualification;
 use Politizr\Model\PUQualificationQuery;
+use Politizr\Model\PUser;
+use Politizr\Model\PUserQuery;
 
 abstract class BasePUPoliticalParty extends BaseObject implements Persistent
 {
@@ -109,6 +113,17 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     protected $collPUQualificationsPartial;
 
     /**
+     * @var        PropelObjectCollection|PUAffinityUPP[] Collection to store aggregation of PUAffinityUPP objects.
+     */
+    protected $collPuAffinityUppPUPoliticalParties;
+    protected $collPuAffinityUppPUPoliticalPartiesPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPuAffinityUppPUsers;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -140,7 +155,19 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $puAffinityUppPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pUQualificationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puAffinityUppPUPoliticalPartiesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -638,6 +665,9 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
 
             $this->collPUQualifications = null;
 
+            $this->collPuAffinityUppPUPoliticalParties = null;
+
+            $this->collPuAffinityUppPUsers = null;
         } // if (deep)
     }
 
@@ -794,6 +824,32 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->puAffinityUppPUsersScheduledForDeletion !== null) {
+                if (!$this->puAffinityUppPUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puAffinityUppPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PuAffinityUppPUPoliticalPartyQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puAffinityUppPUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuAffinityUppPUsers() as $puAffinityUppPUser) {
+                    if ($puAffinityUppPUser->isModified()) {
+                        $puAffinityUppPUser->save($con);
+                    }
+                }
+            } elseif ($this->collPuAffinityUppPUsers) {
+                foreach ($this->collPuAffinityUppPUsers as $puAffinityUppPUser) {
+                    if ($puAffinityUppPUser->isModified()) {
+                        $puAffinityUppPUser->save($con);
+                    }
+                }
+            }
+
             if ($this->pUQualificationsScheduledForDeletion !== null) {
                 if (!$this->pUQualificationsScheduledForDeletion->isEmpty()) {
                     foreach ($this->pUQualificationsScheduledForDeletion as $pUQualification) {
@@ -806,6 +862,23 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
 
             if ($this->collPUQualifications !== null) {
                 foreach ($this->collPUQualifications as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion !== null) {
+                if (!$this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->isEmpty()) {
+                    PUAffinityUPPQuery::create()
+                        ->filterByPrimaryKeys($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuAffinityUppPUPoliticalParties !== null) {
+                foreach ($this->collPuAffinityUppPUPoliticalParties as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1016,6 +1089,14 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPuAffinityUppPUPoliticalParties !== null) {
+                    foreach ($this->collPuAffinityUppPUPoliticalParties as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1124,6 +1205,9 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->collPUQualifications) {
                 $result['PUQualifications'] = $this->collPUQualifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPuAffinityUppPUPoliticalParties) {
+                $result['PuAffinityUppPUPoliticalParties'] = $this->collPuAffinityUppPUPoliticalParties->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1330,6 +1414,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPuAffinityUppPUPoliticalParties() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuAffinityUppPUPoliticalParty($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1393,6 +1483,9 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     {
         if ('PUQualification' == $relationName) {
             $this->initPUQualifications();
+        }
+        if ('PuAffinityUppPUPoliticalParty' == $relationName) {
+            $this->initPuAffinityUppPUPoliticalParties();
         }
     }
 
@@ -1665,6 +1758,426 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPuAffinityUppPUPoliticalParties collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUPoliticalParty The current object (for fluent API support)
+     * @see        addPuAffinityUppPUPoliticalParties()
+     */
+    public function clearPuAffinityUppPUPoliticalParties()
+    {
+        $this->collPuAffinityUppPUPoliticalParties = null; // important to set this to null since that means it is uninitialized
+        $this->collPuAffinityUppPUPoliticalPartiesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuAffinityUppPUPoliticalParties collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuAffinityUppPUPoliticalParties($v = true)
+    {
+        $this->collPuAffinityUppPUPoliticalPartiesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuAffinityUppPUPoliticalParties collection.
+     *
+     * By default this just sets the collPuAffinityUppPUPoliticalParties collection to an empty array (like clearcollPuAffinityUppPUPoliticalParties());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuAffinityUppPUPoliticalParties($overrideExisting = true)
+    {
+        if (null !== $this->collPuAffinityUppPUPoliticalParties && !$overrideExisting) {
+            return;
+        }
+        $this->collPuAffinityUppPUPoliticalParties = new PropelObjectCollection();
+        $this->collPuAffinityUppPUPoliticalParties->setModel('PUAffinityUPP');
+    }
+
+    /**
+     * Gets an array of PUAffinityUPP objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUPoliticalParty is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUAffinityUPP[] List of PUAffinityUPP objects
+     * @throws PropelException
+     */
+    public function getPuAffinityUppPUPoliticalParties($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuAffinityUppPUPoliticalPartiesPartial && !$this->isNew();
+        if (null === $this->collPuAffinityUppPUPoliticalParties || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuAffinityUppPUPoliticalParties) {
+                // return empty collection
+                $this->initPuAffinityUppPUPoliticalParties();
+            } else {
+                $collPuAffinityUppPUPoliticalParties = PUAffinityUPPQuery::create(null, $criteria)
+                    ->filterByPuAffinityUppPUPoliticalParty($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuAffinityUppPUPoliticalPartiesPartial && count($collPuAffinityUppPUPoliticalParties)) {
+                      $this->initPuAffinityUppPUPoliticalParties(false);
+
+                      foreach($collPuAffinityUppPUPoliticalParties as $obj) {
+                        if (false == $this->collPuAffinityUppPUPoliticalParties->contains($obj)) {
+                          $this->collPuAffinityUppPUPoliticalParties->append($obj);
+                        }
+                      }
+
+                      $this->collPuAffinityUppPUPoliticalPartiesPartial = true;
+                    }
+
+                    $collPuAffinityUppPUPoliticalParties->getInternalIterator()->rewind();
+                    return $collPuAffinityUppPUPoliticalParties;
+                }
+
+                if($partial && $this->collPuAffinityUppPUPoliticalParties) {
+                    foreach($this->collPuAffinityUppPUPoliticalParties as $obj) {
+                        if($obj->isNew()) {
+                            $collPuAffinityUppPUPoliticalParties[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuAffinityUppPUPoliticalParties = $collPuAffinityUppPUPoliticalParties;
+                $this->collPuAffinityUppPUPoliticalPartiesPartial = false;
+            }
+        }
+
+        return $this->collPuAffinityUppPUPoliticalParties;
+    }
+
+    /**
+     * Sets a collection of PuAffinityUppPUPoliticalParty objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puAffinityUppPUPoliticalParties A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function setPuAffinityUppPUPoliticalParties(PropelCollection $puAffinityUppPUPoliticalParties, PropelPDO $con = null)
+    {
+        $puAffinityUppPUPoliticalPartiesToDelete = $this->getPuAffinityUppPUPoliticalParties(new Criteria(), $con)->diff($puAffinityUppPUPoliticalParties);
+
+        $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = unserialize(serialize($puAffinityUppPUPoliticalPartiesToDelete));
+
+        foreach ($puAffinityUppPUPoliticalPartiesToDelete as $puAffinityUppPUPoliticalPartyRemoved) {
+            $puAffinityUppPUPoliticalPartyRemoved->setPuAffinityUppPUPoliticalParty(null);
+        }
+
+        $this->collPuAffinityUppPUPoliticalParties = null;
+        foreach ($puAffinityUppPUPoliticalParties as $puAffinityUppPUPoliticalParty) {
+            $this->addPuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty);
+        }
+
+        $this->collPuAffinityUppPUPoliticalParties = $puAffinityUppPUPoliticalParties;
+        $this->collPuAffinityUppPUPoliticalPartiesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUAffinityUPP objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUAffinityUPP objects.
+     * @throws PropelException
+     */
+    public function countPuAffinityUppPUPoliticalParties(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuAffinityUppPUPoliticalPartiesPartial && !$this->isNew();
+        if (null === $this->collPuAffinityUppPUPoliticalParties || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuAffinityUppPUPoliticalParties) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getPuAffinityUppPUPoliticalParties());
+            }
+            $query = PUAffinityUPPQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuAffinityUppPUPoliticalParty($this)
+                ->count($con);
+        }
+
+        return count($this->collPuAffinityUppPUPoliticalParties);
+    }
+
+    /**
+     * Method called to associate a PUAffinityUPP object to this object
+     * through the PUAffinityUPP foreign key attribute.
+     *
+     * @param    PUAffinityUPP $l PUAffinityUPP
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function addPuAffinityUppPUPoliticalParty(PUAffinityUPP $l)
+    {
+        if ($this->collPuAffinityUppPUPoliticalParties === null) {
+            $this->initPuAffinityUppPUPoliticalParties();
+            $this->collPuAffinityUppPUPoliticalPartiesPartial = true;
+        }
+        if (!in_array($l, $this->collPuAffinityUppPUPoliticalParties->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuAffinityUppPUPoliticalParty($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuAffinityUppPUPoliticalParty $puAffinityUppPUPoliticalParty The puAffinityUppPUPoliticalParty object to add.
+     */
+    protected function doAddPuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty)
+    {
+        $this->collPuAffinityUppPUPoliticalParties[]= $puAffinityUppPUPoliticalParty;
+        $puAffinityUppPUPoliticalParty->setPuAffinityUppPUPoliticalParty($this);
+    }
+
+    /**
+     * @param	PuAffinityUppPUPoliticalParty $puAffinityUppPUPoliticalParty The puAffinityUppPUPoliticalParty object to remove.
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function removePuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty)
+    {
+        if ($this->getPuAffinityUppPUPoliticalParties()->contains($puAffinityUppPUPoliticalParty)) {
+            $this->collPuAffinityUppPUPoliticalParties->remove($this->collPuAffinityUppPUPoliticalParties->search($puAffinityUppPUPoliticalParty));
+            if (null === $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion) {
+                $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = clone $this->collPuAffinityUppPUPoliticalParties;
+                $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->clear();
+            }
+            $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion[]= clone $puAffinityUppPUPoliticalParty;
+            $puAffinityUppPUPoliticalParty->setPuAffinityUppPUPoliticalParty(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUPoliticalParty is new, it will return
+     * an empty collection; or if this PUPoliticalParty has previously
+     * been saved, it will retrieve related PuAffinityUppPUPoliticalParties from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUPoliticalParty.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUAffinityUPP[] List of PUAffinityUPP objects
+     */
+    public function getPuAffinityUppPUPoliticalPartiesJoinPuAffinityUppPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUAffinityUPPQuery::create(null, $criteria);
+        $query->joinWith('PuAffinityUppPUser', $join_behavior);
+
+        return $this->getPuAffinityUppPUPoliticalParties($query, $con);
+    }
+
+    /**
+     * Clears out the collPuAffinityUppPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUPoliticalParty The current object (for fluent API support)
+     * @see        addPuAffinityUppPUsers()
+     */
+    public function clearPuAffinityUppPUsers()
+    {
+        $this->collPuAffinityUppPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuAffinityUppPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuAffinityUppPUsers collection.
+     *
+     * By default this just sets the collPuAffinityUppPUsers collection to an empty collection (like clearPuAffinityUppPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuAffinityUppPUsers()
+    {
+        $this->collPuAffinityUppPUsers = new PropelObjectCollection();
+        $this->collPuAffinityUppPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_affinity_u_p_p cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUPoliticalParty is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPuAffinityUppPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuAffinityUppPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuAffinityUppPUsers) {
+                // return empty collection
+                $this->initPuAffinityUppPUsers();
+            } else {
+                $collPuAffinityUppPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPuAffinityUppPUPoliticalParty($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuAffinityUppPUsers;
+                }
+                $this->collPuAffinityUppPUsers = $collPuAffinityUppPUsers;
+            }
+        }
+
+        return $this->collPuAffinityUppPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_affinity_u_p_p cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puAffinityUppPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function setPuAffinityUppPUsers(PropelCollection $puAffinityUppPUsers, PropelPDO $con = null)
+    {
+        $this->clearPuAffinityUppPUsers();
+        $currentPuAffinityUppPUsers = $this->getPuAffinityUppPUsers();
+
+        $this->puAffinityUppPUsersScheduledForDeletion = $currentPuAffinityUppPUsers->diff($puAffinityUppPUsers);
+
+        foreach ($puAffinityUppPUsers as $puAffinityUppPUser) {
+            if (!$currentPuAffinityUppPUsers->contains($puAffinityUppPUser)) {
+                $this->doAddPuAffinityUppPUser($puAffinityUppPUser);
+            }
+        }
+
+        $this->collPuAffinityUppPUsers = $puAffinityUppPUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_affinity_u_p_p cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPuAffinityUppPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuAffinityUppPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuAffinityUppPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuAffinityUppPUPoliticalParty($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuAffinityUppPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_affinity_u_p_p cross reference table.
+     *
+     * @param  PUser $pUser The PUAffinityUPP object to relate
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function addPuAffinityUppPUser(PUser $pUser)
+    {
+        if ($this->collPuAffinityUppPUsers === null) {
+            $this->initPuAffinityUppPUsers();
+        }
+        if (!$this->collPuAffinityUppPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPuAffinityUppPUser($pUser);
+
+            $this->collPuAffinityUppPUsers[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuAffinityUppPUser $puAffinityUppPUser The puAffinityUppPUser object to add.
+     */
+    protected function doAddPuAffinityUppPUser($puAffinityUppPUser)
+    {
+        $pUAffinityUPP = new PUAffinityUPP();
+        $pUAffinityUPP->setPuAffinityUppPUser($puAffinityUppPUser);
+        $this->addPuAffinityUppPUPoliticalParty($pUAffinityUPP);
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_affinity_u_p_p cross reference table.
+     *
+     * @param PUser $pUser The PUAffinityUPP object to relate
+     * @return PUPoliticalParty The current object (for fluent API support)
+     */
+    public function removePuAffinityUppPUser(PUser $pUser)
+    {
+        if ($this->getPuAffinityUppPUsers()->contains($pUser)) {
+            $this->collPuAffinityUppPUsers->remove($this->collPuAffinityUppPUsers->search($pUser));
+            if (null === $this->puAffinityUppPUsersScheduledForDeletion) {
+                $this->puAffinityUppPUsersScheduledForDeletion = clone $this->collPuAffinityUppPUsers;
+                $this->puAffinityUppPUsersScheduledForDeletion->clear();
+            }
+            $this->puAffinityUppPUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1706,6 +2219,16 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPuAffinityUppPUPoliticalParties) {
+                foreach ($this->collPuAffinityUppPUPoliticalParties as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuAffinityUppPUsers) {
+                foreach ($this->collPuAffinityUppPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1714,6 +2237,14 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
             $this->collPUQualifications->clearIterator();
         }
         $this->collPUQualifications = null;
+        if ($this->collPuAffinityUppPUPoliticalParties instanceof PropelCollection) {
+            $this->collPuAffinityUppPUPoliticalParties->clearIterator();
+        }
+        $this->collPuAffinityUppPUPoliticalParties = null;
+        if ($this->collPuAffinityUppPUsers instanceof PropelCollection) {
+            $this->collPuAffinityUppPUsers->clearIterator();
+        }
+        $this->collPuAffinityUppPUsers = null;
     }
 
     /**

@@ -13,10 +13,12 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PUAffinityUPP;
 use Politizr\Model\PUPoliticalParty;
 use Politizr\Model\PUPoliticalPartyPeer;
 use Politizr\Model\PUPoliticalPartyQuery;
 use Politizr\Model\PUQualification;
+use Politizr\Model\PUser;
 
 /**
  * @method PUPoliticalPartyQuery orderById($order = Criteria::ASC) Order by the id column
@@ -48,6 +50,10 @@ use Politizr\Model\PUQualification;
  * @method PUPoliticalPartyQuery leftJoinPUQualification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUQualification relation
  * @method PUPoliticalPartyQuery rightJoinPUQualification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUQualification relation
  * @method PUPoliticalPartyQuery innerJoinPUQualification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUQualification relation
+ *
+ * @method PUPoliticalPartyQuery leftJoinPuAffinityUppPUPoliticalParty($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuAffinityUppPUPoliticalParty relation
+ * @method PUPoliticalPartyQuery rightJoinPuAffinityUppPUPoliticalParty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuAffinityUppPUPoliticalParty relation
+ * @method PUPoliticalPartyQuery innerJoinPuAffinityUppPUPoliticalParty($relationAlias = null) Adds a INNER JOIN clause to the query using the PuAffinityUppPUPoliticalParty relation
  *
  * @method PUPoliticalParty findOne(PropelPDO $con = null) Return the first PUPoliticalParty matching the query
  * @method PUPoliticalParty findOneOrCreate(PropelPDO $con = null) Return the first PUPoliticalParty matching the query, or a new PUPoliticalParty object populated from the query conditions when no match is found
@@ -679,6 +685,97 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
         return $this
             ->joinPUQualification($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUQualification', '\Politizr\Model\PUQualificationQuery');
+    }
+
+    /**
+     * Filter the query by a related PUAffinityUPP object
+     *
+     * @param   PUAffinityUPP|PropelObjectCollection $pUAffinityUPP  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUPoliticalPartyQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuAffinityUppPUPoliticalParty($pUAffinityUPP, $comparison = null)
+    {
+        if ($pUAffinityUPP instanceof PUAffinityUPP) {
+            return $this
+                ->addUsingAlias(PUPoliticalPartyPeer::ID, $pUAffinityUPP->getPUPoliticalPartyId(), $comparison);
+        } elseif ($pUAffinityUPP instanceof PropelObjectCollection) {
+            return $this
+                ->usePuAffinityUppPUPoliticalPartyQuery()
+                ->filterByPrimaryKeys($pUAffinityUPP->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuAffinityUppPUPoliticalParty() only accepts arguments of type PUAffinityUPP or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuAffinityUppPUPoliticalParty relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUPoliticalPartyQuery The current query, for fluid interface
+     */
+    public function joinPuAffinityUppPUPoliticalParty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuAffinityUppPUPoliticalParty');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuAffinityUppPUPoliticalParty');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuAffinityUppPUPoliticalParty relation PUAffinityUPP object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUAffinityUPPQuery A secondary query class using the current class as primary query
+     */
+    public function usePuAffinityUppPUPoliticalPartyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuAffinityUppPUPoliticalParty($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuAffinityUppPUPoliticalParty', '\Politizr\Model\PUAffinityUPPQuery');
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_affinity_u_p_p table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUPoliticalPartyQuery The current query, for fluid interface
+     */
+    public function filterByPuAffinityUppPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuAffinityUppPUPoliticalPartyQuery()
+            ->filterByPuAffinityUppPUser($pUser, $comparison)
+            ->endUse();
     }
 
     /**

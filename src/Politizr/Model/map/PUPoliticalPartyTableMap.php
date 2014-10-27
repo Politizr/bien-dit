@@ -61,6 +61,8 @@ class PUPoliticalPartyTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUQualification', 'Politizr\\Model\\PUQualification', RelationMap::ONE_TO_MANY, array('id' => 'p_u_political_party_id', ), 'SET NULL', 'CASCADE', 'PUQualifications');
+        $this->addRelation('PuAffinityUppPUPoliticalParty', 'Politizr\\Model\\PUAffinityUPP', RelationMap::ONE_TO_MANY, array('id' => 'p_u_political_party_id', ), 'CASCADE', 'CASCADE', 'PuAffinityUppPUPoliticalParties');
+        $this->addRelation('PuAffinityUppPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuAffinityUppPUsers');
     } // buildRelations()
 
     /**

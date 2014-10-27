@@ -10,7 +10,7 @@ class PRBadge extends BasePRBadge
 	 *
 	 */
 	public function __toString() {
-		return $this->getTitle() . ' ('.$this->getGrade().')';
+		return $this->getTitle();
 	}
 
  	/**

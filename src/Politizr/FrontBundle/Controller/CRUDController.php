@@ -752,6 +752,7 @@ class CRUDController extends Controller {
 
     /**
      *  Met à jour les informations personnelles du user
+     *  TODO > + gestion affinités politiques
      *
      */
     public function userPersoUpdateAction(Request $request) {

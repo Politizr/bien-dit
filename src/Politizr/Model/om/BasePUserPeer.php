@@ -14,6 +14,7 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
+use Politizr\Model\PUAffinityUPPPeer;
 use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowTPeer;
 use Politizr\Model\PUFollowUPeer;
@@ -648,6 +649,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowTPeer::clearInstancePool();
+        // Invalidate objects in PUAffinityUPPPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUAffinityUPPPeer::clearInstancePool();
         // Invalidate objects in PDocumentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDocumentPeer::clearInstancePool();

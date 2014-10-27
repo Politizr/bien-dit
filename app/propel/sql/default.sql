@@ -727,6 +727,34 @@ CREATE TABLE `p_u_follow_t`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- p_u_affinity_u_p_p
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_affinity_u_p_p`;
+
+CREATE TABLE `p_u_affinity_u_p_p`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_u_political_party_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_affinity_u_p_p_FI_1` (`p_user_id`),
+    INDEX `p_u_affinity_u_p_p_FI_2` (`p_u_political_party_id`),
+    CONSTRAINT `p_u_affinity_u_p_p_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_affinity_u_p_p_FK_2`
+        FOREIGN KEY (`p_u_political_party_id`)
+        REFERENCES `p_u_political_party` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- p_document
 -- ---------------------------------------------------------------------
 

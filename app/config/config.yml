@@ -233,6 +233,11 @@ liip_imagine:
             quality:              100
             filters:
                 relative_resize:  { widen: 150 }
+        admin_political_party_thumb:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 50 }
+
 
         # FRONT / GENERAL
         facebook_share:
@@ -329,6 +334,13 @@ bazinga_faker:
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+
+        Politizr\Model\PUAffinityUPP:
+            number:                     150
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+                PUPoliticalPartyId:     { method: numberBetween, parameters: [ 1, 16 ] }
+
 
         #################################################################################################################
         #                                   REPUTATION

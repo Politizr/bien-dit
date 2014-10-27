@@ -489,6 +489,22 @@
         </foreign-key>
     </table>
 
+    <table name="p_u_affinity_u_p_p" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_u_political_party_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PuAffinityUppPUser" refPhpName="PuAffinityUppPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_u_political_party" phpName="PuAffinityUppPUPoliticalParty" refPhpName="PuAffinityUppPUPoliticalParty" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_u_political_party_id" foreign="id" />
+        </foreign-key>
+    </table>
+
 
 
 
