@@ -3,7 +3,7 @@
     $('body').on('click', "a[action='debate-publish']", function(e){
         console.log('*** click publish');
         
-        bootbox.confirm('Une fois publié, vous ne pourrez plus modifier le débat. Êtes-vous sûr de vouloir continuer?', function(result) {
+        bootbox.confirm('Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?', function(result) {
             if (result) {
                 $.ajax({
                     type: 'POST',
