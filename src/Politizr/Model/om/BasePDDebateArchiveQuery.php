@@ -32,6 +32,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDDebateArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDebateArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDebateArchiveQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDDebateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
@@ -51,6 +52,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDDebateArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDDebateArchiveQuery groupByOnline() Group by the online column
+ * @method PDDebateArchiveQuery groupByBroadcast() Group by the broadcast column
  * @method PDDebateArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDDebateArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -76,6 +78,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByPublishedAt(string $published_at) Return the first PDDebateArchive filtered by the published_at column
  * @method PDDebateArchive findOneByPublishedBy(string $published_by) Return the first PDDebateArchive filtered by the published_by column
  * @method PDDebateArchive findOneByOnline(boolean $online) Return the first PDDebateArchive filtered by the online column
+ * @method PDDebateArchive findOneByBroadcast(boolean $broadcast) Return the first PDDebateArchive filtered by the broadcast column
  * @method PDDebateArchive findOneByArchivedAt(string $archived_at) Return the first PDDebateArchive filtered by the archived_at column
  *
  * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
@@ -95,6 +98,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByPublishedAt(string $published_at) Return PDDebateArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDDebateArchive objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDDebateArchive objects filtered by the online column
+ * @method array findByBroadcast(boolean $broadcast) Return PDDebateArchive objects filtered by the broadcast column
  * @method array findByArchivedAt(string $archived_at) Return PDDebateArchive objects filtered by the archived_at column
  */
 abstract class BasePDDebateArchiveQuery extends ModelCriteria
@@ -197,7 +201,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `file_name`, `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `file_name`, `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -880,6 +884,33 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the broadcast column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBroadcast(true); // WHERE broadcast = true
+     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
+     * </code>
+     *
+     * @param     boolean|string $broadcast The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByBroadcast($broadcast = null, $comparison = null)
+    {
+        if (is_string($broadcast)) {
+            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

@@ -283,6 +283,18 @@ DebateDelete:
     defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+DebatePhotoUpload:
+    pattern:  /profil/debat/upload-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DebatePhotoDelete:
+    pattern:  /profil/debat/delete-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+
+
 ################################################################################
 # GESTION TAGS
 ################################################################################
@@ -320,3 +332,22 @@ UserTaggedDeleteTag:
     pattern:  /u/user/tagged/deletetag.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:userTaggedDeleteTag, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# GESTION INFOS PERSOS
+################################################################################
+PersoCheck:
+    pattern:  /profil/perso.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserPhotoUpload:
+    pattern:  /profil/upload-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserPhotoDelete:
+    pattern:  /profil/delete-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

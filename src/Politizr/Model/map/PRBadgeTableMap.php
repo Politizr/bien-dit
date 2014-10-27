@@ -44,14 +44,9 @@ class PRBadgeTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_r_badge_type_id', 'PRBadgeTypeId', 'INTEGER', 'p_r_badge_type', 'id', true, null, null);
+        $this->addForeignKey('p_r_badge_metal_id', 'PRBadgeMetalId', 'INTEGER', 'p_r_badge_metal', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('grade', 'Grade', 'ENUM', false, null, null);
-        $this->getColumn('grade', false)->setValueSet(array (
-  0 => 'Or',
-  1 => 'Argent',
-  2 => 'Bronze',
-));
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
@@ -65,6 +60,7 @@ class PRBadgeTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PRBadgeType', 'Politizr\\Model\\PRBadgeType', RelationMap::MANY_TO_ONE, array('p_r_badge_type_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PRBadgeMetal', 'Politizr\\Model\\PRBadgeMetal', RelationMap::MANY_TO_ONE, array('p_r_badge_metal_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PuReputationRbPRBadge', 'Politizr\\Model\\PUReputationRB', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_id', ), 'CASCADE', 'CASCADE', 'PuReputationRbPRBadges');
         $this->addRelation('PuReputationRbPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuReputationRbPUsers');
     } // buildRelations()

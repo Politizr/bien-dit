@@ -45,6 +45,15 @@
     background-position: center center;
  }
 
+ /** upload ajax */
+input[type="file"]#file-name {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+
 /*
 *	Scrollbar dans autocomplete JQueryUI
 */

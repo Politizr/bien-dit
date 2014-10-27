@@ -1,7 +1,11 @@
 <?php
 namespace StudioEcho\Lib;
+
+
 /**
  * Description of StudioEchoUtils
+ * TODO: MAJ avec la version github
+ * /!\ nouvelles méthodes
  *
  * @author Studio Echo / Lionel Bouzonville
  */
@@ -190,4 +194,31 @@ class StudioEchoUtils {
         $value = preg_replace("/([_-\s]?([a-z0-9]+))/e", "ucwords('\\2')", $value);
         return ($lcfirst ? strtolower($value[0]) : strtoupper($value[0])) + substr($value, 1);
     }    
+
+
+    /**
+     *  Récupération des erreurs du formulaire
+     *  Utile pour la gestion des erreurs en cas de validation ajax
+     *
+     *  http://stackoverflow.com/questions/6978723/symfony2-how-to-get-form-validation-errors-after-binding-the-request-to-the-fo
+     *
+     *  @param      $form   \Symfony\Component\Form\Form
+     *
+     *  @return     array   Tableau des erreurs du formulaire
+     */
+    public static function getErrorMessages(\Symfony\Component\Form\Form $form) {      
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+                $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = StudioEchoUtils::getErrorMessages($child);
+            }
+        }
+
+        return $errors;
+    }
 }

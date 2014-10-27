@@ -17,9 +17,9 @@ use Politizr\Model\PRBadgeArchiveQuery;
 /**
  * @method PRBadgeArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PRBadgeArchiveQuery orderByPRBadgeTypeId($order = Criteria::ASC) Order by the p_r_badge_type_id column
+ * @method PRBadgeArchiveQuery orderByPRBadgeMetalId($order = Criteria::ASC) Order by the p_r_badge_metal_id column
  * @method PRBadgeArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRBadgeArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PRBadgeArchiveQuery orderByGrade($order = Criteria::ASC) Order by the grade column
  * @method PRBadgeArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PRBadgeArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PRBadgeArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -27,9 +27,9 @@ use Politizr\Model\PRBadgeArchiveQuery;
  *
  * @method PRBadgeArchiveQuery groupById() Group by the id column
  * @method PRBadgeArchiveQuery groupByPRBadgeTypeId() Group by the p_r_badge_type_id column
+ * @method PRBadgeArchiveQuery groupByPRBadgeMetalId() Group by the p_r_badge_metal_id column
  * @method PRBadgeArchiveQuery groupByTitle() Group by the title column
  * @method PRBadgeArchiveQuery groupByDescription() Group by the description column
- * @method PRBadgeArchiveQuery groupByGrade() Group by the grade column
  * @method PRBadgeArchiveQuery groupByOnline() Group by the online column
  * @method PRBadgeArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PRBadgeArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -43,9 +43,9 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeArchive matching the query, or a new PRBadgeArchive object populated from the query conditions when no match is found
  *
  * @method PRBadgeArchive findOneByPRBadgeTypeId(int $p_r_badge_type_id) Return the first PRBadgeArchive filtered by the p_r_badge_type_id column
+ * @method PRBadgeArchive findOneByPRBadgeMetalId(int $p_r_badge_metal_id) Return the first PRBadgeArchive filtered by the p_r_badge_metal_id column
  * @method PRBadgeArchive findOneByTitle(string $title) Return the first PRBadgeArchive filtered by the title column
  * @method PRBadgeArchive findOneByDescription(string $description) Return the first PRBadgeArchive filtered by the description column
- * @method PRBadgeArchive findOneByGrade(int $grade) Return the first PRBadgeArchive filtered by the grade column
  * @method PRBadgeArchive findOneByOnline(boolean $online) Return the first PRBadgeArchive filtered by the online column
  * @method PRBadgeArchive findOneByCreatedAt(string $created_at) Return the first PRBadgeArchive filtered by the created_at column
  * @method PRBadgeArchive findOneByUpdatedAt(string $updated_at) Return the first PRBadgeArchive filtered by the updated_at column
@@ -53,9 +53,9 @@ use Politizr\Model\PRBadgeArchiveQuery;
  *
  * @method array findById(int $id) Return PRBadgeArchive objects filtered by the id column
  * @method array findByPRBadgeTypeId(int $p_r_badge_type_id) Return PRBadgeArchive objects filtered by the p_r_badge_type_id column
+ * @method array findByPRBadgeMetalId(int $p_r_badge_metal_id) Return PRBadgeArchive objects filtered by the p_r_badge_metal_id column
  * @method array findByTitle(string $title) Return PRBadgeArchive objects filtered by the title column
  * @method array findByDescription(string $description) Return PRBadgeArchive objects filtered by the description column
- * @method array findByGrade(int $grade) Return PRBadgeArchive objects filtered by the grade column
  * @method array findByOnline(boolean $online) Return PRBadgeArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PRBadgeArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PRBadgeArchive objects filtered by the updated_at column
@@ -161,7 +161,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_r_badge_type_id`, `title`, `description`, `grade`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_r_badge_type_id`, `p_r_badge_metal_id`, `title`, `description`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -335,6 +335,48 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the p_r_badge_metal_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPRBadgeMetalId(1234); // WHERE p_r_badge_metal_id = 1234
+     * $query->filterByPRBadgeMetalId(array(12, 34)); // WHERE p_r_badge_metal_id IN (12, 34)
+     * $query->filterByPRBadgeMetalId(array('min' => 12)); // WHERE p_r_badge_metal_id >= 12
+     * $query->filterByPRBadgeMetalId(array('max' => 12)); // WHERE p_r_badge_metal_id <= 12
+     * </code>
+     *
+     * @param     mixed $pRBadgeMetalId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPRBadgeMetalId($pRBadgeMetalId = null, $comparison = null)
+    {
+        if (is_array($pRBadgeMetalId)) {
+            $useMinMax = false;
+            if (isset($pRBadgeMetalId['min'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pRBadgeMetalId['max'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId, $comparison);
+    }
+
+    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -390,33 +432,6 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the grade column
-     *
-     * @param     mixed $grade The value to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PRBadgeArchiveQuery The current query, for fluid interface
-     * @throws PropelException - if the value is not accepted by the enum.
-     */
-    public function filterByGrade($grade = null, $comparison = null)
-    {
-        if (is_scalar($grade)) {
-            $grade = PRBadgeArchivePeer::getSqlValueForEnum(PRBadgeArchivePeer::GRADE, $grade);
-        } elseif (is_array($grade)) {
-            $convertedValues = array();
-            foreach ($grade as $value) {
-                $convertedValues[] = PRBadgeArchivePeer::getSqlValueForEnum(PRBadgeArchivePeer::GRADE, $value);
-            }
-            $grade = $convertedValues;
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PRBadgeArchivePeer::GRADE, $grade, $comparison);
     }
 
     /**

@@ -42,6 +42,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDReactionQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDReactionQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  *
  * @method PDReactionQuery groupByPDDebateId() Group by the p_d_debate_id column
  * @method PDReactionQuery groupByCreatedAt() Group by the created_at column
@@ -63,6 +64,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionQuery groupByPublishedBy() Group by the published_by column
  * @method PDReactionQuery groupByOnline() Group by the online column
+ * @method PDReactionQuery groupByBroadcast() Group by the broadcast column
  *
  * @method PDReactionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDReactionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -102,6 +104,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByPublishedAt(string $published_at) Return the first PDReaction filtered by the published_at column
  * @method PDReaction findOneByPublishedBy(string $published_by) Return the first PDReaction filtered by the published_by column
  * @method PDReaction findOneByOnline(boolean $online) Return the first PDReaction filtered by the online column
+ * @method PDReaction findOneByBroadcast(boolean $broadcast) Return the first PDReaction filtered by the broadcast column
  *
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReaction objects filtered by the p_d_debate_id column
  * @method array findByCreatedAt(string $created_at) Return PDReaction objects filtered by the created_at column
@@ -123,6 +126,7 @@ use Politizr\Model\PUser;
  * @method array findByPublishedAt(string $published_at) Return PDReaction objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReaction objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDReaction objects filtered by the online column
+ * @method array findByBroadcast(boolean $broadcast) Return PDReaction objects filtered by the broadcast column
  */
 abstract class BasePDReactionQuery extends PDocumentQuery
 {
@@ -230,7 +234,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1058,6 +1062,33 @@ abstract class BasePDReactionQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDReactionPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the broadcast column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBroadcast(true); // WHERE broadcast = true
+     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
+     * </code>
+     *
+     * @param     boolean|string $broadcast The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByBroadcast($broadcast = null, $comparison = null)
+    {
+        if (is_string($broadcast)) {
+            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

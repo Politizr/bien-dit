@@ -73,6 +73,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $documents,
+            'Niveau des badge',
+            'Politizr_AdminBundle_PRBadgeMetal_list'
+        );
+        $this->addLinkRoute(
+            $documents,
             'Formule d\'abonnement',
             'Politizr_AdminBundle_POSubscription_list'
         );

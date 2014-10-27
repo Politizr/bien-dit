@@ -5,7 +5,7 @@
 	{% for badge in type.badges %}
 		<tr>
 			<td>
-				<span class="label label-warning">{{ badge.title }} ({{ badge.grade }})</span>
+				<span class="label {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
 			</td>
 			<td>
 				{% if badge.id in badgeIds %}

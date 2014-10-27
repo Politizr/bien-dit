@@ -28,6 +28,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDocumentArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDocumentArchiveQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDocumentArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDocumentArchiveQuery groupById() Group by the id column
@@ -43,6 +44,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDocumentArchiveQuery groupByOnline() Group by the online column
+ * @method PDocumentArchiveQuery groupByBroadcast() Group by the broadcast column
  * @method PDocumentArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDocumentArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -64,6 +66,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchive findOneByPublishedAt(string $published_at) Return the first PDocumentArchive filtered by the published_at column
  * @method PDocumentArchive findOneByPublishedBy(string $published_by) Return the first PDocumentArchive filtered by the published_by column
  * @method PDocumentArchive findOneByOnline(boolean $online) Return the first PDocumentArchive filtered by the online column
+ * @method PDocumentArchive findOneByBroadcast(boolean $broadcast) Return the first PDocumentArchive filtered by the broadcast column
  * @method PDocumentArchive findOneByArchivedAt(string $archived_at) Return the first PDocumentArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDocumentArchive objects filtered by the id column
@@ -79,6 +82,7 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method array findByPublishedAt(string $published_at) Return PDocumentArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocumentArchive objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDocumentArchive objects filtered by the online column
+ * @method array findByBroadcast(boolean $broadcast) Return PDocumentArchive objects filtered by the broadcast column
  * @method array findByArchivedAt(string $archived_at) Return PDocumentArchive objects filtered by the archived_at column
  */
 abstract class BasePDocumentArchiveQuery extends ModelCriteria
@@ -181,7 +185,7 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -720,6 +724,33 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the broadcast column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBroadcast(true); // WHERE broadcast = true
+     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
+     * </code>
+     *
+     * @param     boolean|string $broadcast The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByBroadcast($broadcast = null, $comparison = null)
+    {
+        if (is_string($broadcast)) {
+            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDocumentArchivePeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

@@ -156,6 +156,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     protected $online;
 
     /**
+     * The value for the broadcast field.
+     * @var        boolean
+     */
+    protected $broadcast;
+
+    /**
      * @var        PDocument
      */
     protected $aPDocument;
@@ -504,6 +510,16 @@ abstract class BasePDDebate extends PDocument implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [broadcast] column value.
+     *
+     * @return boolean
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
     /**
@@ -894,6 +910,35 @@ abstract class BasePDDebate extends PDocument implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [broadcast] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setBroadcast($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->broadcast !== $v) {
+            $this->broadcast = $v;
+            $this->modifiedColumns[] = PDDebatePeer::BROADCAST;
+        }
+
+
+        return $this;
+    } // setBroadcast()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -942,6 +987,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->published_by = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->broadcast = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -950,7 +996,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 17; // 17 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebate object", $e);
@@ -1385,6 +1431,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDDebatePeer::BROADCAST)) {
+            $modifiedColumns[':p' . $index++]  = '`broadcast`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_d_debate` (%s) VALUES (%s)',
@@ -1446,6 +1495,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`broadcast`':
+                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1667,6 +1719,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
             case 16:
                 return $this->getOnline();
                 break;
+            case 17:
+                return $this->getBroadcast();
+                break;
             default:
                 return null;
                 break;
@@ -1713,6 +1768,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $keys[14] => $this->getPublishedAt(),
             $keys[15] => $this->getPublishedBy(),
             $keys[16] => $this->getOnline(),
+            $keys[17] => $this->getBroadcast(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPDocument) {
@@ -1815,6 +1871,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
             case 16:
                 $this->setOnline($value);
                 break;
+            case 17:
+                $this->setBroadcast($value);
+                break;
         } // switch()
     }
 
@@ -1856,6 +1915,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setPublishedBy($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setBroadcast($arr[$keys[17]]);
     }
 
     /**
@@ -1884,6 +1944,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_AT)) $criteria->add(PDDebatePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) $criteria->add(PDDebatePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) $criteria->add(PDDebatePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebatePeer::BROADCAST)) $criteria->add(PDDebatePeer::BROADCAST, $this->broadcast);
 
         return $criteria;
     }
@@ -1963,6 +2024,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBroadcast($this->getBroadcast());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3294,6 +3356,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->broadcast = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3596,6 +3659,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $parent->setPublishedAt($this->getPublishedAt());
         $parent->setPublishedBy($this->getPublishedBy());
         $parent->setOnline($this->getOnline());
+        $parent->setBroadcast($this->getBroadcast());
         if ($this->getPUser() && $this->getPUser()->isNew()) {
             $parent->setPUser($this->getPUser());
         }
@@ -3697,6 +3761,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setOnline($archive->getOnline());
+        $this->setBroadcast($archive->getBroadcast());
 
         return $this;
     }

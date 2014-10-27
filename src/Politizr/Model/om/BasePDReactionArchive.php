@@ -159,6 +159,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the broadcast field.
+     * @var        boolean
+     */
+    protected $broadcast;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -472,6 +478,16 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [broadcast] column value.
+     *
+     * @return boolean
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
     /**
@@ -957,6 +973,35 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [broadcast] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setBroadcast($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->broadcast !== $v) {
+            $this->broadcast = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::BROADCAST;
+        }
+
+
+        return $this;
+    } // setBroadcast()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1031,7 +1076,8 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->archived_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->broadcast = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->archived_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1040,7 +1086,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 21; // 21 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReactionArchive object", $e);
@@ -1308,6 +1354,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDReactionArchivePeer::BROADCAST)) {
+            $modifiedColumns[':p' . $index++]  = '`broadcast`';
+        }
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -1381,6 +1430,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`broadcast`':
+                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1573,6 +1625,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 20:
+                return $this->getBroadcast();
+                break;
+            case 21:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1623,7 +1678,8 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[17] => $this->getPublishedAt(),
             $keys[18] => $this->getPublishedBy(),
             $keys[19] => $this->getOnline(),
-            $keys[20] => $this->getArchivedAt(),
+            $keys[20] => $this->getBroadcast(),
+            $keys[21] => $this->getArchivedAt(),
         );
 
         return $result;
@@ -1719,6 +1775,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 20:
+                $this->setBroadcast($value);
+                break;
+            case 21:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1765,7 +1824,8 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setArchivedAt($arr[$keys[20]]);
+        if (array_key_exists($keys[20], $arr)) $this->setBroadcast($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setArchivedAt($arr[$keys[21]]);
     }
 
     /**
@@ -1797,6 +1857,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::PUBLISHED_AT)) $criteria->add(PDReactionArchivePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDReactionArchivePeer::PUBLISHED_BY)) $criteria->add(PDReactionArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) $criteria->add(PDReactionArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDReactionArchivePeer::BROADCAST)) $criteria->add(PDReactionArchivePeer::BROADCAST, $this->broadcast);
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) $criteria->add(PDReactionArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1880,6 +1941,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBroadcast($this->getBroadcast());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1952,6 +2014,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->broadcast = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

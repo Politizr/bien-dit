@@ -35,6 +35,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDocumentQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDocumentQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDocumentQuery orderByDescendantClass($order = Criteria::ASC) Order by the descendant_class column
  *
  * @method PDocumentQuery groupById() Group by the id column
@@ -50,6 +51,7 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentQuery groupByPublishedBy() Group by the published_by column
  * @method PDocumentQuery groupByOnline() Group by the online column
+ * @method PDocumentQuery groupByBroadcast() Group by the broadcast column
  * @method PDocumentQuery groupByDescendantClass() Group by the descendant_class column
  *
  * @method PDocumentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -87,6 +89,7 @@ use Politizr\Model\PUser;
  * @method PDocument findOneByPublishedAt(string $published_at) Return the first PDocument filtered by the published_at column
  * @method PDocument findOneByPublishedBy(string $published_by) Return the first PDocument filtered by the published_by column
  * @method PDocument findOneByOnline(boolean $online) Return the first PDocument filtered by the online column
+ * @method PDocument findOneByBroadcast(boolean $broadcast) Return the first PDocument filtered by the broadcast column
  * @method PDocument findOneByDescendantClass(string $descendant_class) Return the first PDocument filtered by the descendant_class column
  *
  * @method array findById(int $id) Return PDocument objects filtered by the id column
@@ -102,6 +105,7 @@ use Politizr\Model\PUser;
  * @method array findByPublishedAt(string $published_at) Return PDocument objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocument objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDocument objects filtered by the online column
+ * @method array findByBroadcast(boolean $broadcast) Return PDocument objects filtered by the broadcast column
  * @method array findByDescendantClass(string $descendant_class) Return PDocument objects filtered by the descendant_class column
  */
 abstract class BasePDocumentQuery extends ModelCriteria
@@ -210,7 +214,7 @@ abstract class BasePDocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -751,6 +755,33 @@ abstract class BasePDocumentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the broadcast column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBroadcast(true); // WHERE broadcast = true
+     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
+     * </code>
+     *
+     * @param     boolean|string $broadcast The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByBroadcast($broadcast = null, $comparison = null)
+    {
+        if (is_string($broadcast)) {
+            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

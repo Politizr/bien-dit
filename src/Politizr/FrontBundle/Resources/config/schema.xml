@@ -46,17 +46,19 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_r_badge_type_id" type="integer" required="true" />
+        <column name="p_r_badge_metal_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
-
-        <column name="grade"  type="enum" valueSet="Or, Argent, Bronze" />
 
         <column name="online" type="boolean" />
 
         <foreign-key foreignTable="p_r_badge_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_type_id" foreign="id" />
-        </foreign-key>        
+        </foreign-key>
+        <foreign-key foreignTable="p_r_badge_metal" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_badge_metal_id" foreign="id" />
+        </foreign-key>
     </table>
 
     <table name="p_r_badge_type">
@@ -68,6 +70,20 @@
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
     </table>
+
+    <table name="p_r_badge_metal">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+    </table>
+
+
+
+
 
     <table name="p_r_action">
         <behavior name="timestampable" />
@@ -500,6 +516,7 @@
         <column name="published_by" type="varchar" size="300" />
 
         <column name="online" type="boolean" />
+        <column name="broadcast" type="boolean" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

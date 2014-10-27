@@ -130,6 +130,12 @@ abstract class BasePDocument extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the broadcast field.
+     * @var        boolean
+     */
+    protected $broadcast;
+
+    /**
      * The value for the descendant_class field.
      * @var        string
      */
@@ -355,6 +361,16 @@ abstract class BasePDocument extends BaseObject implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [broadcast] column value.
+     *
+     * @return boolean
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
     /**
@@ -663,6 +679,35 @@ abstract class BasePDocument extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [broadcast] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDocument The current object (for fluent API support)
+     */
+    public function setBroadcast($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->broadcast !== $v) {
+            $this->broadcast = $v;
+            $this->modifiedColumns[] = PDocumentPeer::BROADCAST;
+        }
+
+
+        return $this;
+    } // setBroadcast()
+
+    /**
      * Set the value of [descendant_class] column.
      *
      * @param string $v new value
@@ -728,7 +773,8 @@ abstract class BasePDocument extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->online = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->descendant_class = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->broadcast = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->descendant_class = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -737,7 +783,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 14; // 14 = PDocumentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = PDocumentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDocument object", $e);
@@ -1067,6 +1113,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDocumentPeer::BROADCAST)) {
+            $modifiedColumns[':p' . $index++]  = '`broadcast`';
+        }
         if ($this->isColumnModified(PDocumentPeer::DESCENDANT_CLASS)) {
             $modifiedColumns[':p' . $index++]  = '`descendant_class`';
         }
@@ -1119,6 +1168,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`broadcast`':
+                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                     case '`descendant_class`':
                         $stmt->bindValue($identifier, $this->descendant_class, PDO::PARAM_STR);
@@ -1329,6 +1381,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 13:
+                return $this->getBroadcast();
+                break;
+            case 14:
                 return $this->getDescendantClass();
                 break;
             default:
@@ -1373,7 +1428,8 @@ abstract class BasePDocument extends BaseObject implements Persistent
             $keys[10] => $this->getPublishedAt(),
             $keys[11] => $this->getPublishedBy(),
             $keys[12] => $this->getOnline(),
-            $keys[13] => $this->getDescendantClass(),
+            $keys[13] => $this->getBroadcast(),
+            $keys[14] => $this->getDescendantClass(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUser) {
@@ -1462,6 +1518,9 @@ abstract class BasePDocument extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 13:
+                $this->setBroadcast($value);
+                break;
+            case 14:
                 $this->setDescendantClass($value);
                 break;
         } // switch()
@@ -1501,7 +1560,8 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setOnline($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setDescendantClass($arr[$keys[13]]);
+        if (array_key_exists($keys[13], $arr)) $this->setBroadcast($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setDescendantClass($arr[$keys[14]]);
     }
 
     /**
@@ -1526,6 +1586,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED_AT)) $criteria->add(PDocumentPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDocumentPeer::PUBLISHED_BY)) $criteria->add(PDocumentPeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDocumentPeer::ONLINE)) $criteria->add(PDocumentPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDocumentPeer::BROADCAST)) $criteria->add(PDocumentPeer::BROADCAST, $this->broadcast);
         if ($this->isColumnModified(PDocumentPeer::DESCENDANT_CLASS)) $criteria->add(PDocumentPeer::DESCENDANT_CLASS, $this->descendant_class);
 
         return $criteria;
@@ -1602,6 +1663,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBroadcast($this->getBroadcast());
         $copyObj->setDescendantClass($this->getDescendantClass());
 
         if ($deepCopy && !$this->startCopy) {
@@ -2078,6 +2140,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->broadcast = null;
         $this->descendant_class = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
@@ -2248,6 +2311,7 @@ abstract class BasePDocument extends BaseObject implements Persistent
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setOnline($archive->getOnline());
+        $this->setBroadcast($archive->getBroadcast());
         $this->setDescendantClass($archive->getDescendantClass());
 
         return $this;

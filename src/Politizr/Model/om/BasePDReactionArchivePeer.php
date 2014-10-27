@@ -29,13 +29,13 @@ abstract class BasePDReactionArchivePeer
     const TM_CLASS = 'PDReactionArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 21;
+    const NUM_COLUMNS = 22;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 21;
+    const NUM_HYDRATE_COLUMNS = 22;
 
     /** the column name for the p_d_debate_id field */
     const P_D_DEBATE_ID = 'p_d_reaction_archive.p_d_debate_id';
@@ -97,6 +97,9 @@ abstract class BasePDReactionArchivePeer
     /** the column name for the online field */
     const ONLINE = 'p_d_reaction_archive.online';
 
+    /** the column name for the broadcast field */
+    const BROADCAST = 'p_d_reaction_archive.broadcast';
+
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_d_reaction_archive.archived_at';
 
@@ -119,12 +122,12 @@ abstract class BasePDReactionArchivePeer
      * e.g. PDReactionArchivePeer::$fieldNames[PDReactionArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('PDDebateId', 'CreatedAt', 'UpdatedAt', 'Slug', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId', 'createdAt', 'updatedAt', 'slug', 'treeLeft', 'treeRight', 'treeLevel', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDReactionArchivePeer::P_D_DEBATE_ID, PDReactionArchivePeer::CREATED_AT, PDReactionArchivePeer::UPDATED_AT, PDReactionArchivePeer::SLUG, PDReactionArchivePeer::TREE_LEFT, PDReactionArchivePeer::TREE_RIGHT, PDReactionArchivePeer::TREE_LEVEL, PDReactionArchivePeer::ID, PDReactionArchivePeer::P_USER_ID, PDReactionArchivePeer::TITLE, PDReactionArchivePeer::SUMMARY, PDReactionArchivePeer::DESCRIPTION, PDReactionArchivePeer::MORE_INFO, PDReactionArchivePeer::NOTE_POS, PDReactionArchivePeer::NOTE_NEG, PDReactionArchivePeer::NB_VIEWS, PDReactionArchivePeer::PUBLISHED, PDReactionArchivePeer::PUBLISHED_AT, PDReactionArchivePeer::PUBLISHED_BY, PDReactionArchivePeer::ONLINE, PDReactionArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id', 'created_at', 'updated_at', 'slug', 'tree_left', 'tree_right', 'tree_level', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('PDDebateId', 'CreatedAt', 'UpdatedAt', 'Slug', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'Broadcast', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId', 'createdAt', 'updatedAt', 'slug', 'treeLeft', 'treeRight', 'treeLevel', 'id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', 'broadcast', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDReactionArchivePeer::P_D_DEBATE_ID, PDReactionArchivePeer::CREATED_AT, PDReactionArchivePeer::UPDATED_AT, PDReactionArchivePeer::SLUG, PDReactionArchivePeer::TREE_LEFT, PDReactionArchivePeer::TREE_RIGHT, PDReactionArchivePeer::TREE_LEVEL, PDReactionArchivePeer::ID, PDReactionArchivePeer::P_USER_ID, PDReactionArchivePeer::TITLE, PDReactionArchivePeer::SUMMARY, PDReactionArchivePeer::DESCRIPTION, PDReactionArchivePeer::MORE_INFO, PDReactionArchivePeer::NOTE_POS, PDReactionArchivePeer::NOTE_NEG, PDReactionArchivePeer::NB_VIEWS, PDReactionArchivePeer::PUBLISHED, PDReactionArchivePeer::PUBLISHED_AT, PDReactionArchivePeer::PUBLISHED_BY, PDReactionArchivePeer::ONLINE, PDReactionArchivePeer::BROADCAST, PDReactionArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'BROADCAST', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id', 'created_at', 'updated_at', 'slug', 'tree_left', 'tree_right', 'tree_level', 'id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', 'broadcast', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -134,12 +137,12 @@ abstract class BasePDReactionArchivePeer
      * e.g. PDReactionArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('PDDebateId' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'TreeLeft' => 4, 'TreeRight' => 5, 'TreeLevel' => 6, 'Id' => 7, 'PUserId' => 8, 'Title' => 9, 'Summary' => 10, 'Description' => 11, 'MoreInfo' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'NbViews' => 15, 'Published' => 16, 'PublishedAt' => 17, 'PublishedBy' => 18, 'Online' => 19, 'ArchivedAt' => 20, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'treeLeft' => 4, 'treeRight' => 5, 'treeLevel' => 6, 'id' => 7, 'pUserId' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'moreInfo' => 12, 'notePos' => 13, 'noteNeg' => 14, 'nbViews' => 15, 'published' => 16, 'publishedAt' => 17, 'publishedBy' => 18, 'online' => 19, 'archivedAt' => 20, ),
-        BasePeer::TYPE_COLNAME => array (PDReactionArchivePeer::P_D_DEBATE_ID => 0, PDReactionArchivePeer::CREATED_AT => 1, PDReactionArchivePeer::UPDATED_AT => 2, PDReactionArchivePeer::SLUG => 3, PDReactionArchivePeer::TREE_LEFT => 4, PDReactionArchivePeer::TREE_RIGHT => 5, PDReactionArchivePeer::TREE_LEVEL => 6, PDReactionArchivePeer::ID => 7, PDReactionArchivePeer::P_USER_ID => 8, PDReactionArchivePeer::TITLE => 9, PDReactionArchivePeer::SUMMARY => 10, PDReactionArchivePeer::DESCRIPTION => 11, PDReactionArchivePeer::MORE_INFO => 12, PDReactionArchivePeer::NOTE_POS => 13, PDReactionArchivePeer::NOTE_NEG => 14, PDReactionArchivePeer::NB_VIEWS => 15, PDReactionArchivePeer::PUBLISHED => 16, PDReactionArchivePeer::PUBLISHED_AT => 17, PDReactionArchivePeer::PUBLISHED_BY => 18, PDReactionArchivePeer::ONLINE => 19, PDReactionArchivePeer::ARCHIVED_AT => 20, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'TREE_LEFT' => 4, 'TREE_RIGHT' => 5, 'TREE_LEVEL' => 6, 'ID' => 7, 'P_USER_ID' => 8, 'TITLE' => 9, 'SUMMARY' => 10, 'DESCRIPTION' => 11, 'MORE_INFO' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'NB_VIEWS' => 15, 'PUBLISHED' => 16, 'PUBLISHED_AT' => 17, 'PUBLISHED_BY' => 18, 'ONLINE' => 19, 'ARCHIVED_AT' => 20, ),
-        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'tree_left' => 4, 'tree_right' => 5, 'tree_level' => 6, 'id' => 7, 'p_user_id' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'more_info' => 12, 'note_pos' => 13, 'note_neg' => 14, 'nb_views' => 15, 'published' => 16, 'published_at' => 17, 'published_by' => 18, 'online' => 19, 'archived_at' => 20, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('PDDebateId' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'Slug' => 3, 'TreeLeft' => 4, 'TreeRight' => 5, 'TreeLevel' => 6, 'Id' => 7, 'PUserId' => 8, 'Title' => 9, 'Summary' => 10, 'Description' => 11, 'MoreInfo' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'NbViews' => 15, 'Published' => 16, 'PublishedAt' => 17, 'PublishedBy' => 18, 'Online' => 19, 'Broadcast' => 20, 'ArchivedAt' => 21, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pDDebateId' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'slug' => 3, 'treeLeft' => 4, 'treeRight' => 5, 'treeLevel' => 6, 'id' => 7, 'pUserId' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'moreInfo' => 12, 'notePos' => 13, 'noteNeg' => 14, 'nbViews' => 15, 'published' => 16, 'publishedAt' => 17, 'publishedBy' => 18, 'online' => 19, 'broadcast' => 20, 'archivedAt' => 21, ),
+        BasePeer::TYPE_COLNAME => array (PDReactionArchivePeer::P_D_DEBATE_ID => 0, PDReactionArchivePeer::CREATED_AT => 1, PDReactionArchivePeer::UPDATED_AT => 2, PDReactionArchivePeer::SLUG => 3, PDReactionArchivePeer::TREE_LEFT => 4, PDReactionArchivePeer::TREE_RIGHT => 5, PDReactionArchivePeer::TREE_LEVEL => 6, PDReactionArchivePeer::ID => 7, PDReactionArchivePeer::P_USER_ID => 8, PDReactionArchivePeer::TITLE => 9, PDReactionArchivePeer::SUMMARY => 10, PDReactionArchivePeer::DESCRIPTION => 11, PDReactionArchivePeer::MORE_INFO => 12, PDReactionArchivePeer::NOTE_POS => 13, PDReactionArchivePeer::NOTE_NEG => 14, PDReactionArchivePeer::NB_VIEWS => 15, PDReactionArchivePeer::PUBLISHED => 16, PDReactionArchivePeer::PUBLISHED_AT => 17, PDReactionArchivePeer::PUBLISHED_BY => 18, PDReactionArchivePeer::ONLINE => 19, PDReactionArchivePeer::BROADCAST => 20, PDReactionArchivePeer::ARCHIVED_AT => 21, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_D_DEBATE_ID' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'SLUG' => 3, 'TREE_LEFT' => 4, 'TREE_RIGHT' => 5, 'TREE_LEVEL' => 6, 'ID' => 7, 'P_USER_ID' => 8, 'TITLE' => 9, 'SUMMARY' => 10, 'DESCRIPTION' => 11, 'MORE_INFO' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'NB_VIEWS' => 15, 'PUBLISHED' => 16, 'PUBLISHED_AT' => 17, 'PUBLISHED_BY' => 18, 'ONLINE' => 19, 'BROADCAST' => 20, 'ARCHIVED_AT' => 21, ),
+        BasePeer::TYPE_FIELDNAME => array ('p_d_debate_id' => 0, 'created_at' => 1, 'updated_at' => 2, 'slug' => 3, 'tree_left' => 4, 'tree_right' => 5, 'tree_level' => 6, 'id' => 7, 'p_user_id' => 8, 'title' => 9, 'summary' => 10, 'description' => 11, 'more_info' => 12, 'note_pos' => 13, 'note_neg' => 14, 'nb_views' => 15, 'published' => 16, 'published_at' => 17, 'published_by' => 18, 'online' => 19, 'broadcast' => 20, 'archived_at' => 21, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -233,6 +236,7 @@ abstract class BasePDReactionArchivePeer
             $criteria->addSelectColumn(PDReactionArchivePeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDReactionArchivePeer::PUBLISHED_BY);
             $criteria->addSelectColumn(PDReactionArchivePeer::ONLINE);
+            $criteria->addSelectColumn(PDReactionArchivePeer::BROADCAST);
             $criteria->addSelectColumn(PDReactionArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.p_d_debate_id');
@@ -255,6 +259,7 @@ abstract class BasePDReactionArchivePeer
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.broadcast');
             $criteria->addSelectColumn($alias . '.archived_at');
         }
     }

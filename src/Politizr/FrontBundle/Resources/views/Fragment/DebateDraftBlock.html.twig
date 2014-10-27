@@ -1,12 +1,15 @@
 <div class="debate-header">
 	<div class="row">
 		<h3>
-			<div class="col-sm-10">
+			<div class="col-sm-8">
 				{{ debate.title }}
 			</div>
 		</h3>
 		<div class="col-sm-2 text-center">
 			<span class="label label-default pull-right">non publié</span>
+		</div>
+		<div class="col-sm-2 text-center">
+			<a class="btn btn-primary" href="{{ path('MyDraftsEditC', { 'id': debate.id }) }}">Editer</a>
 		</div>
 	</div>
 	<h4>

@@ -21,90 +21,102 @@ Politizr\Model\PRBadgeType:
         description:        |
             Badges autres
 
-
+Politizr\Model\PRBadgeMetal:
+    or:
+        title:              Or
+        description:        |
+            Niveau or
+    argent:
+        title:              Argent
+        description:        |
+            Niveau argent
+    bronze:
+        title:              Bronze
+        description:        |
+            Niveau bronze
 
 Politizr\Model\PRBadge:
     polemiqueur_or:
         online:				true
         p_r_badge_type_id:  debat
-        grade:              Or
+        p_r_badge_metal_id: or
         title:				Polémiqueur
         description:		|
             Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
     polemiqueur_argent:
         online:             true
         p_r_badge_type_id:  debat
-        grade:              Argent
+        p_r_badge_metal_id: argent
         title:              Polémiqueur
         description:        |
             Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
     polemiqueur_bronze:
         online:             true
         p_r_badge_type_id:  debat
-        grade:              Bronze
+        p_r_badge_metal_id: bronze
         title:              Polémiqueur
         description:        |
             Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
     redacteur_or:
         online:             true
         p_r_badge_type_id:  debat
-        grade:              Or
+        p_r_badge_metal_id: or
         title:              Rédacteur
         description:        |
             Être l’auteur de X contenus “débat” ayant obtenu au moins +X
     redacteur_argent:
         online:             true
         p_r_badge_type_id:  debat
-        grade:              Argent
+        p_r_badge_metal_id: argent
         title:              Rédacteur
         description:        |
             Être l’auteur de X contenus “débat” ayant obtenu au moins +X
     redacteur_bronze:
         online:             true
         p_r_badge_type_id:  debat
-        grade:              Bronze
+        p_r_badge_metal_id: bronze
         title:              Rédacteur
         description:        |
             Être l’auteur de X contenus “débat” ayant obtenu au moins +X
     commentateur_or:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Or
+        p_r_badge_metal_id: or
         title:              Commentateur
         description:        |
             Écrire X commentaires
     commentateur_argent:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Argent
+        p_r_badge_metal_id: argent
         title:              Commentateur
         description:        |
             Écrire X commentaires
     commentateur_bronze:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Bronze
+        p_r_badge_metal_id: bronze
         title:              Commentateur
         description:        |
             Écrire X commentaires
     impertinent_or:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Or
+        p_r_badge_metal_id: or
         title:              Impertinent
         description:        |
             Atteindre un score de +X à un de ses commentaires
     impertinent_argent:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Argent
+        p_r_badge_metal_id: argent
         title:              Impertinent
         description:        |
             Atteindre un score de +X à un de ses commentaires
     impertinent_bronze:
         online:             true
         p_r_badge_type_id:  commentaire
-        grade:              Bronze
+        p_r_badge_metal_id: bronze
         title:              Impertinent
         description:        |
             Atteindre un score de +X à un de ses commentaires

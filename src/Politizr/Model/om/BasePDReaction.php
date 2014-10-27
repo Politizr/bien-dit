@@ -167,6 +167,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $online;
 
     /**
+     * The value for the broadcast field.
+     * @var        boolean
+     */
+    protected $broadcast;
+
+    /**
      * @var        PDDebate
      */
     protected $aPDDebate;
@@ -513,6 +519,16 @@ abstract class BasePDReaction extends PDocument implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [broadcast] column value.
+     *
+     * @return boolean
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
     /**
@@ -970,6 +986,35 @@ abstract class BasePDReaction extends PDocument implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [broadcast] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setBroadcast($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->broadcast !== $v) {
+            $this->broadcast = $v;
+            $this->modifiedColumns[] = PDReactionPeer::BROADCAST;
+        }
+
+
+        return $this;
+    } // setBroadcast()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1021,6 +1066,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->broadcast = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1029,7 +1075,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 20; // 20 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1400,6 +1446,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDReactionPeer::BROADCAST)) {
+            $modifiedColumns[':p' . $index++]  = '`broadcast`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_d_reaction` (%s) VALUES (%s)',
@@ -1470,6 +1519,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`broadcast`':
+                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1682,6 +1734,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
             case 19:
                 return $this->getOnline();
                 break;
+            case 20:
+                return $this->getBroadcast();
+                break;
             default:
                 return null;
                 break;
@@ -1731,6 +1786,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $keys[17] => $this->getPublishedAt(),
             $keys[18] => $this->getPublishedBy(),
             $keys[19] => $this->getOnline(),
+            $keys[20] => $this->getBroadcast(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPDDebate) {
@@ -1836,6 +1892,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
             case 19:
                 $this->setOnline($value);
                 break;
+            case 20:
+                $this->setBroadcast($value);
+                break;
         } // switch()
     }
 
@@ -1880,6 +1939,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setBroadcast($arr[$keys[20]]);
     }
 
     /**
@@ -1911,6 +1971,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_AT)) $criteria->add(PDReactionPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_BY)) $criteria->add(PDReactionPeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) $criteria->add(PDReactionPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDReactionPeer::BROADCAST)) $criteria->add(PDReactionPeer::BROADCAST, $this->broadcast);
 
         return $criteria;
     }
@@ -1993,6 +2054,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBroadcast($this->getBroadcast());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2231,6 +2293,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->broadcast = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3404,6 +3467,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $parent->setPublishedAt($this->getPublishedAt());
         $parent->setPublishedBy($this->getPublishedBy());
         $parent->setOnline($this->getOnline());
+        $parent->setBroadcast($this->getBroadcast());
         if ($this->getPUser() && $this->getPUser()->isNew()) {
             $parent->setPUser($this->getPUser());
         }
@@ -3508,6 +3572,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setOnline($archive->getOnline());
+        $this->setBroadcast($archive->getBroadcast());
 
         return $this;
     }

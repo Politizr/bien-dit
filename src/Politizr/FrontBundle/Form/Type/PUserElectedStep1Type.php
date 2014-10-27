@@ -71,6 +71,7 @@ class PUserElectedStep1Type extends AbstractType
             )
         );
 
+        // TODO: + contrainte email
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
@@ -100,6 +101,7 @@ class PUserElectedStep1Type extends AbstractType
             )
         );
         
+        # TODO > contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(

@@ -2,6 +2,7 @@
 namespace Politizr\Frontbundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
+use Politizr\Model\PRBadgeMetal;
 
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
@@ -92,6 +93,10 @@ class PolitizrExtension extends \Twig_Extension
                     )
             ),
             'userTaggedTagsEdit'  => new \Twig_Function_Method($this, 'userTaggedTagsEdit', array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'badgeMetalTwBootClass'  => new \Twig_Function_Method($this, 'badgeMetalTwBootClass', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -335,6 +340,34 @@ class PolitizrExtension extends \Twig_Extension
 
         return $html;
     }
+
+
+
+   /**
+     *  Renvoit une classe de label twitter bootstrap 3 en fonction de l'id BadgeMetal
+     *
+     *  @param $uiser        uiser       PDDebate
+     *  @param $tagTypeId  integer     ID type de tag
+     *
+     *  @return string
+     */
+    public function badgeMetalTwBootClass($badgeMetalId)
+    {
+        $this->logger->info('*** badgeMetalTwBootClass');
+        // $this->logger->info('$badgeMetalId = '.print_r($badgeMetalId, true));
+
+        $twClass = 'label-info';
+        if ($badgeMetalId == PRBadgeMetal::GOLD) {
+            $twClass = 'label-warning';
+        } elseif($badgeMetalId == PRBadgeMetal::SILVER) {
+            $twClass = 'label-default';
+        } elseif($badgeMetalId == PRBadgeMetal::BRONZE) {
+            $twClass = 'label-danger';
+        }
+
+        return $twClass;
+    }
+
 
 
 

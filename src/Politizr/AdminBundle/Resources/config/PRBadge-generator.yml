@@ -12,12 +12,14 @@ params:
             label:          Type
         p_r_badge_type:
             label:          Type
+        p_r_badge_metal_id:
+            label:          Niveau
+        p_r_badge_metal:
+            label:          Niveau
         title:
             label:          Titre
         description:
             label:          Description
-        grade:
-            label:          Niveau
         online:
             label:          En ligne
         created_at:
@@ -34,7 +36,7 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_type, grade, description, nb_users, online ]
+            display:                            [ title, p_r_badge_type, p_r_badge_metal, description, nb_users, online ]
             actions:
                 new:                            ~
             object_actions:
@@ -49,7 +51,7 @@ builders:
         filetype: ~
     filters:
         params:
-            display:                            [ title, grade, p_r_badge_type, online, created_at ]
+            display:                            [ title, p_r_badge_metal, p_r_badge_type, online, created_at ]
             fields:
                 p_r_badge_type:
                     addFormOptions:
@@ -58,8 +60,8 @@ builders:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_type ], [ title ] ]
-                "Champs complémentaires":       [ [ grade ], [ description ] ]
+                "Champs principaux":            [ [ p_r_badge_type, p_r_badge_metal ], [ title ] ]
+                "Champs complémentaires":       [ [ description ] ]
             fields:
                 p_r_badge_type:
                     addFormOptions:
@@ -72,7 +74,7 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
+                    "Texte":                    [ [ p_r_badge_type , p_r_badge_metal ], [ title ], [ description ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
@@ -93,7 +95,7 @@ builders:
 #             title:                              "Visualisation du badge '{{ PRBadge.title }}'"
 #             tabs:
 #                 "Contenu":
-#                     "Texte":                    [ [ p_r_badge_type ], [ grade ], [ title ], [ description ] ]
+#                     "Texte":                    [ [ p_r_badge_type, p_r_badge_metal ], [ title ], [ description ] ]
 #                 "Utilisation":
 #                     "Utilisateurs badgés":      [ block_users ]
 #                 "Attributs":

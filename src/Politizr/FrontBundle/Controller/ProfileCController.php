@@ -34,7 +34,11 @@ use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
 
-use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PUserPerso1Type;
+use Politizr\FrontBundle\Form\Type\PUserPerso2Type;
+use Politizr\FrontBundle\Form\Type\PUserPerso3Type;
+use Politizr\FrontBundle\Form\Type\PUserPerso4Type;
+
 
 /**
  * Gestion profil citoyen
@@ -215,11 +219,9 @@ ORDER BY published DESC
         //      Suggestions d'utilisateurs élus
         $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, PUType::TYPE_QUALIFIE);
 
-
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-
         return $this->render('PolitizrFrontBundle:ProfileC:suggestionsC.html.twig', array(
                     'debatesGeo' => $debatesGeo,
                     'debatesTheme' => $debatesTheme,
@@ -490,17 +492,28 @@ ORDER BY published DESC
         $logger->info('*** myPersoCAction');
 
         // Récupération user courant
-        $pUser = $this->getUser();
+        $user = $this->getUser();
+
+        // Récupération photo profil
+        $fileName = $user->getFileName();
 
         // *********************************** //
-        //      Récupération objets vue
+        //      Formulaires
         // *********************************** //
+        $formPerso1 = $this->createForm(new PUserPerso1Type(), $user);
+        $formPerso2 = $this->createForm(new PUserPerso2Type(), $user);
+        $formPerso3 = $this->createForm(new PUserPerso3Type(), $user);
+        $formPerso4 = $this->createForm(new PUserPerso4Type(), $user);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-
         return $this->render('PolitizrFrontBundle:ProfileC:myPersoC.html.twig', array(
+                        'formPerso1' => $formPerso1->createView(),
+                        'formPerso2' => $formPerso2->createView(),
+                        'formPerso3' => $formPerso3->createView(),
+                        'formPerso4' => $formPerso4->createView(),
+                        'fileName' => $fileName,
             ));
     }
 

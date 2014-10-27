@@ -3,10 +3,97 @@
 {% block main %}
 	<div id="main" class="container">
 		<h3>Mes informations personnelles</h3>
+
+		<h4>Votre photo</h4>
+		<div class="row text-center">
+			<div id="current-photo">
+				{% if (fileName) %}
+		            <img class="img-rounded" src="{{ asset('uploads/users/'~fileName) }}">
+		        {% else %}
+		            <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') }}">
+	        	{% endif %}
+			</div>
+		    <form id="form-user-photo" action="{{ path('UserPhotoUpload') }}" method="post" enctype="multipart/form-data">
+		    	<div id="upload-file-container">
+		        	<input type="file" name="file-name" id="file-name">
+		        	<button id="file-select">Choisir 1 photo sur mon ordinateur</button>
+		        	<button id="file-delete">Supprimer la photo</button>
+		        </div>
+		    </form>
+		</div>
+		
+		<hr>
+
+		<h4>Votre identité</h4>
+		<div id="box-perso1">
+			{{ form_start(formPerso1, {'style': 'horizontal', 'attr': {'id': 'form-perso1'} }) }}
+			    {{ form_errors(formPerso1) }}
+
+			    {{ form_row(formPerso1.gender) }}
+			    {{ form_row(formPerso1.name) }}
+			    {{ form_row(formPerso1.firstname) }}
+			    {{ form_row(formPerso1.birthday) }}
+
+			    <p class="bg-info">Ces informations vous identifiants au travers des débats, elles ne peuvent être modifiées. Si vous désirez les corriger, contactez directement Politizr.</p>
+			{{ form_end(formPerso1) }}
+		</div>
+		
+		<hr>
+
+		<h4>Votre email et votre abonnement newsletter</h4>
+		<div id="box-perso2">
+			{{ form_start(formPerso2, {'style': 'horizontal', 'attr': {'id': 'form-perso2'} }) }}
+			    {{ form_errors(formPerso2) }}
+
+			    {{ form_row(formPerso2.email) }}
+			    {{ form_row(formPerso2.newsletter) }}
+
+			    {{ form_row(formPerso2.actions) }}
+			{{ form_end(formPerso2) }}
+		</div>
+		
+		<hr>
+
+		<h4>Vos informations personnelles</h4>
+		<div id="box-perso3">
+			{{ form_start(formPerso3, {'style': 'horizontal', 'attr': {'id': 'form-perso3'} }) }}
+			    {{ form_errors(formPerso3) }}
+
+			    {{ form_row(formPerso3.biography) }}
+			    {{ form_row(formPerso3.website) }}
+			    {{ form_row(formPerso3.twitter) }}
+			    {{ form_row(formPerso3.facebook) }}
+			    {{ form_row(formPerso3.phone) }}
+
+			    {{ form_row(formPerso3.actions) }}
+			{{ form_end(formPerso3) }}
+		</div>
+		
+		<hr>
+
+		<h4>Vos identifiant et mot de passe de connexion</h4>
+		<div id="box-perso4">
+			{{ form_start(formPerso4, {'style': 'horizontal', 'attr': {'id': 'form-perso4'} }) }}
+			    {{ form_errors(formPerso4) }}
+
+			    {{ form_row(formPerso4.username) }}
+			    {{ form_row(formPerso4.password) }}
+
+			    <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
+			    <hr>
+
+			    {{ form_row(formPerso4.actions) }}
+			{{ form_end(formPerso4) }}
+		</div>
+
 	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
+
+    {# Upload ajax #}
+	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
+	
     {% include 'PolitizrFrontBundle:JS:myPersoC.js.twig' %}
 {% endblock javascriptFooter %}

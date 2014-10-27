@@ -150,6 +150,11 @@ Politizr_AdminBundle_PRBadgeType:
     type:     admingenerator
     prefix:   /PRBadgeType
 
+Politizr_AdminBundle_PRBadgeMetal:
+    resource: "@PolitizrAdminBundle/Controller/PRBadgeMetal/"
+    type:     admingenerator
+    prefix:   /PRBadgeMetal
+
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
     type:     admingenerator

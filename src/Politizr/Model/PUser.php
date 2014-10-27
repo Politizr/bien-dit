@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 
+
 class PUser extends BasePUser implements UserInterface
 {
 	// ************************************************************************************ //
@@ -292,13 +293,13 @@ class PUser extends BasePUser implements UserInterface
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        // /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
-        // TODO sortir la contrainte "unique email" vers PUserStep2Type
+        // TODO /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
+
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',
-            'message' => 'Cette adresse email existe déja.',
+            'message' => 'Cet email est déjà utilisé.',
         )));
-
+    
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'username',
             'message' => 'Cet identifiant est déjà pris.',

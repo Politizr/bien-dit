@@ -12,12 +12,26 @@
 		<h1>Mes contributions</h1>
 		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, taggez le puis publiez le. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
 		<div id="box-edit-debate">
-			<p class="text-muted">Tags géographiques</p>
-			{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
-		    <hr>
-		    <p class="text-muted">Tags thématiques</p>
-			{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
-		    <hr>
+			<p class="text-muted">Bandeau</p>
+			<div class="row text-center">
+				<div id="current-photo">
+					{% if (debate.fileName) %}
+			            <img class="img-rounded" src="{{ asset('uploads/documents/'~debate.fileName) }}">
+			        {% else %}
+			            <p>Aucune photo téléchargée</p>
+		        	{% endif %}
+				</div>
+			    <form id="form-debate-photo" action="{{ path('DebatePhotoUpload') }}" method="post" enctype="multipart/form-data">
+			    	<input type="hidden" name="id" value="{{ debate.id }}">
+			    	<div id="upload-file-container">
+			        	<input type="file" name="file-name" id="file-name">
+			        	<button id="file-select">Choisir 1 photo sur mon ordinateur</button>
+			        	<button id="file-delete">Supprimer la photo</button>
+			        </div>
+			    </form>
+			</div>
+			
+
 			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-debate-update'}}) }}
 			    {{ form_errors(form) }}
 
@@ -58,6 +72,12 @@
 					</div>
 				</div>
 			    <hr>
+				<p class="text-muted">Tags géographiques</p>
+				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
+			    <hr>
+			    <p class="text-muted">Tags thématiques</p>
+				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
+			    <hr>
 				<div class="col-lg-offset-2 col-lg-10">
 					<button type="submit" class="btn btn-success btn-primary">Enregistrer</button>
 					<a action="debate-publish" class="btn btn-success btn-default">Publier</a>
@@ -79,5 +99,8 @@
     <script src="{{ asset('medium-editor/js/medium-editor.min.js') }}"></script>
     <script src="{{ asset('classList/classList.min.js') }}"></script> <!-- IE9 compatibility -->
     
+    {# Upload ajax #}
+	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
+
     {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
 {% endblock javascriptFooter %}

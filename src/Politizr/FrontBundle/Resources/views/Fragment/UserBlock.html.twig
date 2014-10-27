@@ -76,8 +76,7 @@
 			<!-- REPUTATION / BADGES -->
 			<div id="badges">
 				{% for badge in pUser.badges %}
-					{# TODO extraire le grade dans une table séparée #}
-					<span class="label label-warning">{{ badge.title }} ({{ badge.grade }})</span>
+					<span class="label  {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
 				{% else %}
 					<span class="label label-default">Aucun badge</span>
 				{% endfor %}

@@ -141,6 +141,12 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the broadcast field.
+     * @var        boolean
+     */
+    protected $broadcast;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -424,6 +430,16 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [broadcast] column value.
+     *
+     * @return boolean
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
     /**
@@ -846,6 +862,35 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [broadcast] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebateArchive The current object (for fluent API support)
+     */
+    public function setBroadcast($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->broadcast !== $v) {
+            $this->broadcast = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::BROADCAST;
+        }
+
+
+        return $this;
+    } // setBroadcast()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -917,7 +962,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->published_by = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->archived_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->broadcast = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->archived_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -926,7 +972,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 18; // 18 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 19; // 19 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebateArchive object", $e);
@@ -1185,6 +1231,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDDebateArchivePeer::BROADCAST)) {
+            $modifiedColumns[':p' . $index++]  = '`broadcast`';
+        }
         if ($this->isColumnModified(PDDebateArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -1249,6 +1298,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`broadcast`':
+                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1432,6 +1484,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 17:
+                return $this->getBroadcast();
+                break;
+            case 18:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1479,7 +1534,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $keys[14] => $this->getPublishedAt(),
             $keys[15] => $this->getPublishedBy(),
             $keys[16] => $this->getOnline(),
-            $keys[17] => $this->getArchivedAt(),
+            $keys[17] => $this->getBroadcast(),
+            $keys[18] => $this->getArchivedAt(),
         );
 
         return $result;
@@ -1566,6 +1622,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 17:
+                $this->setBroadcast($value);
+                break;
+            case 18:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1609,7 +1668,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setPublishedBy($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setArchivedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[17], $arr)) $this->setBroadcast($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setArchivedAt($arr[$keys[18]]);
     }
 
     /**
@@ -1638,6 +1698,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_AT)) $criteria->add(PDDebateArchivePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_BY)) $criteria->add(PDDebateArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDDebateArchivePeer::ONLINE)) $criteria->add(PDDebateArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebateArchivePeer::BROADCAST)) $criteria->add(PDDebateArchivePeer::BROADCAST, $this->broadcast);
         if ($this->isColumnModified(PDDebateArchivePeer::ARCHIVED_AT)) $criteria->add(PDDebateArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1718,6 +1779,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBroadcast($this->getBroadcast());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1787,6 +1849,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->broadcast = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

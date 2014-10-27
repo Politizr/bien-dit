@@ -43,14 +43,14 @@ abstract class BasePRBadgeArchivePeer
     /** the column name for the p_r_badge_type_id field */
     const P_R_BADGE_TYPE_ID = 'p_r_badge_archive.p_r_badge_type_id';
 
+    /** the column name for the p_r_badge_metal_id field */
+    const P_R_BADGE_METAL_ID = 'p_r_badge_archive.p_r_badge_metal_id';
+
     /** the column name for the title field */
     const TITLE = 'p_r_badge_archive.title';
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_r_badge_archive.description';
-
-    /** the column name for the grade field */
-    const GRADE = 'p_r_badge_archive.grade';
 
     /** the column name for the online field */
     const ONLINE = 'p_r_badge_archive.online';
@@ -63,11 +63,6 @@ abstract class BasePRBadgeArchivePeer
 
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_r_badge_archive.archived_at';
-
-    /** The enumerated values for the grade field */
-    const GRADE_OR = 'Or';
-    const GRADE_ARGENT = 'Argent';
-    const GRADE_BRONZE = 'Bronze';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -88,11 +83,11 @@ abstract class BasePRBadgeArchivePeer
      * e.g. PRBadgeArchivePeer::$fieldNames[PRBadgeArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PRBadgeTypeId', 'Title', 'Description', 'Grade', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pRBadgeTypeId', 'title', 'description', 'grade', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, PRBadgeArchivePeer::TITLE, PRBadgeArchivePeer::DESCRIPTION, PRBadgeArchivePeer::GRADE, PRBadgeArchivePeer::ONLINE, PRBadgeArchivePeer::CREATED_AT, PRBadgeArchivePeer::UPDATED_AT, PRBadgeArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_R_BADGE_TYPE_ID', 'TITLE', 'DESCRIPTION', 'GRADE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_r_badge_type_id', 'title', 'description', 'grade', 'online', 'created_at', 'updated_at', 'archived_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PRBadgeTypeId', 'PRBadgeMetalId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pRBadgeTypeId', 'pRBadgeMetalId', 'title', 'description', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, PRBadgeArchivePeer::P_R_BADGE_METAL_ID, PRBadgeArchivePeer::TITLE, PRBadgeArchivePeer::DESCRIPTION, PRBadgeArchivePeer::ONLINE, PRBadgeArchivePeer::CREATED_AT, PRBadgeArchivePeer::UPDATED_AT, PRBadgeArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_R_BADGE_TYPE_ID', 'P_R_BADGE_METAL_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_r_badge_type_id', 'p_r_badge_metal_id', 'title', 'description', 'online', 'created_at', 'updated_at', 'archived_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -103,21 +98,12 @@ abstract class BasePRBadgeArchivePeer
      * e.g. PRBadgeArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PRBadgeTypeId' => 1, 'Title' => 2, 'Description' => 3, 'Grade' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'ArchivedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pRBadgeTypeId' => 1, 'title' => 2, 'description' => 3, 'grade' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'archivedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID => 0, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID => 1, PRBadgeArchivePeer::TITLE => 2, PRBadgeArchivePeer::DESCRIPTION => 3, PRBadgeArchivePeer::GRADE => 4, PRBadgeArchivePeer::ONLINE => 5, PRBadgeArchivePeer::CREATED_AT => 6, PRBadgeArchivePeer::UPDATED_AT => 7, PRBadgeArchivePeer::ARCHIVED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_R_BADGE_TYPE_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'GRADE' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'ARCHIVED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_r_badge_type_id' => 1, 'title' => 2, 'description' => 3, 'grade' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'archived_at' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PRBadgeTypeId' => 1, 'PRBadgeMetalId' => 2, 'Title' => 3, 'Description' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'ArchivedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pRBadgeTypeId' => 1, 'pRBadgeMetalId' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'archivedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID => 0, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID => 1, PRBadgeArchivePeer::P_R_BADGE_METAL_ID => 2, PRBadgeArchivePeer::TITLE => 3, PRBadgeArchivePeer::DESCRIPTION => 4, PRBadgeArchivePeer::ONLINE => 5, PRBadgeArchivePeer::CREATED_AT => 6, PRBadgeArchivePeer::UPDATED_AT => 7, PRBadgeArchivePeer::ARCHIVED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_R_BADGE_TYPE_ID' => 1, 'P_R_BADGE_METAL_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'ARCHIVED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_r_badge_type_id' => 1, 'p_r_badge_metal_id' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'archived_at' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
-    );
-
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-        PRBadgeArchivePeer::GRADE => array(
-            PRBadgeArchivePeer::GRADE_OR,
-            PRBadgeArchivePeer::GRADE_ARGENT,
-            PRBadgeArchivePeer::GRADE_BRONZE,
-        ),
     );
 
     /**
@@ -160,50 +146,6 @@ abstract class BasePRBadgeArchivePeer
     }
 
     /**
-     * Gets the list of values for all ENUM columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return PRBadgeArchivePeer::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM column
-     *
-     * @param string $colname The ENUM column name.
-     *
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = PRBadgeArchivePeer::getValueSets();
-
-        if (!isset($valueSets[$colname])) {
-            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
-        }
-
-        return $valueSets[$colname];
-    }
-
-    /**
-     * Gets the SQL value for the ENUM column value
-     *
-     * @param string $colname ENUM column name.
-     * @param string $enumVal ENUM value.
-     *
-     * @return int            SQL value
-     */
-    public static function getSqlValueForEnum($colname, $enumVal)
-    {
-        $values = PRBadgeArchivePeer::getValueSet($colname);
-        if (!in_array($enumVal, $values)) {
-            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
-        }
-        return array_search($enumVal, $values);
-    }
-
-    /**
      * Convenience method which changes table.column to alias.column.
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
@@ -237,9 +179,9 @@ abstract class BasePRBadgeArchivePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PRBadgeArchivePeer::ID);
             $criteria->addSelectColumn(PRBadgeArchivePeer::P_R_BADGE_TYPE_ID);
+            $criteria->addSelectColumn(PRBadgeArchivePeer::P_R_BADGE_METAL_ID);
             $criteria->addSelectColumn(PRBadgeArchivePeer::TITLE);
             $criteria->addSelectColumn(PRBadgeArchivePeer::DESCRIPTION);
-            $criteria->addSelectColumn(PRBadgeArchivePeer::GRADE);
             $criteria->addSelectColumn(PRBadgeArchivePeer::ONLINE);
             $criteria->addSelectColumn(PRBadgeArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PRBadgeArchivePeer::UPDATED_AT);
@@ -247,9 +189,9 @@ abstract class BasePRBadgeArchivePeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_r_badge_type_id');
+            $criteria->addSelectColumn($alias . '.p_r_badge_metal_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.grade');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
@@ -554,17 +496,6 @@ abstract class BasePRBadgeArchivePeer
         }
 
         return array($obj, $col);
-    }
-
-    /**
-     * Gets the SQL value for Grade ENUM value
-     *
-     * @param  string $enumVal ENUM value to get SQL value for
-     * @return int             SQL value
-     */
-    public static function getGradeSqlValue($enumVal)
-    {
-        return PRBadgeArchivePeer::getSqlValueForEnum(PRBadgeArchivePeer::GRADE, $enumVal);
     }
 
     /**

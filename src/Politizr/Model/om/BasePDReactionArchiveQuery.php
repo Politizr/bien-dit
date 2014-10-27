@@ -35,6 +35,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDReactionArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDReactionArchiveQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDReactionArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDReactionArchiveQuery groupByPDDebateId() Group by the p_d_debate_id column
@@ -57,6 +58,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDReactionArchiveQuery groupByOnline() Group by the online column
+ * @method PDReactionArchiveQuery groupByBroadcast() Group by the broadcast column
  * @method PDReactionArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDReactionArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -85,6 +87,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByPublishedAt(string $published_at) Return the first PDReactionArchive filtered by the published_at column
  * @method PDReactionArchive findOneByPublishedBy(string $published_by) Return the first PDReactionArchive filtered by the published_by column
  * @method PDReactionArchive findOneByOnline(boolean $online) Return the first PDReactionArchive filtered by the online column
+ * @method PDReactionArchive findOneByBroadcast(boolean $broadcast) Return the first PDReactionArchive filtered by the broadcast column
  * @method PDReactionArchive findOneByArchivedAt(string $archived_at) Return the first PDReactionArchive filtered by the archived_at column
  *
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReactionArchive objects filtered by the p_d_debate_id column
@@ -107,6 +110,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByPublishedAt(string $published_at) Return PDReactionArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReactionArchive objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDReactionArchive objects filtered by the online column
+ * @method array findByBroadcast(boolean $broadcast) Return PDReactionArchive objects filtered by the broadcast column
  * @method array findByArchivedAt(string $archived_at) Return PDReactionArchive objects filtered by the archived_at column
  */
 abstract class BasePDReactionArchiveQuery extends ModelCriteria
@@ -209,7 +213,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1031,6 +1035,33 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the broadcast column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBroadcast(true); // WHERE broadcast = true
+     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
+     * </code>
+     *
+     * @param     boolean|string $broadcast The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByBroadcast($broadcast = null, $comparison = null)
+    {
+        if (is_string($broadcast)) {
+            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**
