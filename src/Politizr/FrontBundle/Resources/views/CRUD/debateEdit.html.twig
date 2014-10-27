@@ -10,7 +10,7 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Mes contributions</h1>
-		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, taggez le puis publiez le. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
+		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, taggez le, puis prévisualisez le afin de pouvoir le publier. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
 		<div id="box-edit-debate">
 			<p class="text-muted">Bandeau</p>
 			<div class="row text-center">
@@ -25,7 +25,7 @@
 			    	<input type="hidden" name="id" value="{{ debate.id }}">
 			    	<div id="upload-file-container">
 			        	<input type="file" name="file-name" id="file-name">
-			        	<button id="file-select">Choisir 1 photo sur mon ordinateur</button>
+			        	<button id="file-select">Choisir la photo</button>
 			        	<button id="file-delete">Supprimer la photo</button>
 			        </div>
 			    </form>
@@ -79,10 +79,10 @@
 				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
 			    <hr>
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-success btn-primary">Enregistrer</button>
-					<a action="debate-publish" class="btn btn-success btn-default">Publier</a>
-					<a action="debate-delete" class="btn btn-success btn-default">Supprimer</a>
-					<a action="debate-list" class="btn btn-warning btn-default">Retour</a>
+					<button type="submit" class="btn btn-success">Enregistrer</button>
+					<a action="debate-preview" class="btn btn-info">Prévisualiser</a>
+					<a action="debate-delete" class="btn btn-warning">Supprimer</a>
+					<a action="debate-list" class="btn btn-primary">Retour</a>
 				</div>	
 			{{ form_end(form) }}
 		</div>
@@ -103,4 +103,5 @@
 	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
 
     {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debatePublishDelete.js.twig' %}
 {% endblock javascriptFooter %}

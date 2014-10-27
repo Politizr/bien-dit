@@ -270,9 +270,9 @@ class CRUDController extends Controller {
 		            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
 		        }
 
-		        // MAJ de l'objet
+		        // // MAJ de l'objet
 		        $debate = PDDebateQuery::create()->findPk($id);
-                $debate->delete(); // TODO > on garde une archive même sur les brouillons? http://propelorm.org/documentation/behaviors/archivable.html
+                $debate->deleteWithoutArchive(); // pas d'archive sur les brouillons
 
                 $this->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 

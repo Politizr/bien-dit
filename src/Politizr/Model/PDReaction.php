@@ -61,6 +61,23 @@ class PDReaction extends BasePDReaction
     	return parent::preSave($con);
 	}
 
+    /**
+     * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
+     * https://github.com/propelorm/Propel/issues/366
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PDDebate The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+        $this->getParentOrCreate($con)->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+
 	// *****************************  DEBAT / REACTION  ****************** //
 
 	/**

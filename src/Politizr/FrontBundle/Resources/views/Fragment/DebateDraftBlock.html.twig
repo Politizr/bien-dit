@@ -1,15 +1,19 @@
+<input type="hidden" id="debate_id" value="{{ debate.id }}" />
 <div class="debate-header">
 	<div class="row">
 		<h3>
-			<div class="col-sm-8">
+			<div class="col-sm-9">
 				{{ debate.title }}
 			</div>
 		</h3>
-		<div class="col-sm-2 text-center">
+		<div class="col-sm-1 text-center">
 			<span class="label label-default pull-right">non publié</span>
 		</div>
-		<div class="col-sm-2 text-center">
+		<div class="col-sm-1 text-center">
 			<a class="btn btn-primary" href="{{ path('MyDraftsEditC', { 'id': debate.id }) }}">Editer</a>
+		</div>
+		<div class="col-sm-1 text-center">
+			<a action="debate-publish" class="btn btn-danger">Publier</a>
 		</div>
 	</div>
 	<h4>

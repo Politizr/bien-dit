@@ -1,0 +1,58 @@
+<script>
+    // Publication debat
+    $('body').on('click', "a[action='debate-publish']", function(e){
+        console.log('*** click publish');
+        
+        bootbox.confirm('Une fois publié, vous ne pourrez plus modifier le débat. Êtes-vous sûr de vouloir continuer?', function(result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url : "{{ path('DebatePublish') }}",
+                    data: { id: $('#debate_id').val() },
+                    dataType: 'json',
+                    {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                    success: function(data) {
+                        $('#ajax-loader').hide();
+                        if (data['error']) {
+                            $('.alert-danger-msg').html(data['error']);
+                            $('.alert.alert-danger').show();
+                        } else {
+                            // redirection
+                            window.location = data['redirectUrl'];
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+
+    // Supression debat
+    $('body').on('click', "a[action='debate-delete']", function(e){
+        console.log('*** click delete');
+
+        bootbox.confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?', function(result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url : "{{ path('DebateDelete') }}",
+                    data: { id: $('#debate_id').val() },
+                    dataType: 'json',
+                    {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                    success: function(data) {
+                        $('#ajax-loader').hide();
+                        if (data['error']) {
+                            $('.alert-danger-msg').html(data['error']);
+                            $('.alert.alert-danger').show();
+                        } else {
+                            // redirection
+                            window.location = data['redirectUrl'];
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
