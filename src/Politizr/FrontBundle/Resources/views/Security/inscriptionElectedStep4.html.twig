@@ -1,4 +1,4 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends layout %}
 
 {% block inscriptionSteps %}
 	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 4 } only %}
@@ -11,8 +11,10 @@
 	        <h3>Récapitulatif paiement</h3>
 	        <p class="bg-info">Merci de votre commande chez Politizr!</p>
 	        <h3>La suite</h3>
-	        <p class="bg-info">Notre équipe va maintenant procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte. Vous recevrez un email dès que votre compte sera actif! Merci pour votre patience, et à bientôt pour les débats!</p>
-	        <a class="btn btn-success pull-right" href="{{ path('InscriptionElectedStep4Check') }}">Cliquez pour continuer</a>
+	        <p class="bg-info">Notre équipe va maintenant procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte. Vous recevrez un email dès que votre compte sera actif: merci pour votre patience et à bientôt pour les débats.</p>
+	        {% if not is_granted('ROLE_CITIZEN') %}
+	        	<a class="btn btn-success pull-right" href="{{ path('InscriptionElectedStep4Check') }}">Cliquez pour continuer</a>
+	        {% endif %}
 	    </div>
 	    <hr>
 	</div>

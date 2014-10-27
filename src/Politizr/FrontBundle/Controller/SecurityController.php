@@ -37,6 +37,7 @@ use Politizr\FrontBundle\Form\Type\PUserStep1Type;
 use Politizr\FrontBundle\Form\Type\PUserStep2Type;
 
 use Politizr\FrontBundle\Form\Type\PUserElectedStep1Type;
+use Politizr\FrontBundle\Form\Type\PUserElectedMigrationStep1Type;
 
 use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
@@ -54,6 +55,7 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
  *  - sortir les envois d'emails dans une classe dédiée
  *  - implémentation BaseFacebook pour exploitation API et récupération infos annexes supplémentaires (photo)
  *  - personnaliser les exception
+ *  - ajout de nouvelles étapes d'inscription > proposition de suggestions + gestion des affinités politiques (citoyen)
  *
  * @author Lionel Bouzonville
  */
@@ -505,7 +507,7 @@ class SecurityController extends Controller {
     }
 
     /* ######################################################################################################## */
-    /*                                                 INSCRIPTION ELU                                          */
+    /*                           INSCRIPTION ELU + MIGRATION CIOYEN VERS ELU                                    */
     /* ######################################################################################################## */
 
     /**
@@ -519,9 +521,7 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
 
-        // Objet & formulaire
         $pUser = new PUser();
         $pUserFormType = new PUserElectedStep1Type();
         $pUserForm = $this->createForm($pUserFormType, $pUser);
@@ -529,7 +529,6 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-
         return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', 
                 array(
                     'pUserForm' => $pUserForm->createView()
@@ -547,7 +546,6 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
         $pUser = new PUser();
         $pUserFormType = new PUserElectedStep1Type();
         $pUserForm = $this->createForm($pUserFormType, $pUser);
@@ -625,6 +623,109 @@ class SecurityController extends Controller {
             ));
     }
 
+
+    /**
+     *     Page de migration de compte citoyen > élu  / Etape 1
+     */
+    public function migrationElectedAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** migrationElectedAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $pUser = $this->getUser();
+
+        // Inscription depuis un compte citoyen
+        $pUserFormType = new PUserElectedMigrationStep1Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', 
+                array(
+                    'pUserForm' => $pUserForm->createView()
+                    ));
+    }
+
+
+    /**
+     *      Validation migration élu
+     */
+    public function migrationElectedCheckAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** migrationElectedCheckAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $pUser = $this->getUser();
+
+        $pUserFormType = new PUserElectedMigrationStep1Type();
+        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+            $pUserForm->bind($this->getRequest());
+
+            if ($pUserForm->isValid()) {
+                $pUser = $pUserForm->getData();
+                // $logger->info('pUser = '.print_r($pUser, true));
+
+                // MAJ droits
+                $pUser->addRole('ROLE_ELECTED_INSCRIPTION');
+
+                // Save user
+                $pUser->save();
+
+                // *************************************** //
+                //      Gestion des justificatifs
+                //      TODO > champs à insérer dans la future commande
+                // *************************************** //
+
+                // 1/ gestion upload pièce ID
+                $file = $pUserForm['uploaded_supporting_document']->getData();
+                $logger->info('$file = '.print_r($file, true));
+                if ($file) {
+                    $pUser->removeUpload(false, true);
+                    $fileName = $pUser->upload($file);
+                    
+                    // $pUser->setSupportingDocument($fileName);
+                }
+
+                // 2/ gestion mandats électifs
+                $electiveMandates = $pUserForm['elective_mandates']->getData();
+
+                // Connexion
+                $this->doPublicConnection($pUser);
+
+                // redirection
+                $url = $this->container->get('router')->generate('InscriptionElectedStep2');
+                return $this->redirect($url);
+            } else {
+                $logger->info('form is not valid');
+            }
+        } else {
+            $logger->info('method is not POST');
+        }
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
+                        'pUserForm' => $pUserForm->createView()
+            ));
+    }
+
+
+
     /**
      *     Page d'inscription élu / Etape 2
      */
@@ -660,10 +761,16 @@ class SecurityController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', 
-                array(
-                    'subscriptionForm' => $subscriptionForm->createView()
-                    ));
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($pUser->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', array(
+                    'subscriptionForm' => $subscriptionForm->createView(),
+                    'layout' => $layout,
+            ));
     }
 
 
@@ -729,8 +836,15 @@ class SecurityController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($pUser->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', array(
-                        'subscriptionForm' => $subscriptionForm->createView()
+                        'subscriptionForm' => $subscriptionForm->createView(),
+                        'layout' => $layout
             ));
     }
 
@@ -755,10 +869,16 @@ class SecurityController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep3.html.twig', 
-                array(
-                    'payments' => $payments
-                    ));
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($pUser->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep3.html.twig', array(
+                    'payments' => $payments,
+                    'layout' => $layout
+                ));
     }
 
 
@@ -814,16 +934,23 @@ class SecurityController extends Controller {
         $this->get('session')->remove('pOSubscription');
         $this->get('session')->remove('pOrder');
 
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($pUser->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep4.html.twig', 
-                array(
-                    ));
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep4.html.twig', array(
+                    'layout' => $layout
+                ));
     }
 
     /**
-     *     Redirection accueil public
+     *  Redirection accueil public
+     *  TODO: création d'un compte citoyen en attendant la validation admin?
      */
     public function inscriptionElectedStep4CheckAction()
     {

@@ -98,6 +98,15 @@ InscriptionElectedStep4Check:
     pattern:  /v/inscription-elu-etape4/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep4Check }
 
+MigrationElected:
+    pattern:  /citoyen/migration-elu
+    defaults: { _controller: PolitizrFrontBundle:Security:migrationElected }
+
+MigrationElectedCheck:
+    pattern:  /citoyen/check
+    defaults: { _controller: PolitizrFrontBundle:Security:migrationElectedCheck }
+
+
 
 ################################################################################
 #				ROUTING DOCUMENT

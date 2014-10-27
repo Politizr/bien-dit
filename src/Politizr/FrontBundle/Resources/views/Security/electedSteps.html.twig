@@ -15,13 +15,13 @@
 	</div>
 	<hr>	
 	<div class="progress">
-		{% set progressbar = 20 %}
+		{% set progressbar = 25 %}
 		{% if step == 2 %}
-			{% set progressbar = 40 %}
+			{% set progressbar = 50 %}
 		{% elseif step == 3 %}
-			{% set progressbar = 60 %}
+			{% set progressbar = 75 %}
 		{% elseif step == 4 %}
-			{% set progressbar = 80 %}
+			{% set progressbar = 100 %}
 		{% endif %}
 
 		<div class="progress-bar" role="progressbar" aria-valuenow="{{ progressbar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressbar }}%;">

@@ -1,4 +1,4 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
 {% block connexionBox %}
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
@@ -10,11 +10,11 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Inscription Élu</h1>
+		<h1>Migration vers un compte élu</h1>
 		<p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les autres élus sur Politizr.</p>
 		<hr>
 		<div id="box-inscription-elected-step-1">
-			{{ form_start(pUserForm, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
+			{{ form_start(pUserForm, {'action': path('MigrationElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
 			    {{ form_errors(pUserForm) }}
 
 				<h3>Civilité</h3>
@@ -22,33 +22,22 @@
 			    {{ form_row(pUserForm.name) }}
 			    {{ form_row(pUserForm.firstname) }}
 			    {{ form_row(pUserForm.birthday) }}
-			    <p class="bg-info">Attention, ces informations ne pourront plus être modifiées après l'inscription.</p>
 
-			    <hr>
-
-			    {{ form_row(pUserForm.email) }}
-			    {{ form_row(pUserForm.newsletter) }}
+			    <p class="bg-info">Ces informations ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
 
 				<h3>Mandats et justificatif</h3>
 			    {{ form_row(pUserForm.uploaded_supporting_document) }}
 			    {{ form_row(pUserForm.elective_mandates) }}
-
-				<h3>Identifiants Politizr</h3>
-			    {{ form_row(pUserForm.username) }}
-			    {{ form_row(pUserForm.plainPassword) }}
 
 			    {{ form_row(pUserForm.actions) }}
 			{{ form_end(pUserForm) }}
 		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
 		</div>
 		<hr>
-		<a class="btn btn-primary" href="{{ path('Inscription') }}">Retour à l'inscription citoyen</a>
-		<hr>
 	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:inscriptionElected.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:migrationElected.js.twig' %}
 {% endblock javascriptFooter %}
