@@ -22,6 +22,7 @@ use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PUser;
