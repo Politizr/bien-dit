@@ -261,6 +261,48 @@ ORDER BY published DESC
             ));
     }
 
+    /**
+     *  Derniers
+     */
+    public function lastCAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** lastCAction');
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+
+        // deniers débats publiés
+        $debates = PDDebateQuery::create()
+                    ->online()
+                    ->last()
+                    ->find();
+
+        // derniers profils qualifiés enregistrés
+        $users = PUserQuery::create()
+                    ->filterByPUTypeId(PUType::TYPE_QUALIFIE)
+                    ->online()
+                    ->last()
+                    ->find();
+
+        // commentaires les plus populaires
+        $comments = PDCommentQuery::create()
+                    ->online()
+                    ->last()
+                    ->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:ProfileC:lastC.html.twig', array(
+                'debates' => $debates,
+                'users' => $users,
+                'comments' => $comments,
+            ));
+    }
+
     /* ######################################################################################################## */
     /*                                                 CONTRIBUTIONS                                            */
     /* ######################################################################################################## */

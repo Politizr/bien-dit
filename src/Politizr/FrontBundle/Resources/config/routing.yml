@@ -159,6 +159,10 @@ PopularsC:
     pattern:  /citoyen/populaires
     defaults: { _controller: PolitizrFrontBundle:ProfileC:popularsC }
 
+LastC:
+    pattern:  /citoyen/derniers
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:lastC }
+
 
 
 MyRatesC:

@@ -33,4 +33,14 @@ class PUserQuery extends BasePUserQuery
 				->orderBy('NbFollowers', \Criteria::DESC)
 				;
 	}
+
+
+	/**
+	 *	Derniers users créés
+	 *
+	 */
+	public function last($limit = 10) {
+		return $this->orderByCreatedAt(\Criteria::DESC)->setLimit($limit);
+	}
+
 }

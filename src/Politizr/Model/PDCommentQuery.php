@@ -17,11 +17,10 @@ class PDCommentQuery extends BasePDCommentQuery
     }
 
 	/**
-	 *	Filtre à appliquer aux objets retournés en page d'accueil
-	 *	TODO requête "populaire" à préciser et à affiner
+	 *	Derniers commentaires publiés
 	 *
 	 */
 	public function last($limit = 10) {
-		return $this->filterByOnline(true)->orderByPublishedAt(\Criteria::DESC)->setLimit($limit);
+		return $this->orderByPublishedAt(\Criteria::DESC)->setLimit($limit);
 	}
 }

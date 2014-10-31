@@ -44,6 +44,15 @@ class PDDebateQuery extends BasePDDebateQuery
 
 	}
 
+
+	/**
+	 *	Derniers débats publiés
+	 *
+	 */
+	public function last($limit = 10) {
+		return $this->orderByPublishedAt(\Criteria::DESC)->setLimit($limit);
+	}
+
 	/**
 	 *	Filtre les objets par géolocalisation
 	 *  TODO requête géoloc / tags
