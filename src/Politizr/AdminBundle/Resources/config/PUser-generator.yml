@@ -115,7 +115,7 @@ builders:
                 "Tag":
                     "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
-                    "Badges":                   [ p_r_badges ]
+                    "Badges":                   [ badges ]
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_connect ]
@@ -146,7 +146,7 @@ builders:
                         options:
                             # label:              Poste
                             data_class:         Politizr\Model\PUQualification
-                p_r_badges:
+                badges:
                     dbType:                     model
                     formType:                   model
                     addFormOptions:

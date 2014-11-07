@@ -358,20 +358,20 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "9c6cfef04cb74587cd610f7dca8c4352d77bfc32"
+                "reference": "220ece7325593e23de39d94816dccbc0d4ec12f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/9c6cfef04cb74587cd610f7dca8c4352d77bfc32",
-                "reference": "9c6cfef04cb74587cd610f7dca8c4352d77bfc32",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/220ece7325593e23de39d94816dccbc0d4ec12f8",
+                "reference": "220ece7325593e23de39d94816dccbc0d4ec12f8",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": ">=1.9"
+                "components/jquery": ">=1.9.1"
             },
             "suggest": {
                 "components/bootstrap-default": "Provide a theme for Bootstrap as components/bootstrap only provides the CSS as file assets"
@@ -398,20 +398,30 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache-2.0"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Twitter, Inc"
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
+                },
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
                 }
             ],
-            "description": "Sleek, intuitive, and powerful front-end framework for faster and easier web development.",
+            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
             "homepage": "http://getbootstrap.com",
             "keywords": [
-                "bootstrap",
-                "css"
+                "css",
+                "framework",
+                "front-end",
+                "less",
+                "mobile-first",
+                "responsive",
+                "web"
             ],
-            "time": "2014-07-02 12:39:50"
+            "time": "2014-10-30 07:22:10"
         },
         {
             "name": "components/font-awesome",
@@ -1027,16 +1037,15 @@
         {
             "name": "elao/web-profiler-extra-bundle",
             "version": "dev-master",
-            "target-dir": "Elao/WebProfilerExtraBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "82061e8b00060db91bd6b76e405184f417f56c09"
+                "reference": "082755c2af114ead713259ec7472782917605aaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/82061e8b00060db91bd6b76e405184f417f56c09",
-                "reference": "82061e8b00060db91bd6b76e405184f417f56c09",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/082755c2af114ead713259ec7472782917605aaf",
+                "reference": "082755c2af114ead713259ec7472782917605aaf",
                 "shasum": ""
             },
             "require": {
@@ -1051,8 +1060,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Elao\\WebProfilerExtraBundle": "."
+                "psr-4": {
+                    "Elao\\WebProfilerExtraBundle\\": "."
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1077,7 +1086,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2013-11-06 19:40:03"
+            "time": "2014-11-06 09:36:21"
         },
         {
             "name": "ensepar/html2pdf",
@@ -3296,12 +3305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "bab3679d1031ac77503c0c14b56aeda885721584"
+                "reference": "d904429e05ce8ba68ebba673cab603a861792aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/bab3679d1031ac77503c0c14b56aeda885721584",
-                "reference": "bab3679d1031ac77503c0c14b56aeda885721584",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d904429e05ce8ba68ebba673cab603a861792aba",
+                "reference": "d904429e05ce8ba68ebba673cab603a861792aba",
                 "shasum": ""
             },
             "replace": {
@@ -3310,7 +3319,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "3.3.x-dev"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3339,7 +3348,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-10-26 06:08:33"
+            "time": "2014-11-05 22:59:24"
         },
         {
             "name": "twbs/bootstrap-sass",
@@ -3347,18 +3356,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap-sass.git",
-                "reference": "452506d6be0827ca1451e3732ce6eec9f87ce547"
+                "reference": "5f1800ab526266469217ed7bcfd05bdce6eb0c92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/452506d6be0827ca1451e3732ce6eec9f87ce547",
-                "reference": "452506d6be0827ca1451e3732ce6eec9f87ce547",
+                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/5f1800ab526266469217ed7bcfd05bdce6eb0c92",
+                "reference": "5f1800ab526266469217ed7bcfd05bdce6eb0c92",
                 "shasum": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "3.3.x-dev"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3392,7 +3401,7 @@
                 "css",
                 "sass"
             ],
-            "time": "2014-10-02 07:57:56"
+            "time": "2014-10-31 21:54:09"
         },
         {
             "name": "twig/extensions",

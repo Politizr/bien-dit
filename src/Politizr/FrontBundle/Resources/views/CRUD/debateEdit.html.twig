@@ -82,7 +82,8 @@
 					<button type="submit" class="btn btn-success">Enregistrer</button>
 					<a action="debate-preview" class="btn btn-info">Prévisualiser</a>
 					<a action="debate-delete" class="btn btn-warning">Supprimer</a>
-					<a action="debate-list" class="btn btn-primary">Retour</a>
+					<!-- TODO / Brancher le JS avec l'URL positionné ici + maj l'URL en fonction du profil courant (citoyen / élu) -->
+					<a action="debate-list" class="btn btn-primary" url="{{ path('MyDraftsC') }}">Retour</a>
 				</div>	
 			{{ form_end(form) }}
 		</div>

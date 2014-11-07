@@ -1,4 +1,4 @@
-{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
 	<div id="main" class="container">
@@ -7,7 +7,7 @@
 			{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('TimelineC') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('TimelineE') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
 			</div>
 		{% endfor %}
 	</div>

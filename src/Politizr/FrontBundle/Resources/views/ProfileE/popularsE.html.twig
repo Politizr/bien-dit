@@ -1,10 +1,10 @@
-{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 
 {% block main %}
 	<div id="main" class="container">
 		<div id="debates">
-			<h3>Derniers débats publiés</h3>
+			<h3>Débats les plus suivis</h3>
 			<div>
 				{% for debate in debates %}
 					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true, 'withMoreInfos': true } %}
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<div id="users">
-			<h3>Derniers élus inscrits</h3>
+			<h3>Élus les plus suivis</h3>
 			<div>
 				{% for user in users %}
 					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div id="comments">
-			<h3>Derniers commentaires publiés</h3>
+			<h3>Les derniers commentaires</h3>
 			<div>
 				{% for comment in comments %}
 					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}

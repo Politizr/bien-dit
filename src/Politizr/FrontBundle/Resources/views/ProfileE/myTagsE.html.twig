@@ -1,24 +1,18 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
-
-{% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 3 } only %}
-{% endblock %}
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
 	<div id="main" class="container">
-		<h2>Taggez votre profil</h2>
+		<h3>Mes tags</h3>
 		<p class="bg-info">Choisissez des tags reflétant votre situation géographique.</p>
 		<p class="text-muted">Tags géographiques</p>
 		{{ userTaggedTagsEdit(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
-		<h2>Vos centres d'intérêts</h2>
-		<p class="bg-info">Choisissez des tags que vous désirez suivre.</p>
+		<h3>Mes centres d'intérêts</h3>
+		<p class="bg-info">Ajoutez un maximum de tags que vous désirez suivre.</p>
 	    <p class="text-muted">Tags géographiques</p>
 		{{ userFollowTagsEdit(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, false) }}
 		<hr>
 	    <p class="text-muted">Tags thématiques</p>
 		{{ userFollowTagsEdit(pUser, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 3, true) }}
-		<hr>
-		<a class="btn btn-primary pull-right" href="{{ path('InscriptionStep3Check') }}">Finaliser mon inscription</a>
 	</div>
 {% endblock main %}
 
