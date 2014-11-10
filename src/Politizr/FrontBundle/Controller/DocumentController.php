@@ -89,6 +89,9 @@ class DocumentController extends Controller {
             throw new NotFoundHttpException('Debate n°'.$id.' not published.');
         }
 
+        $debate->setNbViews($debate->getNbViews() + 1);
+        $debate->save();
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
@@ -191,6 +194,10 @@ class DocumentController extends Controller {
         if (!$pUser->getOnline()) {
             throw new NotFoundHttpException('pUser n°'.$id.' not online.');
         }
+
+        $pUser->setNbViews($pUser->getNbViews() + 1);
+        $pUser->save();
+
 
         // *********************************** //
         //      Récupération des objets associés
