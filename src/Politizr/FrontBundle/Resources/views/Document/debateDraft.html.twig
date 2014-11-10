@@ -1,10 +1,10 @@
-{% extends is_granted('ROLE_CITIZEN') ? 'PolitizrFrontBundle::layoutC.html.twig':'PolitizrFrontBundle::layout.html.twig' %}
-
-{% block connexionBox %}
-	{% if not is_granted('ROLE_CITIZEN') %}
-	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-	{% endif %}
-{% endblock %}
+{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
+{% if (is_granted('ROLE_ELECTED')) %}
+	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% elseif (is_granted('ROLE_CITIZEN')) %}
+	{% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% endif %}
+{% extends layout %}
 
 {% block main %}
 	<div id="main" class="container">
