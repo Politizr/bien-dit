@@ -145,117 +145,115 @@ UserDetail:
 ################################################################################
 HomepageC:
     pattern:  /citoyen
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:homepageC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:homepage }
 
 TimelineC:
     pattern:  /citoyen/timeline
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:timelineC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
 
 SuggestionsC:
     pattern:  /citoyen/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestionsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestions }
 
 PopularsC:
     pattern:  /citoyen/populaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:popularsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:populars }
 
 LastC:
     pattern:  /citoyen/derniers
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:lastC }
-
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:last }
 
 
 MyRatesC:
     pattern:  /citoyen/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myRatesC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myRates }
 
 MyDraftsC:
     pattern:  /citoyen/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDraftsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDrafts }
 
 
 MyDebatesC:
     pattern:  /citoyen/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDebatesC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDebates }
 
 MyCommentsC:
     pattern:  /citoyen/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myCommentsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myComments }
 
 
 MyAccountC:
     pattern:  /citoyen/mon-compte
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myAccountC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myAccount }
 
 MyTagsC:
     pattern:  /citoyen/mon-compte/mes-tags
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myTagsC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myTags }
 
 MyReputationC:
     pattern:  /citoyen/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputationC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputation }
 
 MyPersoC:
     pattern:  /citoyen/mon-compte/mes-informations-personnelles
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myPersoC }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myPerso }
 
 ################################################################################
 #               ROUTING ELU
 ################################################################################
 HomepageE:
     pattern:  /elu
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:homepageE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:homepage }
 
 TimelineE:
     pattern:  /elu/timeline
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:timelineE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
 
 SuggestionsE:
     pattern:  /elu/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:suggestionsE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:suggestions }
 
 PopularsE:
     pattern:  /elu/populaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:popularsE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:populars }
 
 LastE:
     pattern:  /elu/derniers
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:lastE }
-
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:last }
 
 
 MyRatesE:
     pattern:  /elu/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myRatesE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myRates }
 
 MyDraftsE:
     pattern:  /elu/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDraftsE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDrafts }
 
 MyDebatesE:
     pattern:  /elu/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDebatesE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDebates }
 
 MyCommentsE:
     pattern:  /elu/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myCommentsE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myComments }
 
 
 MyAccountE:
     pattern:  /elu/mon-compte
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myAccountE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myAccount }
 
 MyTagsE:
     pattern:  /elu/mon-compte/mes-tags
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myTagsE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myTags }
 
 MyReputationE:
     pattern:  /elu/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReputationE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReputation }
 
 MyPersoE:
     pattern:  /elu/mon-compte/mes-informations-personnelles
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myPersoE }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
 
 
 
@@ -414,6 +412,3 @@ DebatePhotoDelete:
     pattern:  /profil/debat/delete-photo.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
-
-
-

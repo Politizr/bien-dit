@@ -15,6 +15,11 @@
 {% block main %}
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': true } %}
+		{% if is_granted('ROLE_ELECTED') %}
+			<div class="row text-center">
+				<a class="btn btn-danger" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Réagir</a>
+			</div>
+		{% endif %}
 		<div class="row text-center">
 			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>

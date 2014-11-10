@@ -63,10 +63,10 @@ class ProfileCController extends Controller {
     /**
      *  Accueil
      */
-    public function homepageCAction()
+    public function homepageAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** homepageCAction');
+        $logger->info('*** homepageAction');
 
         return $this->redirect($this->generateUrl('TimelineC'));
     }
@@ -74,10 +74,10 @@ class ProfileCController extends Controller {
     /**
      *  Timeline
      */
-    public function timelineCAction()
+    public function timelineAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** timelineCAction');
+        $logger->info('*** timelineAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -196,10 +196,10 @@ ORDER BY published DESC
     /**
      *  Suggestions
      */
-    public function suggestionsCAction()
+    public function suggestionsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** suggestionsCAction');
+        $logger->info('*** suggestionsAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -232,10 +232,10 @@ ORDER BY published DESC
     /**
      *  Populaires
      */
-    public function popularsCAction()
+    public function popularsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** popularsCAction');
+        $logger->info('*** popularsAction');
 
         // *********************************** //
         //      Récupération objets vue
@@ -264,10 +264,10 @@ ORDER BY published DESC
     /**
      *  Derniers
      */
-    public function lastCAction()
+    public function lastAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** lastCAction');
+        $logger->info('*** lastAction');
 
         // *********************************** //
         //      Récupération objets vue
@@ -311,10 +311,10 @@ ORDER BY published DESC
     /**
      *  Mes contributions - Accueil
      */
-    public function myRatesCAction()
+    public function myRatesAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myRatesCAction');
+        $logger->info('*** myRatesAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -346,10 +346,10 @@ ORDER BY published DESC
     /**
      *  Mes contributions - Brouillons
      */
-    public function myDraftsCAction()
+    public function myDraftsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myDraftsCAction');
+        $logger->info('*** myDraftsAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -374,10 +374,10 @@ ORDER BY published DESC
     /**
      *  Mes contributions - Débats
      */
-    public function myDebatesCAction()
+    public function myDebatesAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myDebatesCAction');
+        $logger->info('*** myDebatesAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -400,10 +400,10 @@ ORDER BY published DESC
     /**
      *  Mes contributions - Commentaires
      */
-    public function myCommentsCAction()
+    public function myCommentsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myCommentsCAction');
+        $logger->info('*** myCommentsAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -432,10 +432,10 @@ ORDER BY published DESC
     /**
      *  Mon compte - Accueil
      */
-    public function myAccountCAction()
+    public function myAccountAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myAccountCAction');
+        $logger->info('*** myAccountAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -456,10 +456,10 @@ ORDER BY published DESC
     /**
      *  Mon compte - Mes Tags
      */
-    public function myTagsCAction()
+    public function myTagsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myTagsCAction');
+        $logger->info('*** myTagsAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -481,10 +481,10 @@ ORDER BY published DESC
     /**
      *  Mon compte - Ma réputation
      */
-    public function myReputationCAction()
+    public function myReputationAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myReputationCAction');
+        $logger->info('*** myReputationAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -528,10 +528,10 @@ ORDER BY published DESC
     /**
      *  Mon compte - Mes informations personnelles
      */
-    public function myPersoCAction()
+    public function myPersoAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myPersoCAction');
+        $logger->info('*** myPersoAction');
 
         // Récupération user courant
         $user = $this->getUser();
