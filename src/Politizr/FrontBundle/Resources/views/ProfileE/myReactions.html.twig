@@ -4,7 +4,7 @@
 	<div id="main" class="container">
 		<h3>Mes reactions</h3>
         {% for reaction in reactions %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'reaction': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false, 'withMoreInfos': true } %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false, 'withMoreInfos': true } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucune réaction en ligne pour le moment</a>

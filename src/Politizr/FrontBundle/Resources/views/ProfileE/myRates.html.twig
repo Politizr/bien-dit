@@ -3,11 +3,20 @@
 {% block main %}
 	<div id="main" class="container">
 		<h3>Mes brouillons</h3>
-        {% for draft in drafts %}
+		<h4>Mes débats</h4>
+        {% for draft in debateDrafts %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentDraftMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE') } %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
+			</div>
+		{% endfor %}
+		<h4>Mes réactions</h4>
+        {% for draft in reactionDrafts %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentDraftMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION') } %}
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de réaction pour le moment</a>
 			</div>
 		{% endfor %}
 		<h3>Mes débats publiés</h3>
@@ -15,7 +24,15 @@
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez débat en ligne pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucun débat en ligne pour le moment</a>
+			</div>
+		{% endfor %}
+		<h3>Mes réactions publiés</h3>
+        {% for reaction in reactions %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false, 'withMoreInfos': true } %}
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucune réaction en ligne pour le moment</a>
 			</div>
 		{% endfor %}
 		<h3>Mes commentaires</h3>

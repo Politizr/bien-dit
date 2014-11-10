@@ -164,8 +164,15 @@ class CRUDController extends Controller {
         $reaction->setOnline(true);
         $reaction->setPublished(false);
 
+        // Gestion nested set
         if ($parent) {
             $reaction->insertAsLastChildOf($parent);
+        } else {
+            if ($nbReactions = $debate->countReactions() == 0) {
+                $reaction->makeRoot();
+            } else {
+                $reaction->insertAsNextSiblingOf($debate->getLastReaction());
+            }
         }
         
         $reaction->save();

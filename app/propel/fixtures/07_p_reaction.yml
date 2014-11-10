@@ -1,4 +1,5 @@
 # DOCUMENT DATAS
+# TODO / nested set / Tree level de base => 0 ou 1 > 0 est créé par défaut via makeRoot 
 Politizr\Model\PDReaction:
     reaction1:
         tree_left:      1

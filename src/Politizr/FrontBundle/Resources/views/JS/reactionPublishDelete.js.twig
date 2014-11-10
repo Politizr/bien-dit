@@ -8,7 +8,7 @@
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url : "{{ path('DebatePublish') }}",
+                    url : "{{ path('ReactionPublish') }}",
                     data: { id: $('#reaction_id').val(), 'url': $("a[action='reaction-publish']").attr('url') },
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}

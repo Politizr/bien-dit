@@ -243,6 +243,24 @@ class PDDebate extends BasePDDebate
 		return parent::countPDReactions();
 	}
 
+	/**
+	 *	Renvoit la dernière réaction associée au débat
+	 *
+	 * 	@return 	PDReaction
+	 */
+	public function getLastReaction($online = false, $published = false) {
+		return PDReactionQuery::create()
+					->_if($online)
+						->filterByOnline(true)
+					->_endif()
+					->_if($published)
+						->filterByPublished(true)
+					->_endif()
+					->filterByPDDebateId($this->getId())
+					->orderByCreatedAt(\Criteria::DESC)
+					->findOne();
+	}
+
 
     // *****************************    FOLLOWERS   ************************* //
 

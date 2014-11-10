@@ -325,10 +325,16 @@ ORDER BY published DESC
         // *********************************** //
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+
+        // Débats brouillons en attente de finalisation
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
         // Débats rédigés
         $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+
+        // Réactions rédigées
+        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->find();
 
         // Commentaires rédigés
         $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->find();
@@ -338,8 +344,10 @@ ORDER BY published DESC
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileE:myRates.html.twig', array(
-            'drafts' => $drafts,
+            'debateDrafts' => $debateDrafts,
+            'reactionDrafts' => $reactionDrafts,
             'debates' => $debates,
+            'reactions' => $reactions,
             'comments' => $comments,
             ));
     }
