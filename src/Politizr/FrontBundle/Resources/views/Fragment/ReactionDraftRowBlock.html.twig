@@ -1,0 +1,17 @@
+<tr>
+	<td>{{ document.debate.title }}</td>
+	<td>
+		{% if document.level > 1 %}
+			{% set parentReaction = document.getParent %}
+			{{ parentReaction.title }}
+		{% endif %}
+	</td>
+	<td>{{ document.title }}</td>
+	<td>{{ document.summary | striptags | slice(0, 150) | raw }}</td>
+	<td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
+	<td>
+		<a class="btn btn-primary" href="{{ path('ReactionDraftEdit', { 'id': document.id }) }}">Editer</a>
+		<a class="btn btn-info" href="{{ path('ReactionDraftPreview', { 'id': document.id }) }}">Prévisualiser</a>
+	</td>
+</tr>
+

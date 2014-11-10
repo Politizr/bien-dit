@@ -17,6 +17,7 @@ use Politizr\Model\PDocumentPeer;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
@@ -30,6 +31,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUType;
 use Politizr\Model\PTag;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
@@ -86,9 +88,12 @@ class ProfileEController extends Controller {
         //      Récupération objets vue
         // *********************************** //
 
+
+        // Différences / timeline citoyen:
+        // - +les débats suivis (même sans réactions)
+
         // TODO
         // + réactions sur les débats rédigés par le user courant
-
 
         // Requête MYSQL
         /*
@@ -136,9 +141,7 @@ ORDER BY published DESC
             $sql = "
     ( SELECT p_document.id
     FROM p_document
-        LEFT JOIN p_d_reaction 
-            ON p_document.id = p_d_reaction.id
-    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.") )
+    WHERE id IN (".$inQueryDebateIds.") )
 
     UNION DISTINCT
 
@@ -150,9 +153,7 @@ ORDER BY published DESC
             $sql = "
     SELECT p_document.id
     FROM p_document
-        LEFT JOIN p_d_reaction 
-            ON p_document.id = p_d_reaction.id
-    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+    WHERE id IN (".$inQueryDebateIds.")
         ";
         } elseif(!empty($debateIds)) {
             $sql = "
@@ -359,14 +360,18 @@ ORDER BY published DESC
         // *********************************** //
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+
+        // Réactions brouillons en attente de finalisation
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileE:myDrafts.html.twig', array(
-            'drafts' => $drafts,
+            'debateDrafts' => $debateDrafts,
+            'reactionDrafts' => $reactionDrafts,
             ));
     }
 
@@ -394,6 +399,32 @@ ORDER BY published DESC
 
         return $this->render('PolitizrFrontBundle:ProfileE:myDebates.html.twig', array(
             'debates' => $debates
+            ));
+    }
+
+    /**
+     *  Mes contributions - Réactions
+     */
+    public function myReactionsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myReactionsAction');
+
+        // Récupération user courant
+        $pUser = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+        // Réactions rédigées
+        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+
+        return $this->render('PolitizrFrontBundle:ProfileE:myReactions.html.twig', array(
+            'reactions' => $reactions
             ));
     }
 

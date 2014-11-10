@@ -234,6 +234,10 @@ MyDebatesE:
     pattern:  /elu/mes-contributions/debats
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myDebates }
 
+MyReactionsE:
+    pattern:  /elu/mes-contributions/reactions
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReactions }
+
 MyCommentsE:
     pattern:  /elu/mes-contributions/commentaires
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myComments }
@@ -256,12 +260,34 @@ MyPersoE:
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
 
 
+ReactionDraftPreview:
+    pattern:  /elu/{id}/brouillon/reaction/detail
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionDraft }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+ReactionDraftNew:
+    pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionNew }
+    requirements:
+        _method:        GET
+        debateId:       \d+
+        parentId:       \d*
+
+ReactionDraftEdit:
+    pattern:  /elu/mes-reactions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
 
 ################################################################################
 #               ROUTING CITOYEN OU ELU
 ################################################################################
 DebateDraftPreview:
-    pattern:  /profil/{id}/debat/detail/{slug}
+    pattern:  /profil/{id}/brouillon/debat/detail
     defaults: { _controller: PolitizrFrontBundle:Document:debateDraft }
     requirements:
         _method:        GET
@@ -412,3 +438,22 @@ DebatePhotoDelete:
     pattern:  /profil/debat/delete-photo.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# EDITION REACTION
+################################################################################
+ReactionUpdate:
+    pattern:  /elu/reaction/update.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+ReactionPublish:
+    pattern:  /elu/reaction/publish.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionPublish, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+ReactionDelete:
+    pattern:  /elu/reaction/delete.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

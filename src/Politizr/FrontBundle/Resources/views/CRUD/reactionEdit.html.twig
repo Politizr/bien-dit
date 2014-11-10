@@ -1,0 +1,79 @@
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+
+	{# medium clone editor #}
+	<link rel="stylesheet" href="{{ asset('medium-editor/css/themes/bootstrap.css') }}"> {# theme #}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h1>Mes contributions</h1>
+		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, puis prévisualisez le afin de pouvoir le publier. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
+		<div id="box-edit-reaction">
+			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-reaction-update'}}) }}
+			    {{ form_errors(form) }}
+
+			    {{ form_row(form.summary) }}
+			    {{ form_row(form.description) }}
+			    {{ form_row(form.more_info) }}
+
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Titre</p>
+					    {{ form_widget(form.title) }}
+					</div>
+				</div>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Résumé</p>
+					    <div class="summary-editable">
+					    	{{ reaction.summary | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Description</p>
+					    <div class="description-editable">
+					    	{{ reaction.description | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+			    <div class="form-group">
+					<div class="col-lg-12">
+						<p class="text-muted">Plus d'informations</p>
+					    <div class="moreInfo-editable">
+					    	{{ reaction.moreInfo | raw }}
+					    </div>
+					</div>
+				</div>
+			    <hr>
+				{% set urlBack = path('MyDraftsC') %}
+				{% if is_granted('ROLE_ELECTED') %}
+					{% set urlBack = path('MyDraftsE') %}
+				{% endif %}
+				<div class="col-lg-offset-2 col-lg-10">
+					<button type="submit" class="btn btn-success">Enregistrer</button>
+					<a action="reaction-preview" class="btn btn-info">Prévisualiser</a>
+					<a action="reaction-delete" class="btn btn-warning" url="{{ urlBack }}">Supprimer</a>
+					<a action="reaction-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
+				</div>	
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+
+    {# medium clone editor #}
+    <script src="{{ asset('medium-editor/js/medium-editor.min.js') }}"></script>
+    <script src="{{ asset('classList/classList.min.js') }}"></script> <!-- IE9 compatibility -->
+    
+    {% include 'PolitizrFrontBundle:JS:reactionEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:reactionPublishDelete.js.twig' %}
+{% endblock javascriptFooter %}

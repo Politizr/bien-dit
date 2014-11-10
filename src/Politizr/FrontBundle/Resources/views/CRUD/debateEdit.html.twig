@@ -1,4 +1,8 @@
-{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+{% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% if (is_granted('ROLE_ELECTED')) %}
+	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% endif %}
+{% extends layout %}
 
 {% block stylesheets %}
 	{{ parent() }}

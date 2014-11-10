@@ -11,6 +11,6 @@
 	<td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
 	<td>
 		<a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': document.id }) }}">Editer</a>
-		<a class="btn btn-info" href="{{ path('DebateDraftPreview', { 'id': document.id, 'slug': document.slug }) }}">Prévisualiser</a>
+		<a class="btn btn-info" href="{{ path('DebateDraftPreview', { 'id': document.id }) }}">Prévisualiser</a>
 	</td>
 </tr>

@@ -16,9 +16,11 @@
 	<div id="main" class="container">
 		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': true } %}
 		{% if is_granted('ROLE_ELECTED') %}
+			{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour ce débat par le user courant #}
 			<div class="row text-center">
-				<a class="btn btn-danger" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Réagir</a>
+				<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': null }) }}">Réagir</a>
 			</div>
+			<hr>
 		{% endif %}
 		<div class="row text-center">
 			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>

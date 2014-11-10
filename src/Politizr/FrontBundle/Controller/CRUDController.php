@@ -18,6 +18,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
@@ -27,8 +28,10 @@ use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PUserPerso1Type;
 use Politizr\FrontBundle\Form\Type\PUserPerso2Type;
 use Politizr\FrontBundle\Form\Type\PUserPerso3Type;
@@ -112,6 +115,98 @@ class CRUDController extends Controller {
         // *********************************** //
         return $this->render('PolitizrFrontBundle:CRUD:debateEdit.html.twig', array(
             'debate' => $debate,
+            'form' => $form->createView(),
+            ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                                   REACTION                                               */
+    /* ######################################################################################################## */
+
+    /**
+     *  Création d'une nouvelle réaction
+     */
+    public function reactionNewAction($debateId, $parentId)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionNewAction');
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        // Récupération du débat sur lequel la réaction a lieu
+        $debate = PDDebateQuery::create()->findPk($debateId);
+        if (!$debate) {
+            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
+        }
+
+        // Récupération de la réaction parente sur laquelle la réaction a lieu
+        $parent = null;
+        if ($parentId) {
+            $parent = PDReactionQuery::create()->findPk($parentId);
+            if (!$parent) {
+                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
+            }
+        }
+
+        // Création d'un nouvel objet et redirection vers l'édition
+        $reaction = new PDReaction();
+
+        $reaction->setPDDebateId($debate->getId());
+        
+        $reaction->setTitle('Une nouvelle réaction');
+        
+        $reaction->setPUserId($user->getId());
+
+        $reaction->setNotePos(0);
+        $reaction->setNoteNeg(0);
+        
+        $reaction->setOnline(true);
+        $reaction->setPublished(false);
+
+        if ($parent) {
+            $reaction->insertAsLastChildOf($parent);
+        }
+        
+        $reaction->save();
+
+        return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
+    }
+
+    /**
+     *  Edition d'une réaction
+     */
+    public function reactionEditAction($id)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionEditAction');
+        $logger->info('$id = '.print_r($id, true));
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+        $document = PDocumentQuery::create()->findPk($id);
+        if (!$document) {
+            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        }
+
+        $reaction = PDReactionQuery::create()->findPk($id);
+        $form = $this->createForm(new PDReactionType(), $reaction);
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:CRUD:reactionEdit.html.twig', array(
+            'reaction' => $reaction,
             'form' => $form->createView(),
             ));
     }
@@ -450,6 +545,190 @@ class CRUDController extends Controller {
         return $response;
     }
 
+
+    /* ######################################################################################################## */
+    /*                                               GESTION RÉACTION                                           */
+    /* ######################################################################################################## */
+
+    /**
+     *  Enregistre la réaction
+     *
+     */
+    public function reactionUpdateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionUpdateAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération user courant
+                $user = $this->getUser();
+
+                // Récupération id objet édité
+                $id = $request->get('reaction')['id'];
+                $document = PDocumentQuery::create()->findPk($id);
+                if (!$document) {
+                    throw new InconsistentDataException('Document n°'.$id.' not found.');
+                }
+                if (!$document->isOwner($user->getId())) {
+                    throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+                }
+                if ($document->getPublished()) {
+                    throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+                }
+
+                $reaction = PDReactionQuery::create()->findPk($id);
+                $form = $this->createForm(new PDReactionType(), $reaction);
+
+                $form->bind($request);
+                if ($form->isValid()) {
+                    $reaction = $form->getData();
+                    $reaction->save();
+
+                    // Construction de la réponse
+                    $jsonResponse = array (
+                        'success' => true,
+                    );
+                } else {
+                    // TODO > affichage des erreurs form à virer
+                    $errors = array();
+
+                    foreach ($form->getErrors() as $key => $error) {
+                        $errors[$key] = $error->getMessage();
+                    }
+
+                    throw new \Exception('Form not valid: '.print_r($errors, true));
+                }
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *  Publication de la réaction
+     *
+     */
+    public function reactionPublishAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionPublishAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération user courant
+                $user = $this->getUser();
+
+                // Récupération id objet édité
+                $id = $request->get('id');
+                $document = PDocumentQuery::create()->findPk($id);
+                if (!$document) {
+                    throw new InconsistentDataException('Document n°'.$id.' not found.');
+                }
+                if (!$document->isOwner($user->getId())) {
+                    throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+                }
+                if ($document->getPublished()) {
+                    throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+                }
+
+                // Récupération URL redirection
+                $redirectUrl = $request->get('url');
+
+                // MAJ de l'objet
+                $reaction = PDReactionQuery::create()->findPk($id);
+                $reaction->setPublished(true);
+                $reaction->setPublishedAt(time());
+                $reaction->save();
+
+                $this->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'redirectUrl' => $redirectUrl,
+                );
+
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *  Suppression de la réaction
+     *
+     */
+    public function reactionDeleteAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionDeleteAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération user courant
+                $user = $this->getUser();
+
+                // Récupération id objet édité
+                $id = $request->get('id');
+                $document = PDocumentQuery::create()->findPk($id);
+                if (!$document) {
+                    throw new InconsistentDataException('Document n°'.$id.' not found.');
+                }
+                if ($document->getPublished()) {
+                    throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+                }
+                if (!$document->isOwner($user->getId())) {
+                    throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+                }
+
+                // Récupération URL redirection
+                $redirectUrl = $request->get('url');
+
+                // // MAJ de l'objet
+                $reaction = PDReactionQuery::create()->findPk($id);
+                $reaction->deleteWithoutArchive(); // pas d'archive sur les brouillons
+
+                $this->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'redirectUrl' => $redirectUrl,
+                );
+
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
 
 
     /* ######################################################################################################## */

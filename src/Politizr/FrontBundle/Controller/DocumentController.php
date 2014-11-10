@@ -104,12 +104,11 @@ class DocumentController extends Controller {
     /**
      * Détail brouillon débat
      */
-    public function debateDraftAction($id, $slug)
+    public function debateDraftAction($id)
     {
         $logger = $this->get('logger');
         $logger->info('*** debateDraftAction');
         $logger->info('$id = '.print_r($id, true));
-        $logger->info('$slug = '.print_r($slug, true));
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -151,24 +150,70 @@ class DocumentController extends Controller {
         // *********************************** //
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
-            throw new NotFoundHttpException('PDReaction n°'.$id.' not found.');
+            throw new NotFoundHttpException('Reaction n°'.$id.' not found.');
         }
         if (!$reaction->getOnline()) {
-            throw new NotFoundHttpException('PDReaction n°'.$id.' not online.');
+            throw new NotFoundHttpException('Reaction n°'.$id.' not online.');
         }
 
         $debate = $reaction ->getDebate();
         if (!$debate) {
-            throw new NotFoundHttpException('PDDebate n°'.$id.' not found.');
+            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
         }
         if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('PDDebate n°'.$id.' not online.');
+            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
         }
+
+        $reaction->setNbViews($reaction->getNbViews() + 1);
+        $reaction->save();
+
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
+                    'reaction' => $reaction,
+                    'debate' => $debate
+        ));
+    }
+
+    /**
+     * Détail réaction
+     */
+    public function reactionDraftAction($id)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionDraftAction');
+        $logger->info('$id = '.print_r($id, true));
+
+        // *********************************** //
+        //      Récupération objet
+        // *********************************** //
+        $reaction = PDReactionQuery::create()->findPk($id);
+        if (!$reaction) {
+            throw new NotFoundHttpException('Reaction n°'.$id.' not found.');
+        }
+        if (!$reaction->getOnline()) {
+            throw new NotFoundHttpException('Reaction n°'.$id.' not online.');
+        }
+        if ($reaction->getPublished()) {
+            throw new NotFoundHttpException('Debate n°'.$id.' has been published.');
+        }
+
+        // TODO > UseCase à gérer = suppression d'un débat pour lesquels des réaction sont en cours de rédaction => via event sur suppression debat?
+        $debate = $reaction ->getDebate();
+        if (!$debate) {
+            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
+        }
+
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:Document:reactionDraft.html.twig', array(
                     'reaction' => $reaction,
                     'debate' => $debate
         ));

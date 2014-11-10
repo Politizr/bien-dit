@@ -16,12 +16,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * 
  * @author Lionel Bouzonville
  */
-class PDDebateType extends AbstractType
+class PDReactionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
         $builder->add('id', 'hidden', array(
+            'required' => true, 
+            )
+        );
+        
+        $builder->add('p_d_debate_id', 'hidden', array(
             'required' => true, 
             )
         );
@@ -60,7 +65,9 @@ class PDDebateType extends AbstractType
                 'class' => 'editor',
                 )
             )
-        );        
+        );
+
+        
     }
 
     /**
@@ -69,7 +76,7 @@ class PDDebateType extends AbstractType
      */
     public function getName()
     {
-        return 'debate';
+        return 'reaction';
     }    
     
     /**
@@ -78,7 +85,7 @@ class PDDebateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Politizr\Model\PDDebate',
+            'data_class' => 'Politizr\Model\PDReaction',
         ));
     }
 

@@ -140,13 +140,13 @@
         });
     });
 
-    // Prévisualisation > enregistrement puis redirection
+    // Prévisualisation
     $('body').on('click', "a[action='debate-preview']", function(e){
         console.log('*** click preview');
 
         bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre débat. Voulez-vous prévisualiser votre débat?', function(result) {
             if (result) {
-                window.location = "{{ path('DebateDraftPreview', { 'id': debate.id, 'slug': 'slug' }) }}";
+                window.location = "{{ path('DebateDraftPreview', { 'id': debate.id }) }}";
             }
         });
     });
