@@ -78,12 +78,15 @@
 			    <p class="text-muted">Tags thématiques</p>
 				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
 			    <hr>
+				{% set urlBack = path('MyDraftsC') %}
+				{% if is_granted('ROLE_ELECTED') %}
+					{% set urlBack = path('MyDraftsE') %}
+				{% endif %}
 				<div class="col-lg-offset-2 col-lg-10">
 					<button type="submit" class="btn btn-success">Enregistrer</button>
 					<a action="debate-preview" class="btn btn-info">Prévisualiser</a>
-					<a action="debate-delete" class="btn btn-warning">Supprimer</a>
-					<!-- TODO / Brancher le JS avec l'URL positionné ici + maj l'URL en fonction du profil courant (citoyen / élu) -->
-					<a action="debate-list" class="btn btn-primary" url="{{ path('MyDraftsC') }}">Retour</a>
+					<a action="debate-delete" class="btn btn-warning" url="{{ urlBack }}">Supprimer</a>
+					<a action="debate-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
 				</div>	
 			{{ form_end(form) }}
 		</div>

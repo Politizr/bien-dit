@@ -1,11 +1,13 @@
 <input type="hidden" id="debate_id" value="{{ debate.id }}" />
 <div class="debate-header">
 	<div class="row">
-		<h3>
-			<div class="col-sm-9">
-				{{ debate.title }}
-			</div>
-		</h3>
+		<div class="col-sm-9">
+			<h3>{{ debate.title }}</h3>
+		</div>
+		{% set urlBack = path('MyDebatesC') %}
+		{% if is_granted('ROLE_ELECTED') %}
+			{% set urlBack = path('MyDebatesE') %}
+		{% endif %}
 		<div class="col-sm-1 text-center">
 			<span class="label label-default pull-right">non publié</span>
 		</div>
@@ -13,18 +15,9 @@
 			<a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': debate.id }) }}">Editer</a>
 		</div>
 		<div class="col-sm-1 text-center">
-			<a action="debate-publish" class="btn btn-danger">Publier</a>
+			<a action="debate-publish" class="btn btn-danger" url="{{ urlBack }}">Publier</a>
 		</div>
 	</div>
-	<h4>
-		<div action="user-more-info" class="row">
-			<a class="label label-info">par {{ debate.pUser }}</a>
-		</div>
-		<div class="row" action="user-infos">
-			<hr>
-			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': debate.pUser, 'full': false } only %}
-		</div>
-	</h4>
 </div>
 <hr>
 <div class="debate-tags">

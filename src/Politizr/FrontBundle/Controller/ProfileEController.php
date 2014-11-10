@@ -188,7 +188,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:timelineE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:timeline.html.twig', array(
                     'documents' => $documents
             ));
     }
@@ -222,7 +222,7 @@ ORDER BY published DESC
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:ProfileE:suggestionsE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:suggestions.html.twig', array(
                     'debatesGeo' => $debatesGeo,
                     'debatesTheme' => $debatesTheme,
                     'usersGeo' => $usersGeo
@@ -254,7 +254,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:popularsE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:populars.html.twig', array(
                 'debates' => $debates,
                 'users' => $users,
                 'comments' => $comments,
@@ -296,7 +296,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:lastE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:last.html.twig', array(
                 'debates' => $debates,
                 'users' => $users,
                 'comments' => $comments,
@@ -336,7 +336,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myRatesE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myRates.html.twig', array(
             'drafts' => $drafts,
             'debates' => $debates,
             'comments' => $comments,
@@ -365,7 +365,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myDraftsE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myDrafts.html.twig', array(
             'drafts' => $drafts,
             ));
     }
@@ -392,7 +392,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myDebatesE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myDebates.html.twig', array(
             'debates' => $debates
             ));
     }
@@ -419,7 +419,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myCommentsE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myComments.html.twig', array(
             'comments' => $comments
             ));
     }
@@ -448,7 +448,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myAccountE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myAccount.html.twig', array(
             ));
     }
 
@@ -472,7 +472,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myTagsE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myTags.html.twig', array(
                 'pUser' => $pUser,
             ));
     }
@@ -517,7 +517,7 @@ ORDER BY published DESC
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myReputationE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myReputation.html.twig', array(
             'reputationScore' => $reputationScore,
             'badgeTypes' => $badgeTypes,
             'badgeIds' => $badgeIds,
@@ -550,7 +550,7 @@ ORDER BY published DESC
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:ProfileE:myPersoE.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:myPerso.html.twig', array(
                         'formPerso1' => $formPerso1->createView(),
                         'formPerso2' => $formPerso2->createView(),
                         'formPerso3' => $formPerso3->createView(),

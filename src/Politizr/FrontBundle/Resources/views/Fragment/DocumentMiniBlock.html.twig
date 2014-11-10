@@ -1,8 +1,3 @@
-{% if document.published %}
-	{% set debateRoute = 'DebateDetail' %}
-{% else %}
-	{% set debateRoute = 'DebateDraft' %}
-{% endif %}
 <div class="document-header">
 	<div class="row">
 		{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
@@ -10,11 +5,11 @@
 				<h4><a class="bg-warning" href="{{ path('ReactionDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
 			</div>
 			<div class="col-sm-3">
-				sur le débat <h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ document.debate.title }}</a></h4>
+				sur le débat <h4><a class="bg-info" href="{{ path('DebateDetail', { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ document.debate.title }}</a></h4>
 			</div>
 		{% elseif objectType == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
 			<div class="col-sm-6">
-				<h4><a class="bg-info" href="{{ path(debateRoute, { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
+				<h4><a class="bg-info" href="{{ path('DebateDetail', { 'id': document.id, 'slug': document.slug }) }}">{{ document.title }}</a></h4>
 			</div>
 		{% endif %}
 		<div class="col-sm-2 text-center">
@@ -33,7 +28,9 @@
 			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': document } only %}
 		</div>
 		<div class="col-sm-2 text-center">
-			<span class="label label-default text-center">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			{% if document.published %}
+				<span class="label label-default text-center">publié le {{ document.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			{% endif %}
 		</div>
 	</div>
 	{% if withAuthor %}

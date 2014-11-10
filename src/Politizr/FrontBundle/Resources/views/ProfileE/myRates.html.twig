@@ -4,10 +4,10 @@
 	<div id="main" class="container">
 		<h3>Mes brouillons</h3>
         {% for draft in drafts %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
+			{% include 'PolitizrFrontBundle:Fragment:DocumentDraftMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE') } %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
 		{% endfor %}
 		<h3>Mes débats publiés</h3>

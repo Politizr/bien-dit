@@ -135,7 +135,7 @@
 
         bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous revenir à la liste?', function(result) {
             if (result) {
-                window.location = "{{ path('MyDraftsC') }}";
+                window.location = $("a[action='debate-list']").attr('url');
             }
         });
     });

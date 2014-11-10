@@ -75,7 +75,7 @@ class CRUDController extends Controller {
         
         $debate->save();
 
-        return $this->redirect($this->generateUrl('MyDraftsEditC', array('id' => $debate->getId())));
+        return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
     }
 
     /**
@@ -214,6 +214,9 @@ class CRUDController extends Controller {
 		            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
 		        }
 
+                // Récupération URL redirection
+                $redirectUrl = $request->get('url');
+
 		        // MAJ de l'objet
 		        $debate = PDDebateQuery::create()->findPk($id);
 		        $debate->setPublished(true);
@@ -225,7 +228,7 @@ class CRUDController extends Controller {
 	            // Construction de la réponse
 	            $jsonResponse = array (
 	                'success' => true,
-	                'redirectUrl' => $this->generateUrl('MyDebatesC'),
+	                'redirectUrl' => $redirectUrl,
 	            );
 
             } else {
@@ -270,6 +273,9 @@ class CRUDController extends Controller {
 		            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
 		        }
 
+                // Récupération URL redirection
+                $redirectUrl = $request->get('url');
+
 		        // // MAJ de l'objet
 		        $debate = PDDebateQuery::create()->findPk($id);
                 $debate->deleteWithoutArchive(); // pas d'archive sur les brouillons
@@ -279,7 +285,7 @@ class CRUDController extends Controller {
 	            // Construction de la réponse
 	            $jsonResponse = array (
 	                'success' => true,
-	                'redirectUrl' => $this->generateUrl('MyDebatesC'),
+	                'redirectUrl' => $redirectUrl,
 	            );
 
             } else {
@@ -461,6 +467,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagTitle = $request->get('tagTitle');
                 $tagId = $request->get('tagId');
@@ -522,6 +534,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagId = $request->get('tagId');
                 $objectId = $request->get('objectId');
@@ -559,6 +577,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagTitle = $request->get('tagTitle');
                 $tagId = $request->get('tagId');
@@ -620,6 +644,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagId = $request->get('tagId');
                 $objectId = $request->get('objectId');
@@ -658,6 +688,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagTitle = $request->get('tagTitle');
                 $tagId = $request->get('tagId');
@@ -719,6 +755,12 @@ class CRUDController extends Controller {
         
         try {
             if ($request->isXmlHttpRequest()) {
+                // Récupération user
+                $user = $this->getUser();
+                if (!$user) {
+                    throw new NotFoundHttpException('Utilisateur déconnecté.');
+                }
+
                 // Récupération args
                 $tagId = $request->get('tagId');
                 $objectId = $request->get('objectId');
