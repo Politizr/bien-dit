@@ -88,22 +88,34 @@ class ProfileCController extends Controller {
 
         // TODO
         // + réactions sur les débats rédigés par le user courant
+        // + pouvoir distinguer dans l'affichage un débat possédant seulement un commentaire d'une personne suivi
 
 
         // Requête MYSQL
+        // Liste des débats suivis
+        // union
+        // Liste des documents créés par des users suivis
+        // union
+        // Liste des documents possédant un commentaire par un user suivis
         /*
 
-( SELECT p_document.title, p_document.published_at
+( SELECT p_document.id
 FROM p_document
-    LEFT JOIN p_d_reaction 
-        ON p_document.id = p_d_reaction.id
-WHERE p_d_reaction.p_d_debate_id IN (1, 2, 3) )
+WHERE id IN (1, 2, 3) )
 
 UNION DISTINCT
 
 ( SELECT p_document.title, p_document.published_at
 FROM p_document
 WHERE p_document.p_user_id IN (1, 2, 3) )
+
+UNION DISTINCT
+
+( SELECT p_document.id
+FROM p_document
+    LEFT JOIN p_d_comment 
+        ON p_document_id = p_d_comment.p_document_id
+WHERE p_d_comment.p_user_id IN (1, 2, 3) )
 
 ORDER BY published DESC
 
@@ -136,29 +148,42 @@ ORDER BY published DESC
             $sql = "
     ( SELECT p_document.id
     FROM p_document
-        LEFT JOIN p_d_reaction 
-            ON p_document.id = p_d_reaction.id
-    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.") )
+    WHERE id IN (".$inQueryDebateIds.") )
 
     UNION DISTINCT
 
     ( SELECT p_document.id
     FROM p_document
     WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+
+    UNION DISTINCT
+
+    ( SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_comment 
+            ON p_document.id = p_d_comment.p_document_id
+    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
+
         ";
         } elseif(!empty($debateIds)) {
             $sql = "
     SELECT p_document.id
     FROM p_document
-        LEFT JOIN p_d_reaction 
-            ON p_document.id = p_d_reaction.id
-    WHERE p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+    WHERE id IN (".$inQueryDebateIds.")
         ";
-        } elseif(!empty($debateIds)) {
+        } elseif(!empty($userIds)) {
             $sql = "
-    SELECT p_document.id
+    ( SELECT p_document.id
     FROM p_document
-    WHERE p_document.p_user_id IN (".$inQueryUserIds.")
+    WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+
+    UNION DISTINCT
+
+    ( SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_comment 
+            ON p_document.id = p_d_comment.p_document_id
+    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
         ";
         } else {
             $sql = null;

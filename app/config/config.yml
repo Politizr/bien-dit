@@ -450,10 +450,10 @@ bazinga_faker:
 #                 TreeLevel:              { method: 1 }
 # 
         Politizr\Model\PDComment:
-            number:                     500
+            number:                     10
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PDocumentId:            { method: numberBetween, parameters: [ 1, 12 ] }
+                PDocumentId:            { method: numberBetween, parameters: [ 1, 1 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }

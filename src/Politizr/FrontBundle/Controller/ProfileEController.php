@@ -90,7 +90,6 @@ class ProfileEController extends Controller {
 
 
         // Différences / timeline citoyen:
-        // - +les débats suivis (même sans réactions)
 
         // TODO
         // + réactions sur les débats rédigés par le user courant
@@ -148,6 +147,15 @@ ORDER BY published DESC
     ( SELECT p_document.id
     FROM p_document
     WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+
+    UNION DISTINCT
+
+    ( SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_comment 
+            ON p_document.id = p_d_comment.p_document_id
+    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
+
         ";
         } elseif(!empty($debateIds)) {
             $sql = "
@@ -155,11 +163,19 @@ ORDER BY published DESC
     FROM p_document
     WHERE id IN (".$inQueryDebateIds.")
         ";
-        } elseif(!empty($debateIds)) {
+        } elseif(!empty($userIds)) {
             $sql = "
-    SELECT p_document.id
+    ( SELECT p_document.id
     FROM p_document
-    WHERE p_document.p_user_id IN (".$inQueryUserIds.")
+    WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+
+    UNION DISTINCT
+
+    ( SELECT p_document.id
+    FROM p_document
+        LEFT JOIN p_d_comment 
+            ON p_document.id = p_d_comment.p_document_id
+    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
         ";
         } else {
             $sql = null;
