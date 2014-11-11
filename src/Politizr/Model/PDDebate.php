@@ -67,6 +67,25 @@ class PDDebate extends BasePDDebate
     	return parent::preSave($con);
 	}
 
+
+	/**
+	 *	Création automatique d'un noeud root associé aux réaction du débat.
+	 *
+	 *
+	 */
+	public function postInsert(\PropelPDO $con = null)
+	{
+        $rootNode = new PDReaction();
+
+        $rootNode->setPDDebateId($this->getId());
+        $rootNode->setTitle('ROOT NODE');
+        $rootNode->setOnline(false);
+        $rootNode->setPublished(false);
+
+        $rootNode->makeRoot();
+        $rootNode->save();
+	}
+
     /**
      * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
      * https://github.com/propelorm/Propel/issues/366
@@ -232,6 +251,7 @@ class PDDebate extends BasePDDebate
 	 */
 	public function countReactions($online = false, $published = false) {
 		$query = PDReactionQuery::create()
+					->filterByTreeLevel(0, \Criteria::NOT_EQUAL)	// Exclusion du root node
 					->_if($online)
 						->filterByOnline(true)
 					->_endif()
@@ -240,7 +260,7 @@ class PDDebate extends BasePDDebate
 					->_endif()
 					;
 
-		return parent::countPDReactions();
+		return parent::countPDReactions($query);
 	}
 
 	/**
@@ -248,8 +268,11 @@ class PDDebate extends BasePDDebate
 	 *
 	 * 	@return 	PDReaction
 	 */
-	public function getLastReaction($online = false, $published = false) {
+	public function getLastReaction($treeLevel = false, $online = false, $published = false) {
 		return PDReactionQuery::create()
+					->_if($treeLevel)
+						->filterByTreeLevel($treeLevel)
+					->_endif()
 					->_if($online)
 						->filterByOnline(true)
 					->_endif()

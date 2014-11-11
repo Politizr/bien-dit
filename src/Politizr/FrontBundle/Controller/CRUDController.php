@@ -168,10 +168,11 @@ class CRUDController extends Controller {
         if ($parent) {
             $reaction->insertAsLastChildOf($parent);
         } else {
+            $rootNode = PDReactionQuery::create()->findRoot($debate->getId());
             if ($nbReactions = $debate->countReactions() == 0) {
-                $reaction->makeRoot();
+                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
             } else {
-                $reaction->insertAsNextSiblingOf($debate->getLastReaction());
+                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
             }
         }
         
@@ -710,7 +711,7 @@ class CRUDController extends Controller {
                 $redirectUrl = $request->get('url');
 
                 // // MAJ de l'objet
-                $reaction = PDReactionQuery::create()->findPk($id);
+                $reaction = PDReactionQuery::create()->findPk($id);                
                 $reaction->deleteWithoutArchive(); // pas d'archive sur les brouillons
 
                 $this->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
