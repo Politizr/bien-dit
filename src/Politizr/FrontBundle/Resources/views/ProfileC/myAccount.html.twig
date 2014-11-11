@@ -7,6 +7,13 @@
 			Vous disposez actuellement d'un compte citoyen.
 		</p>
 		<p>
+			{% if app.user.validated %}
+				Votre identité a été validé par nos services.
+			{% else %}
+				Votre identité n'a pas été validé par nos services.
+			{% endif %}
+		</p>
+		<p>
 			Vous exercez ou avez exercé un mandat d'élu? Migrez vers le <a href="{{ path('MigrationElected') }}">compte débatteur</a>.
 		</p>
 	</div>

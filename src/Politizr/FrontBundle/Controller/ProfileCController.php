@@ -441,10 +441,6 @@ ORDER BY published DESC
         $pUser = $this->getUser();
 
         // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
@@ -542,7 +538,7 @@ ORDER BY published DESC
         // *********************************** //
         //      Formulaires
         // *********************************** //
-        $formPerso1 = $this->createForm(new PUserPerso1Type(), $user);
+        $formPerso1 = $this->createForm(new PUserPerso1Type($user), $user);
         $formPerso2 = $this->createForm(new PUserPerso2Type(), $user);
         $formPerso3 = $this->createForm(new PUserPerso3Type(), $user);
         $formPerso4 = $this->createForm(new PUserPerso4Type(), $user);

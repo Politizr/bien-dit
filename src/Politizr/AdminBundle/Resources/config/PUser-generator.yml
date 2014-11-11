@@ -49,6 +49,8 @@ params:
             label:          Badges
         online:
             label:          En ligne
+        validated:
+            label:          Profil validé
         created_at:
             label:          Création
         updated_at:
@@ -121,6 +123,7 @@ builders:
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
+                    "Validé":                   [ [ validated ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedFileName:
@@ -208,6 +211,7 @@ builders:
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
+                    "Validé":                   [ [ validated ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 p_u_qualifications:

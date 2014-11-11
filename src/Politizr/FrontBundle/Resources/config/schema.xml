@@ -305,6 +305,7 @@
         <column name="nb_views" type="integer" />
 
         <column name="online" type="boolean" />
+        <column name="validated" type="boolean" defaultValue="false" />
 
         <foreign-key foreignTable="p_u_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_type_id" foreign="id" />

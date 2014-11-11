@@ -12,6 +12,8 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Model\PUser;
+
 /**
  * TODO: commentaires
  * 
@@ -19,6 +21,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class PUserPerso1Type extends AbstractType
 {
+    protected $user;
+
+    /**
+     *
+     */
+    public function __construct(PUser $user) {
+        $this->user = $user;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Attributs cachés obligatoires
@@ -36,19 +47,19 @@ class PUserPerso1Type extends AbstractType
             'label' => 'Civilité', 
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'empty_value' => 'Civilité',
-            'disabled' => true
+            'disabled' => $this->user->getValidated()?true:false
         ));
 
         $builder->add('name', 'text', array(
             'required' => false,
             'label' => 'Nom', 
-            'disabled' => true
+            'disabled' => $this->user->getValidated()?true:false
             )
         );
         $builder->add('firstname', 'text', array(
             'required' => false,
             'label' => 'Prénom', 
-            'disabled' => true
+            'disabled' => $this->user->getValidated()?true:false
             )
         );
         $builder->add('birthday', 'date', array(
@@ -56,7 +67,7 @@ class PUserPerso1Type extends AbstractType
             'label' => 'Date de naissance', 
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
-            'disabled' => true
+            'disabled' => $this->user->getValidated()?true:false
             )
         );
     }

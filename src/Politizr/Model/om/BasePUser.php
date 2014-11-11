@@ -315,6 +315,13 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the validated field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $validated;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -626,6 +633,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->locked = false;
         $this->expired = false;
         $this->credentials_expired = false;
+        $this->validated = false;
     }
 
     /**
@@ -1214,6 +1222,16 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Get the [validated] column value.
+     *
+     * @return boolean
+     */
+    public function getValidated()
+    {
+        return $this->validated;
     }
 
     /**
@@ -2188,6 +2206,35 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [validated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setValidated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->validated !== $v) {
+            $this->validated = $v;
+            $this->modifiedColumns[] = PUserPeer::VALIDATED;
+        }
+
+
+        return $this;
+    } // setValidated()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -2280,6 +2327,10 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->validated !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -2340,9 +2391,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->last_connect = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
             $this->nb_views = ($row[$startcol + 35] !== null) ? (int) $row[$startcol + 35] : null;
             $this->online = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
-            $this->created_at = ($row[$startcol + 37] !== null) ? (string) $row[$startcol + 37] : null;
-            $this->updated_at = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
-            $this->slug = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
+            $this->validated = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
+            $this->created_at = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
+            $this->updated_at = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
+            $this->slug = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2351,7 +2403,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 40; // 40 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 41; // 41 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -3165,6 +3217,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PUserPeer::VALIDATED)) {
+            $modifiedColumns[':p' . $index++]  = '`validated`';
+        }
         if ($this->isColumnModified(PUserPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -3295,6 +3350,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`validated`':
+                        $stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -3681,12 +3739,15 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 37:
-                return $this->getCreatedAt();
+                return $this->getValidated();
                 break;
             case 38:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 39:
+                return $this->getUpdatedAt();
+                break;
+            case 40:
                 return $this->getSlug();
                 break;
             default:
@@ -3755,9 +3816,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[34] => $this->getLastConnect(),
             $keys[35] => $this->getNbViews(),
             $keys[36] => $this->getOnline(),
-            $keys[37] => $this->getCreatedAt(),
-            $keys[38] => $this->getUpdatedAt(),
-            $keys[39] => $this->getSlug(),
+            $keys[37] => $this->getValidated(),
+            $keys[38] => $this->getCreatedAt(),
+            $keys[39] => $this->getUpdatedAt(),
+            $keys[40] => $this->getSlug(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPUType) {
@@ -3962,12 +4024,15 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 37:
-                $this->setCreatedAt($value);
+                $this->setValidated($value);
                 break;
             case 38:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 39:
+                $this->setUpdatedAt($value);
+                break;
+            case 40:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -4031,9 +4096,10 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[34], $arr)) $this->setLastConnect($arr[$keys[34]]);
         if (array_key_exists($keys[35], $arr)) $this->setNbViews($arr[$keys[35]]);
         if (array_key_exists($keys[36], $arr)) $this->setOnline($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setCreatedAt($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setUpdatedAt($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setSlug($arr[$keys[39]]);
+        if (array_key_exists($keys[37], $arr)) $this->setValidated($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setCreatedAt($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setUpdatedAt($arr[$keys[39]]);
+        if (array_key_exists($keys[40], $arr)) $this->setSlug($arr[$keys[40]]);
     }
 
     /**
@@ -4082,6 +4148,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::LAST_CONNECT)) $criteria->add(PUserPeer::LAST_CONNECT, $this->last_connect);
         if ($this->isColumnModified(PUserPeer::NB_VIEWS)) $criteria->add(PUserPeer::NB_VIEWS, $this->nb_views);
         if ($this->isColumnModified(PUserPeer::ONLINE)) $criteria->add(PUserPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PUserPeer::VALIDATED)) $criteria->add(PUserPeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(PUserPeer::CREATED_AT)) $criteria->add(PUserPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUserPeer::UPDATED_AT)) $criteria->add(PUserPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUserPeer::SLUG)) $criteria->add(PUserPeer::SLUG, $this->slug);
@@ -4184,6 +4251,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setLastConnect($this->getLastConnect());
         $copyObj->setNbViews($this->getNbViews());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setValidated($this->getValidated());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -9045,6 +9113,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->last_connect = null;
         $this->nb_views = null;
         $this->online = null;
+        $this->validated = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -9430,6 +9499,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setLastConnect($archive->getLastConnect());
         $this->setNbViews($archive->getNbViews());
         $this->setOnline($archive->getOnline());
+        $this->setValidated($archive->getValidated());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

@@ -1,5 +1,8 @@
 {# Nom #}
 <a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label label-info">{{ user }}</a>
+{% if user.validated %}
+	<span class="glyphicon glyphicon-ok"></span>
+{% endif %}
 {# Score réputation #}
 <span class="badge alert-success">{{ user.reputationScore }}</span>
 {# Type #}

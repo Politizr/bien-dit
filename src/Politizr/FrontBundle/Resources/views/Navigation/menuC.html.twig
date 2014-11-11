@@ -41,7 +41,10 @@
 		</li>
 	</ul>
 	<ul class="navbar-right">
-		<span class="label label-default">Bienvenue {{ app.user.firstname }} {{ app.user.name }}</span>
+		{% if app.user.validated %}
+			<span class="glyphicon glyphicon-ok"></span>
+		{% endif %}
+		<span class="label label-default">{{ app.user.firstname }} {{ app.user.name }}</span>
 		<a class="btn btn-primary btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
 	</ul>
 </div><!-- /.navbar-collapse -->

@@ -15,6 +15,9 @@
 				<div class="identity">
 					<h3>
 						<a href="{{ path('UserDetail', { 'id': pUser.id, 'slug': pUser.slug }) }}">{{ pUser }}</a>&nbsp;<span class="badge alert-success">{{ pUser.reputationScore }}</span>
+						{% if pUser.validated %}
+							<span class="glyphicon glyphicon-ok"></span>
+						{% endif %}
 					</h3>
 				</div>
 			</div>

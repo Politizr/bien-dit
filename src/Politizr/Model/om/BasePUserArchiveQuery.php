@@ -52,6 +52,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUserArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
@@ -93,6 +94,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByLastConnect() Group by the last_connect column
  * @method PUserArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PUserArchiveQuery groupByOnline() Group by the online column
+ * @method PUserArchiveQuery groupByValidated() Group by the validated column
  * @method PUserArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PUserArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUserArchiveQuery groupByArchivedAt() Group by the archived_at column
@@ -140,6 +142,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByLastConnect(string $last_connect) Return the first PUserArchive filtered by the last_connect column
  * @method PUserArchive findOneByNbViews(int $nb_views) Return the first PUserArchive filtered by the nb_views column
  * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
+ * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
  * @method PUserArchive findOneByCreatedAt(string $created_at) Return the first PUserArchive filtered by the created_at column
  * @method PUserArchive findOneByUpdatedAt(string $updated_at) Return the first PUserArchive filtered by the updated_at column
  * @method PUserArchive findOneByArchivedAt(string $archived_at) Return the first PUserArchive filtered by the archived_at column
@@ -181,6 +184,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByLastConnect(string $last_connect) Return PUserArchive objects filtered by the last_connect column
  * @method array findByNbViews(int $nb_views) Return PUserArchive objects filtered by the nb_views column
  * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
+ * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
  * @method array findByCreatedAt(string $created_at) Return PUserArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUserArchive objects filtered by the updated_at column
  * @method array findByArchivedAt(string $archived_at) Return PUserArchive objects filtered by the archived_at column
@@ -285,7 +289,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1619,6 +1623,33 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the validated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByValidated(true); // WHERE validated = true
+     * $query->filterByValidated('yes'); // WHERE validated = true
+     * </code>
+     *
+     * @param     boolean|string $validated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByValidated($validated = null, $comparison = null)
+    {
+        if (is_string($validated)) {
+            $validated = in_array(strtolower($validated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::VALIDATED, $validated, $comparison);
     }
 
     /**

@@ -34,7 +34,9 @@
 			    {{ form_row(formPerso1.firstname) }}
 			    {{ form_row(formPerso1.birthday) }}
 
-			    <p class="bg-info">Ces informations ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
+				{% if app.user.validated %}
+			    	<p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
+			    {% endif %}
 			{{ form_end(formPerso1) }}
 		</div>
 		

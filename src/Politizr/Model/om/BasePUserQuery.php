@@ -74,6 +74,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUserQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -115,6 +116,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByNbViews() Group by the nb_views column
  * @method PUserQuery groupByOnline() Group by the online column
+ * @method PUserQuery groupByValidated() Group by the validated column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
  * @method PUserQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUserQuery groupBySlug() Group by the slug column
@@ -226,6 +228,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByNbViews(int $nb_views) Return the first PUser filtered by the nb_views column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
+ * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
  * @method PUser findOneByUpdatedAt(string $updated_at) Return the first PUser filtered by the updated_at column
  * @method PUser findOneBySlug(string $slug) Return the first PUser filtered by the slug column
@@ -267,6 +270,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByNbViews(int $nb_views) Return PUser objects filtered by the nb_views column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
+ * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUser objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PUser objects filtered by the slug column
@@ -377,7 +381,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1715,6 +1719,33 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the validated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByValidated(true); // WHERE validated = true
+     * $query->filterByValidated('yes'); // WHERE validated = true
+     * </code>
+     *
+     * @param     boolean|string $validated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByValidated($validated = null, $comparison = null)
+    {
+        if (is_string($validated)) {
+            $validated = in_array(strtolower($validated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::VALIDATED, $validated, $comparison);
     }
 
     /**

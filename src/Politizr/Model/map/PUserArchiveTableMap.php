@@ -83,6 +83,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);

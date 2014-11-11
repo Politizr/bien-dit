@@ -312,6 +312,7 @@ bazinga_faker:
 
                 NbViews:                { method: numberBetween, parameters: [ 150, 1500 ] }
                 Online:                 { method: boolean, parameters: [ 100 ] }
+                Validated:              { method: boolean, parameters: [ 10 ] }
                 Slug:                   { method: null }
 
 #         Politizr\Model\PUQualification:
@@ -411,17 +412,17 @@ bazinga_faker:
 #                 Online:                 { method: boolean, parameters: [ 100 ] }
 #                 Slug:                   { method: null }
 # 
-        Politizr\Model\PUFollowDD:
-            number:                     300
-            custom_formatters:
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-
-        Politizr\Model\PDDTaggedT:
-            number:                     30
-            custom_formatters:
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+#         Politizr\Model\PUFollowDD:
+#             number:                     10
+#             custom_formatters:
+#                 PDDebateId:             { method: numberBetween, parameters: [ 1 ] }
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+# 
+#         Politizr\Model\PDDTaggedT:
+#             number:                     5
+#             custom_formatters:
+#                 PDDebateId:             { method: numberBetween, parameters: [ 1 ] }
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
 #         # TODO Faker ne remplit pas correctement PDDebateId ni les info nested set 
 #         Politizr\Model\PDReaction:
@@ -452,7 +453,7 @@ bazinga_faker:
             number:                     500
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PDocumentId:            { method: numberBetween, parameters: [ 1, 15 ] }
+                PDocumentId:            { method: numberBetween, parameters: [ 1, 12 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }

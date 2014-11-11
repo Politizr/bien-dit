@@ -44,7 +44,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
 
     # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
@@ -70,7 +70,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute2:
         p_u_type_id:            qualifie
@@ -94,7 +94,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute3:
         p_u_type_id:            qualifie
@@ -118,7 +118,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute4:
         p_u_type_id:            qualifie
@@ -142,7 +142,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute5:
         p_u_type_id:            qualifie
@@ -166,7 +166,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute6:
         p_u_type_id:            qualifie
@@ -190,7 +190,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute7:
         p_u_type_id:            qualifie
@@ -212,7 +212,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute8:
         p_u_type_id:            qualifie
@@ -236,7 +236,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute9:
         p_u_type_id:            qualifie
@@ -260,7 +260,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
     depute10:
         p_u_type_id:            qualifie
@@ -284,7 +284,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute11:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -307,7 +307,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute12:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -330,7 +330,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute13:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -353,7 +353,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute14:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -376,7 +376,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute15:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -399,7 +399,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute16:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -422,7 +422,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute17:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -445,7 +445,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute18:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -468,7 +468,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute19:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -491,7 +491,7 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
     depute20:
         p_u_type_id:            qualifie
         p_u_status_id:          activ
@@ -514,6 +514,6 @@ Politizr\Model\PUser:
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         online:                 1
-
+        validated:              1
 
 
