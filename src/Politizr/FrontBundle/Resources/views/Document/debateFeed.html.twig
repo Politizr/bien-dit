@@ -21,7 +21,7 @@
 		<hr>
 		<h3>Les réactions</h3>
 		<div class="debate-reactions-feed">
-			{% for reaction in debate.treeReactions %}
+			{% for reaction in debate.treeReactions(true, true) %}
 				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
 				<div class="border-row">&nbsp;</div>
 			{% else %}

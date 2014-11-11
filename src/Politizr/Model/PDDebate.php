@@ -232,6 +232,7 @@ class PDDebate extends BasePDDebate
 	 */
 	public function getTreeReactions($online = false, $published = false) {
 		$treeReactions = PDReactionQuery::create()
+					->filterByTreeLevel(0, \Criteria::NOT_EQUAL)	// Exclusion du root node
 					->_if($online)
 						->filterByOnline(true)
 					->_endif()

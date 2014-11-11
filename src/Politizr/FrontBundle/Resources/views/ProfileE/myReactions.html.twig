@@ -2,7 +2,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h3>Mes reactions</h3>
+		<h3>Mes réactions</h3>
         {% for reaction in reactions %}
 			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false, 'withMoreInfos': true } %}
 		{% else %}

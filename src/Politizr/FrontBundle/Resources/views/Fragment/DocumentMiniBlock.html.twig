@@ -14,7 +14,7 @@
 		{% endif %}
 		<div class="col-sm-2 text-center">
 			<span class="count-reactions">
-				{% set nbReactions = document.countReactions %}
+				{% set nbReactions = document.countReactions(true, true) %}
 				<span class="badge alert-info">
 					{% if objectType == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
 						<a href="{{ path('DebateFeed', { 'id': document.debate.id, 'slug': document.debate.slug }) }}">{{ nbReactions }} réactions</a>
