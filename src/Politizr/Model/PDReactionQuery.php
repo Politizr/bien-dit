@@ -7,8 +7,31 @@ use Politizr\Model\om\BasePDReactionQuery;
 class PDReactionQuery extends BasePDReactionQuery
 {
 
-    // *****************************    SURCHARGE / DOCUMENT    ************************* //
-    
+
+	/**
+	 *	Renvoit le noeud root, ou le créé au préalable s'il n'existe pas.
+	 *
+	 * 	@return PDReaction
+	 */
+	public function findOrCreateRoot($debateId) {
+		$rootNode = $this->findRoot($debateId);
+
+		if (!$rootNode) {
+	        $rootNode = new PDReaction();
+
+	        $rootNode->setPDDebateId($debateId);
+	        $rootNode->setTitle('ROOT NODE');
+	        $rootNode->setOnline(false);
+	        $rootNode->setPublished(false);
+
+	        $rootNode->makeRoot();
+	        $rootNode->save();
+		}
+
+		return $rootNode;
+	}
+
+
    // *****************************    AGGREGATIONS / UTILES    ************************* //
     
     /**

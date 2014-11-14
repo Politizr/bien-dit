@@ -15,6 +15,10 @@ var components = {
         {
             "name": "jquery-ui",
             "main": "jquery-ui-built.js"
+        },
+        {
+            "name": "form",
+            "main": "form-built.js"
         }
     ],
     "shim": {
@@ -28,6 +32,11 @@ var components = {
                 "jquery"
             ],
             "exports": "jQuery"
+        },
+        "form": {
+            "deps": [
+                "jquery"
+            ]
         }
     },
     "baseUrl": "components"

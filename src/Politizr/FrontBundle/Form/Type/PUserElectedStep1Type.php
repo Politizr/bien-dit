@@ -52,13 +52,15 @@ class PUserElectedStep1Type extends AbstractType
         $builder->add('name', 'text', array(
             'required' => true,
             'label' => 'Nom', 
-            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
+            'attr' => array('placeholder' => 'Nom')
             )
         );
         $builder->add('firstname', 'text', array(
             'required' => true,
             'label' => 'Prénom', 
-            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
+            'attr' => array('placeholder' => 'Prénom')
             )
         );
         $builder->add('birthday', 'date', array(
@@ -67,7 +69,8 @@ class PUserElectedStep1Type extends AbstractType
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
-            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
+            'attr' => array('placeholder' => 'JJ/MM/AAAA')
             )
         );
 
@@ -75,10 +78,12 @@ class PUserElectedStep1Type extends AbstractType
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Email', 
+                'label' => 'Email',
+                'attr' => array('placeholder' => 'Email') 
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation email', 
+                'label' => 'Confirmation email',
+                'attr' => array('placeholder' => 'Email') 
                 ),
             'type' => 'email',
             'constraints' => new NotBlank(array('message' => 'Email obligatoire.'))
@@ -97,7 +102,8 @@ class PUserElectedStep1Type extends AbstractType
         $builder->add('username', 'text', array(
             'required' => true,
             'label' => 'Identifiant', 
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
+            'attr' => array('placeholder' => 'Identifiant')
             )
         );
         
@@ -105,10 +111,12 @@ class PUserElectedStep1Type extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe', 
+                'label' => 'Mot de passe',
+                'attr' => array('placeholder' => 'Mot de passe')
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation', 
+                'label' => 'Confirmation',
+                'attr' => array('placeholder' => 'Mot de passe') 
                 ),
             'type' => 'password',
             'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
@@ -131,7 +139,8 @@ class PUserElectedStep1Type extends AbstractType
             'label' => 'Mandats électifs', 
             'mapped' => false,
             'attr' => array('help_text' => 'Liste des mandats électifs exercés.'),
-            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.')),
+            'attr' => array('placeholder' => 'Liste de vos mandats électifs passés ou présents')
             )
         );
 

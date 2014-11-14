@@ -22,7 +22,6 @@
 			    {{ form_row(pUserForm.name) }}
 			    {{ form_row(pUserForm.firstname) }}
 			    {{ form_row(pUserForm.birthday) }}
-			    <p class="bg-info">Attention, ces informations ne pourront plus être modifiées après l'inscription.</p>
 
 			    <hr>
 
@@ -31,6 +30,10 @@
 
 				<h3>Mandats et justificatif</h3>
 			    {{ form_row(pUserForm.uploaded_supporting_document) }}
+
+			    <p class="bg-info">Attention, votre pièce justificative doit correspondre aux nom / prénom / date de naissance renseignés.</p>
+
+
 			    {{ form_row(pUserForm.elective_mandates) }}
 
 				<h3>Identifiants Politizr</h3>

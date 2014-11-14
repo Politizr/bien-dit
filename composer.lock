@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bc6a16335b48c9108b776ca6556ec7e2",
+    "hash": "dae5adc92cc8a88367dd4b0cf89214d9",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -636,6 +636,17 @@
             "time": "2013-06-14 16:01:43"
         },
         {
+            "name": "daviferreira/medium-editor",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/daviferreira/medium-editor.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2014-11-07 17:26:21"
+        },
+        {
             "name": "doctrine/annotations",
             "version": "v1.2.1",
             "source": {
@@ -1087,6 +1098,17 @@
                 "profiler"
             ],
             "time": "2014-11-06 09:36:21"
+        },
+        {
+            "name": "eligrey/classList.js",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/eligrey/classList.js.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2014-07-24 19:55:40"
         },
         {
             "name": "ensepar/html2pdf",
@@ -2331,6 +2353,56 @@
             "time": "2013-12-29 10:38:23"
         },
         {
+            "name": "malsup/form",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/malsup/form.git",
+                "reference": "6bf24a5f6d8be65f4e5491863180c09356d9dadd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/malsup/form/zipball/6bf24a5f6d8be65f4e5491863180c09356d9dadd",
+                "reference": "6bf24a5f6d8be65f4e5491863180c09356d9dadd",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.5"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.form.js"
+                    ],
+                    "shim": {
+                        "deps": [
+                            "jquery"
+                        ]
+                    }
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "M. Alsup",
+                    "homepage": "http://jquery.malsup.com"
+                }
+            ],
+            "description": "A simple way to AJAX-ify any form on your page; with file upload and progress support.",
+            "homepage": "http://jquery.malsup.com/form/",
+            "keywords": [
+                "ajax",
+                "form",
+                "upload"
+            ],
+            "time": "2014-09-03 01:10:13"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.11.0",
             "source": {
@@ -3300,110 +3372,6 @@
             "time": "2014-10-24 05:54:08"
         },
         {
-            "name": "twbs/bootstrap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "d904429e05ce8ba68ebba673cab603a861792aba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d904429e05ce8ba68ebba673cab603a861792aba",
-                "reference": "d904429e05ce8ba68ebba673cab603a861792aba",
-                "shasum": ""
-            },
-            "replace": {
-                "twitter/bootstrap": "self.version"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                },
-                {
-                    "name": "Mark Otto",
-                    "email": "markdotto@gmail.com"
-                }
-            ],
-            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
-            "keywords": [
-                "JS",
-                "css",
-                "framework",
-                "front-end",
-                "less",
-                "mobile-first",
-                "responsive",
-                "web"
-            ],
-            "time": "2014-11-05 22:59:24"
-        },
-        {
-            "name": "twbs/bootstrap-sass",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap-sass.git",
-                "reference": "5f1800ab526266469217ed7bcfd05bdce6eb0c92"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/5f1800ab526266469217ed7bcfd05bdce6eb0c92",
-                "reference": "5f1800ab526266469217ed7bcfd05bdce6eb0c92",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Otto"
-                },
-                {
-                    "name": "Thomas McDonald"
-                },
-                {
-                    "name": "Tristan Harward"
-                },
-                {
-                    "name": "Peter Gumeson"
-                },
-                {
-                    "name": "Gleb Mazovetskiy"
-                },
-                {
-                    "name": "Jacob Thornton"
-                }
-            ],
-            "description": "bootstrap-sass is a Sass-powered version of Bootstrap, ready to drop right into your Sass powered applications.",
-            "homepage": "http://github.com/twbs/bootstrap-sass",
-            "keywords": [
-                "bootstrap",
-                "css",
-                "sass"
-            ],
-            "time": "2014-10-31 21:54:09"
-        },
-        {
             "name": "twig/extensions",
             "version": "v1.0.1",
             "source": {
@@ -4149,11 +4117,12 @@
         "facebook/php-sdk": 20,
         "elao/web-profiler-extra-bundle": 20,
         "avocode/form-extensions-bundle": 20,
-        "twbs/bootstrap": 20,
-        "twbs/bootstrap-sass": 20,
         "fortawesome/font-awesome": 20,
         "braincrafted/bootstrap-bundle": 20,
-        "components/bootbox": 20
+        "components/bootbox": 20,
+        "malsup/form": 20,
+        "daviferreira/medium-editor": 20,
+        "eligrey/classlist.js": 20
     },
     "prefer-stable": false,
     "platform": {

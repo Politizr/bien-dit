@@ -86,6 +86,8 @@ class ProfileCController extends Controller {
         //      Récupération objets vue
         // *********************************** //
 
+        // TODO / Refactoring > extraire la création de la timeline
+
         // TODO
         // + réactions sur les débats rédigés par le user courant
         // + pouvoir distinguer dans l'affichage un débat possédant seulement un commentaire d'une personne suivi

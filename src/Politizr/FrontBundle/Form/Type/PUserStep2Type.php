@@ -54,13 +54,15 @@ class PUserStep2Type extends AbstractType
         $builder->add('name', 'text', array(
             'required' => true,
             'label' => 'Nom', 
-            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
+            'attr' => array('placeholder' => 'Nom')
             )
         );
         $builder->add('firstname', 'text', array(
             'required' => true,
             'label' => 'Prénom', 
-            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
+            'attr' => array('placeholder' => 'Prénom')
             )
         );
         $builder->add('birthday', 'date', array(
@@ -69,17 +71,20 @@ class PUserStep2Type extends AbstractType
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
-            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
+            'attr' => array('placeholder' => 'JJ/MM/AAAA')
             )
         );
 
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Email', 
+                'label' => 'Email',
+                'attr' => array('placeholder' => 'Email')
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation email', 
+                'label' => 'Confirmation email',
+                'attr' => array('placeholder' => 'Email') 
                 ),
             'type' => 'email',
             'constraints' => new NotBlank(array('message' => 'Email obligatoire.'))

@@ -15,14 +15,59 @@
             "type": "package",
             "package": {
                 "name": "phing/phing",
+                "type": "component",
                 "version": "master",
                 "source": {
                     "url": "git://github.com/Xosofox/phing.git",
                     "type": "git",
                     "reference": "master"
+                }                
+            }
+        },
+        "medium-editor" : {
+            "type": "package",
+            "package": {
+                "name": "daviferreira/medium-editor",
+                "type": "component",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/daviferreira/medium-editor.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "extra": {
+                    "component": {
+                        "scripts": [
+                            "dist/js/medium-editor.min.js"
+                        ],
+                        "styles": [
+                            "dist/css/medium-editor.min.css",
+                            "dist/css/themes/*.min.css"
+                        ]
+                    }
                 }
             }
-        }              
+        },
+        "classList" : {
+            "type": "package",
+            "package": {
+                "name": "eligrey/classList.js",
+                "type": "component",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/eligrey/classList.js.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "extra": {
+                    "component": {
+                        "scripts": [
+                            "classList.min.js"
+                        ]
+                    }
+                }
+            }
+        }
     },
     "require": {
         "php": ">=5.3.3",
@@ -72,12 +117,13 @@
 
         "liip/imagine-bundle": "0.11.*",
 
-        "twbs/bootstrap": "dev-master",
-        "twbs/bootstrap-sass": "dev-master",
+        "components/bootstrap": "v3.3.0",
         "fortawesome/font-awesome": "dev-master",
         "braincrafted/bootstrap-bundle": "dev-master",
-
-        "components/bootbox": "dev-master"
+        "components/bootbox": "dev-master",
+        "malsup/form" : "dev-master",
+        "daviferreira/medium-editor" : "dev-master",
+        "eligrey/classList.js" : "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

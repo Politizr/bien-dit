@@ -21,6 +21,15 @@
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/style.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('components/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('components/bootstrap/css/bootstrap-theme.min.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('components/font-awesome/css/font-awesome.min.css') }}" type="text/css" media="all" />
+        <!--[if lt IE 7]>
+            <link rel="stylesheet" href="{{ asset('components/font-awesome/css/font-awesome-ie7.min') }}" type="text/css" media="all" />
+        <![endif]-->        
     {% endblock %}
 
     {% block javascriptHeader %}
@@ -82,10 +91,10 @@
 
         {% block javascriptFooter %}
             {# jQuery (necessary for Bootstraps JavaScript plugins) #}
-            <script src="{{ asset('js/jquery.js') }}"></script>
+            <script src="{{ asset('components/jquery/jquery.js') }}"></script>
             
-            {# Include all JavaScripts, compiled by Assetic #}
-            <script src="{{ asset('js/bootstrap.js') }}"></script>
+            {# Bootstrap #}
+            <script src="{{ asset('components/bootstrap/js/bootstrap.js') }}"></script>
 
             {# Bootbox http://bootboxjs.com/ #}
             <script src="{{ asset('components/bootbox/bootbox.js') }}"></script>

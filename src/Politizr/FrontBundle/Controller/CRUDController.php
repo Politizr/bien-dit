@@ -168,7 +168,7 @@ class CRUDController extends Controller {
         if ($parent) {
             $reaction->insertAsLastChildOf($parent);
         } else {
-            $rootNode = PDReactionQuery::create()->findRoot($debate->getId());
+            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
             if ($nbReactions = $debate->countReactions() == 0) {
                 $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
             } else {

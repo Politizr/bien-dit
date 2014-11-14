@@ -91,6 +91,8 @@ class ProfileEController extends Controller {
 
         // Différences / timeline citoyen:
 
+        // TODO / Refactoring > extraire la création de la timeline
+
         // TODO
         // + réactions sur les débats rédigés par le user courant
 

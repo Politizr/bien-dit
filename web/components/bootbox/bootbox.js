@@ -77,6 +77,8 @@
     animate: true,
     // additional class string applied to the top level dialog
     className: null,
+    // whether or not to enable keyboard binding
+    keyboard: false,
     // whether or not to include a close button
     closeButton: true,
     // show the dialog immediately by default
@@ -298,6 +300,20 @@
     return options;
   }
 
+  exports.defineLocale = function (name, values) {
+      if (values) {
+          locales[name] = {
+              OK: values.OK,
+              CANCEL: values.CANCEL,
+              CONFIRM: values.CONFIRM
+          };
+          return locales[name];
+      } else {
+          delete locales[name];
+          return null;
+      }
+  };
+
   exports.alert = function() {
     var options;
 
@@ -467,7 +483,6 @@
             throw new Error("given options in wrong format");
           }
 
-
           // ... but override that element if this option sits in a group
 
           if (option.group) {
@@ -573,6 +588,14 @@
     var callbacks = {
       onEscape: options.onEscape
     };
+
+    if ($.fn.modal === undefined) {
+      throw new Error(
+        "$.fn.modal is not defined; please double check you have included " +
+        "the Bootstrap JavaScript library. See http://getbootstrap.com/javascript/ " +
+        "for more details."
+      );
+    }
 
     each(buttons, function(key, button) {
 
@@ -701,7 +724,7 @@
 
     dialog.modal({
       backdrop: options.backdrop,
-      keyboard: false,
+      keyboard: options.keyboard || false,
       show: false
     });
 
@@ -759,6 +782,11 @@
    * unlikely to be required. If this gets too large it can be split out into separate JS files.
    */
   var locales = {
+    bg_BG : {
+      OK      : "Ок",
+      CANCEL  : "Отказ",
+      CONFIRM : "Потвърждавам"
+    },
     br : {
       OK      : "OK",
       CANCEL  : "Cancelar",
@@ -799,6 +827,11 @@
       CANCEL  : "Katkesta",
       CONFIRM : "OK"
     },
+    fa : {
+      OK      : "قبول",
+      CANCEL  : "لغو",
+      CONFIRM : "تایید"
+    },
     fi : {
       OK      : "OK",
       CANCEL  : "Peruuta",
@@ -813,6 +846,16 @@
       OK      : "אישור",
       CANCEL  : "ביטול",
       CONFIRM : "אישור"
+    },
+    hu : {
+      OK      : "OK",
+      CANCEL  : "Mégsem",
+      CONFIRM : "Megerősít"
+    },
+    hr : {
+      OK      : "OK",
+      CANCEL  : "Odustani",
+      CONFIRM : "Potvrdi"
     },
     id : {
       OK      : "OK",
@@ -868,6 +911,11 @@
       OK      : "OK",
       CANCEL  : "Avbryt",
       CONFIRM : "OK"
+    },
+    th : {
+      OK      : "ตกลง",
+      CANCEL  : "ยกเลิก",
+      CONFIRM : "ยืนยัน"
     },
     tr : {
       OK      : "Tamam",

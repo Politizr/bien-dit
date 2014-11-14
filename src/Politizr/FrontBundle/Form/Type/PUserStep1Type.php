@@ -41,7 +41,8 @@ class PUserStep1Type extends AbstractType
         $builder->add('username', 'text', array(
             'required' => true,
             'label' => 'Identifiant', 
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
+            'attr' => array('placeholder' => 'Identifiant')
             )
         );
         
@@ -49,10 +50,12 @@ class PUserStep1Type extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe', 
+                'label' => 'Mot de passe',
+                'attr' => array('placeholder' => 'Mot de passe') 
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation', 
+                'label' => 'Confirmation',
+                'attr' => array('placeholder' => 'Mot de passe') 
                 ),
             'type' => 'password',
             'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))

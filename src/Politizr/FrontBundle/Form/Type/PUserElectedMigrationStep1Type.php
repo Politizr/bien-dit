@@ -79,7 +79,8 @@ class PUserElectedMigrationStep1Type extends AbstractType
             'label' => 'Mandats électifs', 
             'mapped' => false,
             'attr' => array('help_text' => 'Liste des mandats électifs exercés.'),
-            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.')),
+            'attr' => array('placeholder' => 'Liste de vos mandats électifs passés ou présents')
             )
         );
 

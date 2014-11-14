@@ -67,25 +67,6 @@ class PDDebate extends BasePDDebate
     	return parent::preSave($con);
 	}
 
-
-	/**
-	 *	Création automatique d'un noeud root associé aux réaction du débat.
-	 *
-	 *
-	 */
-	public function postInsert(\PropelPDO $con = null)
-	{
-        $rootNode = new PDReaction();
-
-        $rootNode->setPDDebateId($this->getId());
-        $rootNode->setTitle('ROOT NODE');
-        $rootNode->setOnline(false);
-        $rootNode->setPublished(false);
-
-        $rootNode->makeRoot();
-        $rootNode->save();
-	}
-
     /**
      * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
      * https://github.com/propelorm/Propel/issues/366
