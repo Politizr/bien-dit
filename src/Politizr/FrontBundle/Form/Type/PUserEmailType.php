@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * TODO: commentaires
+ * Gestion de la MAJ des données personnelles
  * 
  * @author Lionel Bouzonville
  */
-class PUserPerso2Type extends AbstractType
+class PUserEmailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +33,7 @@ class PUserPerso2Type extends AbstractType
 
         // TODO: + contrainte email
         $builder->add('email', 'repeated', array(
-            'required' => false,
+            'required' => true,
             'first_options' =>   array(
                 'label' => 'Email', 
                 ),
@@ -41,7 +41,10 @@ class PUserPerso2Type extends AbstractType
                 'label' => 'Confirmation email', 
                 ),
             'type' => 'email',
-            'constraints' => new Email(array('message' => 'L\'email n\'a pas un format valide.'))
+            'constraints' => array(
+                new NotBlank(array('message' => 'Email obligatoire.')),
+                new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
+                )
             )
         );
 
@@ -67,7 +70,7 @@ class PUserPerso2Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user';
     }    
     
     /**

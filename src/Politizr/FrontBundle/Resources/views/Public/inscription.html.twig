@@ -19,15 +19,15 @@
 		</div>
 		<hr>
 		<p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
-		<div id="box-inscription-step-1">
-			{{ form_start(pUserForm, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-			    {{ form_errors(pUserForm) }}
+		<div id="box-inscription-register">
+			{{ form_start(userForm, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_errors(userForm) }}
 
-			    {{ form_row(pUserForm.username) }}
-			    {{ form_row(pUserForm.plainPassword) }}
+			    {{ form_row(userForm.username) }}
+			    {{ form_row(userForm.plainPassword) }}
 
-			    {{ form_row(pUserForm.actions) }}
-			{{ form_end(pUserForm) }}
+			    {{ form_row(userForm.actions) }}
+			{{ form_end(userForm) }}
 		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
 		</div>
 		<hr>

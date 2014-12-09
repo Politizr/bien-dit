@@ -1,0 +1,39 @@
+{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+
+{% block inscriptionSteps %}
+	{% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 2 } only %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		{% if userForm.vars.errors|length %}
+			<div class="box-error">
+		    	{{ form_errors(userForm) }}
+		    </div>
+		{% endif %}
+
+		<div id="box-inscription-contact">
+			{{ form_start(userForm, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_errors(userForm) }}
+
+			    {{ form_row(userForm.gender) }}
+			    {{ form_row(userForm.name) }}
+			    {{ form_row(userForm.firstname) }}
+			    {{ form_row(userForm.birthday) }}
+
+			    <hr>
+
+			    {{ form_row(userForm.email) }}
+			    {{ form_row(userForm.newsletter) }}
+
+			    {{ form_row(userForm.actions) }}
+			{{ form_end(userForm) }}
+		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+		</div>
+
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+{% endblock javascriptFooter %}

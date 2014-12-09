@@ -347,6 +347,7 @@ CREATE TABLE `p_o_email`
     `p_o_payment_state_id` INTEGER,
     `p_o_payment_type_id` INTEGER,
     `p_o_subscription_id` INTEGER,
+    `send` VARCHAR(150),
     `subject` VARCHAR(250),
     `html_body` TEXT,
     `txt_body` TEXT,

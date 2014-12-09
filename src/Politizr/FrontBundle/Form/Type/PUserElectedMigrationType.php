@@ -21,7 +21,7 @@ use Politizr\Model\PUType;
  * 
  * @author Lionel Bouzonville
  */
-class PUserElectedMigrationStep1Type extends AbstractType
+class PUserElectedMigrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -36,21 +36,18 @@ class PUserElectedMigrationStep1Type extends AbstractType
             'label' => 'Civilité', 
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.')),
-            'disabled' => true,
         ));
 
         $builder->add('name', 'text', array(
             'required' => true,
             'label' => 'Nom', 
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
-            'disabled' => true,
             )
         );
         $builder->add('firstname', 'text', array(
             'required' => true,
             'label' => 'Prénom', 
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
-            'disabled' => true,
             )
         );
         $builder->add('birthday', 'date', array(
@@ -60,7 +57,6 @@ class PUserElectedMigrationStep1Type extends AbstractType
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
-            'disabled' => true,
             )
         );
 
@@ -98,7 +94,7 @@ class PUserElectedMigrationStep1Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user_elected_migration';
     }    
     
     /**

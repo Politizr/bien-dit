@@ -13,39 +13,41 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
 use Politizr\Model\PUType;
+use Politizr\Model\PUStatus;
 
 /**
  * TODO: commentaires
  * 
  * @author Lionel Bouzonville
  */
-class PUserElectedStep1Type extends AbstractType
+class PUserContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Attributs cachés
+        $builder->add('id', 'hidden', array(
+            'required' => true
+            )
+        );
         $builder->add('p_u_type_id', 'hidden', array(
-            'attr'     => array( 'value' => PUType::TYPE_QUALIFIE )
+            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
             )
         );
         $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => PUStatus::STATUS_ACTIV )
+            'attr'     => array( 'value' => PUStatus::ACTIVED )
             )
         );
         $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
+            'attr'     => array( 'value' => true )
             )
         );
 
 
-        // Nom, prénom, etc.
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité', 
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
-            'empty_value' => 'Civilité',
+            'expanded' => true,
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
         ));
 
@@ -74,19 +76,21 @@ class PUserElectedStep1Type extends AbstractType
             )
         );
 
-        // TODO: + contrainte email
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
                 'label' => 'Email',
-                'attr' => array('placeholder' => 'Email') 
+                'attr' => array('placeholder' => 'Email')
                 ),
             'second_options' =>   array(
                 'label' => 'Confirmation email',
                 'attr' => array('placeholder' => 'Email') 
                 ),
             'type' => 'email',
-            'constraints' => new NotBlank(array('message' => 'Email obligatoire.'))
+            'constraints' => array(
+                new NotBlank(array('message' => 'Email obligatoire.')),
+                new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
+                )
             )
         );
 
@@ -98,58 +102,12 @@ class PUserElectedStep1Type extends AbstractType
         );
 
 
-        // Username / Password
-        $builder->add('username', 'text', array(
-            'required' => true,
-            'label' => 'Identifiant', 
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
-            'attr' => array('placeholder' => 'Identifiant')
-            )
-        );
-        
-        # TODO > contraintes en plus mot de passe "fort"
-        $builder->add('plainPassword', 'repeated', array(
-            'required' => true,
-            'first_options' =>   array(
-                'label' => 'Mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe')
-                ),
-            'second_options' =>   array(
-                'label' => 'Confirmation',
-                'attr' => array('placeholder' => 'Mot de passe') 
-                ),
-            'type' => 'password',
-            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
-            )
-        );
-
-
-        // Justificatif + mandats électifs
-        $builder->add('uploaded_supporting_document', 'file', array(
-            'required' => true,
-            'label' => 'Pièce justificative', 
-            'mapped' => false,
-            'attr' => array('help_text' => 'Scan de votre pièce d\'identité.'),
-            'constraints' => new NotBlank(array('message' => 'Scan d\'une pièce justificative obligatoire.'))
-            )
-        );
-
-        $builder->add('elective_mandates', 'textarea', array(
-            'required' => true,
-            'label' => 'Mandats électifs', 
-            'mapped' => false,
-            'attr' => array('help_text' => 'Liste des mandats électifs exercés.'),
-            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.')),
-            'attr' => array('placeholder' => 'Liste de vos mandats électifs passés ou présents')
-            )
-        );
-
-
         $builder->add('actions', 'form_actions', [
             'buttons' => [
                 'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
                 ]
             ]);
+        
     }
 
     /**
@@ -158,7 +116,7 @@ class PUserElectedStep1Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user_contact';
     }    
     
     /**

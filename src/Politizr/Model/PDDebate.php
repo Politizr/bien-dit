@@ -278,7 +278,7 @@ class PDDebate extends BasePDDebate
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function getFollowers($puStatusId = PUStatus::STATUS_ACTIV, $puTypeId = null) {
+	public function getFollowers($puStatusId = PUStatus::ACTIVED, $puTypeId = null) {
 		$query = PUserQuery::create()
 					->_if($puStatusId)
 						->filterByPUStatusId($puStatusId)
@@ -300,7 +300,7 @@ class PDDebate extends BasePDDebate
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function countFollowers($puStatusId = PUStatus::STATUS_ACTIV, $puTypeId = null) {
+	public function countFollowers($puStatusId = PUStatus::ACTIVED, $puTypeId = null) {
 		$query = PUserQuery::create()
 					->_if($puStatusId)
 						->filterByPUStatusId($puStatusId)
@@ -320,7 +320,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersQ() {
-		$pUsers = $this->getFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_QUALIFIE);
+		$pUsers = $this->getFollowers(PUStatus::ACTIVED, PUType::TYPE_QUALIFIE);
 
 		return $pUsers;
 	}
@@ -331,7 +331,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersQ() {
-        return $this->countFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_QUALIFIE);
+        return $this->countFollowers(PUStatus::ACTIVED, PUType::TYPE_QUALIFIE);
     }
 
 	/**
@@ -340,7 +340,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersC() {
-		$pUsers = $this->getFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_CITOYEN);
+		$pUsers = $this->getFollowers(PUStatus::ACTIVED, PUType::TYPE_CITOYEN);
 
 		return $pUsers;
 	}
@@ -351,7 +351,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersC() {
-        return $this->countFollowers(PUStatus::STATUS_ACTIV, PUType::TYPE_CITOYEN);
+        return $this->countFollowers(PUStatus::ACTIVED, PUType::TYPE_CITOYEN);
     }
 
 

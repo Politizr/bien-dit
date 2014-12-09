@@ -14,6 +14,10 @@ parameters:
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
 
+    # Email contact
+    contact_email: contact@politizr.com
+    noreply_email: ne-pas-repondre@politizr.com
+
     # OAuth parameters
     # Facebook
     facebook_client_id: 266115070240664

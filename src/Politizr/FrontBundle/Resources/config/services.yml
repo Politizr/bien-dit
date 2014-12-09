@@ -1,8 +1,9 @@
-# TODO > version XML
 parameters:
     politizr.oauth_user_provider.class:   	Politizr\Security\User\Provider\OAuthUserProvider
 
 services:
+
+    # CONNEXION
     hwi_oauth.user.provider.entity:
         class:                              HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
 
@@ -13,7 +14,7 @@ services:
         class: 								"%politizr.oauth_user_provider.class%"
         arguments: 							[ @service_container ]
 
-    # Extension twig
+    # EXTENSIONS TWIG
     politzr.twig.politizr_extension:
         class: 								Politizr\FrontBundle\Twig\PolitizrExtension
         arguments: 							[ @service_container ]

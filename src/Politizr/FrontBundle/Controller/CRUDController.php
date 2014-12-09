@@ -32,10 +32,10 @@ use Politizr\Model\PDReaction;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
-use Politizr\FrontBundle\Form\Type\PUserPerso1Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso2Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso3Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso4Type;
+use Politizr\FrontBundle\Form\Type\PUserIdentityType;
+use Politizr\FrontBundle\Form\Type\PUserEmailType;
+use Politizr\FrontBundle\Form\Type\PUserBiographyType;
+use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
 /**
  * Gestion des CRUD lié aux objets Politizr: débat, réaction, ...
@@ -1082,7 +1082,6 @@ class CRUDController extends Controller {
     /**
      *  Met à jour les informations personnelles du user
      *  TODO > + gestion affinités politiques
-     *
      */
     public function userPersoUpdateAction(Request $request) {
         $logger = $this->get('logger');
@@ -1093,18 +1092,18 @@ class CRUDController extends Controller {
                 // Récupération user courant
                 $user = $this->getUser();
 
-                $formTypeId = $request->get('pUser')['form_type_id'];
+                $formTypeId = $request->get('user')['form_type_id'];
                 $logger->info('$formTypeId = '.print_r($formTypeId, true));
 
                 // Création du formulaire soumis
                 if ($formTypeId == 1) {
-                    $formPerso = $this->createForm(new PUserPerso1Type(), $user);
+                    $formPerso = $this->createForm(new PUserIdentityType($user), $user);
                 } elseif($formTypeId == 2) {
-                    $formPerso = $this->createForm(new PUserPerso2Type(), $user);
+                    $formPerso = $this->createForm(new PUserEmailType(), $user);
                 } elseif($formTypeId == 3) {
-                    $formPerso = $this->createForm(new PUserPerso3Type(), $user);
+                    $formPerso = $this->createForm(new PUserBiographyType(), $user);
                 } elseif($formTypeId == 4) {
-                    $formPerso = $this->createForm(new PUserPerso4Type(), $user);
+                    $formPerso = $this->createForm(new PUserConnectionType(), $user);
                 }
 
                 // *********************************** //
@@ -1114,85 +1113,22 @@ class CRUDController extends Controller {
                 if ($formPerso->isValid()) {
                     $userPerso = $formPerso->getData();
                     $logger->info('userPerso = '.print_r($userPerso, true));
+
+                    // enregistrement object user
+                    $userPerso->save();
+
                     if ($formTypeId == 1) {
+                        // Nickname & realname
+                        $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
+                        $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
+                        $user->save();
                     } elseif($formTypeId == 2) {
-                        // MAJ email?
-                        $email = $userPerso->getEmail();
-                        $current = $user->getEmail();
-                        if ($email && $email != $current) {
-                            $user->setEmail($email);
-
-                            // Canonicalization
-                            $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-                            $user->setEmailCanonical($canonicalizeEmail->canonicalize($email));
-
-                            $user->save();
-                        }
-
-                        // MAJ abonnement newsletter?
-                        $newsletter = $userPerso->getNewsletter();
-                        $current = $user->getNewsletter();
-                        if ($newsletter != $current) {
-                            $user->setNewsletter($newsletter);
-
-                            $user->save();
-                        }
+                        // Canonicalization
+                        $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
+                        $user->setEmailCanonical($canonicalizeEmail->canonicalize($userPerso->getEmail()));
+                        $user->save();
                     } elseif($formTypeId == 3) {
-                        // MAJ biography?
-                        $biography = $userPerso->getBiography();
-                        $current = $user->getBiography();
-                        if ($biography != $current) {
-                            $user->setBiography($biography);
-        
-                            $user->save();
-                        }
-
-                        // MAJ website?
-                        $website = $userPerso->getWebsite();
-                        $current = $user->getWebsite();
-                        if ($website != $current) {
-                            $user->setWebsite($website);
-
-                            $user->save();
-                        }
-
-                        // MAJ twitter?
-                        $twitter = $userPerso->getTwitter();
-                        $current = $user->getTwitter();
-                        if ($twitter != $current) {
-                            $user->setTwitter($twitter);
-
-                            $user->save();
-                        }
-
-                        // MAJ facebook?
-                        $facebook = $userPerso->getFacebook();
-                        $current = $user->getFacebook();
-                        if ($facebook != $current) {
-                            $user->setFacebook($facebook);
-
-                            $user->save();
-                        }
-
-                        // MAJ phone?
-                        $phone = $userPerso->getPhone();
-                        $current = $user->getPhone();
-                        if ($phone != $current) {
-                            $user->setPhone($phone);
-
-                            $user->save();
-                        }
                     } elseif($formTypeId == 4) {
-                        // MAJ username?
-                        $username = $userPerso->getUsername();
-                        $current = $user->getUsername();
-                        if ($username && $username != $current) {
-                            $user->setUsername($username);
-                            
-                            $user->save();
-                        }
-
-                        // Génération d'un nouveau mot de passe?
                         $password = $userPerso->getPassword();
                         $logger->info('password = '.print_r($password, true));
                         if ($password) {
@@ -1205,7 +1141,7 @@ class CRUDController extends Controller {
 
                             $user->save();
 
-                            // Envoi email
+                            // Envoi email_canonicalizer
                             $mailer = $this->get('mailer');
                             $templating = $this->get('templating');
 
@@ -1238,7 +1174,7 @@ class CRUDController extends Controller {
                         'success' => true
                     );
                 } else {
-                    $errors = StudioEchoUtils::getErrorMessages($formPerso);
+                    $errors = StudioEchoUtils::getAjaxFormErrors($formPerso);
                     $jsonResponse = array(
                         'error' => $errors
                         );

@@ -1,0 +1,48 @@
+<p>{{ user.gender }} {{ user.firstname | capitalize }} {{ user.name | capitalize }},</p>
+
+{% if order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CREATED')  %}
+	<p>Votre commande chez Politizr vient d'être créée.</p>
+{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::WAITING') %}
+	<p>Votre commande chez Politizr est en attente de traitement.</p>
+{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::OPEN') %}
+	<p>Votre commande chez Politizr est ouverte.</p>
+{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::HANDLED') %}
+	<p>Votre commande chez Politizr est en cours de traitement.</p>
+{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CANCELED') %}
+	<p>Votre commande chez Politizr a été annulée.</p>
+{% endif %}
+
+<ul>Récapitulatif de la commande:
+	<li>Formule choisie: {{ order.POSubscription }}</li>
+	<li>Statut de la commande: {{ order.POOrderState }}</li>
+	<li>Statut du paiement: {{ order.POPaymentState }}</li>
+	<li>Type de paiement: {{ order.POPaymentType }}</li>
+</ul>
+
+{% if order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CANCELED') %}
+	<p>
+		Votre commande a été annulée. Vous pouvez toujours profiter de Politizr uniquement avec les <b>droits citoyens</b>.
+	</p>
+{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::HANDLED') %}
+	<p>
+		Votre commande a été traitée: vous pouvez vous connecter sur Politizr avec votre profil "débatteur".
+	</p>
+{% else %}
+	<p>
+		Notre équipe doit procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte: vous recevrez un email dès que votre compte sera actif. Vous pouvez en attendant profiter de Politizr avec les <b>droits citoyens</b>: n'hésitez pas à compléter votre profil, à suivre des débats et des utilisateurs, toutes ces informations seront conservées lors de la mise à jour de votre compte à la suite de sa validation par nos équipes.
+	</p>
+{% endif %}
+
+{% if order.pOPaymentStateId == constant('Politizr\\Model\\POPaymentState::WAITING')  %}
+	<p>
+		N'oubliez pas d'envoyer votre paiement pour que nous puissions activer votre compte.
+	</p>
+{% endif %}
+
+<p>
+	Êtes-vous prêts à débattre?<br/>
+	A bientôt!<br/>
+	L'équipe Politizr<br/>
+	-------------------------<br/>
+	<a href="http://www.politizr.com" target="_blank">http://www.politizr.com</a><br/>
+</p>

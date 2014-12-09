@@ -9,11 +9,11 @@ class POOrderState extends BasePOOrderState
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-	const STATE_CREATE = 1;
-	const STATE_WAITING = 2;
-	const STATE_OPEN = 3;
-	const STATE_HANDLED = 4;
-	const STATE_CANCEL = 5;
+	const CREATED = 1;
+	const WAITING = 2;
+	const OPEN = 3;
+	const HANDLED = 4;
+	const CANCELED = 5;
 	// ************************************************************************************ //
 
 

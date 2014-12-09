@@ -4,9 +4,7 @@ namespace Politizr\AdminBundle\Controller\POrder;
 
 use Admingenerated\PolitizrAdminBundle\BasePOrderController\ActionsController as BaseActionsController;
 
-use Politizr\AdminBundle\PolitizrAdminEvents;
-use Politizr\AdminBundle\Event\EmailEvent;
-use Politizr\AdminBundle\Event\PDFEvent;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\POrderQuery;
 
@@ -33,15 +31,14 @@ class ActionsController extends BaseActionsController
             throw new InconsistentDataException('POrder pk-'.$pk.' not found.');
         }
 
-        // génération du pdf
-        $event = new PDFEvent();
-        $event->setPOrder($order);
-        $event->setInvoiceDir($this->get('kernel')->getRootDir() . '/../web/uploads/invoices/');
-        $this->get('event_dispatcher')->dispatch(
-            PolitizrAdminEvents::PDF_ORDER_CUSTOMER, $event
-        );
-            
-        $this->get('session')->getFlashBag()->add('success', 'La facture a bien été générée.');
+        try {
+            // Gestion des emails de confirmation
+            $dispatcher = $this->get('event_dispatcher')->dispatch('order_pdf', new GenericEvent($order));        
+            $this->get('session')->getFlashBag()->add('success', 'La facture a bien été générée.');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
+
         return new RedirectResponse($this->generateUrl("Politizr_AdminBundle_POrder_edit", array('pk' => $pk) ));
     }
 
@@ -59,15 +56,14 @@ class ActionsController extends BaseActionsController
             throw new InconsistentDataException('POrder pk-'.$pk.' not found.');
         }
 
-        // envoi de l'email
-        $event = new EmailEvent();
-        $event->setPOrder($order);
-        $event->setInvoiceDir($this->get('kernel')->getRootDir() . '/../web/uploads/invoices/');
-        $this->get('event_dispatcher')->dispatch(
-            PolitizrAdminEvents::EMAIL_ORDER_CUSTOMER, $event
-        );
+        try {
+            // Gestion des emails de confirmation
+            $dispatcher = $this->get('event_dispatcher')->dispatch('order_email', new GenericEvent($order));
+            $this->get('session')->getFlashBag()->add('success', 'L\'email a bien été envoyé.');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
 
-        $this->get('session')->getFlashBag()->add('success', 'L\'email a bien été envoyé.');
         return new RedirectResponse($this->generateUrl("Politizr_AdminBundle_POrder_edit", array('pk' => $pk) ));
     }
 }

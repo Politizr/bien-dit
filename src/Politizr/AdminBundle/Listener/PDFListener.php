@@ -1,10 +1,7 @@
 <?php
-namespace Politizr\AdminBundle\EventListener;
+namespace Politizr\AdminBundle\Listener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Politizr\AdminBundle\PolitizrAdminEvents;
-use Politizr\AdminBundle\Event\PDFEvent;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\POrder;
 use Politizr\Model\POPDF;
@@ -17,40 +14,39 @@ use Politizr\Model\POSubscription;
 use Politizr\Exception\InconsistentDataException;
 
 /**
+ *  Génération PDF
  *
+ *  @author Lionel Bouzonville
  */
-class PDFSubscriber implements EventSubscriberInterface
+class PDFListener
 {
-    // Services SF2
-    private $logger;
-    private $mailer;
-    private $templating;
 
-    // Services tiers
-    private $html2pdf;
+    protected $kernel;
+    protected $mailer;
+    protected $templating;
+    protected $html2pdf;
+    protected $logger;
 
-    public function __construct($logger, $mailer, $templating, $html2pdf)
-    {
-        $this->logger = $logger;
+
+    /**
+     *
+     */
+    public function __construct($kernel, $mailer, $templating, $html2pdf, $logger) {
+        $this->kernel = $kernel;
         $this->mailer = $mailer;
         $this->templating = $templating;
-
         $this->html2pdf = $html2pdf;
+        $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
-    {
-        // Liste des évènements écoutés et méthodes à appeler
-        return array(
-            PolitizrAdminEvents::PDF_ORDER_CUSTOMER => 'pdfOrder'
-        );
-    }
+    /**
+     * 
+     * @param GenericEvent
+     */
+    public function onOrderPdf(GenericEvent $event) {
+        $this->logger->info('*** onOrderPdf');
 
-    public function pdfOrder(PDFEvent $event)
-    {
-        $this->logger->info('*** pdfOrder');
-
-        $order = $event->getPOrder();
+        $order = $event->getSubject();
         if (!$order) {
             throw new InconsistentDataException('POrder not found');
         }
@@ -72,7 +68,7 @@ class PDFSubscriber implements EventSubscriberInterface
         $html2pdf->writeHTML($htmlInvoice);
 
         // Close and output PDF document
-        $invoiceDir = $event->getInvoiceDir();
+        $invoiceDir = $this->kernel->getRootDir() . '/../web/uploads/invoices/';
         $invoiceFilename = 'facture-'.uniqid().'.pdf';
 
         $content = $html2pdf->Output($invoiceDir . $invoiceFilename, 'F');

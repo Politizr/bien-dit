@@ -11,22 +11,17 @@
 		<hr>
 	{% endif %}
 	<div class="row text-center">
-		<div class="col-sm-4">
+		<div class="col-sm-6">
 			<div class="label label-success">1 - Identification</div>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-6">
 			<div class="label label-success">2 - Coordonnées</div>
-		</div>
-		<div class="col-sm-4">
-			<div class="label label-success">3 - Centres d'intérêts</div>
 		</div>
 	</div>	
 	<hr>	
 	<div class="progress">
-		{% set progressbar = 33 %}
+		{% set progressbar = 50 %}
 		{% if step == 2 %}
-			{% set progressbar = 66 %}
-		{% elseif step == 3 %}
 			{% set progressbar = 100 %}
 		{% endif %}
 

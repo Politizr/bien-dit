@@ -29,6 +29,7 @@ use Politizr\Model\POrder;
  * @method POEmailQuery orderByPOPaymentStateId($order = Criteria::ASC) Order by the p_o_payment_state_id column
  * @method POEmailQuery orderByPOPaymentTypeId($order = Criteria::ASC) Order by the p_o_payment_type_id column
  * @method POEmailQuery orderByPOSubscriptionId($order = Criteria::ASC) Order by the p_o_subscription_id column
+ * @method POEmailQuery orderBySend($order = Criteria::ASC) Order by the send column
  * @method POEmailQuery orderBySubject($order = Criteria::ASC) Order by the subject column
  * @method POEmailQuery orderByHtmlBody($order = Criteria::ASC) Order by the html_body column
  * @method POEmailQuery orderByTxtBody($order = Criteria::ASC) Order by the txt_body column
@@ -41,6 +42,7 @@ use Politizr\Model\POrder;
  * @method POEmailQuery groupByPOPaymentStateId() Group by the p_o_payment_state_id column
  * @method POEmailQuery groupByPOPaymentTypeId() Group by the p_o_payment_type_id column
  * @method POEmailQuery groupByPOSubscriptionId() Group by the p_o_subscription_id column
+ * @method POEmailQuery groupBySend() Group by the send column
  * @method POEmailQuery groupBySubject() Group by the subject column
  * @method POEmailQuery groupByHtmlBody() Group by the html_body column
  * @method POEmailQuery groupByTxtBody() Group by the txt_body column
@@ -79,6 +81,7 @@ use Politizr\Model\POrder;
  * @method POEmail findOneByPOPaymentStateId(int $p_o_payment_state_id) Return the first POEmail filtered by the p_o_payment_state_id column
  * @method POEmail findOneByPOPaymentTypeId(int $p_o_payment_type_id) Return the first POEmail filtered by the p_o_payment_type_id column
  * @method POEmail findOneByPOSubscriptionId(int $p_o_subscription_id) Return the first POEmail filtered by the p_o_subscription_id column
+ * @method POEmail findOneBySend(string $send) Return the first POEmail filtered by the send column
  * @method POEmail findOneBySubject(string $subject) Return the first POEmail filtered by the subject column
  * @method POEmail findOneByHtmlBody(string $html_body) Return the first POEmail filtered by the html_body column
  * @method POEmail findOneByTxtBody(string $txt_body) Return the first POEmail filtered by the txt_body column
@@ -91,6 +94,7 @@ use Politizr\Model\POrder;
  * @method array findByPOPaymentStateId(int $p_o_payment_state_id) Return POEmail objects filtered by the p_o_payment_state_id column
  * @method array findByPOPaymentTypeId(int $p_o_payment_type_id) Return POEmail objects filtered by the p_o_payment_type_id column
  * @method array findByPOSubscriptionId(int $p_o_subscription_id) Return POEmail objects filtered by the p_o_subscription_id column
+ * @method array findBySend(string $send) Return POEmail objects filtered by the send column
  * @method array findBySubject(string $subject) Return POEmail objects filtered by the subject column
  * @method array findByHtmlBody(string $html_body) Return POEmail objects filtered by the html_body column
  * @method array findByTxtBody(string $txt_body) Return POEmail objects filtered by the txt_body column
@@ -200,7 +204,7 @@ abstract class BasePOEmailQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_order_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subject`, `html_body`, `txt_body`, `created_at`, `updated_at` FROM `p_o_email` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_order_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `send`, `subject`, `html_body`, `txt_body`, `created_at`, `updated_at` FROM `p_o_email` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -549,6 +553,35 @@ abstract class BasePOEmailQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(POEmailPeer::P_O_SUBSCRIPTION_ID, $pOSubscriptionId, $comparison);
+    }
+
+    /**
+     * Filter the query on the send column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySend('fooValue');   // WHERE send = 'fooValue'
+     * $query->filterBySend('%fooValue%'); // WHERE send LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $send The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POEmailQuery The current query, for fluid interface
+     */
+    public function filterBySend($send = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($send)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $send)) {
+                $send = str_replace('*', '%', $send);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(POEmailPeer::SEND, $send, $comparison);
     }
 
     /**

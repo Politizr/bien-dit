@@ -220,6 +220,8 @@
         <column name="p_o_payment_type_id" type="integer" />
         <column name="p_o_subscription_id" type="integer" />
 
+        <column name="send" type="varchar" size="150" />
+
         <column name="subject" type="varchar" size="250" />
         <column name="html_body" type="longvarchar" />
         <column name="txt_body" type="longvarchar" />

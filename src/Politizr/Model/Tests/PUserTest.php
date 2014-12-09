@@ -100,7 +100,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
 		$pUser->setId(1);
 		$pUser->setPUTypeId(PUType::TYPE_CITOYEN);
-		$pUser->setPUStatusId(PUStatus::STATUS_ACTIV);
+		$pUser->setPUStatusId(PUStatus::ACTIVED);
 		$pUser->setUsername("françoish");
 		$pUser->setName("Hollande");
 		$pUser->setFirstname("François");
@@ -119,7 +119,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(1, $pUser->getId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals(PUType::TYPE_CITOYEN, $pUser->getPUTypeId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(PUStatus::STATUS_ACTIV, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+		$this->assertEquals(PUStatus::ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals("françoish", $pUser->getUsername(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals("Hollande", $pUser->getName(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals("François", $pUser->getFirstname(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');

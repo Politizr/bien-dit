@@ -34,13 +34,13 @@ abstract class BasePOEmailPeer
     const TM_CLASS = 'POEmailTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 12;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /** the column name for the id field */
     const ID = 'p_o_email.id';
@@ -59,6 +59,9 @@ abstract class BasePOEmailPeer
 
     /** the column name for the p_o_subscription_id field */
     const P_O_SUBSCRIPTION_ID = 'p_o_email.p_o_subscription_id';
+
+    /** the column name for the send field */
+    const SEND = 'p_o_email.send';
 
     /** the column name for the subject field */
     const SUBJECT = 'p_o_email.subject';
@@ -94,12 +97,12 @@ abstract class BasePOEmailPeer
      * e.g. POEmailPeer::$fieldNames[POEmailPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'POrderId', 'POOrderStateId', 'POPaymentStateId', 'POPaymentTypeId', 'POSubscriptionId', 'Subject', 'HtmlBody', 'TxtBody', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pOrderId', 'pOOrderStateId', 'pOPaymentStateId', 'pOPaymentTypeId', 'pOSubscriptionId', 'subject', 'htmlBody', 'txtBody', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (POEmailPeer::ID, POEmailPeer::P_ORDER_ID, POEmailPeer::P_O_ORDER_STATE_ID, POEmailPeer::P_O_PAYMENT_STATE_ID, POEmailPeer::P_O_PAYMENT_TYPE_ID, POEmailPeer::P_O_SUBSCRIPTION_ID, POEmailPeer::SUBJECT, POEmailPeer::HTML_BODY, POEmailPeer::TXT_BODY, POEmailPeer::CREATED_AT, POEmailPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_ORDER_ID', 'P_O_ORDER_STATE_ID', 'P_O_PAYMENT_STATE_ID', 'P_O_PAYMENT_TYPE_ID', 'P_O_SUBSCRIPTION_ID', 'SUBJECT', 'HTML_BODY', 'TXT_BODY', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_order_id', 'p_o_order_state_id', 'p_o_payment_state_id', 'p_o_payment_type_id', 'p_o_subscription_id', 'subject', 'html_body', 'txt_body', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'POrderId', 'POOrderStateId', 'POPaymentStateId', 'POPaymentTypeId', 'POSubscriptionId', 'Send', 'Subject', 'HtmlBody', 'TxtBody', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pOrderId', 'pOOrderStateId', 'pOPaymentStateId', 'pOPaymentTypeId', 'pOSubscriptionId', 'send', 'subject', 'htmlBody', 'txtBody', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (POEmailPeer::ID, POEmailPeer::P_ORDER_ID, POEmailPeer::P_O_ORDER_STATE_ID, POEmailPeer::P_O_PAYMENT_STATE_ID, POEmailPeer::P_O_PAYMENT_TYPE_ID, POEmailPeer::P_O_SUBSCRIPTION_ID, POEmailPeer::SEND, POEmailPeer::SUBJECT, POEmailPeer::HTML_BODY, POEmailPeer::TXT_BODY, POEmailPeer::CREATED_AT, POEmailPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_ORDER_ID', 'P_O_ORDER_STATE_ID', 'P_O_PAYMENT_STATE_ID', 'P_O_PAYMENT_TYPE_ID', 'P_O_SUBSCRIPTION_ID', 'SEND', 'SUBJECT', 'HTML_BODY', 'TXT_BODY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_order_id', 'p_o_order_state_id', 'p_o_payment_state_id', 'p_o_payment_type_id', 'p_o_subscription_id', 'send', 'subject', 'html_body', 'txt_body', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -109,12 +112,12 @@ abstract class BasePOEmailPeer
      * e.g. POEmailPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'POrderId' => 1, 'POOrderStateId' => 2, 'POPaymentStateId' => 3, 'POPaymentTypeId' => 4, 'POSubscriptionId' => 5, 'Subject' => 6, 'HtmlBody' => 7, 'TxtBody' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pOrderId' => 1, 'pOOrderStateId' => 2, 'pOPaymentStateId' => 3, 'pOPaymentTypeId' => 4, 'pOSubscriptionId' => 5, 'subject' => 6, 'htmlBody' => 7, 'txtBody' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
-        BasePeer::TYPE_COLNAME => array (POEmailPeer::ID => 0, POEmailPeer::P_ORDER_ID => 1, POEmailPeer::P_O_ORDER_STATE_ID => 2, POEmailPeer::P_O_PAYMENT_STATE_ID => 3, POEmailPeer::P_O_PAYMENT_TYPE_ID => 4, POEmailPeer::P_O_SUBSCRIPTION_ID => 5, POEmailPeer::SUBJECT => 6, POEmailPeer::HTML_BODY => 7, POEmailPeer::TXT_BODY => 8, POEmailPeer::CREATED_AT => 9, POEmailPeer::UPDATED_AT => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_ORDER_ID' => 1, 'P_O_ORDER_STATE_ID' => 2, 'P_O_PAYMENT_STATE_ID' => 3, 'P_O_PAYMENT_TYPE_ID' => 4, 'P_O_SUBSCRIPTION_ID' => 5, 'SUBJECT' => 6, 'HTML_BODY' => 7, 'TXT_BODY' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_order_id' => 1, 'p_o_order_state_id' => 2, 'p_o_payment_state_id' => 3, 'p_o_payment_type_id' => 4, 'p_o_subscription_id' => 5, 'subject' => 6, 'html_body' => 7, 'txt_body' => 8, 'created_at' => 9, 'updated_at' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'POrderId' => 1, 'POOrderStateId' => 2, 'POPaymentStateId' => 3, 'POPaymentTypeId' => 4, 'POSubscriptionId' => 5, 'Send' => 6, 'Subject' => 7, 'HtmlBody' => 8, 'TxtBody' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pOrderId' => 1, 'pOOrderStateId' => 2, 'pOPaymentStateId' => 3, 'pOPaymentTypeId' => 4, 'pOSubscriptionId' => 5, 'send' => 6, 'subject' => 7, 'htmlBody' => 8, 'txtBody' => 9, 'createdAt' => 10, 'updatedAt' => 11, ),
+        BasePeer::TYPE_COLNAME => array (POEmailPeer::ID => 0, POEmailPeer::P_ORDER_ID => 1, POEmailPeer::P_O_ORDER_STATE_ID => 2, POEmailPeer::P_O_PAYMENT_STATE_ID => 3, POEmailPeer::P_O_PAYMENT_TYPE_ID => 4, POEmailPeer::P_O_SUBSCRIPTION_ID => 5, POEmailPeer::SEND => 6, POEmailPeer::SUBJECT => 7, POEmailPeer::HTML_BODY => 8, POEmailPeer::TXT_BODY => 9, POEmailPeer::CREATED_AT => 10, POEmailPeer::UPDATED_AT => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_ORDER_ID' => 1, 'P_O_ORDER_STATE_ID' => 2, 'P_O_PAYMENT_STATE_ID' => 3, 'P_O_PAYMENT_TYPE_ID' => 4, 'P_O_SUBSCRIPTION_ID' => 5, 'SEND' => 6, 'SUBJECT' => 7, 'HTML_BODY' => 8, 'TXT_BODY' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_order_id' => 1, 'p_o_order_state_id' => 2, 'p_o_payment_state_id' => 3, 'p_o_payment_type_id' => 4, 'p_o_subscription_id' => 5, 'send' => 6, 'subject' => 7, 'html_body' => 8, 'txt_body' => 9, 'created_at' => 10, 'updated_at' => 11, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -194,6 +197,7 @@ abstract class BasePOEmailPeer
             $criteria->addSelectColumn(POEmailPeer::P_O_PAYMENT_STATE_ID);
             $criteria->addSelectColumn(POEmailPeer::P_O_PAYMENT_TYPE_ID);
             $criteria->addSelectColumn(POEmailPeer::P_O_SUBSCRIPTION_ID);
+            $criteria->addSelectColumn(POEmailPeer::SEND);
             $criteria->addSelectColumn(POEmailPeer::SUBJECT);
             $criteria->addSelectColumn(POEmailPeer::HTML_BODY);
             $criteria->addSelectColumn(POEmailPeer::TXT_BODY);
@@ -206,6 +210,7 @@ abstract class BasePOEmailPeer
             $criteria->addSelectColumn($alias . '.p_o_payment_state_id');
             $criteria->addSelectColumn($alias . '.p_o_payment_type_id');
             $criteria->addSelectColumn($alias . '.p_o_subscription_id');
+            $criteria->addSelectColumn($alias . '.send');
             $criteria->addSelectColumn($alias . '.subject');
             $criteria->addSelectColumn($alias . '.html_body');
             $criteria->addSelectColumn($alias . '.txt_body');

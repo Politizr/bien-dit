@@ -51,6 +51,19 @@ params:
             label:          En ligne
         validated:
             label:          Profil validé
+        roles:
+            label:          Liste des rôles de l'utilisateur
+            formType:                   choice
+            addFormOptions:
+                expanded:               true
+                multiple:               true
+                choices:                
+                    ROLE_OAUTH_USER:            'Connexion OpenID'
+                    ROLE_CITIZEN_INSCRIPTION:   'Inscription Citoyen en cours'
+                    ROLE_ELECTED_INSCRIPTION:   'Inscription Débatteur en cours'
+                    ROLE_CITIZEN:               'Citoyen'
+                    ROLE_ELECTED:               'Débatteur'
+                    ROLE_PROFILE_COMPLETED:     'Inscription terminée'                                                 
         created_at:
             label:          Création
         updated_at:
@@ -124,6 +137,7 @@ builders:
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
+                    "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedFileName:
@@ -212,6 +226,7 @@ builders:
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
+                    "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 p_u_qualifications:

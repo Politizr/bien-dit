@@ -12,52 +12,62 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Model\PUser;
+use Politizr\Model\PUStatus;
+use Politizr\Model\PUType;
+
 /**
  * TODO: commentaires
  * 
  * @author Lionel Bouzonville
  */
-class PUserPerso4Type extends AbstractType
+class PUserRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Attributs cachés obligatoires
-        $builder->add('id', 'hidden');
-        $builder->add('p_u_type_id', 'hidden');
-        $builder->add('p_u_status_id', 'hidden');
-        $builder->add('form_type_id', 'hidden', array(
-            'mapped' => false,
-            'data' => 4,
-            ));
-
-        // Username / Password
-        $builder->add('username', 'text', array(
-            'required' => false,
-            'label' => 'Identifiant', 
-            // 'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
+        $builder->add('p_u_type_id', 'hidden', array(
+            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
+            )
+        );
+        $builder->add('p_u_status_id', 'hidden', array(
+            'attr'     => array( 'value' => PUStatus::ACTIVED )
+            )
+        );
+        $builder->add('online', 'hidden', array(
+            'attr'     => array( 'value' => false )
             )
         );
 
+        $builder->add('username', 'text', array(
+            'required' => true,
+            'label' => 'Identifiant', 
+            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
+            'attr' => array('placeholder' => 'Identifiant')
+            )
+        );
+        
         # TODO > contraintes en plus mot de passe "fort"
-        $builder->add('password', 'repeated', array(
-            'required' => false,
+        $builder->add('plainPassword', 'repeated', array(
+            'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe', 
+                'label' => 'Mot de passe',
+                'attr' => array('placeholder' => 'Mot de passe') 
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation', 
+                'label' => 'Confirmation',
+                'attr' => array('placeholder' => 'Mot de passe') 
                 ),
             'type' => 'password',
-            // 'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
             )
         );
-
 
         $builder->add('actions', 'form_actions', [
             'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso4' ] ]],
+                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
                 ]
             ]);
+        
     }
 
     /**
@@ -66,7 +76,7 @@ class PUserPerso4Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'register';
     }    
     
     /**

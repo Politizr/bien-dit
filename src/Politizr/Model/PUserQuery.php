@@ -14,7 +14,7 @@ class PUserQuery extends BasePUserQuery
      * Cumule les contraintes associés à un objet en ligne
      */
     public function online() {
-    	return $this->filterByOnline(true)->filterByPUStatusId(PUStatus::STATUS_ACTIV);
+    	return $this->filterByOnline(true)->filterByPUStatusId(PUStatus::ACTIVED);
     }
 
 	/**

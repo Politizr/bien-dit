@@ -221,4 +221,50 @@ class StudioEchoUtils {
 
         return $errors;
     }
-}
+
+
+    /**
+     *  Renvoit les erreurs d'un formulaire formaté pour un affichage ajax.
+     *
+     */
+    public static function getAjaxFormErrors(\Symfony\Component\Form\Form $form) {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+                $errors['error'] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[] = StudioEchoUtils::getAjaxFormErrors($child);
+            }
+        }
+
+        return StudioEchoUtils::multiImplode($errors, ' <br/> ');
+    }
+
+
+    /**
+     *  Implode récursif pour sortie une chaine à partir d'un tableau multi-dimensionnel
+     *  http://stackoverflow.com/questions/3899971/implode-and-explode-multi-dimensional-arrays
+     *
+     *  @array      Le tableau n-dimension
+     *  @glue       La chaine de lien
+     *
+     *  @string
+     */
+    public static function multiImplode($array, $glue) {
+        $ret = '';
+
+        foreach ($array as $item) {
+            if (is_array($item)) {
+                $ret .= StudioEchoUtils::multiImplode($item, $glue) . $glue;
+            } else {
+                $ret .= $item . $glue;
+            }
+        }
+
+        $ret = substr($ret, 0, 0-strlen($glue));
+
+        return $ret;
+    }}

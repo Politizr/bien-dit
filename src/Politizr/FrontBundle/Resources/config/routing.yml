@@ -47,21 +47,13 @@ InscriptionCheck:
     pattern:  /inscription/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
 
-InscriptionStep2:
-    pattern:  /u/inscription-etape2
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep2 }
+InscriptionContact:
+    pattern:  /u/inscription-contact
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContact }
 
-InscriptionStep2Check:
-    pattern:  /u/inscription-etape2/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep2Check }
-
-InscriptionStep3:
-    pattern:  /u/inscription-etape3
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep3 }
-
-InscriptionStep3Check:
-    pattern:  /u/inscription-etape3/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionStep3Check }
+InscriptionContactCheck:
+    pattern:  /u/inscription-contact/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
 
 ################################################################################
 #               ROUTING CREATION PROFIL ÉLU
@@ -74,29 +66,33 @@ InscriptionElectedCheck:
     pattern:  /inscription-elu/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
 
-InscriptionElectedStep2:
-    pattern:  /v/inscription-elu-etape2
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep2 }
+InscriptionElectedOrder:
+    pattern:  /v/inscription-elu-commande
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrder }
 
-InscriptionElectedStep2Check:
-    pattern:  /v/inscription-elu-etape2/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep2Check }
+InscriptionElectedOrderCheck:
+    pattern:  /v/inscription-elu-commande/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrderCheck }
 
-InscriptionElectedStep3:
-    pattern:  /v/inscription-elu-etape3
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep3 }
+InscriptionElectedPayment:
+    pattern:  /v/inscription-elu-paiement
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPayment }
 
-InscriptionElectedStep3Check:
-    pattern:  /v/inscription-elu-etape3/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep3Check }
+InscriptionElectedPaymentCheck:
+    pattern:  /v/inscription-elu-paiement/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCheck }
 
-InscriptionElectedStep4:
-    pattern:  /v/inscription-elu-etape4
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep4 }
+InscriptionElectedPaymentFinished:
+    pattern:  /v/inscription-elu-paiement-termine
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentFinished }
 
-InscriptionElectedStep4Check:
-    pattern:  /v/inscription-elu-etape4/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedStep4Check }
+InscriptionElectedPaymentCanceled:
+    pattern:  /v/inscription-elu-paiement-annule
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
+
+InscriptionElectedThanking:
+    pattern:  /v/inscription-elu-remerciement
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedThanking }
 
 MigrationElected:
     pattern:  /citoyen/migration-elu

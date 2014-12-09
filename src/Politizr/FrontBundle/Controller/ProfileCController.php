@@ -34,10 +34,10 @@ use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
 
-use Politizr\FrontBundle\Form\Type\PUserPerso1Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso2Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso3Type;
-use Politizr\FrontBundle\Form\Type\PUserPerso4Type;
+use Politizr\FrontBundle\Form\Type\PUserIdentityType;
+use Politizr\FrontBundle\Form\Type\PUserEmailType;
+use Politizr\FrontBundle\Form\Type\PUserBiographyType;
+use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
 
 /**
@@ -565,10 +565,10 @@ ORDER BY published DESC
         // *********************************** //
         //      Formulaires
         // *********************************** //
-        $formPerso1 = $this->createForm(new PUserPerso1Type($user), $user);
-        $formPerso2 = $this->createForm(new PUserPerso2Type(), $user);
-        $formPerso3 = $this->createForm(new PUserPerso3Type(), $user);
-        $formPerso4 = $this->createForm(new PUserPerso4Type(), $user);
+        $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
+        $formPerso2 = $this->createForm(new PUserEmailType(), $user);
+        $formPerso3 = $this->createForm(new PUserBiographyType(), $user);
+        $formPerso4 = $this->createForm(new PUserConnectionType(), $user);
 
         // *********************************** //
         //      Affichage de la vue

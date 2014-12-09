@@ -12,62 +12,52 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
-use Politizr\Model\PUType;
-
 /**
- * TODO: commentaires
+ * Gestion de la MAJ des données personnelles
  * 
  * @author Lionel Bouzonville
  */
-class PUserStep1Type extends AbstractType
+class PUserConnectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('p_u_type_id', 'hidden', array(
-            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
-            )
-        );
-        $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => PUStatus::STATUS_ACTIV )
-            )
-        );
-        $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
-            )
-        );
+        // Attributs cachés obligatoires
+        $builder->add('id', 'hidden');
+        $builder->add('p_u_type_id', 'hidden');
+        $builder->add('p_u_status_id', 'hidden');
+        $builder->add('form_type_id', 'hidden', array(
+            'mapped' => false,
+            'data' => 4,
+            ));
 
+        // Username / Password
         $builder->add('username', 'text', array(
             'required' => true,
             'label' => 'Identifiant', 
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
-            'attr' => array('placeholder' => 'Identifiant')
-            )
-        );
-        
-        # TODO > contraintes en plus mot de passe "fort"
-        $builder->add('plainPassword', 'repeated', array(
-            'required' => true,
-            'first_options' =>   array(
-                'label' => 'Mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe') 
-                ),
-            'second_options' =>   array(
-                'label' => 'Confirmation',
-                'attr' => array('placeholder' => 'Mot de passe') 
-                ),
-            'type' => 'password',
-            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
             )
         );
 
+        # TODO > contraintes en plus mot de passe "fort"
+        $builder->add('password', 'repeated', array(
+            // 'required' => true,
+            'first_options' =>   array(
+                'label' => 'Mot de passe', 
+                ),
+            'second_options' =>   array(
+                'label' => 'Confirmation', 
+                ),
+            'type' => 'password',
+            // 'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            )
+        );
+
+
         $builder->add('actions', 'form_actions', [
             'buttons' => [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
+                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso4' ] ]],
                 ]
             ]);
-        
     }
 
     /**
@@ -76,7 +66,7 @@ class PUserStep1Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user';
     }    
     
     /**

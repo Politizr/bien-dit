@@ -9,10 +9,10 @@ class POPaymentType extends BasePOPaymentType
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-	const TYPE_BANK_TRANSFER = 1;
-	const TYPE_CREDIT_CARD = 2;
-	const TYPE_CHECK = 3;
-	const TYPE_PAYPAL = 4;
+	const BANK_TRANSFER = 1;
+	const CREDIT_CARD = 2;
+	const CHECK = 3;
+	const PAYPAL = 4;
 	// ************************************************************************************ //
 
 	/**

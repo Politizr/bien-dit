@@ -15,11 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Politizr\Model\PUser;
 
 /**
- * TODO: commentaires
+ * Gestion de la MAJ des données personnelles
  * 
  * @author Lionel Bouzonville
  */
-class PUserPerso1Type extends AbstractType
+class PUserIdentityType extends AbstractType
 {
     protected $user;
 
@@ -43,33 +43,43 @@ class PUserPerso1Type extends AbstractType
 
         // Nom, prénom, etc. > non modifiable par l'utilisateur directement
         $builder->add('gender', 'choice', array(
-            'required' => false,
+            'required' => true,
             'label' => 'Civilité', 
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'empty_value' => 'Civilité',
-            'disabled' => $this->user->getValidated()?true:false
+            'disabled' => $this->user->getValidated()? true : false ,
+            'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
         ));
 
         $builder->add('name', 'text', array(
-            'required' => false,
+            'required' => true,
             'label' => 'Nom', 
-            'disabled' => $this->user->getValidated()?true:false
+            'disabled' => $this->user->getValidated()? true : false ,
+            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
             )
         );
         $builder->add('firstname', 'text', array(
-            'required' => false,
+            'required' => true,
             'label' => 'Prénom', 
-            'disabled' => $this->user->getValidated()?true:false
+            'disabled' => $this->user->getValidated()? true : false ,
+            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
             )
         );
         $builder->add('birthday', 'date', array(
-            'required' => false,
+            'required' => true,
             'label' => 'Date de naissance', 
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
-            'disabled' => $this->user->getValidated()?true:false
+            'disabled' => $this->user->getValidated()? true : false ,
+            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
             )
         );
+
+        $builder->add('actions', 'form_actions', [
+            'buttons' => [
+                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso1' ] ]],
+                ]
+            ]);
     }
 
     /**
@@ -78,7 +88,7 @@ class PUserPerso1Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user';
     }    
     
     /**

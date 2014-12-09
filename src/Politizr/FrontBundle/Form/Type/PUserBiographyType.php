@@ -15,11 +15,11 @@ use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * TODO: commentaires
+ * Gestion de la MAJ des données personnelles
  * 
  * @author Lionel Bouzonville
  */
-class PUserPerso3Type extends AbstractType
+class PUserBiographyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -80,7 +80,7 @@ class PUserPerso3Type extends AbstractType
      */
     public function getName()
     {
-        return 'pUser';
+        return 'user';
     }    
     
     /**

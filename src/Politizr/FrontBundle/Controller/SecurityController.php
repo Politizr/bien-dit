@@ -11,19 +11,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Component\Security\Core\SecurityContext;
-
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
+use Politizr\Model\POSubscriptionQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUType;
@@ -33,11 +34,11 @@ use Politizr\Model\POOrderState;
 use Politizr\Model\POPaymentState;
 use Politizr\Model\POPaymentType;
 
-use Politizr\FrontBundle\Form\Type\PUserStep1Type;
-use Politizr\FrontBundle\Form\Type\PUserStep2Type;
+use Politizr\FrontBundle\Form\Type\PUserRegisterType;
+use Politizr\FrontBundle\Form\Type\PUserContactType;
 
-use Politizr\FrontBundle\Form\Type\PUserElectedStep1Type;
-use Politizr\FrontBundle\Form\Type\PUserElectedMigrationStep1Type;
+use Politizr\FrontBundle\Form\Type\PUserElectedRegisterType;
+use Politizr\FrontBundle\Form\Type\PUserElectedMigrationType;
 
 use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
@@ -62,7 +63,7 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
 class SecurityController extends Controller {
 
     /* ######################################################################################################## */
-    /*                                                 CONNEXION                                      */
+    /*                                                 CONNEXION                                                */
     /* ######################################################################################################## */
 
     /**
@@ -111,9 +112,9 @@ class SecurityController extends Controller {
 
                     // Récupération du user
                     $userManager = $this->container->get('politizr.login_user_provider');
-                    $pUser = $userManager->loadUserByUsername($login['username']);
+                    $user = $userManager->loadUserByUsername($login['username']);
 
-                    if (!$pUser) {
+                    if (!$user) {
                         $logger->info('User / username not found.');
 
                         $message = 'Utilisateur inconnu.';
@@ -122,11 +123,11 @@ class SecurityController extends Controller {
                             );
                     } else {
                         // Contrôle user/password
-                        $password = $pUser->getPassword();
+                        $password = $user->getPassword();
 
                         $encoderService = $this->get('security.encoder_factory');
-                        $encoder = $encoderService->getEncoder($pUser);
-                        $encodedPass = $encoder->encodePassword($login['password'], $pUser->getSalt());
+                        $encoder = $encoderService->getEncoder($user);
+                        $encodedPass = $encoder->encodePassword($login['password'], $user->getSalt());
                         $logger->info('encodedPass = '.print_r($encodedPass, true));
                         $logger->info('$password = '.print_r($password, true));
 
@@ -139,10 +140,10 @@ class SecurityController extends Controller {
                                 );
                         } else {
                             // Connexion
-                            $redirectUrl = $this->doPublicConnection($pUser);
+                            $redirectUrl = $this->doPublicConnection($user);
 
                             // Check rôles / activ > redirection 
-                            $redirectUrl = $this->computeRedirectUrl($pUser);
+                            $redirectUrl = $this->computeRedirectUrl($user);
 
                             // Construction de la réponse
                             $jsonResponse = array (
@@ -234,9 +235,8 @@ class SecurityController extends Controller {
 
                         $message = \Swift_Message::newInstance()
                                 ->setSubject('Politizr - Mot de passe oublié')
-                                ->setFrom('admin@politizr.fr')
+                                ->setFrom(array($this->container->get('noreply_email') => 'Politizr (ne pas répondre)'))
                                 ->setTo($lostPassword['email'])
-                                // ->setBcc(array('lionel.bouzonville@gmail.com'))
                                 ->setBody($htmlBody, 'text/html', 'utf-8')
                                 ->addPart($txtBody, 'text/plain', 'utf-8')
                         ;
@@ -290,12 +290,11 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
 
         // Objet & formulaire
-        $pUser = new PUser();
-        $pUserFormType = new PUserStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = new PUser();
+        $userFormType = new PUserRegisterType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Affichage de la vue
@@ -303,7 +302,7 @@ class SecurityController extends Controller {
 
         return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', 
                 array(
-                    'pUserForm' => $pUserForm->createView()
+                    'userForm' => $userForm->createView()
                     ));
     }
 
@@ -318,10 +317,10 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
-        $pUser = new PUser();
-        $pUserFormType = new PUserStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = $this->getUser();
+        $user = new PUser();
+        $userFormType = new PUserRegisterType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Traitement du POST
@@ -329,35 +328,35 @@ class SecurityController extends Controller {
         $request = $this->get('request');
         // TODO > migrer le contrôle POST au niveau du routing (_method = POST) + supprimer le contrôle if POST dans le code
         if ($request->getMethod() == 'POST') {
-            $pUserForm->bind($this->getRequest());
+            $userForm->bind($this->getRequest());
 
-            if ($pUserForm->isValid()) {
-                $pUser = $pUserForm->getData();
-                // $logger->info('pUser = '.print_r($pUser, true));
+            if ($userForm->isValid()) {
+                $user = $userForm->getData();
+                // $logger->info('pUser = '.print_r($user, true));
 
                 // MAJ droits
-                $pUser->addRole('ROLE_CITIZEN_INSCRIPTION');
+                $user->addRole('ROLE_CITIZEN_INSCRIPTION');
 
                 $canonicalizeUsername = $this->get('fos_user.util.username_canonicalizer');
-                $pUser->setUsernameCanonical($canonicalizeUsername->canonicalize($pUser->getUsername()));
+                $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
 
                 // Encodage MDP
                 $encoderFactory = $this->get('security.encoder_factory');
 
-                if (0 !== strlen($password = $pUser->getPlainPassword())) {
-                    $encoder = $encoderFactory->getEncoder($pUser);
-                    $pUser->setPassword($encoder->encodePassword($password, $pUser->getSalt()));
-                    $pUser->eraseCredentials();
+                if (0 !== strlen($password = $user->getPlainPassword())) {
+                    $encoder = $encoderFactory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+                    $user->eraseCredentials();
                 }
 
                 // Save user
-                $pUser->save();
+                $user->save();
 
                 // Connexion
-                $this->doPublicConnection($pUser);
+                $this->doPublicConnection($user);
 
                 // redirection
-                $url = $this->container->get('router')->generate('InscriptionStep2');
+                $url = $this->container->get('router')->generate('InscriptionContact');
                 return $this->redirect($url);
             } else {
                 $logger->info('form is not valid');
@@ -371,70 +370,82 @@ class SecurityController extends Controller {
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
-                        'pUserForm' => $pUserForm->createView()
+                        'pUserForm' => $userForm->createView()
             ));
     }
 
     /**
-     *     Page d'inscription / Etape 2
+     *     Page d'inscription / Etape 2 / Contact
      */
-    public function inscriptionStep2Action()
+    public function inscriptionContactAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionStep2Action');
+        $logger->info('*** inscriptionContactAction');
 
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
-        $pUserFormType = new PUserStep2Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = $this->getUser();
+        $userFormType = new PUserContactType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionStep2.html.twig', 
+        return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', 
                 array(
-                    'pUserForm' => $pUserForm->createView()
+                    'userForm' => $userForm->createView()
                     ));
     }
 
     /**
-     *      Validation inscription
+     *      Page d'inscription / Etape 2 / Validation inscription
      */
-    public function inscriptionStep2CheckAction()
+    public function inscriptionContactCheckAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionStep2CheckAction');
+        $logger->info('*** inscriptionContactCheckAction');
 
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
-        $pUserFormType = new PUserStep2Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = $this->getUser();
+        $userFormType = new PUserContactType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Traitement du POST
         // *********************************** //
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
-            $pUserForm->bind($this->getRequest());
+            $userForm->bind($this->getRequest());
 
-            if ($pUserForm->isValid()) {
-                $pUser = $pUserForm->getData();
-                // $logger->info('pUser = '.print_r($pUser, true));
+            if ($userForm->isValid()) {
+                $user = $userForm->getData();
+                // $logger->info('pUser = '.print_r($user, true));
 
                 // Canonicalization
                 $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-                $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
+                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
+
+                // MAJ objet
+                $user->setEnabled(true);
+                $user->setLastLogin(new \DateTime());
+
+                // MAJ droits
+                $user->addRole('ROLE_CITIZEN');
+                $user->addRole('ROLE_PROFILE_COMPLETED');
+                $user->removeRole('ROLE_ELECTED_INSCRIPTION');
 
                 // Save user
-                $pUser->save();
+                $user->save();
+
+                // (re)Connexion (/ maj droits)
+                $this->doPublicConnection($user);
 
                 // redirection
-                $url = $this->container->get('router')->generate('InscriptionStep3');
+                $url = $this->container->get('router')->generate('HomepageC');
                 return $this->redirect($url);
             } else {
                 $logger->info('form is not valid');
@@ -447,63 +458,9 @@ class SecurityController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionStep2.html.twig', array(
-                        'pUserForm' => $pUserForm->createView()
+        return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
+                        'userForm' => $userForm->createView()
             ));
-    }
-
-    /**
-     *     Page d'inscription / Etape 3
-     */
-    public function inscriptionStep3Action()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionStep3Action');
-
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:Security:inscriptionStep3.html.twig', 
-                array(
-                    "pUser" => $pUser
-                    ));
-    }
-
-
-    /**
-     *      Validation / Etape 3
-     */
-    public function inscriptionStep3CheckAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionStep2CheckAction');
-
-        // *********************************** //
-        //      MAJ des droits & connexion "citoyen"
-        // *********************************** //
-        $pUser = $this->getUser();
-        
-        // MAJ objet
-        $pUser->setEnabled(true);
-        $pUser->setLastLogin(new \DateTime());
-
-        // MAJ droits
-        $pUser->addRole('ROLE_CITIZEN');
-        $pUser->addRole('ROLE_PROFILE_COMPLETED');
-        $pUser->removeRole('ROLE_ELECTED_INSCRIPTION');
-
-        // Save user
-        $pUser->save();
-
-        // (re)Connexion (/ maj droits)
-        $this->doPublicConnection($pUser);
-
-        // redirection
-        $url = $this->container->get('router')->generate('HomepageC', array('page' => 1));
-        return $this->redirect($url);
     }
 
     /* ######################################################################################################## */
@@ -511,7 +468,7 @@ class SecurityController extends Controller {
     /* ######################################################################################################## */
 
     /**
-     *     Page d'inscription élu  / Etape 1
+     *     Page d'inscription élu  / Etape 1 / Inscription
      */
     public function inscriptionElectedAction()
     {
@@ -522,21 +479,21 @@ class SecurityController extends Controller {
         //      Formulaire
         // *********************************** //
 
-        $pUser = new PUser();
-        $pUserFormType = new PUserElectedStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = new PUser();
+        $userFormType = new PUserElectedRegisterType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', 
                 array(
-                    'pUserForm' => $pUserForm->createView()
+                    'userForm' => $userForm->createView()
                     ));
     }
 
     /**
-     *      Validation inscription élu
+     *      Page d'inscription élu  / Etape 1 / Validation inscription
      */
     public function inscriptionElectedCheckAction()
     {
@@ -546,66 +503,62 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = new PUser();
-        $pUserFormType = new PUserElectedStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $user = new PUser();
+        $userFormType = new PUserElectedRegisterType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Traitement du POST
         // *********************************** //
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
-            $pUserForm->bind($this->getRequest());
+            $userForm->bind($this->getRequest());
 
-            if ($pUserForm->isValid()) {
-                $pUser = $pUserForm->getData();
-                // $logger->info('pUser = '.print_r($pUser, true));
+            if ($userForm->isValid()) {
+                $user = $userForm->getData();
+                // $logger->info('pUser = '.print_r($user, true));
 
                 // MAJ droits
-                $pUser->addRole('ROLE_ELECTED_INSCRIPTION');
+                $user->addRole('ROLE_ELECTED_INSCRIPTION');
 
                 $canonicalizeUsername = $this->get('fos_user.util.username_canonicalizer');
-                $pUser->setUsernameCanonical($canonicalizeUsername->canonicalize($pUser->getUsername()));
+                $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
 
                 // Encodage MDP
                 $encoderFactory = $this->get('security.encoder_factory');
 
-                if (0 !== strlen($password = $pUser->getPlainPassword())) {
-                    $encoder = $encoderFactory->getEncoder($pUser);
-                    $pUser->setPassword($encoder->encodePassword($password, $pUser->getSalt()));
-                    $pUser->eraseCredentials();
+                if (0 !== strlen($password = $user->getPlainPassword())) {
+                    $encoder = $encoderFactory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+                    $user->eraseCredentials();
                 }
 
                 // Canonicalization
                 $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-                $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
+                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
 
                 // Save user
-                $pUser->save();
+                $user->save();
 
                 // *************************************** //
                 //      Gestion des justificatifs
-                //      TODO > champs à insérer dans la future commande
                 // *************************************** //
-
-                // 1/ gestion upload pièce ID
-                $file = $pUserForm['uploaded_supporting_document']->getData();
-                $logger->info('$file = '.print_r($file, true));
+                // gestion upload pièce ID
+                $file = $userForm['uploaded_supporting_document']->getData();
                 if ($file) {
-                    $pUser->removeUpload(false, true);
-                    $fileName = $pUser->upload($file);
-                    
-                    // $pUser->setSupportingDocument($fileName);
+                    $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
+                    $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
                 }
 
-                // 2/ gestion mandats électifs
-                $electiveMandates = $pUserForm['elective_mandates']->getData();
+                // gestion mandats électifs
+                $electiveMandates = $userForm['elective_mandates']->getData();
+                $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
 
                 // Connexion
-                $this->doPublicConnection($pUser);
+                $this->doPublicConnection($user);
 
                 // redirection
-                $url = $this->container->get('router')->generate('InscriptionElectedStep2');
+                $url = $this->container->get('router')->generate('InscriptionElectedOrder');
                 return $this->redirect($url);
             } else {
                 $logger->info('form is not valid');
@@ -619,13 +572,13 @@ class SecurityController extends Controller {
         // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
-                        'pUserForm' => $pUserForm->createView()
+                        'userForm' => $userForm->createView()
             ));
     }
 
 
     /**
-     *     Page de migration de compte citoyen > élu  / Etape 1
+     *     Page d'inscription élu  / Etape 1 / Migration de compte
      */
     public function migrationElectedAction()
     {
@@ -635,24 +588,38 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
+        $user = $this->getUser();
+
+
+        // Test si le profil a déjà été validé => étape 2 directement
+        if ($user->getValidated()) {
+            // MAJ droits
+            $user->addRole('ROLE_ELECTED_INSCRIPTION');
+
+            // Connexion
+            $this->doPublicConnection($user);
+
+            // redirection
+            $url = $this->container->get('router')->generate('InscriptionElectedOrder');
+            return $this->redirect($url);
+        }
 
         // Inscription depuis un compte citoyen
-        $pUserFormType = new PUserElectedMigrationStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $userFormType = new PUserElectedMigrationType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', 
                 array(
-                    'pUserForm' => $pUserForm->createView()
+                    'userForm' => $userForm->createView()
                     ));
     }
 
 
     /**
-     *      Validation migration élu
+     *      Page d'inscription élu  / Etape 1 / Validation migration de compte
      */
     public function migrationElectedCheckAction()
     {
@@ -662,51 +629,47 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
-        $pUserFormType = new PUserElectedMigrationStep1Type();
-        $pUserForm = $this->createForm($pUserFormType, $pUser);
+        $userFormType = new PUserElectedMigrationType();
+        $userForm = $this->createForm($userFormType, $user);
         
         // *********************************** //
         //      Traitement du POST
         // *********************************** //
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
-            $pUserForm->bind($this->getRequest());
+            $userForm->bind($this->getRequest());
 
-            if ($pUserForm->isValid()) {
-                $pUser = $pUserForm->getData();
-                // $logger->info('pUser = '.print_r($pUser, true));
+            if ($userForm->isValid()) {
+                $user = $userForm->getData();
+                // $logger->info('pUser = '.print_r($user, true));
 
                 // MAJ droits
-                $pUser->addRole('ROLE_ELECTED_INSCRIPTION');
+                $user->addRole('ROLE_ELECTED_INSCRIPTION');
 
                 // Save user
-                $pUser->save();
+                $user->save();
 
                 // *************************************** //
                 //      Gestion des justificatifs
-                //      TODO > champs à insérer dans la future commande
                 // *************************************** //
-
-                // 1/ gestion upload pièce ID
-                $file = $pUserForm['uploaded_supporting_document']->getData();
-                $logger->info('$file = '.print_r($file, true));
+                // gestion upload pièce ID
+                $file = $userForm['uploaded_supporting_document']->getData();
                 if ($file) {
-                    $pUser->removeUpload(false, true);
-                    $fileName = $pUser->upload($file);
-                    
-                    // $pUser->setSupportingDocument($fileName);
+                    $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
+                    $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
                 }
 
-                // 2/ gestion mandats électifs
-                $electiveMandates = $pUserForm['elective_mandates']->getData();
+                // gestion mandats électifs
+                $electiveMandates = $userForm['elective_mandates']->getData();
+                $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
 
                 // Connexion
-                $this->doPublicConnection($pUser);
+                $this->doPublicConnection($user);
 
                 // redirection
-                $url = $this->container->get('router')->generate('InscriptionElectedStep2');
+                $url = $this->container->get('router')->generate('InscriptionElectedOrder');
                 return $this->redirect($url);
             } else {
                 $logger->info('form is not valid');
@@ -718,26 +681,25 @@ class SecurityController extends Controller {
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-
         return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
-                        'pUserForm' => $pUserForm->createView()
+                        'userForm' => $userForm->createView()
             ));
     }
 
 
 
     /**
-     *     Page d'inscription élu / Etape 2
+     *     Page d'inscription élu / Etape 2 / Choix de la formule
      */
-    public function inscriptionElectedStep2Action()
+    public function inscriptionElectedOrderAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedStep2Action');
+        $logger->info('*** inscriptionElectedOrderAction');
 
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
         // Formulaire "simple"
         $subscriptionForm = $this->createFormBuilder()
@@ -763,11 +725,11 @@ class SecurityController extends Controller {
 
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($pUser->hasRole('ROLE_CITIZEN')) {
+        if ($user->hasRole('ROLE_CITIZEN')) {
             $layout = 'PolitizrFrontBundle::layoutC.html.twig';
         }
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
                     'subscriptionForm' => $subscriptionForm->createView(),
                     'layout' => $layout,
             ));
@@ -775,17 +737,17 @@ class SecurityController extends Controller {
 
 
     /**
-     *      Validation choix de la formule
+     *      Page d'inscription élu / Etape 2 / Validation choix de la formule
      */
-    public function inscriptionElectedStep2CheckAction()
+    public function inscriptionElectedOrderCheckAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedStep2CheckAction');
+        $logger->info('*** inscriptionElectedOrderCheckAction');
 
         // *********************************** //
         //      Formulaire
         // *********************************** //
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
         // Formulaire "simple"
         $subscriptionForm = $this->createFormBuilder()
@@ -814,16 +776,16 @@ class SecurityController extends Controller {
 
             if ($subscriptionForm->isValid()) {
                 $datas = $subscriptionForm->getData();
-                $pOSubscription = $datas['p_o_subscription'];
+                $subscription = $datas['p_o_subscription'];
 
-                // TODO + de contrôle sur $pOSubscription?
+                // TODO + de contrôle sur $subscription?
 
                 // Mise en session de la formule choisie
                 // TODO normalisation des variables session type politizr/order/...
-                $this->get('session')->set('pOSubscription', $pOSubscription->getId());
+                $this->get('session')->set('p_o_subscription_id', $subscription->getId());
 
                 // redirection
-                $url = $this->container->get('router')->generate('InscriptionElectedStep3');
+                $url = $this->container->get('router')->generate('InscriptionElectedPayment');
                 return $this->redirect($url);
             } else {
                 $logger->info('form is not valid');
@@ -838,29 +800,29 @@ class SecurityController extends Controller {
 
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($pUser->hasRole('ROLE_CITIZEN')) {
+        if ($user->hasRole('ROLE_CITIZEN')) {
             $layout = 'PolitizrFrontBundle::layoutC.html.twig';
         }
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep2.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
                         'subscriptionForm' => $subscriptionForm->createView(),
                         'layout' => $layout
             ));
     }
 
     /**
-     *     Page d'inscription élu / Etape 3
+     *     Page d'inscription élu / Etape 3 / Paiement
      */
-    public function inscriptionElectedStep3Action()
+    public function inscriptionElectedPaymentAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedStep3Action');
+        $logger->info('*** inscriptionElectedPaymentAction');
 
         // *********************************** //
         //      Formulaire
         // *********************************** //
         // TODO / redirection si connecté
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
         // Listes des moyens de paiement / gestion hors form pour chargement dynamique des formulaires paypal/banque & pavés d'informations spécifiques
         $payments = POPaymentTypeQuery::create()->filterByOnline(true)->orderByRank()->find();
@@ -871,11 +833,11 @@ class SecurityController extends Controller {
 
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($pUser->hasRole('ROLE_CITIZEN')) {
+        if ($user->hasRole('ROLE_CITIZEN')) {
             $layout = 'PolitizrFrontBundle::layoutC.html.twig';
         }
 
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep3.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedPayment.html.twig', array(
                     'payments' => $payments,
                     'layout' => $layout
                 ));
@@ -883,95 +845,142 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription élu / Etape 4
+     *     Page d'inscription élu / Etape 3 / Paiement terminé
      */
-    public function inscriptionElectedStep4Action()
+    public function inscriptionElectedPaymentFinishedAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedStep4Action');
+        $logger->info('*** inscriptionElectedPaymentFinishedAction');
+
+        // *********************************** //
+        //      Formulaire
+        // *********************************** //
+        $user = $this->getUser();
+
+        // Récupération de la commande en cours
+        $orderId = $this->get('session')->get('p_order_id');
+
+        // Récupération commande
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            throw new \Exception('Order id '.$orderId.' not found.');
+        }
+
+        // MAJ statut commande en fonction du type de paiement
+        switch($order->getPOPaymentTypeId()) {
+            case POPaymentType::BANK_TRANSFER:
+            case POPaymentType::CHECK:
+                // MAJ statut / état
+                $order->setPOOrderStateId(POOrderState::WAITING);
+                $order->setPOPaymentStateId(POPaymentState::WAITING);
+                $order->save();
+
+                // Email
+                $dispatcher = $this->get('event_dispatcher')->dispatch('order_email', new GenericEvent($order));
+
+                break;
+                        
+            case POPaymentType::CREDIT_CARD:
+            case POPaymentType::PAYPAL:
+                // MAJ statut / etat / maj stocks / envoi email => via listener retour ATOS / Paypal
+                break;
+            
+            default:
+                break;
+        }
+
+        return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
+    }
+
+    /**
+     *  Page d'inscription élu / Etape 3 / Annulation paiement
+     *
+     */
+    public function inscriptionElectedPaymentCanceledAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionElectedPaymentCanceledAction');
+
+        // Récupération de la commande en cours
+        $orderId = $this->get('session')->get('p_order_id');
+
+        // Récupération commande
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            throw new \Exception('Order id '.$orderId.' not found.');
+        }
+
+        // Suppression commande annulée
+        if ($order) {
+            $order->delete();
+        }
+        $session->remove('p_order_id');
+
+        return $this->redirect($this->generateUrl('InscriptionElectedPayment'));
+    }
+
+
+
+    /**
+     *     Page d'inscription élu / Etape 4 / Remerciement
+     */
+    public function inscriptionElectedThankingAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionElectedThankingAction');
 
         // *********************************** //
         //      Gestion user / order
         // *********************************** //
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
         // Récupération de la commande en cours
-        $pOrderId = $this->get('session')->get('pOrder');
+        $orderId = $this->get('session')->get('p_order_id');
 
-        // MAJ commande
-        $pOrder = POrderQuery::create()->findPk($pOrderId);
-        if (!$pOrder) {
-            // TODO > redirection plutôt qu'exception (gestion reload de la page) ou refonte en 2 actions pour éviter le pb
-            throw new \Exception('POrder id '.$pOrderId.' not found.');
-        }
-
-        // Gestion chèque / virement
-        if ($pOrder->getPOPaymentTypeId() == POPaymentType::TYPE_BANK_TRANSFER || $pOrder->getPOPaymentTypeId() == POPaymentType::TYPE_CHECK) {
-            // MAJ status commande & paiement
-            $pOrder->setPOPaymentStateId(POPaymentState::STATE_WAITING);
-            $pOrder->setPOOrderStateId(POPaymentState::STATE_WAITING);
-            $pOrder->save();
-
-            // Gestion des emails de confirmation
-            // $event = new OrderEmailEvent($orderId, $this->get('mailer'), $this->get('templating'), $this->get('logger'));
-            // $dispatcher = $this->get('event_dispatcher');
-            // try {
-            //     $dispatcher->dispatch('order.email', $event);
-            // } catch(\Exception $e) {
-            //     $logger->err('paymentVirementAction - Exception = '.print_r($e->getMessage(), true));
-            // }
-
+        // Récupération commande
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            // throw new \Exception('Order id '.$orderId.' not found.');
+            $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
+            return $this->redirect($this->generateUrl('Homepage'));
         }
 
         // Suppression rôle user / déconnexion
-        $pUser->addRole('ROLE_ELECTED');
-        $pUser->addRole('ROLE_PROFILE_COMPLETED');
-        $pUser->removeRole('ROLE_ELECTED_INSCRIPTION');
-        $pUser->setPUStatusId(PUStatus::STATUS_VALIDATION_PROCESS);
-        $pUser->save();
+        $user->addRole('ROLE_ELECTED');
+        $user->addRole('ROLE_PROFILE_COMPLETED');
+        $user->removeRole('ROLE_ELECTED_INSCRIPTION');
+        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
+        $user->save();
 
         // Suppression des valeurs en session
-        $this->get('session')->remove('pOSubscription');
-        $this->get('session')->remove('pOrder');
+        $this->get('session')->remove('p_o_subscription_id');
+        $this->get('session')->remove('p_order_id');
+
+        // Droits citoyen en attendant la validation
+        if (!$user->hasRole('ROLE_CITIZEN')) {
+            $user->addRole('ROLE_CITIZEN');
+
+            // Save user
+            $user->save();
+
+            // (re)Connexion (/ maj droits)
+            $this->doPublicConnection($user);
+        }
 
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($pUser->hasRole('ROLE_CITIZEN')) {
+        if ($user->hasRole('ROLE_CITIZEN')) {
             $layout = 'PolitizrFrontBundle::layoutC.html.twig';
         }
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedStep4.html.twig', array(
-                    'layout' => $layout
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', array(
+                    'layout' => $layout,
+                    'order' => $order,
                 ));
     }
-
-    /**
-     *  Redirection accueil public
-     *  TODO: création d'un compte citoyen en attendant la validation admin?
-     */
-    public function inscriptionElectedStep4CheckAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedStep4CheckAction');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $this->get('security.context')->setToken(null);
-        $this->get('request')->getSession()->invalidate();
-
-        $logger->info('déconnexion ok');
-        
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->redirect($this->generateUrl('Homepage'));
-    }
-
-
 
     /* ######################################################################################################## */
     /*                                                 CONNEXION OAUTH                                          */
@@ -1010,63 +1019,63 @@ class SecurityController extends Controller {
         }
         
         // Récupération du PUser éventuellement existant en base
-        $pUser = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
+        $user = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
 
-        if ($pUser) {
+        if ($user) {
             // Utilisateur existant
             $logger->info('Utilisateur existant');
 
             // MAJ des infos relatives à la connexion
-            $pUser->setOAuthData($oAuthData);
+            $user->setOAuthData($oAuthData);
 
             // Save user
-            $pUser->save();
+            $user->save();
 
             // Connexion
-            $this->doPublicConnection($pUser);
+            $this->doPublicConnection($user);
 
             // Redirection
-            $redirectUrl = $this->computeRedirectUrl($pUser);
+            $redirectUrl = $this->computeRedirectUrl($user);
 
             return $this->redirect($redirectUrl);
         } else {
             // Création d'un utilisateur
-            $pUser = new PUser();
-            $pUser->setOAuthData($oAuthData);
+            $user = new PUser();
+            $user->setOAuthData($oAuthData);
 
             // MAJ objet
-            $pUser->setEnabled(true);
-            $pUser->setPUStatusId(PUStatus::STATUS_ACTIV);
-            $pUser->setPUTypeId(PUType::TYPE_CITOYEN);
-            $pUser->setLastLogin(new \DateTime());
+            $user->setEnabled(true);
+            $user->setPUStatusId(PUStatus::ACTIVED);
+            $user->setPUTypeId(PUType::TYPE_CITOYEN);
+            $user->setLastLogin(new \DateTime());
 
             // MAJ droits
-            $pUser->addRole('ROLE_CITIZEN_INSCRIPTION');
+            $user->addRole('ROLE_CITIZEN_INSCRIPTION');
 
-            if ($email = $pUser->getEmail()) {
+            if ($email = $user->getEmail()) {
                 // Canonicalization
                 $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-                $pUser->setEmailCanonical($canonicalizeEmail->canonicalize($pUser->getEmail()));
+                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
 
                 // username = email
-                $pUser->setUsername($pUser->getEmail());
-                $pUser->setUsernameCanonical($pUser->getEmailCanonical());
-            } elseif($nickname = $pUser->getNickname()) {
+                $user->setUsername($user->getEmail());
+                $user->setUsernameCanonical($user->getEmailCanonical());
+            } elseif($nickname = $user->getNickname()) {
                 // username = nickname
-                $pUser->setUsername($pUser->getNickname());
-                $pUser->setUsernameCanonical($pUser->getNickname());
+                $user->setUsername($user->getNickname());
+                $user->setUsernameCanonical($user->getNickname());
             } else {
                 throw new \Exception('Aucune des propriétés suivantes n\'existent: email, nickname');
             }
 
             // Connexion
-            $this->doPublicConnection($pUser);
+            $this->doPublicConnection($user);
 
             // Save user
-            $pUser->save();
+            $user->save();
 
             // Redirection process d'inscription étape 2
-            return $this->redirect($this->generateUrl('InscriptionStep2'));
+            return $this->redirect($this->generateUrl('InscriptionContact'));
         }
     }
 
@@ -1092,52 +1101,57 @@ class SecurityController extends Controller {
         try {
             if ($request->isXmlHttpRequest()) {
                 // Récupération args
-                $pOPaymentTypeId = $request->get('pOPaymentTypeId');
-                $logger->info('$pOPaymentTypeId = ' . print_r($pOPaymentTypeId, true));
+                $paymentTypeId = $request->get('pOPaymentTypeId');
+                $logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
                 
                 // Récupération user session
-                $pUser = $this->getUser();                
+                $user = $this->getUser();
 
-                // Récupération de la session de la formule choisie
-                $pOSubscriptionId = $this->get('session')->get('pOSubscription');
-                $logger->info('$pOSubscriptionId = ' . print_r($pOSubscriptionId, true));
+                // Récupération formule commandée
+                $subscription = POSubscriptionQuery::create()->findPk($this->get('session')->get('p_o_subscription_id'));
 
                 // Création de la commande & mise en session de son ID
-                $pOrder = POrderQuery::createPOrder($pUser, $pOSubscriptionId, $pOPaymentTypeId);
-                $this->get('session')->set('pOrder', $pOrder->getId());
+                $order = POrderQuery::create()->createOrder(
+                                        $user, 
+                                        $subscription, 
+                                        $paymentTypeId, 
+                                        $this->get('session')->get('p_o_supporting_document'), 
+                                        $this->get('session')->get('p_o_elective_mandates')
+                                        );
+                $this->get('session')->set('p_order_id', $order->getId());
 
                 // Construction de la structure
-                switch($pOPaymentTypeId) {
-                    case POPaymentType::TYPE_BANK_TRANSFER:
+                switch($paymentTypeId) {
+                    case POPaymentType::BANK_TRANSFER:
                         $htmlForm = '';
-                        $redirectUrl = $this->generateUrl('InscriptionElectedStep4');
+                        $redirectUrl = $this->generateUrl('InscriptionElectedPaymentFinished');
                         $redirect = true;
 
                         break;
                     
-                    case POPaymentType::TYPE_CREDIT_CARD:
+                    case POPaymentType::CREDIT_CARD:
                         // construct the atos sips form
                         // $sipsAtosManager = $this->get('studio_echo_sips_atos');
-                        // $htmlForm = $sipsAtosManager->computeAtosRequest($pOrder->getId());
+                        // $htmlForm = $sipsAtosManager->computeAtosRequest($order->getId());
 
-                        $htmlForm = '<form id="atos" action="'.$this->generateUrl('InscriptionElectedStep4').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                        $htmlForm = '<form id="atos" action="'.$this->generateUrl('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                         $redirectUrl = '';
                         $redirect = false;
                         break;
                     
-                    case POPaymentType::TYPE_CHECK:
+                    case POPaymentType::CHECK:
                         $htmlForm = '';
-                        $redirectUrl = $this->generateUrl('InscriptionElectedStep4');
+                        $redirectUrl = $this->generateUrl('InscriptionElectedPaymentFinished');
                         $redirect = true;
 
                         break;
                     
-                    case POPaymentType::TYPE_PAYPAL:
+                    case POPaymentType::PAYPAL:
                         // construct the paypal form
                         // $paypalManager = $this->get('studio_echo_paypal');
-                        // $htmlForm = $paypalManager->computePaypalRequest($pOrder->getId());
+                        // $htmlForm = $paypalManager->computePaypalRequest($order->getId());
 
-                        $htmlForm = '<form id="paypal" action="'.$this->generateUrl('InscriptionElectedStep4').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                        $htmlForm = '<form id="paypal" action="'.$this->generateUrl('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                         $redirectUrl = '';
                         $redirect = false;
 
@@ -1178,12 +1192,12 @@ class SecurityController extends Controller {
     /**
      *  Connexion "logiciel" au firewall public (citoyen)
      *
-     * @param $pUser    PUser object
+     * @param $user    PUser object
      */
-    private function doPublicConnection($pUser) {
+    private function doPublicConnection($user) {
         $providerKey = 'public';
 
-        $token = new UsernamePasswordToken($pUser, null, $providerKey, $pUser->getRoles());
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
         $this->get('security.context')->setToken($token);
         $this->get('event_dispatcher')->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
@@ -1201,18 +1215,16 @@ class SecurityController extends Controller {
     /**
      *  Renvoie l'URL de redirection en fonction de l'état / des rôles du user courant.
      *
-     * @param $pUser    PUser object
+     * @param $user    PUser object
      * @return string   Redirect URL
      */
-    private function computeRedirectUrl($pUser) {
-        if ($pUser->hasRole('ROLE_PROFILE_COMPLETED')) {
-            $pUser->setLastLogin(new \DateTime());
-            $pUser->save();
+    private function computeRedirectUrl($user) {
+        if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
+            $user->setLastLogin(new \DateTime());
+            $user->save();
 
-            if ($pUser->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('HomepageC', array('page' => 1));
-            } elseif($pUser->hasRole('ROLE_ELECTED')) {
-                if ($pUser->getPUStatusId() == PUStatus::STATUS_ACTIV) {
+            if($user->hasRole('ROLE_ELECTED')) {
+                if ($user->getPUStatusId() == PUStatus::ACTIVED) {
                     $redirectUrl = $this->generateUrl('HomepageE');
                 } else {
                     // TODO: authenticate access denied + redirection automatique si setToken(null)
@@ -1221,10 +1233,12 @@ class SecurityController extends Controller {
 
                     $redirectUrl = $this->generateUrl('EluActivationProcess');
                 }
+            } elseif ($user->hasRole('ROLE_CITIZEN')) {
+                $redirectUrl = $this->generateUrl('HomepageC', array('page' => 1));
             }
-        } elseif ($pUser->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
+        } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
             $redirectUrl = $this->generateUrl('InscriptionStep2');
-        } elseif ($pUser->hasRole('ROLE_ELECTED_INSCRIPTION')) {
+        } elseif ($user->hasRole('ROLE_ELECTED_INSCRIPTION')) {
             $redirectUrl = $this->generateUrl('InscriptionElectedStep2');
         }
 

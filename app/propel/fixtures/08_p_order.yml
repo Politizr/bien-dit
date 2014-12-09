@@ -60,20 +60,34 @@ Politizr\Model\POPaymentType:
     paypal:
         id:				4
         sortable_rank:  4
-        online:			false
+        online:			true
         title:			Paypal
         description:	|
             Paypal
 
 
 Politizr\Model\POSubscription:
-    annuel:
+    1an:
         online:			true
         sortable_rank:  1
-        title:			Abonnement Annuel
+        title:			Abonnement 1 an
         description:	|
             Abonnement annuel
-        price:			150.00
+        price:			49.90
+    2ans:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 2 ans
+        description:    |
+            Abonnement annuel
+        price:          89.90
+    5ans:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 5 ans
+        description:    |
+            Abonnement annuel
+        price:          189.90
 
 
 # Politizr\Model\POrder:

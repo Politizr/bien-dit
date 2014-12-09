@@ -48,6 +48,7 @@ class POEmailTableMap extends TableMap
         $this->addForeignKey('p_o_payment_state_id', 'POPaymentStateId', 'INTEGER', 'p_o_payment_state', 'id', false, null, null);
         $this->addForeignKey('p_o_payment_type_id', 'POPaymentTypeId', 'INTEGER', 'p_o_payment_type', 'id', false, null, null);
         $this->addForeignKey('p_o_subscription_id', 'POSubscriptionId', 'INTEGER', 'p_o_subscription', 'id', false, null, null);
+        $this->addColumn('send', 'Send', 'VARCHAR', false, 150, null);
         $this->addColumn('subject', 'Subject', 'VARCHAR', false, 250, null);
         $this->addColumn('html_body', 'HtmlBody', 'LONGVARCHAR', false, null, null);
         $this->addColumn('txt_body', 'TxtBody', 'LONGVARCHAR', false, null, null);

@@ -85,6 +85,12 @@ abstract class BasePOEmail extends BaseObject implements Persistent
     protected $p_o_subscription_id;
 
     /**
+     * The value for the send field.
+     * @var        string
+     */
+    protected $send;
+
+    /**
      * The value for the subject field.
      * @var        string
      */
@@ -217,6 +223,16 @@ abstract class BasePOEmail extends BaseObject implements Persistent
     public function getPOSubscriptionId()
     {
         return $this->p_o_subscription_id;
+    }
+
+    /**
+     * Get the [send] column value.
+     *
+     * @return string
+     */
+    public function getSend()
+    {
+        return $this->send;
     }
 
     /**
@@ -476,6 +492,27 @@ abstract class BasePOEmail extends BaseObject implements Persistent
     } // setPOSubscriptionId()
 
     /**
+     * Set the value of [send] column.
+     *
+     * @param string $v new value
+     * @return POEmail The current object (for fluent API support)
+     */
+    public function setSend($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->send !== $v) {
+            $this->send = $v;
+            $this->modifiedColumns[] = POEmailPeer::SEND;
+        }
+
+
+        return $this;
+    } // setSend()
+
+    /**
      * Set the value of [subject] column.
      *
      * @param string $v new value
@@ -622,11 +659,12 @@ abstract class BasePOEmail extends BaseObject implements Persistent
             $this->p_o_payment_state_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->p_o_payment_type_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->p_o_subscription_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->subject = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->html_body = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->txt_body = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->send = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->subject = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->html_body = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->txt_body = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -635,7 +673,7 @@ abstract class BasePOEmail extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 11; // 11 = POEmailPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = POEmailPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating POEmail object", $e);
@@ -936,6 +974,9 @@ abstract class BasePOEmail extends BaseObject implements Persistent
         if ($this->isColumnModified(POEmailPeer::P_O_SUBSCRIPTION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_o_subscription_id`';
         }
+        if ($this->isColumnModified(POEmailPeer::SEND)) {
+            $modifiedColumns[':p' . $index++]  = '`send`';
+        }
         if ($this->isColumnModified(POEmailPeer::SUBJECT)) {
             $modifiedColumns[':p' . $index++]  = '`subject`';
         }
@@ -979,6 +1020,9 @@ abstract class BasePOEmail extends BaseObject implements Persistent
                         break;
                     case '`p_o_subscription_id`':
                         $stmt->bindValue($identifier, $this->p_o_subscription_id, PDO::PARAM_INT);
+                        break;
+                    case '`send`':
+                        $stmt->bindValue($identifier, $this->send, PDO::PARAM_STR);
                         break;
                     case '`subject`':
                         $stmt->bindValue($identifier, $this->subject, PDO::PARAM_STR);
@@ -1184,18 +1228,21 @@ abstract class BasePOEmail extends BaseObject implements Persistent
                 return $this->getPOSubscriptionId();
                 break;
             case 6:
-                return $this->getSubject();
+                return $this->getSend();
                 break;
             case 7:
-                return $this->getHtmlBody();
+                return $this->getSubject();
                 break;
             case 8:
-                return $this->getTxtBody();
+                return $this->getHtmlBody();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getTxtBody();
                 break;
             case 10:
+                return $this->getCreatedAt();
+                break;
+            case 11:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1233,11 +1280,12 @@ abstract class BasePOEmail extends BaseObject implements Persistent
             $keys[3] => $this->getPOPaymentStateId(),
             $keys[4] => $this->getPOPaymentTypeId(),
             $keys[5] => $this->getPOSubscriptionId(),
-            $keys[6] => $this->getSubject(),
-            $keys[7] => $this->getHtmlBody(),
-            $keys[8] => $this->getTxtBody(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
+            $keys[6] => $this->getSend(),
+            $keys[7] => $this->getSubject(),
+            $keys[8] => $this->getHtmlBody(),
+            $keys[9] => $this->getTxtBody(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aPOrder) {
@@ -1308,18 +1356,21 @@ abstract class BasePOEmail extends BaseObject implements Persistent
                 $this->setPOSubscriptionId($value);
                 break;
             case 6:
-                $this->setSubject($value);
+                $this->setSend($value);
                 break;
             case 7:
-                $this->setHtmlBody($value);
+                $this->setSubject($value);
                 break;
             case 8:
-                $this->setTxtBody($value);
+                $this->setHtmlBody($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setTxtBody($value);
                 break;
             case 10:
+                $this->setCreatedAt($value);
+                break;
+            case 11:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1352,11 +1403,12 @@ abstract class BasePOEmail extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setPOPaymentStateId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPOPaymentTypeId($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setPOSubscriptionId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSubject($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setHtmlBody($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setTxtBody($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSend($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSubject($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setHtmlBody($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTxtBody($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
     }
 
     /**
@@ -1374,6 +1426,7 @@ abstract class BasePOEmail extends BaseObject implements Persistent
         if ($this->isColumnModified(POEmailPeer::P_O_PAYMENT_STATE_ID)) $criteria->add(POEmailPeer::P_O_PAYMENT_STATE_ID, $this->p_o_payment_state_id);
         if ($this->isColumnModified(POEmailPeer::P_O_PAYMENT_TYPE_ID)) $criteria->add(POEmailPeer::P_O_PAYMENT_TYPE_ID, $this->p_o_payment_type_id);
         if ($this->isColumnModified(POEmailPeer::P_O_SUBSCRIPTION_ID)) $criteria->add(POEmailPeer::P_O_SUBSCRIPTION_ID, $this->p_o_subscription_id);
+        if ($this->isColumnModified(POEmailPeer::SEND)) $criteria->add(POEmailPeer::SEND, $this->send);
         if ($this->isColumnModified(POEmailPeer::SUBJECT)) $criteria->add(POEmailPeer::SUBJECT, $this->subject);
         if ($this->isColumnModified(POEmailPeer::HTML_BODY)) $criteria->add(POEmailPeer::HTML_BODY, $this->html_body);
         if ($this->isColumnModified(POEmailPeer::TXT_BODY)) $criteria->add(POEmailPeer::TXT_BODY, $this->txt_body);
@@ -1447,6 +1500,7 @@ abstract class BasePOEmail extends BaseObject implements Persistent
         $copyObj->setPOPaymentStateId($this->getPOPaymentStateId());
         $copyObj->setPOPaymentTypeId($this->getPOPaymentTypeId());
         $copyObj->setPOSubscriptionId($this->getPOSubscriptionId());
+        $copyObj->setSend($this->getSend());
         $copyObj->setSubject($this->getSubject());
         $copyObj->setHtmlBody($this->getHtmlBody());
         $copyObj->setTxtBody($this->getTxtBody());
@@ -1781,6 +1835,7 @@ abstract class BasePOEmail extends BaseObject implements Persistent
         $this->p_o_payment_state_id = null;
         $this->p_o_payment_type_id = null;
         $this->p_o_subscription_id = null;
+        $this->send = null;
         $this->subject = null;
         $this->html_body = null;
         $this->txt_body = null;

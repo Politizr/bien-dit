@@ -36,6 +36,8 @@
 
 				{% if app.user.validated %}
 			    	<p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
+			    {% else %}
+				    {{ form_row(formPerso1.actions) }}
 			    {% endif %}
 			{{ form_end(formPerso1) }}
 		</div>

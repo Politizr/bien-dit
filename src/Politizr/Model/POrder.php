@@ -10,8 +10,8 @@ class POrder extends BasePOrder
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
-  	const UPLOAD_PATH = '/../../../web/uploads/orders/';
-  	const UPLOAD_WEB_PATH = '/uploads/orders/';
+  	const UPLOAD_PATH = '/../../../web/uploads/supporting/';
+  	const UPLOAD_WEB_PATH = '/uploads/supporting/';
 
 
 	// ******************* SIMPLE UPLOAD MANAGEMENT **************** //
