@@ -91,18 +91,6 @@ class PublicController extends Controller
             ));
     }
 
-    /**
-     *  Profil en cours de validation
-     */
-    public function eluActivationProcessAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** eluActivationProcessAction');
-
-        return $this->render('PolitizrFrontBundle:Public:eluActivationProcess.html.twig', array(
-            ));
-    }
-
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */
     /* ######################################################################################################## */

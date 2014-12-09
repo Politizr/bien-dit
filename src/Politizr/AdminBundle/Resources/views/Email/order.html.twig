@@ -12,7 +12,8 @@
 	<p>Votre commande chez Politizr a été annulée.</p>
 {% endif %}
 
-<ul>Récapitulatif de la commande:
+<p>Récapitulatif de la commande</p>
+<ul>
 	<li>Formule choisie: {{ order.POSubscription }}</li>
 	<li>Statut de la commande: {{ order.POOrderState }}</li>
 	<li>Statut du paiement: {{ order.POPaymentState }}</li>

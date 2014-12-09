@@ -21,11 +21,6 @@ Presentation:
     pattern:  /presentation
     defaults: { _controller: PolitizrFrontBundle:Public:presentation }
 
-EluActivationProcess:
-    pattern:  /profil-elu-en-cours-de-validation
-    defaults: { _controller: PolitizrFrontBundle:Public:eluActivationProcess }
-
-
 ################################################################################
 #               ROUTING CONNEXION
 ################################################################################

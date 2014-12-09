@@ -416,7 +416,7 @@ class SecurityController extends Controller {
                 // MAJ droits
                 $user->addRole('ROLE_CITIZEN');
                 $user->addRole('ROLE_PROFILE_COMPLETED');
-                $user->removeRole('ROLE_ELECTED_INSCRIPTION');
+                $user->removeRole('ROLE_CITIZEN_INSCRIPTION');
 
                 // Save user
                 $user->save();
@@ -1203,18 +1203,10 @@ class SecurityController extends Controller {
             $user->setLastLogin(new \DateTime());
             $user->save();
 
-            if($user->hasRole('ROLE_ELECTED')) {
-                if ($user->getPUStatusId() == PUStatus::ACTIVED) {
-                    $redirectUrl = $this->generateUrl('HomepageE');
-                } else {
-                    // TODO: authenticate access denied + redirection automatique si setToken(null)
-                    // $this->get('security.context')->setToken(null);
-                    $this->get('request')->getSession()->invalidate();
-
-                    $redirectUrl = $this->generateUrl('EluActivationProcess');
-                }
+            if($user->hasRole('ROLE_ELECTED') && $user->getPUStatusId() == PUStatus::ACTIVED) {
+                $redirectUrl = $this->generateUrl('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->generateUrl('HomepageC', array('page' => 1));
+                $redirectUrl = $this->generateUrl('HomepageC');
             }
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
             $redirectUrl = $this->generateUrl('InscriptionStep2');

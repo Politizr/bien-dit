@@ -13,9 +13,15 @@
 				Votre identité n'a pas été validé par nos services.
 			{% endif %}
 		</p>
-		<p>
-			Vous exercez ou avez exercé un mandat d'élu? Migrez vers le <a href="{{ path('MigrationElected') }}">compte débatteur</a>.
-		</p>
+		{% if is_granted('ROLE_ELECTED') and app.user.PUStatusId == constant('Politizr\\Model\\PUStatus::VALIDATION_PROCESS') %}
+			<p class="bg-info">
+				Votre profil est en cours de validation par nos services: merci de patienter avant de profiter de compte débatteur!
+			</p>
+		{% else %}
+			<p>
+				Vous exercez ou avez exercé un mandat d'élu? Migrez vers le <a href="{{ path('MigrationElected') }}">compte débatteur</a>.
+			</p>
+		{% endif %}
 	</div>
 {% endblock main %}
 

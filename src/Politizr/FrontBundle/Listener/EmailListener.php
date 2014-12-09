@@ -55,7 +55,7 @@ class EmailListener {
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Politizr - Réinitialisation du mot de passe')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr (ne pas répondre)'))
+                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -103,7 +103,7 @@ class EmailListener {
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Politizr - Mise à jour mot de passe')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr (ne pas répondre)'))
+                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
