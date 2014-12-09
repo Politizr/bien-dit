@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POrderQuery;
@@ -153,9 +154,9 @@ class SecurityController extends Controller {
                         }
                     }
                 } else {
-                    $message = 'Champs obligatoires.';
+                    $errors = StudioEchoUtils::getAjaxFormErrors($formLogin);
                     $jsonResponse = array(
-                        'error' => $message
+                        'error' => $errors
                         );
                 }
             } else {
@@ -220,32 +221,11 @@ class SecurityController extends Controller {
                         $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
                         $user->eraseCredentials();
 
+                        $user->setPlainPassword($password);
                         $user->save();
 
                         // Envoi email
-                        $mailer = $this->get('mailer');
-                        $templating = $this->get('templating');
-
-                        $htmlBody = $templating->render(
-                                            'PolitizrFrontBundle:Email:lostPassword.html.twig', array('username' => $user->getUsername(), 'password' => $password)
-                                    );
-                        $txtBody = $templating->render(
-                                            'PolitizrFrontBundle:Email:lostPassword.txt.twig', array('username' => $user->getUsername(), 'password' => $password)
-                                    );
-
-                        $message = \Swift_Message::newInstance()
-                                ->setSubject('Politizr - Mot de passe oublié')
-                                ->setFrom(array($this->container->get('noreply_email') => 'Politizr (ne pas répondre)'))
-                                ->setTo($lostPassword['email'])
-                                ->setBody($htmlBody, 'text/html', 'utf-8')
-                                ->addPart($txtBody, 'text/plain', 'utf-8')
-                        ;
-
-                        $send = $mailer->send($message);
-                        $logger->info('$send = '.print_r($send, true));
-                        if (!$send) {
-                            throw new \Exception('Erreur dans l\'envoi de l\'email');
-                        }
+                        $dispatcher = $this->get('event_dispatcher')->dispatch('lost_password_email', new GenericEvent($user));
 
                         // Construction de la réponse
                         $jsonResponse = array (
@@ -253,9 +233,9 @@ class SecurityController extends Controller {
                         );
                     }
                 } else {
-                    $message = 'Champs obligatoires.';
+                    $errors = StudioEchoUtils::getAjaxFormErrors($formLostPassword);
                     $jsonResponse = array(
-                        'error' => $message
+                        'error' => $errors
                         );
                 }
             } else {

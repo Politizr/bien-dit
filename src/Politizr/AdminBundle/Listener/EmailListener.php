@@ -19,17 +19,19 @@ class EmailListener {
     protected $logger;
 
     protected $contactEmail;
+    protected $noreplyEmail;
 
 
     /**
      *
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail) {
+    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail) {
     	$this->mailer = $mailer;
     	$this->templating = $templating;
     	$this->logger = $logger;
 
     	$this->contactEmail = $contactEmail;
+        $this->noreplyEmail = $noreplyEmail;
     }
 
     /**

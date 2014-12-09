@@ -2,7 +2,6 @@ parameters:
     politizr.oauth_user_provider.class:   	Politizr\Security\User\Provider\OAuthUserProvider
 
 services:
-
     # CONNEXION
     hwi_oauth.user.provider.entity:
         class:                              HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
@@ -13,6 +12,16 @@ services:
     politizr.oauth_user_provider:
         class: 								"%politizr.oauth_user_provider.class%"
         arguments: 							[ @service_container ]
+
+
+    # LISTENERS
+    politzr.listener.email:
+        class:      Politizr\FrontBundle\Listener\EmailListener
+        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%noreply_email%" ]
+        tags:
+            - { name: kernel.event_listener, event: lost_password_email }
+            - { name: kernel.event_listener, event: upd_password_email }
+
 
     # EXTENSIONS TWIG
     politzr.twig.politizr_extension:

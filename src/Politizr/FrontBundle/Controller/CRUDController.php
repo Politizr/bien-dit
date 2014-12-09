@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
@@ -1139,33 +1141,11 @@ class CRUDController extends Controller {
                             $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
                             // $user->eraseCredentials();
 
+                            $user->setPlainPassword($password);
                             $user->save();
 
-                            // Envoi email_canonicalizer
-                            $mailer = $this->get('mailer');
-                            $templating = $this->get('templating');
-
-                            $htmlBody = $templating->render(
-                                                'PolitizrFrontBundle:Email:updatePassword.html.twig', array('username' => $user->getUsername(), 'password' => $password)
-                                        );
-                            $txtBody = $templating->render(
-                                                'PolitizrFrontBundle:Email:updatePassword.txt.twig', array('username' => $user->getUsername(), 'password' => $password)
-                                        );
-
-                            $message = \Swift_Message::newInstance()
-                                    ->setSubject('Politizr - MAJ de votre mot de passe')
-                                    ->setFrom('admin@politizr.fr')
-                                    ->setTo($user->getEmail())
-                                    // ->setBcc(array('lionel.bouzonville@gmail.com'))
-                                    ->setBody($htmlBody, 'text/html', 'utf-8')
-                                    ->addPart($txtBody, 'text/plain', 'utf-8')
-                            ;
-
-                            $send = $mailer->send($message);
-                            $logger->info('$send = '.print_r($send, true));
-                            if (!$send) {
-                                throw new \Exception('Erreur dans l\'envoi de l\'email');
-                            }
+                            // Envoi email
+                            $dispatcher = $this->get('event_dispatcher')->dispatch('upd_password_email', new GenericEvent($user));
                         }
                     }
 
