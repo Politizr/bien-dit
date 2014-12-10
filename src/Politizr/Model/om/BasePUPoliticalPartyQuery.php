@@ -91,8 +91,14 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = 'Politizr\\Model\\PUPoliticalParty', $modelAlias = null)
+    public function __construct($dbName = null, $modelName = null, $modelAlias = null)
     {
+        if (null === $dbName) {
+            $dbName = 'default';
+        }
+        if (null === $modelName) {
+            $modelName = 'Politizr\\Model\\PUPoliticalParty';
+        }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
@@ -109,10 +115,8 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
         if ($criteria instanceof PUPoliticalPartyQuery) {
             return $criteria;
         }
-        $query = new PUPoliticalPartyQuery();
-        if (null !== $modelAlias) {
-            $query->setModelAlias($modelAlias);
-        }
+        $query = new PUPoliticalPartyQuery(null, null, $modelAlias);
+
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
         }
@@ -140,7 +144,7 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
             return null;
         }
         if ((null !== ($obj = PUPoliticalPartyPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
-            // the object is alredy in the instance pool
+            // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
@@ -463,7 +467,7 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      * <code>
      * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
      * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $createdAt The value to use as filter.
@@ -506,7 +510,7 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      * <code>
      * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
      * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $updatedAt The value to use as filter.
@@ -981,21 +985,6 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
         return $stmt;
     }
 
-    // sluggable behavior
-
-    /**
-     * Find one object based on its slug
-     *
-     * @param     string $slug The value to use as filter.
-     * @param     PropelPDO $con The optional connection object
-     *
-     * @return    PUPoliticalParty the result, formatted by the current formatter
-     */
-    public function findOneBySlug($slug, $con = null)
-    {
-        return $this->filterBySlug($slug)->findOne($con);
-    }
-
     // sortable behavior
 
     /**
@@ -1007,6 +996,8 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      */
     public function filterByRank($rank)
     {
+
+
         return $this
             ->addUsingAlias(PUPoliticalPartyPeer::RANK_COL, $rank, Criteria::EQUAL);
     }
@@ -1044,6 +1035,7 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      */
     public function findOneByRank($rank, PropelPDO $con = null)
     {
+
         return $this
             ->filterByRank($rank)
             ->findOne($con);
@@ -1058,6 +1050,8 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      */
     public function findList($con = null)
     {
+
+
         return $this
             ->orderByRank()
             ->find($con);
@@ -1071,6 +1065,25 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
      * @return    integer highest position
      */
     public function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PUPoliticalPartyPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PUPoliticalPartyPeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get the highest rank by a scope with a array format.
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRankArray(PropelPDO $con = null)
     {
         if ($con === null) {
             $con = Propel::getConnection(PUPoliticalPartyPeer::DATABASE_NAME);
@@ -1112,7 +1125,7 @@ abstract class BasePUPoliticalPartyQuery extends ModelCriteria
             $con->commit();
 
             return true;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollback();
             throw $e;
         }

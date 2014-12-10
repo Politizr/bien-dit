@@ -33,7 +33,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -227,6 +227,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -237,6 +238,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPUserId()
     {
+
         return $this->p_user_id;
     }
 
@@ -247,6 +249,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPOOrderStateId()
     {
+
         return $this->p_o_order_state_id;
     }
 
@@ -257,6 +260,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPOPaymentStateId()
     {
+
         return $this->p_o_payment_state_id;
     }
 
@@ -267,6 +271,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPOPaymentTypeId()
     {
+
         return $this->p_o_payment_type_id;
     }
 
@@ -277,6 +282,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPOSubscriptionId()
     {
+
         return $this->p_o_subscription_id;
     }
 
@@ -287,6 +293,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getSubscriptionTitle()
     {
+
         return $this->subscription_title;
     }
 
@@ -297,6 +304,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getSubscriptionDescription()
     {
+
         return $this->subscription_description;
     }
 
@@ -387,6 +395,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getInformation()
     {
+
         return $this->information;
     }
 
@@ -397,6 +406,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPrice()
     {
+
         return $this->price;
     }
 
@@ -407,6 +417,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPromotion()
     {
+
         return $this->promotion;
     }
 
@@ -417,6 +428,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getTotal()
     {
+
         return $this->total;
     }
 
@@ -446,6 +458,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getName()
     {
+
         return $this->name;
     }
 
@@ -456,6 +469,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getFirstname()
     {
+
         return $this->firstname;
     }
 
@@ -466,6 +480,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getPhone()
     {
+
         return $this->phone;
     }
 
@@ -476,6 +491,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getEmail()
     {
+
         return $this->email;
     }
 
@@ -486,6 +502,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getInvoiceRef()
     {
+
         return $this->invoice_ref;
     }
 
@@ -536,6 +553,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getInvoiceFilename()
     {
+
         return $this->invoice_filename;
     }
 
@@ -546,6 +564,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getSupportingDocument()
     {
+
         return $this->supporting_document;
     }
 
@@ -556,6 +575,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      */
     public function getElectiveMandates()
     {
+
         return $this->elective_mandates;
     }
 
@@ -682,7 +702,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setId($v)
@@ -703,7 +723,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_user_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPUserId($v)
@@ -724,7 +744,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_o_order_state_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPOOrderStateId($v)
@@ -745,7 +765,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_o_payment_state_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPOPaymentStateId($v)
@@ -766,7 +786,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_o_payment_type_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPOPaymentTypeId($v)
@@ -787,7 +807,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_o_subscription_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPOSubscriptionId($v)
@@ -808,12 +828,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [subscription_title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setSubscriptionTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -829,12 +849,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [subscription_description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setSubscriptionDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -896,12 +916,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [information] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setInformation($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -917,7 +937,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [price] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPrice($v)
@@ -938,7 +958,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [promotion] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPromotion($v)
@@ -959,7 +979,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [total] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setTotal($v)
@@ -980,7 +1000,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [gender] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POrderArchive The current object (for fluent API support)
      * @throws PropelException - if the value is not accepted by this enum.
      */
@@ -1006,12 +1026,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1027,12 +1047,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [firstname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setFirstname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1048,12 +1068,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [phone] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setPhone($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1069,12 +1089,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [email] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setEmail($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1090,12 +1110,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [invoice_ref] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setInvoiceRef($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1134,12 +1154,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [invoice_filename] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setInvoiceFilename($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1155,12 +1175,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [supporting_document] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setSupportingDocument($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1176,12 +1196,12 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
     /**
      * Set the value of [elective_mandates] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POrderArchive The current object (for fluent API support)
      */
     public function setElectiveMandates($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1286,7 +1306,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -1330,6 +1350,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 27; // 27 = POrderArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -1784,10 +1805,10 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1975,6 +1996,11 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
             $keys[25] => $this->getUpdatedAt(),
             $keys[26] => $this->getArchivedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
 
         return $result;
     }
@@ -2363,7 +2389,7 @@ abstract class BasePOrderArchive extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */

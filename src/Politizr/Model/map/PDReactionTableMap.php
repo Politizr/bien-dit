@@ -117,6 +117,7 @@ class PDReactionTableMap extends TableMap
   'descendant_column' => 'descendant_class',
   'copy_data_to_parent' => 'true',
   'schema' => '',
+  'excluded_parent_behavior' => 'nested_set',
 ),
             'archivable' =>  array (
   'archive_table' => '',

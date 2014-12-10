@@ -26,7 +26,7 @@ abstract class BasePOrderArchivePeer
     const OM_CLASS = 'Politizr\\Model\\POrderArchive';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'POrderArchiveTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\POrderArchiveTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 27;
@@ -126,7 +126,7 @@ abstract class BasePOrderArchivePeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of POrderArchive objects.
+     * An identity map to hold any loaded instances of POrderArchive objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array POrderArchive[]
@@ -244,7 +244,7 @@ abstract class BasePOrderArchivePeer
      * @param string $colname ENUM column name.
      * @param string $enumVal ENUM value.
      *
-     * @return int            SQL value
+     * @return int SQL value
      */
     public static function getSqlValueForEnum($colname, $enumVal)
     {
@@ -252,6 +252,7 @@ abstract class BasePOrderArchivePeer
         if (!in_array($enumVal, $values)) {
             throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
         }
+
         return array_search($enumVal, $values);
     }
 
@@ -394,7 +395,7 @@ abstract class BasePOrderArchivePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 POrderArchive
+     * @return POrderArchive
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -461,7 +462,7 @@ abstract class BasePOrderArchivePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      POrderArchive $obj A POrderArchive object.
+     * @param POrderArchive $obj A POrderArchive object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -511,7 +512,7 @@ abstract class BasePOrderArchivePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   POrderArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return POrderArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -532,10 +533,8 @@ abstract class BasePOrderArchivePeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (POrderArchivePeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (POrderArchivePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -648,7 +647,7 @@ abstract class BasePOrderArchivePeer
      * Gets the SQL value for Gender ENUM value
      *
      * @param  string $enumVal ENUM value to get SQL value for
-     * @return int             SQL value
+     * @return int SQL value
      */
     public static function getGenderSqlValue($enumVal)
     {
@@ -674,7 +673,7 @@ abstract class BasePOrderArchivePeer
     {
       $dbMap = Propel::getDatabaseMap(BasePOrderArchivePeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePOrderArchivePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new POrderArchiveTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\POrderArchiveTableMap());
       }
     }
 
@@ -720,7 +719,7 @@ abstract class BasePOrderArchivePeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -793,7 +792,7 @@ abstract class BasePOrderArchivePeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -852,7 +851,7 @@ abstract class BasePOrderArchivePeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -865,7 +864,7 @@ abstract class BasePOrderArchivePeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      POrderArchive $obj The object to validate.
+     * @param POrderArchive $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -898,7 +897,7 @@ abstract class BasePOrderArchivePeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return POrderArchive
      */

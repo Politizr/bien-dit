@@ -22,6 +22,13 @@ services:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }
 
+    politzr.listener.reputation:
+        class:      Politizr\FrontBundle\Listener\ReputationListener
+        arguments:  [ @logger ]
+        tags:
+            - { name: kernel.event_listener, event: debate_publish }
+            - { name: kernel.event_listener, event: reaction_publish }
+
 
     # EXTENSIONS TWIG
     politzr.twig.politizr_extension:

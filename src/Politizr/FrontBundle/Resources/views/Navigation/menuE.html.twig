@@ -42,6 +42,9 @@
 		</li>
 	</ul>
 	<ul class="navbar-right">
+		{% if app.user.validated %}
+			<span class="glyphicon glyphicon-ok"></span>
+		{% endif %}
 		<span class="label label-success">{{ app.user.firstname }} {{ app.user.name }}</span>
 		<a class="btn btn-danger btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
 	</ul>

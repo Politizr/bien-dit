@@ -49,7 +49,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -200,6 +200,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -210,6 +211,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     public function getPTTagTypeId()
     {
+
         return $this->p_t_tag_type_id;
     }
 
@@ -220,6 +222,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -230,6 +233,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -320,13 +324,14 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PTag The current object (for fluent API support)
      */
     public function setId($v)
@@ -347,7 +352,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * Set the value of [p_t_tag_type_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PTag The current object (for fluent API support)
      */
     public function setPTTagTypeId($v)
@@ -372,12 +377,12 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PTag The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -468,12 +473,12 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PTag The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -509,7 +514,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -533,6 +538,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 7; // 7 = PTagPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -752,7 +758,7 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->alreadyInSave = true;
 
             // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -781,7 +787,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     foreach ($this->puTaggedTPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuTaggedTPTagQuery::create()
+                    PUTaggedTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puTaggedTPUsersScheduledForDeletion = null;
@@ -807,7 +813,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     foreach ($this->puFollowTPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuFollowTPTagQuery::create()
+                    PUFollowTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puFollowTPUsersScheduledForDeletion = null;
@@ -833,7 +839,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     foreach ($this->pddTaggedTPDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PddTaggedTPTagQuery::create()
+                    PDDTaggedTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pddTaggedTPDDebatesScheduledForDeletion = null;
@@ -1062,10 +1068,10 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1077,7 +1083,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
 
             // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -1210,6 +1216,11 @@ abstract class BasePTag extends BaseObject implements Persistent
             $keys[5] => $this->getUpdatedAt(),
             $keys[6] => $this->getSlug(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->aPTTagType) {
                 $result['PTTagType'] = $this->aPTTagType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1475,7 +1486,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a PTTagType object.
      *
-     * @param             PTTagType $v
+     * @param                  PTTagType $v
      * @return PTag The current object (for fluent API support)
      * @throws PropelException
      */
@@ -1623,7 +1634,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     if (false !== $this->collPuTaggedTPTagsPartial && count($collPuTaggedTPTags)) {
                       $this->initPuTaggedTPTags(false);
 
-                      foreach($collPuTaggedTPTags as $obj) {
+                      foreach ($collPuTaggedTPTags as $obj) {
                         if (false == $this->collPuTaggedTPTags->contains($obj)) {
                           $this->collPuTaggedTPTags->append($obj);
                         }
@@ -1633,12 +1644,13 @@ abstract class BasePTag extends BaseObject implements Persistent
                     }
 
                     $collPuTaggedTPTags->getInternalIterator()->rewind();
+
                     return $collPuTaggedTPTags;
                 }
 
-                if($partial && $this->collPuTaggedTPTags) {
-                    foreach($this->collPuTaggedTPTags as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuTaggedTPTags) {
+                    foreach ($this->collPuTaggedTPTags as $obj) {
+                        if ($obj->isNew()) {
                             $collPuTaggedTPTags[] = $obj;
                         }
                     }
@@ -1666,7 +1678,8 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         $puTaggedTPTagsToDelete = $this->getPuTaggedTPTags(new Criteria(), $con)->diff($puTaggedTPTags);
 
-        $this->puTaggedTPTagsScheduledForDeletion = unserialize(serialize($puTaggedTPTagsToDelete));
+
+        $this->puTaggedTPTagsScheduledForDeletion = $puTaggedTPTagsToDelete;
 
         foreach ($puTaggedTPTagsToDelete as $puTaggedTPTagRemoved) {
             $puTaggedTPTagRemoved->setPuTaggedTPTag(null);
@@ -1700,7 +1713,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuTaggedTPTags());
             }
             $query = PUTaggedTQuery::create(null, $criteria);
@@ -1729,8 +1742,13 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->initPuTaggedTPTags();
             $this->collPuTaggedTPTagsPartial = true;
         }
+
         if (!in_array($l, $this->collPuTaggedTPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuTaggedTPTag($l);
+
+            if ($this->puTaggedTPTagsScheduledForDeletion and $this->puTaggedTPTagsScheduledForDeletion->contains($l)) {
+                $this->puTaggedTPTagsScheduledForDeletion->remove($this->puTaggedTPTagsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1866,7 +1884,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     if (false !== $this->collPuFollowTPTagsPartial && count($collPuFollowTPTags)) {
                       $this->initPuFollowTPTags(false);
 
-                      foreach($collPuFollowTPTags as $obj) {
+                      foreach ($collPuFollowTPTags as $obj) {
                         if (false == $this->collPuFollowTPTags->contains($obj)) {
                           $this->collPuFollowTPTags->append($obj);
                         }
@@ -1876,12 +1894,13 @@ abstract class BasePTag extends BaseObject implements Persistent
                     }
 
                     $collPuFollowTPTags->getInternalIterator()->rewind();
+
                     return $collPuFollowTPTags;
                 }
 
-                if($partial && $this->collPuFollowTPTags) {
-                    foreach($this->collPuFollowTPTags as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuFollowTPTags) {
+                    foreach ($this->collPuFollowTPTags as $obj) {
+                        if ($obj->isNew()) {
                             $collPuFollowTPTags[] = $obj;
                         }
                     }
@@ -1909,7 +1928,8 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         $puFollowTPTagsToDelete = $this->getPuFollowTPTags(new Criteria(), $con)->diff($puFollowTPTags);
 
-        $this->puFollowTPTagsScheduledForDeletion = unserialize(serialize($puFollowTPTagsToDelete));
+
+        $this->puFollowTPTagsScheduledForDeletion = $puFollowTPTagsToDelete;
 
         foreach ($puFollowTPTagsToDelete as $puFollowTPTagRemoved) {
             $puFollowTPTagRemoved->setPuFollowTPTag(null);
@@ -1943,7 +1963,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuFollowTPTags());
             }
             $query = PUFollowTQuery::create(null, $criteria);
@@ -1972,8 +1992,13 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->initPuFollowTPTags();
             $this->collPuFollowTPTagsPartial = true;
         }
+
         if (!in_array($l, $this->collPuFollowTPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowTPTag($l);
+
+            if ($this->puFollowTPTagsScheduledForDeletion and $this->puFollowTPTagsScheduledForDeletion->contains($l)) {
+                $this->puFollowTPTagsScheduledForDeletion->remove($this->puFollowTPTagsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2109,7 +2134,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     if (false !== $this->collPddTaggedTPTagsPartial && count($collPddTaggedTPTags)) {
                       $this->initPddTaggedTPTags(false);
 
-                      foreach($collPddTaggedTPTags as $obj) {
+                      foreach ($collPddTaggedTPTags as $obj) {
                         if (false == $this->collPddTaggedTPTags->contains($obj)) {
                           $this->collPddTaggedTPTags->append($obj);
                         }
@@ -2119,12 +2144,13 @@ abstract class BasePTag extends BaseObject implements Persistent
                     }
 
                     $collPddTaggedTPTags->getInternalIterator()->rewind();
+
                     return $collPddTaggedTPTags;
                 }
 
-                if($partial && $this->collPddTaggedTPTags) {
-                    foreach($this->collPddTaggedTPTags as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPddTaggedTPTags) {
+                    foreach ($this->collPddTaggedTPTags as $obj) {
+                        if ($obj->isNew()) {
                             $collPddTaggedTPTags[] = $obj;
                         }
                     }
@@ -2152,7 +2178,8 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         $pddTaggedTPTagsToDelete = $this->getPddTaggedTPTags(new Criteria(), $con)->diff($pddTaggedTPTags);
 
-        $this->pddTaggedTPTagsScheduledForDeletion = unserialize(serialize($pddTaggedTPTagsToDelete));
+
+        $this->pddTaggedTPTagsScheduledForDeletion = $pddTaggedTPTagsToDelete;
 
         foreach ($pddTaggedTPTagsToDelete as $pddTaggedTPTagRemoved) {
             $pddTaggedTPTagRemoved->setPddTaggedTPTag(null);
@@ -2186,7 +2213,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPddTaggedTPTags());
             }
             $query = PDDTaggedTQuery::create(null, $criteria);
@@ -2215,8 +2242,13 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->initPddTaggedTPTags();
             $this->collPddTaggedTPTagsPartial = true;
         }
+
         if (!in_array($l, $this->collPddTaggedTPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPddTaggedTPTag($l);
+
+            if ($this->pddTaggedTPTagsScheduledForDeletion and $this->pddTaggedTPTagsScheduledForDeletion->contains($l)) {
+                $this->pddTaggedTPTagsScheduledForDeletion->remove($this->pddTaggedTPTagsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2355,7 +2387,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     public function setPuTaggedTPUsers(PropelCollection $puTaggedTPUsers, PropelPDO $con = null)
     {
         $this->clearPuTaggedTPUsers();
-        $currentPuTaggedTPUsers = $this->getPuTaggedTPUsers();
+        $currentPuTaggedTPUsers = $this->getPuTaggedTPUsers(null, $con);
 
         $this->puTaggedTPUsersScheduledForDeletion = $currentPuTaggedTPUsers->diff($puTaggedTPUsers);
 
@@ -2412,10 +2444,14 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->collPuTaggedTPUsers === null) {
             $this->initPuTaggedTPUsers();
         }
+
         if (!$this->collPuTaggedTPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuTaggedTPUser($pUser);
+            $this->collPuTaggedTPUsers[] = $pUser;
 
-            $this->collPuTaggedTPUsers[]= $pUser;
+            if ($this->puTaggedTPUsersScheduledForDeletion and $this->puTaggedTPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puTaggedTPUsersScheduledForDeletion->remove($this->puTaggedTPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -2424,11 +2460,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
      */
-    protected function doAddPuTaggedTPUser($puTaggedTPUser)
+    protected function doAddPuTaggedTPUser(PUser $puTaggedTPUser)
     {
-        $pUTaggedT = new PUTaggedT();
-        $pUTaggedT->setPuTaggedTPUser($puTaggedTPUser);
-        $this->addPuTaggedTPTag($pUTaggedT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puTaggedTPUser->getPuTaggedTPTags()->contains($this)) { $pUTaggedT = new PUTaggedT();
+            $pUTaggedT->setPuTaggedTPUser($puTaggedTPUser);
+            $this->addPuTaggedTPTag($pUTaggedT);
+
+            $foreignCollection = $puTaggedTPUser->getPuTaggedTPTags();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -2532,7 +2574,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     public function setPuFollowTPUsers(PropelCollection $puFollowTPUsers, PropelPDO $con = null)
     {
         $this->clearPuFollowTPUsers();
-        $currentPuFollowTPUsers = $this->getPuFollowTPUsers();
+        $currentPuFollowTPUsers = $this->getPuFollowTPUsers(null, $con);
 
         $this->puFollowTPUsersScheduledForDeletion = $currentPuFollowTPUsers->diff($puFollowTPUsers);
 
@@ -2589,10 +2631,14 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->collPuFollowTPUsers === null) {
             $this->initPuFollowTPUsers();
         }
+
         if (!$this->collPuFollowTPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowTPUser($pUser);
+            $this->collPuFollowTPUsers[] = $pUser;
 
-            $this->collPuFollowTPUsers[]= $pUser;
+            if ($this->puFollowTPUsersScheduledForDeletion and $this->puFollowTPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puFollowTPUsersScheduledForDeletion->remove($this->puFollowTPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -2601,11 +2647,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
      */
-    protected function doAddPuFollowTPUser($puFollowTPUser)
+    protected function doAddPuFollowTPUser(PUser $puFollowTPUser)
     {
-        $pUFollowT = new PUFollowT();
-        $pUFollowT->setPuFollowTPUser($puFollowTPUser);
-        $this->addPuFollowTPTag($pUFollowT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puFollowTPUser->getPuFollowTPTags()->contains($this)) { $pUFollowT = new PUFollowT();
+            $pUFollowT->setPuFollowTPUser($puFollowTPUser);
+            $this->addPuFollowTPTag($pUFollowT);
+
+            $foreignCollection = $puFollowTPUser->getPuFollowTPTags();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -2709,7 +2761,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     public function setPddTaggedTPDDebates(PropelCollection $pddTaggedTPDDebates, PropelPDO $con = null)
     {
         $this->clearPddTaggedTPDDebates();
-        $currentPddTaggedTPDDebates = $this->getPddTaggedTPDDebates();
+        $currentPddTaggedTPDDebates = $this->getPddTaggedTPDDebates(null, $con);
 
         $this->pddTaggedTPDDebatesScheduledForDeletion = $currentPddTaggedTPDDebates->diff($pddTaggedTPDDebates);
 
@@ -2766,10 +2818,14 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->collPddTaggedTPDDebates === null) {
             $this->initPddTaggedTPDDebates();
         }
+
         if (!$this->collPddTaggedTPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
             $this->doAddPddTaggedTPDDebate($pDDebate);
+            $this->collPddTaggedTPDDebates[] = $pDDebate;
 
-            $this->collPddTaggedTPDDebates[]= $pDDebate;
+            if ($this->pddTaggedTPDDebatesScheduledForDeletion and $this->pddTaggedTPDDebatesScheduledForDeletion->contains($pDDebate)) {
+                $this->pddTaggedTPDDebatesScheduledForDeletion->remove($this->pddTaggedTPDDebatesScheduledForDeletion->search($pDDebate));
+            }
         }
 
         return $this;
@@ -2778,11 +2834,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * @param	PddTaggedTPDDebate $pddTaggedTPDDebate The pddTaggedTPDDebate object to add.
      */
-    protected function doAddPddTaggedTPDDebate($pddTaggedTPDDebate)
+    protected function doAddPddTaggedTPDDebate(PDDebate $pddTaggedTPDDebate)
     {
-        $pDDTaggedT = new PDDTaggedT();
-        $pDDTaggedT->setPddTaggedTPDDebate($pddTaggedTPDDebate);
-        $this->addPddTaggedTPTag($pDDTaggedT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pddTaggedTPDDebate->getPddTaggedTPTags()->contains($this)) { $pDDTaggedT = new PDDTaggedT();
+            $pDDTaggedT->setPddTaggedTPDDebate($pddTaggedTPDDebate);
+            $this->addPddTaggedTPTag($pDDTaggedT);
+
+            $foreignCollection = $pddTaggedTPDDebate->getPddTaggedTPTags();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -2832,7 +2894,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -3110,7 +3172,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -3144,9 +3206,8 @@ abstract class BasePTag extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PTagQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PTagQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -3170,7 +3231,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 

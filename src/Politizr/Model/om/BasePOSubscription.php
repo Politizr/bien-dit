@@ -39,7 +39,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -157,6 +157,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -167,6 +168,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -177,6 +179,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -187,6 +190,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getPrice()
     {
+
         return $this->price;
     }
 
@@ -197,6 +201,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -287,6 +292,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
@@ -297,13 +303,14 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function getSortableRank()
     {
+
         return $this->sortable_rank;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setId($v)
@@ -324,12 +331,12 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -345,12 +352,12 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -366,7 +373,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     /**
      * Set the value of [price] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setPrice($v)
@@ -462,12 +469,12 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -483,7 +490,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     /**
      * Set the value of [sortable_rank] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return POSubscription The current object (for fluent API support)
      */
     public function setSortableRank($v)
@@ -524,7 +531,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -550,6 +557,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 9; // 9 = POSubscriptionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -713,7 +721,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                 }
                 // sortable behavior
                 if (!$this->isColumnModified(POSubscriptionPeer::RANK_COL)) {
-                    $this->setSortableRank(POSubscriptionQuery::create()->getMaxRank($con) + 1);
+                    $this->setSortableRank(POSubscriptionQuery::create()->getMaxRankArray($con) + 1);
                 }
 
             } else {
@@ -979,10 +987,10 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1115,6 +1123,11 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
             $keys[7] => $this->getSlug(),
             $keys[8] => $this->getSortableRank(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPOrders) {
                 $result['POrders'] = $this->collPOrders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1473,7 +1486,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                     if (false !== $this->collPOrdersPartial && count($collPOrders)) {
                       $this->initPOrders(false);
 
-                      foreach($collPOrders as $obj) {
+                      foreach ($collPOrders as $obj) {
                         if (false == $this->collPOrders->contains($obj)) {
                           $this->collPOrders->append($obj);
                         }
@@ -1483,12 +1496,13 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                     }
 
                     $collPOrders->getInternalIterator()->rewind();
+
                     return $collPOrders;
                 }
 
-                if($partial && $this->collPOrders) {
-                    foreach($this->collPOrders as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPOrders) {
+                    foreach ($this->collPOrders as $obj) {
+                        if ($obj->isNew()) {
                             $collPOrders[] = $obj;
                         }
                     }
@@ -1516,7 +1530,8 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     {
         $pOrdersToDelete = $this->getPOrders(new Criteria(), $con)->diff($pOrders);
 
-        $this->pOrdersScheduledForDeletion = unserialize(serialize($pOrdersToDelete));
+
+        $this->pOrdersScheduledForDeletion = $pOrdersToDelete;
 
         foreach ($pOrdersToDelete as $pOrderRemoved) {
             $pOrderRemoved->setPOSubscription(null);
@@ -1550,7 +1565,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPOrders());
             }
             $query = POrderQuery::create(null, $criteria);
@@ -1579,8 +1594,13 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
             $this->initPOrders();
             $this->collPOrdersPartial = true;
         }
+
         if (!in_array($l, $this->collPOrders->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPOrder($l);
+
+            if ($this->pOrdersScheduledForDeletion and $this->pOrdersScheduledForDeletion->contains($l)) {
+                $this->pOrdersScheduledForDeletion->remove($this->pOrdersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1791,7 +1811,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                     if (false !== $this->collPOEmailsPartial && count($collPOEmails)) {
                       $this->initPOEmails(false);
 
-                      foreach($collPOEmails as $obj) {
+                      foreach ($collPOEmails as $obj) {
                         if (false == $this->collPOEmails->contains($obj)) {
                           $this->collPOEmails->append($obj);
                         }
@@ -1801,12 +1821,13 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                     }
 
                     $collPOEmails->getInternalIterator()->rewind();
+
                     return $collPOEmails;
                 }
 
-                if($partial && $this->collPOEmails) {
-                    foreach($this->collPOEmails as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPOEmails) {
+                    foreach ($this->collPOEmails as $obj) {
+                        if ($obj->isNew()) {
                             $collPOEmails[] = $obj;
                         }
                     }
@@ -1834,7 +1855,8 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     {
         $pOEmailsToDelete = $this->getPOEmails(new Criteria(), $con)->diff($pOEmails);
 
-        $this->pOEmailsScheduledForDeletion = unserialize(serialize($pOEmailsToDelete));
+
+        $this->pOEmailsScheduledForDeletion = $pOEmailsToDelete;
 
         foreach ($pOEmailsToDelete as $pOEmailRemoved) {
             $pOEmailRemoved->setPOSubscription(null);
@@ -1868,7 +1890,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPOEmails());
             }
             $query = POEmailQuery::create(null, $criteria);
@@ -1897,8 +1919,13 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
             $this->initPOEmails();
             $this->collPOEmailsPartial = true;
         }
+
         if (!in_array($l, $this->collPOEmails->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPOEmail($l);
+
+            if ($this->pOEmailsScheduledForDeletion and $this->pOEmailsScheduledForDeletion->contains($l)) {
+                $this->pOEmailsScheduledForDeletion->remove($this->pOEmailsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2060,7 +2087,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -2192,7 +2219,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -2226,9 +2253,8 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = POSubscriptionQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = POSubscriptionQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -2252,7 +2278,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 
@@ -2301,7 +2327,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function isLast(PropelPDO $con = null)
     {
-        return $this->getSortableRank() == POSubscriptionQuery::create()->getMaxRank($con);
+        return $this->getSortableRank() == POSubscriptionQuery::create()->getMaxRankArray($con);
     }
 
     /**
@@ -2314,7 +2340,12 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     public function getNext(PropelPDO $con = null)
     {
 
-        return POSubscriptionQuery::create()->findOneByRank($this->getSortableRank() + 1, $con);
+        $query = POSubscriptionQuery::create();
+
+        $query->filterByRank($this->getSortableRank() + 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -2327,7 +2358,12 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
     public function getPrevious(PropelPDO $con = null)
     {
 
-        return POSubscriptionQuery::create()->findOneByRank($this->getSortableRank() - 1, $con);
+        $query = POSubscriptionQuery::create();
+
+        $query->filterByRank($this->getSortableRank() - 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -2343,7 +2379,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function insertAtRank($rank, PropelPDO $con = null)
     {
-        $maxRank = POSubscriptionQuery::create()->getMaxRank($con);
+        $maxRank = POSubscriptionQuery::create()->getMaxRankArray($con);
         if ($rank < 1 || $rank > $maxRank + 1) {
             throw new PropelException('Invalid rank ' . $rank);
         }
@@ -2372,7 +2408,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
      */
     public function insertAtBottom(PropelPDO $con = null)
     {
-        $this->setSortableRank(POSubscriptionQuery::create()->getMaxRank($con) + 1);
+        $this->setSortableRank(POSubscriptionQuery::create()->getMaxRankArray($con) + 1);
 
         return $this;
     }
@@ -2407,7 +2443,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
         if ($con === null) {
             $con = Propel::getConnection(POSubscriptionPeer::DATABASE_NAME);
         }
-        if ($newRank < 1 || $newRank > POSubscriptionQuery::create()->getMaxRank($con)) {
+        if ($newRank < 1 || $newRank > POSubscriptionQuery::create()->getMaxRankArray($con)) {
             throw new PropelException('Invalid rank ' . $newRank);
         }
 
@@ -2556,7 +2592,7 @@ abstract class BasePOSubscription extends BaseObject implements Persistent
         }
         $con->beginTransaction();
         try {
-            $bottom = POSubscriptionQuery::create()->getMaxRank($con);
+            $bottom = POSubscriptionQuery::create()->getMaxRankArray($con);
             $res = $this->moveToRank($bottom, $con);
             $con->commit();
 

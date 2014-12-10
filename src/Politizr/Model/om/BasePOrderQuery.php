@@ -177,8 +177,14 @@ abstract class BasePOrderQuery extends ModelCriteria
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = 'Politizr\\Model\\POrder', $modelAlias = null)
+    public function __construct($dbName = null, $modelName = null, $modelAlias = null)
     {
+        if (null === $dbName) {
+            $dbName = 'default';
+        }
+        if (null === $modelName) {
+            $modelName = 'Politizr\\Model\\POrder';
+        }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
@@ -195,10 +201,8 @@ abstract class BasePOrderQuery extends ModelCriteria
         if ($criteria instanceof POrderQuery) {
             return $criteria;
         }
-        $query = new POrderQuery();
-        if (null !== $modelAlias) {
-            $query->setModelAlias($modelAlias);
-        }
+        $query = new POrderQuery(null, null, $modelAlias);
+
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
         }
@@ -226,7 +230,7 @@ abstract class BasePOrderQuery extends ModelCriteria
             return null;
         }
         if ((null !== ($obj = POrderPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
-            // the object is alredy in the instance pool
+            // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
@@ -684,7 +688,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      * <code>
      * $query->filterBySubscriptionBeginAt('2011-03-14'); // WHERE subscription_begin_at = '2011-03-14'
      * $query->filterBySubscriptionBeginAt('now'); // WHERE subscription_begin_at = '2011-03-14'
-     * $query->filterBySubscriptionBeginAt(array('max' => 'yesterday')); // WHERE subscription_begin_at > '2011-03-13'
+     * $query->filterBySubscriptionBeginAt(array('max' => 'yesterday')); // WHERE subscription_begin_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $subscriptionBeginAt The value to use as filter.
@@ -727,7 +731,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      * <code>
      * $query->filterBySubscriptionEndAt('2011-03-14'); // WHERE subscription_end_at = '2011-03-14'
      * $query->filterBySubscriptionEndAt('now'); // WHERE subscription_end_at = '2011-03-14'
-     * $query->filterBySubscriptionEndAt(array('max' => 'yesterday')); // WHERE subscription_end_at > '2011-03-13'
+     * $query->filterBySubscriptionEndAt(array('max' => 'yesterday')); // WHERE subscription_end_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $subscriptionEndAt The value to use as filter.
@@ -1097,7 +1101,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      * <code>
      * $query->filterByInvoiceAt('2011-03-14'); // WHERE invoice_at = '2011-03-14'
      * $query->filterByInvoiceAt('now'); // WHERE invoice_at = '2011-03-14'
-     * $query->filterByInvoiceAt(array('max' => 'yesterday')); // WHERE invoice_at > '2011-03-13'
+     * $query->filterByInvoiceAt(array('max' => 'yesterday')); // WHERE invoice_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $invoiceAt The value to use as filter.
@@ -1227,7 +1231,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      * <code>
      * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
      * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $createdAt The value to use as filter.
@@ -1270,7 +1274,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      * <code>
      * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
      * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $updatedAt The value to use as filter.
@@ -2019,7 +2023,7 @@ abstract class BasePOrderQuery extends ModelCriteria
                 $totalArchivedObjects++;
             }
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }

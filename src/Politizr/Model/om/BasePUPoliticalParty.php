@@ -41,7 +41,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -176,6 +176,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -186,6 +187,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -196,6 +198,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getInitials()
     {
+
         return $this->initials;
     }
 
@@ -206,6 +209,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getFileName()
     {
+
         return $this->file_name;
     }
 
@@ -216,6 +220,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -226,6 +231,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -316,6 +322,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
@@ -326,13 +333,14 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function getSortableRank()
     {
+
         return $this->sortable_rank;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setId($v)
@@ -353,12 +361,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -374,12 +382,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [initials] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setInitials($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -395,12 +403,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [file_name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setFileName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -416,12 +424,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -512,12 +520,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -533,7 +541,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * Set the value of [sortable_rank] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUPoliticalParty The current object (for fluent API support)
      */
     public function setSortableRank($v)
@@ -574,7 +582,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -601,6 +609,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 10; // 10 = PUPoliticalPartyPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -765,7 +774,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 }
                 // sortable behavior
                 if (!$this->isColumnModified(PUPoliticalPartyPeer::RANK_COL)) {
-                    $this->setSortableRank(PUPoliticalPartyQuery::create()->getMaxRank($con) + 1);
+                    $this->setSortableRank(PUPoliticalPartyQuery::create()->getMaxRankArray($con) + 1);
                 }
 
             } else {
@@ -831,7 +840,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     foreach ($this->puAffinityUppPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuAffinityUppPUPoliticalPartyQuery::create()
+                    PUAffinityUPPQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puAffinityUppPUsersScheduledForDeletion = null;
@@ -1062,10 +1071,10 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1202,6 +1211,11 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
             $keys[8] => $this->getSlug(),
             $keys[9] => $this->getSortableRank(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPUQualifications) {
                 $result['PUQualifications'] = $this->collPUQualifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1566,7 +1580,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     if (false !== $this->collPUQualificationsPartial && count($collPUQualifications)) {
                       $this->initPUQualifications(false);
 
-                      foreach($collPUQualifications as $obj) {
+                      foreach ($collPUQualifications as $obj) {
                         if (false == $this->collPUQualifications->contains($obj)) {
                           $this->collPUQualifications->append($obj);
                         }
@@ -1576,12 +1590,13 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     }
 
                     $collPUQualifications->getInternalIterator()->rewind();
+
                     return $collPUQualifications;
                 }
 
-                if($partial && $this->collPUQualifications) {
-                    foreach($this->collPUQualifications as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUQualifications) {
+                    foreach ($this->collPUQualifications as $obj) {
+                        if ($obj->isNew()) {
                             $collPUQualifications[] = $obj;
                         }
                     }
@@ -1609,7 +1624,8 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     {
         $pUQualificationsToDelete = $this->getPUQualifications(new Criteria(), $con)->diff($pUQualifications);
 
-        $this->pUQualificationsScheduledForDeletion = unserialize(serialize($pUQualificationsToDelete));
+
+        $this->pUQualificationsScheduledForDeletion = $pUQualificationsToDelete;
 
         foreach ($pUQualificationsToDelete as $pUQualificationRemoved) {
             $pUQualificationRemoved->setPUPoliticalParty(null);
@@ -1643,7 +1659,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUQualifications());
             }
             $query = PUQualificationQuery::create(null, $criteria);
@@ -1672,8 +1688,13 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
             $this->initPUQualifications();
             $this->collPUQualificationsPartial = true;
         }
+
         if (!in_array($l, $this->collPUQualifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUQualification($l);
+
+            if ($this->pUQualificationsScheduledForDeletion and $this->pUQualificationsScheduledForDeletion->contains($l)) {
+                $this->pUQualificationsScheduledForDeletion->remove($this->pUQualificationsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1834,7 +1855,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     if (false !== $this->collPuAffinityUppPUPoliticalPartiesPartial && count($collPuAffinityUppPUPoliticalParties)) {
                       $this->initPuAffinityUppPUPoliticalParties(false);
 
-                      foreach($collPuAffinityUppPUPoliticalParties as $obj) {
+                      foreach ($collPuAffinityUppPUPoliticalParties as $obj) {
                         if (false == $this->collPuAffinityUppPUPoliticalParties->contains($obj)) {
                           $this->collPuAffinityUppPUPoliticalParties->append($obj);
                         }
@@ -1844,12 +1865,13 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                     }
 
                     $collPuAffinityUppPUPoliticalParties->getInternalIterator()->rewind();
+
                     return $collPuAffinityUppPUPoliticalParties;
                 }
 
-                if($partial && $this->collPuAffinityUppPUPoliticalParties) {
-                    foreach($this->collPuAffinityUppPUPoliticalParties as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuAffinityUppPUPoliticalParties) {
+                    foreach ($this->collPuAffinityUppPUPoliticalParties as $obj) {
+                        if ($obj->isNew()) {
                             $collPuAffinityUppPUPoliticalParties[] = $obj;
                         }
                     }
@@ -1877,7 +1899,8 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     {
         $puAffinityUppPUPoliticalPartiesToDelete = $this->getPuAffinityUppPUPoliticalParties(new Criteria(), $con)->diff($puAffinityUppPUPoliticalParties);
 
-        $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = unserialize(serialize($puAffinityUppPUPoliticalPartiesToDelete));
+
+        $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = $puAffinityUppPUPoliticalPartiesToDelete;
 
         foreach ($puAffinityUppPUPoliticalPartiesToDelete as $puAffinityUppPUPoliticalPartyRemoved) {
             $puAffinityUppPUPoliticalPartyRemoved->setPuAffinityUppPUPoliticalParty(null);
@@ -1911,7 +1934,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuAffinityUppPUPoliticalParties());
             }
             $query = PUAffinityUPPQuery::create(null, $criteria);
@@ -1940,8 +1963,13 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
             $this->initPuAffinityUppPUPoliticalParties();
             $this->collPuAffinityUppPUPoliticalPartiesPartial = true;
         }
+
         if (!in_array($l, $this->collPuAffinityUppPUPoliticalParties->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuAffinityUppPUPoliticalParty($l);
+
+            if ($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion and $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->contains($l)) {
+                $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->remove($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2080,7 +2108,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     public function setPuAffinityUppPUsers(PropelCollection $puAffinityUppPUsers, PropelPDO $con = null)
     {
         $this->clearPuAffinityUppPUsers();
-        $currentPuAffinityUppPUsers = $this->getPuAffinityUppPUsers();
+        $currentPuAffinityUppPUsers = $this->getPuAffinityUppPUsers(null, $con);
 
         $this->puAffinityUppPUsersScheduledForDeletion = $currentPuAffinityUppPUsers->diff($puAffinityUppPUsers);
 
@@ -2137,10 +2165,14 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
         if ($this->collPuAffinityUppPUsers === null) {
             $this->initPuAffinityUppPUsers();
         }
+
         if (!$this->collPuAffinityUppPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuAffinityUppPUser($pUser);
+            $this->collPuAffinityUppPUsers[] = $pUser;
 
-            $this->collPuAffinityUppPUsers[]= $pUser;
+            if ($this->puAffinityUppPUsersScheduledForDeletion and $this->puAffinityUppPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puAffinityUppPUsersScheduledForDeletion->remove($this->puAffinityUppPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -2149,11 +2181,17 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     /**
      * @param	PuAffinityUppPUser $puAffinityUppPUser The puAffinityUppPUser object to add.
      */
-    protected function doAddPuAffinityUppPUser($puAffinityUppPUser)
+    protected function doAddPuAffinityUppPUser(PUser $puAffinityUppPUser)
     {
-        $pUAffinityUPP = new PUAffinityUPP();
-        $pUAffinityUPP->setPuAffinityUppPUser($puAffinityUppPUser);
-        $this->addPuAffinityUppPUPoliticalParty($pUAffinityUPP);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puAffinityUppPUser->getPuAffinityUppPUPoliticalParties()->contains($this)) { $pUAffinityUPP = new PUAffinityUPP();
+            $pUAffinityUPP->setPuAffinityUppPUser($puAffinityUppPUser);
+            $this->addPuAffinityUppPUPoliticalParty($pUAffinityUPP);
+
+            $foreignCollection = $puAffinityUppPUser->getPuAffinityUppPUPoliticalParties();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -2206,7 +2244,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -2347,7 +2385,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -2381,9 +2419,8 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PUPoliticalPartyQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PUPoliticalPartyQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -2407,7 +2444,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 
@@ -2456,7 +2493,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function isLast(PropelPDO $con = null)
     {
-        return $this->getSortableRank() == PUPoliticalPartyQuery::create()->getMaxRank($con);
+        return $this->getSortableRank() == PUPoliticalPartyQuery::create()->getMaxRankArray($con);
     }
 
     /**
@@ -2469,7 +2506,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     public function getNext(PropelPDO $con = null)
     {
 
-        return PUPoliticalPartyQuery::create()->findOneByRank($this->getSortableRank() + 1, $con);
+        $query = PUPoliticalPartyQuery::create();
+
+        $query->filterByRank($this->getSortableRank() + 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -2482,7 +2524,12 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
     public function getPrevious(PropelPDO $con = null)
     {
 
-        return PUPoliticalPartyQuery::create()->findOneByRank($this->getSortableRank() - 1, $con);
+        $query = PUPoliticalPartyQuery::create();
+
+        $query->filterByRank($this->getSortableRank() - 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -2498,7 +2545,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function insertAtRank($rank, PropelPDO $con = null)
     {
-        $maxRank = PUPoliticalPartyQuery::create()->getMaxRank($con);
+        $maxRank = PUPoliticalPartyQuery::create()->getMaxRankArray($con);
         if ($rank < 1 || $rank > $maxRank + 1) {
             throw new PropelException('Invalid rank ' . $rank);
         }
@@ -2527,7 +2574,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
      */
     public function insertAtBottom(PropelPDO $con = null)
     {
-        $this->setSortableRank(PUPoliticalPartyQuery::create()->getMaxRank($con) + 1);
+        $this->setSortableRank(PUPoliticalPartyQuery::create()->getMaxRankArray($con) + 1);
 
         return $this;
     }
@@ -2562,7 +2609,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
         if ($con === null) {
             $con = Propel::getConnection(PUPoliticalPartyPeer::DATABASE_NAME);
         }
-        if ($newRank < 1 || $newRank > PUPoliticalPartyQuery::create()->getMaxRank($con)) {
+        if ($newRank < 1 || $newRank > PUPoliticalPartyQuery::create()->getMaxRankArray($con)) {
             throw new PropelException('Invalid rank ' . $newRank);
         }
 
@@ -2711,7 +2758,7 @@ abstract class BasePUPoliticalParty extends BaseObject implements Persistent
         }
         $con->beginTransaction();
         try {
-            $bottom = PUPoliticalPartyQuery::create()->getMaxRank($con);
+            $bottom = PUPoliticalPartyQuery::create()->getMaxRankArray($con);
             $res = $this->moveToRank($bottom, $con);
             $con->commit();
 

@@ -27,7 +27,7 @@ abstract class BasePRBadgeMetalPeer
     const OM_CLASS = 'Politizr\\Model\\PRBadgeMetal';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PRBadgeMetalTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeMetalTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -57,7 +57,7 @@ abstract class BasePRBadgeMetalPeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of PRBadgeMetal objects.
+     * An identity map to hold any loaded instances of PRBadgeMetal objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array PRBadgeMetal[]
@@ -229,7 +229,7 @@ abstract class BasePRBadgeMetalPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 PRBadgeMetal
+     * @return PRBadgeMetal
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -296,7 +296,7 @@ abstract class BasePRBadgeMetalPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      PRBadgeMetal $obj A PRBadgeMetal object.
+     * @param PRBadgeMetal $obj A PRBadgeMetal object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -346,7 +346,7 @@ abstract class BasePRBadgeMetalPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   PRBadgeMetal Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PRBadgeMetal Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -367,10 +367,8 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (PRBadgeMetalPeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (PRBadgeMetalPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -501,7 +499,7 @@ abstract class BasePRBadgeMetalPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePRBadgeMetalPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePRBadgeMetalPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PRBadgeMetalTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\PRBadgeMetalTableMap());
       }
     }
 
@@ -551,7 +549,7 @@ abstract class BasePRBadgeMetalPeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -624,7 +622,7 @@ abstract class BasePRBadgeMetalPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -683,7 +681,7 @@ abstract class BasePRBadgeMetalPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -696,7 +694,7 @@ abstract class BasePRBadgeMetalPeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      PRBadgeMetal $obj The object to validate.
+     * @param PRBadgeMetal $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -729,7 +727,7 @@ abstract class BasePRBadgeMetalPeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return PRBadgeMetal
      */

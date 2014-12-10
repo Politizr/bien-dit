@@ -100,7 +100,7 @@
         
         "propel/propel-bundle": "1.2.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",
-        "craftyshadow/propel-equalnest-behavior": "1.0.5",
+        "craftyshadow/propel-equalnest-behavior": "~1.2",
 
         "phing/phing": "2.4.14",
         

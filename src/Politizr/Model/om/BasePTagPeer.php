@@ -30,7 +30,7 @@ abstract class BasePTagPeer
     const OM_CLASS = 'Politizr\\Model\\PTag';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PTagTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PTagTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 7;
@@ -66,7 +66,7 @@ abstract class BasePTagPeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of PTag objects.
+     * An identity map to hold any loaded instances of PTag objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array PTag[]
@@ -242,7 +242,7 @@ abstract class BasePTagPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 PTag
+     * @return PTag
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -309,7 +309,7 @@ abstract class BasePTagPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      PTag $obj A PTag object.
+     * @param PTag $obj A PTag object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -359,7 +359,7 @@ abstract class BasePTagPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   PTag Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PTag Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -380,10 +380,8 @@ abstract class BasePTagPeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (PTagPeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (PTagPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -758,7 +756,7 @@ abstract class BasePTagPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePTagPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePTagPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PTagTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\PTagTableMap());
       }
     }
 
@@ -808,7 +806,7 @@ abstract class BasePTagPeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -881,7 +879,7 @@ abstract class BasePTagPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -940,7 +938,7 @@ abstract class BasePTagPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -953,7 +951,7 @@ abstract class BasePTagPeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      PTag $obj The object to validate.
+     * @param PTag $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -986,7 +984,7 @@ abstract class BasePTagPeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return PTag
      */

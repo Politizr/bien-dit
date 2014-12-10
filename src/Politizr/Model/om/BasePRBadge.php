@@ -45,7 +45,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -167,6 +167,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -177,6 +178,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getPRBadgeTypeId()
     {
+
         return $this->p_r_badge_type_id;
     }
 
@@ -187,6 +189,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getPRBadgeMetalId()
     {
+
         return $this->p_r_badge_metal_id;
     }
 
@@ -197,6 +200,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -207,6 +211,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -217,6 +222,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -307,13 +313,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setId($v)
@@ -334,7 +341,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Set the value of [p_r_badge_type_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setPRBadgeTypeId($v)
@@ -359,7 +366,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Set the value of [p_r_badge_metal_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setPRBadgeMetalId($v)
@@ -384,12 +391,12 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -405,12 +412,12 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -501,12 +508,12 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRBadge The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -542,7 +549,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -568,6 +575,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 9; // 9 = PRBadgePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -785,7 +793,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->alreadyInSave = true;
 
             // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -821,7 +829,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                     foreach ($this->puReputationRbPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuReputationRbPRBadgeQuery::create()
+                    PUReputationRBQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puReputationRbPUsersScheduledForDeletion = null;
@@ -1028,10 +1036,10 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1043,7 +1051,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
 
             // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -1174,6 +1182,11 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $keys[7] => $this->getUpdatedAt(),
             $keys[8] => $this->getSlug(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->aPRBadgeType) {
                 $result['PRBadgeType'] = $this->aPRBadgeType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1436,7 +1449,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a PRBadgeType object.
      *
-     * @param             PRBadgeType $v
+     * @param                  PRBadgeType $v
      * @return PRBadge The current object (for fluent API support)
      * @throws PropelException
      */
@@ -1488,7 +1501,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a PRBadgeMetal object.
      *
-     * @param             PRBadgeMetal $v
+     * @param                  PRBadgeMetal $v
      * @return PRBadge The current object (for fluent API support)
      * @throws PropelException
      */
@@ -1630,7 +1643,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                     if (false !== $this->collPuReputationRbPRBadgesPartial && count($collPuReputationRbPRBadges)) {
                       $this->initPuReputationRbPRBadges(false);
 
-                      foreach($collPuReputationRbPRBadges as $obj) {
+                      foreach ($collPuReputationRbPRBadges as $obj) {
                         if (false == $this->collPuReputationRbPRBadges->contains($obj)) {
                           $this->collPuReputationRbPRBadges->append($obj);
                         }
@@ -1640,12 +1653,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                     }
 
                     $collPuReputationRbPRBadges->getInternalIterator()->rewind();
+
                     return $collPuReputationRbPRBadges;
                 }
 
-                if($partial && $this->collPuReputationRbPRBadges) {
-                    foreach($this->collPuReputationRbPRBadges as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuReputationRbPRBadges) {
+                    foreach ($this->collPuReputationRbPRBadges as $obj) {
+                        if ($obj->isNew()) {
                             $collPuReputationRbPRBadges[] = $obj;
                         }
                     }
@@ -1673,7 +1687,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
         $puReputationRbPRBadgesToDelete = $this->getPuReputationRbPRBadges(new Criteria(), $con)->diff($puReputationRbPRBadges);
 
-        $this->puReputationRbPRBadgesScheduledForDeletion = unserialize(serialize($puReputationRbPRBadgesToDelete));
+
+        $this->puReputationRbPRBadgesScheduledForDeletion = $puReputationRbPRBadgesToDelete;
 
         foreach ($puReputationRbPRBadgesToDelete as $puReputationRbPRBadgeRemoved) {
             $puReputationRbPRBadgeRemoved->setPuReputationRbPRBadge(null);
@@ -1707,7 +1722,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuReputationRbPRBadges());
             }
             $query = PUReputationRBQuery::create(null, $criteria);
@@ -1736,8 +1751,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->initPuReputationRbPRBadges();
             $this->collPuReputationRbPRBadgesPartial = true;
         }
+
         if (!in_array($l, $this->collPuReputationRbPRBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRbPRBadge($l);
+
+            if ($this->puReputationRbPRBadgesScheduledForDeletion and $this->puReputationRbPRBadgesScheduledForDeletion->contains($l)) {
+                $this->puReputationRbPRBadgesScheduledForDeletion->remove($this->puReputationRbPRBadgesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1876,7 +1896,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     public function setPuReputationRbPUsers(PropelCollection $puReputationRbPUsers, PropelPDO $con = null)
     {
         $this->clearPuReputationRbPUsers();
-        $currentPuReputationRbPUsers = $this->getPuReputationRbPUsers();
+        $currentPuReputationRbPUsers = $this->getPuReputationRbPUsers(null, $con);
 
         $this->puReputationRbPUsersScheduledForDeletion = $currentPuReputationRbPUsers->diff($puReputationRbPUsers);
 
@@ -1933,10 +1953,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         if ($this->collPuReputationRbPUsers === null) {
             $this->initPuReputationRbPUsers();
         }
+
         if (!$this->collPuReputationRbPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRbPUser($pUser);
+            $this->collPuReputationRbPUsers[] = $pUser;
 
-            $this->collPuReputationRbPUsers[]= $pUser;
+            if ($this->puReputationRbPUsersScheduledForDeletion and $this->puReputationRbPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puReputationRbPUsersScheduledForDeletion->remove($this->puReputationRbPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -1945,11 +1969,17 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * @param	PuReputationRbPUser $puReputationRbPUser The puReputationRbPUser object to add.
      */
-    protected function doAddPuReputationRbPUser($puReputationRbPUser)
+    protected function doAddPuReputationRbPUser(PUser $puReputationRbPUser)
     {
-        $pUReputationRB = new PUReputationRB();
-        $pUReputationRB->setPuReputationRbPUser($puReputationRbPUser);
-        $this->addPuReputationRbPRBadge($pUReputationRB);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puReputationRbPUser->getPuReputationRbPRBadges()->contains($this)) { $pUReputationRB = new PUReputationRB();
+            $pUReputationRB->setPuReputationRbPUser($puReputationRbPUser);
+            $this->addPuReputationRbPRBadge($pUReputationRB);
+
+            $foreignCollection = $puReputationRbPUser->getPuReputationRbPRBadges();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -2001,7 +2031,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -2249,7 +2279,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -2283,9 +2313,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PRBadgeQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PRBadgeQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -2309,7 +2338,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 

@@ -198,8 +198,14 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = 'Politizr\\Model\\PUserArchive', $modelAlias = null)
+    public function __construct($dbName = null, $modelName = null, $modelAlias = null)
     {
+        if (null === $dbName) {
+            $dbName = 'default';
+        }
+        if (null === $modelName) {
+            $modelName = 'Politizr\\Model\\PUserArchive';
+        }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
@@ -216,10 +222,8 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         if ($criteria instanceof PUserArchiveQuery) {
             return $criteria;
         }
-        $query = new PUserArchiveQuery();
-        if (null !== $modelAlias) {
-            $query->setModelAlias($modelAlias);
-        }
+        $query = new PUserArchiveQuery(null, null, $modelAlias);
+
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
         }
@@ -247,7 +251,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
             return null;
         }
         if ((null !== ($obj = PUserArchivePeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
-            // the object is alredy in the instance pool
+            // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
@@ -744,7 +748,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByLastLogin('2011-03-14'); // WHERE last_login = '2011-03-14'
      * $query->filterByLastLogin('now'); // WHERE last_login = '2011-03-14'
-     * $query->filterByLastLogin(array('max' => 'yesterday')); // WHERE last_login > '2011-03-13'
+     * $query->filterByLastLogin(array('max' => 'yesterday')); // WHERE last_login < '2011-03-13'
      * </code>
      *
      * @param     mixed $lastLogin The value to use as filter.
@@ -841,7 +845,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByExpiresAt('2011-03-14'); // WHERE expires_at = '2011-03-14'
      * $query->filterByExpiresAt('now'); // WHERE expires_at = '2011-03-14'
-     * $query->filterByExpiresAt(array('max' => 'yesterday')); // WHERE expires_at > '2011-03-13'
+     * $query->filterByExpiresAt(array('max' => 'yesterday')); // WHERE expires_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $expiresAt The value to use as filter.
@@ -913,7 +917,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByPasswordRequestedAt('2011-03-14'); // WHERE password_requested_at = '2011-03-14'
      * $query->filterByPasswordRequestedAt('now'); // WHERE password_requested_at = '2011-03-14'
-     * $query->filterByPasswordRequestedAt(array('max' => 'yesterday')); // WHERE password_requested_at > '2011-03-13'
+     * $query->filterByPasswordRequestedAt(array('max' => 'yesterday')); // WHERE password_requested_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $passwordRequestedAt The value to use as filter.
@@ -983,7 +987,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByCredentialsExpireAt('2011-03-14'); // WHERE credentials_expire_at = '2011-03-14'
      * $query->filterByCredentialsExpireAt('now'); // WHERE credentials_expire_at = '2011-03-14'
-     * $query->filterByCredentialsExpireAt(array('max' => 'yesterday')); // WHERE credentials_expire_at > '2011-03-13'
+     * $query->filterByCredentialsExpireAt(array('max' => 'yesterday')); // WHERE credentials_expire_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $credentialsExpireAt The value to use as filter.
@@ -1305,7 +1309,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByBirthday('2011-03-14'); // WHERE birthday = '2011-03-14'
      * $query->filterByBirthday('now'); // WHERE birthday = '2011-03-14'
-     * $query->filterByBirthday(array('max' => 'yesterday')); // WHERE birthday > '2011-03-13'
+     * $query->filterByBirthday(array('max' => 'yesterday')); // WHERE birthday < '2011-03-13'
      * </code>
      *
      * @param     mixed $birthday The value to use as filter.
@@ -1520,7 +1524,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByLastConnect('2011-03-14'); // WHERE last_connect = '2011-03-14'
      * $query->filterByLastConnect('now'); // WHERE last_connect = '2011-03-14'
-     * $query->filterByLastConnect(array('max' => 'yesterday')); // WHERE last_connect > '2011-03-13'
+     * $query->filterByLastConnect(array('max' => 'yesterday')); // WHERE last_connect < '2011-03-13'
      * </code>
      *
      * @param     mixed $lastConnect The value to use as filter.
@@ -1659,7 +1663,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
      * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $createdAt The value to use as filter.
@@ -1702,7 +1706,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
      * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $updatedAt The value to use as filter.
@@ -1745,7 +1749,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByArchivedAt('2011-03-14'); // WHERE archived_at = '2011-03-14'
      * $query->filterByArchivedAt('now'); // WHERE archived_at = '2011-03-14'
-     * $query->filterByArchivedAt(array('max' => 'yesterday')); // WHERE archived_at > '2011-03-13'
+     * $query->filterByArchivedAt(array('max' => 'yesterday')); // WHERE archived_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $archivedAt The value to use as filter.

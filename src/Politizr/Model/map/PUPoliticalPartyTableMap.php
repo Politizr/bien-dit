@@ -96,7 +96,7 @@ class PUPoliticalPartyTableMap extends TableMap
             'sortable' =>  array (
   'rank_column' => 'sortable_rank',
   'use_scope' => 'false',
-  'scope_column' => 'sortable_scope',
+  'scope_column' => '',
 ),
         );
     } // getBehaviors()

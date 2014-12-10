@@ -122,79 +122,118 @@ Politizr\Model\PRBadge:
             Atteindre un score de +X à un de ses commentaires
 
 
-
-
-
 Politizr\Model\PRAction:
-    d_debate_note_pos:
+    d_debate_publish:
+        online:             true
+        title:              Publier un débat
+        description:        |
+            Publier un débat
+        score_evolution:    10
+    d_reaction_publish:
+        online:             true
+        title:              Publier une réaction
+        description:        |
+            Publier une réaction
+        score_evolution:    30
+    d_comment_publish:
+        online:             true
+        title:              Publier un commentaire
+        description:        |
+            Publier un commentaire
+        score_evolution:    5
+    d_target_debate_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à son débat
+        description:        |
+            Publication d'une réaction sur un de ses débats
+        score_evolution:    5
+    d_target_reaction_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à sa réaction
+        description:        |
+            Publication d'une réaction sur une de ses réactions
+        score_evolution:    5
+    d_target_debate_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à son débat
+        description:        |
+            Publication d'un commentaire sur un de ses débats
+        score_evolution:    2
+    d_target_reaction_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à sa réaction
+        description:        |
+            Publication d'un commentaire sur une de ses réactions
+        score_evolution:    2
+    d_author_debate_note_pos:
         online:				true
-        title:				Note positive débat
+        title:				Donner une note positive à un débat
         description:		|
             Mettre une note + à un débat
         score_evolution:	1
-    d_debate_note_neg:
+    d_author_debate_note_neg:
         online:				true
-        title:				Note négative débat
+        title:				Donner une note négative à un débat
         description:		|
             Mettre une note - à un débat
         score_evolution:	-1
-    d_reaction_note_pos:
+    d_author_reaction_note_pos:
         online:             true
-        title:              Note positive réaction
+        title:              Donner une note positive à une réaction
         description:        |
-            Mettre une note + à un débat
+            Mettre une note + à une réaction
         score_evolution:    1
-    d_reaction_note_neg:
+    d_author_reaction_note_neg:
         online:             true
-        title:              Note négative réaction
+        title:              Donner une note négative à une réaction
         description:        |
             Mettre une note - à une réaction
         score_evolution:    -1
-    d_d_comment_note_pos:
+    d_author_comment_note_pos:
         online:             true
-        title:              Note positive commentaire débat
+        title:              Donner une note positive à un commentaire
         description:        |
-            Mettre une note + à un commentaire débat
+            Mettre une note + à un commentaire
         score_evolution:    1
-    d_d_comment_note_neg:
+    d_author_comment_note_neg:
         online:             true
-        title:              Note négative commentaire débat
+        title:              Donner une note négative à un commentaire
         description:        |
-            Mettre une note - à un commentaire débat
+            Mettre une note - à un commentaire
         score_evolution:    -1
-    d_r_comment_note_pos:
+    d_target_debate_note_pos:
         online:             true
-        title:              Note positive commentaire réaction
+        title:              Recevoir une note positive à son débat
         description:        |
-            Mettre une note + à un commentaire réaction
+            Recevoir une note + à son débat
         score_evolution:    1
-    d_r_comment_note_neg:
+    d_target_debate_note_neg:
         online:             true
-        title:              Note négative commentaire réaction
+        title:              Recevoir une note négative à son débat
         description:        |
-            Mettre une note - à un commentaire réaction
+            Recevoir une note - à son débat
         score_evolution:    -1
-    d_debate_write:
+    d_target_reaction_note_pos:
         online:             true
-        title:              Rédiger un débat
+        title:              Recevoir une note positive à sa réaction
         description:        |
-            Rédiger un débat
-        score_evolution:    10
-    d_reaction_write:
+            Recevoir une note + à sa réaction
+        score_evolution:    1
+    d_target_reaction_note_neg:
         online:             true
-        title:              Rédiger une réaction
+        title:              Recevoir une note négative à sa réaction
         description:        |
-            Rédiger une réaction
-        score_evolution:    10
-    d_d_comment_write:
+            Recevoir une note - à sa réaction
+        score_evolution:    -1
+    d_target_comment_note_pos:
         online:             true
-        title:              Rédiger un commentaire débat
+        title:              Recevoir une note positive à son commentaire
         description:        |
-            Rédiger un commentaire débat
-        score_evolution:    5
-    d_r_comment_write:
+            Recevoir une note + à son commentaire
+        score_evolution:    1
+    d_target_comment_note_neg:
         online:             true
-        title:              Rédiger un commentaire réaction
+        title:              Recevoir une note négative à son commentaire
         description:        |
-            Rédiger un commentaire réaction
-        score_evolution:    5
+            Recevoir une note - à son commentaire
+        score_evolution:    -1

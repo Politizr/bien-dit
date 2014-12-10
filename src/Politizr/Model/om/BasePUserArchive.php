@@ -33,7 +33,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -348,6 +348,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -358,6 +359,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getProvider()
     {
+
         return $this->provider;
     }
 
@@ -368,6 +370,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getProviderId()
     {
+
         return $this->provider_id;
     }
 
@@ -378,6 +381,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getNickname()
     {
+
         return $this->nickname;
     }
 
@@ -388,6 +392,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getRealname()
     {
+
         return $this->realname;
     }
 
@@ -398,6 +403,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getUsername()
     {
+
         return $this->username;
     }
 
@@ -408,6 +414,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getUsernameCanonical()
     {
+
         return $this->username_canonical;
     }
 
@@ -418,6 +425,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getEmail()
     {
+
         return $this->email;
     }
 
@@ -428,6 +436,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getEmailCanonical()
     {
+
         return $this->email_canonical;
     }
 
@@ -438,6 +447,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getEnabled()
     {
+
         return $this->enabled;
     }
 
@@ -448,6 +458,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getSalt()
     {
+
         return $this->salt;
     }
 
@@ -458,6 +469,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getPassword()
     {
+
         return $this->password;
     }
 
@@ -508,6 +520,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getLocked()
     {
+
         return $this->locked;
     }
 
@@ -518,6 +531,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getExpired()
     {
+
         return $this->expired;
     }
 
@@ -568,6 +582,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getConfirmationToken()
     {
+
         return $this->confirmation_token;
     }
 
@@ -618,6 +633,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getCredentialsExpired()
     {
+
         return $this->credentials_expired;
     }
 
@@ -697,6 +713,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getPUTypeId()
     {
+
         return $this->p_u_type_id;
     }
 
@@ -707,6 +724,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getPUStatusId()
     {
+
         return $this->p_u_status_id;
     }
 
@@ -717,6 +735,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getFileName()
     {
+
         return $this->file_name;
     }
 
@@ -746,6 +765,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getFirstname()
     {
+
         return $this->firstname;
     }
 
@@ -756,6 +776,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getName()
     {
+
         return $this->name;
     }
 
@@ -806,6 +827,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getBiography()
     {
+
         return $this->biography;
     }
 
@@ -816,6 +838,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getWebsite()
     {
+
         return $this->website;
     }
 
@@ -826,6 +849,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getTwitter()
     {
+
         return $this->twitter;
     }
 
@@ -836,6 +860,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getFacebook()
     {
+
         return $this->facebook;
     }
 
@@ -846,6 +871,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getPhone()
     {
+
         return $this->phone;
     }
 
@@ -856,6 +882,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getNewsletter()
     {
+
         return $this->newsletter;
     }
 
@@ -906,6 +933,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getNbViews()
     {
+
         return $this->nb_views;
     }
 
@@ -916,6 +944,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -926,6 +955,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      */
     public function getValidated()
     {
+
         return $this->validated;
     }
 
@@ -1052,7 +1082,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setId($v)
@@ -1073,12 +1103,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [provider] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setProvider($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1094,12 +1124,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [provider_id] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setProviderId($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1115,12 +1145,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [nickname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setNickname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1136,12 +1166,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [realname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setRealname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1157,12 +1187,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [username] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setUsername($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1178,12 +1208,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [username_canonical] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setUsernameCanonical($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1199,12 +1229,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [email] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setEmail($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1220,12 +1250,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [email_canonical] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setEmailCanonical($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1270,12 +1300,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [salt] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setSalt($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1291,12 +1321,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [password] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setPassword($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1416,12 +1446,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [confirmation_token] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setConfirmationToken($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1512,14 +1542,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [roles] column.
      *
-     * @param array $v new value
+     * @param  array $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setRoles($v)
     {
         if ($this->roles_unserialized !== $v) {
             $this->roles_unserialized = $v;
-            $this->roles = '| ' . implode(' | ', $v) . ' |';
+            $this->roles = '| ' . implode(' | ', (array) $v) . ' |';
             $this->modifiedColumns[] = PUserArchivePeer::ROLES;
         }
 
@@ -1564,7 +1594,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_u_type_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setPUTypeId($v)
@@ -1585,7 +1615,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_u_status_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setPUStatusId($v)
@@ -1606,12 +1636,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [file_name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setFileName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1627,7 +1657,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [gender] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUserArchive The current object (for fluent API support)
      * @throws PropelException - if the value is not accepted by this enum.
      */
@@ -1653,12 +1683,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [firstname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setFirstname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1674,12 +1704,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1718,12 +1748,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [biography] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setBiography($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1739,12 +1769,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [website] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setWebsite($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1760,12 +1790,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [twitter] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setTwitter($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1781,12 +1811,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [facebook] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setFacebook($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1802,12 +1832,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [phone] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setPhone($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1875,7 +1905,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     /**
      * Set the value of [nb_views] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUserArchive The current object (for fluent API support)
      */
     public function setNbViews($v)
@@ -2063,7 +2093,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -2122,6 +2152,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 41; // 41 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -2660,10 +2691,10 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -2907,6 +2938,11 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $keys[39] => $this->getUpdatedAt(),
             $keys[40] => $this->getArchivedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
 
         return $result;
     }
@@ -3399,7 +3435,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */

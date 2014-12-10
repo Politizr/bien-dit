@@ -37,7 +37,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -105,6 +105,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -115,6 +116,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -201,7 +203,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUStatus The current object (for fluent API support)
      */
     public function setId($v)
@@ -222,12 +224,12 @@ abstract class BasePUStatus extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUStatus The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -309,7 +311,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -330,6 +332,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 4; // 4 = PUStatusPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -676,10 +679,10 @@ abstract class BasePUStatus extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -784,6 +787,11 @@ abstract class BasePUStatus extends BaseObject implements Persistent
             $keys[2] => $this->getCreatedAt(),
             $keys[3] => $this->getUpdatedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPUsers) {
                 $result['PUsers'] = $this->collPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1100,7 +1108,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
                     if (false !== $this->collPUsersPartial && count($collPUsers)) {
                       $this->initPUsers(false);
 
-                      foreach($collPUsers as $obj) {
+                      foreach ($collPUsers as $obj) {
                         if (false == $this->collPUsers->contains($obj)) {
                           $this->collPUsers->append($obj);
                         }
@@ -1110,12 +1118,13 @@ abstract class BasePUStatus extends BaseObject implements Persistent
                     }
 
                     $collPUsers->getInternalIterator()->rewind();
+
                     return $collPUsers;
                 }
 
-                if($partial && $this->collPUsers) {
-                    foreach($this->collPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUsers) {
+                    foreach ($this->collPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPUsers[] = $obj;
                         }
                     }
@@ -1143,7 +1152,8 @@ abstract class BasePUStatus extends BaseObject implements Persistent
     {
         $pUsersToDelete = $this->getPUsers(new Criteria(), $con)->diff($pUsers);
 
-        $this->pUsersScheduledForDeletion = unserialize(serialize($pUsersToDelete));
+
+        $this->pUsersScheduledForDeletion = $pUsersToDelete;
 
         foreach ($pUsersToDelete as $pUserRemoved) {
             $pUserRemoved->setPUStatus(null);
@@ -1177,7 +1187,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUsers());
             }
             $query = PUserQuery::create(null, $criteria);
@@ -1206,8 +1216,13 @@ abstract class BasePUStatus extends BaseObject implements Persistent
             $this->initPUsers();
             $this->collPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUser($l);
+
+            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($l)) {
+                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1289,7 +1304,7 @@ abstract class BasePUStatus extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */

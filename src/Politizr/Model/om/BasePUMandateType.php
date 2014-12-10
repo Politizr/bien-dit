@@ -37,7 +37,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -131,6 +131,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -141,6 +142,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -151,6 +153,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -241,6 +244,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
@@ -251,13 +255,14 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function getSortableRank()
     {
+
         return $this->sortable_rank;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUMandateType The current object (for fluent API support)
      */
     public function setId($v)
@@ -278,12 +283,12 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUMandateType The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -374,12 +379,12 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUMandateType The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -395,7 +400,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     /**
      * Set the value of [sortable_rank] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUMandateType The current object (for fluent API support)
      */
     public function setSortableRank($v)
@@ -436,7 +441,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -460,6 +465,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 7; // 7 = PUMandateTypePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -621,7 +627,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
                 }
                 // sortable behavior
                 if (!$this->isColumnModified(PUMandateTypePeer::RANK_COL)) {
-                    $this->setSortableRank(PUMandateTypeQuery::create()->getMaxRank($con) + 1);
+                    $this->setSortableRank(PUMandateTypeQuery::create()->getMaxRankArray($con) + 1);
                 }
 
             } else {
@@ -857,10 +863,10 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -977,6 +983,11 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
             $keys[5] => $this->getSlug(),
             $keys[6] => $this->getSortableRank(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPUQualifications) {
                 $result['PUQualifications'] = $this->collPUQualifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1311,7 +1322,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
                     if (false !== $this->collPUQualificationsPartial && count($collPUQualifications)) {
                       $this->initPUQualifications(false);
 
-                      foreach($collPUQualifications as $obj) {
+                      foreach ($collPUQualifications as $obj) {
                         if (false == $this->collPUQualifications->contains($obj)) {
                           $this->collPUQualifications->append($obj);
                         }
@@ -1321,12 +1332,13 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
                     }
 
                     $collPUQualifications->getInternalIterator()->rewind();
+
                     return $collPUQualifications;
                 }
 
-                if($partial && $this->collPUQualifications) {
-                    foreach($this->collPUQualifications as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUQualifications) {
+                    foreach ($this->collPUQualifications as $obj) {
+                        if ($obj->isNew()) {
                             $collPUQualifications[] = $obj;
                         }
                     }
@@ -1354,7 +1366,8 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     {
         $pUQualificationsToDelete = $this->getPUQualifications(new Criteria(), $con)->diff($pUQualifications);
 
-        $this->pUQualificationsScheduledForDeletion = unserialize(serialize($pUQualificationsToDelete));
+
+        $this->pUQualificationsScheduledForDeletion = $pUQualificationsToDelete;
 
         foreach ($pUQualificationsToDelete as $pUQualificationRemoved) {
             $pUQualificationRemoved->setPUMandateType(null);
@@ -1388,7 +1401,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUQualifications());
             }
             $query = PUQualificationQuery::create(null, $criteria);
@@ -1417,8 +1430,13 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
             $this->initPUQualifications();
             $this->collPUQualificationsPartial = true;
         }
+
         if (!in_array($l, $this->collPUQualifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUQualification($l);
+
+            if ($this->pUQualificationsScheduledForDeletion and $this->pUQualificationsScheduledForDeletion->contains($l)) {
+                $this->pUQualificationsScheduledForDeletion->remove($this->pUQualificationsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1528,7 +1546,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -1651,7 +1669,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -1685,9 +1703,8 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PUMandateTypeQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PUMandateTypeQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -1711,7 +1728,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 
@@ -1760,7 +1777,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function isLast(PropelPDO $con = null)
     {
-        return $this->getSortableRank() == PUMandateTypeQuery::create()->getMaxRank($con);
+        return $this->getSortableRank() == PUMandateTypeQuery::create()->getMaxRankArray($con);
     }
 
     /**
@@ -1773,7 +1790,12 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     public function getNext(PropelPDO $con = null)
     {
 
-        return PUMandateTypeQuery::create()->findOneByRank($this->getSortableRank() + 1, $con);
+        $query = PUMandateTypeQuery::create();
+
+        $query->filterByRank($this->getSortableRank() + 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -1786,7 +1808,12 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
     public function getPrevious(PropelPDO $con = null)
     {
 
-        return PUMandateTypeQuery::create()->findOneByRank($this->getSortableRank() - 1, $con);
+        $query = PUMandateTypeQuery::create();
+
+        $query->filterByRank($this->getSortableRank() - 1);
+
+
+        return $query->findOne($con);
     }
 
     /**
@@ -1802,7 +1829,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function insertAtRank($rank, PropelPDO $con = null)
     {
-        $maxRank = PUMandateTypeQuery::create()->getMaxRank($con);
+        $maxRank = PUMandateTypeQuery::create()->getMaxRankArray($con);
         if ($rank < 1 || $rank > $maxRank + 1) {
             throw new PropelException('Invalid rank ' . $rank);
         }
@@ -1831,7 +1858,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
      */
     public function insertAtBottom(PropelPDO $con = null)
     {
-        $this->setSortableRank(PUMandateTypeQuery::create()->getMaxRank($con) + 1);
+        $this->setSortableRank(PUMandateTypeQuery::create()->getMaxRankArray($con) + 1);
 
         return $this;
     }
@@ -1866,7 +1893,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
         if ($con === null) {
             $con = Propel::getConnection(PUMandateTypePeer::DATABASE_NAME);
         }
-        if ($newRank < 1 || $newRank > PUMandateTypeQuery::create()->getMaxRank($con)) {
+        if ($newRank < 1 || $newRank > PUMandateTypeQuery::create()->getMaxRankArray($con)) {
             throw new PropelException('Invalid rank ' . $newRank);
         }
 
@@ -2015,7 +2042,7 @@ abstract class BasePUMandateType extends BaseObject implements Persistent
         }
         $con->beginTransaction();
         try {
-            $bottom = PUMandateTypeQuery::create()->getMaxRank($con);
+            $bottom = PUMandateTypeQuery::create()->getMaxRankArray($con);
             $res = $this->moveToRank($bottom, $con);
             $con->commit();
 

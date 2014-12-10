@@ -41,7 +41,7 @@ abstract class BasePUserPeer
     const OM_CLASS = 'Politizr\\Model\\PUser';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PUserTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PUserTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 41;
@@ -183,7 +183,7 @@ abstract class BasePUserPeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of PUser objects.
+     * An identity map to hold any loaded instances of PUser objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array PUser[]
@@ -301,7 +301,7 @@ abstract class BasePUserPeer
      * @param string $colname ENUM column name.
      * @param string $enumVal ENUM value.
      *
-     * @return int            SQL value
+     * @return int SQL value
      */
     public static function getSqlValueForEnum($colname, $enumVal)
     {
@@ -309,6 +309,7 @@ abstract class BasePUserPeer
         if (!in_array($enumVal, $values)) {
             throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
         }
+
         return array_search($enumVal, $values);
     }
 
@@ -479,7 +480,7 @@ abstract class BasePUserPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 PUser
+     * @return PUser
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -546,7 +547,7 @@ abstract class BasePUserPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      PUser $obj A PUser object.
+     * @param PUser $obj A PUser object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -596,7 +597,7 @@ abstract class BasePUserPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   PUser Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PUser Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -617,10 +618,8 @@ abstract class BasePUserPeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (PUserPeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (PUserPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -775,7 +774,7 @@ abstract class BasePUserPeer
      * Gets the SQL value for Gender ENUM value
      *
      * @param  string $enumVal ENUM value to get SQL value for
-     * @return int             SQL value
+     * @return int SQL value
      */
     public static function getGenderSqlValue($enumVal)
     {
@@ -1432,7 +1431,7 @@ abstract class BasePUserPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePUserPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePUserPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PUserTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\PUserTableMap());
       }
     }
 
@@ -1482,7 +1481,7 @@ abstract class BasePUserPeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1555,7 +1554,7 @@ abstract class BasePUserPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1614,7 +1613,7 @@ abstract class BasePUserPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1627,7 +1626,7 @@ abstract class BasePUserPeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      PUser $obj The object to validate.
+     * @param PUser $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1660,7 +1659,7 @@ abstract class BasePUserPeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return PUser
      */

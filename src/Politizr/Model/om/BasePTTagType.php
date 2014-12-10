@@ -37,7 +37,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -111,6 +111,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -121,6 +122,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -131,6 +133,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -217,7 +220,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PTTagType The current object (for fluent API support)
      */
     public function setId($v)
@@ -238,12 +241,12 @@ abstract class BasePTTagType extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PTTagType The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -259,12 +262,12 @@ abstract class BasePTTagType extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PTTagType The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -346,7 +349,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -368,6 +371,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 5; // 5 = PTTagTypePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -731,10 +735,10 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -843,6 +847,11 @@ abstract class BasePTTagType extends BaseObject implements Persistent
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPTags) {
                 $result['PTags'] = $this->collPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1165,7 +1174,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
                     if (false !== $this->collPTagsPartial && count($collPTags)) {
                       $this->initPTags(false);
 
-                      foreach($collPTags as $obj) {
+                      foreach ($collPTags as $obj) {
                         if (false == $this->collPTags->contains($obj)) {
                           $this->collPTags->append($obj);
                         }
@@ -1175,12 +1184,13 @@ abstract class BasePTTagType extends BaseObject implements Persistent
                     }
 
                     $collPTags->getInternalIterator()->rewind();
+
                     return $collPTags;
                 }
 
-                if($partial && $this->collPTags) {
-                    foreach($this->collPTags as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPTags) {
+                    foreach ($this->collPTags as $obj) {
+                        if ($obj->isNew()) {
                             $collPTags[] = $obj;
                         }
                     }
@@ -1208,7 +1218,8 @@ abstract class BasePTTagType extends BaseObject implements Persistent
     {
         $pTagsToDelete = $this->getPTags(new Criteria(), $con)->diff($pTags);
 
-        $this->pTagsScheduledForDeletion = unserialize(serialize($pTagsToDelete));
+
+        $this->pTagsScheduledForDeletion = $pTagsToDelete;
 
         foreach ($pTagsToDelete as $pTagRemoved) {
             $pTagRemoved->setPTTagType(null);
@@ -1242,7 +1253,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPTags());
             }
             $query = PTagQuery::create(null, $criteria);
@@ -1271,8 +1282,13 @@ abstract class BasePTTagType extends BaseObject implements Persistent
             $this->initPTags();
             $this->collPTagsPartial = true;
         }
+
         if (!in_array($l, $this->collPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPTag($l);
+
+            if ($this->pTagsScheduledForDeletion and $this->pTagsScheduledForDeletion->contains($l)) {
+                $this->pTagsScheduledForDeletion->remove($this->pTagsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1330,7 +1346,7 @@ abstract class BasePTTagType extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */

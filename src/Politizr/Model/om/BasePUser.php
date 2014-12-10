@@ -76,7 +76,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -653,6 +653,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -663,6 +664,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getProvider()
     {
+
         return $this->provider;
     }
 
@@ -673,6 +675,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getProviderId()
     {
+
         return $this->provider_id;
     }
 
@@ -683,6 +686,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getNickname()
     {
+
         return $this->nickname;
     }
 
@@ -693,6 +697,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getRealname()
     {
+
         return $this->realname;
     }
 
@@ -703,6 +708,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getUsername()
     {
+
         return $this->username;
     }
 
@@ -713,6 +719,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getUsernameCanonical()
     {
+
         return $this->username_canonical;
     }
 
@@ -723,6 +730,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getEmail()
     {
+
         return $this->email;
     }
 
@@ -733,6 +741,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getEmailCanonical()
     {
+
         return $this->email_canonical;
     }
 
@@ -743,6 +752,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getEnabled()
     {
+
         return $this->enabled;
     }
 
@@ -753,6 +763,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getSalt()
     {
+
         return $this->salt;
     }
 
@@ -763,6 +774,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getPassword()
     {
+
         return $this->password;
     }
 
@@ -813,6 +825,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getLocked()
     {
+
         return $this->locked;
     }
 
@@ -823,6 +836,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getExpired()
     {
+
         return $this->expired;
     }
 
@@ -873,6 +887,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getConfirmationToken()
     {
+
         return $this->confirmation_token;
     }
 
@@ -923,6 +938,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getCredentialsExpired()
     {
+
         return $this->credentials_expired;
     }
 
@@ -1002,6 +1018,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getPUTypeId()
     {
+
         return $this->p_u_type_id;
     }
 
@@ -1012,6 +1029,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getPUStatusId()
     {
+
         return $this->p_u_status_id;
     }
 
@@ -1022,6 +1040,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getFileName()
     {
+
         return $this->file_name;
     }
 
@@ -1051,6 +1070,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getFirstname()
     {
+
         return $this->firstname;
     }
 
@@ -1061,6 +1081,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getName()
     {
+
         return $this->name;
     }
 
@@ -1111,6 +1132,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getBiography()
     {
+
         return $this->biography;
     }
 
@@ -1121,6 +1143,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getWebsite()
     {
+
         return $this->website;
     }
 
@@ -1131,6 +1154,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getTwitter()
     {
+
         return $this->twitter;
     }
 
@@ -1141,6 +1165,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getFacebook()
     {
+
         return $this->facebook;
     }
 
@@ -1151,6 +1176,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getPhone()
     {
+
         return $this->phone;
     }
 
@@ -1161,6 +1187,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getNewsletter()
     {
+
         return $this->newsletter;
     }
 
@@ -1211,6 +1238,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getNbViews()
     {
+
         return $this->nb_views;
     }
 
@@ -1221,6 +1249,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -1231,6 +1260,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getValidated()
     {
+
         return $this->validated;
     }
 
@@ -1321,13 +1351,14 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setId($v)
@@ -1348,12 +1379,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [provider] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setProvider($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1369,12 +1400,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [provider_id] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setProviderId($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1390,12 +1421,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [nickname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setNickname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1411,12 +1442,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [realname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setRealname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1432,12 +1463,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [username] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setUsername($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1453,12 +1484,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [username_canonical] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setUsernameCanonical($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1474,12 +1505,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [email] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setEmail($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1495,12 +1526,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [email_canonical] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setEmailCanonical($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1545,12 +1576,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [salt] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setSalt($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1566,12 +1597,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [password] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setPassword($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1691,12 +1722,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [confirmation_token] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setConfirmationToken($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1787,14 +1818,14 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [roles] column.
      *
-     * @param array $v new value
+     * @param  array $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setRoles($v)
     {
         if ($this->roles_unserialized !== $v) {
             $this->roles_unserialized = $v;
-            $this->roles = '| ' . implode(' | ', $v) . ' |';
+            $this->roles = '| ' . implode(' | ', (array) $v) . ' |';
             $this->modifiedColumns[] = PUserPeer::ROLES;
         }
 
@@ -1839,7 +1870,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [p_u_type_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setPUTypeId($v)
@@ -1864,7 +1895,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [p_u_status_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setPUStatusId($v)
@@ -1889,12 +1920,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [file_name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setFileName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1910,7 +1941,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [gender] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUser The current object (for fluent API support)
      * @throws PropelException - if the value is not accepted by this enum.
      */
@@ -1936,12 +1967,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [firstname] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setFirstname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1957,12 +1988,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2001,12 +2032,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [biography] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setBiography($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2022,12 +2053,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [website] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setWebsite($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2043,12 +2074,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [twitter] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setTwitter($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2064,12 +2095,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [facebook] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setFacebook($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2085,12 +2116,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [phone] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setPhone($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2158,7 +2189,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [nb_views] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setNbViews($v)
@@ -2283,12 +2314,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PUser The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -2344,7 +2375,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -2403,6 +2434,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 41; // 41 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -2652,7 +2684,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->alreadyInSave = true;
 
             // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -2688,7 +2720,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puFollowDdPDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuFollowDdPUserQuery::create()
+                    PUFollowDDQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puFollowDdPDDebatesScheduledForDeletion = null;
@@ -2714,7 +2746,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puReputationRbPRBadgesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuReputationRbPUserQuery::create()
+                    PUReputationRBQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puReputationRbPRBadgesScheduledForDeletion = null;
@@ -2740,7 +2772,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puReputationRaPRBadgesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuReputationRaPUserQuery::create()
+                    PUReputationRAQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puReputationRaPRBadgesScheduledForDeletion = null;
@@ -2766,7 +2798,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puTaggedTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuTaggedTPUserQuery::create()
+                    PUTaggedTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puTaggedTPTagsScheduledForDeletion = null;
@@ -2792,7 +2824,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puFollowTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuFollowTPUserQuery::create()
+                    PUFollowTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puFollowTPTagsScheduledForDeletion = null;
@@ -2818,7 +2850,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PuAffinityUppPUserQuery::create()
+                    PUAffinityUPPQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = null;
@@ -3443,10 +3475,10 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -3458,7 +3490,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
 
             // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -3821,6 +3853,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[39] => $this->getUpdatedAt(),
             $keys[40] => $this->getSlug(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->aPUType) {
                 $result['PUType'] = $this->aPUType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -4400,7 +4437,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a PUType object.
      *
-     * @param             PUType $v
+     * @param                  PUType $v
      * @return PUser The current object (for fluent API support)
      * @throws PropelException
      */
@@ -4452,7 +4489,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a PUStatus object.
      *
-     * @param             PUStatus $v
+     * @param                  PUStatus $v
      * @return PUser The current object (for fluent API support)
      * @throws PropelException
      */
@@ -4633,7 +4670,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPOrdersPartial && count($collPOrders)) {
                       $this->initPOrders(false);
 
-                      foreach($collPOrders as $obj) {
+                      foreach ($collPOrders as $obj) {
                         if (false == $this->collPOrders->contains($obj)) {
                           $this->collPOrders->append($obj);
                         }
@@ -4643,12 +4680,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPOrders->getInternalIterator()->rewind();
+
                     return $collPOrders;
                 }
 
-                if($partial && $this->collPOrders) {
-                    foreach($this->collPOrders as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPOrders) {
+                    foreach ($this->collPOrders as $obj) {
+                        if ($obj->isNew()) {
                             $collPOrders[] = $obj;
                         }
                     }
@@ -4676,7 +4714,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pOrdersToDelete = $this->getPOrders(new Criteria(), $con)->diff($pOrders);
 
-        $this->pOrdersScheduledForDeletion = unserialize(serialize($pOrdersToDelete));
+
+        $this->pOrdersScheduledForDeletion = $pOrdersToDelete;
 
         foreach ($pOrdersToDelete as $pOrderRemoved) {
             $pOrderRemoved->setPUser(null);
@@ -4710,7 +4749,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPOrders());
             }
             $query = POrderQuery::create(null, $criteria);
@@ -4739,8 +4778,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPOrders();
             $this->collPOrdersPartial = true;
         }
+
         if (!in_array($l, $this->collPOrders->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPOrder($l);
+
+            if ($this->pOrdersScheduledForDeletion and $this->pOrdersScheduledForDeletion->contains($l)) {
+                $this->pOrdersScheduledForDeletion->remove($this->pOrdersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -4951,7 +4995,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPUQualificationsPartial && count($collPUQualifications)) {
                       $this->initPUQualifications(false);
 
-                      foreach($collPUQualifications as $obj) {
+                      foreach ($collPUQualifications as $obj) {
                         if (false == $this->collPUQualifications->contains($obj)) {
                           $this->collPUQualifications->append($obj);
                         }
@@ -4961,12 +5005,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPUQualifications->getInternalIterator()->rewind();
+
                     return $collPUQualifications;
                 }
 
-                if($partial && $this->collPUQualifications) {
-                    foreach($this->collPUQualifications as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUQualifications) {
+                    foreach ($this->collPUQualifications as $obj) {
+                        if ($obj->isNew()) {
                             $collPUQualifications[] = $obj;
                         }
                     }
@@ -4994,7 +5039,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pUQualificationsToDelete = $this->getPUQualifications(new Criteria(), $con)->diff($pUQualifications);
 
-        $this->pUQualificationsScheduledForDeletion = unserialize(serialize($pUQualificationsToDelete));
+
+        $this->pUQualificationsScheduledForDeletion = $pUQualificationsToDelete;
 
         foreach ($pUQualificationsToDelete as $pUQualificationRemoved) {
             $pUQualificationRemoved->setPUser(null);
@@ -5028,7 +5074,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUQualifications());
             }
             $query = PUQualificationQuery::create(null, $criteria);
@@ -5057,8 +5103,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPUQualifications();
             $this->collPUQualificationsPartial = true;
         }
+
         if (!in_array($l, $this->collPUQualifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUQualification($l);
+
+            if ($this->pUQualificationsScheduledForDeletion and $this->pUQualificationsScheduledForDeletion->contains($l)) {
+                $this->pUQualificationsScheduledForDeletion->remove($this->pUQualificationsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -5219,7 +5270,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuFollowDdPUsersPartial && count($collPuFollowDdPUsers)) {
                       $this->initPuFollowDdPUsers(false);
 
-                      foreach($collPuFollowDdPUsers as $obj) {
+                      foreach ($collPuFollowDdPUsers as $obj) {
                         if (false == $this->collPuFollowDdPUsers->contains($obj)) {
                           $this->collPuFollowDdPUsers->append($obj);
                         }
@@ -5229,12 +5280,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuFollowDdPUsers->getInternalIterator()->rewind();
+
                     return $collPuFollowDdPUsers;
                 }
 
-                if($partial && $this->collPuFollowDdPUsers) {
-                    foreach($this->collPuFollowDdPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuFollowDdPUsers) {
+                    foreach ($this->collPuFollowDdPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuFollowDdPUsers[] = $obj;
                         }
                     }
@@ -5262,7 +5314,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puFollowDdPUsersToDelete = $this->getPuFollowDdPUsers(new Criteria(), $con)->diff($puFollowDdPUsers);
 
-        $this->puFollowDdPUsersScheduledForDeletion = unserialize(serialize($puFollowDdPUsersToDelete));
+
+        $this->puFollowDdPUsersScheduledForDeletion = $puFollowDdPUsersToDelete;
 
         foreach ($puFollowDdPUsersToDelete as $puFollowDdPUserRemoved) {
             $puFollowDdPUserRemoved->setPuFollowDdPUser(null);
@@ -5296,7 +5349,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuFollowDdPUsers());
             }
             $query = PUFollowDDQuery::create(null, $criteria);
@@ -5325,8 +5378,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuFollowDdPUsers();
             $this->collPuFollowDdPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuFollowDdPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowDdPUser($l);
+
+            if ($this->puFollowDdPUsersScheduledForDeletion and $this->puFollowDdPUsersScheduledForDeletion->contains($l)) {
+                $this->puFollowDdPUsersScheduledForDeletion->remove($this->puFollowDdPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -5462,7 +5520,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuReputationRbPUsersPartial && count($collPuReputationRbPUsers)) {
                       $this->initPuReputationRbPUsers(false);
 
-                      foreach($collPuReputationRbPUsers as $obj) {
+                      foreach ($collPuReputationRbPUsers as $obj) {
                         if (false == $this->collPuReputationRbPUsers->contains($obj)) {
                           $this->collPuReputationRbPUsers->append($obj);
                         }
@@ -5472,12 +5530,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuReputationRbPUsers->getInternalIterator()->rewind();
+
                     return $collPuReputationRbPUsers;
                 }
 
-                if($partial && $this->collPuReputationRbPUsers) {
-                    foreach($this->collPuReputationRbPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuReputationRbPUsers) {
+                    foreach ($this->collPuReputationRbPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuReputationRbPUsers[] = $obj;
                         }
                     }
@@ -5505,7 +5564,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puReputationRbPUsersToDelete = $this->getPuReputationRbPUsers(new Criteria(), $con)->diff($puReputationRbPUsers);
 
-        $this->puReputationRbPUsersScheduledForDeletion = unserialize(serialize($puReputationRbPUsersToDelete));
+
+        $this->puReputationRbPUsersScheduledForDeletion = $puReputationRbPUsersToDelete;
 
         foreach ($puReputationRbPUsersToDelete as $puReputationRbPUserRemoved) {
             $puReputationRbPUserRemoved->setPuReputationRbPUser(null);
@@ -5539,7 +5599,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuReputationRbPUsers());
             }
             $query = PUReputationRBQuery::create(null, $criteria);
@@ -5568,8 +5628,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuReputationRbPUsers();
             $this->collPuReputationRbPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuReputationRbPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRbPUser($l);
+
+            if ($this->puReputationRbPUsersScheduledForDeletion and $this->puReputationRbPUsersScheduledForDeletion->contains($l)) {
+                $this->puReputationRbPUsersScheduledForDeletion->remove($this->puReputationRbPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -5705,7 +5770,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuReputationRaPUsersPartial && count($collPuReputationRaPUsers)) {
                       $this->initPuReputationRaPUsers(false);
 
-                      foreach($collPuReputationRaPUsers as $obj) {
+                      foreach ($collPuReputationRaPUsers as $obj) {
                         if (false == $this->collPuReputationRaPUsers->contains($obj)) {
                           $this->collPuReputationRaPUsers->append($obj);
                         }
@@ -5715,12 +5780,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuReputationRaPUsers->getInternalIterator()->rewind();
+
                     return $collPuReputationRaPUsers;
                 }
 
-                if($partial && $this->collPuReputationRaPUsers) {
-                    foreach($this->collPuReputationRaPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuReputationRaPUsers) {
+                    foreach ($this->collPuReputationRaPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuReputationRaPUsers[] = $obj;
                         }
                     }
@@ -5748,7 +5814,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puReputationRaPUsersToDelete = $this->getPuReputationRaPUsers(new Criteria(), $con)->diff($puReputationRaPUsers);
 
-        $this->puReputationRaPUsersScheduledForDeletion = unserialize(serialize($puReputationRaPUsersToDelete));
+
+        $this->puReputationRaPUsersScheduledForDeletion = $puReputationRaPUsersToDelete;
 
         foreach ($puReputationRaPUsersToDelete as $puReputationRaPUserRemoved) {
             $puReputationRaPUserRemoved->setPuReputationRaPUser(null);
@@ -5782,7 +5849,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuReputationRaPUsers());
             }
             $query = PUReputationRAQuery::create(null, $criteria);
@@ -5811,8 +5878,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuReputationRaPUsers();
             $this->collPuReputationRaPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuReputationRaPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRaPUser($l);
+
+            if ($this->puReputationRaPUsersScheduledForDeletion and $this->puReputationRaPUsersScheduledForDeletion->contains($l)) {
+                $this->puReputationRaPUsersScheduledForDeletion->remove($this->puReputationRaPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -5948,7 +6020,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuTaggedTPUsersPartial && count($collPuTaggedTPUsers)) {
                       $this->initPuTaggedTPUsers(false);
 
-                      foreach($collPuTaggedTPUsers as $obj) {
+                      foreach ($collPuTaggedTPUsers as $obj) {
                         if (false == $this->collPuTaggedTPUsers->contains($obj)) {
                           $this->collPuTaggedTPUsers->append($obj);
                         }
@@ -5958,12 +6030,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuTaggedTPUsers->getInternalIterator()->rewind();
+
                     return $collPuTaggedTPUsers;
                 }
 
-                if($partial && $this->collPuTaggedTPUsers) {
-                    foreach($this->collPuTaggedTPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuTaggedTPUsers) {
+                    foreach ($this->collPuTaggedTPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuTaggedTPUsers[] = $obj;
                         }
                     }
@@ -5991,7 +6064,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puTaggedTPUsersToDelete = $this->getPuTaggedTPUsers(new Criteria(), $con)->diff($puTaggedTPUsers);
 
-        $this->puTaggedTPUsersScheduledForDeletion = unserialize(serialize($puTaggedTPUsersToDelete));
+
+        $this->puTaggedTPUsersScheduledForDeletion = $puTaggedTPUsersToDelete;
 
         foreach ($puTaggedTPUsersToDelete as $puTaggedTPUserRemoved) {
             $puTaggedTPUserRemoved->setPuTaggedTPUser(null);
@@ -6025,7 +6099,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuTaggedTPUsers());
             }
             $query = PUTaggedTQuery::create(null, $criteria);
@@ -6054,8 +6128,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuTaggedTPUsers();
             $this->collPuTaggedTPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuTaggedTPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuTaggedTPUser($l);
+
+            if ($this->puTaggedTPUsersScheduledForDeletion and $this->puTaggedTPUsersScheduledForDeletion->contains($l)) {
+                $this->puTaggedTPUsersScheduledForDeletion->remove($this->puTaggedTPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -6191,7 +6270,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuFollowTPUsersPartial && count($collPuFollowTPUsers)) {
                       $this->initPuFollowTPUsers(false);
 
-                      foreach($collPuFollowTPUsers as $obj) {
+                      foreach ($collPuFollowTPUsers as $obj) {
                         if (false == $this->collPuFollowTPUsers->contains($obj)) {
                           $this->collPuFollowTPUsers->append($obj);
                         }
@@ -6201,12 +6280,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuFollowTPUsers->getInternalIterator()->rewind();
+
                     return $collPuFollowTPUsers;
                 }
 
-                if($partial && $this->collPuFollowTPUsers) {
-                    foreach($this->collPuFollowTPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuFollowTPUsers) {
+                    foreach ($this->collPuFollowTPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuFollowTPUsers[] = $obj;
                         }
                     }
@@ -6234,7 +6314,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puFollowTPUsersToDelete = $this->getPuFollowTPUsers(new Criteria(), $con)->diff($puFollowTPUsers);
 
-        $this->puFollowTPUsersScheduledForDeletion = unserialize(serialize($puFollowTPUsersToDelete));
+
+        $this->puFollowTPUsersScheduledForDeletion = $puFollowTPUsersToDelete;
 
         foreach ($puFollowTPUsersToDelete as $puFollowTPUserRemoved) {
             $puFollowTPUserRemoved->setPuFollowTPUser(null);
@@ -6268,7 +6349,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuFollowTPUsers());
             }
             $query = PUFollowTQuery::create(null, $criteria);
@@ -6297,8 +6378,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuFollowTPUsers();
             $this->collPuFollowTPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuFollowTPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowTPUser($l);
+
+            if ($this->puFollowTPUsersScheduledForDeletion and $this->puFollowTPUsersScheduledForDeletion->contains($l)) {
+                $this->puFollowTPUsersScheduledForDeletion->remove($this->puFollowTPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -6434,7 +6520,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPuAffinityUppPUsersPartial && count($collPuAffinityUppPUsers)) {
                       $this->initPuAffinityUppPUsers(false);
 
-                      foreach($collPuAffinityUppPUsers as $obj) {
+                      foreach ($collPuAffinityUppPUsers as $obj) {
                         if (false == $this->collPuAffinityUppPUsers->contains($obj)) {
                           $this->collPuAffinityUppPUsers->append($obj);
                         }
@@ -6444,12 +6530,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPuAffinityUppPUsers->getInternalIterator()->rewind();
+
                     return $collPuAffinityUppPUsers;
                 }
 
-                if($partial && $this->collPuAffinityUppPUsers) {
-                    foreach($this->collPuAffinityUppPUsers as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuAffinityUppPUsers) {
+                    foreach ($this->collPuAffinityUppPUsers as $obj) {
+                        if ($obj->isNew()) {
                             $collPuAffinityUppPUsers[] = $obj;
                         }
                     }
@@ -6477,7 +6564,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $puAffinityUppPUsersToDelete = $this->getPuAffinityUppPUsers(new Criteria(), $con)->diff($puAffinityUppPUsers);
 
-        $this->puAffinityUppPUsersScheduledForDeletion = unserialize(serialize($puAffinityUppPUsersToDelete));
+
+        $this->puAffinityUppPUsersScheduledForDeletion = $puAffinityUppPUsersToDelete;
 
         foreach ($puAffinityUppPUsersToDelete as $puAffinityUppPUserRemoved) {
             $puAffinityUppPUserRemoved->setPuAffinityUppPUser(null);
@@ -6511,7 +6599,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuAffinityUppPUsers());
             }
             $query = PUAffinityUPPQuery::create(null, $criteria);
@@ -6540,8 +6628,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPuAffinityUppPUsers();
             $this->collPuAffinityUppPUsersPartial = true;
         }
+
         if (!in_array($l, $this->collPuAffinityUppPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuAffinityUppPUser($l);
+
+            if ($this->puAffinityUppPUsersScheduledForDeletion and $this->puAffinityUppPUsersScheduledForDeletion->contains($l)) {
+                $this->puAffinityUppPUsersScheduledForDeletion->remove($this->puAffinityUppPUsersScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -6677,7 +6770,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPDocumentsPartial && count($collPDocuments)) {
                       $this->initPDocuments(false);
 
-                      foreach($collPDocuments as $obj) {
+                      foreach ($collPDocuments as $obj) {
                         if (false == $this->collPDocuments->contains($obj)) {
                           $this->collPDocuments->append($obj);
                         }
@@ -6687,12 +6780,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPDocuments->getInternalIterator()->rewind();
+
                     return $collPDocuments;
                 }
 
-                if($partial && $this->collPDocuments) {
-                    foreach($this->collPDocuments as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPDocuments) {
+                    foreach ($this->collPDocuments as $obj) {
+                        if ($obj->isNew()) {
                             $collPDocuments[] = $obj;
                         }
                     }
@@ -6720,7 +6814,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pDocumentsToDelete = $this->getPDocuments(new Criteria(), $con)->diff($pDocuments);
 
-        $this->pDocumentsScheduledForDeletion = unserialize(serialize($pDocumentsToDelete));
+
+        $this->pDocumentsScheduledForDeletion = $pDocumentsToDelete;
 
         foreach ($pDocumentsToDelete as $pDocumentRemoved) {
             $pDocumentRemoved->setPUser(null);
@@ -6754,7 +6849,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPDocuments());
             }
             $query = PDocumentQuery::create(null, $criteria);
@@ -6783,8 +6878,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPDocuments();
             $this->collPDocumentsPartial = true;
         }
+
         if (!in_array($l, $this->collPDocuments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPDocument($l);
+
+            if ($this->pDocumentsScheduledForDeletion and $this->pDocumentsScheduledForDeletion->contains($l)) {
+                $this->pDocumentsScheduledForDeletion->remove($this->pDocumentsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -6895,7 +6995,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPDCommentsPartial && count($collPDComments)) {
                       $this->initPDComments(false);
 
-                      foreach($collPDComments as $obj) {
+                      foreach ($collPDComments as $obj) {
                         if (false == $this->collPDComments->contains($obj)) {
                           $this->collPDComments->append($obj);
                         }
@@ -6905,12 +7005,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPDComments->getInternalIterator()->rewind();
+
                     return $collPDComments;
                 }
 
-                if($partial && $this->collPDComments) {
-                    foreach($this->collPDComments as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPDComments) {
+                    foreach ($this->collPDComments as $obj) {
+                        if ($obj->isNew()) {
                             $collPDComments[] = $obj;
                         }
                     }
@@ -6938,7 +7039,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pDCommentsToDelete = $this->getPDComments(new Criteria(), $con)->diff($pDComments);
 
-        $this->pDCommentsScheduledForDeletion = unserialize(serialize($pDCommentsToDelete));
+
+        $this->pDCommentsScheduledForDeletion = $pDCommentsToDelete;
 
         foreach ($pDCommentsToDelete as $pDCommentRemoved) {
             $pDCommentRemoved->setPUser(null);
@@ -6972,7 +7074,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPDComments());
             }
             $query = PDCommentQuery::create(null, $criteria);
@@ -7001,8 +7103,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPDComments();
             $this->collPDCommentsPartial = true;
         }
+
         if (!in_array($l, $this->collPDComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPDComment($l);
+
+            if ($this->pDCommentsScheduledForDeletion and $this->pDCommentsScheduledForDeletion->contains($l)) {
+                $this->pDCommentsScheduledForDeletion->remove($this->pDCommentsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -7138,7 +7245,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPUFollowUsRelatedByPUserIdPartial && count($collPUFollowUsRelatedByPUserId)) {
                       $this->initPUFollowUsRelatedByPUserId(false);
 
-                      foreach($collPUFollowUsRelatedByPUserId as $obj) {
+                      foreach ($collPUFollowUsRelatedByPUserId as $obj) {
                         if (false == $this->collPUFollowUsRelatedByPUserId->contains($obj)) {
                           $this->collPUFollowUsRelatedByPUserId->append($obj);
                         }
@@ -7148,12 +7255,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPUFollowUsRelatedByPUserId->getInternalIterator()->rewind();
+
                     return $collPUFollowUsRelatedByPUserId;
                 }
 
-                if($partial && $this->collPUFollowUsRelatedByPUserId) {
-                    foreach($this->collPUFollowUsRelatedByPUserId as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUFollowUsRelatedByPUserId) {
+                    foreach ($this->collPUFollowUsRelatedByPUserId as $obj) {
+                        if ($obj->isNew()) {
                             $collPUFollowUsRelatedByPUserId[] = $obj;
                         }
                     }
@@ -7181,7 +7289,11 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pUFollowUsRelatedByPUserIdToDelete = $this->getPUFollowUsRelatedByPUserId(new Criteria(), $con)->diff($pUFollowUsRelatedByPUserId);
 
-        $this->pUFollowUsRelatedByPUserIdScheduledForDeletion = unserialize(serialize($pUFollowUsRelatedByPUserIdToDelete));
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->pUFollowUsRelatedByPUserIdScheduledForDeletion = clone $pUFollowUsRelatedByPUserIdToDelete;
 
         foreach ($pUFollowUsRelatedByPUserIdToDelete as $pUFollowURelatedByPUserIdRemoved) {
             $pUFollowURelatedByPUserIdRemoved->setPUserRelatedByPUserId(null);
@@ -7215,7 +7327,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUFollowUsRelatedByPUserId());
             }
             $query = PUFollowUQuery::create(null, $criteria);
@@ -7244,8 +7356,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPUFollowUsRelatedByPUserId();
             $this->collPUFollowUsRelatedByPUserIdPartial = true;
         }
+
         if (!in_array($l, $this->collPUFollowUsRelatedByPUserId->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUFollowURelatedByPUserId($l);
+
+            if ($this->pUFollowUsRelatedByPUserIdScheduledForDeletion and $this->pUFollowUsRelatedByPUserIdScheduledForDeletion->contains($l)) {
+                $this->pUFollowUsRelatedByPUserIdScheduledForDeletion->remove($this->pUFollowUsRelatedByPUserIdScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -7356,7 +7473,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPUFollowUsRelatedByPUserFollowerIdPartial && count($collPUFollowUsRelatedByPUserFollowerId)) {
                       $this->initPUFollowUsRelatedByPUserFollowerId(false);
 
-                      foreach($collPUFollowUsRelatedByPUserFollowerId as $obj) {
+                      foreach ($collPUFollowUsRelatedByPUserFollowerId as $obj) {
                         if (false == $this->collPUFollowUsRelatedByPUserFollowerId->contains($obj)) {
                           $this->collPUFollowUsRelatedByPUserFollowerId->append($obj);
                         }
@@ -7366,12 +7483,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPUFollowUsRelatedByPUserFollowerId->getInternalIterator()->rewind();
+
                     return $collPUFollowUsRelatedByPUserFollowerId;
                 }
 
-                if($partial && $this->collPUFollowUsRelatedByPUserFollowerId) {
-                    foreach($this->collPUFollowUsRelatedByPUserFollowerId as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPUFollowUsRelatedByPUserFollowerId) {
+                    foreach ($this->collPUFollowUsRelatedByPUserFollowerId as $obj) {
+                        if ($obj->isNew()) {
                             $collPUFollowUsRelatedByPUserFollowerId[] = $obj;
                         }
                     }
@@ -7399,7 +7517,11 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pUFollowUsRelatedByPUserFollowerIdToDelete = $this->getPUFollowUsRelatedByPUserFollowerId(new Criteria(), $con)->diff($pUFollowUsRelatedByPUserFollowerId);
 
-        $this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion = unserialize(serialize($pUFollowUsRelatedByPUserFollowerIdToDelete));
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion = clone $pUFollowUsRelatedByPUserFollowerIdToDelete;
 
         foreach ($pUFollowUsRelatedByPUserFollowerIdToDelete as $pUFollowURelatedByPUserFollowerIdRemoved) {
             $pUFollowURelatedByPUserFollowerIdRemoved->setPUserRelatedByPUserFollowerId(null);
@@ -7433,7 +7555,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPUFollowUsRelatedByPUserFollowerId());
             }
             $query = PUFollowUQuery::create(null, $criteria);
@@ -7462,8 +7584,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPUFollowUsRelatedByPUserFollowerId();
             $this->collPUFollowUsRelatedByPUserFollowerIdPartial = true;
         }
+
         if (!in_array($l, $this->collPUFollowUsRelatedByPUserFollowerId->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPUFollowURelatedByPUserFollowerId($l);
+
+            if ($this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion and $this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion->contains($l)) {
+                $this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion->remove($this->pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -7574,7 +7701,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPDDebatesPartial && count($collPDDebates)) {
                       $this->initPDDebates(false);
 
-                      foreach($collPDDebates as $obj) {
+                      foreach ($collPDDebates as $obj) {
                         if (false == $this->collPDDebates->contains($obj)) {
                           $this->collPDDebates->append($obj);
                         }
@@ -7584,12 +7711,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPDDebates->getInternalIterator()->rewind();
+
                     return $collPDDebates;
                 }
 
-                if($partial && $this->collPDDebates) {
-                    foreach($this->collPDDebates as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPDDebates) {
+                    foreach ($this->collPDDebates as $obj) {
+                        if ($obj->isNew()) {
                             $collPDDebates[] = $obj;
                         }
                     }
@@ -7617,7 +7745,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pDDebatesToDelete = $this->getPDDebates(new Criteria(), $con)->diff($pDDebates);
 
-        $this->pDDebatesScheduledForDeletion = unserialize(serialize($pDDebatesToDelete));
+
+        $this->pDDebatesScheduledForDeletion = $pDDebatesToDelete;
 
         foreach ($pDDebatesToDelete as $pDDebateRemoved) {
             $pDDebateRemoved->setPUser(null);
@@ -7651,7 +7780,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPDDebates());
             }
             $query = PDDebateQuery::create(null, $criteria);
@@ -7680,8 +7809,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPDDebates();
             $this->collPDDebatesPartial = true;
         }
+
         if (!in_array($l, $this->collPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPDDebate($l);
+
+            if ($this->pDDebatesScheduledForDeletion and $this->pDDebatesScheduledForDeletion->contains($l)) {
+                $this->pDDebatesScheduledForDeletion->remove($this->pDDebatesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -7817,7 +7951,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     if (false !== $this->collPDReactionsPartial && count($collPDReactions)) {
                       $this->initPDReactions(false);
 
-                      foreach($collPDReactions as $obj) {
+                      foreach ($collPDReactions as $obj) {
                         if (false == $this->collPDReactions->contains($obj)) {
                           $this->collPDReactions->append($obj);
                         }
@@ -7827,12 +7961,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
 
                     $collPDReactions->getInternalIterator()->rewind();
+
                     return $collPDReactions;
                 }
 
-                if($partial && $this->collPDReactions) {
-                    foreach($this->collPDReactions as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPDReactions) {
+                    foreach ($this->collPDReactions as $obj) {
+                        if ($obj->isNew()) {
                             $collPDReactions[] = $obj;
                         }
                     }
@@ -7860,7 +7995,8 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $pDReactionsToDelete = $this->getPDReactions(new Criteria(), $con)->diff($pDReactions);
 
-        $this->pDReactionsScheduledForDeletion = unserialize(serialize($pDReactionsToDelete));
+
+        $this->pDReactionsScheduledForDeletion = $pDReactionsToDelete;
 
         foreach ($pDReactionsToDelete as $pDReactionRemoved) {
             $pDReactionRemoved->setPUser(null);
@@ -7894,7 +8030,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPDReactions());
             }
             $query = PDReactionQuery::create(null, $criteria);
@@ -7923,8 +8059,13 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->initPDReactions();
             $this->collPDReactionsPartial = true;
         }
+
         if (!in_array($l, $this->collPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPDReaction($l);
+
+            if ($this->pDReactionsScheduledForDeletion and $this->pDReactionsScheduledForDeletion->contains($l)) {
+                $this->pDReactionsScheduledForDeletion->remove($this->pDReactionsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -8088,7 +8229,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuFollowDdPDDebates(PropelCollection $puFollowDdPDDebates, PropelPDO $con = null)
     {
         $this->clearPuFollowDdPDDebates();
-        $currentPuFollowDdPDDebates = $this->getPuFollowDdPDDebates();
+        $currentPuFollowDdPDDebates = $this->getPuFollowDdPDDebates(null, $con);
 
         $this->puFollowDdPDDebatesScheduledForDeletion = $currentPuFollowDdPDDebates->diff($puFollowDdPDDebates);
 
@@ -8145,10 +8286,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuFollowDdPDDebates === null) {
             $this->initPuFollowDdPDDebates();
         }
+
         if (!$this->collPuFollowDdPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowDdPDDebate($pDDebate);
+            $this->collPuFollowDdPDDebates[] = $pDDebate;
 
-            $this->collPuFollowDdPDDebates[]= $pDDebate;
+            if ($this->puFollowDdPDDebatesScheduledForDeletion and $this->puFollowDdPDDebatesScheduledForDeletion->contains($pDDebate)) {
+                $this->puFollowDdPDDebatesScheduledForDeletion->remove($this->puFollowDdPDDebatesScheduledForDeletion->search($pDDebate));
+            }
         }
 
         return $this;
@@ -8157,11 +8302,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
      */
-    protected function doAddPuFollowDdPDDebate($puFollowDdPDDebate)
+    protected function doAddPuFollowDdPDDebate(PDDebate $puFollowDdPDDebate)
     {
-        $pUFollowDD = new PUFollowDD();
-        $pUFollowDD->setPuFollowDdPDDebate($puFollowDdPDDebate);
-        $this->addPuFollowDdPUser($pUFollowDD);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puFollowDdPDDebate->getPuFollowDdPUsers()->contains($this)) { $pUFollowDD = new PUFollowDD();
+            $pUFollowDD->setPuFollowDdPDDebate($puFollowDdPDDebate);
+            $this->addPuFollowDdPUser($pUFollowDD);
+
+            $foreignCollection = $puFollowDdPDDebate->getPuFollowDdPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -8265,7 +8416,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuReputationRbPRBadges(PropelCollection $puReputationRbPRBadges, PropelPDO $con = null)
     {
         $this->clearPuReputationRbPRBadges();
-        $currentPuReputationRbPRBadges = $this->getPuReputationRbPRBadges();
+        $currentPuReputationRbPRBadges = $this->getPuReputationRbPRBadges(null, $con);
 
         $this->puReputationRbPRBadgesScheduledForDeletion = $currentPuReputationRbPRBadges->diff($puReputationRbPRBadges);
 
@@ -8322,10 +8473,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuReputationRbPRBadges === null) {
             $this->initPuReputationRbPRBadges();
         }
+
         if (!$this->collPuReputationRbPRBadges->contains($pRBadge)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRbPRBadge($pRBadge);
+            $this->collPuReputationRbPRBadges[] = $pRBadge;
 
-            $this->collPuReputationRbPRBadges[]= $pRBadge;
+            if ($this->puReputationRbPRBadgesScheduledForDeletion and $this->puReputationRbPRBadgesScheduledForDeletion->contains($pRBadge)) {
+                $this->puReputationRbPRBadgesScheduledForDeletion->remove($this->puReputationRbPRBadgesScheduledForDeletion->search($pRBadge));
+            }
         }
 
         return $this;
@@ -8334,11 +8489,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuReputationRbPRBadge $puReputationRbPRBadge The puReputationRbPRBadge object to add.
      */
-    protected function doAddPuReputationRbPRBadge($puReputationRbPRBadge)
+    protected function doAddPuReputationRbPRBadge(PRBadge $puReputationRbPRBadge)
     {
-        $pUReputationRB = new PUReputationRB();
-        $pUReputationRB->setPuReputationRbPRBadge($puReputationRbPRBadge);
-        $this->addPuReputationRbPUser($pUReputationRB);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puReputationRbPRBadge->getPuReputationRbPUsers()->contains($this)) { $pUReputationRB = new PUReputationRB();
+            $pUReputationRB->setPuReputationRbPRBadge($puReputationRbPRBadge);
+            $this->addPuReputationRbPUser($pUReputationRB);
+
+            $foreignCollection = $puReputationRbPRBadge->getPuReputationRbPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -8442,7 +8603,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuReputationRaPRBadges(PropelCollection $puReputationRaPRBadges, PropelPDO $con = null)
     {
         $this->clearPuReputationRaPRBadges();
-        $currentPuReputationRaPRBadges = $this->getPuReputationRaPRBadges();
+        $currentPuReputationRaPRBadges = $this->getPuReputationRaPRBadges(null, $con);
 
         $this->puReputationRaPRBadgesScheduledForDeletion = $currentPuReputationRaPRBadges->diff($puReputationRaPRBadges);
 
@@ -8499,10 +8660,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuReputationRaPRBadges === null) {
             $this->initPuReputationRaPRBadges();
         }
+
         if (!$this->collPuReputationRaPRBadges->contains($pRAction)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRaPRBadge($pRAction);
+            $this->collPuReputationRaPRBadges[] = $pRAction;
 
-            $this->collPuReputationRaPRBadges[]= $pRAction;
+            if ($this->puReputationRaPRBadgesScheduledForDeletion and $this->puReputationRaPRBadgesScheduledForDeletion->contains($pRAction)) {
+                $this->puReputationRaPRBadgesScheduledForDeletion->remove($this->puReputationRaPRBadgesScheduledForDeletion->search($pRAction));
+            }
         }
 
         return $this;
@@ -8511,11 +8676,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuReputationRaPRBadge $puReputationRaPRBadge The puReputationRaPRBadge object to add.
      */
-    protected function doAddPuReputationRaPRBadge($puReputationRaPRBadge)
+    protected function doAddPuReputationRaPRBadge(PRAction $puReputationRaPRBadge)
     {
-        $pUReputationRA = new PUReputationRA();
-        $pUReputationRA->setPuReputationRaPRBadge($puReputationRaPRBadge);
-        $this->addPuReputationRaPUser($pUReputationRA);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puReputationRaPRBadge->getPuReputationRaPUsers()->contains($this)) { $pUReputationRA = new PUReputationRA();
+            $pUReputationRA->setPuReputationRaPRBadge($puReputationRaPRBadge);
+            $this->addPuReputationRaPUser($pUReputationRA);
+
+            $foreignCollection = $puReputationRaPRBadge->getPuReputationRaPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -8619,7 +8790,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuTaggedTPTags(PropelCollection $puTaggedTPTags, PropelPDO $con = null)
     {
         $this->clearPuTaggedTPTags();
-        $currentPuTaggedTPTags = $this->getPuTaggedTPTags();
+        $currentPuTaggedTPTags = $this->getPuTaggedTPTags(null, $con);
 
         $this->puTaggedTPTagsScheduledForDeletion = $currentPuTaggedTPTags->diff($puTaggedTPTags);
 
@@ -8676,10 +8847,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuTaggedTPTags === null) {
             $this->initPuTaggedTPTags();
         }
+
         if (!$this->collPuTaggedTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
             $this->doAddPuTaggedTPTag($pTag);
+            $this->collPuTaggedTPTags[] = $pTag;
 
-            $this->collPuTaggedTPTags[]= $pTag;
+            if ($this->puTaggedTPTagsScheduledForDeletion and $this->puTaggedTPTagsScheduledForDeletion->contains($pTag)) {
+                $this->puTaggedTPTagsScheduledForDeletion->remove($this->puTaggedTPTagsScheduledForDeletion->search($pTag));
+            }
         }
 
         return $this;
@@ -8688,11 +8863,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
      */
-    protected function doAddPuTaggedTPTag($puTaggedTPTag)
+    protected function doAddPuTaggedTPTag(PTag $puTaggedTPTag)
     {
-        $pUTaggedT = new PUTaggedT();
-        $pUTaggedT->setPuTaggedTPTag($puTaggedTPTag);
-        $this->addPuTaggedTPUser($pUTaggedT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puTaggedTPTag->getPuTaggedTPUsers()->contains($this)) { $pUTaggedT = new PUTaggedT();
+            $pUTaggedT->setPuTaggedTPTag($puTaggedTPTag);
+            $this->addPuTaggedTPUser($pUTaggedT);
+
+            $foreignCollection = $puTaggedTPTag->getPuTaggedTPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -8796,7 +8977,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuFollowTPTags(PropelCollection $puFollowTPTags, PropelPDO $con = null)
     {
         $this->clearPuFollowTPTags();
-        $currentPuFollowTPTags = $this->getPuFollowTPTags();
+        $currentPuFollowTPTags = $this->getPuFollowTPTags(null, $con);
 
         $this->puFollowTPTagsScheduledForDeletion = $currentPuFollowTPTags->diff($puFollowTPTags);
 
@@ -8853,10 +9034,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuFollowTPTags === null) {
             $this->initPuFollowTPTags();
         }
+
         if (!$this->collPuFollowTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowTPTag($pTag);
+            $this->collPuFollowTPTags[] = $pTag;
 
-            $this->collPuFollowTPTags[]= $pTag;
+            if ($this->puFollowTPTagsScheduledForDeletion and $this->puFollowTPTagsScheduledForDeletion->contains($pTag)) {
+                $this->puFollowTPTagsScheduledForDeletion->remove($this->puFollowTPTagsScheduledForDeletion->search($pTag));
+            }
         }
 
         return $this;
@@ -8865,11 +9050,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
      */
-    protected function doAddPuFollowTPTag($puFollowTPTag)
+    protected function doAddPuFollowTPTag(PTag $puFollowTPTag)
     {
-        $pUFollowT = new PUFollowT();
-        $pUFollowT->setPuFollowTPTag($puFollowTPTag);
-        $this->addPuFollowTPUser($pUFollowT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puFollowTPTag->getPuFollowTPUsers()->contains($this)) { $pUFollowT = new PUFollowT();
+            $pUFollowT->setPuFollowTPTag($puFollowTPTag);
+            $this->addPuFollowTPUser($pUFollowT);
+
+            $foreignCollection = $puFollowTPTag->getPuFollowTPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -8973,7 +9164,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     public function setPuAffinityUppPUPoliticalParties(PropelCollection $puAffinityUppPUPoliticalParties, PropelPDO $con = null)
     {
         $this->clearPuAffinityUppPUPoliticalParties();
-        $currentPuAffinityUppPUPoliticalParties = $this->getPuAffinityUppPUPoliticalParties();
+        $currentPuAffinityUppPUPoliticalParties = $this->getPuAffinityUppPUPoliticalParties(null, $con);
 
         $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion = $currentPuAffinityUppPUPoliticalParties->diff($puAffinityUppPUPoliticalParties);
 
@@ -9030,10 +9221,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->collPuAffinityUppPUPoliticalParties === null) {
             $this->initPuAffinityUppPUPoliticalParties();
         }
+
         if (!$this->collPuAffinityUppPUPoliticalParties->contains($pUPoliticalParty)) { // only add it if the **same** object is not already associated
             $this->doAddPuAffinityUppPUPoliticalParty($pUPoliticalParty);
+            $this->collPuAffinityUppPUPoliticalParties[] = $pUPoliticalParty;
 
-            $this->collPuAffinityUppPUPoliticalParties[]= $pUPoliticalParty;
+            if ($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion and $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->contains($pUPoliticalParty)) {
+                $this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->remove($this->puAffinityUppPUPoliticalPartiesScheduledForDeletion->search($pUPoliticalParty));
+            }
         }
 
         return $this;
@@ -9042,11 +9237,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @param	PuAffinityUppPUPoliticalParty $puAffinityUppPUPoliticalParty The puAffinityUppPUPoliticalParty object to add.
      */
-    protected function doAddPuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty)
+    protected function doAddPuAffinityUppPUPoliticalParty(PUPoliticalParty $puAffinityUppPUPoliticalParty)
     {
-        $pUAffinityUPP = new PUAffinityUPP();
-        $pUAffinityUPP->setPuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty);
-        $this->addPuAffinityUppPUser($pUAffinityUPP);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puAffinityUppPUPoliticalParty->getPuAffinityUppPUsers()->contains($this)) { $pUAffinityUPP = new PUAffinityUPP();
+            $pUAffinityUPP->setPuAffinityUppPUPoliticalParty($puAffinityUppPUPoliticalParty);
+            $this->addPuAffinityUppPUser($pUAffinityUPP);
+
+            $foreignCollection = $puAffinityUppPUPoliticalParty->getPuAffinityUppPUsers();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -9132,7 +9333,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -9587,7 +9788,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -9630,9 +9831,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
         }
 
-        $query = PUserQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PUserQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -9656,7 +9856,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 

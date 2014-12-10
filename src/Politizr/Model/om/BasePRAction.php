@@ -39,7 +39,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -154,6 +154,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -164,6 +165,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -174,6 +176,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -184,6 +187,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getPObjectName()
     {
+
         return $this->p_object_name;
     }
 
@@ -194,6 +198,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getPObjectId()
     {
+
         return $this->p_object_id;
     }
 
@@ -204,6 +209,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getScoreEvolution()
     {
+
         return $this->score_evolution;
     }
 
@@ -214,6 +220,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -304,13 +311,14 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setId($v)
@@ -331,12 +339,12 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -352,12 +360,12 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -373,12 +381,12 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [p_object_name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setPObjectName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -394,7 +402,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [p_object_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setPObjectId($v)
@@ -415,7 +423,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [score_evolution] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setScoreEvolution($v)
@@ -511,12 +519,12 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PRAction The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -552,7 +560,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -579,6 +587,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 10; // 10 = PRActionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -795,7 +804,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
                     foreach ($this->puReputationRaPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuReputationRaPRBadgeQuery::create()
+                    PUReputationRAQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puReputationRaPUsersScheduledForDeletion = null;
@@ -1008,10 +1017,10 @@ abstract class BasePRAction extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1140,6 +1149,11 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $keys[8] => $this->getUpdatedAt(),
             $keys[9] => $this->getSlug(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->collPuReputationRaPRBadges) {
                 $result['PuReputationRaPRBadges'] = $this->collPuReputationRaPRBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1492,7 +1506,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
                     if (false !== $this->collPuReputationRaPRBadgesPartial && count($collPuReputationRaPRBadges)) {
                       $this->initPuReputationRaPRBadges(false);
 
-                      foreach($collPuReputationRaPRBadges as $obj) {
+                      foreach ($collPuReputationRaPRBadges as $obj) {
                         if (false == $this->collPuReputationRaPRBadges->contains($obj)) {
                           $this->collPuReputationRaPRBadges->append($obj);
                         }
@@ -1502,12 +1516,13 @@ abstract class BasePRAction extends BaseObject implements Persistent
                     }
 
                     $collPuReputationRaPRBadges->getInternalIterator()->rewind();
+
                     return $collPuReputationRaPRBadges;
                 }
 
-                if($partial && $this->collPuReputationRaPRBadges) {
-                    foreach($this->collPuReputationRaPRBadges as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuReputationRaPRBadges) {
+                    foreach ($this->collPuReputationRaPRBadges as $obj) {
+                        if ($obj->isNew()) {
                             $collPuReputationRaPRBadges[] = $obj;
                         }
                     }
@@ -1535,7 +1550,8 @@ abstract class BasePRAction extends BaseObject implements Persistent
     {
         $puReputationRaPRBadgesToDelete = $this->getPuReputationRaPRBadges(new Criteria(), $con)->diff($puReputationRaPRBadges);
 
-        $this->puReputationRaPRBadgesScheduledForDeletion = unserialize(serialize($puReputationRaPRBadgesToDelete));
+
+        $this->puReputationRaPRBadgesScheduledForDeletion = $puReputationRaPRBadgesToDelete;
 
         foreach ($puReputationRaPRBadgesToDelete as $puReputationRaPRBadgeRemoved) {
             $puReputationRaPRBadgeRemoved->setPuReputationRaPRBadge(null);
@@ -1569,7 +1585,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuReputationRaPRBadges());
             }
             $query = PUReputationRAQuery::create(null, $criteria);
@@ -1598,8 +1614,13 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $this->initPuReputationRaPRBadges();
             $this->collPuReputationRaPRBadgesPartial = true;
         }
+
         if (!in_array($l, $this->collPuReputationRaPRBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRaPRBadge($l);
+
+            if ($this->puReputationRaPRBadgesScheduledForDeletion and $this->puReputationRaPRBadgesScheduledForDeletion->contains($l)) {
+                $this->puReputationRaPRBadgesScheduledForDeletion->remove($this->puReputationRaPRBadgesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -1738,7 +1759,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
     public function setPuReputationRaPUsers(PropelCollection $puReputationRaPUsers, PropelPDO $con = null)
     {
         $this->clearPuReputationRaPUsers();
-        $currentPuReputationRaPUsers = $this->getPuReputationRaPUsers();
+        $currentPuReputationRaPUsers = $this->getPuReputationRaPUsers(null, $con);
 
         $this->puReputationRaPUsersScheduledForDeletion = $currentPuReputationRaPUsers->diff($puReputationRaPUsers);
 
@@ -1795,10 +1816,14 @@ abstract class BasePRAction extends BaseObject implements Persistent
         if ($this->collPuReputationRaPUsers === null) {
             $this->initPuReputationRaPUsers();
         }
+
         if (!$this->collPuReputationRaPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuReputationRaPUser($pUser);
+            $this->collPuReputationRaPUsers[] = $pUser;
 
-            $this->collPuReputationRaPUsers[]= $pUser;
+            if ($this->puReputationRaPUsersScheduledForDeletion and $this->puReputationRaPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puReputationRaPUsersScheduledForDeletion->remove($this->puReputationRaPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -1807,11 +1832,17 @@ abstract class BasePRAction extends BaseObject implements Persistent
     /**
      * @param	PuReputationRaPUser $puReputationRaPUser The puReputationRaPUser object to add.
      */
-    protected function doAddPuReputationRaPUser($puReputationRaPUser)
+    protected function doAddPuReputationRaPUser(PUser $puReputationRaPUser)
     {
-        $pUReputationRA = new PUReputationRA();
-        $pUReputationRA->setPuReputationRaPUser($puReputationRaPUser);
-        $this->addPuReputationRaPRBadge($pUReputationRA);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puReputationRaPUser->getPuReputationRaPRBadges()->contains($this)) { $pUReputationRA = new PUReputationRA();
+            $pUReputationRA->setPuReputationRaPUser($puReputationRaPUser);
+            $this->addPuReputationRaPRBadge($pUReputationRA);
+
+            $foreignCollection = $puReputationRaPUser->getPuReputationRaPRBadges();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -1864,7 +1895,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -1996,7 +2027,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -2030,9 +2061,8 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PRActionQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PRActionQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -2056,7 +2086,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 

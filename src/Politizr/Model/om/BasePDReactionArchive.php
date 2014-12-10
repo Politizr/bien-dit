@@ -33,7 +33,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -197,6 +197,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getPDDebateId()
     {
+
         return $this->p_d_debate_id;
     }
 
@@ -287,6 +288,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
@@ -297,6 +299,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getTreeLeft()
     {
+
         return $this->tree_left;
     }
 
@@ -307,6 +310,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getTreeRight()
     {
+
         return $this->tree_right;
     }
 
@@ -317,6 +321,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getTreeLevel()
     {
+
         return $this->tree_level;
     }
 
@@ -327,6 +332,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -337,6 +343,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getPUserId()
     {
+
         return $this->p_user_id;
     }
 
@@ -347,6 +354,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -357,6 +365,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getSummary()
     {
+
         return $this->summary;
     }
 
@@ -367,6 +376,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -377,6 +387,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getMoreInfo()
     {
+
         return $this->more_info;
     }
 
@@ -387,6 +398,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getNotePos()
     {
+
         return $this->note_pos;
     }
 
@@ -397,6 +409,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getNoteNeg()
     {
+
         return $this->note_neg;
     }
 
@@ -407,6 +420,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getNbViews()
     {
+
         return $this->nb_views;
     }
 
@@ -417,6 +431,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getPublished()
     {
+
         return $this->published;
     }
 
@@ -467,6 +482,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getPublishedBy()
     {
+
         return $this->published_by;
     }
 
@@ -477,6 +493,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -487,6 +504,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function getBroadcast()
     {
+
         return $this->broadcast;
     }
 
@@ -533,7 +551,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_d_debate_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setPDDebateId($v)
@@ -600,12 +618,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -621,7 +639,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [tree_left] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setTreeLeft($v)
@@ -642,7 +660,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [tree_right] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setTreeRight($v)
@@ -663,7 +681,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [tree_level] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setTreeLevel($v)
@@ -684,7 +702,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setId($v)
@@ -705,7 +723,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_user_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setPUserId($v)
@@ -726,12 +744,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -747,12 +765,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [summary] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setSummary($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -768,12 +786,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -789,12 +807,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [more_info] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setMoreInfo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -810,7 +828,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [note_pos] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setNotePos($v)
@@ -831,7 +849,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [note_neg] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setNoteNeg($v)
@@ -852,7 +870,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [nb_views] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setNbViews($v)
@@ -925,12 +943,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     /**
      * Set the value of [published_by] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
     public function setPublishedBy($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1047,7 +1065,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -1086,6 +1104,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 22; // 22 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -1510,10 +1529,10 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1681,6 +1700,11 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[20] => $this->getBroadcast(),
             $keys[21] => $this->getArchivedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
 
         return $result;
     }
@@ -2030,7 +2054,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */

@@ -31,6 +31,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PRAction;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
@@ -329,6 +330,10 @@ class CRUDController extends Controller {
                 $debate->save();
 
                 $this->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
+
+                // Réputation
+                $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('debate_publish', $event);
 
 	            // Construction de la réponse
 	            $jsonResponse = array (
@@ -661,12 +666,15 @@ class CRUDController extends Controller {
 
                 $this->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
 
+                // Réputation
+                $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('reaction_publish', $event);
+
                 // Construction de la réponse
                 $jsonResponse = array (
                     'success' => true,
                     'redirectUrl' => $redirectUrl,
                 );
-
             } else {
                 throw $this->createNotFoundException('Not a XHR request');
             }

@@ -142,8 +142,14 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = 'Politizr\\Model\\PDDebate', $modelAlias = null)
+    public function __construct($dbName = null, $modelName = null, $modelAlias = null)
     {
+        if (null === $dbName) {
+            $dbName = 'default';
+        }
+        if (null === $modelName) {
+            $modelName = 'Politizr\\Model\\PDDebate';
+        }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
@@ -160,10 +166,8 @@ abstract class BasePDDebateQuery extends PDocumentQuery
         if ($criteria instanceof PDDebateQuery) {
             return $criteria;
         }
-        $query = new PDDebateQuery();
-        if (null !== $modelAlias) {
-            $query->setModelAlias($modelAlias);
-        }
+        $query = new PDDebateQuery(null, null, $modelAlias);
+
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
         }
@@ -191,7 +195,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
             return null;
         }
         if ((null !== ($obj = PDDebatePeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
-            // the object is alredy in the instance pool
+            // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
@@ -358,7 +362,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      * <code>
      * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
      * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $createdAt The value to use as filter.
@@ -401,7 +405,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      * <code>
      * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
      * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $updatedAt The value to use as filter.
@@ -830,7 +834,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      * <code>
      * $query->filterByPublishedAt('2011-03-14'); // WHERE published_at = '2011-03-14'
      * $query->filterByPublishedAt('now'); // WHERE published_at = '2011-03-14'
-     * $query->filterByPublishedAt(array('max' => 'yesterday')); // WHERE published_at > '2011-03-13'
+     * $query->filterByPublishedAt(array('max' => 'yesterday')); // WHERE published_at < '2011-03-13'
      * </code>
      *
      * @param     mixed $publishedAt The value to use as filter.
@@ -1579,21 +1583,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
         return $stmt;
     }
 
-    // sluggable behavior
-
-    /**
-     * Find one object based on its slug
-     *
-     * @param     string $slug The value to use as filter.
-     * @param     PropelPDO $con The optional connection object
-     *
-     * @return    PDDebate the result, formatted by the current formatter
-     */
-    public function findOneBySlug($slug, $con = null)
-    {
-        return $this->filterBySlug($slug)->findOne($con);
-    }
-
     // archivable behavior
 
     /**
@@ -1631,7 +1620,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
                 $totalArchivedObjects++;
             }
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }

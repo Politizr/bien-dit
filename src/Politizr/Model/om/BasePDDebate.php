@@ -48,7 +48,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -259,6 +259,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getFileName()
     {
+
         return $this->file_name;
     }
 
@@ -349,6 +350,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getSlug()
     {
+
         return $this->slug;
     }
 
@@ -359,6 +361,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -369,6 +372,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getPUserId()
     {
+
         return $this->p_user_id;
     }
 
@@ -379,6 +383,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -389,6 +394,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getSummary()
     {
+
         return $this->summary;
     }
 
@@ -399,6 +405,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -409,6 +416,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getMoreInfo()
     {
+
         return $this->more_info;
     }
 
@@ -419,6 +427,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getNotePos()
     {
+
         return $this->note_pos;
     }
 
@@ -429,6 +438,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getNoteNeg()
     {
+
         return $this->note_neg;
     }
 
@@ -439,6 +449,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getNbViews()
     {
+
         return $this->nb_views;
     }
 
@@ -449,6 +460,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getPublished()
     {
+
         return $this->published;
     }
 
@@ -499,6 +511,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getPublishedBy()
     {
+
         return $this->published_by;
     }
 
@@ -509,6 +522,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -519,18 +533,19 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function getBroadcast()
     {
+
         return $this->broadcast;
     }
 
     /**
      * Set the value of [file_name] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setFileName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -592,12 +607,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setSlug($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -613,7 +628,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setId($v)
@@ -638,7 +653,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [p_user_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setPUserId($v)
@@ -663,12 +678,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [title] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setTitle($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -684,12 +699,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [summary] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setSummary($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -705,12 +720,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -726,12 +741,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [more_info] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setMoreInfo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -747,7 +762,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [note_pos] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setNotePos($v)
@@ -768,7 +783,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [note_neg] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setNoteNeg($v)
@@ -789,7 +804,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [nb_views] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setNbViews($v)
@@ -862,12 +877,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Set the value of [published_by] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
     public function setPublishedBy($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -961,7 +976,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -996,6 +1011,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 18; // 18 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -1226,7 +1242,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->alreadyInSave = true;
 
             // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -1262,7 +1278,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     foreach ($this->puFollowDdPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PuFollowDdPDDebateQuery::create()
+                    PUFollowDDQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->puFollowDdPUsersScheduledForDeletion = null;
@@ -1288,7 +1304,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     foreach ($this->pddTaggedTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PddTaggedTPDDebateQuery::create()
+                    PDDTaggedTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pddTaggedTPTagsScheduledForDeletion = null;
@@ -1572,10 +1588,10 @@ abstract class BasePDDebate extends PDocument implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1587,7 +1603,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
 
             // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
+            // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
@@ -1770,6 +1786,11 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $keys[16] => $this->getOnline(),
             $keys[17] => $this->getBroadcast(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
         if ($includeForeignObjects) {
             if (null !== $this->aPDocument) {
                 $result['PDocument'] = $this->aPDocument->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -2109,7 +2130,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Declares an association between this object and a PDocument object.
      *
-     * @param             PDocument $v
+     * @param                  PDocument $v
      * @return PDDebate The current object (for fluent API support)
      * @throws PropelException
      */
@@ -2155,7 +2176,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * Declares an association between this object and a PUser object.
      *
-     * @param             PUser $v
+     * @param                  PUser $v
      * @return PDDebate The current object (for fluent API support)
      * @throws PropelException
      */
@@ -2303,7 +2324,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     if (false !== $this->collPuFollowDdPDDebatesPartial && count($collPuFollowDdPDDebates)) {
                       $this->initPuFollowDdPDDebates(false);
 
-                      foreach($collPuFollowDdPDDebates as $obj) {
+                      foreach ($collPuFollowDdPDDebates as $obj) {
                         if (false == $this->collPuFollowDdPDDebates->contains($obj)) {
                           $this->collPuFollowDdPDDebates->append($obj);
                         }
@@ -2313,12 +2334,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     }
 
                     $collPuFollowDdPDDebates->getInternalIterator()->rewind();
+
                     return $collPuFollowDdPDDebates;
                 }
 
-                if($partial && $this->collPuFollowDdPDDebates) {
-                    foreach($this->collPuFollowDdPDDebates as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPuFollowDdPDDebates) {
+                    foreach ($this->collPuFollowDdPDDebates as $obj) {
+                        if ($obj->isNew()) {
                             $collPuFollowDdPDDebates[] = $obj;
                         }
                     }
@@ -2346,7 +2368,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         $puFollowDdPDDebatesToDelete = $this->getPuFollowDdPDDebates(new Criteria(), $con)->diff($puFollowDdPDDebates);
 
-        $this->puFollowDdPDDebatesScheduledForDeletion = unserialize(serialize($puFollowDdPDDebatesToDelete));
+
+        $this->puFollowDdPDDebatesScheduledForDeletion = $puFollowDdPDDebatesToDelete;
 
         foreach ($puFollowDdPDDebatesToDelete as $puFollowDdPDDebateRemoved) {
             $puFollowDdPDDebateRemoved->setPuFollowDdPDDebate(null);
@@ -2380,7 +2403,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPuFollowDdPDDebates());
             }
             $query = PUFollowDDQuery::create(null, $criteria);
@@ -2409,8 +2432,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->initPuFollowDdPDDebates();
             $this->collPuFollowDdPDDebatesPartial = true;
         }
+
         if (!in_array($l, $this->collPuFollowDdPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowDdPDDebate($l);
+
+            if ($this->puFollowDdPDDebatesScheduledForDeletion and $this->puFollowDdPDDebatesScheduledForDeletion->contains($l)) {
+                $this->puFollowDdPDDebatesScheduledForDeletion->remove($this->puFollowDdPDDebatesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2546,7 +2574,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     if (false !== $this->collPDReactionsPartial && count($collPDReactions)) {
                       $this->initPDReactions(false);
 
-                      foreach($collPDReactions as $obj) {
+                      foreach ($collPDReactions as $obj) {
                         if (false == $this->collPDReactions->contains($obj)) {
                           $this->collPDReactions->append($obj);
                         }
@@ -2556,12 +2584,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     }
 
                     $collPDReactions->getInternalIterator()->rewind();
+
                     return $collPDReactions;
                 }
 
-                if($partial && $this->collPDReactions) {
-                    foreach($this->collPDReactions as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPDReactions) {
+                    foreach ($this->collPDReactions as $obj) {
+                        if ($obj->isNew()) {
                             $collPDReactions[] = $obj;
                         }
                     }
@@ -2589,7 +2618,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         $pDReactionsToDelete = $this->getPDReactions(new Criteria(), $con)->diff($pDReactions);
 
-        $this->pDReactionsScheduledForDeletion = unserialize(serialize($pDReactionsToDelete));
+
+        $this->pDReactionsScheduledForDeletion = $pDReactionsToDelete;
 
         foreach ($pDReactionsToDelete as $pDReactionRemoved) {
             $pDReactionRemoved->setPDDebate(null);
@@ -2623,7 +2653,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPDReactions());
             }
             $query = PDReactionQuery::create(null, $criteria);
@@ -2652,8 +2682,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->initPDReactions();
             $this->collPDReactionsPartial = true;
         }
+
         if (!in_array($l, $this->collPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPDReaction($l);
+
+            if ($this->pDReactionsScheduledForDeletion and $this->pDReactionsScheduledForDeletion->contains($l)) {
+                $this->pDReactionsScheduledForDeletion->remove($this->pDReactionsScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -2814,7 +2849,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     if (false !== $this->collPddTaggedTPDDebatesPartial && count($collPddTaggedTPDDebates)) {
                       $this->initPddTaggedTPDDebates(false);
 
-                      foreach($collPddTaggedTPDDebates as $obj) {
+                      foreach ($collPddTaggedTPDDebates as $obj) {
                         if (false == $this->collPddTaggedTPDDebates->contains($obj)) {
                           $this->collPddTaggedTPDDebates->append($obj);
                         }
@@ -2824,12 +2859,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     }
 
                     $collPddTaggedTPDDebates->getInternalIterator()->rewind();
+
                     return $collPddTaggedTPDDebates;
                 }
 
-                if($partial && $this->collPddTaggedTPDDebates) {
-                    foreach($this->collPddTaggedTPDDebates as $obj) {
-                        if($obj->isNew()) {
+                if ($partial && $this->collPddTaggedTPDDebates) {
+                    foreach ($this->collPddTaggedTPDDebates as $obj) {
+                        if ($obj->isNew()) {
                             $collPddTaggedTPDDebates[] = $obj;
                         }
                     }
@@ -2857,7 +2893,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         $pddTaggedTPDDebatesToDelete = $this->getPddTaggedTPDDebates(new Criteria(), $con)->diff($pddTaggedTPDDebates);
 
-        $this->pddTaggedTPDDebatesScheduledForDeletion = unserialize(serialize($pddTaggedTPDDebatesToDelete));
+
+        $this->pddTaggedTPDDebatesScheduledForDeletion = $pddTaggedTPDDebatesToDelete;
 
         foreach ($pddTaggedTPDDebatesToDelete as $pddTaggedTPDDebateRemoved) {
             $pddTaggedTPDDebateRemoved->setPddTaggedTPDDebate(null);
@@ -2891,7 +2928,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 return 0;
             }
 
-            if($partial && !$criteria) {
+            if ($partial && !$criteria) {
                 return count($this->getPddTaggedTPDDebates());
             }
             $query = PDDTaggedTQuery::create(null, $criteria);
@@ -2920,8 +2957,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->initPddTaggedTPDDebates();
             $this->collPddTaggedTPDDebatesPartial = true;
         }
+
         if (!in_array($l, $this->collPddTaggedTPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddPddTaggedTPDDebate($l);
+
+            if ($this->pddTaggedTPDDebatesScheduledForDeletion and $this->pddTaggedTPDDebatesScheduledForDeletion->contains($l)) {
+                $this->pddTaggedTPDDebatesScheduledForDeletion->remove($this->pddTaggedTPDDebatesScheduledForDeletion->search($l));
+            }
         }
 
         return $this;
@@ -3060,7 +3102,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     public function setPuFollowDdPUsers(PropelCollection $puFollowDdPUsers, PropelPDO $con = null)
     {
         $this->clearPuFollowDdPUsers();
-        $currentPuFollowDdPUsers = $this->getPuFollowDdPUsers();
+        $currentPuFollowDdPUsers = $this->getPuFollowDdPUsers(null, $con);
 
         $this->puFollowDdPUsersScheduledForDeletion = $currentPuFollowDdPUsers->diff($puFollowDdPUsers);
 
@@ -3117,10 +3159,14 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->collPuFollowDdPUsers === null) {
             $this->initPuFollowDdPUsers();
         }
+
         if (!$this->collPuFollowDdPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
             $this->doAddPuFollowDdPUser($pUser);
+            $this->collPuFollowDdPUsers[] = $pUser;
 
-            $this->collPuFollowDdPUsers[]= $pUser;
+            if ($this->puFollowDdPUsersScheduledForDeletion and $this->puFollowDdPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puFollowDdPUsersScheduledForDeletion->remove($this->puFollowDdPUsersScheduledForDeletion->search($pUser));
+            }
         }
 
         return $this;
@@ -3129,11 +3175,17 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
      */
-    protected function doAddPuFollowDdPUser($puFollowDdPUser)
+    protected function doAddPuFollowDdPUser(PUser $puFollowDdPUser)
     {
-        $pUFollowDD = new PUFollowDD();
-        $pUFollowDD->setPuFollowDdPUser($puFollowDdPUser);
-        $this->addPuFollowDdPDDebate($pUFollowDD);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puFollowDdPUser->getPuFollowDdPDDebates()->contains($this)) { $pUFollowDD = new PUFollowDD();
+            $pUFollowDD->setPuFollowDdPUser($puFollowDdPUser);
+            $this->addPuFollowDdPDDebate($pUFollowDD);
+
+            $foreignCollection = $puFollowDdPUser->getPuFollowDdPDDebates();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -3237,7 +3289,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     public function setPddTaggedTPTags(PropelCollection $pddTaggedTPTags, PropelPDO $con = null)
     {
         $this->clearPddTaggedTPTags();
-        $currentPddTaggedTPTags = $this->getPddTaggedTPTags();
+        $currentPddTaggedTPTags = $this->getPddTaggedTPTags(null, $con);
 
         $this->pddTaggedTPTagsScheduledForDeletion = $currentPddTaggedTPTags->diff($pddTaggedTPTags);
 
@@ -3294,10 +3346,14 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->collPddTaggedTPTags === null) {
             $this->initPddTaggedTPTags();
         }
+
         if (!$this->collPddTaggedTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
             $this->doAddPddTaggedTPTag($pTag);
+            $this->collPddTaggedTPTags[] = $pTag;
 
-            $this->collPddTaggedTPTags[]= $pTag;
+            if ($this->pddTaggedTPTagsScheduledForDeletion and $this->pddTaggedTPTagsScheduledForDeletion->contains($pTag)) {
+                $this->pddTaggedTPTagsScheduledForDeletion->remove($this->pddTaggedTPTagsScheduledForDeletion->search($pTag));
+            }
         }
 
         return $this;
@@ -3306,11 +3362,17 @@ abstract class BasePDDebate extends PDocument implements Persistent
     /**
      * @param	PddTaggedTPTag $pddTaggedTPTag The pddTaggedTPTag object to add.
      */
-    protected function doAddPddTaggedTPTag($pddTaggedTPTag)
+    protected function doAddPddTaggedTPTag(PTag $pddTaggedTPTag)
     {
-        $pDDTaggedT = new PDDTaggedT();
-        $pDDTaggedT->setPddTaggedTPTag($pddTaggedTPTag);
-        $this->addPddTaggedTPDDebate($pDDTaggedT);
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pddTaggedTPTag->getPddTaggedTPDDebates()->contains($this)) { $pDDTaggedT = new PDDTaggedT();
+            $pDDTaggedT->setPddTaggedTPTag($pddTaggedTPTag);
+            $this->addPddTaggedTPDDebate($pDDTaggedT);
+
+            $foreignCollection = $pddTaggedTPTag->getPddTaggedTPDDebates();
+            $foreignCollection[] = $this;
+        }
     }
 
     /**
@@ -3371,7 +3433,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -3538,7 +3600,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
 
     /**
-     * Make sure the slug is short enough to accomodate the column size
+     * Make sure the slug is short enough to accommodate the column size
      *
      * @param    string $slug                   the slug to check
      * @param    int    $incrementReservedSpace the number of characters to keep empty
@@ -3572,9 +3634,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $slug2 = $slug . $separator;
         }
 
-        $query = PDDebateQuery::create('q')
-            ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)
-            ->prune($this)
+         $query = PDDebateQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
         ;
 
         if (!$alreadyExists) {
@@ -3598,7 +3659,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
         }
 
         $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if (0 == $slugNum[0]) {
+        if ('0' === $slugNum[0]) {
             $slugNum[0] = 1;
         }
 
