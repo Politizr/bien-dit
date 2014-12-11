@@ -33,8 +33,8 @@
 		</div>
 	</div>
 	<div class="comment-author row text-center">
-		<div class="col-sm-12">
-			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': comment } only %}
+		<div class="notes col-sm-12">
+			{{ linkNote(comment, constant('Politizr\\Model\\PDocument::TYPE_COMMENT')) }}
 		</div>
 	</div>
 </div>

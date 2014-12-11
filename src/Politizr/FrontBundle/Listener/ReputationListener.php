@@ -84,6 +84,105 @@ class ReputationListener {
     }
 
     /**
+     * Note positive sur un document
+     *
+     * @param GenericEvent
+     */
+    public function onNotePos(GenericEvent $event) {
+        $this->logger->info('*** onNotePos');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        switch($objectName) {
+            case 'Politizr\Model\PDDebate':
+                $prActionId = PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_POS;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+            case 'Politizr\Model\PDReaction':
+                $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_POS;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_POS;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+            case 'Politizr\Model\PDComment':
+                $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_POS;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+        } 
+    }
+
+    /**
+     * Note négative sur un document
+     *
+     * @param GenericEvent
+     */
+    public function onNoteNeg(GenericEvent $event) {
+        $this->logger->info('*** onNoteNeg');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        switch(get_class($subject)) {
+            case 'Politizr\Model\PDDebate':
+                $prActionId = PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_NEG;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+            case 'Politizr\Model\PDReaction':
+                $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_NEG;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+            case 'Politizr\Model\PDComment':
+                $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG;
+
+                // Auteur associé
+                $userIdAuthor = $subject->getPUserId();
+                $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_NEG;
+
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                break;
+        } 
+    }
+
+
+
+
+    /**
      * Insertion en BDD
      *
      * @param

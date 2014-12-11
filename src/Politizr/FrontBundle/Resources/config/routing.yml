@@ -341,9 +341,12 @@ Follow:
     defaults: { _controller: PolitizrFrontBundle:Document:follow, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
-Unfollow:
-    pattern:  /unfollow.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:unfollow, _format: json }
+################################################################################
+# NOTATION DEBAT / REACTION / COMMENTAIRE
+################################################################################
+Note:
+    pattern:  /note.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:note, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################

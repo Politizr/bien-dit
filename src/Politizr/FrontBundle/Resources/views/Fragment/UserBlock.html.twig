@@ -93,7 +93,7 @@
 		<hr>
 		<div class="row text-center">
 			<div class="star">
-				{{ linkFollow(pUser.id, 'user') }}
+				{{ linkFollow(pUser, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
 			</div>
 		</div>
 	{% else %}

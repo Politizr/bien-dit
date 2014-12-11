@@ -1,0 +1,14 @@
+{% if app.user %}
+	{% if not pos %}
+		<a class="badge alert-success" action="note" object-id="{{ object.id }}" context="{{ context }}" way="up">{{ object.notePos }} +</a>
+	{% else %}
+		<span class="badge alert-success">{{ object.notePos }} +</span>
+	{% endif %}
+	{% if not neg %}
+		<a class="badge alert-danger" action="note" object-id="{{ object.id }}" context="{{ context }}" way="down">{{ object.noteNeg }} -</a>
+	{% else %}
+		<span class="badge alert-danger">{{ object.noteNeg }} -</span>
+	{% endif %}
+{% else %}
+	<a class="btn btn-primary" href="{{ path('Inscription') }}">M'inscrire pour noter</a>
+{% endif %}

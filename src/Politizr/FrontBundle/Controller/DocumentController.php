@@ -10,17 +10,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PDocument;
 use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
+
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
@@ -269,7 +274,7 @@ class DocumentController extends Controller {
     /* ######################################################################################################## */
 
     /**
-     *      Suivi d'un débat / profil
+     *  Suivre / Ne plus suivre debat / user
      */
     public function followAction(Request $request) {
         $logger = $this->get('logger');
@@ -279,48 +284,78 @@ class DocumentController extends Controller {
             if ($request->isXmlHttpRequest()) {
                 // Récupération user
                 $pUser = $this->getUser();
-                if (!$pUser) {
-                    throw new NotFoundHttpException('Utilisateur déconnecté.');
-                }
 
                 // Récupération args
                 $objectId = $request->get('objectId');
                 $logger->info('$objectId = ' . print_r($objectId, true));
-                $objectType = $request->get('objectType');
-                $logger->info('$objectType = ' . print_r($objectType, true));
+                $context = $request->get('context');
+                $logger->info('$context = ' . print_r($context, true));
+                $way = $request->get('way');
+                $logger->info('$way = ' . print_r($way, true));
 
-                if ($objectType == 'debate') {
-                    // TODO > contrôle élément non existant?
+                // MAJ suivre / ne plus suivre
+                if ($way == 'follow') {
+                    switch($context) {
+                        case PDocument::TYPE_DEBATE:
+                            $object = PDDebateQuery::create()->findPk($objectId);
 
-                    // Insertion nouvel élément
-                    $pUFollowDD = new PUFollowDD();
+                            // Insertion nouvel élément
+                            $pUFollowDD = new PUFollowDD();
+                            $pUFollowDD->setPUserId($pUser->getId());
+                            $pUFollowDD->setPDDebateId($object->getId());
+                            $pUFollowDD->save();
 
-                    $pUFollowDD->setPUserId($pUser->getId());
-                    $pUFollowDD->setPDDebateId($objectId);
+                            break;
+                        case PDocument::TYPE_USER:
+                            $object = PDReactionQuery::create()->findPk($objectId);
 
-                    $pUFollowDD->save();
-                } elseif ($objectType = 'user') {
-                    // TODO > contrôle élément non existant? / a priori exception dans ce cas
+                            // Insertion nouvel élément
+                            $pUFollowU = new PUFollowU();
+                            $pUFollowU->setPUserId($object->getId());
+                            $pUFollowU->setPUserFollowerId($pUser->getId());
+                            $pUFollowU->save();
 
-                    // Insertion nouvel élément
-                    $pUFollowU = new PUFollowU();
+                            break;
+                    }
+                } elseif ($way == 'unfollow') {
+                    switch($context) {
+                        case PDocument::TYPE_DEBATE:
+                            $object = PDDebateQuery::create()->findPk($objectId);
 
-                    $pUFollowU->setPUserId($objectId);
-                    $pUFollowU->setPUserFollowerId($pUser->getId());
+                            // Suppression élément(s)
+                            $pUFollowDDList = PUFollowDDQuery::create()
+                                            ->filterByPUserId($pUser->getId())
+                                            ->filterByPDDebateId($object->getId())
+                                            ->find();
+                            foreach ($pUFollowDDList as $pUFollowDD) {
+                                $pUFollowDD->delete();
+                            }
 
-                    $pUFollowU->save();
+                            break;
+                        case PDocument::TYPE_USER:
+                            $object = PDReactionQuery::create()->findPk($objectId);
+
+                            // Suppression élément(s)
+                            $pUFollowUList = PUFollowUQuery::create()
+                                            ->filterByPUserId($object->getId())
+                                            ->filterByPUserFollowerId($pUser->getId())
+                                            ->find();
+                            foreach ($pUFollowUList as $pUFollowU) {
+                                $pUFollowU->delete();
+                            }
+
+                            break;
+                    }
                 }
 
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
-                                        'objectId' => $objectId,
-                                        'objectType' => $objectType,
-                                        'isFollower' => true
+                                    'PolitizrFrontBundle:Fragment:LinkFollow.html.twig', array(
+                                        'object' => $object,
+                                        'context' => $context
                                         )
                             );
-
 
                 // Construction de la réponse
                 $jsonResponse = array (
@@ -344,57 +379,61 @@ class DocumentController extends Controller {
     }
 
     /**
-     *      Arrêter le suivi d'un débat / profil
+     *  Note débat / réaction / commentaire
      */
-    public function unfollowAction(Request $request) {
+    public function noteAction(Request $request) {
         $logger = $this->get('logger');
-        $logger->info('*** unfollowAction');
+        $logger->info('*** noteAction');
         
         try {
             if ($request->isXmlHttpRequest()) {
                 // Récupération user
-                $pUser = $this->getUser();
-                if (!$pUser) {
-                    throw new NotFoundHttpException('Utilisateur déconnecté.');
-                }
+                $user = $this->getUser();
 
                 // Récupération args
                 $objectId = $request->get('objectId');
                 $logger->info('$objectId = ' . print_r($objectId, true));
-                $objectType = $request->get('objectType');
-                $logger->info('$objectType = ' . print_r($objectType, true));
-                
-                if ($objectType == 'debate') {
-                    // Suppression élément
-                    $pUFollowDDList = PUFollowDDQuery::create()
-                                    ->filterByPUserId($objectId)
-                                    ->filterByPDDebateId($objectId)
-                                    ->find();
+                $context = $request->get('context');
+                $logger->info('$context = ' . print_r($context, true));
+                $way = $request->get('way');
+                $logger->info('$way = ' . print_r($way, true));
 
-                    // précaution > boucle sur tous les éléments
-                    foreach ($pUFollowDDList as $pUFollowDD) {
-                        $pUFollowDD->delete();
-                    }
-                } elseif ($objectType = 'user') {
-                    // Suppression élément
-                    $pUFollowUList = PUFollowUQuery::create()
-                                    ->filterByPUserId($objectId)
-                                    ->filterByPUserFollowerId($pUser->getId())
-                                    ->find();
+                // Récupération objet
+                switch($context) {
+                    case PDocument::TYPE_DEBATE:
+                        $object = PDDebateQuery::create()->findPk($objectId);
+                        break;
+                    case PDocument::TYPE_REACTION:
+                        $object = PDReactionQuery::create()->findPk($objectId);
+                        break;
+                    case PDocument::TYPE_COMMENT:
+                        $object = PDCommentQuery::create()->findPk($objectId);
+                        break;
+                }
 
-                    // précaution > boucle sur tous les éléments
-                    foreach ($pUFollowUList as $pUFollowU) {
-                        $pUFollowU->delete();
-                    }
+                // MAJ note
+                if ($way == 'up') {
+                    $object->setNotePos($object->getNotePos() + 1);
+                    $object->save();
+
+                    // Réputation
+                    $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                    $dispatcher = $this->get('event_dispatcher')->dispatch('note_pos', $event);
+                } elseif ($way == 'down') {
+                    $object->setNoteNeg($object->getNoteNeg() + 1);
+                    $object->save();
+
+                    // Réputation
+                    $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                    $dispatcher = $this->get('event_dispatcher')->dispatch('note_neg', $event);
                 }
 
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
-                                        'objectId' => $objectId,
-                                        'objectType' => $objectType,
-                                        'isFollower' => false
+                                    'PolitizrFrontBundle:Fragment:LinkNote.html.twig', array(
+                                        'object' => $object,
+                                        'context' => $context,
                                         )
                             );
 

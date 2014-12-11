@@ -7,8 +7,8 @@
 				<h3>{{ debate.title }}</h3>
 			{% endif %}
 		</div>
-		<div class="col-sm-2 text-center">
-			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': debate } only %}
+		<div class="notes col-sm-2 text-center">
+			{{ linkNote(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
 		</div>
 		<div class="col-sm-2 text-center">
 			<span class="label label-info text-center">vu {{ debate.nbViews }} fois</span>
@@ -58,7 +58,7 @@
 		{{ debate.summary | raw }}
 	</div>
 	<div class="star text-center">
-		{{ linkFollow(debate.id, 'debate') }}
+		{{ linkFollow(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
 	</div>
 </div>
 {% if full %}

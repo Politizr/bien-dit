@@ -4,6 +4,7 @@ deps
 README.md
 
 update-fixtures.sh
+reload-bdd.sh
 
 /app/cache/*
 /app/logs/*

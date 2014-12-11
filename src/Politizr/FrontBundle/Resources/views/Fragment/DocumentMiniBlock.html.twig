@@ -24,8 +24,8 @@
 				</span>
 			</span>
 		</div>
-		<div class="col-sm-2 text-center">
-			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': document } only %}
+		<div class="notes col-sm-2 text-center">
+			{{ linkNote(document, objectType) }}
 		</div>
 		<div class="col-sm-2 text-center">
 			{% if document.published %}

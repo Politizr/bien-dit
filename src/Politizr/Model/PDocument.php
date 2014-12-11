@@ -19,8 +19,11 @@ use Politizr\Exception\InconsistentDataException;
  */
 class PDocument extends BasePDocument
 {
-	const TYPE_DEBATE = 'débat';
-	const TYPE_REACTION = 'réaction';
+	// TODO > migrer le stockage des types sur un objet dédié
+	const TYPE_DEBATE = 'debate';
+	const TYPE_REACTION = 'reaction';
+	const TYPE_COMMENT = 'comment';
+	const TYPE_USER = 'user';
 
 	// *****************************  OBJET / STRING  ****************** //
 

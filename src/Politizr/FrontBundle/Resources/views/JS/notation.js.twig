@@ -3,14 +3,16 @@
     //      AJAX
     // **************************** //
 
-    // suivre / ne plus suivre
-    $("body").on("click", "a[action='follow']", function(e) {
-        console.log('*** click follow');
+    // Noter
+    $("body").on("click", "a[action='note']", function(e) {
+        console.log('*** click note');
         
+        e.preventDefault();
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('Follow') }}",
-            context: $(this).closest('.star'),
+            url: "{{ path('Note') }}",
+            context: $(this).closest('.notes'),
             data: { 'objectId': $(this).attr('object-id'), 'context': $(this).attr('context'), 'way': $(this).attr('way') },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
@@ -27,5 +29,6 @@
         });
 
     });
+
 
 </script>

@@ -3,8 +3,6 @@
 	<hr>
 	{% if pDocument %}
 		<div class="reactionInfos">
-			{% include 'PolitizrFrontBundle:Fragment:Notation.html.twig' with { 'object': pDocument } only %}
-			<hr>
 			{% include 'PolitizrFrontBundle:Fragment:DocumentCommentsHighlight.html.twig' with { 'globalComments': pDocument.globalComments } only %}
 		</div>
 	{% endif %}

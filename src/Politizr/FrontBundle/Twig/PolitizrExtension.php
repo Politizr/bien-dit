@@ -3,13 +3,19 @@ namespace Politizr\Frontbundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
 use Politizr\Model\PRBadgeMetal;
+use Politizr\Model\PRAction;
+use Politizr\Model\PDocument;
 
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUReputationRAQuery;
 
 
 /**
- * Fonctions/Helper Politizr
+ * Fonctions Twig Politizr Front
+ *
+ * TODO:
+ *      - constantes en dur sur type de document (linkFollow) > utiliser les constantes de PDocument
  *
  * @author Lionel Bouzonville
  */
@@ -100,6 +106,10 @@ class PolitizrExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'linkNote'  => new \Twig_Function_Method($this, 'linkNote', array(
+                    'is_safe' => array('html')
+                    )
+            ),
         );
     }
 
@@ -113,44 +123,50 @@ class PolitizrExtension extends \Twig_Extension
      *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
      *
      * @param $objectId     ID objet
-     * @param $objectType   Type d'objet suivi: user - debate
+     * @param $context      Type d'objet suivi: user - debate
      *
      * @return string
      */
-    public function linkFollow($objectId, $objectType)
+    public function linkFollow($object, $context)
     {
-        // $this->logger->info('*** linkFollow');
-        // $this->logger->info('$objectId = '.print_r($objectId, true));
-        // $this->logger->info('$objectType = '.print_r($objectType, true));
+        $this->logger->info('*** linkFollow');
+        $this->logger->info('$object = '.print_r($object, true));
+        $this->logger->info('$context = '.print_r($context, true));
 
-        $isFollower = false;
-
+        $follower = false;
         if ($this->pUser) {
-            if ($objectType == 'debate') {
-                $nb = PUFollowDDQuery::create()
-                    ->filterByPUserId($this->pUser->getId())
-                    ->filterByPDDebateId($objectId)
-                    ->count();
-                if ($nb > 0) {
-                    $isFollower = true;
-                }
-            } elseif ($objectType == 'user') {
-                $nb = PUFollowUQuery::create()
-                    ->filterByPUserFollowerId($this->pUser->getId())
-                    ->filterByPUserId($objectId)
-                    ->count();
-                if ($nb > 0) {
-                    $isFollower = true;
-                }
+            switch($context) {
+                case PDocument::TYPE_DEBATE:
+                    $follow = PUFollowDDQuery::create()
+                        ->filterByPUserId($this->pUser->getId())
+                        ->filterByPDDebateId($object->getId())
+                        ->findOne();
+                    
+                    if ($follow) {
+                        $follower = true;
+                    }
+
+                    break;
+                case PDocument::TYPE_USER:
+                    $follow = PUFollowUQuery::create()
+                        ->filterByPUserFollowerId($this->pUser->getId())
+                        ->filterByPUserId($object->getId())
+                        ->findOne();
+                    
+                    if ($follow) {
+                        $follower = true;
+                    }
+
+                    break;
             }
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
-                                'objectId' => $objectId,
-                                'objectType' => $objectType,
-                                'isFollower' => $isFollower
+                                'object' => $object,
+                                'context' => $context,
+                                'follower' => $follower
                                 )
                     );
 
@@ -366,6 +382,87 @@ class PolitizrExtension extends \Twig_Extension
         }
 
         return $twClass;
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                              NOTATION                                                    */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Affiche & active / désactive les Note + / Note -
+     *
+     *  @param $object          objet
+     *  @param $context         PDocument::TYPE_DEBATE / TYPE_REACTION / TYPE_COMMENT
+     *
+     *  @return string
+     */
+    public function linkNote($object, $context)
+    {
+        // $this->logger->info('*** linkNote');
+        // $this->logger->info('$object = '.print_r($object, true));
+        // $this->logger->info('$context = '.print_r($context, true));
+
+        $pos = false;
+        $neg = false;
+
+        if ($this->pUser) {
+            // Le document a-t-il déjà été noté pos et/ou neg?
+            switch($context) {
+                case PDocument::TYPE_DEBATE:
+                    $queryPos = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
+                        ->filterByPObjectName('Politizr\Model\PDDebate');
+                    $queryNeg = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
+                        ->filterByPObjectName('Politizr\Model\PDDebate');
+                    break;
+                case PDocument::TYPE_REACTION:
+                    $queryPos = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
+                        ->filterByPObjectName('Politizr\Model\PDReaction');
+                    $queryNeg = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
+                        ->filterByPObjectName('Politizr\Model\PDReaction');
+                    break;
+                case PDocument::TYPE_COMMENT:
+                    $queryPos = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
+                        ->filterByPObjectName('Politizr\Model\PDComment');
+                    $queryNeg = PUReputationRAQuery::create()
+                        ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
+                        ->filterByPObjectName('Politizr\Model\PDComment');
+                    break;
+            }
+
+            $notePos = $queryPos->filterByPUserId($this->pUser->getId())
+                ->filterByPObjectId($object->getId())
+                ->findOne();
+            if ($notePos) {
+                $pos = true;
+            }
+
+            $noteNeg = $queryNeg->filterByPUserId($this->pUser->getId())
+                ->filterByPObjectId($object->getId())
+                ->findOne();
+            if ($noteNeg) {
+                $neg = true;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment:NotationAction.html.twig', array(
+                                'object' => $object,
+                                'context' => $context,
+                                'pos' => $pos,
+                                'neg' => $neg,
+                                )
+                    );
+
+        return $html;
+
     }
 
 
