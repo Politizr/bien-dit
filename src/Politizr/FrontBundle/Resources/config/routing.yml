@@ -296,7 +296,6 @@ DebateDraftEdit:
         id:             \d+
 
 
-
 ################################################################################
 ################################################################################
 #				ROUTING AJAX
@@ -452,3 +451,11 @@ ReactionDelete:
     defaults: { _controller: PolitizrFrontBundle:CRUD:reactionDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+
+################################################################################
+# EDITION COMMENTAIRE
+################################################################################
+CommentNew:
+    pattern:  /profil/commentaire/new.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:commentNew, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

@@ -40,4 +40,30 @@
 
     });
 
+    // création d'un commentaire
+    $("body").on("click", "input[action='btn-submit-comment']", function(e) {
+        console.log('*** click comments');
+        var context = $(this).closest('.comments');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('CommentNew') }}",
+            context: context,
+            data: $("#form-comment-new").serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $(this).find('#form-comment-new').trigger("reset");
+                    $(this).find('.comment-just-created').prepend(data['html'] + '<hr>');
+                }
+            }
+        });
+
+    });
+
 </script>

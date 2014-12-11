@@ -1,9 +1,36 @@
 <hr>
+<div class="comment-perso">
+	<div class="comment-edit row">
+		<div class="col-sm-2 text-center">
+			{% if (app.user and app.user.fileName) %}
+	            <img class="img-circle" src="{{ asset('uploads/users/'~app.user.fileName) | imagine_filter('user_mini_thumb') }}" alt="{{ app.user.name }}">
+	        {% else %}
+	            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini_thumb') }}" >
+        	{% endif %}
+		</div>
+		<div class="col-sm-8 text-center">
+			{{ form_start(formComment, {'style': 'horizontal', 'attr': {'id': 'form-comment-new'} }) }}
+			    {{ form_errors(formComment) }}
+
+			    {{ form_widget(formComment.description) }}
+				{% if formComment.description.vars.errors|length %}
+	        		<div class="field_error">{{ form_errors(formComment.description) }}</div>
+	        	{% endif %}
+
+			{{ form_end(formComment) }}
+		</div>
+		<div class="col-sm-2 text-center">
+			{% if app.user %}
+				<input type="button" value="Commenter" class="btn btn-success" action="btn-submit-comment" />		
+			{% else %}
+				<a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<hr>
+<div class="comment-just-created"></div>
 {% for comment in comments %}
 	{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
 	<hr>
-{% else %}
-	<div class="no-result">
-		Aucun commentaire pour le moment
-	</div>
 {% endfor %}

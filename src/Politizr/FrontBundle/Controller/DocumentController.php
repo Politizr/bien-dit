@@ -23,9 +23,12 @@ use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDocument;
+use Politizr\Model\PDComment;
 use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
+
+use Politizr\FrontBundle\Form\Type\PDCommentType;
 
 
 /**
@@ -507,11 +510,25 @@ class DocumentController extends Controller {
                 // Récupération des commentaires du paragraphe
                 $comments = $document->getComments(true, $noParagraph);
 
+                // Form saisie commentaire
+                // Récupération user
+                $user = $this->getUser();
+
+                $comment = new PDComment();
+                if ($user) {
+                    $comment->setPUserId($user->getId());
+                    $comment->setPDocumentId($document->getId());
+                    $comment->setParagraphNo($noParagraph);
+                }
+                $formComment = $this->createForm(new PDCommentType(), $comment);
+
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
                                     'PolitizrFrontBundle:Fragment:Comments.html.twig', array(
+                                        'document' => $document,
                                         'comments' => $comments,
+                                        'formComment' => $formComment->createView(),
                                         )
                             );
 
