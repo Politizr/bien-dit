@@ -283,7 +283,7 @@ class DocumentController extends Controller {
         try {
             if ($request->isXmlHttpRequest()) {
                 // Récupération user
-                $pUser = $this->getUser();
+                $user = $this->getUser();
 
                 // Récupération args
                 $objectId = $request->get('objectId');
@@ -301,19 +301,27 @@ class DocumentController extends Controller {
 
                             // Insertion nouvel élément
                             $pUFollowDD = new PUFollowDD();
-                            $pUFollowDD->setPUserId($pUser->getId());
+                            $pUFollowDD->setPUserId($user->getId());
                             $pUFollowDD->setPDDebateId($object->getId());
                             $pUFollowDD->save();
 
+                            // Réputation
+                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                            $dispatcher = $this->get('event_dispatcher')->dispatch('debate_follow', $event);
+
                             break;
                         case PDocument::TYPE_USER:
-                            $object = PDReactionQuery::create()->findPk($objectId);
+                            $object = PUserQuery::create()->findPk($objectId);
 
                             // Insertion nouvel élément
                             $pUFollowU = new PUFollowU();
                             $pUFollowU->setPUserId($object->getId());
-                            $pUFollowU->setPUserFollowerId($pUser->getId());
+                            $pUFollowU->setPUserFollowerId($user->getId());
                             $pUFollowU->save();
+
+                            // Réputation
+                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                            $dispatcher = $this->get('event_dispatcher')->dispatch('user_follow', $event);
 
                             break;
                     }
@@ -324,25 +332,33 @@ class DocumentController extends Controller {
 
                             // Suppression élément(s)
                             $pUFollowDDList = PUFollowDDQuery::create()
-                                            ->filterByPUserId($pUser->getId())
+                                            ->filterByPUserId($user->getId())
                                             ->filterByPDDebateId($object->getId())
                                             ->find();
                             foreach ($pUFollowDDList as $pUFollowDD) {
                                 $pUFollowDD->delete();
                             }
 
+                            // Réputation
+                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                            $dispatcher = $this->get('event_dispatcher')->dispatch('debate_unfollow', $event);
+
                             break;
                         case PDocument::TYPE_USER:
-                            $object = PDReactionQuery::create()->findPk($objectId);
+                            $object = PUserQuery::create()->findPk($objectId);
 
                             // Suppression élément(s)
                             $pUFollowUList = PUFollowUQuery::create()
                                             ->filterByPUserId($object->getId())
-                                            ->filterByPUserFollowerId($pUser->getId())
+                                            ->filterByPUserFollowerId($user->getId())
                                             ->find();
                             foreach ($pUFollowUList as $pUFollowU) {
                                 $pUFollowU->delete();
                             }
+
+                            // Réputation
+                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+                            $dispatcher = $this->get('event_dispatcher')->dispatch('user_unfollow', $event);
 
                             break;
                     }

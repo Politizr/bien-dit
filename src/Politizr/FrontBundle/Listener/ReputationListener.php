@@ -180,6 +180,108 @@ class ReputationListener {
     }
 
 
+    /**
+     * Suivi d'un débat
+     *
+     * @param GenericEvent
+     */
+    public function onDebateFollow(GenericEvent $event) {
+        $this->logger->info('*** onDebateFollow');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+        $prActionId = PRAction::ID_D_AUTHOR_DEBATE_FOLLOW;
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+        // Auteur du débat
+        $userId = $subject->getPUserId();
+        $prActionId = PRAction::ID_D_TARGET_DEBATE_FOLLOW;
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+    }
+
+    /**
+     * Suivi d'un user
+     *
+     * @param GenericEvent
+     */
+    public function onUserFollow(GenericEvent $event) {
+        $this->logger->info('*** onUserFollow');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+        $prActionId = PRAction::ID_U_AUTHOR_USER_FOLLOW;
+        
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+        // User suivi
+        $userId = $subject->getId();
+        $prActionId = PRAction::ID_U_TARGET_USER_FOLLOW;
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+    }
+
+    /**
+     * Ne plus suivre un débat
+     *
+     * @param GenericEvent
+     */
+    public function onDebateUnfollow(GenericEvent $event) {
+        $this->logger->info('*** onDebateUnfollow');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+        $prActionId = PRAction::ID_D_AUTHOR_DEBATE_UNFOLLOW;
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+        // Auteur du débat
+        $userId = $subject->getPUserId();
+        $prActionId = PRAction::ID_D_TARGET_DEBATE_UNFOLLOW;
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+    }
+
+    /**
+     * Ne plus suivre un user
+     *
+     * @param GenericEvent
+     */
+    public function onUserUnfollow(GenericEvent $event) {
+        $this->logger->info('*** onUserUnfollow');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+        $prActionId = PRAction::ID_U_AUTHOR_USER_UNFOLLOW;
+        
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+        // User suivi
+        $userId = $subject->getId();
+        $prActionId = PRAction::ID_U_TARGET_USER_UNFOLLOW;
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+    }
+
+
+    // ******************************************************** //
+    //                      Méthodes privées                    //
+    // ******************************************************** //
 
 
     /**

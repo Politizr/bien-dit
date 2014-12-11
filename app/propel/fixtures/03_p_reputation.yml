@@ -121,7 +121,7 @@ Politizr\Model\PRBadge:
         description:        |
             Atteindre un score de +X à un de ses commentaires
 
-
+# Constantes de classe PRAction à MAJ en parallèle
 Politizr\Model\PRAction:
     d_debate_publish:
         online:             true
@@ -165,6 +165,7 @@ Politizr\Model\PRAction:
         description:        |
             Publication d'un commentaire sur une de ses réactions
         score_evolution:    2
+
     d_author_debate_note_pos:
         online:				true
         title:				Donner une note positive à un débat
@@ -236,4 +237,53 @@ Politizr\Model\PRAction:
         title:              Recevoir une note négative à son commentaire
         description:        |
             Recevoir une note - à son commentaire
+        score_evolution:    -1
+
+    d_author_debate_follow:
+        online:             true
+        title:              Suivre un débat
+        description:        |
+            Suivre un débat
+        score_evolution:    2
+    d_author_debate_unfollow:
+        online:             true
+        title:              Ne plus suivre un débat
+        description:        |
+            Ne plus suivre un débat
+        score_evolution:    -1
+    u_author_user_follow:
+        online:             true
+        title:              Suivre un utilisateur
+        description:        |
+            Suivre un utilisateur
+        score_evolution:    2
+    u_author_user_unfollow:
+        online:             true
+        title:              Ne plus suivre un utilisateur
+        description:        |
+            Ne plus suivre un utilisateur
+        score_evolution:    -1
+    d_target_debate_follow:
+        online:             true
+        title:              Être suivi pour son débat
+        description:        |
+            Être suivi pour son débat
+        score_evolution:    5
+    d_target_debate_unfollow:
+        online:             true
+        title:              Ne plus être suivi pour son débat
+        description:        |
+            Ne plus être suivi pour son débat
+        score_evolution:    -1
+    u_target_user_follow:
+        online:             true
+        title:              Être suivi pour son profil
+        description:        |
+            Être suivi pour son profil
+        score_evolution:    5
+    u_target_user_unfollow:
+        online:             true
+        title:              Ne plus être suivi pour son profil
+        description:        |
+            Ne plus être suivi pour son profil
         score_evolution:    -1

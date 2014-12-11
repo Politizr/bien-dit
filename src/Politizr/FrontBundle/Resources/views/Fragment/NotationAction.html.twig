@@ -10,5 +10,7 @@
 		<span class="badge alert-danger">{{ object.noteNeg }} -</span>
 	{% endif %}
 {% else %}
-	<a class="btn btn-primary" href="{{ path('Inscription') }}">M'inscrire pour noter</a>
+	<span class="badge alert-success">{{ object.notePos }} +</span>
+	<span class="badge alert-danger">{{ object.noteNeg }} -</span><br/>
+	<a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">M'inscrire pour noter</a>
 {% endif %}

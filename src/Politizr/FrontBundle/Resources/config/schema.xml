@@ -446,6 +446,7 @@
         <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_r_action_id" type="integer" required="true" />
 

@@ -30,6 +30,10 @@ services:
             - { name: kernel.event_listener, event: reaction_publish }
             - { name: kernel.event_listener, event: note_pos }
             - { name: kernel.event_listener, event: note_neg }
+            - { name: kernel.event_listener, event: debate_follow }
+            - { name: kernel.event_listener, event: debate_unfollow }
+            - { name: kernel.event_listener, event: user_follow }
+            - { name: kernel.event_listener, event: user_unfollow }
 
 
     # EXTENSIONS TWIG
