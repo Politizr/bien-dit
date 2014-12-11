@@ -1,0 +1,9 @@
+<hr>
+{% for comment in comments %}
+	{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
+	<hr>
+{% else %}
+	<div class="no-result">
+		Aucun commentaire pour le moment
+	</div>
+{% endfor %}

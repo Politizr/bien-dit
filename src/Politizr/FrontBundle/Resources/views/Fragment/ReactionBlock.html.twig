@@ -52,15 +52,23 @@
 {% if full %}
 	<hr>
 	<div class="reaction-body">
-		<div class="reaction-description sizeup">
-			{{ reaction.getDescription | raw }}
-		</div>
-		{% if reaction.getMoreInfo | striptags | trim is not empty %}
-			<hr>
-			<div class="reaction-more-info well">
-				{{ reaction.getMoreInfo | raw }}
+		{% for paragraph in paragraphs %}
+			<div class="reaction-paragraph">
+				<div class="row reaction-description sizeup">
+					<div class="col-sm-1">
+						<a class="badge alert-warning" action="comments" object-id="{{ reaction.id }}" no-paragraph="{{ loop.index }}">{{ reaction.document.countComments(true, loop.index) }}</a>
+					</div>
+					<div class="col-sm-11">
+						<p>{{ paragraph | raw }}</p>
+					</div>
+				</div>
+				<div class="comments"></div>
 			</div>
-		{% endif %}
+		{% endfor %}
+	</div>
+	<hr>
+	<div class="reaction-more-info well">
+		{{ reaction.getMoreInfo | raw }}
 	</div>
 {% endif %}
 <hr>

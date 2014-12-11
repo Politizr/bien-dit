@@ -1,0 +1,43 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        $('.comments').hide();
+    });
+
+    // **************************** //
+    //      AJAX
+    // **************************** //
+
+    // affichage des commentaires par paragraphe
+    $("body").on("click", "a[action='comments']", function(e) {
+        console.log('*** click comments');
+
+        var context = $(this).closest('.debate-paragraph').children('.comments');
+        if (context.is(":visible")) {
+            context.slideUp();
+            context.html('');
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('Comments') }}",
+                context: context,
+                data: { 'objectId': $(this).attr('object-id'), 'noParagraph': $(this).attr('no-paragraph') },
+                dataType: 'json',
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    $('#ajax-loader').hide();
+                    if (data['error']) {
+                        $('.alert-danger-msg').html(data['error']);
+                        $('.alert.alert-danger').show();
+                    } else {
+                        $(this).html(data['html']).slideDown();
+                    }
+                }
+            });
+        }
+
+    });
+
+</script>

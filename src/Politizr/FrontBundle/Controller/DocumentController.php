@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -97,11 +98,17 @@ class DocumentController extends Controller {
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
+        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+        $description = str_replace('</p>', '', $debate->getDescription());
+        $paragraphs = explode('<p>', $description);
+        array_shift($paragraphs);
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
-        			'debate' => $debate
+        			'debate' => $debate,
+                    'paragraphs' => $paragraphs,
         ));
     }
 
@@ -172,13 +179,18 @@ class DocumentController extends Controller {
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
 
+        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+        $description = str_replace('</p>', '', $reaction->getDescription());
+        $paragraphs = explode('<p>', $description);
+        array_shift($paragraphs);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
                     'reaction' => $reaction,
-                    'debate' => $debate
+                    'debate' => $debate,
+                    'paragraphs' => $paragraphs,
         ));
     }
 
@@ -450,6 +462,56 @@ class DocumentController extends Controller {
                                     'PolitizrFrontBundle:Fragment:LinkNote.html.twig', array(
                                         'object' => $object,
                                         'context' => $context,
+                                        )
+                            );
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'html' => $html
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+    /**
+     *  Commentaires d'un document
+     */
+    public function commentsAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** commentsAction');
+        
+        try {
+            if ($request->isXmlHttpRequest()) {
+                // Récupération args
+                $objectId = $request->get('objectId');
+                $logger->info('$objectId = ' . print_r($objectId, true));
+                $noParagraph = $request->get('noParagraph');
+                $logger->info('$noParagraph = ' . print_r($noParagraph, true));
+
+                // Récupération objet
+                $document = PDocumentQuery::create()->findPk($objectId);
+
+                // Récupération des commentaires du paragraphe
+                $comments = $document->getComments(true, $noParagraph);
+
+                // Construction rendu
+                $templating = $this->get('templating');
+                $html = $templating->render(
+                                    'PolitizrFrontBundle:Fragment:Comments.html.twig', array(
+                                        'comments' => $comments,
                                         )
                             );
 

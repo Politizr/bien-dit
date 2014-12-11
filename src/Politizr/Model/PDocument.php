@@ -104,9 +104,13 @@ class PDocument extends BasePDocument
 	 *
 	 * @return 	integer 	Nombre de commentaires
 	 */
-	public function countComments() {
+	public function countComments($online = true, $paragraphNo = null) {
 		$query = PDCommentQuery::create()
-					->filterByOnline(true);
+					->filterByOnline($online)
+					->_if($paragraphNo)
+						->filterByParagraphNo($paragraphNo)
+					->_endif()
+					;
 		
 		return parent::countPDComments($query);
 	}
@@ -117,9 +121,12 @@ class PDocument extends BasePDocument
 	 *
 	 * @return PropelCollection d'objets PDDComment 
 	 */
-	public function getComments($online = true) {
+	public function getComments($online = true, $paragraphNo = null) {
 		$query = PDCommentQuery::create()
 					->filterByOnline($online)
+					->_if($paragraphNo)
+						->filterByParagraphNo($paragraphNo)
+					->_endif()
 					->orderByNotePos(\Criteria::DESC);
 
 		return parent::getPDComments($query);

@@ -14,7 +14,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': true } %}
+		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'paragraphs': paragraphs, 'full': true } %}
 		{% if is_granted('ROLE_ELECTED') %}
 			{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour ce débat par le user courant #}
 			<div class="row text-center">
@@ -26,8 +26,8 @@
 			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>
 		<hr>		
-		<div class="debate-comments">
-			{% for comment in debate.document.comments %}
+		<div class="debate-global-comments">
+			{% for comment in debate.document.globalComments %}
 				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
 				<hr>
 			{% else %}
@@ -45,6 +45,7 @@
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
 	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

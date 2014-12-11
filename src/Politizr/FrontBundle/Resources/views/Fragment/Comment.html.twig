@@ -24,9 +24,6 @@
 			{% if (docLink) %}
 				</a>
 			{% endif %}
-			{% if comment.paragraphNo != 0 %}
-				(paragraphe n°{{ comment.paragraphNo }})
-			{% endif %}		
 		</div>
 		<div class="col-sm-2 text-center">
 			<span class="label label-default">publié le {{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>

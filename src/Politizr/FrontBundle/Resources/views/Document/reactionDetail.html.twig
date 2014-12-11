@@ -17,7 +17,7 @@
 		<div class="row">
 			<h3><a class="bg-info" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a></h3>
 		</div>
-		{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with { 'reaction': reaction, 'full': true } %}
+		{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with { 'reaction': reaction, 'paragraphs': paragraphs, 'full': true } %}
 		<div class="row text-center">
 			{% if is_granted('ROLE_ELECTED') %}
 				{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour cette réaction par le user courant #}
@@ -43,8 +43,8 @@
 			{% endfor %}
 		</div>
 		<hr>
-		<div class="reaction-comments">
-			{% for comment in reaction.getComments %}
+		<div class="reaction-global-comments">
+			{% for comment in reaction.document.globalComments %}
 				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
 				<hr>
 			{% else %}
@@ -62,6 +62,7 @@
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
 	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

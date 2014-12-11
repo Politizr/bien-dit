@@ -64,15 +64,25 @@
 {% if full %}
 	<hr>
 	<div class="debate-body">
-		<div class="debate-description sizeup">
-			{{ debate.description | raw }}
-		</div>
-		{% if debate.moreInfo | striptags | trim is not empty %}
-			<hr>
-			<div class="debate-more-info well">
-				{{ debate.moreInfo | raw }}
+		{% for paragraph in paragraphs %}
+			<div class="debate-paragraph">
+				<div class="row debate-description sizeup">
+					<div class="col-sm-1">
+						<a class="badge alert-warning" action="comments" object-id="{{ debate.id }}" no-paragraph="{{ loop.index }}">{{ debate.document.countComments(true, loop.index) }}</a>
+					</div>
+					<div class="col-sm-11">
+						<p>{{ paragraph | raw }}</p>
+					</div>
+				</div>
+				<div class="comments"></div>
 			</div>
-		{% endif %}
+		{% endfor %}
 	</div>
+	{% if debate.moreInfo | striptags | trim is not empty %}
+		<hr>
+		<div class="debate-more-info well">
+			{{ debate.moreInfo | raw }}
+		</div>
+	{% endif %}
 {% endif %}
 <hr>

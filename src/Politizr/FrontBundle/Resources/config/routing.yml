@@ -326,14 +326,6 @@ PaymentProcess:
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
-# CONSULTATION DEBAT / REACTION
-################################################################################
-GetDescriptionPDocument:
-    pattern:  /getDescriptionPDocument.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:getDescriptionPDocument, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 # SUIVI DEBAT / USER
 ################################################################################
 Follow:
@@ -404,6 +396,15 @@ UserPhotoDelete:
     pattern:  /profil/delete-photo.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# CONSULTATION DOCUMENT
+################################################################################
+Comments:
+    pattern:  /comments.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:comments, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 
 ################################################################################
 # EDITION DEBAT
