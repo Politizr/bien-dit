@@ -531,11 +531,18 @@ class DocumentController extends Controller {
                                         'formComment' => $formComment->createView(),
                                         )
                             );
+                $counter = $templating->render(
+                                    'PolitizrFrontBundle:Fragment:NbComments.html.twig', array(
+                                        'document' => $document,
+                                        'paragraphNo' => $noParagraph,
+                                        )
+                            );
 
                 // Construction de la réponse
                 $jsonResponse = array (
                     'success' => true,
-                    'html' => $html
+                    'html' => $html,
+                    'counter' => $counter,
                 );
             } else {
                 throw $this->createNotFoundException('Not a XHR request');

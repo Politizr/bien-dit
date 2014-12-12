@@ -6,6 +6,17 @@
         $('.comments').hide();
     });
 
+
+    // Fermeture commentaires
+    $("body").on("click", "a[action='close-comments']", function(e) {
+        console.log('*** click close-comments');
+
+        context = $(this).closest('.paragraph').find('.comments');
+        context.slideUp();
+        context.html('');
+    });
+
+
     // **************************** //
     //      AJAX
     // **************************** //
@@ -14,36 +25,33 @@
     $("body").on("click", "a[action='comments']", function(e) {
         console.log('*** click comments');
 
-        var context = $(this).closest('.debate-paragraph').children('.comments');
-        if (context.is(":visible")) {
-            context.slideUp();
-            context.html('');
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: "{{ path('Comments') }}",
-                context: context,
-                data: { 'objectId': $(this).attr('object-id'), 'noParagraph': $(this).attr('no-paragraph') },
-                dataType: 'json',
-                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
-                success: function(data) {
-                    $('#ajax-loader').hide();
-                    if (data['error']) {
-                        $('.alert-danger-msg').html(data['error']);
-                        $('.alert.alert-danger').show();
-                    } else {
-                        $(this).html(data['html']).slideDown();
-                    }
+        var context = $(this).closest('.paragraph');
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('Comments') }}",
+            context: context,
+            data: { 'objectId': $(this).attr('object-id'), 'noParagraph': $(this).attr('no-paragraph') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $(this).find('.comments').html(data['html']).slideDown();
+                    $(this).find('.counter').html(data['counter']);
                 }
-            });
-        }
-
+            }
+        });
     });
 
     // création d'un commentaire
     $("body").on("click", "input[action='btn-submit-comment']", function(e) {
         console.log('*** click comments');
-        var context = $(this).closest('.comments');
+        
+        var context = $(this).closest('.paragraph');
+        // var context = $(this).closest('.comments');
 
         $.ajax({
             type: 'POST',
@@ -58,8 +66,8 @@
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
-                    $(this).find('#form-comment-new').trigger("reset");
-                    $(this).find('.comment-just-created').prepend(data['html'] + '<hr>');
+                    $(this).find('.comments').html(data['html']).slideDown();
+                    $(this).find('.counter').html(data['counter']);
                 }
             }
         });

@@ -5,6 +5,7 @@ namespace Politizr\FrontBundle\Listener;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PRAction;
+use Politizr\Model\PDocument;
 use Politizr\Model\PUReputationRA;
 
 /**
@@ -82,6 +83,39 @@ class ReputationListener {
             $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
         }
     }
+
+    /**
+     * Publication d'un commentaire
+     *
+     * @param GenericEvent
+     */
+    public function onCommentPublish(GenericEvent $event) {
+        $this->logger->info('*** onCommentPublish');
+
+        $subject = $event->getSubject();
+        $userId = $event->getArgument('user_id');
+        $prActionId = PRAction::ID_D_COMMENT_PUBLISH;
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+
+        // Document associé au commentaire
+        $document = $subject->getPDocument();
+
+        $userId = $document->getPUserId();
+        switch ($document->getType()) {
+            case PDocument::TYPE_DEBATE:
+                $prActionId = PRAction::ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                break;
+            case PDocument::TYPE_REACTION:
+                $prActionId = PRAction::ID_D_TARGET_REACTION_COMMENT_PUBLISH;
+                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+                break;
+        }
+    }
+
 
     /**
      * Note positive sur un document

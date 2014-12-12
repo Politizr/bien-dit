@@ -109,6 +109,10 @@ class PDocument extends BasePDocument
 					->filterByOnline($online)
 					->_if($paragraphNo)
 						->filterByParagraphNo($paragraphNo)
+					->_else()
+						->filterByParagraphNo(0)
+							->_or()
+						->filterByParagraphNo(null)					
 					->_endif()
 					;
 		
@@ -121,13 +125,22 @@ class PDocument extends BasePDocument
 	 *
 	 * @return PropelCollection d'objets PDDComment 
 	 */
-	public function getComments($online = true, $paragraphNo = null) {
+	public function getComments($online = true, $paragraphNo = null, $orderBy = null) {
 		$query = PDCommentQuery::create()
 					->filterByOnline($online)
 					->_if($paragraphNo)
 						->filterByParagraphNo($paragraphNo)
+					->_else()
+						->filterByParagraphNo(0)
+							->_or()
+						->filterByParagraphNo(null)					
 					->_endif()
-					->orderByNotePos(\Criteria::DESC);
+					->_if($orderBy)
+						->orderBy($orderBy[0], $orderBy[1])
+					->_else()
+						->orderBy('p_d_comment.created_at', 'desc')
+					->_endif()
+					;
 
 		return parent::getPDComments($query);
 	}
@@ -138,36 +151,7 @@ class PDocument extends BasePDocument
 	 *
 	 * @return PropelCollection d'objets PDDComment 
 	 */
-	public function getGlobalComments() {
-		$query = PDCommentQuery::create()
-					->filterByOnline(true)
-					->filterByParagraphNo(0)
-						->_or()
-					->filterByParagraphNo(null)
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDComments($query);
+	public function getGlobalComments($online = true, $orderBy = null) {
+		return $this->getComments($online, 0, $orderBy);
 	}
-	
-
-	/**
-	 *	Renvoit les commentaires du débat associés à un paragraphe
-	 *
-	 * @param $paragraphNo 	Numéro du paragraphe ou null pour tous
-	 *
-	 * @return PropelCollection d'objets PDDComment 
-	 */
-	public function getParagraphComments($paragraphNo = null) {
-		$query = PDCommentQuery::create()
-					->filterByOnline(true)
-					->_if($paragraphNo)
-						->filterByParagraphNo($paragraphNo)
-					->_else()
-						->filterByParagraphNo(array('min' => 1))
-					->_endif()
-					->orderByNotePos(\Criteria::DESC);
-
-		return parent::getPDComments($query);
-	}
-
 }

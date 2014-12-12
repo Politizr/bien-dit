@@ -27,14 +27,12 @@
 		</div>
 		<hr>		
 		<div class="debate-global-comments">
-			{% for comment in debate.document.globalComments %}
-				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
-				<hr>
-			{% else %}
-				<div class="no-result">
-					Aucun commentaire pour le moment
+			<div class="paragraph">
+				<div class="counter text-center">
+					{% include 'PolitizrFrontBundle:Fragment:NbComments.html.twig' with {'document': debate.document, 'paragraphNo': 0 } only %}
 				</div>
-			{% endfor %}
+				<div class="comments"></div>
+			</div>
 		</div>
 	</div>
 {% endblock main %}

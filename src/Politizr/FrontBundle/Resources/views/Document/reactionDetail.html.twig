@@ -29,6 +29,15 @@
 			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 		</div>
 		<hr>
+		<div class="reaction-global-comments">
+			<div class="paragraph">
+				<div class="counter text-center">
+					{% include 'PolitizrFrontBundle:Fragment:NbComments.html.twig' with {'document': reaction.document, 'paragraphNo': 0 } only %}
+				</div>
+				<div class="comments"></div>
+			</div>
+		</div>
+		<hr>
 		<div class="debate-reactions-feed">
 			{% for reaction in reaction.childrenReactions %}
 				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
@@ -39,17 +48,6 @@
 			{% else %}
 				<div class="no-result">
 					Aucune réaction pour le moment
-				</div>
-			{% endfor %}
-		</div>
-		<hr>
-		<div class="reaction-global-comments">
-			{% for comment in reaction.document.globalComments %}
-				{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': false } %}
-				<hr>
-			{% else %}
-				<div class="no-result">
-					Aucun commentaire pour le moment
 				</div>
 			{% endfor %}
 		</div>

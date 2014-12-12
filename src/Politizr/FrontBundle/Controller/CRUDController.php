@@ -768,20 +768,51 @@ class CRUDController extends Controller {
                     $comment = $formComment->getData();
                     $comment->save();
 
+                    // Réputation
+                    $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
+                    $dispatcher = $this->get('event_dispatcher')->dispatch('comment_publish', $event);
+
+                    // Récupération objet
+                    $objectId = $comment->getPDocumentId();
+                    $noParagraph = $comment->getParagraphNo();
+
+                    $document = PDocumentQuery::create()->findPk($objectId);
+
+                    // Récupération des commentaires du paragraphe
+                    $comments = $document->getComments(true, $noParagraph);
+
+                    $comment = new PDComment();
+                    if ($user) {
+                        $comment->setPUserId($user->getId());
+                        $comment->setPDocumentId($document->getId());
+                        $comment->setParagraphNo($noParagraph);
+                    }
+                    $formComment = $this->createForm(new PDCommentType(), $comment);
+
                     // Construction rendu
                     $templating = $this->get('templating');
                     $html = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:Comment.html.twig', array(
-                                            'comment' => $comment,
-                                            'docLink' => false,
+                                        'PolitizrFrontBundle:Fragment:Comments.html.twig', array(
+                                            'document' => $document,
+                                            'comments' => $comments,
+                                            'formComment' => $formComment->createView(),
                                             )
                                 );
+                    $counter = $templating->render(
+                                        'PolitizrFrontBundle:Fragment:NbComments.html.twig', array(
+                                            'document' => $document,
+                                            'paragraphNo' => $noParagraph,
+                                            )
+                                );
+
 
                     // Construction de la réponse
                     $jsonResponse = array (
                         'success' => true,
-                        'html' => $html
+                        'html' => $html,
+                        'counter' => $counter,
                     );
+
                 } else {
                     $errors = StudioEchoUtils::getAjaxFormErrors($formComment);
                     $jsonResponse = array(

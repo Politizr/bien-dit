@@ -65,10 +65,10 @@
 	<hr>
 	<div class="debate-body">
 		{% for paragraph in paragraphs %}
-			<div class="debate-paragraph">
+			<div class="paragraph">
 				<div class="row debate-description sizeup">
-					<div class="col-sm-1">
-						<a class="badge alert-warning" action="comments" object-id="{{ debate.id }}" no-paragraph="{{ loop.index }}">{{ debate.document.countComments(true, loop.index) }}</a>
+					<div class="counter col-sm-1">
+						{% include 'PolitizrFrontBundle:Fragment:NbComments.html.twig' with {'document': debate.document, 'paragraphNo': loop.index } only %}
 					</div>
 					<div class="col-sm-11">
 						<p>{{ paragraph | raw }}</p>
