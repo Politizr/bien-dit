@@ -4,7 +4,29 @@
 	<div id="main" class="container">
 		<h3>Mes brouillons</h3>
         {% for draft in drafts %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentDraftMiniBlock.html.twig' with { 'document': draft, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE') } %}
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+				        <tr>
+				            <th>Bandeau</th>
+				            <th>Titre</th>
+				            <th>Résumé</th>
+				            <th>Date de création</th>
+				            <th>&nbsp;</th>
+				        </tr>
+			      	</thead>				
+			        {% for draft in drafts %}
+						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
+					{% else %}
+						<tr>
+							<td colspan="5">
+								Aucun brouillon rédigé pour le moment
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<a class="btn btn-primary" href="{{ path('DebateDraftNew') }}">Nouveau</a>
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
@@ -12,15 +34,18 @@
 		{% endfor %}
 		<h3>Mes débats publiés</h3>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } %}
+			<hr>
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez débat en ligne pour le moment</a>
+			<hr>
 			</div>
 		{% endfor %}
 		<h3>Mes commentaires</h3>
         {% for comment in comments %}
-			{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
+			<hr>
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('TimelineC') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>

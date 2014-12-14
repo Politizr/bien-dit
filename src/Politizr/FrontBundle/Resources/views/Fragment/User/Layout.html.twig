@@ -1,0 +1,188 @@
+{# Bloc détail d'un user #}
+{% block detail %}
+	<div class="user-detail">
+		{% if not user %}
+			<div class="author-infos">
+				<span class="label label-danger">Auteur supprimé</span>
+			</div>
+		{% else %}
+			<div class="row text-center">
+				{# Photo #}
+				<div class="col-sm-4">
+					{# TODO / TwigExtension Image #}
+					{% if (user.fileName) %}
+			            <img class="img-rounded" src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_bio') }}" alt="{{ user.name }}">
+			        {% else %}
+			            <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_bio') }}" alt="{{ user.name }}">
+		        	{% endif %}
+				</div>
+
+				{# Identité #}
+				<div class="col-sm-4">
+					<h3>
+						<span class="label {% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}label-info{% else %}label-danger{% endif %}">
+							{{ user }}
+							{% if user.validated %}
+								<i class="fa fa-check-square-o" title="Profil validé"></i>
+							{% endif %}
+						</span>
+					</h3>
+				</div>
+
+				{# Type #}
+				<div class="col-sm-4">
+					<h3>
+						<span class="badge alert-success">{{ user.reputationScore }}</span>
+					</h3>
+				</div>
+			</div>
+
+			<hr>
+			<div class="row text-center">
+				{# Followers #}
+				<div class="col-sm-8">
+					{% include 'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig' with {'nbC': user.countPUserFollowersC, 'nbQ': user.countPUserFollowersQ, 'followersC': user.PUserFollowersC, 'followersQ': user.PUserFollowersQ } only %}
+				</div>
+				{# Subscribe #}
+				<div class="col-sm-4">
+					<div class="star text-center">
+						{{ linkFollow(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
+					</div>
+				</div>
+			</div>
+
+			<hr>
+			<div class="jumbotron">
+				{# Badges #}
+				<div class="row text-center">
+					<div id="badges">
+						{% for badge in user.badges %}
+							<span class="label  {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
+						{% else %}
+							<span class="label label-default">Aucun badge</span>
+						{% endfor %}
+					</div>
+				</div>
+				<hr>
+				{# Bio #}
+				<div class="row text-center">
+					<div class="col-sm-12">
+						<p>{{ user.biography | raw  }}</p>
+					</div>
+				</div>
+
+				<hr>
+				{# Tags #}
+				<div class="row text-center">
+					<div class="col-sm-6">
+						{{ userTaggedTags(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+					</div>
+					<div class="col-sm-6">
+						{{ userTaggedTags(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+					</div>
+				</div>
+			</div>
+
+			{# Qualifications #}
+			{% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+					        <tr>
+					            <th>Date</th>
+					            <th>Mandat</th>
+					            <th>Parti</th>
+					            <th>Description</th>
+					        </tr>
+				      	</thead>				
+						{% set qualifications = user.qualifications %}
+						{% for qualification in qualifications %}
+							<tr>
+								<td>
+							    	{% if (qualification.isCurrent) %}
+							    		<span class="label label-info">Depuis le {{ qualification.beginAt | date('d/m/Y') }}</span>
+							    	{% else %}
+							    		<span class="label label-info">Du {{ qualification.beginAt | date('d/m/Y') }} au {{ qualification.endAt | date('d/m/Y') }}</span>
+							    	{% endif %}
+								</td>
+								<td><span class="label label-danger">{{ qualification.mandateTypeTitle }}</span></td>
+								<td>
+									{% if (qualification.politicalPartyLogo) %}
+							            <img class="img-rounded" src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
+							        {% else %}
+							            <span class="label label-info">{{ qualification.politicalPartyInitials }}</span>
+							    	{% endif %}
+								</td>
+								<td>{{ qualification.description | raw  }}</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="4">
+									Aucune qualification rédigée pour le moment
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			{% endif %}
+
+		{% endif %}
+	</div>
+{% endblock detail %}
+
+{# Bloc user "auteur" #}
+{% block author %}
+	{% spaceless %}
+		{# TODO / TwigExtension Photo #}
+		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
+			{% if (user.FileName) %}
+		        <img class="img-rounded" src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini') }}" alt="{{ user.name }}">
+		    {% else %}
+		        <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini') }}" alt="{{ user.name }}">
+			{% endif %}
+		</a>
+		&nbsp;
+		{# Nom & Type #}
+		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label {% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}label-info{% else %}label-danger{% endif %}">
+			{{ user }}
+			{% if user.validated %}
+				<span class="fa fa-check-square-o" title="Profil validé"></span>
+			{% endif %}
+		</a>
+		&nbsp;
+		{# Score réputation #}
+		<span class="badge alert-success">{{ user.reputationScore }}</span>
+		&nbsp;
+		{# Mandat en cours #}
+		{% if user.currentQualification %}
+			{% set qualification = user.currentQualification %}
+			{% if (qualification) %}
+		        <img src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
+			{% endif %}	
+		{% endif %}
+	{% endspaceless %}
+{% endblock author %}
+
+{# Bloc ligne de listing de users #}
+{% block listRow %}
+	<div class="user-list-row">
+		{% if not user %}
+			<div class="author-infos">
+				<span class="label label-danger">Auteur supprimé</span>
+			</div>
+		{% else %}
+			{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': user } only %}
+			<div class="row">
+				<div class="col-sm-4 text-center">
+					nombre de débats écrits > lien vers liste des débats du user
+				</div>
+				<div class="col-sm-4 text-center">
+					nombre de réactions écrits > lien vers liste des réactions du user
+				</div>
+				<div class="col-sm-4 text-center">
+					nombre de commentaires écrits > lien vers liste des commentaires du user
+				</div>
+			</div>
+		{% endif %}
+	</div>
+{% endblock listRow %}

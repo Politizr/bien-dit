@@ -14,12 +14,13 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': pUser, 'full': true } only %}
+		{% include 'PolitizrFrontBundle:Fragment\\User:Detail.html.twig' with { 'user': pUser } only %}
+		<div class="border-row">&nbsp;</div>
 		{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
 			<div id="author-debates-block">
-				<h3>Liste des débats rédigés</h3>
+				<h1>Liste des débats rédigés</h1>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': false, 'withMoreInfos': true } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 				{% else %}
 					<div class="no-result">
 						Aucun débat pour le moment
@@ -27,9 +28,9 @@
 				{% endfor %}
 			</div>
 			<div id="author-reactions-block">
-				<h3>Liste des réactions rédigées</h3>
+				<h1>Liste des réactions rédigées</h1>
 				{% for reaction in reactions %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': reaction, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_REACTION'), 'withAuthor': false, 'withMoreInfos': true } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowUser.html.twig' with { 'reaction': reaction } %}
 				{% else %}
 					<div class="no-result">
 						Aucune réaction pour le moment

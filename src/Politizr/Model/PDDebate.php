@@ -355,4 +355,12 @@ class PDDebate extends BasePDDebate
     }
 
 
+    // *****************************    USERS   ************************* //
+    
+	/**
+	 *
+	 */
+    public function getUser() {
+    	return $this->getPUser();
+    }
 }

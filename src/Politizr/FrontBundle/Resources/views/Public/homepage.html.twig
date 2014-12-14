@@ -51,27 +51,27 @@
 			<h2>Débats les plus suivis</h2>
 			<div>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true, 'withMoreInfos': true } %}
-					<div class="border-row">&nbsp;</div>
+					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
-		<hr>
+		<div class="border-row">&nbsp;</div>
 		<div id="users">
-			<h2>Élus les plus suivis</h2>
+			<h2>Débatteurs les plus suivis</h2>
 			<div>
 				{% for user in users %}
-					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
-					<div class="border-row">&nbsp;</div>
+					{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
-		<hr>
+		<div class="border-row">&nbsp;</div>
 		<div id="comments">
 			<h2>Les derniers commentaires</h2>
 			<div>
 				{% for comment in comments %}
-					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
 					<hr>
 				{% endfor %}
 			</div>

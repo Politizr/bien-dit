@@ -163,7 +163,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:FollowAction.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
                                 'object' => $object,
                                 'context' => $context,
                                 'follower' => $follower
@@ -190,7 +190,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
                                 'tags' => $debate->getTags($tagTypeId),
                                 'tagTypeId' => $tagTypeId
                                 )
@@ -219,7 +219,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
                                 'object' => $debate,
                                 'tagTypeId' => $tagTypeId,
                                 'zoneId' => $zoneId,
@@ -251,7 +251,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
                                 'tags' => $pUser->getFollowTags($tagTypeId),
                                 'tagTypeId' => $tagTypeId
                                 )
@@ -280,7 +280,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
                                 'object' => $user,
                                 'tagTypeId' => $tagTypeId,
                                 'zoneId' => $zoneId,
@@ -313,7 +313,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:Tags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
                                 'tags' => $user->getTaggedTags($tagTypeId),
                                 'tagTypeId' => $tagTypeId
                                 )
@@ -343,7 +343,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:EditTags.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
                                 'object' => $user,
                                 'tagTypeId' => $tagTypeId,
                                 'zoneId' => $zoneId,
@@ -453,7 +453,7 @@ class PolitizrExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment:NotationAction.html.twig', array(
+                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
                                 'object' => $object,
                                 'context' => $context,
                                 'pos' => $pos,

@@ -73,9 +73,18 @@ class PDComment extends BasePDComment
 	/**
 	 * Renvoit le user associé à la réaction
 	 *
-	 * @return 	PDDebate 	Objet débat
+	 * @return 	PUser 	Objet user
 	 */
 	public function getAuthor() {
+		return parent::getPUser();
+	}
+
+	/**
+	 * Renvoit le user associé à la réaction
+	 *
+	 * @return 	PUser 	Objet user
+	 */
+	public function getUser() {
 		return parent::getPUser();
 	}
 

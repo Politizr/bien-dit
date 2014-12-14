@@ -142,11 +142,18 @@ class DocumentController extends Controller {
             throw new NotFoundHttpException('Debate n°'.$id.' has been published.');
         }
 
+        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+        $description = str_replace('</p>', '', $debate->getDescription());
+        $paragraphs = explode('<p>', $description);
+        array_shift($paragraphs);
+
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDraft.html.twig', array(
-                    'debate' => $debate
+                    'debate' => $debate,
+                    'paragraphs' => $paragraphs,
         ));
     }
 
@@ -230,12 +237,19 @@ class DocumentController extends Controller {
         }
 
 
+        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+        $description = str_replace('</p>', '', $reaction->getDescription());
+        $paragraphs = explode('<p>', $description);
+        array_shift($paragraphs);
+
+
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:reactionDraft.html.twig', array(
                     'reaction' => $reaction,
-                    'debate' => $debate
+                    'debate' => $debate,
+                    'paragraphs' => $paragraphs,
         ));
     }
 
@@ -382,7 +396,7 @@ class DocumentController extends Controller {
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:LinkFollow.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
                                         'object' => $object,
                                         'context' => $context
                                         )
@@ -462,7 +476,7 @@ class DocumentController extends Controller {
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:LinkNote.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig', array(
                                         'object' => $object,
                                         'context' => $context,
                                         )
@@ -525,14 +539,14 @@ class DocumentController extends Controller {
                 // Construction rendu
                 $templating = $this->get('templating');
                 $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:Comments.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig', array(
                                         'document' => $document,
                                         'comments' => $comments,
                                         'formComment' => $formComment->createView(),
                                         )
                             );
                 $counter = $templating->render(
-                                    'PolitizrFrontBundle:Fragment:NbComments.html.twig', array(
+                                    'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig', array(
                                         'document' => $document,
                                         'paragraphNo' => $noParagraph,
                                         )

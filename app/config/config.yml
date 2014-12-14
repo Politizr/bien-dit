@@ -249,18 +249,24 @@ liip_imagine:
             quality:              100
             filters:
                 thumbnail:         { size: [640, 480], mode: outbound }
-        user_bio_mini_thumb:
+        debate_list:
             quality:              100
             filters:
-                thumbnail:         { size: [100, 100], mode: outbound }
-        user_bio_thumb:
+                thumbnail:         { size: [640, 200], mode: outbound }
+
+        user_bio:
             quality:              100
             filters:
                 thumbnail:         { size: [150, 150], mode: outbound }
-        user_mini_thumb:
+        user_mini:
+            quality:              100
+            filters:
+                thumbnail:         { size: [25, 25], mode: outbound }
+        user_follower:
             quality:              100
             filters:
                 thumbnail:         { size: [50, 50], mode: outbound }
+
         political_party_mini_thumb:
             quality:              100
             filters:

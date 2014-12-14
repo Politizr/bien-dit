@@ -1,0 +1,94 @@
+{# Bloc commentaires d'un document (débat ou réaction) #}
+{% block documentRow %}
+	<div class="comment-document-row">
+		<div class="row">
+			{# User #}		
+			<div class="col-sm-2 text-center">
+				{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': comment.user } only %}
+			</div>
+
+			{# Description #}
+			<div class="col-sm-8">
+				<em>"{{ comment.description }}"</em>
+			</div>
+
+			{# Date #}
+			<div class="col-sm-2 text-center">
+				<span class="label label-default">publié le {{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+		</div>
+
+		{# Notation #}
+		<div class="comment-author row text-center">
+			<div class="notes col-sm-12">
+				{{ linkNote(comment, constant('Politizr\\Model\\PDocument::TYPE_COMMENT')) }}
+			</div>
+		</div>
+	</div>
+{% endblock documentRow %}
+
+{# Bloc listing de commentaires #}
+{% block listRow %}
+	<div class="comment-list-row">
+		<div class="row">
+			{# Description + lien #}
+			<div class="col-sm-10">
+				{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+					<a href="{{ path('DebateDetail', { 'id': comment.document.id, 'slug': comment.debate.slug }) }}">
+				{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+					<a href="{{ path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.reaction.slug }) }}">
+				{% endif %}
+					<em>"{{ comment.description }}"</em>
+				</a>
+			</div>
+
+			{# Date #}
+			<div class="col-sm-2 text-center">
+				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris" ) | capitalize }}</span>
+			</div>
+		</div>
+
+		{# User #}
+		<div class="row">
+			<div class="col-sm-12">
+				{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': comment.user } only %}
+			</div>
+		</div>
+	</div>
+{% endblock listRow %}
+
+{% block counter %}
+	<a class="badge alert-warning" action="comments" object-id="{{ document.id }}" no-paragraph="{{ paragraphNo }}">{{ document.countComments(true, paragraphNo) }}</a>
+{% endblock counter %}
+
+{% block form %}
+	<div class="comment-perso">
+		<div class="comment-edit row">
+			<div class="col-sm-2 text-center">
+				{% if (app.user and app.user.fileName) %}
+		            <img class="img-circle" src="{{ asset('uploads/users/'~app.user.fileName) | imagine_filter('user_mini') }}" alt="{{ app.user.name }}">
+		        {% else %}
+		            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini') }}" >
+	        	{% endif %}
+			</div>
+			<div class="col-sm-8 text-center">
+				{{ form_start(formComment, {'style': 'horizontal', 'attr': {'id': 'form-comment-new'} }) }}
+				    {{ form_errors(formComment) }}
+
+				    {{ form_widget(formComment.description) }}
+					{% if formComment.description.vars.errors|length %}
+		        		<div class="field_error">{{ form_errors(formComment.description) }}</div>
+		        	{% endif %}
+
+				{{ form_end(formComment) }}
+			</div>
+			<div class="col-sm-2 text-center">
+				{% if app.user %}
+					<input type="button" value="Commenter" class="btn btn-success" action="btn-submit-comment" />		
+				{% else %}
+					<a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock form %}

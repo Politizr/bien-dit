@@ -42,7 +42,7 @@ use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
 /**
- * Gestion profil élu
+ * Gestion profil débatteur
  *
  * TODO:
  *	- gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
@@ -235,7 +235,7 @@ ORDER BY published DESC
         $debatesGeo = $pUser->getTaggedDebates(PTTagType::TYPE_GEO);
         $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
 
-        //      Suggestions d'utilisateurs élus
+        //      Suggestions d'utilisateurs débatteurs
         $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, PUType::TYPE_QUALIFIE);
 
         // *********************************** //

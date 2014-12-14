@@ -1,0 +1,41 @@
+{% extends 'PolitizrFrontBundle:Fragment\\Reaction:Detail.html.twig' %}
+
+{% block header %}
+	{# Infos générales #}
+	<div class="row">
+		<div class="col-sm-8">
+			<h1>{{ reaction.title }}</h1>
+		</div>
+
+		<div class="col-sm-1 text-center">
+			&nbsp;
+		</div>
+		<div class="col-sm-1 text-center">
+			<span class="label label-default pull-right">non publié</span>
+		</div>
+		<div class="col-sm-1 text-center">
+			<a class="btn btn-primary" href="{{ path('ReactionDraftEdit', { 'id': reaction.id }) }}">Editer</a>
+		</div>
+		<div class="col-sm-1 text-center">
+			<a action="reaction-publish" class="btn btn-danger" object-id="{{ reaction.id }}" url="{{ path('MyReactionsE') }}">Publier</a>
+		</div>
+	</div>
+{% endblock header %}
+
+{% block author %}
+{% endblock author %}
+
+{% block linkDetailFeed %}
+{% endblock linkDetailFeed %}
+
+{# Description & plus d'infos #}
+{% block paragraphComment %}
+	{# Désactivation des commentaires #}
+	<span class="badge alert-warning">{{ reaction.countComments(true, loop.index) }}</span>
+{% endblock paragraphComment %}
+
+{% block actionReact %}
+{% endblock actionReact %}
+
+{% block globalComments %}		
+{% endblock globalComments %}

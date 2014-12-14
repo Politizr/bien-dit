@@ -792,14 +792,14 @@ class CRUDController extends Controller {
                     // Construction rendu
                     $templating = $this->get('templating');
                     $html = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:Comments.html.twig', array(
+                                        'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig', array(
                                             'document' => $document,
                                             'comments' => $comments,
                                             'formComment' => $formComment->createView(),
                                             )
                                 );
                     $counter = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:NbComments.html.twig', array(
+                                        'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig', array(
                                             'document' => $document,
                                             'paragraphNo' => $noParagraph,
                                             )
@@ -877,7 +877,7 @@ class CRUDController extends Controller {
                     $tag = PTagQuery::create()->findPk($tagId);
                     $templating = $this->get('templating');
                     $htmlTag = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                        'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
                                             'objectId' => $objectId,
                                             'tag' => $tag,
                                             'deleteUrl' => $this->container->get('router')->generate('DebateDeleteTag')
@@ -987,7 +987,7 @@ class CRUDController extends Controller {
                     $tag = PTagQuery::create()->findPk($tagId);
                     $templating = $this->get('templating');
                     $htmlTag = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                        'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
                                             'objectId' => $objectId,
                                             'tag' => $tag,
                                             'deleteUrl' => $this->container->get('router')->generate('UserFollowDeleteTag')
@@ -1098,7 +1098,7 @@ class CRUDController extends Controller {
                     $tag = PTagQuery::create()->findPk($tagId);
                     $templating = $this->get('templating');
                     $htmlTag = $templating->render(
-                                        'PolitizrFrontBundle:Fragment:Tag.html.twig', array(
+                                        'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
                                             'objectId' => $objectId,
                                             'tag' => $tag,
                                             'deleteUrl' => $this->container->get('router')->generate('UserFollowDeleteTag')

@@ -14,26 +14,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'paragraphs': paragraphs, 'full': true } %}
-		{% if is_granted('ROLE_ELECTED') %}
-			{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour ce débat par le user courant #}
-			<div class="row text-center">
-				<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': null }) }}">Réagir</a>
-			</div>
-			<hr>
-		{% endif %}
-		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
-		</div>
-		<hr>		
-		<div class="debate-global-comments">
-			<div class="paragraph">
-				<div class="counter text-center">
-					{% include 'PolitizrFrontBundle:Fragment:NbComments.html.twig' with {'document': debate.document, 'paragraphNo': 0 } only %}
-				</div>
-				<div class="comments"></div>
-			</div>
-		</div>
+		{% include 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' with { 'debate': debate, 'paragraphs': paragraphs } %}
 	</div>
 {% endblock main %}
 

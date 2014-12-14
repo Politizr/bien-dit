@@ -1,9 +1,0 @@
-<div class="reaction-infos-block">
-	<span class="reaction-more-info">A propos de cette réaction</span>
-	<hr>
-	{% if pDocument %}
-		<div class="reactionInfos">
-			{% include 'PolitizrFrontBundle:Fragment:DocumentCommentsHighlight.html.twig' with { 'globalComments': pDocument.globalComments } only %}
-		</div>
-	{% endif %}
-</div>

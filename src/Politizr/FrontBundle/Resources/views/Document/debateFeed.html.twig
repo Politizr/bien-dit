@@ -14,15 +14,11 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false } %}
-		<div class="row text-center">
-			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">Détail du débat</a>
-		</div>
-		<hr>
-		<h3>Les réactions</h3>
+		{% include 'PolitizrFrontBundle:Fragment\\Debate:DetailFeed.html.twig' with { 'debate': debate } only %}
+		<div class="border-row">&nbsp;</div>
 		<div class="debate-reactions-feed">
 			{% for reaction in debate.treeReactions(true, true) %}
-				{% include 'PolitizrFrontBundle:Fragment:ReactionBlock.html.twig' with {'reaction': reaction, 'full': false } only %}
+				{% include 'PolitizrFrontBundle:Fragment\\Reaction:DetailFeed.html.twig' with {'reaction': reaction } only %}
 				<div class="border-row">&nbsp;</div>
 			{% else %}
 				<div class="no-result">

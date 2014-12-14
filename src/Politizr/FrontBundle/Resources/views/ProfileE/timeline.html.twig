@@ -4,11 +4,15 @@
 	<div id="main" class="container">
 		<h3>Timeline</h3>
         {% for document in documents %}
-			{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': document.childObject, 'objectType': document.type, 'withAuthor': true, 'withMoreInfos': false } %}
-			<div class="border-row">&nbsp;</div>
+			{% if document.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': document.childObject } %}
+			{% else %}
+				{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': document.childObject } %}
+			{% endif %}
+			<hr>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('SuggestionsE') }}">Suivez plus de débat ou d'utilisateurs!</a>
+				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Suivez plus de débat ou d'utilisateurs!</a>
 			</div>
 		{% endfor %}
 	</div>

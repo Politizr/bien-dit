@@ -17,7 +17,7 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\PUType;
 
 /**
- * Formulaire associée à la migration d'un compte citoyen vers élu
+ * Formulaire associée à la migration d'un compte citoyen vers débatteur
  * 
  * @author Lionel Bouzonville
  */

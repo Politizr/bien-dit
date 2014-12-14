@@ -16,7 +16,7 @@
 			        </tr>
 		      	</thead>				
 		        {% for draft in debateDrafts %}
-					{% include 'PolitizrFrontBundle:Fragment:DebateDraftRowBlock.html.twig' with { 'document': draft } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
 				{% else %}
 					<tr>
 						<td colspan="5">
@@ -41,7 +41,7 @@
 			        </tr>
 		      	</thead>				
 		        {% for draft in reactionDrafts %}
-					{% include 'PolitizrFrontBundle:Fragment:ReactionDraftRowBlock.html.twig' with { 'document': draft } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Reaction:DraftTableRow.html.twig' with { 'document': draft } %}
 				{% else %}
 					<tr>
 						<td colspan="5">

@@ -15,7 +15,7 @@
 				        </tr>
 			      	</thead>				
 			        {% for draft in drafts %}
-						{% include 'PolitizrFrontBundle:Fragment:DebateDraftRowBlock.html.twig' with { 'document': draft } %}
+						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
 					{% else %}
 						<tr>
 							<td colspan="5">

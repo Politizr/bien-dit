@@ -235,7 +235,7 @@ ORDER BY published DESC
         //      Récupération objets vue
         // *********************************** //
 
-        //      Suggestions de documents
+        // Suggestions de documents
 
         // Récupération listing débat "match" tags géo
         // TODO: algo "match" à définir
@@ -243,7 +243,7 @@ ORDER BY published DESC
         $debatesGeo = $pUser->getTaggedDebates(PTTagType::TYPE_GEO);
         $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
 
-        //      Suggestions d'utilisateurs élus
+        // Suggestions d'utilisateurs débatteurs
         $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, PUType::TYPE_QUALIFIE);
 
         // *********************************** //

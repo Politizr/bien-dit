@@ -7,17 +7,17 @@
 			<h3>Derniers débats publiés</h3>
 			<div>
 				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': constant('Politizr\\Model\\PDocument::TYPE_DEBATE'), 'withAuthor': true, 'withMoreInfos': true } %}
-					<div class="border-row">&nbsp;</div>
+					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
 		<div id="users">
-			<h3>Derniers élus inscrits</h3>
+			<h3>Derniers débatteurs inscrits</h3>
 			<div>
 				{% for user in users %}
-					{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
-					<div class="border-row">&nbsp;</div>
+					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': user } %}
+					<hr>
 				{% endfor %}
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			<h3>Derniers commentaires publiés</h3>
 			<div>
 				{% for comment in comments %}
-					{% include 'PolitizrFrontBundle:Fragment:Comment.html.twig' with { 'comment': comment, 'docLink': true } %}
+					{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
 					<hr>
 				{% endfor %}
 			</div>
@@ -36,7 +36,7 @@
 
 {% block javascriptFooter %}
 	{{ parent() }}
-	    
+    
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}

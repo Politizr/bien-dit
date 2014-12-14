@@ -1,0 +1,210 @@
+{# Bloc détail d'une réaction #}
+{% block detail %}
+	<div class="reaction-detail">
+		{# Infos générales #}
+		<div class="row">
+			<div class="col-sm-8">
+				<h2>{{ reaction.title }}</h2>
+			</div>
+			<div class="col-sm-2 text-center">
+				<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
+			</div>
+			<div class="col-sm-2 text-center">
+				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+		</div>
+		{# Réaction parente #}
+		<div class="row">
+			<div class="col-sm-12">
+				{# TODO / TwigExtension Parent Réaction #}
+				{#
+				<div>
+					<hr>
+					DEBUG NESTED SET - 
+					isRoot {{ reaction.isRoot }} - 
+					isLeaf {{ reaction.isLeaf }} - 
+					getLevel {{ reaction.getLevel }} - 
+					hasChildren {{ reaction.hasChildren }} - 
+					countChildren {{ reaction.countChildren }} - 
+					hasPrevSibling {{ reaction.hasPrevSibling }} - 
+					hasNextSibling {{ reaction.hasNextSibling }} - 
+				</div>
+				#}
+				{% if reaction.level > 1 %}
+					{% set parentReaction = reaction.getParent %}
+					<h4>En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>" sur le débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+				{% else %}
+					<h4>En réaction au débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+				{% endif %}
+			</div>
+		</div>
+
+		{% block author %}
+			<div class="row">
+				{# User #}
+				<div class="col-sm-8">
+					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': reaction.user } only %}
+				</div>
+				{# Notes #}
+				<div class="notes col-sm-4 text-center">
+					{{ linkNote(reaction, constant('Politizr\\Model\\PDocument::TYPE_REACTION')) }}
+				</div>
+			</div>
+		{% endblock author %}
+
+		{# Image du débat #}
+		<hr>
+		<div class="row debate-image">
+			<div class="col-sm-12">
+				{# TODO / TwigExtension Image #}
+				{% if (reaction.debate.FileName) %}
+			        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~reaction.debate.FileName) | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
+			    {% else %}
+			        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
+				{% endif %}
+			</div>
+		</div>
+
+
+		{# Résumé #}
+		<hr>
+		<div class="jumbotron">
+			{# Résumé #}
+			<div class="row text-center">
+				<div class="col-sm-12">
+					{{ reaction.summary | raw }}
+				</div>
+			</div>
+			{# Lien détail #}
+			<div class="row text-center">
+				<div class="col-sm-12">
+					<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
+				</div>
+			</div>		
+		</div>
+
+		<div class="row text-center">
+			{% if is_granted('ROLE_ELECTED') %}
+				{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour cette réaction par le user courant #}
+				<div class="row text-center">
+					<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': reaction.debate.id, 'parentId': reaction.id }) }}">Réagir</a>
+				</div>
+				<hr>
+			{% endif %}
+			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
+		</div>
+
+
+		{# Description & plus d'infos #}
+		{% block description %}
+			{# Paragraphes #}
+			<hr>
+			<div class="reaction-body">
+				{% for paragraph in paragraphs %}
+					<div class="paragraph">
+						<div class="row reaction-description sizeup">
+							<div class="counter col-sm-1">
+								{% include 'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig' with {'document': reaction.document, 'paragraphNo': loop.index } only %}
+							</div>
+							<div class="col-sm-11">
+								<p>{{ paragraph | raw }}</p>
+							</div>
+						</div>
+						<div class="comments"></div>
+					</div>
+				{% endfor %}
+			</div>
+
+			{# Plus d'infos #}
+			{% if reaction.moreInfo | striptags | trim is not empty %}
+				<hr>
+				<div class="debate-more-info well">
+					{{ reaction.moreInfo | raw }}
+				</div>
+			{% endif %}
+		{% endblock description %}
+
+		{% block globalComments %}		
+			{# Commentaires #}
+			<hr>
+			<div class="reaction-global-comments">
+				<div class="paragraph">
+					<div class="counter text-center">
+						{% include 'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig' with {'document': reaction.document, 'paragraphNo': 0 } only %}
+					</div>
+					<div class="comments"></div>
+				</div>
+			</div>
+		{% endblock globalComments %}		
+	</div>
+{% endblock detail %}
+
+{# Bloc ligne de listing de réactions #}
+{% block listRow %}
+	<div class="reaction-list-row">
+		{# Infos générales #}
+		<div class="row">
+			<div class="col-sm-8">
+				<h2>{{ reaction.title }}</h2>
+			</div>
+			<div class="col-sm-2 text-center">
+				<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
+			</div>
+			<div class="col-sm-2 text-center">
+				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+		</div>
+		
+		{# Réaction parente #}
+		<div class="row">
+			<div class="col-sm-12">
+				{# TODO / TwigExtension Parent Réaction #}
+				{#
+				<div>
+					<hr>
+					DEBUG NESTED SET - 
+					isRoot {{ reaction.isRoot }} - 
+					isLeaf {{ reaction.isLeaf }} - 
+					getLevel {{ reaction.getLevel }} - 
+					hasChildren {{ reaction.hasChildren }} - 
+					countChildren {{ reaction.countChildren }} - 
+					hasPrevSibling {{ reaction.hasPrevSibling }} - 
+					hasNextSibling {{ reaction.hasNextSibling }} - 
+				</div>
+				#}
+				{% if reaction.level > 1 %}
+					{% set parentReaction = reaction.getParent %}
+					<h4>En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>" sur le débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+				{% else %}
+					<h4>En réaction au débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			{# User #}
+			<div class="col-sm-12">
+				{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': reaction.user } only %}
+			</div>
+		</div>
+	</div>
+{% endblock listRow %}
+
+{# Bloc ligne d'un tableau de brouillon de débats #}
+{% block draftTableRow %}
+	<tr>
+		<td>{{ document.debate.title }}</td>
+		<td>
+			{% if document.level > 1 %}
+				{% set parentReaction = document.getParent %}
+				{{ parentReaction.title }}
+			{% endif %}
+		</td>
+		<td>{{ document.title }}</td>
+		<td>{{ document.summary | striptags | slice(0, 150) | raw }}</td>
+		<td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
+		<td>
+			<a class="btn btn-primary" href="{{ path('ReactionDraftEdit', { 'id': document.id }) }}">Editer</a>
+			<a class="btn btn-info" href="{{ path('ReactionDraftPreview', { 'id': document.id }) }}">Prévisualiser</a>
+		</td>
+	</tr>
+{% endblock draftTableRow %}

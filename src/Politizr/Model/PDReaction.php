@@ -188,4 +188,14 @@ class PDReaction extends BasePDReaction
 		return $this->countChildrenReactions(true, true);
 	}
 
+
+
+    // *****************************    USERS   ************************* //
+    
+	/**
+	 *
+	 */
+    public function getUser() {
+    	return $this->getPUser();
+    }
 }

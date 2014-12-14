@@ -1,9 +1,0 @@
-{% if app.user %}
-	{% if follower %}
-		<a class="btn btn-warning" action="follow" object-id="{{ object.id }}" context="{{ context }}" way="unfollow">Ne plus suivre</a>
-	{% else %}
-		<a class="btn btn-success" action="follow" object-id="{{ object.id }}" context="{{ context }}" way="follow">Suivre</a>
-	{% endif %}
-{% else %}
-	<a class="btn btn-primary" href="{{ path('Inscription') }}">M'inscrire pour suivre</a>
-{% endif %}

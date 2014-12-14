@@ -11,14 +11,13 @@
 		</div>
 		<hr>
 		{% for debate in debatesGeo %}
-			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
-			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
-		<div class="border-row">&nbsp;</div>
+		
 		<h3>Suggestions de débats par tags thématiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
@@ -27,14 +26,13 @@
 		</div>
 		<hr>
 		{% for debate in debatesTheme %}
-			{# include 'PolitizrFrontBundle:Fragment:DocumentMiniBlock.html.twig' with { 'document': debate, 'objectType': 'PDDebate', 'withAuthor': true } #}
-			{% include 'PolitizrFrontBundle:Fragment:DebateBlock.html.twig' with { 'debate': debate, 'full': false, 'withMoreInfos': true } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
 		{% else %}
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
-		<div class="border-row">&nbsp;</div>
+
 		<h3>Suggestions d'élus par tags géographiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
@@ -43,10 +41,11 @@
 		</div>
 		<hr>
 		{% for user in usersGeo %}
-			{% include 'PolitizrFrontBundle:Fragment:UserBlock.html.twig' with { 'pUser': user, 'full': false } %}
+			{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } only %}
+			<hr>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun élu ne correspond à vos tags suivis</a>
+				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débatteur ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
 	</div>

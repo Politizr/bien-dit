@@ -5,7 +5,7 @@
 		<div class="row">
 			<h3><a class="bg-info" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a></h3>
 		</div>
-		{% include 'PolitizrFrontBundle:Fragment:ReactionDraftBlock.html.twig' with { 'reaction': reaction, 'full': true } %}
+		{% include 'PolitizrFrontBundle:Fragment\\Reaction:DetailDraft.html.twig' with { 'reaction': reaction, 'paragraphs': paragraphs } %}
 	</div>
 {% endblock main %}
 

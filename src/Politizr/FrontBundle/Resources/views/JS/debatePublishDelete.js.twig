@@ -9,7 +9,7 @@
                     type: 'POST',
                     dataType: 'json',
                     url : "{{ path('DebatePublish') }}",
-                    data: { id: $('#debate_id').val(), 'url': $("a[action='debate-publish']").attr('url') },
+                    data: { 'id': $("a[action='debate-publish']").attr('object-id'), 'url': $("a[action='debate-publish']").attr('url') },
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
@@ -38,7 +38,7 @@
                     type: 'POST',
                     dataType: 'json',
                     url : "{{ path('DebateDelete') }}",
-                    data: { id: $('#debate_id').val(), url: $("a[action='debate-delete']").attr('url') },
+                    data: { 'id': $('#debate_id').val(), 'url': $("a[action='debate-delete']").attr('url') },
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {

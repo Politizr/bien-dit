@@ -448,7 +448,7 @@ class SecurityController extends Controller {
     /* ######################################################################################################## */
 
     /**
-     *     Page d'inscription élu  / Etape 1 / Inscription
+     *     Page d'inscription débatteur  / Etape 1 / Inscription
      */
     public function inscriptionElectedAction()
     {
@@ -473,7 +473,7 @@ class SecurityController extends Controller {
     }
 
     /**
-     *      Page d'inscription élu  / Etape 1 / Validation inscription
+     *      Page d'inscription débatteur  / Etape 1 / Validation inscription
      */
     public function inscriptionElectedCheckAction()
     {
@@ -558,7 +558,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription élu  / Etape 1 / Migration de compte
+     *     Page d'inscription débatteur  / Etape 1 / Migration de compte
      */
     public function migrationElectedAction()
     {
@@ -599,7 +599,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *      Page d'inscription élu  / Etape 1 / Validation migration de compte
+     *      Page d'inscription débatteur  / Etape 1 / Validation migration de compte
      */
     public function migrationElectedCheckAction()
     {
@@ -669,7 +669,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription élu / Etape 2 / Choix de la formule
+     *     Page d'inscription débatteur / Etape 2 / Choix de la formule
      */
     public function inscriptionElectedOrderAction()
     {
@@ -717,7 +717,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *      Page d'inscription élu / Etape 2 / Validation choix de la formule
+     *      Page d'inscription débatteur / Etape 2 / Validation choix de la formule
      */
     public function inscriptionElectedOrderCheckAction()
     {
@@ -791,7 +791,7 @@ class SecurityController extends Controller {
     }
 
     /**
-     *     Page d'inscription élu / Etape 3 / Paiement
+     *     Page d'inscription débatteur / Etape 3 / Paiement
      */
     public function inscriptionElectedPaymentAction()
     {
@@ -825,7 +825,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription élu / Etape 3 / Paiement terminé
+     *     Page d'inscription débatteur / Etape 3 / Paiement terminé
      */
     public function inscriptionElectedPaymentFinishedAction()
     {
@@ -873,7 +873,7 @@ class SecurityController extends Controller {
     }
 
     /**
-     *  Page d'inscription élu / Etape 3 / Annulation paiement
+     *  Page d'inscription débatteur / Etape 3 / Annulation paiement
      *
      */
     public function inscriptionElectedPaymentCanceledAction(Request $request)
@@ -902,7 +902,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription élu / Etape 4 / Remerciement
+     *     Page d'inscription débatteur / Etape 4 / Remerciement
      */
     public function inscriptionElectedThankingAction()
     {

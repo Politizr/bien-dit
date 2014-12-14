@@ -8,7 +8,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment:DebateDraftBlock.html.twig' with { 'debate': debate } %}
+		{% include 'PolitizrFrontBundle:Fragment\\Debate:DetailDraft.html.twig' with { 'debate': debate, 'paragraphs': paragraphs } %}
 	</div>
 {% endblock main %}
 

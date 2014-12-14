@@ -1,0 +1,48 @@
+{% extends 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' %}
+
+{% block header %}
+	{# Infos générales #}
+	{% set urlBack = path('MyDebatesC') %}
+	{% if is_granted('ROLE_ELECTED') %}
+		{% set urlBack = path('MyDebatesE') %}
+	{% endif %}
+	<div class="row">
+		<div class="col-sm-8">
+			<h1>{{ debate.title }}</h1>
+		</div>
+
+		<div class="col-sm-1 text-center">
+			&nbsp;
+		</div>
+		<div class="col-sm-1 text-center">
+			<span class="label label-default pull-right">non publié</span>
+		</div>
+		<div class="col-sm-1 text-center">
+			<a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': debate.id }) }}">Editer</a>
+		</div>
+		<div class="col-sm-1 text-center">
+			<a action="debate-publish" class="btn btn-danger" object-id="{{ debate.id }}" url="{{ urlBack }}">Publier</a>
+		</div>
+	</div>
+{% endblock header %}
+
+{% block author %}
+{% endblock author %}
+
+{% block follow %}
+{% endblock follow %}
+
+{% block linkDetailFeed %}
+{% endblock linkDetailFeed %}
+
+{# Description & plus d'infos #}
+{% block paragraphComment %}
+	{# Désactivation des commentaires #}
+	<span class="badge alert-warning">{{ debate.countComments(true, loop.index) }}</span>
+{% endblock paragraphComment %}
+
+{% block actionReact %}
+{% endblock actionReact %}
+
+{% block globalComments %}		
+{% endblock globalComments %}
