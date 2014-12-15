@@ -41,10 +41,13 @@
 		</li>
 	</ul>
 	<ul class="navbar-right">
-		{% if app.user.validated %}
-			<span class="glyphicon glyphicon-ok"></span>
-		{% endif %}
-		<span class="label label-success">{{ app.user.firstname }} {{ app.user.name }}</span>
-		<a class="btn btn-danger btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
+		<span class="label label-info">
+			{{ app.user.firstname }} {{ app.user.name }}
+			{% if app.user.validated %}
+				<i class="fa fa-check-square-o" title="Profil validé"></i>
+			{% endif %}
+		</span>
+		&nbsp;
+		<a class="btn btn-warning btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
 	</ul>
 </div><!-- /.navbar-collapse -->

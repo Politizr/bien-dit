@@ -24,12 +24,17 @@ Presentation:
 ################################################################################
 #               ROUTING CONNEXION
 ################################################################################
+Logout:
+    pattern:  /deconnexion
+    defaults: { _controller: PolitizrFrontBundle:Security:logout }
+
+CancelInscription:
+    pattern:  /annuler-inscription
+    defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
+
 Login:
     pattern:  /login
     defaults: { _controller: PolitizrFrontBundle:Security:login }
-
-Logout:
-    pattern:  /logout
 
 ################################################################################
 #               ROUTING CREATION PROFIL CITOYEN
@@ -41,6 +46,8 @@ Inscription:
 InscriptionCheck:
     pattern:  /inscription/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
+    requirements:
+        _method:        POST
 
 InscriptionContact:
     pattern:  /u/inscription-contact
@@ -49,6 +56,8 @@ InscriptionContact:
 InscriptionContactCheck:
     pattern:  /u/inscription-contact/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
+    requirements:
+        _method:        POST
 
 ################################################################################
 #               ROUTING CREATION PROFIL ÉLU
@@ -60,6 +69,8 @@ InscriptionElected:
 InscriptionElectedCheck:
     pattern:  /inscription-elu/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
+    requirements:
+        _method:        POST
 
 InscriptionElectedOrder:
     pattern:  /v/inscription-elu-commande
@@ -68,6 +79,8 @@ InscriptionElectedOrder:
 InscriptionElectedOrderCheck:
     pattern:  /v/inscription-elu-commande/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrderCheck }
+    requirements:
+        _method:        POST
 
 InscriptionElectedPayment:
     pattern:  /v/inscription-elu-paiement
@@ -96,6 +109,8 @@ MigrationElected:
 MigrationElectedCheck:
     pattern:  /citoyen/check
     defaults: { _controller: PolitizrFrontBundle:Security:migrationElectedCheck }
+    requirements:
+        _method:        POST
 
 
 

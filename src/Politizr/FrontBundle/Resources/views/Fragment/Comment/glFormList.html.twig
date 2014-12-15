@@ -6,7 +6,7 @@
 <hr>
 <div class="comment-just-created"></div>
 {% for comment in comments %}
-	{% include 'PolitizrFrontBundle:Fragment\\Comment:ListDocumentRow.html.twig' with { 'comment': comment } %}
+	{% include 'PolitizrFrontBundle:Fragment\\Comment:DocumentRow.html.twig' with { 'comment': comment } %}
 	<hr>
 {% endfor %}
 <div class="text-center">

@@ -1,18 +1,29 @@
+{# 
+LAYOUT REACTION
+-----------------------------
+- regroupement un 1 fichier de tous les fragments fonctionnels réutilisables séparément
+- objectif > mutualiser / harmoniser les mises à jour du code
+- permet aussi de trouver des points communs et de faire de l'héritage parmi les enfants de ce layout
+#}
+
 {# Bloc détail d'une réaction #}
 {% block detail %}
 	<div class="reaction-detail">
-		{# Infos générales #}
-		<div class="row">
-			<div class="col-sm-8">
-				<h2>{{ reaction.title }}</h2>
+		{% block header %}
+			{# Infos générales #}
+			<div class="row">
+				<div class="col-sm-8">
+					<h2>{{ reaction.title }}</h2>
+				</div>
+				<div class="col-sm-2 text-center">
+					<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
+				</div>
+				<div class="col-sm-2 text-center">
+					<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+				</div>
 			</div>
-			<div class="col-sm-2 text-center">
-				<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
-			</div>
-			<div class="col-sm-2 text-center">
-				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
-			</div>
-		</div>
+		{% endblock header %}
+
 		{# Réaction parente #}
 		<div class="row">
 			<div class="col-sm-12">
@@ -75,24 +86,28 @@
 					{{ reaction.summary | raw }}
 				</div>
 			</div>
-			{# Lien détail #}
-			<div class="row text-center">
-				<div class="col-sm-12">
-					<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
+			{% block linkDetailFeed %}
+				{# Lien détail #}
+				<div class="row text-center">
+					<div class="col-sm-12">
+						<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
+					</div>
 				</div>
-			</div>		
+			{% endblock linkDetailFeed %}
 		</div>
 
-		<div class="row text-center">
-			{% if is_granted('ROLE_ELECTED') %}
-				{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour cette réaction par le user courant #}
-				<div class="row text-center">
-					<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': reaction.debate.id, 'parentId': reaction.id }) }}">Réagir</a>
-				</div>
-				<hr>
-			{% endif %}
-			<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
-		</div>
+		{% block linkReactDebateFeed %}
+			<div class="row text-center">
+				{% if is_granted('ROLE_ELECTED') %}
+					{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour cette réaction par le user courant #}
+					<div class="row text-center">
+						<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': reaction.debate.id, 'parentId': reaction.id }) }}">Réagir</a>
+					</div>
+					<hr>
+				{% endif %}
+				<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
+			</div>
+		{% endblock linkReactDebateFeed %}
 
 
 		{# Description & plus d'infos #}

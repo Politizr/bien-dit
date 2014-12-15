@@ -308,119 +308,29 @@ class DocumentController extends Controller {
     public function followAction(Request $request) {
         $logger = $this->get('logger');
         $logger->info('*** followAction');
-        
-        try {
-            if ($request->isXmlHttpRequest()) {
-                // Récupération user
-                $user = $this->getUser();
 
-                // Récupération args
-                $objectId = $request->get('objectId');
-                $logger->info('$objectId = ' . print_r($objectId, true));
-                $context = $request->get('context');
-                $logger->info('$context = ' . print_r($context, true));
-                $way = $request->get('way');
-                $logger->info('$way = ' . print_r($way, true));
+        $context = $request->get('context');
+        $logger->info('$context = ' . print_r($context, true));
 
-                // MAJ suivre / ne plus suivre
-                if ($way == 'follow') {
-                    switch($context) {
-                        case PDocument::TYPE_DEBATE:
-                            $object = PDDebateQuery::create()->findPk($objectId);
-
-                            // Insertion nouvel élément
-                            $pUFollowDD = new PUFollowDD();
-                            $pUFollowDD->setPUserId($user->getId());
-                            $pUFollowDD->setPDDebateId($object->getId());
-                            $pUFollowDD->save();
-
-                            // Réputation
-                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                            $dispatcher = $this->get('event_dispatcher')->dispatch('debate_follow', $event);
-
-                            break;
-                        case PDocument::TYPE_USER:
-                            $object = PUserQuery::create()->findPk($objectId);
-
-                            // Insertion nouvel élément
-                            $pUFollowU = new PUFollowU();
-                            $pUFollowU->setPUserId($object->getId());
-                            $pUFollowU->setPUserFollowerId($user->getId());
-                            $pUFollowU->save();
-
-                            // Réputation
-                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                            $dispatcher = $this->get('event_dispatcher')->dispatch('user_follow', $event);
-
-                            break;
-                    }
-                } elseif ($way == 'unfollow') {
-                    switch($context) {
-                        case PDocument::TYPE_DEBATE:
-                            $object = PDDebateQuery::create()->findPk($objectId);
-
-                            // Suppression élément(s)
-                            $pUFollowDDList = PUFollowDDQuery::create()
-                                            ->filterByPUserId($user->getId())
-                                            ->filterByPDDebateId($object->getId())
-                                            ->find();
-                            foreach ($pUFollowDDList as $pUFollowDD) {
-                                $pUFollowDD->delete();
-                            }
-
-                            // Réputation
-                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                            $dispatcher = $this->get('event_dispatcher')->dispatch('debate_unfollow', $event);
-
-                            break;
-                        case PDocument::TYPE_USER:
-                            $object = PUserQuery::create()->findPk($objectId);
-
-                            // Suppression élément(s)
-                            $pUFollowUList = PUFollowUQuery::create()
-                                            ->filterByPUserId($object->getId())
-                                            ->filterByPUserFollowerId($user->getId())
-                                            ->find();
-                            foreach ($pUFollowUList as $pUFollowU) {
-                                $pUFollowU->delete();
-                            }
-
-                            // Réputation
-                            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                            $dispatcher = $this->get('event_dispatcher')->dispatch('user_unfollow', $event);
-
-                            break;
-                    }
-                }
-
-                // Construction rendu
-                $templating = $this->get('templating');
-                $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
-                                        'object' => $object,
-                                        'context' => $context
-                                        )
-                            );
-
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true,
-                    'html' => $html
+        $jsonResponse = array('error' => 'Contexte non défini.');
+        switch($context) {
+            case PDocument::TYPE_DEBATE:
+                $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+                    'politizr.service.document',
+                    'follow'
                 );
-            } else {
-                throw $this->createNotFoundException('Not a XHR request');
-            }
-        } catch (NotFoundHttpException $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        } catch (\Exception $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
+
+                break;
+            case PDocument::TYPE_USER:
+                $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+                    'politizr.service.user',
+                    'follow'
+                );
+
+                break;
         }
 
-        // JSON formatted success/error message
-        $response = new Response(json_encode($jsonResponse));
-        return $response;
+        return $jsonResponse;
     }
 
     /**
@@ -429,78 +339,13 @@ class DocumentController extends Controller {
     public function noteAction(Request $request) {
         $logger = $this->get('logger');
         $logger->info('*** noteAction');
-        
-        try {
-            if ($request->isXmlHttpRequest()) {
-                // Récupération user
-                $user = $this->getUser();
 
-                // Récupération args
-                $objectId = $request->get('objectId');
-                $logger->info('$objectId = ' . print_r($objectId, true));
-                $context = $request->get('context');
-                $logger->info('$context = ' . print_r($context, true));
-                $way = $request->get('way');
-                $logger->info('$way = ' . print_r($way, true));
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'note'
+        );
 
-                // Récupération objet
-                switch($context) {
-                    case PDocument::TYPE_DEBATE:
-                        $object = PDDebateQuery::create()->findPk($objectId);
-                        break;
-                    case PDocument::TYPE_REACTION:
-                        $object = PDReactionQuery::create()->findPk($objectId);
-                        break;
-                    case PDocument::TYPE_COMMENT:
-                        $object = PDCommentQuery::create()->findPk($objectId);
-                        break;
-                }
-
-                // MAJ note
-                if ($way == 'up') {
-                    $object->setNotePos($object->getNotePos() + 1);
-                    $object->save();
-
-                    // Réputation
-                    $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                    $dispatcher = $this->get('event_dispatcher')->dispatch('note_pos', $event);
-                } elseif ($way == 'down') {
-                    $object->setNoteNeg($object->getNoteNeg() + 1);
-                    $object->save();
-
-                    // Réputation
-                    $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-                    $dispatcher = $this->get('event_dispatcher')->dispatch('note_neg', $event);
-                }
-
-                // Construction rendu
-                $templating = $this->get('templating');
-                $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig', array(
-                                        'object' => $object,
-                                        'context' => $context,
-                                        )
-                            );
-
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true,
-                    'html' => $html
-                );
-            } else {
-                throw $this->createNotFoundException('Not a XHR request');
-            }
-        } catch (NotFoundHttpException $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        } catch (\Exception $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        }
-
-        // JSON formatted success/error message
-        $response = new Response(json_encode($jsonResponse));
-        return $response;
+        return $jsonResponse;
     }
 
     /**
@@ -509,69 +354,12 @@ class DocumentController extends Controller {
     public function commentsAction(Request $request) {
         $logger = $this->get('logger');
         $logger->info('*** commentsAction');
-        
-        try {
-            if ($request->isXmlHttpRequest()) {
-                // Récupération args
-                $objectId = $request->get('objectId');
-                $logger->info('$objectId = ' . print_r($objectId, true));
-                $noParagraph = $request->get('noParagraph');
-                $logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
-                // Récupération objet
-                $document = PDocumentQuery::create()->findPk($objectId);
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'comments'
+        );
 
-                // Récupération des commentaires du paragraphe
-                $comments = $document->getComments(true, $noParagraph);
-
-                // Form saisie commentaire
-                // Récupération user
-                $user = $this->getUser();
-
-                $comment = new PDComment();
-                if ($user) {
-                    $comment->setPUserId($user->getId());
-                    $comment->setPDocumentId($document->getId());
-                    $comment->setParagraphNo($noParagraph);
-                }
-                $formComment = $this->createForm(new PDCommentType(), $comment);
-
-                // Construction rendu
-                $templating = $this->get('templating');
-                $html = $templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig', array(
-                                        'document' => $document,
-                                        'comments' => $comments,
-                                        'formComment' => $formComment->createView(),
-                                        )
-                            );
-                $counter = $templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig', array(
-                                        'document' => $document,
-                                        'paragraphNo' => $noParagraph,
-                                        )
-                            );
-
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true,
-                    'html' => $html,
-                    'counter' => $counter,
-                );
-            } else {
-                throw $this->createNotFoundException('Not a XHR request');
-            }
-        } catch (NotFoundHttpException $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        } catch (\Exception $e) {
-            $logger->info('Exception = ' . print_r($e->getMessage(), true));
-            $jsonResponse = array('error' => $e->getMessage());
-        }
-
-        // JSON formatted success/error message
-        $response = new Response(json_encode($jsonResponse));
-        return $response;
+        return $jsonResponse;
     }
-
 }

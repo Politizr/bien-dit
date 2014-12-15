@@ -244,13 +244,11 @@
     </table>
 
 
-
-
     <table name="p_user">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable"/>
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 

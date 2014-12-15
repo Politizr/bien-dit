@@ -14,6 +14,30 @@ services:
         arguments: 							[ @service_container ]
 
 
+    # SERVICES ROUTING
+    politizr.routing.ajax:
+        class:                              Politizr\FrontBundle\Lib\Routing\AjaxCreateResponse
+        arguments:                          [ @service_container ]
+
+
+    # SERVICES METIERS
+    politizr.service.security:
+        class:                              Politizr\FrontBundle\Lib\Service\SecurityManager
+        arguments:                          [ @service_container ]
+
+    politizr.service.user:
+        class:                              Politizr\FrontBundle\Lib\Service\UserManager
+        arguments:                          [ @service_container ]
+
+    politizr.service.document:
+        class:                              Politizr\FrontBundle\Lib\Service\DocumentManager
+        arguments:                          [ @service_container ]
+
+    politizr.service.tag:
+        class:                              Politizr\FrontBundle\Lib\Service\TagManager
+        arguments:                          [ @service_container ]
+
+
     # LISTENERS
     politzr.listener.email:
         class:      Politizr\FrontBundle\Listener\EmailListener
