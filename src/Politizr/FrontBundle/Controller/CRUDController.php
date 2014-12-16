@@ -66,23 +66,8 @@ class CRUDController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** debateNewAction');
 
-        // Récupération user courant
-        $user = $this->getUser();
-
-        // Création d'un nouvel objet et redirection vers l'édition
-        $debate = new PDDebate();
-        
-        $debate->setTitle('Un nouveau débat');
-        
-        $debate->setPUserId($user->getId());
-
-        $debate->setNotePos(0);
-        $debate->setNoteNeg(0);
-        
-        $debate->setOnline(true);
-        $debate->setPublished(false);
-        
-        $debate->save();
+        // Service associé a la création d'une réaction
+        $debate = $this->get('politizr.service.document')->debateNew();
 
         return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
     }
@@ -137,52 +122,8 @@ class CRUDController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
 
-        // Récupération user courant
-        $user = $this->getUser();
-
-        // Récupération du débat sur lequel la réaction a lieu
-        $debate = PDDebateQuery::create()->findPk($debateId);
-        if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
-        }
-
-        // Récupération de la réaction parente sur laquelle la réaction a lieu
-        $parent = null;
-        if ($parentId) {
-            $parent = PDReactionQuery::create()->findPk($parentId);
-            if (!$parent) {
-                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
-            }
-        }
-
-        // Création d'un nouvel objet et redirection vers l'édition
-        $reaction = new PDReaction();
-
-        $reaction->setPDDebateId($debate->getId());
-        
-        $reaction->setTitle('Une nouvelle réaction');
-        
-        $reaction->setPUserId($user->getId());
-
-        $reaction->setNotePos(0);
-        $reaction->setNoteNeg(0);
-        
-        $reaction->setOnline(true);
-        $reaction->setPublished(false);
-
-        // Gestion nested set
-        if ($parent) {
-            $reaction->insertAsLastChildOf($parent);
-        } else {
-            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
-            if ($nbReactions = $debate->countReactions() == 0) {
-                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
-            } else {
-                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
-            }
-        }
-        
-        $reaction->save();
+        // Service associé a la création d'une réaction
+        $reaction = $this->get('politizr.service.document')->reactionNew($debateId, $parentId);
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
     }

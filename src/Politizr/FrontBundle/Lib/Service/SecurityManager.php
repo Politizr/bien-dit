@@ -19,6 +19,8 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
 use Politizr\Model\POPaymentType;
+use Politizr\Model\POOrderState;
+use Politizr\Model\POPaymentState;
 
 use Politizr\Model\POSubscriptionQuery;
 use Politizr\Model\POrderQuery;
@@ -104,7 +106,296 @@ class SecurityManager
 
 
     /* ######################################################################################################## */
-    /*                                                  CONNEXION                                               */
+    /*                           SERVICES METIERS LIES A L'INSCRIPTION                                          */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Démarrage du process d'inscription
+     *
+     *  @param  PUser $user
+     */
+    public function inscriptionStart(PUser $user) {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** inscriptionStart');
+        
+        // MAJ droits
+        $user->addRole('ROLE_CITIZEN_INSCRIPTION');
+
+        $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
+        $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
+
+        // Encodage MDP
+        $encoderFactory = $this->sc->get('security.encoder_factory');
+
+        if (0 !== strlen($password = $user->getPlainPassword())) {
+            $encoder = $encoderFactory->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+            $user->eraseCredentials();
+        }
+
+        // Save user
+        $user->save();
+
+        // Connexion
+        $this->doPublicConnection($user);
+    }
+
+    /**
+     *  Finalisation du process d'inscription
+     *
+     *  @param PUser $user
+     */
+    public function inscriptionFinish(PUser $user) {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** inscriptionFinish');
+        
+        // MAJ objet
+        $user->setEnabled(true);
+        $user->setLastLogin(new \DateTime());
+
+        // MAJ droits
+        $user->addRole('ROLE_CITIZEN');
+        $user->addRole('ROLE_PROFILE_COMPLETED');
+        $user->removeRole('ROLE_CITIZEN_INSCRIPTION');
+
+        // Save user
+        $user->save();
+
+        // (re)Connexion (/ maj droits)
+        $this->doPublicConnection($user);
+    }
+
+
+    /**
+     *  Démarrage du process d'inscription débatteur
+     *
+     *  @param  PUser $user
+     */
+    public function inscriptionElectedStart(PUser $user) {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** inscriptionElectedStart');
+        
+        // MAJ droits
+        $user->addRole('ROLE_ELECTED_INSCRIPTION');
+
+        $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
+        $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
+
+        // Encodage MDP
+        $encoderFactory = $this->sc->get('security.encoder_factory');
+
+        if (0 !== strlen($password = $user->getPlainPassword())) {
+            $encoder = $encoderFactory->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+            $user->eraseCredentials();
+        }
+
+        // Canonicalization
+        $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
+        $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
+
+        // Save user
+        $user->save();
+
+        // Connexion
+        $this->doPublicConnection($user);
+    }
+
+
+    /**
+     *  Démarrage du process de migration vers un compte débatteur
+     *
+     *  @param  PUser $user
+     */
+    public function migrationElectedStart(PUser $user) {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** migrationElectedStart');
+
+        // MAJ droits
+        $user->addRole('ROLE_ELECTED_INSCRIPTION');
+        $user->save();
+
+        // Connexion
+        $this->doPublicConnection($user);
+    }
+
+
+    /**
+     *  Page d'inscription débatteur / Etape 3 / Paiement terminé
+     *
+     */
+    public function updateOrderPaymentFinished() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** updateOrderPaymentFinished');
+        
+        // Récupération de la commande en cours
+        $orderId = $this->sc->get('session')->get('p_order_id');
+
+        // Récupération commande
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            throw new \Exception('Order id '.$orderId.' not found.');
+        }
+
+        // MAJ statut commande en fonction du type de paiement
+        switch($order->getPOPaymentTypeId()) {
+            case POPaymentType::BANK_TRANSFER:
+            case POPaymentType::CHECK:
+                // MAJ statut / état
+                $order->setPOOrderStateId(POOrderState::WAITING);
+                $order->setPOPaymentStateId(POPaymentState::WAITING);
+                $order->save();
+
+                // Email
+                $dispatcher = $this->sc->get('event_dispatcher')->dispatch('order_email', new GenericEvent($order));
+
+                break;
+                        
+            case POPaymentType::CREDIT_CARD:
+            case POPaymentType::PAYPAL:
+                // MAJ statut / etat / maj stocks / envoi email => via listener retour ATOS / Paypal
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     *  Page d'inscription débatteur / Etape 3 / Annulation paiement
+     *
+     */
+    public function updateOrderPaymentCanceled() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** updateOrderPaymentCanceled');
+        
+        // Récupération de la commande en cours
+        $orderId = $this->sc->get('session')->get('p_order_id');
+
+        // Récupération commande
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            throw new \Exception('Order id '.$orderId.' not found.');
+        }
+
+        // Suppression commande annulée
+        if ($order) {
+            $order->delete();
+        }
+    }
+
+    /**
+     *  Finalisation du process d'inscription débatteur
+     *
+     */
+    public function inscriptionFinishElected(PUser $user) {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** inscriptionFinishElected');
+        
+        // Suppression rôle user / déconnexion
+        $user->addRole('ROLE_ELECTED');
+        $user->addRole('ROLE_PROFILE_COMPLETED');
+        $user->removeRole('ROLE_ELECTED_INSCRIPTION');
+        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
+        $user->save();
+
+        // Droits citoyen en attendant la validation
+        if (!$user->hasRole('ROLE_CITIZEN')) {
+            $user->addRole('ROLE_CITIZEN');
+
+            // Save user
+            $user->save();
+
+            // (re)Connexion (/ maj droits)
+            $this->doPublicConnection($user);
+        }
+    }
+
+
+    /* ######################################################################################################## */
+    /*                         SERVICES METIERS LIES A LA CONNEXION OAUTH                                       */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Check l'état d'un utilisateur suite à une connexion oAuth
+     *
+     */
+    public function oauthRegister() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** oauthRegister');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération données oAuth
+        $oAuthData = $this->sc->get('session')->getFlashBag()->get('oAuthData');
+        if (!$oAuthData || !is_array($oAuthData) || !isset($oAuthData['provider']) || !isset($oAuthData['providerId'])) {
+            return $this->sc->get('router')->generate('Homepage');
+        }
+        
+        // Récupération du user existant en base
+        $user = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
+        if ($user) {
+            // MAJ des infos relatives à la connexion
+            $user->setOAuthData($oAuthData);
+
+            // Save user
+            $user->save();
+
+            // Connexion
+            $this->doPublicConnection($user);
+
+            // Redirection
+            $redirectUrl = $this->computeRedirectUrl($user);
+
+            return $redirectUrl;
+        } else {
+            // Création d'un utilisateur
+            $user = new PUser();
+            $user->setOAuthData($oAuthData);
+
+            // MAJ objet
+            $user->setEnabled(true);
+            $user->setPUStatusId(PUStatus::ACTIVED);
+            $user->setPUTypeId(PUType::TYPE_CITOYEN);
+            $user->setLastLogin(new \DateTime());
+
+            // MAJ droits
+            $user->addRole('ROLE_CITIZEN_INSCRIPTION');
+
+            if ($email = $user->getEmail()) {
+                // Canonicalization
+                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
+                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
+
+                // username = email
+                $user->setUsername($user->getEmail());
+                $user->setUsernameCanonical($user->getEmailCanonical());
+            } elseif($nickname = $user->getNickname()) {
+                // username = nickname
+                $user->setUsername($user->getNickname());
+                $user->setUsernameCanonical($user->getNickname());
+            } else {
+                throw new \Exception('Aucune des propriétés suivantes n\'existent: email, nickname');
+            }
+
+            // Connexion
+            $this->doPublicConnection($user);
+
+            // Save user
+            $user->save();
+
+            // Redirection process d'inscription étape 2
+            return $this->sc->get('router')->generate('InscriptionContact');
+        }
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                      CONNEXION (FONCTIONS AJAX)                                          */
     /* ######################################################################################################## */
 
 
@@ -240,8 +531,9 @@ class SecurityManager
     }
 
 
+
     /* ######################################################################################################## */
-    /*                                     INSCRIPTION / AJAX                                               */
+    /*                                  INSCRIPTION (FONCTIONS AJAX)                                            */
     /* ######################################################################################################## */
 
 
@@ -332,543 +624,5 @@ class SecurityManager
     }
 
 
-
-    /* ######################################################################################################## */
-    /*                                     INSCRIPTION / NON AJAX                                               */
-    /* ######################################################################################################## */
-
-
-
-    /**
-     *  Validation inscription / Etape 1
-     *
-     */
-    public function inscriptionCheck() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionCheck');
-        
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $user = new PUser();
-        $userFormType = new PUserRegisterType();
-        $form = $this->sc->get('form.factory')->create(new PUserRegisterType(), $user);
-
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //        
-        $form->bind($request);
-        if ($form->isValid()) {
-            $user = $form->getData();
-            // $logger->info('pUser = '.print_r($user, true));
-
-            // MAJ droits
-            $user->addRole('ROLE_CITIZEN_INSCRIPTION');
-
-            $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
-            $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
-
-            // Encodage MDP
-            $encoderFactory = $this->sc->get('security.encoder_factory');
-
-            if (0 !== strlen($password = $user->getPlainPassword())) {
-                $encoder = $encoderFactory->getEncoder($user);
-                $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                $user->eraseCredentials();
-            }
-
-            // Save user
-            $user->save();
-
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('InscriptionContact'),
-                );
-        }
-
-        return array(
-            'pUserForm' => $form->createView(),
-            );
-    }
-
-    /**
-     *  Validation inscription / Etape 1
-     *
-     */
-    public function inscriptionContactCheck() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionContactCheck');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $form = $this->sc->get('form.factory')->create(new PUserContactType(), $user);
-        
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $user = $form->getData();
-            // $logger->info('pUser = '.print_r($user, true));
-
-            // Canonicalization
-            $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-            $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
-
-            // MAJ objet
-            $user->setEnabled(true);
-            $user->setLastLogin(new \DateTime());
-
-            // MAJ droits
-            $user->addRole('ROLE_CITIZEN');
-            $user->addRole('ROLE_PROFILE_COMPLETED');
-            $user->removeRole('ROLE_CITIZEN_INSCRIPTION');
-
-            // Save user
-            $user->save();
-
-            // (re)Connexion (/ maj droits)
-            $this->doPublicConnection($user);
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('HomepageC'),
-                );
-        }
-
-        return array(
-            'userForm' => $form->createView()
-            );
-    }
-
-
-    /**
-     *  Page d'inscription débatteur  / Etape 1 / Validation inscription
-     *
-     */
-    public function inscriptionElectedCheck() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedCheck');
-        
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $user = new PUser();
-        $form = $this->sc->get('form.factory')->create(new PUserElectedRegisterType(), $user);
-        
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $user = $form->getData();
-            // $logger->info('pUser = '.print_r($user, true));
-
-            // MAJ droits
-            $user->addRole('ROLE_ELECTED_INSCRIPTION');
-
-            $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
-            $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
-
-            // Encodage MDP
-            $encoderFactory = $this->sc->get('security.encoder_factory');
-
-            if (0 !== strlen($password = $user->getPlainPassword())) {
-                $encoder = $encoderFactory->getEncoder($user);
-                $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                $user->eraseCredentials();
-            }
-
-            // Canonicalization
-            $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-            $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
-
-            // Save user
-            $user->save();
-
-            // *************************************** //
-            //      Gestion des justificatifs
-            // *************************************** //
-            // gestion upload pièce ID
-            $file = $form['uploaded_supporting_document']->getData();
-            if ($file) {
-                $supportingDocument = $file->move($this->sc->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
-                $this->sc->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
-            }
-
-            // gestion mandats électifs
-            $electiveMandates = $form['elective_mandates']->getData();
-            $this->sc->get('session')->set('p_o_elective_mandates', $electiveMandates);
-
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('InscriptionElectedOrder'),
-                );
-        }
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return array(
-            'userForm' => $form->createView()
-            );
-    }
-
-
-    /**
-     *  Page d'inscription débatteur  / Etape 1 / Validation migration de compte
-     *
-     */
-    public function migrationElectedCheck() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** migrationElectedCheck');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $form = $this->sc->get('form.factory')->create(new PUserElectedMigrationType(), $user);
-        
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
-        $request = $this->sc->get('request');
-
-        if ($form->isValid()) {
-            $user = $form->getData();
-            // $logger->info('pUser = '.print_r($user, true));
-
-            // MAJ droits
-            $user->addRole('ROLE_ELECTED_INSCRIPTION');
-
-            // Save user
-            $user->save();
-
-            // *************************************** //
-            //      Gestion des justificatifs
-            // *************************************** //
-            // gestion upload pièce ID
-            $file = $form['uploaded_supporting_document']->getData();
-            if ($file) {
-                $supportingDocument = $file->move($this->sc->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
-                $this->sc->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
-            }
-
-            // gestion mandats électifs
-            $electiveMandates = $form['elective_mandates']->getData();
-            $this->sc->get('session')->set('p_o_elective_mandates', $electiveMandates);
-
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('InscriptionElectedOrder'),
-                );
-        }
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return array(
-            'userForm' => $form->createView()
-            );
-    }
-
-    /**
-     *  Page d'inscription débatteur / Etape 2 / Validation choix de la formule
-     *
-     */
-    public function inscriptionElectedOrderCheck() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedOrderCheck');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $form = $this->sc->get('form.factory')->create(new POrderSubscriptionType());
-        
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
-        $request = $this->sc->get('request');
-        $form->bind($request);
-        if ($form->isValid()) {
-            $datas = $form->getData();
-            $subscription = $datas['p_o_subscription'];
-
-            // Mise en session de la formule choisie
-            $this->sc->get('session')->set('p_o_subscription_id', $subscription->getId());
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('InscriptionElectedPayment'),
-                );
-        }
-
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
-        }
-
-        return array(
-            'subscriptionForm' => $form->createView(),
-            'layout' => $layout
-            );
-    }
-
-
-
-    /**
-     *  Page d'inscription débatteur / Etape 3 / Paiement terminé
-     *
-     */
-    public function inscriptionElectedPaymentFinished() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedPaymentFinished');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération de la commande en cours
-        $orderId = $this->sc->get('session')->get('p_order_id');
-
-        // Récupération commande
-        $order = POrderQuery::create()->findPk($orderId);
-        if (!$order) {
-            throw new \Exception('Order id '.$orderId.' not found.');
-        }
-
-        // MAJ statut commande en fonction du type de paiement
-        switch($order->getPOPaymentTypeId()) {
-            case POPaymentType::BANK_TRANSFER:
-            case POPaymentType::CHECK:
-                // MAJ statut / état
-                $order->setPOOrderStateId(POOrderState::WAITING);
-                $order->setPOPaymentStateId(POPaymentState::WAITING);
-                $order->save();
-
-                // Email
-                $dispatcher = $this->sc->get('event_dispatcher')->dispatch('order_email', new GenericEvent($order));
-
-                break;
-                        
-            case POPaymentType::CREDIT_CARD:
-            case POPaymentType::PAYPAL:
-                // MAJ statut / etat / maj stocks / envoi email => via listener retour ATOS / Paypal
-                break;
-            
-            default:
-                break;
-        }
-
-        return $this->sc->get('router')->generate('InscriptionElectedThanking');
-    }
-
-
-    /**
-     *  Page d'inscription débatteur / Etape 3 / Annulation paiement
-     *
-     */
-    public function inscriptionElectedPaymentCanceled() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedPaymentCanceled');
-        
-        // Récupération de la commande en cours
-        $orderId = $this->sc->get('session')->get('p_order_id');
-
-        // Récupération commande
-        $order = POrderQuery::create()->findPk($orderId);
-        if (!$order) {
-            throw new \Exception('Order id '.$orderId.' not found.');
-        }
-
-        // Suppression commande annulée
-        if ($order) {
-            $order->delete();
-        }
-        $session->remove('p_order_id');
-
-        return $this->sc->get('router')->generate('InscriptionElectedPayment');
-    }
-
-    /**
-     *  Page d'inscription débatteur / Etape 4 / Remerciement
-     *
-     */
-    public function inscriptionElectedThanking() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedThanking');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération de la commande en cours
-        $orderId = $this->sc->get('session')->get('p_order_id');
-
-        // Récupération commande
-        $order = POrderQuery::create()->findPk($orderId);
-        if (!$order) {
-            // throw new \Exception('Order id '.$orderId.' not found.');
-            $this->sc->get('session')->getFlashBag()->add('error', 'Session expirée.');
-
-            // redirection
-            return array(
-                'redirectUrl' => $this->sc->get('router')->generate('Homepage'),
-                );
-        }
-
-        // Suppression rôle user / déconnexion
-        $user->addRole('ROLE_ELECTED');
-        $user->addRole('ROLE_PROFILE_COMPLETED');
-        $user->removeRole('ROLE_ELECTED_INSCRIPTION');
-        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
-        $user->save();
-
-        // Suppression des valeurs en session
-        $this->sc->get('session')->remove('p_o_subscription_id');
-        $this->sc->get('session')->remove('p_order_id');
-
-        // Droits citoyen en attendant la validation
-        if (!$user->hasRole('ROLE_CITIZEN')) {
-            $user->addRole('ROLE_CITIZEN');
-
-            // Save user
-            $user->save();
-
-            // (re)Connexion (/ maj droits)
-            $this->doPublicConnection($user);
-        }
-
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
-        }
-
-        return array(
-            'layout' => $layout,
-            'order' => $order,
-            );
-    }
-
-
-    /* ######################################################################################################## */
-    /*                                 CONNEXION OAUTH / NON AJAX                                               */
-    /* ######################################################################################################## */
-
-
-    /**
-     *  Check l'état d'un utilisateur suite à une connexion oAuth
-     *
-     */
-    public function oauthRegister() {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** oauthRegister');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération données oAuth
-        $oAuthData = $this->sc->get('session')->getFlashBag()->get('oAuthData');
-        $logger->info('$oAuthData = '.print_r($oAuthData, true));
-
-        if (!$oAuthData || !is_array($oAuthData) || !isset($oAuthData['provider']) || !isset($oAuthData['providerId'])) {
-            return $this->sc->get('router')->generate('Homepage');
-        }
-        
-        // Récupération du user existant en base
-        $user = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
-
-        if ($user) {
-            // Utilisateur existant
-            $logger->info('Utilisateur existant');
-
-            // MAJ des infos relatives à la connexion
-            $user->setOAuthData($oAuthData);
-
-            // Save user
-            $user->save();
-
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // Redirection
-            $redirectUrl = $this->computeRedirectUrl($user);
-
-            return $redirectUrl;
-        } else {
-            // Création d'un utilisateur
-            $user = new PUser();
-            $user->setOAuthData($oAuthData);
-
-            // MAJ objet
-            $user->setEnabled(true);
-            $user->setPUStatusId(PUStatus::ACTIVED);
-            $user->setPUTypeId(PUType::TYPE_CITOYEN);
-            $user->setLastLogin(new \DateTime());
-
-            // MAJ droits
-            $user->addRole('ROLE_CITIZEN_INSCRIPTION');
-
-            if ($email = $user->getEmail()) {
-                // Canonicalization
-                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
-
-                // username = email
-                $user->setUsername($user->getEmail());
-                $user->setUsernameCanonical($user->getEmailCanonical());
-            } elseif($nickname = $user->getNickname()) {
-                // username = nickname
-                $user->setUsername($user->getNickname());
-                $user->setUsernameCanonical($user->getNickname());
-            } else {
-                throw new \Exception('Aucune des propriétés suivantes n\'existent: email, nickname');
-            }
-
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // Save user
-            $user->save();
-
-            // Redirection process d'inscription étape 2
-            return $this->sc->get('router')->generate('InscriptionContact');
-        }
-    }
 
 }

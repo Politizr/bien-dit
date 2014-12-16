@@ -19,15 +19,18 @@
 		</div>
 		<hr>
 		<p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
+		{% if form.vars.errors|length %}
+			<div class="box-error">
+		    	{{ form_errors(form) }}
+		    </div>
+		{% endif %}
 		<div id="box-inscription-register">
-			{{ form_start(userForm, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-			    {{ form_errors(userForm) }}
+			{{ form_start(form, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_row(form.username) }}
+			    {{ form_row(form.plainPassword) }}
 
-			    {{ form_row(userForm.username) }}
-			    {{ form_row(userForm.plainPassword) }}
-
-			    {{ form_row(userForm.actions) }}
-			{{ form_end(userForm) }}
+			    {{ form_row(form.actions) }}
+			{{ form_end(form) }}
 		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
 		</div>
 		<hr>

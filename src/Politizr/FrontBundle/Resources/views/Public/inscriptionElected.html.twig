@@ -14,34 +14,34 @@
 		<p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les débatteurs sur Politizr.</p>
 		<hr>
 		<div id="box-inscription-elected-register">
-			{{ form_start(userForm, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
-			    {{ form_errors(userForm) }}
+			{{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
+			    {{ form_errors(form) }}
 
 				<h3>Civilité</h3>
-			    {{ form_row(userForm.gender) }}
-			    {{ form_row(userForm.name) }}
-			    {{ form_row(userForm.firstname) }}
-			    {{ form_row(userForm.birthday) }}
+			    {{ form_row(form.gender) }}
+			    {{ form_row(form.name) }}
+			    {{ form_row(form.firstname) }}
+			    {{ form_row(form.birthday) }}
 
 			    <hr>
 
-			    {{ form_row(userForm.email) }}
-			    {{ form_row(userForm.newsletter) }}
+			    {{ form_row(form.email) }}
+			    {{ form_row(form.newsletter) }}
 
 				<h3>Mandats et justificatif</h3>
-			    {{ form_row(userForm.uploaded_supporting_document) }}
+			    {{ form_row(form.uploaded_supporting_document) }}
 
 			    <p class="bg-info">Attention, votre pièce justificative doit correspondre aux nom / prénom / date de naissance renseignés.</p>
 
 
-			    {{ form_row(userForm.elective_mandates) }}
+			    {{ form_row(form.elective_mandates) }}
 
 				<h3>Identifiants Politizr</h3>
-			    {{ form_row(userForm.username) }}
-			    {{ form_row(userForm.plainPassword) }}
+			    {{ form_row(form.username) }}
+			    {{ form_row(form.plainPassword) }}
 
-			    {{ form_row(userForm.actions) }}
-			{{ form_end(userForm) }}
+			    {{ form_row(form.actions) }}
+			{{ form_end(form) }}
 		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
 		</div>
 		<hr>

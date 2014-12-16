@@ -6,28 +6,26 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% if userForm.vars.errors|length %}
+		{% if form.vars.errors|length %}
 			<div class="box-error">
-		    	{{ form_errors(userForm) }}
+		    	{{ form_errors(form) }}
 		    </div>
 		{% endif %}
 
 		<div id="box-inscription-contact">
-			{{ form_start(userForm, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-			    {{ form_errors(userForm) }}
-
-			    {{ form_row(userForm.gender) }}
-			    {{ form_row(userForm.name) }}
-			    {{ form_row(userForm.firstname) }}
-			    {{ form_row(userForm.birthday) }}
+			{{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+			    {{ form_row(form.gender) }}
+			    {{ form_row(form.name) }}
+			    {{ form_row(form.firstname) }}
+			    {{ form_row(form.birthday) }}
 
 			    <hr>
 
-			    {{ form_row(userForm.email) }}
-			    {{ form_row(userForm.newsletter) }}
+			    {{ form_row(form.email) }}
+			    {{ form_row(form.newsletter) }}
 
-			    {{ form_row(userForm.actions) }}
-			{{ form_end(userForm) }}
+			    {{ form_row(form.actions) }}
+			{{ form_end(form) }}
 		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
 		</div>
 

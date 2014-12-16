@@ -162,22 +162,12 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-
         // Objet & formulaire
         $user = new PUser();
-        $userFormType = new PUserRegisterType();
-        $userForm = $this->createForm($userFormType, $user);
+        $form = $this->createForm(new PUserRegisterType(), $user);
         
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', 
-                array(
-                    'userForm' => $userForm->createView()
+        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
+                    'form' => $form->createView()
                     ));
     }
 
@@ -189,14 +179,22 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionCheckAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->inscriptionCheck();
+        $user = new PUser();
+        $form = $this->createForm(new PUserRegisterType(), $user);
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+
+            // Service associé au démarrage de l'inscription
+            $this->get('politizr.service.security')->inscriptionStart($user);
+
+            return $this->redirect($this->generateUrl('InscriptionContact'));
         }
-        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', $viewAttr);
+
+        return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
+                'form' => $form->createView(),
+                ));
     }
 
     /**
@@ -207,19 +205,11 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionContactAction');
 
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
         $user = $this->getUser();
-        $userFormType = new PUserContactType();
-        $userForm = $this->createForm($userFormType, $user);
+        $form = $this->createForm(new PUserContactType(), $user);
         
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', 
-                array(
-                    'userForm' => $userForm->createView()
+        return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
+                    'form' => $form->createView()
                     ));
     }
 
@@ -230,14 +220,27 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionContactCheckAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->inscriptionContactCheck();
+        $user = $this->getUser();
+        $form = $this->createForm(new PUserContactType(), $user);
+        
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+            // Canonicalization email
+            $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
+            $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
+            $user->save();
+
+            // Service associé à la finalisation de l'inscription
+            $this->get('politizr.service.security')->inscriptionFinish($user);
+
+            return $this->redirect($this->generateUrl('HomepageC'));
         }
-        return $this->render('PolitizrFrontBundle:Public:inscriptionContact.html.twig', $viewAttr);
+
+        return $this->render('PolitizrFrontBundle:Public:inscriptionContact.html.twig', array(
+                    'form' => $form->createView()
+                    ));
     }
 
 
@@ -253,20 +256,11 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedAction');
 
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-
         $user = new PUser();
-        $userFormType = new PUserElectedRegisterType();
-        $userForm = $this->createForm($userFormType, $user);
+        $form = $this->createForm(new PUserElectedRegisterType(), $user);
         
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', 
-                array(
-                    'userForm' => $userForm->createView()
+        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
+                    'form' => $form->createView()
                     ));
     }
 
@@ -277,56 +271,60 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedCheckAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->inscriptionElectedCheck();
+        $user = new PUser();
+        $form = $this->createForm(new PUserElectedRegisterType(), $user);
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+
+            // Service associé au démarrage de l'inscription débatteur
+            $this->get('politizr.service.security')->inscriptionElectedStart($user);
+
+            // gestion upload pièce ID
+            $file = $form['uploaded_supporting_document']->getData();
+            if ($file) {
+                $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
+                $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
+            }
+
+            // gestion mandats électifs
+            $electiveMandates = $form['elective_mandates']->getData();
+            $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
+
+            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
-        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', $viewAttr);
+        
+        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
+                    'form' => $form->createView()
+                    ));
     }
 
 
     /**
-     *     Page d'inscription débatteur  / Etape 1 / Migration de compte
+     *  Page d'inscription débatteur  / Etape 1 / Migration de compte
      */
     public function migrationElectedAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** migrationElectedAction');
 
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $user = $this->getUser();
-
         // Mise en session d'une variable spéciale
         $this->get('session')->set('migration', true);
 
-        // Test si le profil a déjà été validé => étape 2 directement
+        // profil déjà validé => étape 2 directement
+        $user = $this->getUser();
         if ($user->getValidated()) {
-            // MAJ droits
-            $user->addRole('ROLE_ELECTED_INSCRIPTION');
+            $this->get('politizr.service.security')->migrationElectedStart($user);
 
-            // Connexion
-            $this->doPublicConnection($user);
-
-            // redirection
-            $url = $this->container->get('router')->generate('InscriptionElectedOrder');
-            return $this->redirect($url);
+            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
 
         // Inscription depuis un compte citoyen
-        $userFormType = new PUserElectedMigrationType();
-        $userForm = $this->createForm($userFormType, $user);
+        $form = $this->createForm(new PUserElectedMigrationType(), $user);
         
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', 
-                array(
-                    'userForm' => $userForm->createView()
+        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
+                    'form' => $form->createView()
                     ));
     }
 
@@ -338,35 +336,47 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** migrationElectedCheckAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->migrationElectedCheck();
+        $user = $this->getUser();
+        $form = $this->createForm(new PUserElectedMigrationType(), $user);
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+
+            // Service associé au démarrage de la migration vers un compte débatteur
+            $this->get('politizr.service.security')->migrationElectedStart($user);
+
+            // gestion upload pièce ID
+            $file = $form['uploaded_supporting_document']->getData();
+            if ($file) {
+                $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
+                $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
+            }
+
+            // gestion mandats électifs
+            $electiveMandates = $form['elective_mandates']->getData();
+            $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
+
+            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
-        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', $viewAttr);
+
+        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
+                    'form' => $form->createView()
+                    ));
     }
 
 
     /**
      *     Page d'inscription débatteur / Etape 2 / Choix de la formule
      */
-    public function inscriptionElectedOrderAction()
+    public function inscriptionElectedOrderAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedOrderAction');
 
         $user = $this->getUser();
+        $form = $this->createForm(new POrderSubscriptionType());
 
-        // *********************************** //
-        //      Formulaire
-        // *********************************** //
-        $subscriptionForm = $this->createForm(new POrderSubscriptionType());
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
@@ -374,7 +384,7 @@ class SecurityController extends Controller {
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
-                    'subscriptionForm' => $subscriptionForm->createView(),
+                    'form' => $form->createView(),
                     'layout' => $layout,
             ));
     }
@@ -387,14 +397,30 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedOrderCheckAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->inscriptionElectedOrderCheck();
+        $user = $this->getUser();
+        $form = $this->createForm(new POrderSubscriptionType());
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $datas = $form->getData();
+            $subscription = $datas['p_o_subscription'];
+
+            // Mise en session de la formule choisie
+            $this->get('session')->set('p_o_subscription_id', $subscription->getId());
+
+            return $this->redirect($this->generateUrl('InscriptionElectedPayment'));
         }
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElected.html.twig', $viewAttr);
+
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($user->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
+                    'form' => $form->createView(),
+                    'layout' => $layout,
+            ));
     }
 
 
@@ -411,10 +437,6 @@ class SecurityController extends Controller {
         // Listes des moyens de paiement / gestion hors form pour chargement dynamique des formulaires paypal/banque & pavés d'informations spécifiques
         $payments = POPaymentTypeQuery::create()->filterByOnline(true)->orderByRank()->find();
         
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
@@ -434,11 +456,10 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
-        // Appel du service
-        $redirectUrl = $this->get('politizr.service.security')->inscriptionElectedPaymentFinished();
+        // Mise à jour de la commande
+        $this->get('politizr.service.security')->updateOrderPaymentFinished();
 
-        // Affichage de la vue ou redirection
-        return $this->redirect($redirectUrl);
+        return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
     }
 
     /**
@@ -448,11 +469,14 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentCanceledAction');
 
-        // Appel du service
-        $redirectUrl = $this->get('politizr.service.security')->inscriptionElectedPaymentCanceled();
+        // Mise à jour de la commande
+        $this->get('politizr.service.security')->updateOrderPaymentCanceled();
+
+        // Suppression des valeurs en session
+        $this->get('session')->remove('p_order_id');
 
         // Affichage de la vue ou redirection
-        return $this->redirect($redirectUrl);
+        return $this->redirect($this->generateUrl('InscriptionElectedPayment'));
     }
 
 
@@ -463,14 +487,33 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedThankingAction');
 
-        // Appel du service
-        $viewAttr = $this->get('politizr.service.security')->inscriptionElectedThanking();
+        $user = $this->getUser();
 
-        // Affichage de la vue ou redirection
-        if (array_key_exists('redirectUrl', $viewAttr)) {
-            return $this->redirect($viewAttr['redirectUrl']);
+        // Récupération de la commande en cours
+        $orderId = $this->get('session')->get('p_order_id');
+        $order = POrderQuery::create()->findPk($orderId);
+        if (!$order) {
+            $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
+            return $this->redirect($this->generateUrl('Homepage'));
         }
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', $viewAttr);
+
+        // Suppression des valeurs en session
+        $this->get('session')->remove('p_o_subscription_id');
+        $this->get('session')->remove('p_order_id');
+        
+        // Finalisation du process d'inscription débatteur
+        $this->get('politizr.service.security')->inscriptionFinishElected($user);
+
+        // Cas migration formule > MAJ du layout
+        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        if ($user->hasRole('ROLE_CITIZEN')) {
+            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+        }
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', array(
+            'layout' => $layout,
+            'order' => $order,
+            ));
     }
 
 
@@ -502,7 +545,7 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** oauthRegisterAction');
 
-        // Appel du service
+        // Appel du service connexion oauth ou création user + connexion oauth suivant les cas
         $redirectUrl = $this->get('politizr.service.security')->oauthRegister();
 
         // Redirection

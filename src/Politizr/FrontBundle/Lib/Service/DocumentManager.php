@@ -12,6 +12,7 @@ use Politizr\FrontBundle\Lib\SimpleImage;
 
 use Politizr\Model\PDocument;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PDComment;
 
@@ -41,8 +42,103 @@ class DocumentManager
         $this->sc = $serviceContainer;
     }
 
+
     /* ######################################################################################################## */
-    /*                                SUIVI, NOTES, COMMENTAIRES                                                */
+    /*                     SERVICES METIERS LIES AU CRUD DOCUMENT (DEBAT / REACTION)                            */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Création d'un nouveau débat
+     *
+     *  @return PDDebate  Objet débat créé
+     */
+    public function debateNew() {
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Création d'un nouvel objet et redirection vers l'édition
+        $debate = new PDDebate();
+        
+        $debate->setTitle('Un nouveau débat');
+        
+        $debate->setPUserId($user->getId());
+
+        $debate->setNotePos(0);
+        $debate->setNoteNeg(0);
+        
+        $debate->setOnline(true);
+        $debate->setPublished(false);
+        
+        $debate->save();
+
+        return $debate;
+    }
+
+
+    /**
+     *  Création d'une nouvelle réaction
+     *
+     *  @param  integer     $debateId       Débat associé  
+     *  @param  integer     $parentId       Réaction parente associée  
+     *
+     *  @return PDReaction  Objet réaction créé
+     */
+    public function reactionNew($debateId, $parentId) {
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération du débat sur lequel la réaction a lieu
+        $debate = PDDebateQuery::create()->findPk($debateId);
+        if (!$debate) {
+            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
+        }
+
+        // Récupération de la réaction parente sur laquelle la réaction a lieu
+        $parent = null;
+        if ($parentId) {
+            $parent = PDReactionQuery::create()->findPk($parentId);
+            if (!$parent) {
+                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
+            }
+        }
+
+        // Création d'un nouvel objet et redirection vers l'édition
+        $reaction = new PDReaction();
+
+        $reaction->setPDDebateId($debate->getId());
+        
+        $reaction->setTitle('Une nouvelle réaction');
+        
+        $reaction->setPUserId($user->getId());
+
+        $reaction->setNotePos(0);
+        $reaction->setNoteNeg(0);
+        
+        $reaction->setOnline(true);
+        $reaction->setPublished(false);
+
+        // Gestion nested set
+        if ($parent) {
+            $reaction->insertAsLastChildOf($parent);
+        } else {
+            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
+            if ($nbReactions = $debate->countReactions() == 0) {
+                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
+            } else {
+                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
+            }
+        }
+        
+        $reaction->save();
+
+        return $reaction;
+    }
+
+
+
+    /* ######################################################################################################## */
+    /*                            SUIVI, NOTES, COMMENTAIRES (FONCTIONS AJAX)                                   */
     /* ######################################################################################################## */
 
 
@@ -239,7 +335,7 @@ class DocumentManager
     }
 
     /* ######################################################################################################## */
-    /*                                EDITION DEBAT                                                */
+    /*                                EDITION DEBAT  (FONCTIONS AJAX)                                           */
     /* ######################################################################################################## */
 
 
@@ -496,7 +592,7 @@ class DocumentManager
     }
 
     /* ######################################################################################################## */
-    /*                                          EDITION REACTION                                                */
+    /*                                          EDITION REACTION (FONCTIONS AJAX)                               */
     /* ######################################################################################################## */
 
     /**
@@ -633,7 +729,7 @@ class DocumentManager
     }
 
     /* ######################################################################################################## */
-    /*                                          EDITION COMMENTAIRE                                             */
+    /*                                          EDITION COMMENTAIRE (FONCTIONS AJAX)                            */
     /* ######################################################################################################## */
 
 
