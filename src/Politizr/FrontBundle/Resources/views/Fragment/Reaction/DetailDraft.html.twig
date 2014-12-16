@@ -1,6 +1,6 @@
 {% extends 'PolitizrFrontBundle:Fragment\\Reaction:Detail.html.twig' %}
 
-{% block header %}
+{% block detailHeader %}
 	{# Infos générales #}
 	<div class="row">
 		<div class="col-sm-8">
@@ -20,25 +20,23 @@
 			<a action="reaction-publish" class="btn btn-danger" object-id="{{ reaction.id }}" url="{{ path('MyReactionsE') }}">Publier</a>
 		</div>
 	</div>
-{% endblock header %}
+{% endblock detailHeader %}
 
-{% block author %}
-{% endblock author %}
+{% block detailAuthor %}
+{% endblock detailAuthor %}
 
-{% block linkDetailFeed %}
-{% endblock linkDetailFeed %}
-
-{% block linkReactDebateFeed %}
-{% endblock linkReactDebateFeed %}
+{% block detailLink %}
+{% endblock detailLink %}
 
 {# Description & plus d'infos #}
-{% block paragraphComment %}
+{% block detailParagraphComment %}
 	{# Désactivation des commentaires #}
 	<span class="badge alert-warning">{{ reaction.countComments(true, loop.index) }}</span>
-{% endblock paragraphComment %}
+{% endblock detailParagraphComment %}
 
-{% block actionReact %}
-{% endblock actionReact %}
+{% block detailAction %}
+{% endblock detailAction %}
 
-{% block globalComments %}		
-{% endblock globalComments %}
+
+{% block detailGlobalComments %}		
+{% endblock detailGlobalComments %}

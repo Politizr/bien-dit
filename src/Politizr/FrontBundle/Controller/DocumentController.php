@@ -125,9 +125,6 @@ class DocumentController extends Controller {
         $logger->info('*** debateDraftAction');
         $logger->info('$id = '.print_r($id, true));
 
-        // Récupération user courant
-        $pUser = $this->getUser();
-
         // *********************************** //
         //      Récupération objet
         // *********************************** //
@@ -146,7 +143,6 @@ class DocumentController extends Controller {
         $description = str_replace('</p>', '', $debate->getDescription());
         $paragraphs = explode('<p>', $description);
         array_shift($paragraphs);
-
 
         // *********************************** //
         //      Affichage de la vue

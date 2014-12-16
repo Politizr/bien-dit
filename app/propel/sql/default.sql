@@ -1072,12 +1072,14 @@ CREATE TABLE `p_user_archive`
     `validated` TINYINT(1) DEFAULT 0,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_user_archive_I_1` (`p_u_type_id`),
     INDEX `p_user_archive_I_2` (`p_u_status_id`),
     INDEX `p_user_archive_I_3` (`username_canonical`),
-    INDEX `p_user_archive_I_4` (`email_canonical`)
+    INDEX `p_user_archive_I_4` (`email_canonical`),
+    INDEX `p_user_archive_I_5` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

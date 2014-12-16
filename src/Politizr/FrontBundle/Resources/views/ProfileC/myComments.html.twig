@@ -4,7 +4,7 @@
 	<div id="main" class="container">
 		<h3>Mes commentaires</h3>
         {% for comment in comments %}
-			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment, 'docLink': true } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment, 'docLink': true } %}
 			<hr>
 		{% else %}
 			<div class="no-results">

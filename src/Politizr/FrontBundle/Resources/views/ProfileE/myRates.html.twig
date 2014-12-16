@@ -30,7 +30,7 @@
 			<a class="btn btn-primary" href="{{ path('DebateDraftNew') }}">Nouveau</a>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
 		{% endfor %}
 		<h4>Mes réactions</h4>
@@ -59,12 +59,12 @@
 			</div>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de réaction pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de réaction pour le moment</a>
 			</div>
 		{% endfor %}
 		<h3>Mes débats publiés</h3>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 			<hr>
 		{% else %}
 			<div class="no-results">
@@ -73,7 +73,7 @@
 		{% endfor %}
 		<h3>Mes réactions publiés</h3>
         {% for reaction in reactions %}
-			{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': reaction } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowUser.html.twig' with { 'reaction': reaction } %}
 			<hr>
 		{% else %}
 			<div class="no-results">
@@ -82,7 +82,7 @@
 		{% endfor %}
 		<h3>Mes commentaires</h3>
         {% for comment in comments %}
-			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
 			<hr>
 		{% else %}
 			<div class="no-results">

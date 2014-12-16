@@ -37,6 +37,10 @@ services:
         class:                              Politizr\FrontBundle\Lib\Service\TagManager
         arguments:                          [ @service_container ]
 
+    politizr.service.timeline:
+        class:                              Politizr\FrontBundle\Lib\Service\TimelineManager
+        arguments:                          [ @service_container ]
+
 
     # LISTENERS
     politzr.listener.email:

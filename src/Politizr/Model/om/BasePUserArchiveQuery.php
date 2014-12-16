@@ -55,6 +55,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUserArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PUserArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PUserArchiveQuery groupById() Group by the id column
@@ -97,6 +98,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByValidated() Group by the validated column
  * @method PUserArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PUserArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUserArchiveQuery groupBySlug() Group by the slug column
  * @method PUserArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PUserArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -145,6 +147,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
  * @method PUserArchive findOneByCreatedAt(string $created_at) Return the first PUserArchive filtered by the created_at column
  * @method PUserArchive findOneByUpdatedAt(string $updated_at) Return the first PUserArchive filtered by the updated_at column
+ * @method PUserArchive findOneBySlug(string $slug) Return the first PUserArchive filtered by the slug column
  * @method PUserArchive findOneByArchivedAt(string $archived_at) Return the first PUserArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PUserArchive objects filtered by the id column
@@ -187,6 +190,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
  * @method array findByCreatedAt(string $created_at) Return PUserArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUserArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PUserArchive objects filtered by the slug column
  * @method array findByArchivedAt(string $archived_at) Return PUserArchive objects filtered by the archived_at column
  */
 abstract class BasePUserArchiveQuery extends ModelCriteria
@@ -293,7 +297,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1740,6 +1744,35 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::SLUG, $slug, $comparison);
     }
 
     /**

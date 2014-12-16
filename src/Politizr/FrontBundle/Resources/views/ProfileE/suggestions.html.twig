@@ -14,7 +14,7 @@
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
+				<a class="btn btn-primary" href="{{ path('MyTagsE') }}">Aucun débat ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
 
@@ -29,7 +29,7 @@
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun débat ne correspond à vos tags suivis</a>
+				<a class="btn btn-primary" href="{{ path('MyTagsE') }}">Aucun débat ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
 		
@@ -45,7 +45,7 @@
 			<hr>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyTagsC') }}">Aucun élu ne correspond à vos tags suivis</a>
+				<a class="btn btn-primary" href="{{ path('MyTagsE') }}">Aucun élu ne correspond à vos tags suivis</a>
 			</div>
 		{% endfor %}
 	</div>

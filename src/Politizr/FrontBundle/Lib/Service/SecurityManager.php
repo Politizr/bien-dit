@@ -21,6 +21,7 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\POPaymentType;
 use Politizr\Model\POOrderState;
 use Politizr\Model\POPaymentState;
+use Politizr\Model\PUType;
 
 use Politizr\Model\POSubscriptionQuery;
 use Politizr\Model\POrderQuery;
@@ -85,6 +86,7 @@ class SecurityManager
      * @return string   Redirect URL
      */
     private function computeRedirectUrl($user) {
+        $redirectUrl = null;
         if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
             $user->setLastLogin(new \DateTime());
             $user->save();
@@ -100,7 +102,11 @@ class SecurityManager
             $redirectUrl = $this->sc->get('router')->generate('InscriptionElectedStep2');
         }
 
-        return $redirectUrl;
+        if ($redirectUrl) {
+            return $redirectUrl;
+        } else {
+            throw new InconsistentDataException('Aucun rôle / status / état n\'est cohérent pour l\'utilisateur');
+        }
     }
     
 
@@ -151,7 +157,9 @@ class SecurityManager
         $logger->info('*** inscriptionFinish');
         
         // MAJ objet
-        $user->setEnabled(true);
+        $user->setOnline(true);
+        $user->setPUStatusId(PUStatus::ACTIVED);
+        $user->setPUTypeId(PUType::TYPE_CITOYEN);
         $user->setLastLogin(new \DateTime());
 
         // MAJ droits
@@ -295,10 +303,15 @@ class SecurityManager
         $logger->info('*** inscriptionFinishElected');
         
         // Suppression rôle user / déconnexion
+        $user->setOnline(true);
+        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
+        $user->setPUTypeId(PUType::TYPE_ELECTED);
+        $user->setLastLogin(new \DateTime());
+
         $user->addRole('ROLE_ELECTED');
         $user->addRole('ROLE_PROFILE_COMPLETED');
         $user->removeRole('ROLE_ELECTED_INSCRIPTION');
-        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
+
         $user->save();
 
         // Droits citoyen en attendant la validation
@@ -358,7 +371,7 @@ class SecurityManager
             $user->setOAuthData($oAuthData);
 
             // MAJ objet
-            $user->setEnabled(true);
+            $user->setOnline(true);
             $user->setPUStatusId(PUStatus::ACTIVED);
             $user->setPUTypeId(PUType::TYPE_CITOYEN);
             $user->setLastLogin(new \DateTime());

@@ -53,7 +53,7 @@
 				</div>
 			    <hr>
 				{% set urlBack = path('MyDraftsC') %}
-				{% if is_granted('ROLE_ELECTED') %}
+				{% if isGrantedE() %}
 					{% set urlBack = path('MyDraftsE') %}
 				{% endif %}
 				<div class="col-lg-offset-2 col-lg-10">

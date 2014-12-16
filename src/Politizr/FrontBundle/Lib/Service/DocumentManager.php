@@ -20,6 +20,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PDCommentQuery;
 
 use Politizr\FrontBundle\Form\Type\PDCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
@@ -304,7 +305,7 @@ class DocumentManager
 
         // Form saisie commentaire
         $comment = new PDComment();
-        if ($user) {
+        if ($this->sc->get('security.context')->isGranted('ROLE_PROFILE_COMPLETED')){
             $comment->setPUserId($user->getId());
             $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);

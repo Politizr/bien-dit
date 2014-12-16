@@ -291,6 +291,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * The value for the slug field.
+     * @var        string
+     */
+    protected $slug;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -1037,6 +1043,17 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         return $dt->format($format);
 
+    }
+
+    /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+
+        return $this->slug;
     }
 
     /**
@@ -2028,6 +2045,27 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
+     * Set the value of [slug] column.
+     *
+     * @param  string $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -2143,7 +2181,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $this->validated = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
             $this->created_at = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
             $this->updated_at = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
-            $this->archived_at = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
+            $this->slug = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
+            $this->archived_at = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2153,7 +2192,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 41; // 41 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 42; // 42 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUserArchive object", $e);
@@ -2481,6 +2520,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
+        if ($this->isColumnModified(PUserArchivePeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
         if ($this->isColumnModified(PUserArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -2614,6 +2656,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -2866,6 +2911,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 return $this->getUpdatedAt();
                 break;
             case 40:
+                return $this->getSlug();
+                break;
+            case 41:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -2936,7 +2984,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $keys[37] => $this->getValidated(),
             $keys[38] => $this->getCreatedAt(),
             $keys[39] => $this->getUpdatedAt(),
-            $keys[40] => $this->getArchivedAt(),
+            $keys[40] => $this->getSlug(),
+            $keys[41] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3105,6 +3154,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->setUpdatedAt($value);
                 break;
             case 40:
+                $this->setSlug($value);
+                break;
+            case 41:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -3171,7 +3223,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[37], $arr)) $this->setValidated($arr[$keys[37]]);
         if (array_key_exists($keys[38], $arr)) $this->setCreatedAt($arr[$keys[38]]);
         if (array_key_exists($keys[39], $arr)) $this->setUpdatedAt($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setArchivedAt($arr[$keys[40]]);
+        if (array_key_exists($keys[40], $arr)) $this->setSlug($arr[$keys[40]]);
+        if (array_key_exists($keys[41], $arr)) $this->setArchivedAt($arr[$keys[41]]);
     }
 
     /**
@@ -3223,6 +3276,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::VALIDATED)) $criteria->add(PUserArchivePeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(PUserArchivePeer::CREATED_AT)) $criteria->add(PUserArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUserArchivePeer::UPDATED_AT)) $criteria->add(PUserArchivePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUserArchivePeer::SLUG)) $criteria->add(PUserArchivePeer::SLUG, $this->slug);
         if ($this->isColumnModified(PUserArchivePeer::ARCHIVED_AT)) $criteria->add(PUserArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -3326,6 +3380,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setValidated($this->getValidated());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -3419,6 +3474,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->validated = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->slug = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

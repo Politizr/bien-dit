@@ -1,7 +1,7 @@
 {% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
-{% if (is_granted('ROLE_ELECTED')) %}
+{% if (isGrantedE()) %}
 	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
-{% elseif (is_granted('ROLE_CITIZEN')) %}
+{% elseif (isGrantedC()) %}
 	{% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
 {% endif %}
 {% extends layout %}

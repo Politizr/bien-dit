@@ -9,7 +9,7 @@ LAYOUT REACTION
 {# Bloc détail d'une réaction #}
 {% block detail %}
 	<div class="reaction-detail">
-		{% block header %}
+		{% block detailHeader %}
 			{# Infos générales #}
 			<div class="row">
 				<div class="col-sm-8">
@@ -22,46 +22,33 @@ LAYOUT REACTION
 					<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 				</div>
 			</div>
-		{% endblock header %}
+		{% endblock detailHeader %}
 
 		{# Réaction parente #}
 		<div class="row">
 			<div class="col-sm-12">
 				{# TODO / TwigExtension Parent Réaction #}
-				{#
-				<div>
-					<hr>
-					DEBUG NESTED SET - 
-					isRoot {{ reaction.isRoot }} - 
-					isLeaf {{ reaction.isLeaf }} - 
-					getLevel {{ reaction.getLevel }} - 
-					hasChildren {{ reaction.hasChildren }} - 
-					countChildren {{ reaction.countChildren }} - 
-					hasPrevSibling {{ reaction.hasPrevSibling }} - 
-					hasNextSibling {{ reaction.hasNextSibling }} - 
-				</div>
-				#}
 				{% if reaction.level > 1 %}
 					{% set parentReaction = reaction.getParent %}
-					<h4>En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>" sur le débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+					<h4>En réaction à <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
 				{% else %}
-					<h4>En réaction au débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+					<h4>En réaction au débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
 				{% endif %}
 			</div>
 		</div>
 
-		{% block author %}
+		{% block detailAuthor %}
 			<div class="row">
 				{# User #}
 				<div class="col-sm-8">
-					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': reaction.user } only %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': reaction.user } only %}
 				</div>
 				{# Notes #}
 				<div class="notes col-sm-4 text-center">
 					{{ linkNote(reaction, constant('Politizr\\Model\\PDocument::TYPE_REACTION')) }}
 				</div>
 			</div>
-		{% endblock author %}
+		{% endblock detailAuthor %}
 
 		{# Image du débat #}
 		<hr>
@@ -81,37 +68,36 @@ LAYOUT REACTION
 		<hr>
 		<div class="jumbotron">
 			{# Résumé #}
-			<div class="row text-center">
+			<div class="row">
 				<div class="col-sm-12">
 					{{ reaction.summary | raw }}
 				</div>
 			</div>
-			{% block linkDetailFeed %}
+			{% block detailLink %}
 				{# Lien détail #}
 				<div class="row text-center">
 					<div class="col-sm-12">
 						<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
 					</div>
 				</div>
-			{% endblock linkDetailFeed %}
+			{% endblock detailLink %}
 		</div>
 
-		{% block linkReactDebateFeed %}
+		{% block detailAction %}
 			<div class="row text-center">
-				{% if is_granted('ROLE_ELECTED') %}
+				{% if isGrantedE() %}
 					{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour cette réaction par le user courant #}
 					<div class="row text-center">
 						<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': reaction.debate.id, 'parentId': reaction.id }) }}">Réagir</a>
 					</div>
 					<hr>
 				{% endif %}
-				<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
 			</div>
-		{% endblock linkReactDebateFeed %}
+		{% endblock detailAction %}
 
 
 		{# Description & plus d'infos #}
-		{% block description %}
+		{% block detailDescription %}
 			{# Paragraphes #}
 			<hr>
 			<div class="reaction-body">
@@ -119,7 +105,9 @@ LAYOUT REACTION
 					<div class="paragraph">
 						<div class="row reaction-description sizeup">
 							<div class="counter col-sm-1">
-								{% include 'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig' with {'document': reaction.document, 'paragraphNo': loop.index } only %}
+								{% block detailParagraphComment %}
+									{% include 'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig' with {'document': reaction.document, 'paragraphNo': loop.index } only %}
+								{% endblock detailParagraphComment %}
 							</div>
 							<div class="col-sm-11">
 								<p>{{ paragraph | raw }}</p>
@@ -137,9 +125,9 @@ LAYOUT REACTION
 					{{ reaction.moreInfo | raw }}
 				</div>
 			{% endif %}
-		{% endblock description %}
+		{% endblock detailDescription %}
 
-		{% block globalComments %}		
+		{% block detailGlobalComments %}		
 			{# Commentaires #}
 			<hr>
 			<div class="reaction-global-comments">
@@ -150,7 +138,7 @@ LAYOUT REACTION
 					<div class="comments"></div>
 				</div>
 			</div>
-		{% endblock globalComments %}		
+		{% endblock detailGlobalComments %}		
 	</div>
 {% endblock detail %}
 
@@ -160,47 +148,46 @@ LAYOUT REACTION
 		{# Infos générales #}
 		<div class="row">
 			<div class="col-sm-8">
-				<h2>{{ reaction.title }}</h2>
+				<h4><a href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">{{ reaction.title }}</a></h4>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
+				<span class="count-reactions">
+					{# TODO / TwigExtension NbReactions #}
+					{% set nbReactions = reaction.countChildrenReactions(true, true) %}
+					<span class="badge alert-info">
+						<a href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">{{ nbReactions }} réactions</a>
+					</span>
+				</span>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris" ) | capitalize }}</span>
 			</div>
 		</div>
 		
 		{# Réaction parente #}
 		<div class="row">
 			<div class="col-sm-12">
-				{# TODO / TwigExtension Parent Réaction #}
-				{#
-				<div>
-					<hr>
-					DEBUG NESTED SET - 
-					isRoot {{ reaction.isRoot }} - 
-					isLeaf {{ reaction.isLeaf }} - 
-					getLevel {{ reaction.getLevel }} - 
-					hasChildren {{ reaction.hasChildren }} - 
-					countChildren {{ reaction.countChildren }} - 
-					hasPrevSibling {{ reaction.hasPrevSibling }} - 
-					hasNextSibling {{ reaction.hasNextSibling }} - 
-				</div>
-				#}
 				{% if reaction.level > 1 %}
 					{% set parentReaction = reaction.getParent %}
-					<h4>En réaction à "<a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>" sur le débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+					<span class="label label-warning">
+						En réaction à <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+					</span>
 				{% else %}
-					<h4>En réaction au débat "<a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>"</h4>
+					<span class="label label-warning">
+						En réaction au débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+					</span>
 				{% endif %}
 			</div>
 		</div>
-		<div class="row">
-			{# User #}
-			<div class="col-sm-12">
-				{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': reaction.user } only %}
+
+		{% block listAuthor %}		
+			<div class="row">
+				{# User #}
+				<div class="col-sm-12">
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': reaction.user } only %}
+				</div>
 			</div>
-		</div>
+		{% endblock listAuthor %}
 	</div>
 {% endblock listRow %}
 
@@ -223,3 +210,63 @@ LAYOUT REACTION
 		</td>
 	</tr>
 {% endblock draftTableRow %}
+
+{# Bloc ligne de la timeline #}
+{% block timelineRow %}
+	<div class="reaction-timeline-row">
+		{# Date #}
+		<div class="row">
+			<div class="col-sm-2 text-center">
+				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+			<div class="col-sm-10 text-center">
+				&nbsp;
+			</div>
+		</div>
+
+		{# Accroche #}
+		<div class="row">
+			<div class="col-sm-1 text-center">
+				<h4><i class="fa fa-bell"></i></h4>
+			</div>
+			<div class="col-sm-10">
+				<h4>
+					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': reaction.user } only %} a rédigé une <a class="label label-warning" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">réaction</a>
+					{% if reaction.level > 1 %}
+						{% set parentReaction = reaction.getParent %}
+						en réaction à <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+					{% else %}
+						sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+					{% endif %}
+				</h4>
+			</div>
+			<div class="col-sm-1 text-center">
+				<span class="count-reactions">
+					{# TODO / TwigExtension NbReactions #}
+					{% set nbReactions = reaction.countChildrenReactions(true, true) %}
+					<span class="badge alert-info">
+						<a href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">{{ nbReactions }} réactions</a>
+					</span>
+				</span>
+			</div>
+		</div>
+
+		{# Infos générales #}
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3>{{ reaction.title }}</h3>
+				</div>
+			</div>
+
+			{# Résumé #}
+			<div class="row">
+				<div class="col-sm-12">
+					{{ reaction.summary | raw }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock timelineRow %}
+

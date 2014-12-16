@@ -34,7 +34,7 @@
 		{% endfor %}
 		<h3>Mes débats publiés</h3>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 			<hr>
 		{% else %}
 			<div class="no-results">
@@ -44,7 +44,7 @@
 		{% endfor %}
 		<h3>Mes commentaires</h3>
         {% for comment in comments %}
-			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
 			<hr>
 		{% else %}
 			<div class="no-results">

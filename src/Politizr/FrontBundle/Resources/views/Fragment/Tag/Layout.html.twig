@@ -17,8 +17,8 @@ LAYOUT TAG
 	{% endif %}
 
 	<span class="tag label label-{{ twbLabel }}">
-		{{ tag.title }}
-		<a action="deleteTag" path="{{ deleteUrl }}" tag-id="{{ tag.id }}" object-id="{{ objectId }}">&times;</a>
+		<i class="fa fa-tag"></i>&nbsp;{{ tag.title }}
+		<a action="deleteTag" class="fa fa-close" path="{{ deleteUrl }}" tag-id="{{ tag.id }}" object-id="{{ objectId }}"></a>
 	</span>
 {% endblock listRow %}
 
@@ -35,8 +35,8 @@ LAYOUT TAG
 	{% endif %}
 
 	{% for tag in tags %}
-		<span class="tag label label-{{ twbLabel }}">{{ tag.title }}</span>
+		<span class="tag label label-{{ twbLabel }}"><i class="fa fa-tag"></i>&nbsp;{{ tag.title }}</span>
 	{% else %}
-		<span class="label label-default">Aucun tag {{ tagLabel }}</span>
+		<span class="label label-default"><i class="fa fa-tag"></i>&nbsp;Aucun tag {{ tagLabel }}</span>
 	{% endfor %}
 {% endblock list %}

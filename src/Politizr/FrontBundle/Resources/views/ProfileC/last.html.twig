@@ -16,7 +16,7 @@
 			<h3>Derniers débatteurs inscrits</h3>
 			<div>
 				{% for user in users %}
-					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': user } %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } %}
 					<hr>
 				{% endfor %}
 			</div>

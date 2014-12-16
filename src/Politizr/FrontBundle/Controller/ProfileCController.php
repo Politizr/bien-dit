@@ -79,144 +79,14 @@ class ProfileCController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** timelineAction');
 
-        // Récupération user courant
-        $pUser = $this->getUser();
+        // Récupération de la requête SQL
+        $sql = $this->get('politizr.service.timeline')->getSql();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // TODO / Refactoring > extraire la création de la timeline
-
-        // TODO
-        // + réactions sur les débats rédigés par le user courant
-        // + pouvoir distinguer dans l'affichage un débat possédant seulement un commentaire d'une personne suivi
-
-
-        // Requête MYSQL
-        // Liste des débats suivis
-        // union
-        // Liste des documents créés par des users suivis
-        // union
-        // Liste des documents possédant un commentaire par un user suivis
-        /*
-
-( SELECT p_document.id
-FROM p_document
-WHERE id IN (1, 2, 3) )
-
-UNION DISTINCT
-
-( SELECT p_document.title, p_document.published_at
-FROM p_document
-WHERE p_document.p_user_id IN (1, 2, 3) )
-
-UNION DISTINCT
-
-( SELECT p_document.id
-FROM p_document
-    LEFT JOIN p_d_comment 
-        ON p_document_id = p_d_comment.p_document_id
-WHERE p_d_comment.p_user_id IN (1, 2, 3) )
-
-ORDER BY published DESC
-
-        */
-
-        // Récupération d'un tableau des ids des débats suivis
-        $debateIds = PUFollowDDQuery::create()
-                        ->filterByPUserId($pUser->getId())
-                        ->find()
-                        ->toKeyValue('PDDebateId', 'PDDebateId')
-                        // ->getPrimaryKeys()
-                        ;
-        $debateIds = array_keys($debateIds);
-        $inQueryDebateIds = implode(',', $debateIds);
-        $logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
-
-        // Récupération d'un tableau des ids des users suivis
-        $userIds = PUFollowUQuery::create()
-                        ->filterByPUserFollowerId($pUser->getId())
-                        ->find()
-                        ->toKeyValue('PUserId', 'PUserId')
-                        // ->getPrimaryKeys()
-                        ;
-        $userIds = array_keys($userIds);
-        $inQueryUserIds = implode(',', $userIds);
-        $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
-
-        // Préparation requête SQL
-        if (!empty($debateIds) && !empty($userIds)) {
-            $sql = "
-    ( SELECT p_document.id
-    FROM p_document
-    WHERE id IN (".$inQueryDebateIds.") )
-
-    UNION DISTINCT
-
-    ( SELECT p_document.id
-    FROM p_document
-    WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
-
-    UNION DISTINCT
-
-    ( SELECT p_document.id
-    FROM p_document
-        LEFT JOIN p_d_comment 
-            ON p_document.id = p_d_comment.p_document_id
-    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
-
-        ";
-        } elseif(!empty($debateIds)) {
-            $sql = "
-    SELECT p_document.id
-    FROM p_document
-    WHERE id IN (".$inQueryDebateIds.")
-        ";
-        } elseif(!empty($userIds)) {
-            $sql = "
-    ( SELECT p_document.id
-    FROM p_document
-    WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
-
-    UNION DISTINCT
-
-    ( SELECT p_document.id
-    FROM p_document
-        LEFT JOIN p_d_comment 
-            ON p_document.id = p_d_comment.p_document_id
-    WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
-        ";
-        } else {
-            $sql = null;
-            $listPKs = array();
-        }
-
-        if ($sql) {
-            // Exécution de la requête timeline brute
-            $con = \Propel::getConnection(PDocumentPeer::DATABASE_NAME, \Propel::CONNECTION_READ);
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $listPKs = $stmt->fetchAll(\PDO::FETCH_COLUMN);
-            $logger->info('listPKs = '.print_r($listPKs, true));
-        }
-
-        // Préparation d'une requête "objet" ordonnancée
-        // TODO > pagination ajax vis scrolling
-        $maxPerPage = 10;
-        $query = PDocumentQuery::create()
-                    ->addUsingAlias(PDocumentPeer::ID, $listPKs, \Criteria::IN)
-                    ->orderByPublishedAt('desc')
-                    ;
-        $documents = $query->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
+        // Exécution de la requête SQL & préparation du modèle
+        $timeline = $this->get('politizr.service.timeline')->getTimeline($sql);
 
         return $this->render('PolitizrFrontBundle:ProfileC:timeline.html.twig', array(
-                    'documents' => $documents
+                    'timeline' => $timeline
             ));
     }
 

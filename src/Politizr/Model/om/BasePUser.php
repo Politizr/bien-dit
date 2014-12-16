@@ -9582,146 +9582,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         return $this;
     }
 
-    // archivable behavior
-
-    /**
-     * Get an archived version of the current object.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PUserArchive An archive object, or null if the current object was never archived
-     */
-    public function getArchive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            return null;
-        }
-        $archive = PUserArchiveQuery::create()
-            ->filterByPrimaryKey($this->getPrimaryKey())
-            ->findOne($con);
-
-        return $archive;
-    }
-    /**
-     * Copy the data of the current object into a $archiveTablePhpName archive object.
-     * The archived object is then saved.
-     * If the current object has already been archived, the archived object
-     * is updated and not duplicated.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object is new
-     *
-     * @return     PUserArchive The archive object based on this object
-     */
-    public function archive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
-        }
-        if (!$archive = $this->getArchive($con)) {
-            $archive = new PUserArchive();
-            $archive->setPrimaryKey($this->getPrimaryKey());
-        }
-        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
-        $archive->setArchivedAt(time());
-        $archive->save($con);
-
-        return $archive;
-    }
-
-    /**
-     * Revert the the current object to the state it had when it was last archived.
-     * The object must be saved afterwards if the changes must persist.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object has no corresponding archive.
-     *
-     * @return PUser The current object (for fluent API support)
-     */
-    public function restoreFromArchive(PropelPDO $con = null)
-    {
-        if (!$archive = $this->getArchive($con)) {
-            throw new PropelException('The current object has never been archived and cannot be restored');
-        }
-        $this->populateFromArchive($archive);
-
-        return $this;
-    }
-
-    /**
-     * Populates the the current object based on a $archiveTablePhpName archive object.
-     *
-     * @param      PUserArchive $archive An archived object based on the same class
-      * @param      Boolean $populateAutoIncrementPrimaryKeys
-     *               If true, autoincrement columns are copied from the archive object.
-     *               If false, autoincrement columns are left intact.
-      *
-     * @return     PUser The current object (for fluent API support)
-     */
-    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
-        if ($populateAutoIncrementPrimaryKeys) {
-            $this->setId($archive->getId());
-        }
-        $this->setProvider($archive->getProvider());
-        $this->setProviderId($archive->getProviderId());
-        $this->setNickname($archive->getNickname());
-        $this->setRealname($archive->getRealname());
-        $this->setUsername($archive->getUsername());
-        $this->setUsernameCanonical($archive->getUsernameCanonical());
-        $this->setEmail($archive->getEmail());
-        $this->setEmailCanonical($archive->getEmailCanonical());
-        $this->setEnabled($archive->getEnabled());
-        $this->setSalt($archive->getSalt());
-        $this->setPassword($archive->getPassword());
-        $this->setLastLogin($archive->getLastLogin());
-        $this->setLocked($archive->getLocked());
-        $this->setExpired($archive->getExpired());
-        $this->setExpiresAt($archive->getExpiresAt());
-        $this->setConfirmationToken($archive->getConfirmationToken());
-        $this->setPasswordRequestedAt($archive->getPasswordRequestedAt());
-        $this->setCredentialsExpired($archive->getCredentialsExpired());
-        $this->setCredentialsExpireAt($archive->getCredentialsExpireAt());
-        $this->setRoles($archive->getRoles());
-        $this->setPUTypeId($archive->getPUTypeId());
-        $this->setPUStatusId($archive->getPUStatusId());
-        $this->setFileName($archive->getFileName());
-        $this->setGender($archive->getGender());
-        $this->setFirstname($archive->getFirstname());
-        $this->setName($archive->getName());
-        $this->setBirthday($archive->getBirthday());
-        $this->setBiography($archive->getBiography());
-        $this->setWebsite($archive->getWebsite());
-        $this->setTwitter($archive->getTwitter());
-        $this->setFacebook($archive->getFacebook());
-        $this->setPhone($archive->getPhone());
-        $this->setNewsletter($archive->getNewsletter());
-        $this->setLastConnect($archive->getLastConnect());
-        $this->setNbViews($archive->getNbViews());
-        $this->setOnline($archive->getOnline());
-        $this->setValidated($archive->getValidated());
-        $this->setCreatedAt($archive->getCreatedAt());
-        $this->setUpdatedAt($archive->getUpdatedAt());
-        $this->setSlug($archive->getSlug());
-
-        return $this;
-    }
-
-    /**
-     * Removes the object from the database without archiving it.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PUser The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
     // sluggable behavior
 
     /**
@@ -9861,6 +9721,146 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
 
         return $slug2 . ($slugNum + 1);
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PUserArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PUserArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PUserArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PUserArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PUser The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      PUserArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PUser The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setProvider($archive->getProvider());
+        $this->setProviderId($archive->getProviderId());
+        $this->setNickname($archive->getNickname());
+        $this->setRealname($archive->getRealname());
+        $this->setUsername($archive->getUsername());
+        $this->setUsernameCanonical($archive->getUsernameCanonical());
+        $this->setEmail($archive->getEmail());
+        $this->setEmailCanonical($archive->getEmailCanonical());
+        $this->setEnabled($archive->getEnabled());
+        $this->setSalt($archive->getSalt());
+        $this->setPassword($archive->getPassword());
+        $this->setLastLogin($archive->getLastLogin());
+        $this->setLocked($archive->getLocked());
+        $this->setExpired($archive->getExpired());
+        $this->setExpiresAt($archive->getExpiresAt());
+        $this->setConfirmationToken($archive->getConfirmationToken());
+        $this->setPasswordRequestedAt($archive->getPasswordRequestedAt());
+        $this->setCredentialsExpired($archive->getCredentialsExpired());
+        $this->setCredentialsExpireAt($archive->getCredentialsExpireAt());
+        $this->setRoles($archive->getRoles());
+        $this->setPUTypeId($archive->getPUTypeId());
+        $this->setPUStatusId($archive->getPUStatusId());
+        $this->setFileName($archive->getFileName());
+        $this->setGender($archive->getGender());
+        $this->setFirstname($archive->getFirstname());
+        $this->setName($archive->getName());
+        $this->setBirthday($archive->getBirthday());
+        $this->setBiography($archive->getBiography());
+        $this->setWebsite($archive->getWebsite());
+        $this->setTwitter($archive->getTwitter());
+        $this->setFacebook($archive->getFacebook());
+        $this->setPhone($archive->getPhone());
+        $this->setNewsletter($archive->getNewsletter());
+        $this->setLastConnect($archive->getLastConnect());
+        $this->setNbViews($archive->getNbViews());
+        $this->setOnline($archive->getOnline());
+        $this->setValidated($archive->getValidated());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSlug($archive->getSlug());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PUser The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
     // equal_nest_parent behavior

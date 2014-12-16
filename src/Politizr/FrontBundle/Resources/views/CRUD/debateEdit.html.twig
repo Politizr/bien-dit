@@ -1,5 +1,5 @@
 {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
-{% if (is_granted('ROLE_ELECTED')) %}
+{% if (isGrantedE()) %}
 	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
 {% endif %}
 {% extends layout %}
@@ -83,7 +83,7 @@
 				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
 			    <hr>
 				{% set urlBack = path('MyDraftsC') %}
-				{% if is_granted('ROLE_ELECTED') %}
+				{% if isGrantedE() %}
 					{% set urlBack = path('MyDraftsE') %}
 				{% endif %}
 				<div class="col-lg-offset-2 col-lg-10">

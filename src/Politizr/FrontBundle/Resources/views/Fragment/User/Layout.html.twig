@@ -73,7 +73,7 @@ LAYOUT USER
 				</div>
 				<hr>
 				{# Bio #}
-				<div class="row text-center">
+				<div class="row">
 					<div class="col-sm-12">
 						<p>{{ user.biography | raw  }}</p>
 					</div>
@@ -138,59 +138,26 @@ LAYOUT USER
 	</div>
 {% endblock detail %}
 
-{# Bloc user "auteur" #}
-{% block author %}
-	{% spaceless %}
-		{# TODO / TwigExtension Photo #}
-		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
-			{% if (user.FileName) %}
-		        <img class="img-rounded" src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini') }}" alt="{{ user.name }}">
-		    {% else %}
-		        <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini') }}" alt="{{ user.name }}">
-			{% endif %}
-		</a>
-		&nbsp;
-		{# Nom & Type #}
-		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label {% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}label-info{% else %}label-danger{% endif %}">
-			{{ user }}
-			{% if user.validated %}
-				<span class="fa fa-check-square-o" title="Profil validé"></span>
-			{% endif %}
-		</a>
-		&nbsp;
-		{# Score réputation #}
-		<span class="badge alert-success">{{ user.reputationScore }}</span>
-		&nbsp;
-		{# Mandat en cours #}
-		{% if user.currentQualification %}
-			{% set qualification = user.currentQualification %}
-			{% if (qualification) %}
-		        <img src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
-			{% endif %}	
-		{% endif %}
-	{% endspaceless %}
-{% endblock author %}
-
 {# Bloc ligne de listing de users #}
 {% block listRow %}
 	<div class="user-list-row">
-		{% if not user %}
-			<div class="author-infos">
-				<span class="label label-danger">Auteur supprimé</span>
+		<div class="row">
+			<div class="col-sm-6">
+				{% if user %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
+				{% else %}
+					<span class="label label-default">Utilisateur supprimé</span>
+				{% endif %}
 			</div>
-		{% else %}
-			{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': user } only %}
-			<div class="row">
-				<div class="col-sm-4 text-center">
-					nombre de débats écrits > lien vers liste des débats du user
-				</div>
-				<div class="col-sm-4 text-center">
-					nombre de réactions écrits > lien vers liste des réactions du user
-				</div>
-				<div class="col-sm-4 text-center">
-					nombre de commentaires écrits > lien vers liste des commentaires du user
-				</div>
+			<div class="col-sm-2 text-center">
+				<span class="badge alert-info">{{ user.countDebates }} débats</span>
 			</div>
-		{% endif %}
+			<div class="col-sm-2 text-center">
+				<span class="badge alert-danger">{{ user.countReactions }} réactions</span>
+			</div>
+			<div class="col-sm-2 text-center">
+				<span class="badge alert-warning">{{ user.countComments }} commentaires</span>
+			</div>
+		</div>
 	</div>
 {% endblock listRow %}

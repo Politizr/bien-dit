@@ -16,7 +16,7 @@
 			<h3>Élus les plus suivis</h3>
 			<div>
 				{% for user in users %}
-					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'pUser': user, 'full': false } %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'pUser': user, 'full': false } %}
 					<hr>
 				{% endfor %}
 			</div>

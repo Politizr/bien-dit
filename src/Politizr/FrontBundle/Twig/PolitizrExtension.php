@@ -5,11 +5,16 @@ use Politizr\Constant\ReputationConstants;
 use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PRAction;
 use Politizr\Model\PDocument;
+use Politizr\Model\PUStatus;
 
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUReputationRAQuery;
 
+use Politizr\FrontBundle\Lib\TimelineRow;
 
 /**
  * Fonctions Twig Politizr Front
@@ -21,17 +26,20 @@ use Politizr\Model\PUReputationRAQuery;
  */
 class PolitizrExtension extends \Twig_Extension
 {
-    private $logger;
+    private $sc;
 
+    private $logger;
     private $router;
     private $templating;
 
-    private $pUser;
+    private $user;
 
     /**
      *
      */
     public function __construct($serviceContainer) {
+        $this->sc = $serviceContainer;
+        
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
@@ -42,12 +50,12 @@ class PolitizrExtension extends \Twig_Extension
 
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
-                $this->pUser = $user;
+                $this->user = $user;
             } else {
-                $this->pUser = null;
+                $this->user = null;
             }
         } else {
-            $this->pUser = null;
+            $this->user = null;
         }
 
     }
@@ -60,13 +68,12 @@ class PolitizrExtension extends \Twig_Extension
     /**
      *  Renvoie la liste des filtres
      */
-//     public function getFilters()
-//     {
-//         return array(
-//             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
-//         );
-//     }
-
+    // public function getFilters()
+    // {
+    //     return array(
+    //         new \Twig_SimpleFilter('isGranted', array($this, 'isGranted')),
+    //     );
+    // }
 
     /**
      *  Renvoie la liste des fonctions
@@ -74,7 +81,11 @@ class PolitizrExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'linkFollow'  => new \Twig_Function_Method($this, 'linkFollow', array(
+            'isGrantedC'  => new \Twig_Function_Method($this, 'isGrantedC', array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'isGrantedE'  => new \Twig_Function_Method($this, 'isGrantedE', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -106,7 +117,15 @@ class PolitizrExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'linkFollow'  => new \Twig_Function_Method($this, 'linkFollow', array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'linkNote'  => new \Twig_Function_Method($this, 'linkNote', array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'timelineRow'  => new \Twig_Function_Method($this, 'timelineRow', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -115,64 +134,66 @@ class PolitizrExtension extends \Twig_Extension
 
 
     /* ######################################################################################################## */
-    /*                                                DEBATS                                                    */
+    /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
 
 
+    /* ######################################################################################################## */
+    /*                                             FONCTIONS                                                    */
+    /* ######################################################################################################## */
+
+    /* ######################################################################################################## */
+    /*                                              USER                                                        */
+    /* ######################################################################################################## */
+
     /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     *  Test l'autorisation d'un user citoyen et de l'état de son inscription
      *
-     * @param $objectId     ID objet
-     * @param $context      Type d'objet suivi: user - debate
+     * @param $user         PUser à tester
      *
      * @return string
      */
-    public function linkFollow($object, $context)
+    public function isGrantedC()
     {
-        $this->logger->info('*** linkFollow');
-        $this->logger->info('$object = '.print_r($object, true));
-        $this->logger->info('$context = '.print_r($context, true));
+        $this->logger->info('*** isGrantedC');
 
-        $follower = false;
-        if ($this->pUser) {
-            switch($context) {
-                case PDocument::TYPE_DEBATE:
-                    $follow = PUFollowDDQuery::create()
-                        ->filterByPUserId($this->pUser->getId())
-                        ->filterByPDDebateId($object->getId())
-                        ->findOne();
-                    
-                    if ($follow) {
-                        $follower = true;
-                    }
-
-                    break;
-                case PDocument::TYPE_USER:
-                    $follow = PUFollowUQuery::create()
-                        ->filterByPUserFollowerId($this->pUser->getId())
-                        ->filterByPUserId($object->getId())
-                        ->findOne();
-                    
-                    if ($follow) {
-                        $follower = true;
-                    }
-
-                    break;
-            }
+        if ($this->sc->get('security.context')->isGranted('ROLE_CITIZEN') &&
+            $this->user &&
+            $this->user->getOnline()) {
+            return true;    
         }
 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
-                                'object' => $object,
-                                'context' => $context,
-                                'follower' => $follower
-                                )
-                    );
-
-        return $html;
-
+        return false;
     }
+
+
+    /**
+     *  Test l'autorisation d'un user débatteur et de l'état de son inscription
+     *
+     * @param $user         PUser à tester
+     *
+     * @return string
+     */
+    public function isGrantedE()
+    {
+        $this->logger->info('*** isGrantedE');
+
+        if ($this->sc->get('security.context')->isGranted('ROLE_ELECTED') &&
+            $this->user &&
+            $this->user->getPUStatusId() == PUStatus::ACTIVED &&
+            $this->user->getOnline()) {
+            return true;    
+        }
+
+        return false;
+    }
+
+
+
+    /* ######################################################################################################## */
+    /*                                                DEBATS                                                    */
+    /* ######################################################################################################## */
+
 
    /**
      *  Affiche les tags d'un débat suivant le type fourni
@@ -238,21 +259,21 @@ class PolitizrExtension extends \Twig_Extension
    /**
      *  Affiche les tags suivis par un user suivant le type fourni
      *
-     * @param $pUser        pUser       PDDebate
+     * @param $user        user       PDDebate
      * @param $tagTypeId  integer     ID type de tag
      *
      * @return string
      */
-    public function userFollowTags($pUser, $tagTypeId)
+    public function userFollowTags($user, $tagTypeId)
     {
         $this->logger->info('*** userFollowTags');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
-                                'tags' => $pUser->getFollowTags($tagTypeId),
+                                'tags' => $user->getFollowTags($tagTypeId),
                                 'tagTypeId' => $tagTypeId
                                 )
                     );
@@ -386,7 +407,7 @@ class PolitizrExtension extends \Twig_Extension
 
 
     /* ######################################################################################################## */
-    /*                                              NOTATION                                                    */
+    /*                                              NOTE & FOLLOW                                               */
     /* ######################################################################################################## */
 
 
@@ -407,7 +428,7 @@ class PolitizrExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
-        if ($this->pUser) {
+        if ($this->user) {
             // Le document a-t-il déjà été noté pos et/ou neg?
             switch($context) {
                 case PDocument::TYPE_DEBATE:
@@ -436,14 +457,14 @@ class PolitizrExtension extends \Twig_Extension
                     break;
             }
 
-            $notePos = $queryPos->filterByPUserId($this->pUser->getId())
+            $notePos = $queryPos->filterByPUserId($this->user->getId())
                 ->filterByPObjectId($object->getId())
                 ->findOne();
             if ($notePos) {
                 $pos = true;
             }
 
-            $noteNeg = $queryNeg->filterByPUserId($this->pUser->getId())
+            $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
                 ->filterByPObjectId($object->getId())
                 ->findOne();
             if ($noteNeg) {
@@ -464,6 +485,114 @@ class PolitizrExtension extends \Twig_Extension
         return $html;
 
     }
+
+    /**
+     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     *
+     * @param $objectId     ID objet
+     * @param $context      Type d'objet suivi: user - debate
+     *
+     * @return string
+     */
+    public function linkFollow($object, $context)
+    {
+        $this->logger->info('*** linkFollow');
+        $this->logger->info('$object = '.print_r($object, true));
+        $this->logger->info('$context = '.print_r($context, true));
+
+        $follower = false;
+        if ($this->user) {
+            switch($context) {
+                case PDocument::TYPE_DEBATE:
+                    $follow = PUFollowDDQuery::create()
+                        ->filterByPUserId($this->user->getId())
+                        ->filterByPDDebateId($object->getId())
+                        ->findOne();
+                    
+                    if ($follow) {
+                        $follower = true;
+                    }
+
+                    break;
+                case PDocument::TYPE_USER:
+                    $follow = PUFollowUQuery::create()
+                        ->filterByPUserFollowerId($this->user->getId())
+                        ->filterByPUserId($object->getId())
+                        ->findOne();
+                    
+                    if ($follow) {
+                        $follower = true;
+                    }
+
+                    break;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
+                                'object' => $object,
+                                'context' => $context,
+                                'follower' => $follower
+                                )
+                    );
+
+        return $html;
+
+    }
+
+
+
+    /* ######################################################################################################## */
+    /*                                              TIMELINE                                                    */
+    /* ######################################################################################################## */
+
+
+
+    /**
+     *  Rendu d'une ligne de la timeline en fonction du type
+     *
+     * @param $timelineRow      Objet TimelineRow
+     *
+     * @return string
+     */
+    public function timelineRow(TimelineRow $timelineRow)
+    {
+        $this->logger->info('*** timelineRow');
+        $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
+
+        $html = '';
+        switch ($timelineRow->getType()) {
+            case PDocument::TYPE_DEBATE:
+                $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
+                $html = $this->templating->render(
+                                    'PolitizrFrontBundle:Fragment\\Debate:TimelineRow.html.twig', array(
+                                        'debate' => $debate
+                                        )
+                            );
+                break;
+            case PDocument::TYPE_REACTION:
+                $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
+                $html = $this->templating->render(
+                                    'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig', array(
+                                        'reaction' => $reaction
+                                        )
+                            );
+                break;
+            case PDocument::TYPE_COMMENT:
+                $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
+                $html = $this->templating->render(
+                                    'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig', array(
+                                        'comment' => $comment
+                                        )
+                            );
+                break;
+        }
+
+        return $html;
+
+    }
+
 
 
 

@@ -606,7 +606,19 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     * Renvoie les réactions associées à l'utilisateur
+     * Renvoie le nombre de débats associés à l'utilisateur
+     *
+     * @return     integer
+     */
+    public function countDebates($online = true, $published = true) {
+        $debates = $this->getDebates($online, $published);
+
+        return count($debates);
+    }
+
+
+    /**
+     * Renvoie les réactions associé à l'utilisateur
      *
      * @return PDDebate (collection)
      */
@@ -619,6 +631,19 @@ class PUser extends BasePUser implements UserInterface
 
         return $query->find();
     }
+
+    /**
+     * Renvoie le nombre de réactions associé à l'utilisateur
+     *
+     * @return     integer
+     */
+    public function countReactions($online = true, $published = true) {
+        $reactions = $this->getReactions($online, $published);
+
+        return count($reactions);
+    }
+
+
 
     // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //
 
@@ -635,6 +660,18 @@ class PUser extends BasePUser implements UserInterface
 
         return parent::getPDComments($query);
     }
+
+    /**
+     * Renvoie le nombre de comentaires associé à l'utilisateur
+     *
+     * @return     integer
+     */
+    public function countComments($online = true) {
+        $comments = $this->getComments($online);
+
+        return count($comments);
+    }
+
 
 
     // *****************************    BADGES / REPUTATION    ************************* //

@@ -9,7 +9,7 @@ LAYOUT DEBATE
 {# Bloc détail d'un débat #}
 {% block detail %}
 	<div class="debate-detail">
-		{% block header %}
+		{% block detailHeader %}
 			{# Infos générales #}
 			<div class="row">
 				<div class="col-sm-8">
@@ -22,22 +22,22 @@ LAYOUT DEBATE
 					<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
 				</div>
 			</div>
-		{% endblock header %}
+		{% endblock detailHeader %}
 
-		{% block author %}
+		{% block detailAuthor %}
 			<div class="row">
 				{# User #}
 				<div class="col-sm-8">
-					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': debate.user } only %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': debate.user } only %}
 				</div>
 				{# Notes #}
 				<div class="notes col-sm-4 text-center">
 					{{ linkNote(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
 				</div>
 			</div>
-		{% endblock author %}
+		{% endblock detailAuthor %}
 
-		{% block follow %}
+		{% block detailFollow %}
 			<hr>
 			<div class="row text-center">
 				{# Followers #}
@@ -51,7 +51,7 @@ LAYOUT DEBATE
 					</div>
 				</div>
 			</div>
-		{% endblock follow %}
+		{% endblock detailFollow %}
 
 		{# Image #}
 		<hr>
@@ -80,32 +80,32 @@ LAYOUT DEBATE
 			</div>
 			<hr>
 			{# Résumé #}
-			<div class="row text-center">
+			<div class="row">
 				<div class="col-sm-12">
 					{{ debate.summary | raw }}
 				</div>
 			</div>
-			{% block linkDetailFeed %}
+			{% block detailLink %}
 				{# Lien détail #}
 				<div class="row text-center">
 					<div class="col-sm-12">
 						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
 					</div>
 				</div>		
-			{% endblock linkDetailFeed %}
+			{% endblock detailLink %}
 		</div>
 
 		{# Description & plus d'infos #}
-		{% block description %}
+		{% block detailDescription %}
 			<hr>
 			<div class="debate-body">
 				{% for paragraph in paragraphs %}
 					<div class="paragraph">
 						<div class="row debate-description sizeup">
 							<div class="counter col-sm-1">
-								{% block paragraphComment %}
+								{% block detailParagraphComment %}
 									{% include 'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig' with {'document': debate.document, 'paragraphNo': loop.index } only %}
-								{% endblock paragraphComment %}
+								{% endblock detailParagraphComment %}
 							</div>
 							<div class="col-sm-11">
 								<p>{{ paragraph | raw }}</p>
@@ -122,19 +122,19 @@ LAYOUT DEBATE
 					{{ debate.moreInfo | raw }}
 				</div>
 			{% endif %}
-		{% endblock description %}
+		{% endblock detailDescription %}
 
-		{% block actionReact %}
-			{% if is_granted('ROLE_ELECTED') %}
+		{% block detailAction %}
+			{% if isGrantedE() %}
 				{# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour ce débat par le user courant #}
 				<div class="row text-center">
 					<a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': null }) }}">Réagir</a>
 				</div>
 				<hr>
 			{% endif %}
-		{% endblock actionReact %}
+		{% endblock detailAction %}
 
-		{% block globalComments %}		
+		{% block detailGlobalComments %}		
 			<hr>		
 			<div class="debate-global-comments">
 				<div class="paragraph">
@@ -144,14 +144,14 @@ LAYOUT DEBATE
 					<div class="comments"></div>
 				</div>
 			</div>
-		{% endblock globalComments %}		
+		{% endblock detailGlobalComments %}		
 	</div>
 {% endblock detail %}
 
 {# Bloc ligne de listing de débats #}
 {% block listRow %}
 	<div class="debate-list-row">
-		{% block debateImage %}
+		{% block listHeader %}
 			<div class="row">
 				<div class="col-sm-12">
 					{# TODO / TwigExtension Image #}
@@ -162,7 +162,7 @@ LAYOUT DEBATE
 					{% endif %}
 				</div>
 			</div>
-		{% endblock debateImage %}
+		{% endblock listHeader %}
 		<div class="row">
 			<div class="col-sm-8">
 				<h4><a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a></h4>
@@ -180,13 +180,13 @@ LAYOUT DEBATE
 				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris" ) | capitalize }}</span>
 			</div>
 		</div>
-		{% block debateUser %}
+		{% block listAuthor %}
 			<div class="row">
 				<div class="col-sm-12">
-					{% include 'PolitizrFrontBundle:Fragment\\User:Author.html.twig' with { 'user': debate.user } only %}
+					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': debate.user } only %}
 				</div>
 			</div>
-		{% endblock debateUser %}
+		{% endblock listAuthor %}
 	</div>
 {% endblock listRow %}
 
@@ -209,3 +209,82 @@ LAYOUT DEBATE
 		</td>
 	</tr>
 {% endblock draftTableRow %}
+
+
+{# Bloc ligne de la timeline #}
+{% block timelineRow %}
+	<div class="debate-timeline-row">
+		{# Date #}
+		<div class="row">
+			<div class="col-sm-2 text-center">
+				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+			<div class="col-sm-10 text-center">
+				&nbsp;
+			</div>
+		</div>
+
+		{# Accroche #}
+		<div class="row">
+			<div class="col-sm-1 text-center">
+				<h4><i class="fa fa-bullhorn"></i></h4>
+			</div>
+			<div class="col-sm-10">
+				<h4>
+					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': debate.user } only %} a rédigé un <a class="label label-success" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">débat</a>.
+				</h4>
+			</div>
+			<div class="col-sm-1 text-center">
+				<span class="count-reactions">
+					{# TODO / TwigExtension NbReactions #}
+					{% set nbReactions = debate.countReactions(true, true) %}
+					<span class="badge alert-info">
+						<a href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">{{ nbReactions }} réactions</a>
+					</span>
+				</span>
+			</div>
+		</div>
+
+		{# Infos générales #}
+		<div class="jumbotron">
+			{# Bandeau #}
+			<div class="row">
+				<div class="col-sm-12 debate-image">
+					{# TODO / TwigExtension Image #}
+					{% if (debate.FileName) %}
+				        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
+				    {% else %}
+				        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
+					{% endif %}
+				</div>
+			</div>
+
+			{# Titre #}
+			<hr>
+			<div class="row">
+				<div class="col-sm-12">
+					<h3>{{ debate.title }}</h3>
+				</div>
+			</div>
+			
+			<hr>
+			{# Tags #}
+			<div class="row text-center">
+				<div class="col-sm-6">
+					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+				</div>
+				<div class="col-sm-6">
+					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+				</div>
+			</div>
+
+			<hr>
+			{# Résumé #}
+			<div class="row">
+				<div class="col-sm-12">
+					{{ debate.summary | raw }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock timelineRow %}

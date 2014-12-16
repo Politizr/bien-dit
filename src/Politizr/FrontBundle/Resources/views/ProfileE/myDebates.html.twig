@@ -4,11 +4,11 @@
 	<div id="main" class="container">
 		<h3>Mes débats</h3>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 			<hr>
 		{% else %}
 			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez aucun débat en ligne pour le moment</a>
+				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucun débat en ligne pour le moment</a>
 			</div>
 		{% endfor %}
 	</div>
