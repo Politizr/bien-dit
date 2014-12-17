@@ -6,6 +6,7 @@
  * Styles Politizr
  */
 
+/* surcharge bootstrap */
 h1,
 h2,
 h3,
@@ -20,6 +21,7 @@ h6,
 .h6 {
     font-family: "Merriweather", Helvetica, Arial, sans-serif!important;
 }
+
 
  /* styles génériques */
 .alert {

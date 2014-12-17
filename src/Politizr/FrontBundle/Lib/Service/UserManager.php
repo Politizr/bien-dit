@@ -98,11 +98,19 @@ class UserManager
                                 'context' => PDocument::TYPE_USER
                                 )
                     );
+        $followers = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
+                                'object' => $object,
+                                'context' => PDocument::TYPE_USER
+                                )
+                    );
+
 
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
-            'html' => $html
+            'html' => $html,
+            'followers' => $followers
             );
     }
 

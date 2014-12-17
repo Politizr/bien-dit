@@ -14,19 +14,19 @@
 
 {% block main %}
 	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment\\User:Detail.html.twig' with { 'user': pUser } only %}
+		{% include 'PolitizrFrontBundle:Fragment\\User:Detail.html.twig' with { 'user': user } only %}
 		<div class="border-row">&nbsp;</div>
-		{% if pUser.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
-			<div id="author-debates-block">
-				<h1>Liste des débats rédigés</h1>
-				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
-				{% else %}
-					<div class="no-result">
-						Aucun débat pour le moment
-					</div>
-				{% endfor %}
-			</div>
+		<div id="author-debates-block">
+			<h1>Liste des débats rédigés</h1>
+			{% for debate in debates %}
+				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
+			{% else %}
+				<div class="no-result">
+					Aucun débat pour le moment
+				</div>
+			{% endfor %}
+		</div>
+		{% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
 			<div id="author-reactions-block">
 				<h1>Liste des réactions rédigées</h1>
 				{% for reaction in reactions %}

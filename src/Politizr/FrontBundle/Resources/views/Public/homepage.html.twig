@@ -6,49 +6,8 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<!--
-		<div id="home-slide" class="carousel slide" data-ride="carousel">
-		  <!-- Indicators --
-		  <ol class="carousel-indicators">
-		    <li data-target="#home-slide" data-slide-to="0" class="active"></li>
-		    <li data-target="#home-slide" data-slide-to="1"></li>
-		    <li data-target="#home-slide" data-slide-to="2"></li>
-		  </ol>
-
-		  <!-- Wrapper for slides --
-		  <div class="carousel-inner">
-		    <div class="item active">
-		      <img src="{# asset('bundles/politizrfront/images/p-slide1.jpg') #}" alt="Politizr" width="100%">
-		      <div class="carousel-caption">
-		        Politizr, des débats politiques
-		      </div>
-		    </div>
-		    <div class="item">
-		      <img src="{# asset('bundles/politizrfront/images/p-slide2.jpg') #}" alt="Politizr" width="100%">
-		      <div class="carousel-caption">
-		        Suivez vos notifications dans votre espace personnel Politizr
-		      </div>
-		    </div>
-		    <div class="item">
-		      <img src="{# asset('bundles/politizrfront/images/p-slide3.jpg') #}" alt="Politizr" width="100%">
-		      <div class="carousel-caption">
-		        Commentez les débats et les réactions des élus sur Politizr
-		      </div>
-		    </div>
-		  </div>
-
-		  <!-- Controls --
-		  <a class="left carousel-control" href="#home-slide" role="button" data-slide="prev">
-		    {# icon('camera') #}
-		  </a>
-		  <a class="right carousel-control" href="#home-slide" role="button" data-slide="next">
-		    {# icon('camera') #}
-		  </a>
-		</div>
-		-->
-
 		<div id="debates">
-			<h2>Débats les plus suivis</h2>
+			<h2>Les derniers débats publiés...</h2>
 			<div>
 				{% for debate in debates %}
 					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
@@ -58,7 +17,7 @@
 		</div>
 		<div class="border-row">&nbsp;</div>
 		<div id="users">
-			<h2>Débatteurs les plus suivis</h2>
+			<h2>Les profils les plus populaires...</h2>
 			<div>
 				{% for user in users %}
 					{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } %}
@@ -68,7 +27,7 @@
 		</div>
 		<div class="border-row">&nbsp;</div>
 		<div id="comments">
-			<h2>Les derniers commentaires</h2>
+			<h2>Les derniers commentaires...</h2>
 			<div>
 				{% for comment in comments %}
 					{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}

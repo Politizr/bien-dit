@@ -133,7 +133,7 @@
     $('body').on('click', "a[action='debate-list']", function(e){
         console.log('*** click list');
 
-        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous revenir à la liste?', function(result) {
+        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous continuer?', function(result) {
             if (result) {
                 window.location = $("a[action='debate-list']").attr('url');
             }
@@ -144,7 +144,7 @@
     $('body').on('click', "a[action='debate-preview']", function(e){
         console.log('*** click preview');
 
-        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre débat. Voulez-vous prévisualiser votre débat?', function(result) {
+        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre débat. Voulez-vous continuer?', function(result) {
             if (result) {
                 window.location = "{{ path('DebateDraftPreview', { 'id': debate.id }) }}";
             }

@@ -201,11 +201,18 @@ class DocumentManager
                                 'context' => PDocument::TYPE_DEBATE
                                 )
                     );
+        $followers = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
+                                'object' => $object,
+                                'context' => PDocument::TYPE_DEBATE
+                                )
+                    );
 
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
-            'html' => $html
+            'html' => $html,
+            'followers' => $followers,
             );
     }
 

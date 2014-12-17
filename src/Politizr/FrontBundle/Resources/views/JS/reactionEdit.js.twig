@@ -63,7 +63,7 @@
     $('body').on('click', "a[action='reaction-list']", function(e){
         console.log('*** click list');
 
-        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous revenir à la liste?', function(result) {
+        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous continuer?', function(result) {
             if (result) {
                 window.location = $("a[action='reaction-list']").attr('url');
             }
@@ -74,7 +74,7 @@
     $('body').on('click', "a[action='reaction-preview']", function(e){
         console.log('*** click preview');
 
-        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre réaction. Voulez-vous prévisualiser votre réaction?', function(result) {
+        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre réaction. Voulez-vous continuer?', function(result) {
             if (result) {
                 window.location = "{{ path('ReactionDraftPreview', { 'id': reaction.id }) }}";
             }

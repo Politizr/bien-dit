@@ -50,19 +50,20 @@ LAYOUT REACTION
 			</div>
 		{% endblock detailAuthor %}
 
-		{# Image du débat #}
-		<hr>
-		<div class="row debate-image">
-			<div class="col-sm-12">
-				{# TODO / TwigExtension Image #}
-				{% if (reaction.debate.FileName) %}
-			        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~reaction.debate.FileName) | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
-			    {% else %}
-			        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
-				{% endif %}
+		{% block detailImage %}
+			{# Image du débat #}
+			<hr>
+			<div class="row debate-image">
+				<div class="col-sm-12">
+					{# TODO / TwigExtension Image #}
+					{% if (reaction.debate.FileName) %}
+				        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~reaction.debate.FileName) | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
+				    {% else %}
+				        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
+					{% endif %}
+				</div>
 			</div>
-		</div>
-
+		{% endblock detailImage %}
 
 		{# Résumé #}
 		<hr>
@@ -77,7 +78,7 @@ LAYOUT REACTION
 				{# Lien détail #}
 				<div class="row text-center">
 					<div class="col-sm-12">
-						<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
+						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
 					</div>
 				</div>
 			{% endblock detailLink %}

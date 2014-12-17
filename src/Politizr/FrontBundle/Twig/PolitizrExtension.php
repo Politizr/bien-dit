@@ -20,7 +20,7 @@ use Politizr\FrontBundle\Lib\TimelineRow;
  * Fonctions Twig Politizr Front
  *
  * TODO:
- *      - constantes en dur sur type de document (linkFollow) > utiliser les constantes de PDocument
+ *      - constantes en dur sur type de document (linkSubscribe) > utiliser les constantes de PDocument
  *
  * @author Lionel Bouzonville
  */
@@ -117,7 +117,11 @@ class PolitizrExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
-            'linkFollow'  => new \Twig_Function_Method($this, 'linkFollow', array(
+            'linkSubscribe'  => new \Twig_Function_Method($this, 'linkSubscribe', array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'linkFollowers'  => new \Twig_Function_Method($this, 'linkFollowers', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -494,9 +498,9 @@ class PolitizrExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function linkFollow($object, $context)
+    public function linkSubscribe($object, $context)
     {
-        $this->logger->info('*** linkFollow');
+        $this->logger->info('*** linkSubscribe');
         $this->logger->info('$object = '.print_r($object, true));
         $this->logger->info('$context = '.print_r($context, true));
 
@@ -534,6 +538,55 @@ class PolitizrExtension extends \Twig_Extension
                                 'object' => $object,
                                 'context' => $context,
                                 'follower' => $follower
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Affiche le bloc des followers
+     *
+     * @param $objectId     ID objet
+     * @param $context      Type d'objet suivi: user - debate
+     *
+     * @return string
+     */
+    public function linkFollowers($object, $context)
+    {
+        $this->logger->info('*** linkFollowers');
+        $this->logger->info('$object = '.print_r($object, true));
+        $this->logger->info('$context = '.print_r($context, true));
+
+        $nbC = 0;
+        $nbQ = 0;
+        $followersC = array();
+        $followersQ = array();
+        switch($context) {
+            case PDocument::TYPE_DEBATE:
+                $nbC = $object->countFollowersC();
+                $nbQ = $object->countFollowersQ();
+                $followersC = $object->getFollowersC();
+                $followersQ = $object->getFollowersC();
+
+                break;
+            case PDocument::TYPE_USER:
+                $nbC = $object->countPUserFollowersC();
+                $nbQ = $object->countPUserFollowersQ();
+                $followersC = $object->getPUserFollowersC();
+                $followersQ = $object->getPUserFollowersQ();
+
+                break;
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig', array(
+                                'nbC' => $nbC,
+                                'nbQ' => $nbQ,
+                                'followersC' => $followersC,
+                                'followersQ' => $followersQ,
                                 )
                     );
 

@@ -32,22 +32,26 @@ LAYOUT DEBATE
 				</div>
 				{# Notes #}
 				<div class="notes col-sm-4 text-center">
-					{{ linkNote(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+					<div id="notation">
+						{{ linkNote(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+					</div>
 				</div>
 			</div>
 		{% endblock detailAuthor %}
 
 		{% block detailFollow %}
 			<hr>
-			<div class="row text-center">
+			<div class="following row text-center">
 				{# Followers #}
 				<div class="col-sm-8">
-					{% include 'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig' with {'nbC': debate.countFollowersC, 'nbQ': debate.countFollowersQ, 'followersC': debate.followersC, 'followersQ': debate.followersQ } only %}
+					<div id="followers">
+						{{ linkFollowers(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+					</div>
 				</div>
 				{# Subscribe #}
-				<div class="col-sm-4">
-					<div class="star text-center">
-						{{ linkFollow(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+				<div class="col-sm-4 text-center">
+					<div id="subscribe">
+						{{ linkSubscribe(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
 					</div>
 				</div>
 			</div>

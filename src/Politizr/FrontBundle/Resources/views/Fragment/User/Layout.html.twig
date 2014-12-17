@@ -46,15 +46,17 @@ LAYOUT USER
 			</div>
 
 			<hr>
-			<div class="row text-center">
+			<div class="following row text-center">
 				{# Followers #}
 				<div class="col-sm-8">
-					{% include 'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig' with {'nbC': user.countPUserFollowersC, 'nbQ': user.countPUserFollowersQ, 'followersC': user.PUserFollowersC, 'followersQ': user.PUserFollowersQ } only %}
+					<div id="followers">
+						{{ linkFollowers(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
+					</div>
 				</div>
 				{# Subscribe #}
-				<div class="col-sm-4">
-					<div class="star text-center">
-						{{ linkFollow(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
+				<div class="col-sm-4 text-center">
+					<div id="subscribe">
+						{{ linkSubscribe(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
 					</div>
 				</div>
 			</div>
@@ -82,11 +84,8 @@ LAYOUT USER
 				<hr>
 				{# Tags #}
 				<div class="row text-center">
-					<div class="col-sm-6">
+					<div class="col-sm-12">
 						{{ userTaggedTags(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
-					</div>
-					<div class="col-sm-6">
-						{{ userTaggedTags(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 					</div>
 				</div>
 			</div>

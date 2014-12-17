@@ -305,7 +305,8 @@ class SecurityManager
         // Suppression rôle user / déconnexion
         $user->setOnline(true);
         $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
-        $user->setPUTypeId(PUType::TYPE_ELECTED);
+
+        $user->setPUTypeId(PUType::TYPE_QUALIFIE);
         $user->setLastLogin(new \DateTime());
 
         $user->addRole('ROLE_ELECTED');

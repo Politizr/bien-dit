@@ -76,12 +76,14 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
 
     /**
      * The value for the note_pos field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $note_pos;
 
     /**
      * The value for the note_neg field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $note_neg;
@@ -147,6 +149,28 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->note_pos = 0;
+        $this->note_neg = 0;
+    }
+
+    /**
+     * Initializes internal state of BasePDocumentArchive object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -724,6 +748,14 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->note_pos !== 0) {
+                return false;
+            }
+
+            if ($this->note_neg !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -1590,6 +1622,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

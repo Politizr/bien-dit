@@ -18,7 +18,7 @@ use Politizr\Model\PUFollowDD;
 class PolitizrExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *  linkFollow
+     *  linkSubscribe
      */
     public function testLinkFollow()
     {        
@@ -53,7 +53,7 @@ class PolitizrExtensionTest extends \PHPUnit_Framework_TestCase
 
 
 
-        // $this->assertEquals("test", $politizrExt->linkFollow($objectId, $objectType));
+        // $this->assertEquals("test", $politizrExt->linkSubscribe($objectId, $objectType));
     }
 
 }

@@ -262,16 +262,16 @@ class DocumentController extends Controller {
         // *********************************** //
         //      Récupération objet
         // *********************************** //
-        $pUser = PUserQuery::create()->findPk($id);
-        if (!$pUser) {
-            throw new NotFoundHttpException('pUser n°'.$id.' not found.');
+        $user = PUserQuery::create()->findPk($id);
+        if (!$user) {
+            throw new NotFoundHttpException('User n°'.$id.' not found.');
         }
-        if (!$pUser->getOnline()) {
-            throw new NotFoundHttpException('pUser n°'.$id.' not online.');
+        if (!$user->getOnline()) {
+            throw new NotFoundHttpException('User n°'.$id.' not online.');
         }
 
-        $pUser->setNbViews($pUser->getNbViews() + 1);
-        $pUser->save();
+        $user->setNbViews($user->getNbViews() + 1);
+        $user->save();
 
 
         // *********************************** //
@@ -279,16 +279,16 @@ class DocumentController extends Controller {
         // *********************************** //
 
         // PDDebate (collection)
-        $debates = $pUser->getDebates();
+        $debates = $user->getDebates();
 
         // PDReaction (collection)
-        $reactions = $pUser->getReactions();
+        $reactions = $user->getReactions();
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:userDetail.html.twig', array(
-                    'pUser' => $pUser,
+                    'user' => $user,
                     'debates' => $debates,
                     'reactions' => $reactions
             ));

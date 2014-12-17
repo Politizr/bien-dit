@@ -7,21 +7,24 @@
     $("body").on("click", "a[action='follow']", function(e) {
         console.log('*** click follow');
         
+        var context = $(this).closest('.following');
         $.ajax({
             type: 'POST',
             url: "{{ path('Follow') }}",
-            context: $(this).closest('.star'),
+            context: context,
             data: { 'objectId': $(this).attr('object-id'), 'context': $(this).attr('context'), 'way': $(this).attr('way') },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 $('#ajax-loader').hide();
                 if (data['error']) {
-                    $('#ajax-loader').hide();
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
-                    $(this).html(data['html']);
+                    $(this).find('#subscribe').html(data['html']);
+                    $(this).find('#followers').html(data['followers']);
+                    $(this).find("div[action='followers-c-list']").hide();
+                    $(this).find("div[action='followers-q-list']").hide();           
                 }
             }
         });

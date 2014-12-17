@@ -1,54 +1,60 @@
-<!-- Brand and toggle get grouped for better mobile display -->
-<div class="navbar-header">
-	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		<span class="sr-only">Toggle navigation</span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-	</button>
-	<a class="navbar-brand" href="{{ path('HomepageE') }}">Politizr</a>
-</div>
+<nav class="navbar navbar-default" role="navigation">
+  	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{{ path('HomepageE') }}">
+				<img src="{{ asset('bundles/politizrfront/images/politizr-logo-navbar.png') }}" alt="Politizr" title="Accueil Politizr" />
+			</a>
+		</div>
 
-<!-- Collect the nav links, forms, and other content for toggling -->
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	<ul class="nav navbar-nav">
-		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Actualité<span class="caret"></span></a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="{{ path('HomepageE') }}">Mon forum</a></li>
-				<li><a href="{{ path('SuggestionsE') }}">Suggestions</a></li>
-				<li><a href="{{ path('PopularsE') }}">Populaires</a></li>
-				<li><a href="{{ path('LastE') }}">Derniers</a></li>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Actualité<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ path('HomepageE') }}">Mon forum</a></li>
+						<li><a href="{{ path('SuggestionsE') }}">Suggestions</a></li>
+						<li><a href="{{ path('PopularsE') }}">Populaires</a></li>
+						<li><a href="{{ path('LastE') }}">Derniers</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mes contributions<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ path('MyRatesE') }}">Accueil</a></li>
+						<li><a href="{{ path('MyDraftsE') }}">Mes brouillons</a></li>
+						<li><a href="{{ path('MyDebatesE') }}">Mes débats</a></li>
+						<li><a href="{{ path('MyReactionsE') }}">Mes réactions</a></li>
+						<li><a href="{{ path('MyCommentsE') }}">Mes commentaires</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mon compte<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ path('MyAccountE') }}">Accueil</a></li>
+						<li><a href="{{ path('MyTagsE') }}">Mes tags</a></li>
+						<li><a href="{{ path('MyReputationE') }}">Ma réputation</a></li>
+						<li><a href="{{ path('MyPersoE') }}">Mes informations personnelles</a></li>
+					</ul>
+				</li>
 			</ul>
-		</li>
-		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mes contributions<span class="caret"></span></a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="{{ path('MyRatesE') }}">Accueil</a></li>
-				<li><a href="{{ path('MyDraftsE') }}">Mes brouillons</a></li>
-				<li><a href="{{ path('MyDebatesE') }}">Mes débats</a></li>
-				<li><a href="{{ path('MyReactionsE') }}">Mes réactions</a></li>
-				<li><a href="{{ path('MyCommentsE') }}">Mes commentaires</a></li>
+			<ul class="navbar-form navbar-right">
+				<span class="label label-danger">
+					{{ app.user.firstname }} {{ app.user.name }}
+					{% if app.user.validated %}
+						<i class="fa fa-check-square-o" title="Profil validé"></i>
+					{% endif %}
+				</span>
+				&nbsp;
+				<a class="btn btn-warning btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
 			</ul>
-		</li>
-		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mon compte<span class="caret"></span></a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="{{ path('MyAccountE') }}">Accueil</a></li>
-				<li><a href="{{ path('MyTagsE') }}">Mes tags</a></li>
-				<li><a href="{{ path('MyReputationE') }}">Ma réputation</a></li>
-				<li><a href="{{ path('MyPersoE') }}">Mes informations personnelles</a></li>
-			</ul>
-		</li>
-	</ul>
-	<ul class="navbar-right">
-		<span class="label label-danger">
-			{{ app.user.firstname }} {{ app.user.name }}
-			{% if app.user.validated %}
-				<i class="fa fa-check-square-o" title="Profil validé"></i>
-			{% endif %}
-		</span>
-		&nbsp;
-		<a class="btn btn-warning btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
-	</ul>
-</div><!-- /.navbar-collapse -->
+		</div><!-- /.navbar-collapse -->
+	</div>
+</nav>

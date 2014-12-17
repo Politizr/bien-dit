@@ -524,8 +524,8 @@
         <column name="description" type="longvarchar" />
         <column name="more_info" type="longvarchar" />
 
-        <column name="note_pos" type="integer" />
-        <column name="note_neg" type="integer" />
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
 
         <column name="nb_views" type="integer" />
 
@@ -587,8 +587,8 @@
         <column name="description" type="longvarchar" />
         <column name="paragraph_no" type="integer" />
 
-        <column name="note_pos" type="integer" />
-        <column name="note_neg" type="integer" />
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
 
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />

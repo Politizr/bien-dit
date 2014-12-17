@@ -48,14 +48,17 @@ class PublicController extends Controller
         //      Récupération objets vue
         // *********************************** //
 
-        // débats les plus populaires
-        $debates = PDDebateQuery::create()->online()->popularity(5)->find();
+        // deniers débats publiés
+        $debates = PDDebateQuery::create()
+                    ->online()
+                    ->last(5)
+                    ->find();
 
         // profils les plus populaires
         $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
 
         // commentaires les plus populaires
-        $comments = PDCommentQuery::create()->online()->last(10)->find();
+        $comments = PDCommentQuery::create()->online()->last(5)->find();
 
         // débats locaux / adresse IP
         // $request = $this->get('request');

@@ -55,8 +55,8 @@ class PDReactionArchiveTableMap extends TableMap
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('more_info', 'MoreInfo', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
-        $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, null);
+        $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
+        $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);

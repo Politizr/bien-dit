@@ -83,7 +83,6 @@ class SecurityController extends Controller {
      *  Annulation inscription
      */
     public function cancelInscriptionAction() {
-
         // Récupération user
         $user = $this->get('security.context')->getToken()->getUser();
 

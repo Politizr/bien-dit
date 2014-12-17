@@ -47,8 +47,8 @@ class PDCommentTableMap extends TableMap
         $this->addForeignKey('p_document_id', 'PDocumentId', 'INTEGER', 'p_document', 'id', true, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('paragraph_no', 'ParagraphNo', 'INTEGER', false, null, null);
-        $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, null);
-        $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, null);
+        $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
+        $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
