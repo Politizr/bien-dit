@@ -112,32 +112,28 @@ LAYOUT COMMENT
 		{% set route = path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.reaction.slug }) %}
 	{% endif %}
 
-	<div class="comment-timeline-row">
-		{# Date #}
-		<div class="row">
-			<div class="col-sm-2 text-center">
-				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
-			</div>
-			<div class="col-sm-10 text-center">
-				&nbsp;
-			</div>
-		</div>
-
+	<div class="timeline-row">
 		{# Accroche #}
 		<div class="row">
 			<div class="col-sm-1 text-center">
 				<h4><i class="fa fa-twitch"></i></h4>
 			</div>
-			<div class="col-sm-11">
-				<h4>
+			<div class="col-sm-2 text-center">
+				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ comment.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+			</div>
+			<div class="col-sm-8">
+				<h4 {% if isParentMine %} class="bg-info"{% endif %}>
 					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': comment.user } only %} a rédigé un <a class="label label-info" href="{{ route }}">commentaire</a>
 					{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-						sur le débat
+						sur {% if isParentMine %}votre{% else %}le{% endif %} débat
 					{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-						sur la réaction
+						sur {% if isParentMine %}votre{% else %}la{% endif %} réaction
 					{% endif %}
 					<a href="{{ route }}">{{ comment.document }}</a>
 				</h4>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="fa fa-info" action="more-info"></a>
 			</div>
 		</div>
 

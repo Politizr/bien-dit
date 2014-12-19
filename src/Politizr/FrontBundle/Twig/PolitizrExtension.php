@@ -626,17 +626,45 @@ class PolitizrExtension extends \Twig_Extension
                 break;
             case PDocument::TYPE_REACTION:
                 $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
+
+                // MAJ de variables spécifiques aux réactions
+                $parentReaction = null;
+                $isParentReactionMine = false;
+                $isParentDebateMine = false;
+                if ($reaction->getLevel() > 1);
+                    $parentReaction = $reaction->getParent();
+                    if ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
+                        $isParentDebateMine = true;
+                    }
+                    if ($this->user->getId() == $parentReaction->getPUserId()) {
+                        $isParentReactionMine = true;
+                    }
+                elseif ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
+                    $isParentDebateMine = true;
+                }
+
                 $html = $this->templating->render(
                                     'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig', array(
-                                        'reaction' => $reaction
+                                        'reaction' => $reaction,
+                                        'parentReaction' => $parentReaction,
+                                        'isParentReactionMine' => $isParentReactionMine,
+                                        'isParentDebateMine' => $isParentDebateMine,
                                         )
                             );
                 break;
             case PDocument::TYPE_COMMENT:
                 $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
+
+                // MAJ de variables spécifiques aux commentaires
+                $isParentMine = false;
+                if ($comment->getPDocument() && $this->user->getId() == $comment->getPDocument()->getPUserId()) {
+                    $isParentMine = true;
+                }
+
                 $html = $this->templating->render(
                                     'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig', array(
-                                        'comment' => $comment
+                                        'comment' => $comment,
+                                        'isParentMine' => $isParentMine,
                                         )
                             );
                 break;

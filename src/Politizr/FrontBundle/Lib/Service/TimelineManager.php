@@ -8,6 +8,8 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Model\PDocumentQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 
@@ -72,6 +74,46 @@ class TimelineManager
         return $userIds;        
     }
 
+
+    /**
+     *  Renvoit un tableau des ids des réactions du userId
+     *
+     *  @param  integer     $userId
+     *  
+     *  @return array
+     */
+    private function getMyReactionIdsArray($userId) {
+        $myReactionIds = PDReactionQuery::create()
+                        ->filterByPUserId($userId)
+                        ->find()
+                        ->toKeyValue('Id', 'Id')
+                        // ->getPrimaryKeys()
+                        ;
+        $myReactionIds = array_keys($myReactionIds);
+
+        return $myReactionIds;        
+    }
+
+
+    /**
+     *  Renvoit un tableau des ids des documents du userId
+     *
+     *  @param  integer     $userId
+     *  
+     *  @return array
+     */
+    private function getMyDocumentIdsArray($userId) {
+        $myDocumentIds = PDocumentQuery::create()
+                        ->filterByPUserId($userId)
+                        ->find()
+                        ->toKeyValue('Id', 'Id')
+                        // ->getPrimaryKeys()
+                        ;
+        $myDocumentIds = array_keys($myDocumentIds);
+
+        return $myDocumentIds;        
+    }
+
     /* ######################################################################################################## */
     /*                           SERVICES METIERS LIES A L'INSCRIPTION                                          */
     /* ######################################################################################################## */
@@ -101,15 +143,52 @@ class TimelineManager
      *  # Débats & réactions des users suivis
      *  ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, 'p_document' as type
      *  FROM p_document
-     *  WHERE p_document.p_user_id IN (1, 72) )
+     *  WHERE p_document.p_user_id IN (1, 73) )
      *  
      *  
      *  UNION DISTINCT
      *  
      *  # Commentaires des users suivis
-     *  ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'p_d_comment' as    *  type
+     *  ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'p_d_comment' as  'Politizr\\Model\\PDComment'  type
      *  FROM p_d_comment
-     *  WHERE p_d_comment.p_user_id IN (1, 72) )
+     *  WHERE p_d_comment.p_user_id IN (1, 73) )
+     *  
+     *  
+     *  UNION DISTINCT
+     *  
+     *  # Réactions sur mes débats
+     *  ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+     *  FROM p_d_reaction
+     *      LEFT JOIN p_d_debate 
+     *          ON p_d_reaction.p_d_debate_id = p_d_debate.id
+     *  WHERE 
+     *      p_d_debate.p_user_id = 72
+     *      AND p_d_reaction.tree_level > 0 )
+     *  
+     *  
+     *  UNION DISTINCT
+     *  
+     *  # Réactions sur mes réactions
+     *  ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+     *  FROM p_d_reaction as p_d_reaction
+     *      LEFT JOIN p_d_reaction as my_reaction
+     *          ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
+     *  WHERE 
+     *    my_reaction.id IN (12, 16) 
+     *    AND p_d_reaction.tree_left > my_reaction.tree_left
+     *      AND p_d_reaction.tree_left < my_reaction.tree_right
+     *      AND p_d_reaction.tree_level > my_reaction.tree_level
+     *      AND p_d_reaction.tree_level > 1 )
+     *  
+     *
+     *  UNION DISTINCT
+     *  
+     *  # Commentaires sur mes débats & réactions
+     *  ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+     *  FROM p_d_comment
+     *  WHERE p_d_comment.p_document_id IN (1, 12, 16) )
+     *  
+     *  
      *  
      *  ORDER BY published_at DESC
      *  
@@ -122,6 +201,8 @@ class TimelineManager
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
+        $userId = $user->getId();
+        $logger->info('userId = '.print_r($userId, true));
 
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
@@ -139,8 +220,25 @@ class TimelineManager
         }
         $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
+        // Récupération d'un tableau des ids de mes réactions
+        $myReactionIds = $this->getMyReactionIdsArray($user->getId());
+        $inQueryMyReactionIds = implode(',', $myReactionIds);
+        if (empty($inQueryMyReactionIds)) {
+            $inQueryMyReactionIds = 0;
+        }
+        $logger->info('inQueryMyReactionIds = '.print_r($inQueryMyReactionIds, true));
+
+        // Récupération d'un tableau des ids de mes documents
+        $myDocumentIds = $this->getMyReactionIdsArray($user->getId());
+        $inQueryMyDocumentIds = implode(',', $myDocumentIds);
+        if (empty($inQueryMyDocumentIds)) {
+            $inQueryMyDocumentIds = 0;
+        }
+        $logger->info('inQueryMyDocumentIds = '.print_r($inQueryMyDocumentIds, true));
+        
+
         // Préparation requête SQL
-        if (!empty($debateIds) || !empty($userIds)) {
+        if (!empty($debateIds) || !empty($userIds) || !empty($myReactionIds) || !empty($myDocumentIds)) {
             $sql = "
 
 #  Réactions aux débats suivis
@@ -165,6 +263,39 @@ UNION DISTINCT
 ( SELECT p_d_comment.id as id, 'commentaire' as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDComment' as type
 FROM p_d_comment
 WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+# Réactions sur mes débats
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_debate 
+        ON p_d_reaction.p_d_debate_id = p_d_debate.id
+WHERE 
+    p_d_debate.p_user_id = ".$userId."
+    AND p_d_reaction.tree_level > 0 )
+
+UNION DISTINCT
+
+# Réactions sur mes réactions
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction as p_d_reaction
+    LEFT JOIN p_d_reaction as my_reaction
+        ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
+WHERE 
+  my_reaction.id IN (".$inQueryMyReactionIds.") 
+  AND p_d_reaction.tree_left > my_reaction.tree_left
+    AND p_d_reaction.tree_left < my_reaction.tree_right
+    AND p_d_reaction.tree_level > my_reaction.tree_level
+    AND p_d_reaction.tree_level > 1 )
+
+UNION DISTINCT
+
+# Commentaires sur mes débats & réactions
+( SELECT p_d_comment.id as id, 'commentaire' as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDComment' as type
+FROM p_d_comment
+WHERE p_d_comment.p_document_id IN (".$inQueryMyDocumentIds.") )
+
 
 ORDER BY published_at DESC
         ";

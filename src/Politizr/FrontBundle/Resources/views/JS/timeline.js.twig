@@ -1,0 +1,19 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        $(".jumbotron").hide();
+    });
+
+    // Ouverture box jumbotron
+    $("body").on("click", "a[action='more-info']", function() {
+        if ($(this).closest('.timeline-row').find('.jumbotron').is(':visible')) {
+            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
+        } else {
+            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
+            $(this).closest('.timeline-row').find('.jumbotron').slideDown();
+        }
+    });
+
+</script>
