@@ -182,7 +182,6 @@ class PUser extends BasePUser implements UserInterface
         return serialize(
             array(
                 $this->id,
-                $this->p_u_type_id,
                 $this->p_u_status_id,
                 $this->username,
                 $this->name,
@@ -194,7 +193,9 @@ class PUser extends BasePUser implements UserInterface
                 $this->expired,
                 $this->locked,
                 $this->credentials_expired,
-                $this->enabled,
+                $this->qualified,
+                $this->validated,
+                $this->online,
                 $this->_new,
             )
         );
@@ -213,7 +214,6 @@ class PUser extends BasePUser implements UserInterface
 
         list(
                 $this->id,
-                $this->p_u_type_id,
                 $this->p_u_status_id,
                 $this->username,
                 $this->name,
@@ -225,7 +225,9 @@ class PUser extends BasePUser implements UserInterface
                 $this->expired,
                 $this->locked,
                 $this->credentials_expired,
-                $this->enabled,
+                $this->qualified,
+                $this->validated,
+                $this->online,
                 $this->_new,
         ) = $data;
     }
@@ -360,7 +362,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserFollowersQ() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE);
+		$query = PUserQuery::create()->filterByQualified(true);
 		$pUsers = $this->getPUserFollowers($query);
 
 		return $pUsers;
@@ -383,7 +385,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserFollowersC() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_CITOYEN);
+		$query = PUserQuery::create()->filterByQualified(false);
 		$pUsers = $this->getPUserFollowers($query);
 
 		return $pUsers;
@@ -447,7 +449,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserSubscribersQ() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE);
+		$query = PUserQuery::create()->filterByQualified(true);
 		$pUsers = $this->getPUserSubscribers($query);
 
 		return $pUsers;
@@ -471,7 +473,7 @@ class PUser extends BasePUser implements UserInterface
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getPUserSubscribersC() {
-		$query = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_CITOYEN);
+		$query = PUserQuery::create()->filterByQualified(false);
 		$pUsers = $this->getPUserSubscribers($query);
 
 		return $pUsers;
@@ -491,47 +493,46 @@ class PUser extends BasePUser implements UserInterface
     // *****************************    QUALIFICATION    ************************* //
 
     /**
-     *  Renvoie les qualifications par ordre décroissant
+     *  Renvoie les mandats par ordre décroissant
      *
-     * @return PUQualification
+     * @return array PUMandate
      */
-    public function getQualifications() {
-        $query = PUQualificationQuery::create()
+    public function getMandates() {
+        $query = PUMandateQuery::create()
                     ->orderByBeginAt(\Criteria::DESC);
 
-        return parent::getPUQualifications($query);
+        return parent::getPUMandates($query);
     }
 
     /**
-     *  Renvoie la qualification courante
+     *  Renvoie le mandat courant
      *
-     * @return PUQualification
+     * @return PUMandate
      */
-    public function getCurrentQualification() {
-        $puQualification = PUQualificationQuery::create()
+    public function getCurrentMandate() {
+        $puMandate = PUMandateQuery::create()
             ->filterByPUserId($this->getId())
             ->filterByEndAt(array('min' => time()))
                 ->_or()
             ->filterByEndAt(null)
             ->findOne();
 
-        return $puQualification;
+        return $puMandate;
     }
 
     // *****************************    AFFINITÉS POLITIQUES    ************************* //
 
     /**
-     *  Renvoie les parties politiques affinité par ordre sortable
+     *  Renvoie les affinités d'organisation
      *
-     * @return array    PUPoliticalParty
+     * @return array    PQOrganization
      */
-    public function getPoliticalParties($online = true) {
-        $query = PUPoliticalPartyQuery::create()
+    public function getOrganizations($online = true) {
+        $query = PQOrganizationPartyQuery::create()
                     ->filterByOnline($online)
-                    ->setDistinct()
-                    ->orderByRank();
+                    ->setDistinct();
 
-        return parent::getPuAffinityUppPUPoliticalParties($query);
+        return parent::getPQOrganizations($query);
     }
 
 
@@ -693,21 +694,21 @@ class PUser extends BasePUser implements UserInterface
             ->orderByTitle()
             ;
 
-        return parent::getPuReputationRbPRBadges($query);
+        return parent::getPRBadges($query);
     }
 
     /**
      * @see addPuReputationRbPRBadge
      */
     public function addBadge(PRBadge $prBadge) {
-        return parent::addPuReputationRbPRBadge($prBadge);
+        return parent::addPRBadge($prBadge);
     }
 
     /**
      * @see removePuReputationRbPRBadge
      */
     public function removeBadge(PRBadge $prBadge) {
-        return parent::removePuReputationRbPRBadge($prBadge);
+        return parent::removePRBadge($prBadge);
     }
 
     /**
@@ -768,7 +769,7 @@ class PUser extends BasePUser implements UserInterface
 
         // Récupère les débats
         $pDDebates = PDDebateQuery::create()
-                        ->usePddTaggedTPDDebateQuery()
+                        ->usePddTaggedTQuery()
                             ->filterByPTagId($followedIds->getData())
                         ->endUse()
                         ->_if($notFollowed)
@@ -789,7 +790,7 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PUser (collection)
      */
-    public function getTaggedPUsers($ptTagTypeId = null, $puType = null, $notFollowed = true) {
+    public function getTaggedPUsers($ptTagTypeId = null, $qualified = null, $notFollowed = true) {
         $followedTagsId = PTagQuery::create()
                         ->select('Id')
                         ->_if($ptTagTypeId)
@@ -806,8 +807,8 @@ class PUser extends BasePUser implements UserInterface
                         ->_if($notFollowed)
                             ->where('p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ?)', $this->getId())
                         ->_endif()
-                        ->_if($puType)
-                            ->filterByPUTypeId($puType)
+                        ->_if($qualified)
+                            ->filterByQualified($qualified)
                         ->_endif()
                         ->filterById($this->getId(), \Criteria::NOT_EQUAL)
                         ->online()

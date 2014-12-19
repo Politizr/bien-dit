@@ -116,8 +116,8 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PDDTaggedT[] Collection to store aggregation of PDDTaggedT objects.
      */
-    protected $collPddTaggedTPTags;
-    protected $collPddTaggedTPTagsPartial;
+    protected $collPDDTaggedTs;
+    protected $collPDDTaggedTsPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
@@ -132,7 +132,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
      */
-    protected $collPddTaggedTPDDebates;
+    protected $collPDDebates;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -173,7 +173,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pddTaggedTPDDebatesScheduledForDeletion = null;
+    protected $pDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -191,7 +191,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pddTaggedTPTagsScheduledForDeletion = null;
+    protected $pDDTaggedTsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -609,11 +609,11 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             $this->collPuFollowTPTags = null;
 
-            $this->collPddTaggedTPTags = null;
+            $this->collPDDTaggedTs = null;
 
             $this->collPuTaggedTPUsers = null;
             $this->collPuFollowTPUsers = null;
-            $this->collPddTaggedTPDDebates = null;
+            $this->collPDDebates = null;
         } // if (deep)
     }
 
@@ -832,28 +832,28 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pddTaggedTPDDebatesScheduledForDeletion !== null) {
-                if (!$this->pddTaggedTPDDebatesScheduledForDeletion->isEmpty()) {
+            if ($this->pDDebatesScheduledForDeletion !== null) {
+                if (!$this->pDDebatesScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->pddTaggedTPDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                    foreach ($this->pDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
                     PDDTaggedTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->pddTaggedTPDDebatesScheduledForDeletion = null;
+                    $this->pDDebatesScheduledForDeletion = null;
                 }
 
-                foreach ($this->getPddTaggedTPDDebates() as $pddTaggedTPDDebate) {
-                    if ($pddTaggedTPDDebate->isModified()) {
-                        $pddTaggedTPDDebate->save($con);
+                foreach ($this->getPDDebates() as $pDDebate) {
+                    if ($pDDebate->isModified()) {
+                        $pDDebate->save($con);
                     }
                 }
-            } elseif ($this->collPddTaggedTPDDebates) {
-                foreach ($this->collPddTaggedTPDDebates as $pddTaggedTPDDebate) {
-                    if ($pddTaggedTPDDebate->isModified()) {
-                        $pddTaggedTPDDebate->save($con);
+            } elseif ($this->collPDDebates) {
+                foreach ($this->collPDDebates as $pDDebate) {
+                    if ($pDDebate->isModified()) {
+                        $pDDebate->save($con);
                     }
                 }
             }
@@ -892,17 +892,17 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pddTaggedTPTagsScheduledForDeletion !== null) {
-                if (!$this->pddTaggedTPTagsScheduledForDeletion->isEmpty()) {
+            if ($this->pDDTaggedTsScheduledForDeletion !== null) {
+                if (!$this->pDDTaggedTsScheduledForDeletion->isEmpty()) {
                     PDDTaggedTQuery::create()
-                        ->filterByPrimaryKeys($this->pddTaggedTPTagsScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->pDDTaggedTsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pddTaggedTPTagsScheduledForDeletion = null;
+                    $this->pDDTaggedTsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPddTaggedTPTags !== null) {
-                foreach ($this->collPddTaggedTPTags as $referrerFK) {
+            if ($this->collPDDTaggedTs !== null) {
+                foreach ($this->collPDDTaggedTs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1115,8 +1115,8 @@ abstract class BasePTag extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPddTaggedTPTags !== null) {
-                    foreach ($this->collPddTaggedTPTags as $referrerFK) {
+                if ($this->collPDDTaggedTs !== null) {
+                    foreach ($this->collPDDTaggedTs as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1231,8 +1231,8 @@ abstract class BasePTag extends BaseObject implements Persistent
             if (null !== $this->collPuFollowTPTags) {
                 $result['PuFollowTPTags'] = $this->collPuFollowTPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPddTaggedTPTags) {
-                $result['PddTaggedTPTags'] = $this->collPddTaggedTPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPDDTaggedTs) {
+                $result['PDDTaggedTs'] = $this->collPDDTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1427,9 +1427,9 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPddTaggedTPTags() as $relObj) {
+            foreach ($this->getPDDTaggedTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPddTaggedTPTag($relObj->copy($deepCopy));
+                    $copyObj->addPDDTaggedT($relObj->copy($deepCopy));
                 }
             }
 
@@ -1552,8 +1552,8 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ('PuFollowTPTag' == $relationName) {
             $this->initPuFollowTPTags();
         }
-        if ('PddTaggedTPTag' == $relationName) {
-            $this->initPddTaggedTPTags();
+        if ('PDDTaggedT' == $relationName) {
+            $this->initPDDTaggedTs();
         }
     }
 
@@ -2058,36 +2058,36 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPddTaggedTPTags collection
+     * Clears out the collPDDTaggedTs collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PTag The current object (for fluent API support)
-     * @see        addPddTaggedTPTags()
+     * @see        addPDDTaggedTs()
      */
-    public function clearPddTaggedTPTags()
+    public function clearPDDTaggedTs()
     {
-        $this->collPddTaggedTPTags = null; // important to set this to null since that means it is uninitialized
-        $this->collPddTaggedTPTagsPartial = null;
+        $this->collPDDTaggedTs = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDTaggedTsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPddTaggedTPTags collection loaded partially
+     * reset is the collPDDTaggedTs collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPddTaggedTPTags($v = true)
+    public function resetPartialPDDTaggedTs($v = true)
     {
-        $this->collPddTaggedTPTagsPartial = $v;
+        $this->collPDDTaggedTsPartial = $v;
     }
 
     /**
-     * Initializes the collPddTaggedTPTags collection.
+     * Initializes the collPDDTaggedTs collection.
      *
-     * By default this just sets the collPddTaggedTPTags collection to an empty array (like clearcollPddTaggedTPTags());
+     * By default this just sets the collPDDTaggedTs collection to an empty array (like clearcollPDDTaggedTs());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -2096,13 +2096,13 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPddTaggedTPTags($overrideExisting = true)
+    public function initPDDTaggedTs($overrideExisting = true)
     {
-        if (null !== $this->collPddTaggedTPTags && !$overrideExisting) {
+        if (null !== $this->collPDDTaggedTs && !$overrideExisting) {
             return;
         }
-        $this->collPddTaggedTPTags = new PropelObjectCollection();
-        $this->collPddTaggedTPTags->setModel('PDDTaggedT');
+        $this->collPDDTaggedTs = new PropelObjectCollection();
+        $this->collPDDTaggedTs->setModel('PDDTaggedT');
     }
 
     /**
@@ -2119,79 +2119,79 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @return PropelObjectCollection|PDDTaggedT[] List of PDDTaggedT objects
      * @throws PropelException
      */
-    public function getPddTaggedTPTags($criteria = null, PropelPDO $con = null)
+    public function getPDDTaggedTs($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPddTaggedTPTagsPartial && !$this->isNew();
-        if (null === $this->collPddTaggedTPTags || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPddTaggedTPTags) {
+        $partial = $this->collPDDTaggedTsPartial && !$this->isNew();
+        if (null === $this->collPDDTaggedTs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDDTaggedTs) {
                 // return empty collection
-                $this->initPddTaggedTPTags();
+                $this->initPDDTaggedTs();
             } else {
-                $collPddTaggedTPTags = PDDTaggedTQuery::create(null, $criteria)
-                    ->filterByPddTaggedTPTag($this)
+                $collPDDTaggedTs = PDDTaggedTQuery::create(null, $criteria)
+                    ->filterByPTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPddTaggedTPTagsPartial && count($collPddTaggedTPTags)) {
-                      $this->initPddTaggedTPTags(false);
+                    if (false !== $this->collPDDTaggedTsPartial && count($collPDDTaggedTs)) {
+                      $this->initPDDTaggedTs(false);
 
-                      foreach ($collPddTaggedTPTags as $obj) {
-                        if (false == $this->collPddTaggedTPTags->contains($obj)) {
-                          $this->collPddTaggedTPTags->append($obj);
+                      foreach ($collPDDTaggedTs as $obj) {
+                        if (false == $this->collPDDTaggedTs->contains($obj)) {
+                          $this->collPDDTaggedTs->append($obj);
                         }
                       }
 
-                      $this->collPddTaggedTPTagsPartial = true;
+                      $this->collPDDTaggedTsPartial = true;
                     }
 
-                    $collPddTaggedTPTags->getInternalIterator()->rewind();
+                    $collPDDTaggedTs->getInternalIterator()->rewind();
 
-                    return $collPddTaggedTPTags;
+                    return $collPDDTaggedTs;
                 }
 
-                if ($partial && $this->collPddTaggedTPTags) {
-                    foreach ($this->collPddTaggedTPTags as $obj) {
+                if ($partial && $this->collPDDTaggedTs) {
+                    foreach ($this->collPDDTaggedTs as $obj) {
                         if ($obj->isNew()) {
-                            $collPddTaggedTPTags[] = $obj;
+                            $collPDDTaggedTs[] = $obj;
                         }
                     }
                 }
 
-                $this->collPddTaggedTPTags = $collPddTaggedTPTags;
-                $this->collPddTaggedTPTagsPartial = false;
+                $this->collPDDTaggedTs = $collPDDTaggedTs;
+                $this->collPDDTaggedTsPartial = false;
             }
         }
 
-        return $this->collPddTaggedTPTags;
+        return $this->collPDDTaggedTs;
     }
 
     /**
-     * Sets a collection of PddTaggedTPTag objects related by a one-to-many relationship
+     * Sets a collection of PDDTaggedT objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pddTaggedTPTags A Propel collection.
+     * @param PropelCollection $pDDTaggedTs A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PTag The current object (for fluent API support)
      */
-    public function setPddTaggedTPTags(PropelCollection $pddTaggedTPTags, PropelPDO $con = null)
+    public function setPDDTaggedTs(PropelCollection $pDDTaggedTs, PropelPDO $con = null)
     {
-        $pddTaggedTPTagsToDelete = $this->getPddTaggedTPTags(new Criteria(), $con)->diff($pddTaggedTPTags);
+        $pDDTaggedTsToDelete = $this->getPDDTaggedTs(new Criteria(), $con)->diff($pDDTaggedTs);
 
 
-        $this->pddTaggedTPTagsScheduledForDeletion = $pddTaggedTPTagsToDelete;
+        $this->pDDTaggedTsScheduledForDeletion = $pDDTaggedTsToDelete;
 
-        foreach ($pddTaggedTPTagsToDelete as $pddTaggedTPTagRemoved) {
-            $pddTaggedTPTagRemoved->setPddTaggedTPTag(null);
+        foreach ($pDDTaggedTsToDelete as $pDDTaggedTRemoved) {
+            $pDDTaggedTRemoved->setPTag(null);
         }
 
-        $this->collPddTaggedTPTags = null;
-        foreach ($pddTaggedTPTags as $pddTaggedTPTag) {
-            $this->addPddTaggedTPTag($pddTaggedTPTag);
+        $this->collPDDTaggedTs = null;
+        foreach ($pDDTaggedTs as $pDDTaggedT) {
+            $this->addPDDTaggedT($pDDTaggedT);
         }
 
-        $this->collPddTaggedTPTags = $pddTaggedTPTags;
-        $this->collPddTaggedTPTagsPartial = false;
+        $this->collPDDTaggedTs = $pDDTaggedTs;
+        $this->collPDDTaggedTsPartial = false;
 
         return $this;
     }
@@ -2205,16 +2205,16 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @return int             Count of related PDDTaggedT objects.
      * @throws PropelException
      */
-    public function countPddTaggedTPTags(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPDDTaggedTs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPddTaggedTPTagsPartial && !$this->isNew();
-        if (null === $this->collPddTaggedTPTags || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPddTaggedTPTags) {
+        $partial = $this->collPDDTaggedTsPartial && !$this->isNew();
+        if (null === $this->collPDDTaggedTs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDDTaggedTs) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPddTaggedTPTags());
+                return count($this->getPDDTaggedTs());
             }
             $query = PDDTaggedTQuery::create(null, $criteria);
             if ($distinct) {
@@ -2222,11 +2222,11 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByPddTaggedTPTag($this)
+                ->filterByPTag($this)
                 ->count($con);
         }
 
-        return count($this->collPddTaggedTPTags);
+        return count($this->collPDDTaggedTs);
     }
 
     /**
@@ -2236,18 +2236,18 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @param    PDDTaggedT $l PDDTaggedT
      * @return PTag The current object (for fluent API support)
      */
-    public function addPddTaggedTPTag(PDDTaggedT $l)
+    public function addPDDTaggedT(PDDTaggedT $l)
     {
-        if ($this->collPddTaggedTPTags === null) {
-            $this->initPddTaggedTPTags();
-            $this->collPddTaggedTPTagsPartial = true;
+        if ($this->collPDDTaggedTs === null) {
+            $this->initPDDTaggedTs();
+            $this->collPDDTaggedTsPartial = true;
         }
 
-        if (!in_array($l, $this->collPddTaggedTPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPddTaggedTPTag($l);
+        if (!in_array($l, $this->collPDDTaggedTs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDTaggedT($l);
 
-            if ($this->pddTaggedTPTagsScheduledForDeletion and $this->pddTaggedTPTagsScheduledForDeletion->contains($l)) {
-                $this->pddTaggedTPTagsScheduledForDeletion->remove($this->pddTaggedTPTagsScheduledForDeletion->search($l));
+            if ($this->pDDTaggedTsScheduledForDeletion and $this->pDDTaggedTsScheduledForDeletion->contains($l)) {
+                $this->pDDTaggedTsScheduledForDeletion->remove($this->pDDTaggedTsScheduledForDeletion->search($l));
             }
         }
 
@@ -2255,28 +2255,28 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PddTaggedTPTag $pddTaggedTPTag The pddTaggedTPTag object to add.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to add.
      */
-    protected function doAddPddTaggedTPTag($pddTaggedTPTag)
+    protected function doAddPDDTaggedT($pDDTaggedT)
     {
-        $this->collPddTaggedTPTags[]= $pddTaggedTPTag;
-        $pddTaggedTPTag->setPddTaggedTPTag($this);
+        $this->collPDDTaggedTs[]= $pDDTaggedT;
+        $pDDTaggedT->setPTag($this);
     }
 
     /**
-     * @param	PddTaggedTPTag $pddTaggedTPTag The pddTaggedTPTag object to remove.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to remove.
      * @return PTag The current object (for fluent API support)
      */
-    public function removePddTaggedTPTag($pddTaggedTPTag)
+    public function removePDDTaggedT($pDDTaggedT)
     {
-        if ($this->getPddTaggedTPTags()->contains($pddTaggedTPTag)) {
-            $this->collPddTaggedTPTags->remove($this->collPddTaggedTPTags->search($pddTaggedTPTag));
-            if (null === $this->pddTaggedTPTagsScheduledForDeletion) {
-                $this->pddTaggedTPTagsScheduledForDeletion = clone $this->collPddTaggedTPTags;
-                $this->pddTaggedTPTagsScheduledForDeletion->clear();
+        if ($this->getPDDTaggedTs()->contains($pDDTaggedT)) {
+            $this->collPDDTaggedTs->remove($this->collPDDTaggedTs->search($pDDTaggedT));
+            if (null === $this->pDDTaggedTsScheduledForDeletion) {
+                $this->pDDTaggedTsScheduledForDeletion = clone $this->collPDDTaggedTs;
+                $this->pDDTaggedTsScheduledForDeletion->clear();
             }
-            $this->pddTaggedTPTagsScheduledForDeletion[]= clone $pddTaggedTPTag;
-            $pddTaggedTPTag->setPddTaggedTPTag(null);
+            $this->pDDTaggedTsScheduledForDeletion[]= clone $pDDTaggedT;
+            $pDDTaggedT->setPTag(null);
         }
 
         return $this;
@@ -2288,7 +2288,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PTag is new, it will return
      * an empty collection; or if this PTag has previously
-     * been saved, it will retrieve related PddTaggedTPTags from storage.
+     * been saved, it will retrieve related PDDTaggedTs from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2299,12 +2299,12 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PDDTaggedT[] List of PDDTaggedT objects
      */
-    public function getPddTaggedTPTagsJoinPddTaggedTPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPDDTaggedTsJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PDDTaggedTQuery::create(null, $criteria);
-        $query->joinWith('PddTaggedTPDDebate', $join_behavior);
+        $query->joinWith('PDDebate', $join_behavior);
 
-        return $this->getPddTaggedTPTags($query, $con);
+        return $this->getPDDTaggedTs($query, $con);
     }
 
     /**
@@ -2682,35 +2682,35 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPddTaggedTPDDebates collection
+     * Clears out the collPDDebates collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PTag The current object (for fluent API support)
-     * @see        addPddTaggedTPDDebates()
+     * @see        addPDDebates()
      */
-    public function clearPddTaggedTPDDebates()
+    public function clearPDDebates()
     {
-        $this->collPddTaggedTPDDebates = null; // important to set this to null since that means it is uninitialized
-        $this->collPddTaggedTPDDebatesPartial = null;
+        $this->collPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDebatesPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collPddTaggedTPDDebates collection.
+     * Initializes the collPDDebates collection.
      *
-     * By default this just sets the collPddTaggedTPDDebates collection to an empty collection (like clearPddTaggedTPDDebates());
+     * By default this just sets the collPDDebates collection to an empty collection (like clearPDDebates());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initPddTaggedTPDDebates()
+    public function initPDDebates()
     {
-        $this->collPddTaggedTPDDebates = new PropelObjectCollection();
-        $this->collPddTaggedTPDDebates->setModel('PDDebate');
+        $this->collPDDebates = new PropelObjectCollection();
+        $this->collPDDebates->setModel('PDDebate');
     }
 
     /**
@@ -2728,24 +2728,24 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
      */
-    public function getPddTaggedTPDDebates($criteria = null, PropelPDO $con = null)
+    public function getPDDebates($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collPddTaggedTPDDebates || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPddTaggedTPDDebates) {
+        if (null === $this->collPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPDDebates) {
                 // return empty collection
-                $this->initPddTaggedTPDDebates();
+                $this->initPDDebates();
             } else {
-                $collPddTaggedTPDDebates = PDDebateQuery::create(null, $criteria)
-                    ->filterByPddTaggedTPTag($this)
+                $collPDDebates = PDDebateQuery::create(null, $criteria)
+                    ->filterByPTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collPddTaggedTPDDebates;
+                    return $collPDDebates;
                 }
-                $this->collPddTaggedTPDDebates = $collPddTaggedTPDDebates;
+                $this->collPDDebates = $collPDDebates;
             }
         }
 
-        return $this->collPddTaggedTPDDebates;
+        return $this->collPDDebates;
     }
 
     /**
@@ -2754,24 +2754,24 @@ abstract class BasePTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pddTaggedTPDDebates A Propel collection.
+     * @param PropelCollection $pDDebates A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PTag The current object (for fluent API support)
      */
-    public function setPddTaggedTPDDebates(PropelCollection $pddTaggedTPDDebates, PropelPDO $con = null)
+    public function setPDDebates(PropelCollection $pDDebates, PropelPDO $con = null)
     {
-        $this->clearPddTaggedTPDDebates();
-        $currentPddTaggedTPDDebates = $this->getPddTaggedTPDDebates(null, $con);
+        $this->clearPDDebates();
+        $currentPDDebates = $this->getPDDebates(null, $con);
 
-        $this->pddTaggedTPDDebatesScheduledForDeletion = $currentPddTaggedTPDDebates->diff($pddTaggedTPDDebates);
+        $this->pDDebatesScheduledForDeletion = $currentPDDebates->diff($pDDebates);
 
-        foreach ($pddTaggedTPDDebates as $pddTaggedTPDDebate) {
-            if (!$currentPddTaggedTPDDebates->contains($pddTaggedTPDDebate)) {
-                $this->doAddPddTaggedTPDDebate($pddTaggedTPDDebate);
+        foreach ($pDDebates as $pDDebate) {
+            if (!$currentPDDebates->contains($pDDebate)) {
+                $this->doAddPDDebate($pDDebate);
             }
         }
 
-        $this->collPddTaggedTPDDebates = $pddTaggedTPDDebates;
+        $this->collPDDebates = $pDDebates;
 
         return $this;
     }
@@ -2786,10 +2786,10 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * @return int the number of related PDDebate objects
      */
-    public function countPddTaggedTPDDebates($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPDDebates($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collPddTaggedTPDDebates || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPddTaggedTPDDebates) {
+        if (null === $this->collPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPDDebates) {
                 return 0;
             } else {
                 $query = PDDebateQuery::create(null, $criteria);
@@ -2798,11 +2798,11 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
 
                 return $query
-                    ->filterByPddTaggedTPTag($this)
+                    ->filterByPTag($this)
                     ->count($con);
             }
         } else {
-            return count($this->collPddTaggedTPDDebates);
+            return count($this->collPDDebates);
         }
     }
 
@@ -2813,18 +2813,18 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @param  PDDebate $pDDebate The PDDTaggedT object to relate
      * @return PTag The current object (for fluent API support)
      */
-    public function addPddTaggedTPDDebate(PDDebate $pDDebate)
+    public function addPDDebate(PDDebate $pDDebate)
     {
-        if ($this->collPddTaggedTPDDebates === null) {
-            $this->initPddTaggedTPDDebates();
+        if ($this->collPDDebates === null) {
+            $this->initPDDebates();
         }
 
-        if (!$this->collPddTaggedTPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
-            $this->doAddPddTaggedTPDDebate($pDDebate);
-            $this->collPddTaggedTPDDebates[] = $pDDebate;
+        if (!$this->collPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDebate($pDDebate);
+            $this->collPDDebates[] = $pDDebate;
 
-            if ($this->pddTaggedTPDDebatesScheduledForDeletion and $this->pddTaggedTPDDebatesScheduledForDeletion->contains($pDDebate)) {
-                $this->pddTaggedTPDDebatesScheduledForDeletion->remove($this->pddTaggedTPDDebatesScheduledForDeletion->search($pDDebate));
+            if ($this->pDDebatesScheduledForDeletion and $this->pDDebatesScheduledForDeletion->contains($pDDebate)) {
+                $this->pDDebatesScheduledForDeletion->remove($this->pDDebatesScheduledForDeletion->search($pDDebate));
             }
         }
 
@@ -2832,17 +2832,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PddTaggedTPDDebate $pddTaggedTPDDebate The pddTaggedTPDDebate object to add.
+     * @param	PDDebate $pDDebate The pDDebate object to add.
      */
-    protected function doAddPddTaggedTPDDebate(PDDebate $pddTaggedTPDDebate)
+    protected function doAddPDDebate(PDDebate $pDDebate)
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pddTaggedTPDDebate->getPddTaggedTPTags()->contains($this)) { $pDDTaggedT = new PDDTaggedT();
-            $pDDTaggedT->setPddTaggedTPDDebate($pddTaggedTPDDebate);
-            $this->addPddTaggedTPTag($pDDTaggedT);
+        if (!$pDDebate->getPTags()->contains($this)) { $pDDTaggedT = new PDDTaggedT();
+            $pDDTaggedT->setPDDebate($pDDebate);
+            $this->addPDDTaggedT($pDDTaggedT);
 
-            $foreignCollection = $pddTaggedTPDDebate->getPddTaggedTPTags();
+            $foreignCollection = $pDDebate->getPTags();
             $foreignCollection[] = $this;
         }
     }
@@ -2854,15 +2854,15 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @param PDDebate $pDDebate The PDDTaggedT object to relate
      * @return PTag The current object (for fluent API support)
      */
-    public function removePddTaggedTPDDebate(PDDebate $pDDebate)
+    public function removePDDebate(PDDebate $pDDebate)
     {
-        if ($this->getPddTaggedTPDDebates()->contains($pDDebate)) {
-            $this->collPddTaggedTPDDebates->remove($this->collPddTaggedTPDDebates->search($pDDebate));
-            if (null === $this->pddTaggedTPDDebatesScheduledForDeletion) {
-                $this->pddTaggedTPDDebatesScheduledForDeletion = clone $this->collPddTaggedTPDDebates;
-                $this->pddTaggedTPDDebatesScheduledForDeletion->clear();
+        if ($this->getPDDebates()->contains($pDDebate)) {
+            $this->collPDDebates->remove($this->collPDDebates->search($pDDebate));
+            if (null === $this->pDDebatesScheduledForDeletion) {
+                $this->pDDebatesScheduledForDeletion = clone $this->collPDDebates;
+                $this->pDDebatesScheduledForDeletion->clear();
             }
-            $this->pddTaggedTPDDebatesScheduledForDeletion[]= $pDDebate;
+            $this->pDDebatesScheduledForDeletion[]= $pDDebate;
         }
 
         return $this;
@@ -2912,8 +2912,8 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPddTaggedTPTags) {
-                foreach ($this->collPddTaggedTPTags as $o) {
+            if ($this->collPDDTaggedTs) {
+                foreach ($this->collPDDTaggedTs as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2927,8 +2927,8 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPddTaggedTPDDebates) {
-                foreach ($this->collPddTaggedTPDDebates as $o) {
+            if ($this->collPDDebates) {
+                foreach ($this->collPDDebates as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2947,10 +2947,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPuFollowTPTags->clearIterator();
         }
         $this->collPuFollowTPTags = null;
-        if ($this->collPddTaggedTPTags instanceof PropelCollection) {
-            $this->collPddTaggedTPTags->clearIterator();
+        if ($this->collPDDTaggedTs instanceof PropelCollection) {
+            $this->collPDDTaggedTs->clearIterator();
         }
-        $this->collPddTaggedTPTags = null;
+        $this->collPDDTaggedTs = null;
         if ($this->collPuTaggedTPUsers instanceof PropelCollection) {
             $this->collPuTaggedTPUsers->clearIterator();
         }
@@ -2959,10 +2959,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPuFollowTPUsers->clearIterator();
         }
         $this->collPuFollowTPUsers = null;
-        if ($this->collPddTaggedTPDDebates instanceof PropelCollection) {
-            $this->collPddTaggedTPDDebates->clearIterator();
+        if ($this->collPDDebates instanceof PropelCollection) {
+            $this->collPDDebates->clearIterator();
         }
-        $this->collPddTaggedTPDDebates = null;
+        $this->collPDDebates = null;
         $this->aPTTagType = null;
     }
 

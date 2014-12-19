@@ -6,18 +6,18 @@ params:
     namespace_prefix:       Politizr
     concurrency_lock:       ~
     bundle_name:            AdminBundle
-    embed_types:
-        # qualification
-        - "PUQualification-generator.yml"
+#     embed_types:
+#         # qualification
+#         - "PUQualification-generator.yml"
     pk_requirement:         ~
     fields:
         id:
             label:          ID
-        p_u_type_id:
+        qualified_id:
             label:          Type
         p_u_status_id:
             label:          Statut
-        p_u_type:
+        qualified:
             label:          Type
         p_u_status:
             label:          Statut
@@ -43,14 +43,14 @@ params:
             label:          Téléphone
         last_connect:
             label:          Dernière connexion
-        p_u_qualifications:
-            label:          Qualifications
         p_r_badges:
             label:          Badges
-        online:
-            label:          En ligne
+        qualified:
+            label:          Profil qualifié
         validated:
             label:          Profil validé
+        online:
+            label:          En ligne
         roles:
             label:          Liste des rôles de l'utilisateur
             formType:                   choice
@@ -84,11 +84,11 @@ builders:
                     "Qualifiés":
                         default:                true
                         filters: 
-                            filterByPUTypeId:   2
+                            filterByQualified:  true
                     "Citoyens":
                         filters: 
-                            filterByPUTypeId:   1
-            display:                            [ file_name, name, firstname, p_u_type, p_u_status, online, last_connect ]
+                            filterByQualified:  false
+            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_connect ]
             actions:
                 new:                            ~
             object_actions:
@@ -101,12 +101,12 @@ builders:
         filetype:                               ~
     filters:
         params:
-            display:                            [ name, firstname, p_u_type, p_u_status, online, last_connect ]
+            display:                            [ name, firstname, qualified, p_u_status, online, last_connect ]
     new:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ p_u_type, p_u_status ], [ gender ], [ firstname, name ] ]
+                "Champs principaux":            [ [ qualified, p_u_status ], [ gender ], [ firstname, name ] ]
                 "Champs complémentaires":       [ biography ]
             fields:
                 biography:
@@ -120,13 +120,11 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ p_u_type ]
+                    "Type":                     [ qualified ]
                     "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ biography ]
-                "Qualification":
-                    "Qualifications":           [ p_u_qualifications ]
                 "Tag":
                     "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
@@ -148,21 +146,6 @@ builders:
                         # nameable:               fileName
                         deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
-                p_u_qualifications:
-                    dbType:                     collection
-                    formType:                   afe_collection_table
-                    label:                      Liste des postes de qualification de l'utilisateur
-                    addFormOptions:
-                        # widget:                 fieldset
-                        # editable:               [ title, begin_at, end_at ]
-                        type:                   \Politizr\AdminBundle\Form\Type\PUQualification\EditType
-                        allow_add:              true
-                        allow_delete:           true
-                        by_reference:           false
-                        new_label:              " - Nouvelle qualification"
-                        options:
-                            # label:              Poste
-                            data_class:         Politizr\Model\PUQualification
                 badges:
                     dbType:                     model
                     formType:                   model
@@ -200,13 +183,11 @@ builders:
             title:                              "Visualisation de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ p_u_type ]
+                    "Type":                     [ qualified ]
                     "Civilité":                 [ [ file_name, gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ biography ]
-                "Qualification":
-                    "Qualifications":           [ p_u_qualifications ]
                 "Tag":
                     "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
@@ -229,21 +210,6 @@ builders:
                     "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
-                p_u_qualifications:
-                    dbType:                     collection
-                    formType:                   afe_collection_table
-                    label:                      Liste des postes de qualification de l'utilisateur
-                    addFormOptions:
-                        # widget:                 fieldset
-                        # editable:               [ title, begin_at, end_at ]
-                        type:                   \Politizr\AdminBundle\Form\Type\PUQualification\EditType
-                        allow_add:              true
-                        allow_delete:           true
-                        by_reference:           false
-                        new_label:              " - Nouvelle qualification"
-                        options:
-                            # label:              Poste
-                            data_class:         Politizr\Model\PUQualification
                 block_tags_geo:
                     label:                      "Tags géo"
                     formType:                   hidden

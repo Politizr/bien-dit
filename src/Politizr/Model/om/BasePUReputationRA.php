@@ -87,12 +87,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     /**
      * @var        PUser
      */
-    protected $aPuReputationRaPUser;
+    protected $aPUser;
 
     /**
      * @var        PRAction
      */
-    protected $aPuReputationRaPRBadge;
+    protected $aPRAction;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -287,8 +287,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $this->modifiedColumns[] = PUReputationRAPeer::P_USER_ID;
         }
 
-        if ($this->aPuReputationRaPUser !== null && $this->aPuReputationRaPUser->getId() !== $v) {
-            $this->aPuReputationRaPUser = null;
+        if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
+            $this->aPUser = null;
         }
 
 
@@ -312,8 +312,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $this->modifiedColumns[] = PUReputationRAPeer::P_R_ACTION_ID;
         }
 
-        if ($this->aPuReputationRaPRBadge !== null && $this->aPuReputationRaPRBadge->getId() !== $v) {
-            $this->aPuReputationRaPRBadge = null;
+        if ($this->aPRAction !== null && $this->aPRAction->getId() !== $v) {
+            $this->aPRAction = null;
         }
 
 
@@ -479,11 +479,11 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPuReputationRaPUser !== null && $this->p_user_id !== $this->aPuReputationRaPUser->getId()) {
-            $this->aPuReputationRaPUser = null;
+        if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
+            $this->aPUser = null;
         }
-        if ($this->aPuReputationRaPRBadge !== null && $this->p_r_action_id !== $this->aPuReputationRaPRBadge->getId()) {
-            $this->aPuReputationRaPRBadge = null;
+        if ($this->aPRAction !== null && $this->p_r_action_id !== $this->aPRAction->getId()) {
+            $this->aPRAction = null;
         }
     } // ensureConsistency
 
@@ -524,8 +524,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPuReputationRaPUser = null;
-            $this->aPuReputationRaPRBadge = null;
+            $this->aPUser = null;
+            $this->aPRAction = null;
         } // if (deep)
     }
 
@@ -655,18 +655,18 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPuReputationRaPUser !== null) {
-                if ($this->aPuReputationRaPUser->isModified() || $this->aPuReputationRaPUser->isNew()) {
-                    $affectedRows += $this->aPuReputationRaPUser->save($con);
+            if ($this->aPUser !== null) {
+                if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
+                    $affectedRows += $this->aPUser->save($con);
                 }
-                $this->setPuReputationRaPUser($this->aPuReputationRaPUser);
+                $this->setPUser($this->aPUser);
             }
 
-            if ($this->aPuReputationRaPRBadge !== null) {
-                if ($this->aPuReputationRaPRBadge->isModified() || $this->aPuReputationRaPRBadge->isNew()) {
-                    $affectedRows += $this->aPuReputationRaPRBadge->save($con);
+            if ($this->aPRAction !== null) {
+                if ($this->aPRAction->isModified() || $this->aPRAction->isNew()) {
+                    $affectedRows += $this->aPRAction->save($con);
                 }
-                $this->setPuReputationRaPRBadge($this->aPuReputationRaPRBadge);
+                $this->setPRAction($this->aPRAction);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -858,15 +858,15 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPuReputationRaPUser !== null) {
-                if (!$this->aPuReputationRaPUser->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPuReputationRaPUser->getValidationFailures());
+            if ($this->aPUser !== null) {
+                if (!$this->aPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
                 }
             }
 
-            if ($this->aPuReputationRaPRBadge !== null) {
-                if (!$this->aPuReputationRaPRBadge->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPuReputationRaPRBadge->getValidationFailures());
+            if ($this->aPRAction !== null) {
+                if (!$this->aPRAction->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPRAction->getValidationFailures());
                 }
             }
 
@@ -975,11 +975,11 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPuReputationRaPUser) {
-                $result['PuReputationRaPUser'] = $this->aPuReputationRaPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPUser) {
+                $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPuReputationRaPRBadge) {
-                $result['PuReputationRaPRBadge'] = $this->aPuReputationRaPRBadge->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPRAction) {
+                $result['PRAction'] = $this->aPRAction->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1219,7 +1219,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * @return PUReputationRA The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPuReputationRaPUser(PUser $v = null)
+    public function setPUser(PUser $v = null)
     {
         if ($v === null) {
             $this->setPUserId(NULL);
@@ -1227,12 +1227,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $this->setPUserId($v->getId());
         }
 
-        $this->aPuReputationRaPUser = $v;
+        $this->aPUser = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPuReputationRaPUser($this);
+            $v->addPUReputationRA($this);
         }
 
 
@@ -1248,20 +1248,20 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * @return PUser The associated PUser object.
      * @throws PropelException
      */
-    public function getPuReputationRaPUser(PropelPDO $con = null, $doQuery = true)
+    public function getPUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPuReputationRaPUser === null && ($this->p_user_id !== null) && $doQuery) {
-            $this->aPuReputationRaPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+        if ($this->aPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPuReputationRaPUser->addPuReputationRaPUsers($this);
+                $this->aPUser->addPUReputationRAs($this);
              */
         }
 
-        return $this->aPuReputationRaPUser;
+        return $this->aPUser;
     }
 
     /**
@@ -1271,7 +1271,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * @return PUReputationRA The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPuReputationRaPRBadge(PRAction $v = null)
+    public function setPRAction(PRAction $v = null)
     {
         if ($v === null) {
             $this->setPRActionId(NULL);
@@ -1279,12 +1279,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $this->setPRActionId($v->getId());
         }
 
-        $this->aPuReputationRaPRBadge = $v;
+        $this->aPRAction = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PRAction object, it will not be re-added.
         if ($v !== null) {
-            $v->addPuReputationRaPRBadge($this);
+            $v->addPUReputationRA($this);
         }
 
 
@@ -1300,20 +1300,20 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * @return PRAction The associated PRAction object.
      * @throws PropelException
      */
-    public function getPuReputationRaPRBadge(PropelPDO $con = null, $doQuery = true)
+    public function getPRAction(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPuReputationRaPRBadge === null && ($this->p_r_action_id !== null) && $doQuery) {
-            $this->aPuReputationRaPRBadge = PRActionQuery::create()->findPk($this->p_r_action_id, $con);
+        if ($this->aPRAction === null && ($this->p_r_action_id !== null) && $doQuery) {
+            $this->aPRAction = PRActionQuery::create()->findPk($this->p_r_action_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPuReputationRaPRBadge->addPuReputationRaPRBadges($this);
+                $this->aPRAction->addPUReputationRAs($this);
              */
         }
 
-        return $this->aPuReputationRaPRBadge;
+        return $this->aPRAction;
     }
 
     /**
@@ -1350,18 +1350,18 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aPuReputationRaPUser instanceof Persistent) {
-              $this->aPuReputationRaPUser->clearAllReferences($deep);
+            if ($this->aPUser instanceof Persistent) {
+              $this->aPUser->clearAllReferences($deep);
             }
-            if ($this->aPuReputationRaPRBadge instanceof Persistent) {
-              $this->aPuReputationRaPRBadge->clearAllReferences($deep);
+            if ($this->aPRAction instanceof Persistent) {
+              $this->aPRAction->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aPuReputationRaPUser = null;
-        $this->aPuReputationRaPRBadge = null;
+        $this->aPUser = null;
+        $this->aPRAction = null;
     }
 
     /**

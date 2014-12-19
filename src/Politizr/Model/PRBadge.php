@@ -24,22 +24,4 @@ class PRBadge extends BasePRBadge
 		return $slug;
 	}
 	
-	/******************************************************************************/
-
-	/**
-	 * 	Surcharge simplification du nom de la méthode
-	 */
-	public function countPUsers(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::countPuReputationRbPUsers($con, $doQuery);
-	}
-
-	/**
-	 * 	Surcharge simplification du nom de la méthode
-	 */
-	public function getPUsers(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::getPuReputationRbPUsers($con, $doQuery);
-	}
-
 }

@@ -1,0 +1,8 @@
+<div class="author">
+	<a href="{{ path('Politizr_AdminBundle_PUser_edit', { 'pk': user.id }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
+		{{ user }}
+		{% if user.validated %}
+			<span class="fa fa-check-square-o" title="Profil validé"></span>
+		{% endif %}
+	</a>
+</div>

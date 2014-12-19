@@ -490,7 +490,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PuReputationRaPUser table
+     * Returns the number of rows matching criteria, joining the related PUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -498,7 +498,7 @@ abstract class BasePUReputationRAPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPuReputationRaPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -541,7 +541,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PuReputationRaPRBadge table
+     * Returns the number of rows matching criteria, joining the related PRAction table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -549,7 +549,7 @@ abstract class BasePUReputationRAPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPuReputationRaPRBadge(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPRAction(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -600,7 +600,7 @@ abstract class BasePUReputationRAPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPuReputationRaPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -646,7 +646,7 @@ abstract class BasePUReputationRAPeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PUReputationRA) to $obj2 (PUser)
-                $obj2->addPuReputationRaPUser($obj1);
+                $obj2->addPUReputationRA($obj1);
 
             } // if joined row was not null
 
@@ -667,7 +667,7 @@ abstract class BasePUReputationRAPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPuReputationRaPRBadge(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPRAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -713,7 +713,7 @@ abstract class BasePUReputationRAPeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PUReputationRA) to $obj2 (PRAction)
-                $obj2->addPuReputationRaPRBadge($obj1);
+                $obj2->addPUReputationRA($obj1);
 
             } // if joined row was not null
 
@@ -841,7 +841,7 @@ abstract class BasePUReputationRAPeer
                 } // if obj2 loaded
 
                 // Add the $obj1 (PUReputationRA) to the collection in $obj2 (PUser)
-                $obj2->addPuReputationRaPUser($obj1);
+                $obj2->addPUReputationRA($obj1);
             } // if joined row not null
 
             // Add objects for joined PRAction rows
@@ -859,7 +859,7 @@ abstract class BasePUReputationRAPeer
                 } // if obj3 loaded
 
                 // Add the $obj1 (PUReputationRA) to the collection in $obj3 (PRAction)
-                $obj3->addPuReputationRaPRBadge($obj1);
+                $obj3->addPUReputationRA($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -871,7 +871,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PuReputationRaPUser table
+     * Returns the number of rows matching criteria, joining the related PUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -879,7 +879,7 @@ abstract class BasePUReputationRAPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPuReputationRaPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -922,7 +922,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PuReputationRaPRBadge table
+     * Returns the number of rows matching criteria, joining the related PRAction table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -930,7 +930,7 @@ abstract class BasePUReputationRAPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPuReputationRaPRBadge(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPRAction(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -973,7 +973,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Selects a collection of PUReputationRA objects pre-filled with all related objects except PuReputationRaPUser.
+     * Selects a collection of PUReputationRA objects pre-filled with all related objects except PUser.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -982,7 +982,7 @@ abstract class BasePUReputationRAPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPuReputationRaPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1034,7 +1034,7 @@ abstract class BasePUReputationRAPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (PUReputationRA) to the collection in $obj2 (PRAction)
-                $obj2->addPuReputationRaPRBadge($obj1);
+                $obj2->addPUReputationRA($obj1);
 
             } // if joined row is not null
 
@@ -1047,7 +1047,7 @@ abstract class BasePUReputationRAPeer
 
 
     /**
-     * Selects a collection of PUReputationRA objects pre-filled with all related objects except PuReputationRaPRBadge.
+     * Selects a collection of PUReputationRA objects pre-filled with all related objects except PRAction.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1056,7 +1056,7 @@ abstract class BasePUReputationRAPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPuReputationRaPRBadge(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPRAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1108,7 +1108,7 @@ abstract class BasePUReputationRAPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (PUReputationRA) to the collection in $obj2 (PUser)
-                $obj2->addPuReputationRaPUser($obj1);
+                $obj2->addPUReputationRA($obj1);
 
             } // if joined row is not null
 

@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
-use Politizr\Model\PUType;
 
 /**
  * Formulaire associée à la migration d'un compte citoyen vers débatteur
@@ -27,7 +26,7 @@ class PUserElectedMigrationType extends AbstractType
     {
         // Attributs cachés obligatoires
         $builder->add('id', 'hidden');
-        $builder->add('p_u_type_id', 'hidden');
+        $builder->add('qualified', 'hidden');
         $builder->add('p_u_status_id', 'hidden');
 
         // Nom, prénom, etc.

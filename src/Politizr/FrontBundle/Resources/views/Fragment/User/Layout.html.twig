@@ -28,7 +28,7 @@ LAYOUT USER
 				{# Identité #}
 				<div class="col-sm-4">
 					<h3>
-						<span class="label {% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}label-info{% else %}label-danger{% endif %}">
+						<span class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
 							{{ user }}
 							{% if user.validated %}
 								<i class="fa fa-check-square-o" title="Profil validé"></i>
@@ -91,41 +91,41 @@ LAYOUT USER
 			</div>
 
 			{# Qualifications #}
-			{% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
+			{% if user.qualified %}
 				<div class="table-responsive">
 					<table class="table table-hover">
 						<thead>
 					        <tr>
 					            <th>Date</th>
 					            <th>Mandat</th>
-					            <th>Parti</th>
+					            <th>Organisation</th>
 					            <th>Description</th>
 					        </tr>
 				      	</thead>				
-						{% set qualifications = user.qualifications %}
-						{% for qualification in qualifications %}
+						{% set mandates = user.mandates %}
+						{% for mandate in mandates %}
 							<tr>
 								<td>
-							    	{% if (qualification.isCurrent) %}
-							    		<span class="label label-info">Depuis le {{ qualification.beginAt | date('d/m/Y') }}</span>
+							    	{% if (mandate.isCurrent) %}
+							    		<span class="label label-info">Depuis le {{ mandate.beginAt | date('d/m/Y') }}</span>
 							    	{% else %}
-							    		<span class="label label-info">Du {{ qualification.beginAt | date('d/m/Y') }} au {{ qualification.endAt | date('d/m/Y') }}</span>
+							    		<span class="label label-info">Du {{ mandate.beginAt | date('d/m/Y') }} au {{ mandate.endAt | date('d/m/Y') }}</span>
 							    	{% endif %}
 								</td>
-								<td><span class="label label-danger">{{ qualification.mandateTypeTitle }}</span></td>
+								<td><span class="label label-danger">{{ mandate.mandateTypeTitle }}</span></td>
 								<td>
-									{% if (qualification.politicalPartyLogo) %}
-							            <img class="img-rounded" src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
+									{% if (mandate.organizationLogo) %}
+							            <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
 							        {% else %}
-							            <span class="label label-info">{{ qualification.politicalPartyInitials }}</span>
+							            <span class="label label-info">{{ mandate.organizationInitials }}</span>
 							    	{% endif %}
 								</td>
-								<td>{{ qualification.description | raw  }}</td>
+								<td>{{ mandate.description | raw  }}</td>
 							</tr>
 						{% else %}
 							<tr>
 								<td colspan="4">
-									Aucune qualification rédigée pour le moment
+									Aucune mandate rédigée pour le moment
 								</td>
 							</tr>
 						{% endfor %}

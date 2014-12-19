@@ -17,21 +17,26 @@ use Politizr\Model\PDComment;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDocument;
+use Politizr\Model\PNEmail;
+use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
+use Politizr\Model\PQOrganization;
+use Politizr\Model\PQualification;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PTag;
-use Politizr\Model\PUAffinityUPP;
+use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowT;
 use Politizr\Model\PUFollowU;
-use Politizr\Model\PUPoliticalParty;
-use Politizr\Model\PUQualification;
+use Politizr\Model\PUMandate;
+use Politizr\Model\PUNotifiedPN;
 use Politizr\Model\PUReputationRA;
 use Politizr\Model\PUReputationRB;
+use Politizr\Model\PURoleQ;
 use Politizr\Model\PUStatus;
+use Politizr\Model\PUSubscribeNO;
 use Politizr\Model\PUTaggedT;
-use Politizr\Model\PUType;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
@@ -58,7 +63,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByCredentialsExpired($order = Criteria::ASC) Order by the credentials_expired column
  * @method PUserQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
- * @method PUserQuery orderByPUTypeId($order = Criteria::ASC) Order by the p_u_type_id column
  * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
@@ -73,8 +77,9 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
- * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUserQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -100,7 +105,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByCredentialsExpired() Group by the credentials_expired column
  * @method PUserQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserQuery groupByRoles() Group by the roles column
- * @method PUserQuery groupByPUTypeId() Group by the p_u_type_id column
  * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByGender() Group by the gender column
@@ -115,8 +119,9 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByNewsletter() Group by the newsletter column
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByNbViews() Group by the nb_views column
- * @method PUserQuery groupByOnline() Group by the online column
+ * @method PUserQuery groupByQualified() Group by the qualified column
  * @method PUserQuery groupByValidated() Group by the validated column
+ * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
  * @method PUserQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUserQuery groupBySlug() Group by the slug column
@@ -124,10 +129,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PUserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method PUserQuery leftJoinPUType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUType relation
- * @method PUserQuery rightJoinPUType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUType relation
- * @method PUserQuery innerJoinPUType($relationAlias = null) Adds a INNER JOIN clause to the query using the PUType relation
  *
  * @method PUserQuery leftJoinPUStatus($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUStatus relation
  * @method PUserQuery rightJoinPUStatus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUStatus relation
@@ -137,21 +138,17 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the POrder relation
  * @method PUserQuery innerJoinPOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the POrder relation
  *
- * @method PUserQuery leftJoinPUQualification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUQualification relation
- * @method PUserQuery rightJoinPUQualification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUQualification relation
- * @method PUserQuery innerJoinPUQualification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUQualification relation
- *
  * @method PUserQuery leftJoinPuFollowDdPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPUser relation
  * @method PUserQuery rightJoinPuFollowDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPUser relation
  * @method PUserQuery innerJoinPuFollowDdPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowDdPUser relation
  *
- * @method PUserQuery leftJoinPuReputationRbPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuReputationRbPUser relation
- * @method PUserQuery rightJoinPuReputationRbPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuReputationRbPUser relation
- * @method PUserQuery innerJoinPuReputationRbPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuReputationRbPUser relation
+ * @method PUserQuery leftJoinPUReputationRB($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUReputationRB relation
+ * @method PUserQuery rightJoinPUReputationRB($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUReputationRB relation
+ * @method PUserQuery innerJoinPUReputationRB($relationAlias = null) Adds a INNER JOIN clause to the query using the PUReputationRB relation
  *
- * @method PUserQuery leftJoinPuReputationRaPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuReputationRaPUser relation
- * @method PUserQuery rightJoinPuReputationRaPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuReputationRaPUser relation
- * @method PUserQuery innerJoinPuReputationRaPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuReputationRaPUser relation
+ * @method PUserQuery leftJoinPUReputationRA($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUReputationRA relation
+ * @method PUserQuery rightJoinPUReputationRA($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUReputationRA relation
+ * @method PUserQuery innerJoinPUReputationRA($relationAlias = null) Adds a INNER JOIN clause to the query using the PUReputationRA relation
  *
  * @method PUserQuery leftJoinPuTaggedTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPUser relation
  * @method PUserQuery rightJoinPuTaggedTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPUser relation
@@ -161,9 +158,25 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPuFollowTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowTPUser relation
  * @method PUserQuery innerJoinPuFollowTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowTPUser relation
  *
- * @method PUserQuery leftJoinPuAffinityUppPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuAffinityUppPUser relation
- * @method PUserQuery rightJoinPuAffinityUppPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuAffinityUppPUser relation
- * @method PUserQuery innerJoinPuAffinityUppPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuAffinityUppPUser relation
+ * @method PUserQuery leftJoinPURoleQ($relationAlias = null) Adds a LEFT JOIN clause to the query using the PURoleQ relation
+ * @method PUserQuery rightJoinPURoleQ($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PURoleQ relation
+ * @method PUserQuery innerJoinPURoleQ($relationAlias = null) Adds a INNER JOIN clause to the query using the PURoleQ relation
+ *
+ * @method PUserQuery leftJoinPUMandate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUMandate relation
+ * @method PUserQuery rightJoinPUMandate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUMandate relation
+ * @method PUserQuery innerJoinPUMandate($relationAlias = null) Adds a INNER JOIN clause to the query using the PUMandate relation
+ *
+ * @method PUserQuery leftJoinPUAffinityQO($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQO relation
+ * @method PUserQuery rightJoinPUAffinityQO($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQO relation
+ * @method PUserQuery innerJoinPUAffinityQO($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQO relation
+ *
+ * @method PUserQuery leftJoinPUNotifiedPN($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotifiedPN relation
+ * @method PUserQuery rightJoinPUNotifiedPN($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotifiedPN relation
+ * @method PUserQuery innerJoinPUNotifiedPN($relationAlias = null) Adds a INNER JOIN clause to the query using the PUNotifiedPN relation
+ *
+ * @method PUserQuery leftJoinPUSubscribeNO($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUSubscribeNO relation
+ * @method PUserQuery rightJoinPUSubscribeNO($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribeNO relation
+ * @method PUserQuery innerJoinPUSubscribeNO($relationAlias = null) Adds a INNER JOIN clause to the query using the PUSubscribeNO relation
  *
  * @method PUserQuery leftJoinPDocument($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDocument relation
  * @method PUserQuery rightJoinPDocument($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDocument relation
@@ -212,7 +225,6 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByCredentialsExpired(boolean $credentials_expired) Return the first PUser filtered by the credentials_expired column
  * @method PUser findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUser filtered by the credentials_expire_at column
  * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
- * @method PUser findOneByPUTypeId(int $p_u_type_id) Return the first PUser filtered by the p_u_type_id column
  * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
@@ -227,8 +239,9 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByNewsletter(boolean $newsletter) Return the first PUser filtered by the newsletter column
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByNbViews(int $nb_views) Return the first PUser filtered by the nb_views column
- * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
+ * @method PUser findOneByQualified(boolean $qualified) Return the first PUser filtered by the qualified column
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
+ * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
  * @method PUser findOneByUpdatedAt(string $updated_at) Return the first PUser filtered by the updated_at column
  * @method PUser findOneBySlug(string $slug) Return the first PUser filtered by the slug column
@@ -254,7 +267,6 @@ use Politizr\Model\PUserQuery;
  * @method array findByCredentialsExpired(boolean $credentials_expired) Return PUser objects filtered by the credentials_expired column
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUser objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
- * @method array findByPUTypeId(int $p_u_type_id) Return PUser objects filtered by the p_u_type_id column
  * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
@@ -269,8 +281,9 @@ use Politizr\Model\PUserQuery;
  * @method array findByNewsletter(boolean $newsletter) Return PUser objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByNbViews(int $nb_views) Return PUser objects filtered by the nb_views column
- * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
+ * @method array findByQualified(boolean $qualified) Return PUser objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
+ * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUser objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PUser objects filtered by the slug column
@@ -385,7 +398,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1197,50 +1210,6 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_u_type_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPUTypeId(1234); // WHERE p_u_type_id = 1234
-     * $query->filterByPUTypeId(array(12, 34)); // WHERE p_u_type_id IN (12, 34)
-     * $query->filterByPUTypeId(array('min' => 12)); // WHERE p_u_type_id >= 12
-     * $query->filterByPUTypeId(array('max' => 12)); // WHERE p_u_type_id <= 12
-     * </code>
-     *
-     * @see       filterByPUType()
-     *
-     * @param     mixed $pUTypeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterByPUTypeId($pUTypeId = null, $comparison = null)
-    {
-        if (is_array($pUTypeId)) {
-            $useMinMax = false;
-            if (isset($pUTypeId['min'])) {
-                $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pUTypeId['max'])) {
-                $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUTypeId, $comparison);
-    }
-
-    /**
      * Filter the query on the p_u_status_id column
      *
      * Example usage:
@@ -1699,15 +1668,15 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the online column
+     * Filter the query on the qualified column
      *
      * Example usage:
      * <code>
-     * $query->filterByOnline(true); // WHERE online = true
-     * $query->filterByOnline('yes'); // WHERE online = true
+     * $query->filterByQualified(true); // WHERE qualified = true
+     * $query->filterByQualified('yes'); // WHERE qualified = true
      * </code>
      *
-     * @param     boolean|string $online The value to use as filter.
+     * @param     boolean|string $qualified The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -1716,13 +1685,13 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function filterByOnline($online = null, $comparison = null)
+    public function filterByQualified($qualified = null, $comparison = null)
     {
-        if (is_string($online)) {
-            $online = in_array(strtolower($online), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($qualified)) {
+            $qualified = in_array(strtolower($qualified), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(PUserPeer::ONLINE, $online, $comparison);
+        return $this->addUsingAlias(PUserPeer::QUALIFIED, $qualified, $comparison);
     }
 
     /**
@@ -1750,6 +1719,33 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::VALIDATED, $validated, $comparison);
+    }
+
+    /**
+     * Filter the query on the online column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOnline(true); // WHERE online = true
+     * $query->filterByOnline('yes'); // WHERE online = true
+     * </code>
+     *
+     * @param     boolean|string $online The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByOnline($online = null, $comparison = null)
+    {
+        if (is_string($online)) {
+            $online = in_array(strtolower($online), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::ONLINE, $online, $comparison);
     }
 
     /**
@@ -1865,82 +1861,6 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::SLUG, $slug, $comparison);
-    }
-
-    /**
-     * Filter the query by a related PUType object
-     *
-     * @param   PUType|PropelObjectCollection $pUType The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPUType($pUType, $comparison = null)
-    {
-        if ($pUType instanceof PUType) {
-            return $this
-                ->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUType->getId(), $comparison);
-        } elseif ($pUType instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PUserPeer::P_U_TYPE_ID, $pUType->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByPUType() only accepts arguments of type PUType or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PUType relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPUType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUType');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PUType');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PUType relation PUType object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PUTypeQuery A secondary query class using the current class as primary query
-     */
-    public function usePUTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPUType($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUType', '\Politizr\Model\PUTypeQuery');
     }
 
     /**
@@ -2094,80 +2014,6 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUQualification object
-     *
-     * @param   PUQualification|PropelObjectCollection $pUQualification  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPUQualification($pUQualification, $comparison = null)
-    {
-        if ($pUQualification instanceof PUQualification) {
-            return $this
-                ->addUsingAlias(PUserPeer::ID, $pUQualification->getPUserId(), $comparison);
-        } elseif ($pUQualification instanceof PropelObjectCollection) {
-            return $this
-                ->usePUQualificationQuery()
-                ->filterByPrimaryKeys($pUQualification->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPUQualification() only accepts arguments of type PUQualification or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PUQualification relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPUQualification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUQualification');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PUQualification');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PUQualification relation PUQualification object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PUQualificationQuery A secondary query class using the current class as primary query
-     */
-    public function usePUQualificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPUQualification($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUQualification', '\Politizr\Model\PUQualificationQuery');
-    }
-
-    /**
      * Filter the query by a related PUFollowDD object
      *
      * @param   PUFollowDD|PropelObjectCollection $pUFollowDD  the related object to use as filter
@@ -2250,33 +2096,33 @@ abstract class BasePUserQuery extends ModelCriteria
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuReputationRbPUser($pUReputationRB, $comparison = null)
+    public function filterByPUReputationRB($pUReputationRB, $comparison = null)
     {
         if ($pUReputationRB instanceof PUReputationRB) {
             return $this
                 ->addUsingAlias(PUserPeer::ID, $pUReputationRB->getPUserId(), $comparison);
         } elseif ($pUReputationRB instanceof PropelObjectCollection) {
             return $this
-                ->usePuReputationRbPUserQuery()
+                ->usePUReputationRBQuery()
                 ->filterByPrimaryKeys($pUReputationRB->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPuReputationRbPUser() only accepts arguments of type PUReputationRB or PropelCollection');
+            throw new PropelException('filterByPUReputationRB() only accepts arguments of type PUReputationRB or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuReputationRbPUser relation
+     * Adds a JOIN clause to the query using the PUReputationRB relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPuReputationRbPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUReputationRB($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuReputationRbPUser');
+        $relationMap = $tableMap->getRelation('PUReputationRB');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2291,14 +2137,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuReputationRbPUser');
+            $this->addJoinObject($join, 'PUReputationRB');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuReputationRbPUser relation PUReputationRB object
+     * Use the PUReputationRB relation PUReputationRB object
      *
      * @see       useQuery()
      *
@@ -2308,11 +2154,11 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUReputationRBQuery A secondary query class using the current class as primary query
      */
-    public function usePuReputationRbPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUReputationRBQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuReputationRbPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuReputationRbPUser', '\Politizr\Model\PUReputationRBQuery');
+            ->joinPUReputationRB($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUReputationRB', '\Politizr\Model\PUReputationRBQuery');
     }
 
     /**
@@ -2324,33 +2170,33 @@ abstract class BasePUserQuery extends ModelCriteria
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuReputationRaPUser($pUReputationRA, $comparison = null)
+    public function filterByPUReputationRA($pUReputationRA, $comparison = null)
     {
         if ($pUReputationRA instanceof PUReputationRA) {
             return $this
                 ->addUsingAlias(PUserPeer::ID, $pUReputationRA->getPUserId(), $comparison);
         } elseif ($pUReputationRA instanceof PropelObjectCollection) {
             return $this
-                ->usePuReputationRaPUserQuery()
+                ->usePUReputationRAQuery()
                 ->filterByPrimaryKeys($pUReputationRA->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPuReputationRaPUser() only accepts arguments of type PUReputationRA or PropelCollection');
+            throw new PropelException('filterByPUReputationRA() only accepts arguments of type PUReputationRA or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuReputationRaPUser relation
+     * Adds a JOIN clause to the query using the PUReputationRA relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPuReputationRaPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUReputationRA($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuReputationRaPUser');
+        $relationMap = $tableMap->getRelation('PUReputationRA');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2365,14 +2211,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuReputationRaPUser');
+            $this->addJoinObject($join, 'PUReputationRA');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuReputationRaPUser relation PUReputationRA object
+     * Use the PUReputationRA relation PUReputationRA object
      *
      * @see       useQuery()
      *
@@ -2382,11 +2228,11 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUReputationRAQuery A secondary query class using the current class as primary query
      */
-    public function usePuReputationRaPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUReputationRAQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuReputationRaPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuReputationRaPUser', '\Politizr\Model\PUReputationRAQuery');
+            ->joinPUReputationRA($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUReputationRA', '\Politizr\Model\PUReputationRAQuery');
     }
 
     /**
@@ -2538,41 +2384,41 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUAffinityUPP object
+     * Filter the query by a related PURoleQ object
      *
-     * @param   PUAffinityUPP|PropelObjectCollection $pUAffinityUPP  the related object to use as filter
+     * @param   PURoleQ|PropelObjectCollection $pURoleQ  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuAffinityUppPUser($pUAffinityUPP, $comparison = null)
+    public function filterByPURoleQ($pURoleQ, $comparison = null)
     {
-        if ($pUAffinityUPP instanceof PUAffinityUPP) {
+        if ($pURoleQ instanceof PURoleQ) {
             return $this
-                ->addUsingAlias(PUserPeer::ID, $pUAffinityUPP->getPUserId(), $comparison);
-        } elseif ($pUAffinityUPP instanceof PropelObjectCollection) {
+                ->addUsingAlias(PUserPeer::ID, $pURoleQ->getPUserId(), $comparison);
+        } elseif ($pURoleQ instanceof PropelObjectCollection) {
             return $this
-                ->usePuAffinityUppPUserQuery()
-                ->filterByPrimaryKeys($pUAffinityUPP->getPrimaryKeys())
+                ->usePURoleQQuery()
+                ->filterByPrimaryKeys($pURoleQ->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPuAffinityUppPUser() only accepts arguments of type PUAffinityUPP or PropelCollection');
+            throw new PropelException('filterByPURoleQ() only accepts arguments of type PURoleQ or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuAffinityUppPUser relation
+     * Adds a JOIN clause to the query using the PURoleQ relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPuAffinityUppPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPURoleQ($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuAffinityUppPUser');
+        $relationMap = $tableMap->getRelation('PURoleQ');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2587,14 +2433,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuAffinityUppPUser');
+            $this->addJoinObject($join, 'PURoleQ');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuAffinityUppPUser relation PUAffinityUPP object
+     * Use the PURoleQ relation PURoleQ object
      *
      * @see       useQuery()
      *
@@ -2602,13 +2448,309 @@ abstract class BasePUserQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PUAffinityUPPQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PURoleQQuery A secondary query class using the current class as primary query
      */
-    public function usePuAffinityUppPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePURoleQQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuAffinityUppPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuAffinityUppPUser', '\Politizr\Model\PUAffinityUPPQuery');
+            ->joinPURoleQ($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PURoleQ', '\Politizr\Model\PURoleQQuery');
+    }
+
+    /**
+     * Filter the query by a related PUMandate object
+     *
+     * @param   PUMandate|PropelObjectCollection $pUMandate  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUMandate($pUMandate, $comparison = null)
+    {
+        if ($pUMandate instanceof PUMandate) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUMandate->getPUserId(), $comparison);
+        } elseif ($pUMandate instanceof PropelObjectCollection) {
+            return $this
+                ->usePUMandateQuery()
+                ->filterByPrimaryKeys($pUMandate->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUMandate() only accepts arguments of type PUMandate or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUMandate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUMandate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUMandate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUMandate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUMandate relation PUMandate object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUMandateQuery A secondary query class using the current class as primary query
+     */
+    public function usePUMandateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUMandate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUMandate', '\Politizr\Model\PUMandateQuery');
+    }
+
+    /**
+     * Filter the query by a related PUAffinityQO object
+     *
+     * @param   PUAffinityQO|PropelObjectCollection $pUAffinityQO  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUAffinityQO($pUAffinityQO, $comparison = null)
+    {
+        if ($pUAffinityQO instanceof PUAffinityQO) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUAffinityQO->getPUserId(), $comparison);
+        } elseif ($pUAffinityQO instanceof PropelObjectCollection) {
+            return $this
+                ->usePUAffinityQOQuery()
+                ->filterByPrimaryKeys($pUAffinityQO->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUAffinityQO() only accepts arguments of type PUAffinityQO or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUAffinityQO relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUAffinityQO($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUAffinityQO');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUAffinityQO');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUAffinityQO relation PUAffinityQO object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUAffinityQOQuery A secondary query class using the current class as primary query
+     */
+    public function usePUAffinityQOQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUAffinityQO($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQO', '\Politizr\Model\PUAffinityQOQuery');
+    }
+
+    /**
+     * Filter the query by a related PUNotifiedPN object
+     *
+     * @param   PUNotifiedPN|PropelObjectCollection $pUNotifiedPN  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUNotifiedPN($pUNotifiedPN, $comparison = null)
+    {
+        if ($pUNotifiedPN instanceof PUNotifiedPN) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUNotifiedPN->getPUserId(), $comparison);
+        } elseif ($pUNotifiedPN instanceof PropelObjectCollection) {
+            return $this
+                ->usePUNotifiedPNQuery()
+                ->filterByPrimaryKeys($pUNotifiedPN->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUNotifiedPN() only accepts arguments of type PUNotifiedPN or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUNotifiedPN relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUNotifiedPN($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUNotifiedPN');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUNotifiedPN');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUNotifiedPN relation PUNotifiedPN object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUNotifiedPNQuery A secondary query class using the current class as primary query
+     */
+    public function usePUNotifiedPNQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUNotifiedPN($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUNotifiedPN', '\Politizr\Model\PUNotifiedPNQuery');
+    }
+
+    /**
+     * Filter the query by a related PUSubscribeNO object
+     *
+     * @param   PUSubscribeNO|PropelObjectCollection $pUSubscribeNO  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUSubscribeNO($pUSubscribeNO, $comparison = null)
+    {
+        if ($pUSubscribeNO instanceof PUSubscribeNO) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUSubscribeNO->getPUserId(), $comparison);
+        } elseif ($pUSubscribeNO instanceof PropelObjectCollection) {
+            return $this
+                ->usePUSubscribeNOQuery()
+                ->filterByPrimaryKeys($pUSubscribeNO->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUSubscribeNO() only accepts arguments of type PUSubscribeNO or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUSubscribeNO relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUSubscribeNO($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUSubscribeNO');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUSubscribeNO');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUSubscribeNO relation PUSubscribeNO object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUSubscribeNOQuery A secondary query class using the current class as primary query
+     */
+    public function usePUSubscribeNOQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUSubscribeNO($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUSubscribeNO', '\Politizr\Model\PUSubscribeNOQuery');
     }
 
     /**
@@ -3081,11 +3223,11 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   PUserQuery The current query, for fluid interface
      */
-    public function filterByPuReputationRbPRBadge($pRBadge, $comparison = Criteria::EQUAL)
+    public function filterByPRBadge($pRBadge, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePuReputationRbPUserQuery()
-            ->filterByPuReputationRbPRBadge($pRBadge, $comparison)
+            ->usePUReputationRBQuery()
+            ->filterByPRBadge($pRBadge, $comparison)
             ->endUse();
     }
 
@@ -3098,11 +3240,11 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   PUserQuery The current query, for fluid interface
      */
-    public function filterByPuReputationRaPRBadge($pRAction, $comparison = Criteria::EQUAL)
+    public function filterByPRAction($pRAction, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePuReputationRaPUserQuery()
-            ->filterByPuReputationRaPRBadge($pRAction, $comparison)
+            ->usePUReputationRAQuery()
+            ->filterByPRAction($pRAction, $comparison)
             ->endUse();
     }
 
@@ -3141,19 +3283,70 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUPoliticalParty object
-     * using the p_u_affinity_u_p_p table as cross reference
+     * Filter the query by a related PQualification object
+     * using the p_u_role_q table as cross reference
      *
-     * @param   PUPoliticalParty $pUPoliticalParty the related object to use as filter
+     * @param   PQualification $pQualification the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   PUserQuery The current query, for fluid interface
      */
-    public function filterByPuAffinityUppPUPoliticalParty($pUPoliticalParty, $comparison = Criteria::EQUAL)
+    public function filterByPQualification($pQualification, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePuAffinityUppPUserQuery()
-            ->filterByPuAffinityUppPUPoliticalParty($pUPoliticalParty, $comparison)
+            ->usePURoleQQuery()
+            ->filterByPQualification($pQualification, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PQOrganization object
+     * using the p_u_affinity_q_o table as cross reference
+     *
+     * @param   PQOrganization $pQOrganization the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPQOrganization($pQOrganization, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUAffinityQOQuery()
+            ->filterByPQOrganization($pQOrganization, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PNotification object
+     * using the p_u_notified_p_n table as cross reference
+     *
+     * @param   PNotification $pNotification the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPNotification($pNotification, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUNotifiedPNQuery()
+            ->filterByPNotification($pNotification, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PNEmail object
+     * using the p_u_subscribe_n_o table as cross reference
+     *
+     * @param   PNEmail $pNEmail the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPNEmail($pNEmail, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUSubscribeNOQuery()
+            ->filterByPNEmail($pNEmail, $comparison)
             ->endUse();
     }
 

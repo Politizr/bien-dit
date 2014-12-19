@@ -14,16 +14,18 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
-use Politizr\Model\PUAffinityUPPPeer;
+use Politizr\Model\PUAffinityQOPeer;
 use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowTPeer;
 use Politizr\Model\PUFollowUPeer;
-use Politizr\Model\PUQualificationPeer;
+use Politizr\Model\PUMandatePeer;
+use Politizr\Model\PUNotifiedPNPeer;
 use Politizr\Model\PUReputationRAPeer;
 use Politizr\Model\PUReputationRBPeer;
+use Politizr\Model\PURoleQPeer;
 use Politizr\Model\PUStatusPeer;
+use Politizr\Model\PUSubscribeNOPeer;
 use Politizr\Model\PUTaggedTPeer;
-use Politizr\Model\PUTypePeer;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PUserTableMap;
@@ -115,9 +117,6 @@ abstract class BasePUserPeer
     /** the column name for the roles field */
     const ROLES = 'p_user.roles';
 
-    /** the column name for the p_u_type_id field */
-    const P_U_TYPE_ID = 'p_user.p_u_type_id';
-
     /** the column name for the p_u_status_id field */
     const P_U_STATUS_ID = 'p_user.p_u_status_id';
 
@@ -160,11 +159,14 @@ abstract class BasePUserPeer
     /** the column name for the nb_views field */
     const NB_VIEWS = 'p_user.nb_views';
 
-    /** the column name for the online field */
-    const ONLINE = 'p_user.online';
+    /** the column name for the qualified field */
+    const QUALIFIED = 'p_user.qualified';
 
     /** the column name for the validated field */
     const VALIDATED = 'p_user.validated';
+
+    /** the column name for the online field */
+    const ONLINE = 'p_user.online';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_user.created_at';
@@ -198,11 +200,11 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[PUserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'PUTypeId', 'PUStatusId', 'FileName', 'Gender', 'Firstname', 'Name', 'Birthday', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbViews', 'Online', 'Validated', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'pUTypeId', 'pUStatusId', 'fileName', 'gender', 'firstname', 'name', 'birthday', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbViews', 'online', 'validated', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::P_U_TYPE_ID, PUserPeer::P_U_STATUS_ID, PUserPeer::FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_VIEWS, PUserPeer::ONLINE, PUserPeer::VALIDATED, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'P_U_TYPE_ID', 'P_U_STATUS_ID', 'FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_VIEWS', 'ONLINE', 'VALIDATED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'p_u_type_id', 'p_u_status_id', 'file_name', 'gender', 'firstname', 'name', 'birthday', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_views', 'online', 'validated', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'PUStatusId', 'FileName', 'Gender', 'Firstname', 'Name', 'Birthday', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbViews', 'Qualified', 'Validated', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'pUStatusId', 'fileName', 'gender', 'firstname', 'name', 'birthday', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbViews', 'qualified', 'validated', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::P_U_STATUS_ID, PUserPeer::FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_VIEWS, PUserPeer::QUALIFIED, PUserPeer::VALIDATED, PUserPeer::ONLINE, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'P_U_STATUS_ID', 'FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_VIEWS', 'QUALIFIED', 'VALIDATED', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'p_u_status_id', 'file_name', 'gender', 'firstname', 'name', 'birthday', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_views', 'qualified', 'validated', 'online', 'created_at', 'updated_at', 'slug', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, )
     );
 
@@ -213,11 +215,11 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Provider' => 1, 'ProviderId' => 2, 'Nickname' => 3, 'Realname' => 4, 'Username' => 5, 'UsernameCanonical' => 6, 'Email' => 7, 'EmailCanonical' => 8, 'Enabled' => 9, 'Salt' => 10, 'Password' => 11, 'LastLogin' => 12, 'Locked' => 13, 'Expired' => 14, 'ExpiresAt' => 15, 'ConfirmationToken' => 16, 'PasswordRequestedAt' => 17, 'CredentialsExpired' => 18, 'CredentialsExpireAt' => 19, 'Roles' => 20, 'PUTypeId' => 21, 'PUStatusId' => 22, 'FileName' => 23, 'Gender' => 24, 'Firstname' => 25, 'Name' => 26, 'Birthday' => 27, 'Biography' => 28, 'Website' => 29, 'Twitter' => 30, 'Facebook' => 31, 'Phone' => 32, 'Newsletter' => 33, 'LastConnect' => 34, 'NbViews' => 35, 'Online' => 36, 'Validated' => 37, 'CreatedAt' => 38, 'UpdatedAt' => 39, 'Slug' => 40, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'provider' => 1, 'providerId' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'usernameCanonical' => 6, 'email' => 7, 'emailCanonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'lastLogin' => 12, 'locked' => 13, 'expired' => 14, 'expiresAt' => 15, 'confirmationToken' => 16, 'passwordRequestedAt' => 17, 'credentialsExpired' => 18, 'credentialsExpireAt' => 19, 'roles' => 20, 'pUTypeId' => 21, 'pUStatusId' => 22, 'fileName' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'biography' => 28, 'website' => 29, 'twitter' => 30, 'facebook' => 31, 'phone' => 32, 'newsletter' => 33, 'lastConnect' => 34, 'nbViews' => 35, 'online' => 36, 'validated' => 37, 'createdAt' => 38, 'updatedAt' => 39, 'slug' => 40, ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::PROVIDER => 1, PUserPeer::PROVIDER_ID => 2, PUserPeer::NICKNAME => 3, PUserPeer::REALNAME => 4, PUserPeer::USERNAME => 5, PUserPeer::USERNAME_CANONICAL => 6, PUserPeer::EMAIL => 7, PUserPeer::EMAIL_CANONICAL => 8, PUserPeer::ENABLED => 9, PUserPeer::SALT => 10, PUserPeer::PASSWORD => 11, PUserPeer::LAST_LOGIN => 12, PUserPeer::LOCKED => 13, PUserPeer::EXPIRED => 14, PUserPeer::EXPIRES_AT => 15, PUserPeer::CONFIRMATION_TOKEN => 16, PUserPeer::PASSWORD_REQUESTED_AT => 17, PUserPeer::CREDENTIALS_EXPIRED => 18, PUserPeer::CREDENTIALS_EXPIRE_AT => 19, PUserPeer::ROLES => 20, PUserPeer::P_U_TYPE_ID => 21, PUserPeer::P_U_STATUS_ID => 22, PUserPeer::FILE_NAME => 23, PUserPeer::GENDER => 24, PUserPeer::FIRSTNAME => 25, PUserPeer::NAME => 26, PUserPeer::BIRTHDAY => 27, PUserPeer::BIOGRAPHY => 28, PUserPeer::WEBSITE => 29, PUserPeer::TWITTER => 30, PUserPeer::FACEBOOK => 31, PUserPeer::PHONE => 32, PUserPeer::NEWSLETTER => 33, PUserPeer::LAST_CONNECT => 34, PUserPeer::NB_VIEWS => 35, PUserPeer::ONLINE => 36, PUserPeer::VALIDATED => 37, PUserPeer::CREATED_AT => 38, PUserPeer::UPDATED_AT => 39, PUserPeer::SLUG => 40, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROVIDER' => 1, 'PROVIDER_ID' => 2, 'NICKNAME' => 3, 'REALNAME' => 4, 'USERNAME' => 5, 'USERNAME_CANONICAL' => 6, 'EMAIL' => 7, 'EMAIL_CANONICAL' => 8, 'ENABLED' => 9, 'SALT' => 10, 'PASSWORD' => 11, 'LAST_LOGIN' => 12, 'LOCKED' => 13, 'EXPIRED' => 14, 'EXPIRES_AT' => 15, 'CONFIRMATION_TOKEN' => 16, 'PASSWORD_REQUESTED_AT' => 17, 'CREDENTIALS_EXPIRED' => 18, 'CREDENTIALS_EXPIRE_AT' => 19, 'ROLES' => 20, 'P_U_TYPE_ID' => 21, 'P_U_STATUS_ID' => 22, 'FILE_NAME' => 23, 'GENDER' => 24, 'FIRSTNAME' => 25, 'NAME' => 26, 'BIRTHDAY' => 27, 'BIOGRAPHY' => 28, 'WEBSITE' => 29, 'TWITTER' => 30, 'FACEBOOK' => 31, 'PHONE' => 32, 'NEWSLETTER' => 33, 'LAST_CONNECT' => 34, 'NB_VIEWS' => 35, 'ONLINE' => 36, 'VALIDATED' => 37, 'CREATED_AT' => 38, 'UPDATED_AT' => 39, 'SLUG' => 40, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'provider' => 1, 'provider_id' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'username_canonical' => 6, 'email' => 7, 'email_canonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'last_login' => 12, 'locked' => 13, 'expired' => 14, 'expires_at' => 15, 'confirmation_token' => 16, 'password_requested_at' => 17, 'credentials_expired' => 18, 'credentials_expire_at' => 19, 'roles' => 20, 'p_u_type_id' => 21, 'p_u_status_id' => 22, 'file_name' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'biography' => 28, 'website' => 29, 'twitter' => 30, 'facebook' => 31, 'phone' => 32, 'newsletter' => 33, 'last_connect' => 34, 'nb_views' => 35, 'online' => 36, 'validated' => 37, 'created_at' => 38, 'updated_at' => 39, 'slug' => 40, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Provider' => 1, 'ProviderId' => 2, 'Nickname' => 3, 'Realname' => 4, 'Username' => 5, 'UsernameCanonical' => 6, 'Email' => 7, 'EmailCanonical' => 8, 'Enabled' => 9, 'Salt' => 10, 'Password' => 11, 'LastLogin' => 12, 'Locked' => 13, 'Expired' => 14, 'ExpiresAt' => 15, 'ConfirmationToken' => 16, 'PasswordRequestedAt' => 17, 'CredentialsExpired' => 18, 'CredentialsExpireAt' => 19, 'Roles' => 20, 'PUStatusId' => 21, 'FileName' => 22, 'Gender' => 23, 'Firstname' => 24, 'Name' => 25, 'Birthday' => 26, 'Biography' => 27, 'Website' => 28, 'Twitter' => 29, 'Facebook' => 30, 'Phone' => 31, 'Newsletter' => 32, 'LastConnect' => 33, 'NbViews' => 34, 'Qualified' => 35, 'Validated' => 36, 'Online' => 37, 'CreatedAt' => 38, 'UpdatedAt' => 39, 'Slug' => 40, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'provider' => 1, 'providerId' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'usernameCanonical' => 6, 'email' => 7, 'emailCanonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'lastLogin' => 12, 'locked' => 13, 'expired' => 14, 'expiresAt' => 15, 'confirmationToken' => 16, 'passwordRequestedAt' => 17, 'credentialsExpired' => 18, 'credentialsExpireAt' => 19, 'roles' => 20, 'pUStatusId' => 21, 'fileName' => 22, 'gender' => 23, 'firstname' => 24, 'name' => 25, 'birthday' => 26, 'biography' => 27, 'website' => 28, 'twitter' => 29, 'facebook' => 30, 'phone' => 31, 'newsletter' => 32, 'lastConnect' => 33, 'nbViews' => 34, 'qualified' => 35, 'validated' => 36, 'online' => 37, 'createdAt' => 38, 'updatedAt' => 39, 'slug' => 40, ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::PROVIDER => 1, PUserPeer::PROVIDER_ID => 2, PUserPeer::NICKNAME => 3, PUserPeer::REALNAME => 4, PUserPeer::USERNAME => 5, PUserPeer::USERNAME_CANONICAL => 6, PUserPeer::EMAIL => 7, PUserPeer::EMAIL_CANONICAL => 8, PUserPeer::ENABLED => 9, PUserPeer::SALT => 10, PUserPeer::PASSWORD => 11, PUserPeer::LAST_LOGIN => 12, PUserPeer::LOCKED => 13, PUserPeer::EXPIRED => 14, PUserPeer::EXPIRES_AT => 15, PUserPeer::CONFIRMATION_TOKEN => 16, PUserPeer::PASSWORD_REQUESTED_AT => 17, PUserPeer::CREDENTIALS_EXPIRED => 18, PUserPeer::CREDENTIALS_EXPIRE_AT => 19, PUserPeer::ROLES => 20, PUserPeer::P_U_STATUS_ID => 21, PUserPeer::FILE_NAME => 22, PUserPeer::GENDER => 23, PUserPeer::FIRSTNAME => 24, PUserPeer::NAME => 25, PUserPeer::BIRTHDAY => 26, PUserPeer::BIOGRAPHY => 27, PUserPeer::WEBSITE => 28, PUserPeer::TWITTER => 29, PUserPeer::FACEBOOK => 30, PUserPeer::PHONE => 31, PUserPeer::NEWSLETTER => 32, PUserPeer::LAST_CONNECT => 33, PUserPeer::NB_VIEWS => 34, PUserPeer::QUALIFIED => 35, PUserPeer::VALIDATED => 36, PUserPeer::ONLINE => 37, PUserPeer::CREATED_AT => 38, PUserPeer::UPDATED_AT => 39, PUserPeer::SLUG => 40, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROVIDER' => 1, 'PROVIDER_ID' => 2, 'NICKNAME' => 3, 'REALNAME' => 4, 'USERNAME' => 5, 'USERNAME_CANONICAL' => 6, 'EMAIL' => 7, 'EMAIL_CANONICAL' => 8, 'ENABLED' => 9, 'SALT' => 10, 'PASSWORD' => 11, 'LAST_LOGIN' => 12, 'LOCKED' => 13, 'EXPIRED' => 14, 'EXPIRES_AT' => 15, 'CONFIRMATION_TOKEN' => 16, 'PASSWORD_REQUESTED_AT' => 17, 'CREDENTIALS_EXPIRED' => 18, 'CREDENTIALS_EXPIRE_AT' => 19, 'ROLES' => 20, 'P_U_STATUS_ID' => 21, 'FILE_NAME' => 22, 'GENDER' => 23, 'FIRSTNAME' => 24, 'NAME' => 25, 'BIRTHDAY' => 26, 'BIOGRAPHY' => 27, 'WEBSITE' => 28, 'TWITTER' => 29, 'FACEBOOK' => 30, 'PHONE' => 31, 'NEWSLETTER' => 32, 'LAST_CONNECT' => 33, 'NB_VIEWS' => 34, 'QUALIFIED' => 35, 'VALIDATED' => 36, 'ONLINE' => 37, 'CREATED_AT' => 38, 'UPDATED_AT' => 39, 'SLUG' => 40, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'provider' => 1, 'provider_id' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'username_canonical' => 6, 'email' => 7, 'email_canonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'last_login' => 12, 'locked' => 13, 'expired' => 14, 'expires_at' => 15, 'confirmation_token' => 16, 'password_requested_at' => 17, 'credentials_expired' => 18, 'credentials_expire_at' => 19, 'roles' => 20, 'p_u_status_id' => 21, 'file_name' => 22, 'gender' => 23, 'firstname' => 24, 'name' => 25, 'birthday' => 26, 'biography' => 27, 'website' => 28, 'twitter' => 29, 'facebook' => 30, 'phone' => 31, 'newsletter' => 32, 'last_connect' => 33, 'nb_views' => 34, 'qualified' => 35, 'validated' => 36, 'online' => 37, 'created_at' => 38, 'updated_at' => 39, 'slug' => 40, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, )
     );
 
@@ -366,7 +368,6 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRED);
             $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRE_AT);
             $criteria->addSelectColumn(PUserPeer::ROLES);
-            $criteria->addSelectColumn(PUserPeer::P_U_TYPE_ID);
             $criteria->addSelectColumn(PUserPeer::P_U_STATUS_ID);
             $criteria->addSelectColumn(PUserPeer::FILE_NAME);
             $criteria->addSelectColumn(PUserPeer::GENDER);
@@ -381,8 +382,9 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn(PUserPeer::NEWSLETTER);
             $criteria->addSelectColumn(PUserPeer::LAST_CONNECT);
             $criteria->addSelectColumn(PUserPeer::NB_VIEWS);
-            $criteria->addSelectColumn(PUserPeer::ONLINE);
+            $criteria->addSelectColumn(PUserPeer::QUALIFIED);
             $criteria->addSelectColumn(PUserPeer::VALIDATED);
+            $criteria->addSelectColumn(PUserPeer::ONLINE);
             $criteria->addSelectColumn(PUserPeer::CREATED_AT);
             $criteria->addSelectColumn(PUserPeer::UPDATED_AT);
             $criteria->addSelectColumn(PUserPeer::SLUG);
@@ -408,7 +410,6 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn($alias . '.credentials_expired');
             $criteria->addSelectColumn($alias . '.credentials_expire_at');
             $criteria->addSelectColumn($alias . '.roles');
-            $criteria->addSelectColumn($alias . '.p_u_type_id');
             $criteria->addSelectColumn($alias . '.p_u_status_id');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.gender');
@@ -423,8 +424,9 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn($alias . '.newsletter');
             $criteria->addSelectColumn($alias . '.last_connect');
             $criteria->addSelectColumn($alias . '.nb_views');
-            $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.qualified');
             $criteria->addSelectColumn($alias . '.validated');
+            $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
@@ -635,9 +637,6 @@ abstract class BasePUserPeer
         // Invalidate objects in POrderPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         POrderPeer::clearInstancePool();
-        // Invalidate objects in PUQualificationPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUQualificationPeer::clearInstancePool();
         // Invalidate objects in PUFollowDDPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowDDPeer::clearInstancePool();
@@ -653,9 +652,21 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowTPeer::clearInstancePool();
-        // Invalidate objects in PUAffinityUPPPeer instance pool,
+        // Invalidate objects in PURoleQPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUAffinityUPPPeer::clearInstancePool();
+        PURoleQPeer::clearInstancePool();
+        // Invalidate objects in PUMandatePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUMandatePeer::clearInstancePool();
+        // Invalidate objects in PUAffinityQOPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUAffinityQOPeer::clearInstancePool();
+        // Invalidate objects in PUNotifiedPNPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUNotifiedPNPeer::clearInstancePool();
+        // Invalidate objects in PUSubscribeNOPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUSubscribeNOPeer::clearInstancePool();
         // Invalidate objects in PDocumentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDocumentPeer::clearInstancePool();
@@ -783,57 +794,6 @@ abstract class BasePUserPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUType table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinPUType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PUserPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(PUserPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining the related PUStatus table
      *
      * @param      Criteria $criteria
@@ -881,73 +841,6 @@ abstract class BasePUserPeer
         $stmt->closeCursor();
 
         return $count;
-    }
-
-
-    /**
-     * Selects a collection of PUser objects pre-filled with their PUType objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUser objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinPUType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUserPeer::DATABASE_NAME);
-        }
-
-        PUserPeer::addSelectColumns($criteria);
-        $startcol = PUserPeer::NUM_HYDRATE_COLUMNS;
-        PUTypePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = PUserPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PUserPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = PUTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = PUTypePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = PUTypePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    PUTypePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (PUser) to $obj2 (PUType)
-                $obj2->addPUser($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
     }
 
 
@@ -1054,8 +947,6 @@ abstract class BasePUserPeer
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
         $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1092,209 +983,11 @@ abstract class BasePUserPeer
         PUserPeer::addSelectColumns($criteria);
         $startcol2 = PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        PUTypePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PUTypePeer::NUM_HYDRATE_COLUMNS;
-
-        PUStatusPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + PUStatusPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
-        $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PUserPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PUserPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-            // Add objects for joined PUType rows
-
-            $key2 = PUTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-            if ($key2 !== null) {
-                $obj2 = PUTypePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = PUTypePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PUTypePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
-
-                // Add the $obj1 (PUser) to the collection in $obj2 (PUType)
-                $obj2->addPUser($obj1);
-            } // if joined row not null
-
-            // Add objects for joined PUStatus rows
-
-            $key3 = PUStatusPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = PUStatusPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
-
-                    $cls = PUStatusPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    PUStatusPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
-
-                // Add the $obj1 (PUser) to the collection in $obj3 (PUStatus)
-                $obj3->addPUser($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related PUType table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptPUType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PUserPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PUserPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related PUStatus table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptPUStatus(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PUserPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PUserPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of PUser objects pre-filled with all related objects except PUType.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUser objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptPUType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUserPeer::DATABASE_NAME);
-        }
-
-        PUserPeer::addSelectColumns($criteria);
-        $startcol2 = PUserPeer::NUM_HYDRATE_COLUMNS;
-
         PUStatusPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUStatusPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
 
-
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
@@ -1312,98 +1005,23 @@ abstract class BasePUserPeer
                 PUserPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined PUStatus rows
+            // Add objects for joined PUStatus rows
 
-                $key2 = PUStatusPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = PUStatusPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
+            $key2 = PUStatusPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = PUStatusPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
 
-                        $cls = PUStatusPeer::getOMClass();
+                    $cls = PUStatusPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
                     PUStatusPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
+                } // if obj2 loaded
 
                 // Add the $obj1 (PUser) to the collection in $obj2 (PUStatus)
                 $obj2->addPUser($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of PUser objects pre-filled with all related objects except PUStatus.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUser objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptPUStatus(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUserPeer::DATABASE_NAME);
-        }
-
-        PUserPeer::addSelectColumns($criteria);
-        $startcol2 = PUserPeer::NUM_HYDRATE_COLUMNS;
-
-        PUTypePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PUTypePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PUserPeer::P_U_TYPE_ID, PUTypePeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PUserPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PUserPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined PUType rows
-
-                $key2 = PUTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = PUTypePeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = PUTypePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PUTypePeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (PUser) to the collection in $obj2 (PUType)
-                $obj2->addPUser($obj1);
-
-            } // if joined row is not null
+            } // if joined row not null
 
             $results[] = $obj1;
         }

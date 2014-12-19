@@ -1,13 +1,13 @@
 <div id="displayAffinitiesZone">
-	{% for politicalParty in politicalParties %}
+	{% for organization in organizations %}
 		<div class="row">
-			{% if (politicalParty.fileName) %}
-	            <img class="img-rounded" src="{{ asset('uploads/political/'~politicalParty.fileName) | imagine_filter('admin_political_party_thumb') }}" alt="{{ politicalParty.initials }}">
+			{% if (organization.fileName) %}
+	            <img class="img-rounded" src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('admin_organization') }}" alt="{{ organization.initials }}">
 	        {% else %}
-	            <span class="label label-info">{{ politicalParty.initials }}</span>
+	            <span class="label label-info">{{ organization.initials }}</span>
 	    	{% endif %}
 		</div>
 	{% else %}
-		Aucune affinité avec un parti politique
+		Aucune affinité avec une organisation
 	{% endfor %}
 </div>

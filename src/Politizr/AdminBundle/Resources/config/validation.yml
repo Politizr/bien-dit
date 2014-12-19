@@ -7,24 +7,12 @@
 
 Politizr\Model\PUser:
     properties:
-        p_u_type_id:
-            - Type:
-                type: 		integer
-                message: 	"La valeur {{ value }} n'est pas un type {{ type }} valide."
-            - NotBlank:     ~
         p_u_status_id:
             - Type:
                 type: 		integer 
                 message: 	"La valeur {{ value }} n'est pas un type {{ type }} valide."
             - NotBlank:     ~
 
-
-Politizr\Model\PUQualification:
-    properties:
-        title:
-            - NotBlank:     ~
-        begin_at:
-            - NotBlank:     ~
 
 ####################################### ORDER #####################################
 
@@ -105,19 +93,8 @@ Politizr\Model\PRAction:
                 type:       integer 
                 message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
 
+
 ##################################### TYPES #####################################
-
-Politizr\Model\PUPoliticalParty:
-    properties:
-        title:
-            - NotBlank:     ~
-        initials:
-            - NotBlank:     ~
-
-Politizr\Model\PUMandateType:
-    properties:
-        title:
-            - NotBlank:     ~
 
 Politizr\Model\PTTagType:
     properties:

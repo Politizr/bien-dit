@@ -1,4 +1,20 @@
 {% extends 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' %}
 
+{% block listImage %}
+	{# Image du débat #}
+	<hr>
+	<div class="row">
+		<div class="col-sm-12">
+			{# TODO / TwigExtension Image #}
+			{% if (reaction.debate.FileName) %}
+		        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~reaction.debate.FileName) | imagine_filter('debate_list') }}" alt="{{ reaction.debate.title }}">
+		    {% else %}
+		        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_list') }}" alt="{{ reaction.debate.title }}">
+			{% endif %}
+		</div>
+	</div>
+{% endblock listImage %}
+
+
 {% block listAuthor %}
 {% endblock listAuthor %}

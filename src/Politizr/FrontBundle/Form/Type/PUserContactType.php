@@ -13,7 +13,6 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 use Politizr\Model\PUStatus;
 
 /**
@@ -29,8 +28,8 @@ class PUserContactType extends AbstractType
             'required' => true
             )
         );
-        $builder->add('p_u_type_id', 'hidden', array(
-            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
+        $builder->add('qualified', 'hidden', array(
+            'attr'     => array( 'value' => false )
             )
         );
         $builder->add('p_u_status_id', 'hidden', array(

@@ -28,7 +28,6 @@ use Politizr\Model\POPaymentTypeQuery;
 use Politizr\Model\POSubscriptionQuery;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 use Politizr\Model\PUStatus;
 use Politizr\Model\POrder;
 use Politizr\Model\POOrderState;

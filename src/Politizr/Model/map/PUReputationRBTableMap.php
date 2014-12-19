@@ -56,8 +56,8 @@ class PUReputationRBTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PuReputationRbPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PuReputationRbPRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_ONE, array('p_r_badge_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_ONE, array('p_r_badge_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**

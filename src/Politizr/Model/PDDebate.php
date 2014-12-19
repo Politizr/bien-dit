@@ -6,7 +6,6 @@ use Politizr\Model\om\BasePDDebate;
 
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 use Politizr\Model\PUStatus;
 
 use Politizr\Model\PUserQuery;
@@ -191,7 +190,7 @@ class PDDebate extends BasePDDebate
                     ->setDistinct()
                     ;
 
-		return parent::getPddTaggedTPTags($query);
+		return parent::getPTags($query);
 	}
 
 
@@ -274,17 +273,17 @@ class PDDebate extends BasePDDebate
 	 *	Renvoit le nombre de followers du débat.
 	 *
 	 * @param 	$puStatusId 	integer 	Filtrage par rapport au status
-	 * @param 	$puTypeId 		integer 	Filtrage par rapport au type
+	 * @param 	$qualified 		boolean 	Filtrage par rapport à la qualification
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function getFollowers($puStatusId = PUStatus::ACTIVED, $puTypeId = null) {
+	public function getFollowers($puStatusId = PUStatus::ACTIVED, $qualified = null) {
 		$query = PUserQuery::create()
 					->_if($puStatusId)
 						->filterByPUStatusId($puStatusId)
 					->_endif()
-					->_if($puTypeId)
-						->filterByPUTypeId($puTypeId)
+					->_if($qualified)
+						->filterByQualified($qualified)
 					->_endif()
 					->filterByOnline(true)
 					->setDistinct();
@@ -296,17 +295,17 @@ class PDDebate extends BasePDDebate
 	 *	Renvoit le nombre de followers du débat.
 	 *
 	 * @param 	$puStatusId 	integer 	Filtrage par rapport au status
-	 * @param 	$puTypeId 		integer 	Filtrage par rapport au type
+	 * @param 	$qualified 		boolean 	Filtrage par rapport à la qualification
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function countFollowers($puStatusId = PUStatus::ACTIVED, $puTypeId = null) {
+	public function countFollowers($puStatusId = PUStatus::ACTIVED, $qualified = null) {
 		$query = PUserQuery::create()
 					->_if($puStatusId)
 						->filterByPUStatusId($puStatusId)
 					->_endif()
-					->_if($puTypeId)
-						->filterByPUTypeId($puTypeId)
+					->_if($qualified)
+						->filterByQualified($qualified)
 					->_endif()
 					->filterByOnline(true)
 					->setDistinct();
@@ -320,7 +319,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersQ() {
-		$pUsers = $this->getFollowers(PUStatus::ACTIVED, PUType::TYPE_QUALIFIE);
+		$pUsers = $this->getFollowers(PUStatus::ACTIVED, true);
 
 		return $pUsers;
 	}
@@ -331,7 +330,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersQ() {
-        return $this->countFollowers(PUStatus::ACTIVED, PUType::TYPE_QUALIFIE);
+        return $this->countFollowers(PUStatus::ACTIVED, true);
     }
 
 	/**
@@ -340,7 +339,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersC() {
-		$pUsers = $this->getFollowers(PUStatus::ACTIVED, PUType::TYPE_CITOYEN);
+		$pUsers = $this->getFollowers(PUStatus::ACTIVED, false);
 
 		return $pUsers;
 	}
@@ -351,7 +350,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersC() {
-        return $this->countFollowers(PUStatus::ACTIVED, PUType::TYPE_CITOYEN);
+        return $this->countFollowers(PUStatus::ACTIVED, false);
     }
 
 

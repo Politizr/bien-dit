@@ -34,7 +34,7 @@ class PUserIdentityType extends AbstractType
     {
         // Attributs cachés obligatoires
         $builder->add('id', 'hidden');
-        $builder->add('p_u_type_id', 'hidden');
+        $builder->add('qualified', 'hidden');
         $builder->add('p_u_status_id', 'hidden');
         $builder->add('form_type_id', 'hidden', array(
             'mapped' => false,

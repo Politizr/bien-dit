@@ -121,7 +121,7 @@ Politizr\Model\PRBadge:
         description:        |
             Atteindre un score de +X à un de ses commentaires
 
-# Constantes de classe PRAction à MAJ en parallèle
+# Constantes de classe PRAction à MAJ en parallèle + check si notifications à maj en parallèle
 Politizr\Model\PRAction:
     d_debate_publish:
         online:             true

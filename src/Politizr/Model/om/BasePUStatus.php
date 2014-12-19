@@ -1256,31 +1256,6 @@ abstract class BasePUStatus extends BaseObject implements Persistent
         return $this;
     }
 
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUStatus is new, it will return
-     * an empty collection; or if this PUStatus has previously
-     * been saved, it will retrieve related PUsers from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUStatus.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUser[] List of PUser objects
-     */
-    public function getPUsersJoinPUType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PUserQuery::create(null, $criteria);
-        $query->joinWith('PUType', $join_behavior);
-
-        return $this->getPUsers($query, $con);
-    }
-
     /**
      * Clears the current object and sets all attributes to their default values
      */

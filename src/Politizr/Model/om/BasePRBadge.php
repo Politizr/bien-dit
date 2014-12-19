@@ -117,13 +117,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PUReputationRB[] Collection to store aggregation of PUReputationRB objects.
      */
-    protected $collPuReputationRbPRBadges;
-    protected $collPuReputationRbPRBadgesPartial;
+    protected $collPUReputationRBs;
+    protected $collPUReputationRBsPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
-    protected $collPuReputationRbPUsers;
+    protected $collPUsers;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -152,13 +152,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $puReputationRbPUsersScheduledForDeletion = null;
+    protected $pUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $puReputationRbPRBadgesScheduledForDeletion = null;
+    protected $pUReputationRBsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -646,9 +646,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
             $this->aPRBadgeType = null;
             $this->aPRBadgeMetal = null;
-            $this->collPuReputationRbPRBadges = null;
+            $this->collPUReputationRBs = null;
 
-            $this->collPuReputationRbPUsers = null;
+            $this->collPUsers = null;
         } // if (deep)
     }
 
@@ -822,43 +822,43 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->puReputationRbPUsersScheduledForDeletion !== null) {
-                if (!$this->puReputationRbPUsersScheduledForDeletion->isEmpty()) {
+            if ($this->pUsersScheduledForDeletion !== null) {
+                if (!$this->pUsersScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->puReputationRbPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                    foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
                     PUReputationRBQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->puReputationRbPUsersScheduledForDeletion = null;
+                    $this->pUsersScheduledForDeletion = null;
                 }
 
-                foreach ($this->getPuReputationRbPUsers() as $puReputationRbPUser) {
-                    if ($puReputationRbPUser->isModified()) {
-                        $puReputationRbPUser->save($con);
+                foreach ($this->getPUsers() as $pUser) {
+                    if ($pUser->isModified()) {
+                        $pUser->save($con);
                     }
                 }
-            } elseif ($this->collPuReputationRbPUsers) {
-                foreach ($this->collPuReputationRbPUsers as $puReputationRbPUser) {
-                    if ($puReputationRbPUser->isModified()) {
-                        $puReputationRbPUser->save($con);
+            } elseif ($this->collPUsers) {
+                foreach ($this->collPUsers as $pUser) {
+                    if ($pUser->isModified()) {
+                        $pUser->save($con);
                     }
                 }
             }
 
-            if ($this->puReputationRbPRBadgesScheduledForDeletion !== null) {
-                if (!$this->puReputationRbPRBadgesScheduledForDeletion->isEmpty()) {
+            if ($this->pUReputationRBsScheduledForDeletion !== null) {
+                if (!$this->pUReputationRBsScheduledForDeletion->isEmpty()) {
                     PUReputationRBQuery::create()
-                        ->filterByPrimaryKeys($this->puReputationRbPRBadgesScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->pUReputationRBsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->puReputationRbPRBadgesScheduledForDeletion = null;
+                    $this->pUReputationRBsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPuReputationRbPRBadges !== null) {
-                foreach ($this->collPuReputationRbPRBadges as $referrerFK) {
+            if ($this->collPUReputationRBs !== null) {
+                foreach ($this->collPUReputationRBs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1073,8 +1073,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPuReputationRbPRBadges !== null) {
-                    foreach ($this->collPuReputationRbPRBadges as $referrerFK) {
+                if ($this->collPUReputationRBs !== null) {
+                    foreach ($this->collPUReputationRBs as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1194,8 +1194,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             if (null !== $this->aPRBadgeMetal) {
                 $result['PRBadgeMetal'] = $this->aPRBadgeMetal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collPuReputationRbPRBadges) {
-                $result['PuReputationRbPRBadges'] = $this->collPuReputationRbPRBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUReputationRBs) {
+                $result['PUReputationRBs'] = $this->collPUReputationRBs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1390,9 +1390,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPuReputationRbPRBadges() as $relObj) {
+            foreach ($this->getPUReputationRBs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPuReputationRbPRBadge($relObj->copy($deepCopy));
+                    $copyObj->addPUReputationRB($relObj->copy($deepCopy));
                 }
             }
 
@@ -1561,42 +1561,42 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PuReputationRbPRBadge' == $relationName) {
-            $this->initPuReputationRbPRBadges();
+        if ('PUReputationRB' == $relationName) {
+            $this->initPUReputationRBs();
         }
     }
 
     /**
-     * Clears out the collPuReputationRbPRBadges collection
+     * Clears out the collPUReputationRBs collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PRBadge The current object (for fluent API support)
-     * @see        addPuReputationRbPRBadges()
+     * @see        addPUReputationRBs()
      */
-    public function clearPuReputationRbPRBadges()
+    public function clearPUReputationRBs()
     {
-        $this->collPuReputationRbPRBadges = null; // important to set this to null since that means it is uninitialized
-        $this->collPuReputationRbPRBadgesPartial = null;
+        $this->collPUReputationRBs = null; // important to set this to null since that means it is uninitialized
+        $this->collPUReputationRBsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPuReputationRbPRBadges collection loaded partially
+     * reset is the collPUReputationRBs collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPuReputationRbPRBadges($v = true)
+    public function resetPartialPUReputationRBs($v = true)
     {
-        $this->collPuReputationRbPRBadgesPartial = $v;
+        $this->collPUReputationRBsPartial = $v;
     }
 
     /**
-     * Initializes the collPuReputationRbPRBadges collection.
+     * Initializes the collPUReputationRBs collection.
      *
-     * By default this just sets the collPuReputationRbPRBadges collection to an empty array (like clearcollPuReputationRbPRBadges());
+     * By default this just sets the collPUReputationRBs collection to an empty array (like clearcollPUReputationRBs());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1605,13 +1605,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPuReputationRbPRBadges($overrideExisting = true)
+    public function initPUReputationRBs($overrideExisting = true)
     {
-        if (null !== $this->collPuReputationRbPRBadges && !$overrideExisting) {
+        if (null !== $this->collPUReputationRBs && !$overrideExisting) {
             return;
         }
-        $this->collPuReputationRbPRBadges = new PropelObjectCollection();
-        $this->collPuReputationRbPRBadges->setModel('PUReputationRB');
+        $this->collPUReputationRBs = new PropelObjectCollection();
+        $this->collPUReputationRBs->setModel('PUReputationRB');
     }
 
     /**
@@ -1628,79 +1628,79 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @return PropelObjectCollection|PUReputationRB[] List of PUReputationRB objects
      * @throws PropelException
      */
-    public function getPuReputationRbPRBadges($criteria = null, PropelPDO $con = null)
+    public function getPUReputationRBs($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPuReputationRbPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPuReputationRbPRBadges || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPuReputationRbPRBadges) {
+        $partial = $this->collPUReputationRBsPartial && !$this->isNew();
+        if (null === $this->collPUReputationRBs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUReputationRBs) {
                 // return empty collection
-                $this->initPuReputationRbPRBadges();
+                $this->initPUReputationRBs();
             } else {
-                $collPuReputationRbPRBadges = PUReputationRBQuery::create(null, $criteria)
-                    ->filterByPuReputationRbPRBadge($this)
+                $collPUReputationRBs = PUReputationRBQuery::create(null, $criteria)
+                    ->filterByPRBadge($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPuReputationRbPRBadgesPartial && count($collPuReputationRbPRBadges)) {
-                      $this->initPuReputationRbPRBadges(false);
+                    if (false !== $this->collPUReputationRBsPartial && count($collPUReputationRBs)) {
+                      $this->initPUReputationRBs(false);
 
-                      foreach ($collPuReputationRbPRBadges as $obj) {
-                        if (false == $this->collPuReputationRbPRBadges->contains($obj)) {
-                          $this->collPuReputationRbPRBadges->append($obj);
+                      foreach ($collPUReputationRBs as $obj) {
+                        if (false == $this->collPUReputationRBs->contains($obj)) {
+                          $this->collPUReputationRBs->append($obj);
                         }
                       }
 
-                      $this->collPuReputationRbPRBadgesPartial = true;
+                      $this->collPUReputationRBsPartial = true;
                     }
 
-                    $collPuReputationRbPRBadges->getInternalIterator()->rewind();
+                    $collPUReputationRBs->getInternalIterator()->rewind();
 
-                    return $collPuReputationRbPRBadges;
+                    return $collPUReputationRBs;
                 }
 
-                if ($partial && $this->collPuReputationRbPRBadges) {
-                    foreach ($this->collPuReputationRbPRBadges as $obj) {
+                if ($partial && $this->collPUReputationRBs) {
+                    foreach ($this->collPUReputationRBs as $obj) {
                         if ($obj->isNew()) {
-                            $collPuReputationRbPRBadges[] = $obj;
+                            $collPUReputationRBs[] = $obj;
                         }
                     }
                 }
 
-                $this->collPuReputationRbPRBadges = $collPuReputationRbPRBadges;
-                $this->collPuReputationRbPRBadgesPartial = false;
+                $this->collPUReputationRBs = $collPUReputationRBs;
+                $this->collPUReputationRBsPartial = false;
             }
         }
 
-        return $this->collPuReputationRbPRBadges;
+        return $this->collPUReputationRBs;
     }
 
     /**
-     * Sets a collection of PuReputationRbPRBadge objects related by a one-to-many relationship
+     * Sets a collection of PUReputationRB objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $puReputationRbPRBadges A Propel collection.
+     * @param PropelCollection $pUReputationRBs A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PRBadge The current object (for fluent API support)
      */
-    public function setPuReputationRbPRBadges(PropelCollection $puReputationRbPRBadges, PropelPDO $con = null)
+    public function setPUReputationRBs(PropelCollection $pUReputationRBs, PropelPDO $con = null)
     {
-        $puReputationRbPRBadgesToDelete = $this->getPuReputationRbPRBadges(new Criteria(), $con)->diff($puReputationRbPRBadges);
+        $pUReputationRBsToDelete = $this->getPUReputationRBs(new Criteria(), $con)->diff($pUReputationRBs);
 
 
-        $this->puReputationRbPRBadgesScheduledForDeletion = $puReputationRbPRBadgesToDelete;
+        $this->pUReputationRBsScheduledForDeletion = $pUReputationRBsToDelete;
 
-        foreach ($puReputationRbPRBadgesToDelete as $puReputationRbPRBadgeRemoved) {
-            $puReputationRbPRBadgeRemoved->setPuReputationRbPRBadge(null);
+        foreach ($pUReputationRBsToDelete as $pUReputationRBRemoved) {
+            $pUReputationRBRemoved->setPRBadge(null);
         }
 
-        $this->collPuReputationRbPRBadges = null;
-        foreach ($puReputationRbPRBadges as $puReputationRbPRBadge) {
-            $this->addPuReputationRbPRBadge($puReputationRbPRBadge);
+        $this->collPUReputationRBs = null;
+        foreach ($pUReputationRBs as $pUReputationRB) {
+            $this->addPUReputationRB($pUReputationRB);
         }
 
-        $this->collPuReputationRbPRBadges = $puReputationRbPRBadges;
-        $this->collPuReputationRbPRBadgesPartial = false;
+        $this->collPUReputationRBs = $pUReputationRBs;
+        $this->collPUReputationRBsPartial = false;
 
         return $this;
     }
@@ -1714,16 +1714,16 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @return int             Count of related PUReputationRB objects.
      * @throws PropelException
      */
-    public function countPuReputationRbPRBadges(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUReputationRBs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPuReputationRbPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPuReputationRbPRBadges || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPuReputationRbPRBadges) {
+        $partial = $this->collPUReputationRBsPartial && !$this->isNew();
+        if (null === $this->collPUReputationRBs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUReputationRBs) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPuReputationRbPRBadges());
+                return count($this->getPUReputationRBs());
             }
             $query = PUReputationRBQuery::create(null, $criteria);
             if ($distinct) {
@@ -1731,11 +1731,11 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByPuReputationRbPRBadge($this)
+                ->filterByPRBadge($this)
                 ->count($con);
         }
 
-        return count($this->collPuReputationRbPRBadges);
+        return count($this->collPUReputationRBs);
     }
 
     /**
@@ -1745,18 +1745,18 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @param    PUReputationRB $l PUReputationRB
      * @return PRBadge The current object (for fluent API support)
      */
-    public function addPuReputationRbPRBadge(PUReputationRB $l)
+    public function addPUReputationRB(PUReputationRB $l)
     {
-        if ($this->collPuReputationRbPRBadges === null) {
-            $this->initPuReputationRbPRBadges();
-            $this->collPuReputationRbPRBadgesPartial = true;
+        if ($this->collPUReputationRBs === null) {
+            $this->initPUReputationRBs();
+            $this->collPUReputationRBsPartial = true;
         }
 
-        if (!in_array($l, $this->collPuReputationRbPRBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPuReputationRbPRBadge($l);
+        if (!in_array($l, $this->collPUReputationRBs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUReputationRB($l);
 
-            if ($this->puReputationRbPRBadgesScheduledForDeletion and $this->puReputationRbPRBadgesScheduledForDeletion->contains($l)) {
-                $this->puReputationRbPRBadgesScheduledForDeletion->remove($this->puReputationRbPRBadgesScheduledForDeletion->search($l));
+            if ($this->pUReputationRBsScheduledForDeletion and $this->pUReputationRBsScheduledForDeletion->contains($l)) {
+                $this->pUReputationRBsScheduledForDeletion->remove($this->pUReputationRBsScheduledForDeletion->search($l));
             }
         }
 
@@ -1764,28 +1764,28 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuReputationRbPRBadge $puReputationRbPRBadge The puReputationRbPRBadge object to add.
+     * @param	PUReputationRB $pUReputationRB The pUReputationRB object to add.
      */
-    protected function doAddPuReputationRbPRBadge($puReputationRbPRBadge)
+    protected function doAddPUReputationRB($pUReputationRB)
     {
-        $this->collPuReputationRbPRBadges[]= $puReputationRbPRBadge;
-        $puReputationRbPRBadge->setPuReputationRbPRBadge($this);
+        $this->collPUReputationRBs[]= $pUReputationRB;
+        $pUReputationRB->setPRBadge($this);
     }
 
     /**
-     * @param	PuReputationRbPRBadge $puReputationRbPRBadge The puReputationRbPRBadge object to remove.
+     * @param	PUReputationRB $pUReputationRB The pUReputationRB object to remove.
      * @return PRBadge The current object (for fluent API support)
      */
-    public function removePuReputationRbPRBadge($puReputationRbPRBadge)
+    public function removePUReputationRB($pUReputationRB)
     {
-        if ($this->getPuReputationRbPRBadges()->contains($puReputationRbPRBadge)) {
-            $this->collPuReputationRbPRBadges->remove($this->collPuReputationRbPRBadges->search($puReputationRbPRBadge));
-            if (null === $this->puReputationRbPRBadgesScheduledForDeletion) {
-                $this->puReputationRbPRBadgesScheduledForDeletion = clone $this->collPuReputationRbPRBadges;
-                $this->puReputationRbPRBadgesScheduledForDeletion->clear();
+        if ($this->getPUReputationRBs()->contains($pUReputationRB)) {
+            $this->collPUReputationRBs->remove($this->collPUReputationRBs->search($pUReputationRB));
+            if (null === $this->pUReputationRBsScheduledForDeletion) {
+                $this->pUReputationRBsScheduledForDeletion = clone $this->collPUReputationRBs;
+                $this->pUReputationRBsScheduledForDeletion->clear();
             }
-            $this->puReputationRbPRBadgesScheduledForDeletion[]= clone $puReputationRbPRBadge;
-            $puReputationRbPRBadge->setPuReputationRbPRBadge(null);
+            $this->pUReputationRBsScheduledForDeletion[]= clone $pUReputationRB;
+            $pUReputationRB->setPRBadge(null);
         }
 
         return $this;
@@ -1797,7 +1797,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PRBadge is new, it will return
      * an empty collection; or if this PRBadge has previously
-     * been saved, it will retrieve related PuReputationRbPRBadges from storage.
+     * been saved, it will retrieve related PUReputationRBs from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1808,44 +1808,44 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PUReputationRB[] List of PUReputationRB objects
      */
-    public function getPuReputationRbPRBadgesJoinPuReputationRbPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUReputationRBsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PUReputationRBQuery::create(null, $criteria);
-        $query->joinWith('PuReputationRbPUser', $join_behavior);
+        $query->joinWith('PUser', $join_behavior);
 
-        return $this->getPuReputationRbPRBadges($query, $con);
+        return $this->getPUReputationRBs($query, $con);
     }
 
     /**
-     * Clears out the collPuReputationRbPUsers collection
+     * Clears out the collPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PRBadge The current object (for fluent API support)
-     * @see        addPuReputationRbPUsers()
+     * @see        addPUsers()
      */
-    public function clearPuReputationRbPUsers()
+    public function clearPUsers()
     {
-        $this->collPuReputationRbPUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collPuReputationRbPUsersPartial = null;
+        $this->collPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUsersPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collPuReputationRbPUsers collection.
+     * Initializes the collPUsers collection.
      *
-     * By default this just sets the collPuReputationRbPUsers collection to an empty collection (like clearPuReputationRbPUsers());
+     * By default this just sets the collPUsers collection to an empty collection (like clearPUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initPuReputationRbPUsers()
+    public function initPUsers()
     {
-        $this->collPuReputationRbPUsers = new PropelObjectCollection();
-        $this->collPuReputationRbPUsers->setModel('PUser');
+        $this->collPUsers = new PropelObjectCollection();
+        $this->collPUsers->setModel('PUser');
     }
 
     /**
@@ -1863,24 +1863,24 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * @return PropelObjectCollection|PUser[] List of PUser objects
      */
-    public function getPuReputationRbPUsers($criteria = null, PropelPDO $con = null)
+    public function getPUsers($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collPuReputationRbPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuReputationRbPUsers) {
+        if (null === $this->collPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUsers) {
                 // return empty collection
-                $this->initPuReputationRbPUsers();
+                $this->initPUsers();
             } else {
-                $collPuReputationRbPUsers = PUserQuery::create(null, $criteria)
-                    ->filterByPuReputationRbPRBadge($this)
+                $collPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPRBadge($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collPuReputationRbPUsers;
+                    return $collPUsers;
                 }
-                $this->collPuReputationRbPUsers = $collPuReputationRbPUsers;
+                $this->collPUsers = $collPUsers;
             }
         }
 
-        return $this->collPuReputationRbPUsers;
+        return $this->collPUsers;
     }
 
     /**
@@ -1889,24 +1889,24 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $puReputationRbPUsers A Propel collection.
+     * @param PropelCollection $pUsers A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PRBadge The current object (for fluent API support)
      */
-    public function setPuReputationRbPUsers(PropelCollection $puReputationRbPUsers, PropelPDO $con = null)
+    public function setPUsers(PropelCollection $pUsers, PropelPDO $con = null)
     {
-        $this->clearPuReputationRbPUsers();
-        $currentPuReputationRbPUsers = $this->getPuReputationRbPUsers(null, $con);
+        $this->clearPUsers();
+        $currentPUsers = $this->getPUsers(null, $con);
 
-        $this->puReputationRbPUsersScheduledForDeletion = $currentPuReputationRbPUsers->diff($puReputationRbPUsers);
+        $this->pUsersScheduledForDeletion = $currentPUsers->diff($pUsers);
 
-        foreach ($puReputationRbPUsers as $puReputationRbPUser) {
-            if (!$currentPuReputationRbPUsers->contains($puReputationRbPUser)) {
-                $this->doAddPuReputationRbPUser($puReputationRbPUser);
+        foreach ($pUsers as $pUser) {
+            if (!$currentPUsers->contains($pUser)) {
+                $this->doAddPUser($pUser);
             }
         }
 
-        $this->collPuReputationRbPUsers = $puReputationRbPUsers;
+        $this->collPUsers = $pUsers;
 
         return $this;
     }
@@ -1921,10 +1921,10 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * @return int the number of related PUser objects
      */
-    public function countPuReputationRbPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collPuReputationRbPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuReputationRbPUsers) {
+        if (null === $this->collPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUsers) {
                 return 0;
             } else {
                 $query = PUserQuery::create(null, $criteria);
@@ -1933,11 +1933,11 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 }
 
                 return $query
-                    ->filterByPuReputationRbPRBadge($this)
+                    ->filterByPRBadge($this)
                     ->count($con);
             }
         } else {
-            return count($this->collPuReputationRbPUsers);
+            return count($this->collPUsers);
         }
     }
 
@@ -1948,18 +1948,18 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @param  PUser $pUser The PUReputationRB object to relate
      * @return PRBadge The current object (for fluent API support)
      */
-    public function addPuReputationRbPUser(PUser $pUser)
+    public function addPUser(PUser $pUser)
     {
-        if ($this->collPuReputationRbPUsers === null) {
-            $this->initPuReputationRbPUsers();
+        if ($this->collPUsers === null) {
+            $this->initPUsers();
         }
 
-        if (!$this->collPuReputationRbPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
-            $this->doAddPuReputationRbPUser($pUser);
-            $this->collPuReputationRbPUsers[] = $pUser;
+        if (!$this->collPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPUser($pUser);
+            $this->collPUsers[] = $pUser;
 
-            if ($this->puReputationRbPUsersScheduledForDeletion and $this->puReputationRbPUsersScheduledForDeletion->contains($pUser)) {
-                $this->puReputationRbPUsersScheduledForDeletion->remove($this->puReputationRbPUsersScheduledForDeletion->search($pUser));
+            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($pUser)) {
+                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($pUser));
             }
         }
 
@@ -1967,17 +1967,17 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuReputationRbPUser $puReputationRbPUser The puReputationRbPUser object to add.
+     * @param	PUser $pUser The pUser object to add.
      */
-    protected function doAddPuReputationRbPUser(PUser $puReputationRbPUser)
+    protected function doAddPUser(PUser $pUser)
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$puReputationRbPUser->getPuReputationRbPRBadges()->contains($this)) { $pUReputationRB = new PUReputationRB();
-            $pUReputationRB->setPuReputationRbPUser($puReputationRbPUser);
-            $this->addPuReputationRbPRBadge($pUReputationRB);
+        if (!$pUser->getPRBadges()->contains($this)) { $pUReputationRB = new PUReputationRB();
+            $pUReputationRB->setPUser($pUser);
+            $this->addPUReputationRB($pUReputationRB);
 
-            $foreignCollection = $puReputationRbPUser->getPuReputationRbPRBadges();
+            $foreignCollection = $pUser->getPRBadges();
             $foreignCollection[] = $this;
         }
     }
@@ -1989,15 +1989,15 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @param PUser $pUser The PUReputationRB object to relate
      * @return PRBadge The current object (for fluent API support)
      */
-    public function removePuReputationRbPUser(PUser $pUser)
+    public function removePUser(PUser $pUser)
     {
-        if ($this->getPuReputationRbPUsers()->contains($pUser)) {
-            $this->collPuReputationRbPUsers->remove($this->collPuReputationRbPUsers->search($pUser));
-            if (null === $this->puReputationRbPUsersScheduledForDeletion) {
-                $this->puReputationRbPUsersScheduledForDeletion = clone $this->collPuReputationRbPUsers;
-                $this->puReputationRbPUsersScheduledForDeletion->clear();
+        if ($this->getPUsers()->contains($pUser)) {
+            $this->collPUsers->remove($this->collPUsers->search($pUser));
+            if (null === $this->pUsersScheduledForDeletion) {
+                $this->pUsersScheduledForDeletion = clone $this->collPUsers;
+                $this->pUsersScheduledForDeletion->clear();
             }
-            $this->puReputationRbPUsersScheduledForDeletion[]= $pUser;
+            $this->pUsersScheduledForDeletion[]= $pUser;
         }
 
         return $this;
@@ -2039,13 +2039,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPuReputationRbPRBadges) {
-                foreach ($this->collPuReputationRbPRBadges as $o) {
+            if ($this->collPUReputationRBs) {
+                foreach ($this->collPUReputationRBs as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPuReputationRbPUsers) {
-                foreach ($this->collPuReputationRbPUsers as $o) {
+            if ($this->collPUsers) {
+                foreach ($this->collPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2059,14 +2059,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPuReputationRbPRBadges instanceof PropelCollection) {
-            $this->collPuReputationRbPRBadges->clearIterator();
+        if ($this->collPUReputationRBs instanceof PropelCollection) {
+            $this->collPUReputationRBs->clearIterator();
         }
-        $this->collPuReputationRbPRBadges = null;
-        if ($this->collPuReputationRbPUsers instanceof PropelCollection) {
-            $this->collPuReputationRbPUsers->clearIterator();
+        $this->collPUReputationRBs = null;
+        if ($this->collPUsers instanceof PropelCollection) {
+            $this->collPUsers->clearIterator();
         }
-        $this->collPuReputationRbPUsers = null;
+        $this->collPUsers = null;
         $this->aPRBadgeType = null;
         $this->aPRBadgeMetal = null;
     }

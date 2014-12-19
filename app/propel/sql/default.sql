@@ -387,6 +387,135 @@ CREATE TABLE `p_o_email`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- p_qualification
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_qualification`;
+
+CREATE TABLE `p_qualification`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_qualification_slug` (`slug`(255))
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_q_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_q_type`;
+
+CREATE TABLE `p_q_type`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_q_type_slug` (`slug`(255))
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_q_mandate
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_q_mandate`;
+
+CREATE TABLE `p_q_mandate`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_q_type_id` INTEGER NOT NULL,
+    `title` VARCHAR(250),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_q_mandate_slug` (`slug`(255)),
+    INDEX `p_q_mandate_FI_1` (`p_q_type_id`),
+    CONSTRAINT `p_q_mandate_FK_1`
+        FOREIGN KEY (`p_q_type_id`)
+        REFERENCES `p_q_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_q_organization
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_q_organization`;
+
+CREATE TABLE `p_q_organization`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `initials` VARCHAR(50),
+    `file_name` VARCHAR(150),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
+    `p_q_type_id` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_q_organization_slug` (`slug`(255)),
+    INDEX `p_q_organization_FI_1` (`p_q_type_id`),
+    CONSTRAINT `p_q_organization_FK_1`
+        FOREIGN KEY (`p_q_type_id`)
+        REFERENCES `p_q_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_notification
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_notification`;
+
+CREATE TABLE `p_notification`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_n_email
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_n_email`;
+
+CREATE TABLE `p_n_email`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(250),
+    `description` TEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- p_user
 -- ---------------------------------------------------------------------
 
@@ -415,7 +544,6 @@ CREATE TABLE `p_user`
     `credentials_expired` TINYINT(1) DEFAULT 0,
     `credentials_expire_at` DATETIME,
     `roles` TEXT,
-    `p_u_type_id` INTEGER NOT NULL,
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `gender` TINYINT,
@@ -430,8 +558,9 @@ CREATE TABLE `p_user`
     `newsletter` TINYINT(1),
     `last_connect` DATETIME,
     `nb_views` INTEGER,
-    `online` TINYINT(1),
+    `qualified` TINYINT(1),
     `validated` TINYINT(1) DEFAULT 0,
+    `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -439,33 +568,12 @@ CREATE TABLE `p_user`
     UNIQUE INDEX `p_user_U_1` (`username_canonical`),
     UNIQUE INDEX `p_user_U_2` (`email_canonical`),
     UNIQUE INDEX `p_user_slug` (`slug`(255)),
-    INDEX `p_user_FI_1` (`p_u_type_id`),
-    INDEX `p_user_FI_2` (`p_u_status_id`),
+    INDEX `p_user_FI_1` (`p_u_status_id`),
     CONSTRAINT `p_user_FK_1`
-        FOREIGN KEY (`p_u_type_id`)
-        REFERENCES `p_u_type` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_user_FK_2`
         FOREIGN KEY (`p_u_status_id`)
         REFERENCES `p_u_status` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_u_type
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_u_type`;
-
-CREATE TABLE `p_u_type`
-(
-    `id` INTEGER NOT NULL,
-    `title` VARCHAR(150),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -505,85 +613,6 @@ CREATE TABLE `p_u_follow_u`
         FOREIGN KEY (`p_user_follower_id`)
         REFERENCES `p_user` (`id`)
         ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_u_qualification
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_u_qualification`;
-
-CREATE TABLE `p_u_qualification`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_user_id` INTEGER NOT NULL,
-    `p_u_political_party_id` INTEGER,
-    `p_u_mandate_type_id` INTEGER,
-    `description` TEXT,
-    `begin_at` DATETIME,
-    `end_at` DATETIME,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_u_qualification_FI_1` (`p_user_id`),
-    INDEX `p_u_qualification_FI_2` (`p_u_political_party_id`),
-    INDEX `p_u_qualification_FI_3` (`p_u_mandate_type_id`),
-    CONSTRAINT `p_u_qualification_FK_1`
-        FOREIGN KEY (`p_user_id`)
-        REFERENCES `p_user` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_u_qualification_FK_2`
-        FOREIGN KEY (`p_u_political_party_id`)
-        REFERENCES `p_u_political_party` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL,
-    CONSTRAINT `p_u_qualification_FK_3`
-        FOREIGN KEY (`p_u_mandate_type_id`)
-        REFERENCES `p_u_mandate_type` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_u_political_party
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_u_political_party`;
-
-CREATE TABLE `p_u_political_party`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(250),
-    `initials` VARCHAR(50),
-    `file_name` VARCHAR(150),
-    `description` TEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `sortable_rank` INTEGER,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `p_u_political_party_slug` (`slug`(255))
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_u_mandate_type
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_u_mandate_type`;
-
-CREATE TABLE `p_u_mandate_type`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(250),
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `sortable_rank` INTEGER,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `p_u_mandate_type_slug` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -729,29 +758,162 @@ CREATE TABLE `p_u_follow_t`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_affinity_u_p_p
+-- p_u_role_q
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_affinity_u_p_p`;
+DROP TABLE IF EXISTS `p_u_role_q`;
 
-CREATE TABLE `p_u_affinity_u_p_p`
+CREATE TABLE `p_u_role_q`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
-    `p_u_political_party_id` INTEGER NOT NULL,
+    `p_qualification_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_affinity_u_p_p_FI_1` (`p_user_id`),
-    INDEX `p_u_affinity_u_p_p_FI_2` (`p_u_political_party_id`),
-    CONSTRAINT `p_u_affinity_u_p_p_FK_1`
+    INDEX `p_u_role_q_FI_1` (`p_user_id`),
+    INDEX `p_u_role_q_FI_2` (`p_qualification_id`),
+    CONSTRAINT `p_u_role_q_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_affinity_u_p_p_FK_2`
-        FOREIGN KEY (`p_u_political_party_id`)
-        REFERENCES `p_u_political_party` (`id`)
+    CONSTRAINT `p_u_role_q_FK_2`
+        FOREIGN KEY (`p_qualification_id`)
+        REFERENCES `p_qualification` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_mandate
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_mandate`;
+
+CREATE TABLE `p_u_mandate`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_q_type_id` INTEGER NOT NULL,
+    `p_q_mandate_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER NOT NULL,
+    `description` TEXT,
+    `begin_at` DATETIME,
+    `end_at` DATETIME,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_mandate_FI_1` (`p_user_id`),
+    INDEX `p_u_mandate_FI_2` (`p_q_type_id`),
+    INDEX `p_u_mandate_FI_3` (`p_q_mandate_id`),
+    INDEX `p_u_mandate_FI_4` (`p_q_organization_id`),
+    CONSTRAINT `p_u_mandate_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_mandate_FK_2`
+        FOREIGN KEY (`p_q_type_id`)
+        REFERENCES `p_q_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_mandate_FK_3`
+        FOREIGN KEY (`p_q_mandate_id`)
+        REFERENCES `p_q_mandate` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_mandate_FK_4`
+        FOREIGN KEY (`p_q_organization_id`)
+        REFERENCES `p_q_organization` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_affinity_q_o
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_affinity_q_o`;
+
+CREATE TABLE `p_u_affinity_q_o`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_affinity_q_o_FI_1` (`p_user_id`),
+    INDEX `p_u_affinity_q_o_FI_2` (`p_q_organization_id`),
+    CONSTRAINT `p_u_affinity_q_o_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_affinity_q_o_FK_2`
+        FOREIGN KEY (`p_q_organization_id`)
+        REFERENCES `p_q_organization` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_notified_p_n
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_notified_p_n`;
+
+CREATE TABLE `p_u_notified_p_n`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_notification_id` INTEGER NOT NULL,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `checked` TINYINT(1),
+    `checked_at` DATETIME,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_notified_p_n_FI_1` (`p_user_id`),
+    INDEX `p_u_notified_p_n_FI_2` (`p_notification_id`),
+    CONSTRAINT `p_u_notified_p_n_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_notified_p_n_FK_2`
+        FOREIGN KEY (`p_notification_id`)
+        REFERENCES `p_notification` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_subscribe_n_o
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_subscribe_n_o`;
+
+CREATE TABLE `p_u_subscribe_n_o`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_n_email_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_subscribe_n_o_FI_1` (`p_user_id`),
+    INDEX `p_u_subscribe_n_o_FI_2` (`p_n_email_id`),
+    CONSTRAINT `p_u_subscribe_n_o_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_subscribe_n_o_FK_2`
+        FOREIGN KEY (`p_n_email_id`)
+        REFERENCES `p_n_email` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -1053,7 +1215,6 @@ CREATE TABLE `p_user_archive`
     `credentials_expired` TINYINT(1) DEFAULT 0,
     `credentials_expire_at` DATETIME,
     `roles` TEXT,
-    `p_u_type_id` INTEGER NOT NULL,
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `gender` TINYINT,
@@ -1068,32 +1229,33 @@ CREATE TABLE `p_user_archive`
     `newsletter` TINYINT(1),
     `last_connect` DATETIME,
     `nb_views` INTEGER,
-    `online` TINYINT(1),
+    `qualified` TINYINT(1),
     `validated` TINYINT(1) DEFAULT 0,
+    `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_user_archive_I_1` (`p_u_type_id`),
-    INDEX `p_user_archive_I_2` (`p_u_status_id`),
-    INDEX `p_user_archive_I_3` (`username_canonical`),
-    INDEX `p_user_archive_I_4` (`email_canonical`),
-    INDEX `p_user_archive_I_5` (`slug`(255))
+    INDEX `p_user_archive_I_1` (`p_u_status_id`),
+    INDEX `p_user_archive_I_2` (`username_canonical`),
+    INDEX `p_user_archive_I_3` (`email_canonical`),
+    INDEX `p_user_archive_I_4` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_qualification_archive
+-- p_u_mandate_archive
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_qualification_archive`;
+DROP TABLE IF EXISTS `p_u_mandate_archive`;
 
-CREATE TABLE `p_u_qualification_archive`
+CREATE TABLE `p_u_mandate_archive`
 (
     `id` INTEGER NOT NULL,
     `p_user_id` INTEGER NOT NULL,
-    `p_u_political_party_id` INTEGER,
-    `p_u_mandate_type_id` INTEGER,
+    `p_q_type_id` INTEGER NOT NULL,
+    `p_q_mandate_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER NOT NULL,
     `description` TEXT,
     `begin_at` DATETIME,
     `end_at` DATETIME,
@@ -1101,9 +1263,10 @@ CREATE TABLE `p_u_qualification_archive`
     `updated_at` DATETIME,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_qualification_archive_I_1` (`p_user_id`),
-    INDEX `p_u_qualification_archive_I_2` (`p_u_political_party_id`),
-    INDEX `p_u_qualification_archive_I_3` (`p_u_mandate_type_id`)
+    INDEX `p_u_mandate_archive_I_1` (`p_user_id`),
+    INDEX `p_u_mandate_archive_I_2` (`p_q_type_id`),
+    INDEX `p_u_mandate_archive_I_3` (`p_q_mandate_id`),
+    INDEX `p_u_mandate_archive_I_4` (`p_q_organization_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

@@ -176,12 +176,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $roles_unserialized;
 
     /**
-     * The value for the p_u_type_id field.
-     * @var        int
-     */
-    protected $p_u_type_id;
-
-    /**
      * The value for the p_u_status_id field.
      * @var        int
      */
@@ -266,10 +260,10 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $nb_views;
 
     /**
-     * The value for the online field.
+     * The value for the qualified field.
      * @var        boolean
      */
-    protected $online;
+    protected $qualified;
 
     /**
      * The value for the validated field.
@@ -277,6 +271,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $validated;
+
+    /**
+     * The value for the online field.
+     * @var        boolean
+     */
+    protected $online;
 
     /**
      * The value for the created_at field.
@@ -713,17 +713,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // hasRole()
 
     /**
-     * Get the [p_u_type_id] column value.
-     *
-     * @return int
-     */
-    public function getPUTypeId()
-    {
-
-        return $this->p_u_type_id;
-    }
-
-    /**
      * Get the [p_u_status_id] column value.
      *
      * @return int
@@ -944,14 +933,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [online] column value.
+     * Get the [qualified] column value.
      *
      * @return boolean
      */
-    public function getOnline()
+    public function getQualified()
     {
 
-        return $this->online;
+        return $this->qualified;
     }
 
     /**
@@ -963,6 +952,17 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     {
 
         return $this->validated;
+    }
+
+    /**
+     * Get the [online] column value.
+     *
+     * @return boolean
+     */
+    public function getOnline()
+    {
+
+        return $this->online;
     }
 
     /**
@@ -1609,27 +1609,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // removeRole()
 
     /**
-     * Set the value of [p_u_type_id] column.
-     *
-     * @param  int $v new value
-     * @return PUserArchive The current object (for fluent API support)
-     */
-    public function setPUTypeId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_u_type_id !== $v) {
-            $this->p_u_type_id = $v;
-            $this->modifiedColumns[] = PUserArchivePeer::P_U_TYPE_ID;
-        }
-
-
-        return $this;
-    } // setPUTypeId()
-
-    /**
      * Set the value of [p_u_status_id] column.
      *
      * @param  int $v new value
@@ -1941,7 +1920,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // setNbViews()
 
     /**
-     * Sets the value of the [online] column.
+     * Sets the value of the [qualified] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -1950,7 +1929,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      * @param boolean|integer|string $v The new value
      * @return PUserArchive The current object (for fluent API support)
      */
-    public function setOnline($v)
+    public function setQualified($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -1960,14 +1939,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             }
         }
 
-        if ($this->online !== $v) {
-            $this->online = $v;
-            $this->modifiedColumns[] = PUserArchivePeer::ONLINE;
+        if ($this->qualified !== $v) {
+            $this->qualified = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::QUALIFIED;
         }
 
 
         return $this;
-    } // setOnline()
+    } // setQualified()
 
     /**
      * Sets the value of the [validated] column.
@@ -1997,6 +1976,35 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         return $this;
     } // setValidated()
+
+    /**
+     * Sets the value of the [online] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setOnline($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->online !== $v) {
+            $this->online = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::ONLINE;
+        }
+
+
+        return $this;
+    } // setOnline()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -2162,23 +2170,23 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $this->credentials_expire_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->roles = $row[$startcol + 20];
             $this->roles_unserialized = null;
-            $this->p_u_type_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
-            $this->p_u_status_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
-            $this->file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->gender = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
-            $this->firstname = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->name = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->birthday = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->biography = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->website = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->twitter = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->facebook = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->phone = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
-            $this->newsletter = ($row[$startcol + 33] !== null) ? (boolean) $row[$startcol + 33] : null;
-            $this->last_connect = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
-            $this->nb_views = ($row[$startcol + 35] !== null) ? (int) $row[$startcol + 35] : null;
-            $this->online = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
-            $this->validated = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
+            $this->p_u_status_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->file_name = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->gender = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
+            $this->firstname = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->name = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->birthday = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->biography = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->website = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->twitter = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->facebook = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->phone = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->newsletter = ($row[$startcol + 32] !== null) ? (boolean) $row[$startcol + 32] : null;
+            $this->last_connect = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->nb_views = ($row[$startcol + 34] !== null) ? (int) $row[$startcol + 34] : null;
+            $this->qualified = ($row[$startcol + 35] !== null) ? (boolean) $row[$startcol + 35] : null;
+            $this->validated = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
+            $this->online = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
             $this->created_at = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
             $this->updated_at = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
             $this->slug = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
@@ -2463,9 +2471,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::ROLES)) {
             $modifiedColumns[':p' . $index++]  = '`roles`';
         }
-        if ($this->isColumnModified(PUserArchivePeer::P_U_TYPE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_u_type_id`';
-        }
         if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_u_status_id`';
         }
@@ -2508,11 +2513,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::NB_VIEWS)) {
             $modifiedColumns[':p' . $index++]  = '`nb_views`';
         }
-        if ($this->isColumnModified(PUserArchivePeer::ONLINE)) {
-            $modifiedColumns[':p' . $index++]  = '`online`';
+        if ($this->isColumnModified(PUserArchivePeer::QUALIFIED)) {
+            $modifiedColumns[':p' . $index++]  = '`qualified`';
         }
         if ($this->isColumnModified(PUserArchivePeer::VALIDATED)) {
             $modifiedColumns[':p' . $index++]  = '`validated`';
+        }
+        if ($this->isColumnModified(PUserArchivePeer::ONLINE)) {
+            $modifiedColumns[':p' . $index++]  = '`online`';
         }
         if ($this->isColumnModified(PUserArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -2600,9 +2608,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                     case '`roles`':
                         $stmt->bindValue($identifier, $this->roles, PDO::PARAM_STR);
                         break;
-                    case '`p_u_type_id`':
-                        $stmt->bindValue($identifier, $this->p_u_type_id, PDO::PARAM_INT);
-                        break;
                     case '`p_u_status_id`':
                         $stmt->bindValue($identifier, $this->p_u_status_id, PDO::PARAM_INT);
                         break;
@@ -2645,11 +2650,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                     case '`nb_views`':
                         $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
                         break;
-                    case '`online`':
-                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                    case '`qualified`':
+                        $stmt->bindValue($identifier, (int) $this->qualified, PDO::PARAM_INT);
                         break;
                     case '`validated`':
                         $stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
+                        break;
+                    case '`online`':
+                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -2854,55 +2862,55 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 return $this->getRoles();
                 break;
             case 21:
-                return $this->getPUTypeId();
-                break;
-            case 22:
                 return $this->getPUStatusId();
                 break;
-            case 23:
+            case 22:
                 return $this->getFileName();
                 break;
-            case 24:
+            case 23:
                 return $this->getGender();
                 break;
-            case 25:
+            case 24:
                 return $this->getFirstname();
                 break;
-            case 26:
+            case 25:
                 return $this->getName();
                 break;
-            case 27:
+            case 26:
                 return $this->getBirthday();
                 break;
-            case 28:
+            case 27:
                 return $this->getBiography();
                 break;
-            case 29:
+            case 28:
                 return $this->getWebsite();
                 break;
-            case 30:
+            case 29:
                 return $this->getTwitter();
                 break;
-            case 31:
+            case 30:
                 return $this->getFacebook();
                 break;
-            case 32:
+            case 31:
                 return $this->getPhone();
                 break;
-            case 33:
+            case 32:
                 return $this->getNewsletter();
                 break;
-            case 34:
+            case 33:
                 return $this->getLastConnect();
                 break;
-            case 35:
+            case 34:
                 return $this->getNbViews();
                 break;
+            case 35:
+                return $this->getQualified();
+                break;
             case 36:
-                return $this->getOnline();
+                return $this->getValidated();
                 break;
             case 37:
-                return $this->getValidated();
+                return $this->getOnline();
                 break;
             case 38:
                 return $this->getCreatedAt();
@@ -2965,23 +2973,23 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $keys[18] => $this->getCredentialsExpired(),
             $keys[19] => $this->getCredentialsExpireAt(),
             $keys[20] => $this->getRoles(),
-            $keys[21] => $this->getPUTypeId(),
-            $keys[22] => $this->getPUStatusId(),
-            $keys[23] => $this->getFileName(),
-            $keys[24] => $this->getGender(),
-            $keys[25] => $this->getFirstname(),
-            $keys[26] => $this->getName(),
-            $keys[27] => $this->getBirthday(),
-            $keys[28] => $this->getBiography(),
-            $keys[29] => $this->getWebsite(),
-            $keys[30] => $this->getTwitter(),
-            $keys[31] => $this->getFacebook(),
-            $keys[32] => $this->getPhone(),
-            $keys[33] => $this->getNewsletter(),
-            $keys[34] => $this->getLastConnect(),
-            $keys[35] => $this->getNbViews(),
-            $keys[36] => $this->getOnline(),
-            $keys[37] => $this->getValidated(),
+            $keys[21] => $this->getPUStatusId(),
+            $keys[22] => $this->getFileName(),
+            $keys[23] => $this->getGender(),
+            $keys[24] => $this->getFirstname(),
+            $keys[25] => $this->getName(),
+            $keys[26] => $this->getBirthday(),
+            $keys[27] => $this->getBiography(),
+            $keys[28] => $this->getWebsite(),
+            $keys[29] => $this->getTwitter(),
+            $keys[30] => $this->getFacebook(),
+            $keys[31] => $this->getPhone(),
+            $keys[32] => $this->getNewsletter(),
+            $keys[33] => $this->getLastConnect(),
+            $keys[34] => $this->getNbViews(),
+            $keys[35] => $this->getQualified(),
+            $keys[36] => $this->getValidated(),
+            $keys[37] => $this->getOnline(),
             $keys[38] => $this->getCreatedAt(),
             $keys[39] => $this->getUpdatedAt(),
             $keys[40] => $this->getSlug(),
@@ -3093,59 +3101,59 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->setRoles($value);
                 break;
             case 21:
-                $this->setPUTypeId($value);
-                break;
-            case 22:
                 $this->setPUStatusId($value);
                 break;
-            case 23:
+            case 22:
                 $this->setFileName($value);
                 break;
-            case 24:
+            case 23:
                 $valueSet = PUserArchivePeer::getValueSet(PUserArchivePeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 25:
+            case 24:
                 $this->setFirstname($value);
                 break;
-            case 26:
+            case 25:
                 $this->setName($value);
                 break;
-            case 27:
+            case 26:
                 $this->setBirthday($value);
                 break;
-            case 28:
+            case 27:
                 $this->setBiography($value);
                 break;
-            case 29:
+            case 28:
                 $this->setWebsite($value);
                 break;
-            case 30:
+            case 29:
                 $this->setTwitter($value);
                 break;
-            case 31:
+            case 30:
                 $this->setFacebook($value);
                 break;
-            case 32:
+            case 31:
                 $this->setPhone($value);
                 break;
-            case 33:
+            case 32:
                 $this->setNewsletter($value);
                 break;
-            case 34:
+            case 33:
                 $this->setLastConnect($value);
                 break;
-            case 35:
+            case 34:
                 $this->setNbViews($value);
                 break;
+            case 35:
+                $this->setQualified($value);
+                break;
             case 36:
-                $this->setOnline($value);
+                $this->setValidated($value);
                 break;
             case 37:
-                $this->setValidated($value);
+                $this->setOnline($value);
                 break;
             case 38:
                 $this->setCreatedAt($value);
@@ -3204,23 +3212,23 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[18], $arr)) $this->setCredentialsExpired($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setCredentialsExpireAt($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setRoles($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setPUTypeId($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setPUStatusId($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setFileName($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setGender($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setFirstname($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setName($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setBirthday($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setBiography($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setWebsite($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setTwitter($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setFacebook($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setPhone($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setNewsletter($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setLastConnect($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setNbViews($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setOnline($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setValidated($arr[$keys[37]]);
+        if (array_key_exists($keys[21], $arr)) $this->setPUStatusId($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setFileName($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setGender($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setFirstname($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setName($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setBirthday($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setBiography($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setWebsite($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setTwitter($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setFacebook($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setPhone($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setNewsletter($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setLastConnect($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setNbViews($arr[$keys[34]]);
+        if (array_key_exists($keys[35], $arr)) $this->setQualified($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setValidated($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setOnline($arr[$keys[37]]);
         if (array_key_exists($keys[38], $arr)) $this->setCreatedAt($arr[$keys[38]]);
         if (array_key_exists($keys[39], $arr)) $this->setUpdatedAt($arr[$keys[39]]);
         if (array_key_exists($keys[40], $arr)) $this->setSlug($arr[$keys[40]]);
@@ -3257,7 +3265,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::CREDENTIALS_EXPIRED)) $criteria->add(PUserArchivePeer::CREDENTIALS_EXPIRED, $this->credentials_expired);
         if ($this->isColumnModified(PUserArchivePeer::CREDENTIALS_EXPIRE_AT)) $criteria->add(PUserArchivePeer::CREDENTIALS_EXPIRE_AT, $this->credentials_expire_at);
         if ($this->isColumnModified(PUserArchivePeer::ROLES)) $criteria->add(PUserArchivePeer::ROLES, $this->roles);
-        if ($this->isColumnModified(PUserArchivePeer::P_U_TYPE_ID)) $criteria->add(PUserArchivePeer::P_U_TYPE_ID, $this->p_u_type_id);
         if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) $criteria->add(PUserArchivePeer::P_U_STATUS_ID, $this->p_u_status_id);
         if ($this->isColumnModified(PUserArchivePeer::FILE_NAME)) $criteria->add(PUserArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PUserArchivePeer::GENDER)) $criteria->add(PUserArchivePeer::GENDER, $this->gender);
@@ -3272,8 +3279,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::NEWSLETTER)) $criteria->add(PUserArchivePeer::NEWSLETTER, $this->newsletter);
         if ($this->isColumnModified(PUserArchivePeer::LAST_CONNECT)) $criteria->add(PUserArchivePeer::LAST_CONNECT, $this->last_connect);
         if ($this->isColumnModified(PUserArchivePeer::NB_VIEWS)) $criteria->add(PUserArchivePeer::NB_VIEWS, $this->nb_views);
-        if ($this->isColumnModified(PUserArchivePeer::ONLINE)) $criteria->add(PUserArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PUserArchivePeer::QUALIFIED)) $criteria->add(PUserArchivePeer::QUALIFIED, $this->qualified);
         if ($this->isColumnModified(PUserArchivePeer::VALIDATED)) $criteria->add(PUserArchivePeer::VALIDATED, $this->validated);
+        if ($this->isColumnModified(PUserArchivePeer::ONLINE)) $criteria->add(PUserArchivePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PUserArchivePeer::CREATED_AT)) $criteria->add(PUserArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUserArchivePeer::UPDATED_AT)) $criteria->add(PUserArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUserArchivePeer::SLUG)) $criteria->add(PUserArchivePeer::SLUG, $this->slug);
@@ -3361,7 +3369,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setCredentialsExpired($this->getCredentialsExpired());
         $copyObj->setCredentialsExpireAt($this->getCredentialsExpireAt());
         $copyObj->setRoles($this->getRoles());
-        $copyObj->setPUTypeId($this->getPUTypeId());
         $copyObj->setPUStatusId($this->getPUStatusId());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setGender($this->getGender());
@@ -3376,8 +3383,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setNewsletter($this->getNewsletter());
         $copyObj->setLastConnect($this->getLastConnect());
         $copyObj->setNbViews($this->getNbViews());
-        $copyObj->setOnline($this->getOnline());
+        $copyObj->setQualified($this->getQualified());
         $copyObj->setValidated($this->getValidated());
+        $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -3455,7 +3463,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->credentials_expire_at = null;
         $this->roles = null;
         $this->roles_unserialized = null;
-        $this->p_u_type_id = null;
         $this->p_u_status_id = null;
         $this->file_name = null;
         $this->gender = null;
@@ -3470,8 +3477,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->newsletter = null;
         $this->last_connect = null;
         $this->nb_views = null;
-        $this->online = null;
+        $this->qualified = null;
         $this->validated = null;
+        $this->online = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;

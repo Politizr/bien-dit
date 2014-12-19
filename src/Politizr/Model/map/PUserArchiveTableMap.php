@@ -63,7 +63,6 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('credentials_expired', 'CredentialsExpired', 'BOOLEAN', false, 1, false);
         $this->addColumn('credentials_expire_at', 'CredentialsExpireAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('roles', 'Roles', 'ARRAY', false, null, null);
-        $this->addColumn('p_u_type_id', 'PUTypeId', 'INTEGER', true, null, null);
         $this->addColumn('p_u_status_id', 'PUStatusId', 'INTEGER', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('gender', 'Gender', 'ENUM', false, null, null);
@@ -82,8 +81,9 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('qualified', 'Qualified', 'BOOLEAN', false, 1, null);
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
+        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

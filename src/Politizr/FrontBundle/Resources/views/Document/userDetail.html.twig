@@ -26,7 +26,7 @@
 				</div>
 			{% endfor %}
 		</div>
-		{% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_QUALIFIE') %}
+		{% if user.qualified %}
 			<div id="author-reactions-block">
 				<h1>Liste des réactions rédigées</h1>
 				{% for reaction in reactions %}

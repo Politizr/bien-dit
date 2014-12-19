@@ -1,0 +1,133 @@
+# NOTIFICATION
+
+# Constantes de classe PNotification à MAJ en parallèle
+Politizr\Model\PNotification:
+    d_target_debate_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à son débat
+        description:        |
+            Publication d'une réaction sur un de ses débats
+    d_target_reaction_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à sa réaction
+        description:        |
+            Publication d'une réaction sur une de ses réactions
+    d_target_debate_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à son débat
+        description:        |
+            Publication d'un commentaire sur un de ses débats
+    d_target_reaction_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à sa réaction
+        description:        |
+            Publication d'un commentaire sur une de ses réactions
+
+    d_target_debate_note_pos:
+        online:             true
+        title:              Recevoir une note positive à son débat
+        description:        |
+            Recevoir une note + à son débat
+    d_target_debate_note_neg:
+        online:             true
+        title:              Recevoir une note négative à son débat
+        description:        |
+            Recevoir une note - à son débat
+    d_target_reaction_note_pos:
+        online:             true
+        title:              Recevoir une note positive à sa réaction
+        description:        |
+            Recevoir une note + à sa réaction
+    d_target_reaction_note_neg:
+        online:             true
+        title:              Recevoir une note négative à sa réaction
+        description:        |
+            Recevoir une note - à sa réaction
+    d_target_comment_note_pos:
+        online:             true
+        title:              Recevoir une note positive à son commentaire
+        description:        |
+            Recevoir une note + à son commentaire
+    d_target_comment_note_neg:
+        online:             true
+        title:              Recevoir une note négative à son commentaire
+        description:        |
+            Recevoir une note - à son commentaire
+
+    d_target_debate_follow:
+        online:             true
+        title:              Être suivi pour son débat
+        description:        |
+            Être suivi pour son débat
+    u_target_user_follow:
+        online:             true
+        title:              Être suivi pour son profil
+        description:        |
+            Être suivi pour son profil
+
+
+
+# Constantes de classe PNEmail à MAJ en parallèle
+Politizr\Model\PNEmail:
+    d_target_debate_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à son débat
+        description:        |
+            Publication d'une réaction sur un de ses débats
+    d_target_reaction_reaction_publish:
+        online:             true
+        title:              Publication d'une réaction à sa réaction
+        description:        |
+            Publication d'une réaction sur une de ses réactions
+    d_target_debate_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à son débat
+        description:        |
+            Publication d'un commentaire sur un de ses débats
+    d_target_reaction_comment_publish:
+        online:             true
+        title:              Publication d'un commentaire à sa réaction
+        description:        |
+            Publication d'un commentaire sur une de ses réactions
+
+    d_target_debate_note_pos:
+        online:             true
+        title:              Recevoir une note positive à son débat
+        description:        |
+            Recevoir une note + à son débat
+    d_target_debate_note_neg:
+        online:             true
+        title:              Recevoir une note négative à son débat
+        description:        |
+            Recevoir une note - à son débat
+    d_target_reaction_note_pos:
+        online:             true
+        title:              Recevoir une note positive à sa réaction
+        description:        |
+            Recevoir une note + à sa réaction
+    d_target_reaction_note_neg:
+        online:             true
+        title:              Recevoir une note négative à sa réaction
+        description:        |
+            Recevoir une note - à sa réaction
+    d_target_comment_note_pos:
+        online:             true
+        title:              Recevoir une note positive à son commentaire
+        description:        |
+            Recevoir une note + à son commentaire
+    d_target_comment_note_neg:
+        online:             true
+        title:              Recevoir une note négative à son commentaire
+        description:        |
+            Recevoir une note - à son commentaire
+
+    d_target_debate_follow:
+        online:             true
+        title:              Être suivi pour son débat
+        description:        |
+            Être suivi pour son débat
+    u_target_user_follow:
+        online:             true
+        title:              Être suivi pour son profil
+        description:        |
+            Être suivi pour son profil

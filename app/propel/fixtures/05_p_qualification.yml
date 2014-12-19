@@ -1,0 +1,237 @@
+# QUALIFICATION
+Politizr\Model\PQualification:
+    elu:
+        title:              Élu
+        online:             true
+        description:        |
+            Vous possédez un mandat d'élu
+    ex-elu:
+        title:              Ancien élu
+        online:             true
+        description:        |
+            Vous avez possédé un mandat d'élu
+    associatif:
+        title:              Associatif
+        online:             false
+        description:        |
+            Vous êtes membre d'une association
+    syndicat:
+        title:              Syndicaliste
+        online:             false
+        description:        |
+            Vous êtes membre d'un syndicat
+
+# TYPE DE QUALIFICATION
+Politizr\Model\PQType:
+    electif:
+        title:              Mandat électif
+        online:             true
+        description:        |
+            Mandat électif
+    associatif:
+        title:              Mandat associatif
+        online:             false
+        description:        |
+            Mandat associatif
+    syndical:
+        title:              Mandat syndical
+        online:             false
+        description:        |
+            Mandat syndical
+
+# LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+# http://www.france-politique.fr/partis-politiques.htm
+Politizr\Model\PQOrganization:
+    parti0:
+        online:              true
+        p_q_type_id:         electif
+        title:               Non Inscrit
+        initials:            Non Inscrit
+        description:        |
+            Indépendant, pas d'affiliation à un parti politique
+    parti1:
+        online:              true
+        p_q_type_id:         electif
+        title:               Parti Communiste Français
+        initials:            PCF
+        file_name:           pcf.gif
+        description:        |
+            Parti Communiste Français
+    parti2:
+        online:              true
+        p_q_type_id:         electif
+        title:               Parti de Gauche
+        initials:            PG
+        file_name:           pg.jpg
+        description:        |
+            Parti de Gauche
+    parti3:
+        online:              true
+        p_q_type_id:         electif
+        title:               Mouvement Républicain et Citoyen
+        initials:            MRC
+        file_name:           mrc.jpg
+        description:        |
+            Mouvement Républicain et Citoyen
+    parti4:
+        online:              true
+        p_q_type_id:         electif
+        title:               Parti Socialiste
+        initials:            PS
+        file_name:           ps.gif
+        description:        |
+            Parti Socialiste
+    parti5:
+        online:              true
+        p_q_type_id:         electif
+        title:               Parti Radical de Gauche
+        initials:            PRG
+        file_name:           prg.gif
+        description:        |
+            Parti Radical de Gauche
+    parti6:
+        online:              true
+        p_q_type_id:         electif
+        title:               Europe écologie - Les Verts
+        initials:            EELV
+        file_name:           eelv.gif
+        description:        |
+            Europe écologie - Les Verts
+    parti7:
+        online:              true
+        p_q_type_id:         electif
+        title:               Citoyenneté Action Participation pour le 21e siècle
+        initials:            CAP21
+        file_name:           cap21.gif
+        description:        |
+            Citoyenneté Action Participation pour le 21e siècle
+    parti8:
+        online:              true
+        p_q_type_id:         electif
+        title:               Mouvement Démocrate
+        initials:            MODEM
+        file_name:           modem.gif
+        description:        |
+            Mouvement Démocrate
+    parti9:
+        online:              true
+        p_q_type_id:         electif
+        title:               Union des Démocrates et Indépendants
+        initials:            UDI
+        file_name:           udi.gif
+        description:        |
+            Union des Démocrates et Indépendants
+    parti10:
+        online:              true
+        p_q_type_id:         electif
+        title:               Union pour un Mouvement Populaire
+        initials:            UMP
+        file_name:           ump.gif
+        description:        |
+            Union pour un Mouvement Populaire
+    parti11:
+        online:              true
+        p_q_type_id:         electif
+        title:               Parti Chrétien-démocrate
+        initials:            PCD
+        file_name:           pcd.jpg
+        description:        |
+            Parti Chrétien-démocrate
+    parti12:
+        online:              true
+        p_q_type_id:         electif
+        title:               Centre National des Indépendants et Paysans
+        initials:            CNIP
+        file_name:           cnip.jpg
+        description:        |
+            Centre National des Indépendants et Paysans
+    parti13:
+        online:              true
+        p_q_type_id:         electif
+        title:               Debout la République
+        initials:            DLR
+        file_name:           dlr.gif
+        description:        |
+            Debout la République
+    parti14:
+        online:              true
+        p_q_type_id:         electif
+        title:               Mouvement pour la France
+        initials:            MPF
+        file_name:           mpf.jpg
+        description:        |
+            Mouvement pour la France
+    parti15:
+        online:              true
+        p_q_type_id:         electif
+        p_q_type_id:         electif
+        title:               Front National
+        initials:            FN
+        file_name:           fn.gif
+        description:        |
+            Front National
+    parti16:
+        online:              true
+        p_q_type_id:         electif
+        title:               Autre parti
+        initials:            Autre parti
+        description:        |
+            Parti non référencé
+
+
+# LISTE DE TOUS LES MANDATS EXISTANTS
+Politizr\Model\PQMandate:
+    president:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président de la République
+    depute:
+        online:             true
+        p_q_type_id:        electif
+        title:              Député
+    senateur:
+        online:             true
+        p_q_type_id:        electif
+        title:              Sénateur
+    depute_europeen:
+        online:             true
+        p_q_type_id:        electif
+        title:              Député Européen
+    conseiller_regional:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Régional
+    president_conseiller_regional:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président du Conseil Régional
+    conseiller_departemental:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Général
+    president_conseiller_departemental:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président du Conseil Général
+    conseiller_communautaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Communautaire
+    president_conseiller_communautaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président du Conseil Communautaire
+    conseiller_municipal:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Municipal
+    maire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Maire
+    adjoint_maire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Adjoint au Maire
+
+

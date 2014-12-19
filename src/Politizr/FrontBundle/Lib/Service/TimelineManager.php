@@ -103,15 +103,6 @@ class TimelineManager
      *  FROM p_document
      *  WHERE p_document.p_user_id IN (1, 72) )
      *  
-     *  UNION DISTINCT
-     *  
-     *  # Débats & réactions avec commentaire par users suivis
-     *  ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, 'p_document' as type
-     *  FROM p_document
-     *      LEFT JOIN p_d_comment 
-     *          ON p_document.id = p_d_comment.p_document_id
-     *  WHERE p_d_comment.p_user_id IN (1, 72) )
-     *  
      *  
      *  UNION DISTINCT
      *  
@@ -149,7 +140,7 @@ class TimelineManager
         $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
         // Préparation requête SQL
-        if (!empty($debateIds) && !empty($userIds)) {
+        if (!empty($debateIds) || !empty($userIds)) {
             $sql = "
 
 #  Réactions aux débats suivis
@@ -167,15 +158,6 @@ UNION DISTINCT
 ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
 FROM p_document
 WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
-
-UNION DISTINCT
-
-# Débats & réactions avec commentaire par users suivis
-( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
-FROM p_document
-    LEFT JOIN p_d_comment 
-        ON p_document.id = p_d_comment.p_document_id
-WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
 
 UNION DISTINCT
 

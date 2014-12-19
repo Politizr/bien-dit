@@ -36,7 +36,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByCredentialsExpired($order = Criteria::ASC) Order by the credentials_expired column
  * @method PUserArchiveQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserArchiveQuery orderByRoles($order = Criteria::ASC) Order by the roles column
- * @method PUserArchiveQuery orderByPUTypeId($order = Criteria::ASC) Order by the p_u_type_id column
  * @method PUserArchiveQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserArchiveQuery orderByGender($order = Criteria::ASC) Order by the gender column
@@ -51,8 +50,9 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserArchiveQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
- * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserArchiveQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUserArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -79,7 +79,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByCredentialsExpired() Group by the credentials_expired column
  * @method PUserArchiveQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserArchiveQuery groupByRoles() Group by the roles column
- * @method PUserArchiveQuery groupByPUTypeId() Group by the p_u_type_id column
  * @method PUserArchiveQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserArchiveQuery groupByFileName() Group by the file_name column
  * @method PUserArchiveQuery groupByGender() Group by the gender column
@@ -94,8 +93,9 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByNewsletter() Group by the newsletter column
  * @method PUserArchiveQuery groupByLastConnect() Group by the last_connect column
  * @method PUserArchiveQuery groupByNbViews() Group by the nb_views column
- * @method PUserArchiveQuery groupByOnline() Group by the online column
+ * @method PUserArchiveQuery groupByQualified() Group by the qualified column
  * @method PUserArchiveQuery groupByValidated() Group by the validated column
+ * @method PUserArchiveQuery groupByOnline() Group by the online column
  * @method PUserArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PUserArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUserArchiveQuery groupBySlug() Group by the slug column
@@ -128,7 +128,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByCredentialsExpired(boolean $credentials_expired) Return the first PUserArchive filtered by the credentials_expired column
  * @method PUserArchive findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUserArchive filtered by the credentials_expire_at column
  * @method PUserArchive findOneByRoles(array $roles) Return the first PUserArchive filtered by the roles column
- * @method PUserArchive findOneByPUTypeId(int $p_u_type_id) Return the first PUserArchive filtered by the p_u_type_id column
  * @method PUserArchive findOneByPUStatusId(int $p_u_status_id) Return the first PUserArchive filtered by the p_u_status_id column
  * @method PUserArchive findOneByFileName(string $file_name) Return the first PUserArchive filtered by the file_name column
  * @method PUserArchive findOneByGender(int $gender) Return the first PUserArchive filtered by the gender column
@@ -143,8 +142,9 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByNewsletter(boolean $newsletter) Return the first PUserArchive filtered by the newsletter column
  * @method PUserArchive findOneByLastConnect(string $last_connect) Return the first PUserArchive filtered by the last_connect column
  * @method PUserArchive findOneByNbViews(int $nb_views) Return the first PUserArchive filtered by the nb_views column
- * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
+ * @method PUserArchive findOneByQualified(boolean $qualified) Return the first PUserArchive filtered by the qualified column
  * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
+ * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
  * @method PUserArchive findOneByCreatedAt(string $created_at) Return the first PUserArchive filtered by the created_at column
  * @method PUserArchive findOneByUpdatedAt(string $updated_at) Return the first PUserArchive filtered by the updated_at column
  * @method PUserArchive findOneBySlug(string $slug) Return the first PUserArchive filtered by the slug column
@@ -171,7 +171,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByCredentialsExpired(boolean $credentials_expired) Return PUserArchive objects filtered by the credentials_expired column
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUserArchive objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUserArchive objects filtered by the roles column
- * @method array findByPUTypeId(int $p_u_type_id) Return PUserArchive objects filtered by the p_u_type_id column
  * @method array findByPUStatusId(int $p_u_status_id) Return PUserArchive objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUserArchive objects filtered by the file_name column
  * @method array findByGender(int $gender) Return PUserArchive objects filtered by the gender column
@@ -186,8 +185,9 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByNewsletter(boolean $newsletter) Return PUserArchive objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUserArchive objects filtered by the last_connect column
  * @method array findByNbViews(int $nb_views) Return PUserArchive objects filtered by the nb_views column
- * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
+ * @method array findByQualified(boolean $qualified) Return PUserArchive objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
+ * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PUserArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUserArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PUserArchive objects filtered by the slug column
@@ -297,7 +297,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_type_id`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `online`, `validated`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1109,48 +1109,6 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_u_type_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPUTypeId(1234); // WHERE p_u_type_id = 1234
-     * $query->filterByPUTypeId(array(12, 34)); // WHERE p_u_type_id IN (12, 34)
-     * $query->filterByPUTypeId(array('min' => 12)); // WHERE p_u_type_id >= 12
-     * $query->filterByPUTypeId(array('max' => 12)); // WHERE p_u_type_id <= 12
-     * </code>
-     *
-     * @param     mixed $pUTypeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserArchiveQuery The current query, for fluid interface
-     */
-    public function filterByPUTypeId($pUTypeId = null, $comparison = null)
-    {
-        if (is_array($pUTypeId)) {
-            $useMinMax = false;
-            if (isset($pUTypeId['min'])) {
-                $this->addUsingAlias(PUserArchivePeer::P_U_TYPE_ID, $pUTypeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pUTypeId['max'])) {
-                $this->addUsingAlias(PUserArchivePeer::P_U_TYPE_ID, $pUTypeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PUserArchivePeer::P_U_TYPE_ID, $pUTypeId, $comparison);
-    }
-
-    /**
      * Filter the query on the p_u_status_id column
      *
      * Example usage:
@@ -1607,15 +1565,15 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the online column
+     * Filter the query on the qualified column
      *
      * Example usage:
      * <code>
-     * $query->filterByOnline(true); // WHERE online = true
-     * $query->filterByOnline('yes'); // WHERE online = true
+     * $query->filterByQualified(true); // WHERE qualified = true
+     * $query->filterByQualified('yes'); // WHERE qualified = true
      * </code>
      *
-     * @param     boolean|string $online The value to use as filter.
+     * @param     boolean|string $qualified The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -1624,13 +1582,13 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      *
      * @return PUserArchiveQuery The current query, for fluid interface
      */
-    public function filterByOnline($online = null, $comparison = null)
+    public function filterByQualified($qualified = null, $comparison = null)
     {
-        if (is_string($online)) {
-            $online = in_array(strtolower($online), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($qualified)) {
+            $qualified = in_array(strtolower($qualified), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(PUserArchivePeer::ONLINE, $online, $comparison);
+        return $this->addUsingAlias(PUserArchivePeer::QUALIFIED, $qualified, $comparison);
     }
 
     /**
@@ -1658,6 +1616,33 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::VALIDATED, $validated, $comparison);
+    }
+
+    /**
+     * Filter the query on the online column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOnline(true); // WHERE online = true
+     * $query->filterByOnline('yes'); // WHERE online = true
+     * </code>
+     *
+     * @param     boolean|string $online The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByOnline($online = null, $comparison = null)
+    {
+        if (is_string($online)) {
+            $online = in_array(strtolower($online), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::ONLINE, $online, $comparison);
     }
 
     /**

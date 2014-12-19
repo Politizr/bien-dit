@@ -36,13 +36,13 @@ use Politizr\Model\PTag;
  * @method PDDTaggedTQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PDDTaggedTQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PDDTaggedTQuery leftJoinPddTaggedTPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PddTaggedTPDDebate relation
- * @method PDDTaggedTQuery rightJoinPddTaggedTPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PddTaggedTPDDebate relation
- * @method PDDTaggedTQuery innerJoinPddTaggedTPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PddTaggedTPDDebate relation
+ * @method PDDTaggedTQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
+ * @method PDDTaggedTQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
+ * @method PDDTaggedTQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
  *
- * @method PDDTaggedTQuery leftJoinPddTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PddTaggedTPTag relation
- * @method PDDTaggedTQuery rightJoinPddTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PddTaggedTPTag relation
- * @method PDDTaggedTQuery innerJoinPddTaggedTPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PddTaggedTPTag relation
+ * @method PDDTaggedTQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
+ * @method PDDTaggedTQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
+ * @method PDDTaggedTQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
  *
  * @method PDDTaggedT findOne(PropelPDO $con = null) Return the first PDDTaggedT matching the query
  * @method PDDTaggedT findOneOrCreate(PropelPDO $con = null) Return the first PDDTaggedT matching the query, or a new PDDTaggedT object populated from the query conditions when no match is found
@@ -310,7 +310,7 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      * $query->filterByPDDebateId(array('max' => 12)); // WHERE p_d_debate_id <= 12
      * </code>
      *
-     * @see       filterByPddTaggedTPDDebate()
+     * @see       filterByPDDebate()
      *
      * @param     mixed $pDDebateId The value to use as filter.
      *              Use scalar values for equality.
@@ -354,7 +354,7 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      * $query->filterByPTagId(array('max' => 12)); // WHERE p_tag_id <= 12
      * </code>
      *
-     * @see       filterByPddTaggedTPTag()
+     * @see       filterByPTag()
      *
      * @param     mixed $pTagId The value to use as filter.
      *              Use scalar values for equality.
@@ -482,7 +482,7 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      * @return                 PDDTaggedTQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPddTaggedTPDDebate($pDDebate, $comparison = null)
+    public function filterByPDDebate($pDDebate, $comparison = null)
     {
         if ($pDDebate instanceof PDDebate) {
             return $this
@@ -495,22 +495,22 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(PDDTaggedTPeer::P_D_DEBATE_ID, $pDDebate->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPddTaggedTPDDebate() only accepts arguments of type PDDebate or PropelCollection');
+            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PddTaggedTPDDebate relation
+     * Adds a JOIN clause to the query using the PDDebate relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PDDTaggedTQuery The current query, for fluid interface
      */
-    public function joinPddTaggedTPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PddTaggedTPDDebate');
+        $relationMap = $tableMap->getRelation('PDDebate');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -525,14 +525,14 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PddTaggedTPDDebate');
+            $this->addJoinObject($join, 'PDDebate');
         }
 
         return $this;
     }
 
     /**
-     * Use the PddTaggedTPDDebate relation PDDebate object
+     * Use the PDDebate relation PDDebate object
      *
      * @see       useQuery()
      *
@@ -542,11 +542,11 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
      */
-    public function usePddTaggedTPDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPddTaggedTPDDebate($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PddTaggedTPDDebate', '\Politizr\Model\PDDebateQuery');
+            ->joinPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
     }
 
     /**
@@ -558,7 +558,7 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      * @return                 PDDTaggedTQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPddTaggedTPTag($pTag, $comparison = null)
+    public function filterByPTag($pTag, $comparison = null)
     {
         if ($pTag instanceof PTag) {
             return $this
@@ -571,22 +571,22 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(PDDTaggedTPeer::P_TAG_ID, $pTag->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPddTaggedTPTag() only accepts arguments of type PTag or PropelCollection');
+            throw new PropelException('filterByPTag() only accepts arguments of type PTag or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PddTaggedTPTag relation
+     * Adds a JOIN clause to the query using the PTag relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PDDTaggedTQuery The current query, for fluid interface
      */
-    public function joinPddTaggedTPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PddTaggedTPTag');
+        $relationMap = $tableMap->getRelation('PTag');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -601,14 +601,14 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PddTaggedTPTag');
+            $this->addJoinObject($join, 'PTag');
         }
 
         return $this;
     }
 
     /**
-     * Use the PddTaggedTPTag relation PTag object
+     * Use the PTag relation PTag object
      *
      * @see       useQuery()
      *
@@ -618,11 +618,11 @@ abstract class BasePDDTaggedTQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PTagQuery A secondary query class using the current class as primary query
      */
-    public function usePddTaggedTPTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPddTaggedTPTag($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PddTaggedTPTag', '\Politizr\Model\PTagQuery');
+            ->joinPTag($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PTag', '\Politizr\Model\PTagQuery');
     }
 
     /**

@@ -60,8 +60,8 @@ class PRActionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PuReputationRaPRBadge', 'Politizr\\Model\\PUReputationRA', RelationMap::ONE_TO_MANY, array('id' => 'p_r_action_id', ), 'CASCADE', 'CASCADE', 'PuReputationRaPRBadges');
-        $this->addRelation('PuReputationRaPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuReputationRaPUsers');
+        $this->addRelation('PUReputationRA', 'Politizr\\Model\\PUReputationRA', RelationMap::ONE_TO_MANY, array('id' => 'p_r_action_id', ), 'CASCADE', 'CASCADE', 'PUReputationRAs');
+        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
     } // buildRelations()
 
     /**

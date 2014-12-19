@@ -18,7 +18,6 @@ use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PTagQuery;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 
 /**
  *  Gestion du routing tout public
@@ -55,7 +54,7 @@ class PublicController extends Controller
                     ->find();
 
         // profils les plus populaires
-        $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
+        $users = PUserQuery::create()->filterByQualified(true)->online()->popularity(5)->find();
 
         // commentaires les plus populaires
         $comments = PDCommentQuery::create()->online()->last(5)->find();

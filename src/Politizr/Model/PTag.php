@@ -30,22 +30,6 @@ class PTag extends BasePTag
 	/**
 	 * 	Surcharge simplification du nom de la méthode
 	 */
-	public function countPDDebates(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::countPddTaggedTPDDebates($con, $doQuery);
-	}
-
-	/**
-	 * 	Surcharge simplification du nom de la méthode
-	 */
-	public function getPDDebates(\PropelPDO $con = null, $doQuery = true)
-	{
-		return parent::getPddTaggedTPDDebates($con, $doQuery);
-	}
-
-	/**
-	 * 	Surcharge simplification du nom de la méthode
-	 */
 	public function countPUsers(\PropelPDO $con = null, $doQuery = true)
 	{
 		return parent::countPuTaggedTPTags($con, $doQuery);

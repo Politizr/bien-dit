@@ -21,7 +21,6 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\POPaymentType;
 use Politizr\Model\POOrderState;
 use Politizr\Model\POPaymentState;
-use Politizr\Model\PUType;
 
 use Politizr\Model\POSubscriptionQuery;
 use Politizr\Model\POrderQuery;
@@ -91,7 +90,7 @@ class SecurityManager
             $user->setLastLogin(new \DateTime());
             $user->save();
 
-            if($user->hasRole('ROLE_ELECTED') && $user->getPUStatusId() == PUStatus::ACTIVED) {
+            if($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
                 $redirectUrl = $this->sc->get('router')->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
                 $redirectUrl = $this->sc->get('router')->generate('HomepageC');
@@ -159,7 +158,7 @@ class SecurityManager
         // MAJ objet
         $user->setOnline(true);
         $user->setPUStatusId(PUStatus::ACTIVED);
-        $user->setPUTypeId(PUType::TYPE_CITOYEN);
+        $user->setQualified(false);
         $user->setLastLogin(new \DateTime());
 
         // MAJ droits
@@ -306,7 +305,7 @@ class SecurityManager
         $user->setOnline(true);
         $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
 
-        $user->setPUTypeId(PUType::TYPE_QUALIFIE);
+        $user->setQualified(true);
         $user->setLastLogin(new \DateTime());
 
         $user->addRole('ROLE_ELECTED');
@@ -374,7 +373,7 @@ class SecurityManager
             // MAJ objet
             $user->setOnline(true);
             $user->setPUStatusId(PUStatus::ACTIVED);
-            $user->setPUTypeId(PUType::TYPE_CITOYEN);
+            $user->setQualified(false);
             $user->setLastLogin(new \DateTime());
 
             // MAJ droits

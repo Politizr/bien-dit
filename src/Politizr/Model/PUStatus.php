@@ -9,9 +9,11 @@ class PUStatus extends BasePUStatus
 	// ************************************************************************************ //
 	//										CONSTANTES
 	// ************************************************************************************ //
+    
     const ACTIVED = 1;
 	const VALIDATION_PROCESS = 2;
-	const ARCHIVED = 3;
+	const EXCLUDED = 3;
+	const ARCHIVED = 4;
 
 
 	/**

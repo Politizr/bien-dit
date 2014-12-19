@@ -4,7 +4,6 @@ namespace Politizr\Model\Tests\PUser;
 use Politizr\Model\Tests\PolitizrTestBase;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 use Politizr\Model\PUStatus;
 
 
@@ -99,7 +98,6 @@ class PUserTest extends \PHPUnit_Framework_TestCase
     	$pUser = new PUser();
 
 		$pUser->setId(1);
-		$pUser->setPUTypeId(PUType::TYPE_CITOYEN);
 		$pUser->setPUStatusId(PUStatus::ACTIVED);
 		$pUser->setUsername("françoish");
 		$pUser->setName("Hollande");
@@ -110,6 +108,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 		$pUser->setExpired(false);
 		$pUser->setLocked(false);
 		$pUser->setCredentialsExpired(false);
+        $pUser->setQualified(false);
 		$pUser->setEnabled(true);
 
 		$serialized = $pUser->serialize();
@@ -118,7 +117,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 		$pUser->unserialize($serialized);
 
 		$this->assertEquals(1, $pUser->getId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(PUType::TYPE_CITOYEN, $pUser->getPUTypeId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+		$this->assertEquals(false, $pUser->getQualified(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals(PUStatus::ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals("françoish", $pUser->getUsername(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
 		$this->assertEquals("Hollande", $pUser->getName(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');

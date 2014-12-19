@@ -30,7 +30,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $documents = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
 
         // Commentaires
-        $documents = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
+        $comments = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
 
         // Tags
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');
@@ -49,55 +49,43 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PRAction_list'
         );
 
-        // Réglages des types:  tags, badges, mode & statut paiement, statut commande, partis politiques, mandats électifs
-        $documents = $this->addDropdown($menu, 'Type');
+        // Réglages des types:  tags, badges, mode & statut paiement, statut commande
+        $types = $this->addDropdown($menu, 'Type');
         $this->addLinkRoute(
-            $documents,
-            'Parti politique',
-            'Politizr_AdminBundle_PUPoliticalParty_list'
-        );
-        $this->addLinkRoute(
-            $documents,
-            'Mandat électif',
-            'Politizr_AdminBundle_PUMandateType_list'
-        );
-        $this->addLinkRoute(
-            $documents,
+            $types,
             'Tag',
             'Politizr_AdminBundle_PTTagType_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Badge',
             'Politizr_AdminBundle_PRBadgeType_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Niveau des badge',
             'Politizr_AdminBundle_PRBadgeMetal_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Formule d\'abonnement',
             'Politizr_AdminBundle_POSubscription_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Mode Paiement',
             'Politizr_AdminBundle_POPaymentType_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Statut Paiement',
             'Politizr_AdminBundle_POPaymentState_list'
         );
         $this->addLinkRoute(
-            $documents,
+            $types,
             'Statut Commande',
             'Politizr_AdminBundle_POOrderState_list'
         );
-
-
 
 
         // Réglages techniques: notifications utilisateurs
@@ -107,8 +95,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Administrateurs',
             'Politizr_AdminBundle_User_list'
         );
-
-
 
 
         

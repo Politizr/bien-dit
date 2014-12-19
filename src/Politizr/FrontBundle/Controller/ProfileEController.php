@@ -28,7 +28,6 @@ use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUReputationRBQuery;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PUType;
 use Politizr\Model\PTag;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -116,7 +115,7 @@ class ProfileEController extends Controller {
         $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
 
         //      Suggestions d'utilisateurs débatteurs
-        $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, PUType::TYPE_QUALIFIE);
+        $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, true);
 
         // *********************************** //
         //      Affichage de la vue
@@ -144,7 +143,7 @@ class ProfileEController extends Controller {
         $debates = PDDebateQuery::create()->online()->popularity(5)->find();
 
         // profils les plus populaires
-        $users = PUserQuery::create()->filterByPUTypeId(PUType::TYPE_QUALIFIE)->online()->popularity(5)->find();
+        $users = PUserQuery::create()->filterByQualified(true)->online()->popularity(5)->find();
 
         // commentaires les plus populaires
         $comments = PDCommentQuery::create()->online()->last(10)->find();
@@ -180,7 +179,7 @@ class ProfileEController extends Controller {
 
         // derniers profils qualifiés enregistrés
         $users = PUserQuery::create()
-                    ->filterByPUTypeId(PUType::TYPE_QUALIFIE)
+                    ->filterByQualified(true)
                     ->online()
                     ->last()
                     ->find();

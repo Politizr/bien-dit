@@ -36,13 +36,13 @@ use Politizr\Model\PUser;
  * @method PUReputationRBQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PUReputationRBQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUReputationRBQuery leftJoinPuReputationRbPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuReputationRbPUser relation
- * @method PUReputationRBQuery rightJoinPuReputationRbPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuReputationRbPUser relation
- * @method PUReputationRBQuery innerJoinPuReputationRbPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuReputationRbPUser relation
+ * @method PUReputationRBQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PUReputationRBQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PUReputationRBQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
- * @method PUReputationRBQuery leftJoinPuReputationRbPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuReputationRbPRBadge relation
- * @method PUReputationRBQuery rightJoinPuReputationRbPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuReputationRbPRBadge relation
- * @method PUReputationRBQuery innerJoinPuReputationRbPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PuReputationRbPRBadge relation
+ * @method PUReputationRBQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
+ * @method PUReputationRBQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
+ * @method PUReputationRBQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
  *
  * @method PUReputationRB findOne(PropelPDO $con = null) Return the first PUReputationRB matching the query
  * @method PUReputationRB findOneOrCreate(PropelPDO $con = null) Return the first PUReputationRB matching the query, or a new PUReputationRB object populated from the query conditions when no match is found
@@ -307,7 +307,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
      * </code>
      *
-     * @see       filterByPuReputationRbPUser()
+     * @see       filterByPUser()
      *
      * @param     mixed $pUserId The value to use as filter.
      *              Use scalar values for equality.
@@ -351,7 +351,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * $query->filterByPRBadgeId(array('max' => 12)); // WHERE p_r_badge_id <= 12
      * </code>
      *
-     * @see       filterByPuReputationRbPRBadge()
+     * @see       filterByPRBadge()
      *
      * @param     mixed $pRBadgeId The value to use as filter.
      *              Use scalar values for equality.
@@ -479,7 +479,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @return                 PUReputationRBQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuReputationRbPUser($pUser, $comparison = null)
+    public function filterByPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
@@ -492,22 +492,22 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPuReputationRbPUser() only accepts arguments of type PUser or PropelCollection');
+            throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuReputationRbPUser relation
+     * Adds a JOIN clause to the query using the PUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUReputationRBQuery The current query, for fluid interface
      */
-    public function joinPuReputationRbPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuReputationRbPUser');
+        $relationMap = $tableMap->getRelation('PUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -522,14 +522,14 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuReputationRbPUser');
+            $this->addJoinObject($join, 'PUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuReputationRbPUser relation PUser object
+     * Use the PUser relation PUser object
      *
      * @see       useQuery()
      *
@@ -539,11 +539,11 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
      */
-    public function usePuReputationRbPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuReputationRbPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuReputationRbPUser', '\Politizr\Model\PUserQuery');
+            ->joinPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
     }
 
     /**
@@ -555,7 +555,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @return                 PUReputationRBQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPuReputationRbPRBadge($pRBadge, $comparison = null)
+    public function filterByPRBadge($pRBadge, $comparison = null)
     {
         if ($pRBadge instanceof PRBadge) {
             return $this
@@ -568,22 +568,22 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadge->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPuReputationRbPRBadge() only accepts arguments of type PRBadge or PropelCollection');
+            throw new PropelException('filterByPRBadge() only accepts arguments of type PRBadge or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PuReputationRbPRBadge relation
+     * Adds a JOIN clause to the query using the PRBadge relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUReputationRBQuery The current query, for fluid interface
      */
-    public function joinPuReputationRbPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuReputationRbPRBadge');
+        $relationMap = $tableMap->getRelation('PRBadge');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -598,14 +598,14 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PuReputationRbPRBadge');
+            $this->addJoinObject($join, 'PRBadge');
         }
 
         return $this;
     }
 
     /**
-     * Use the PuReputationRbPRBadge relation PRBadge object
+     * Use the PRBadge relation PRBadge object
      *
      * @see       useQuery()
      *
@@ -615,11 +615,11 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PRBadgeQuery A secondary query class using the current class as primary query
      */
-    public function usePuReputationRbPRBadgeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePRBadgeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPuReputationRbPRBadge($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuReputationRbPRBadge', '\Politizr\Model\PRBadgeQuery');
+            ->joinPRBadge($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PRBadge', '\Politizr\Model\PRBadgeQuery');
     }
 
     /**

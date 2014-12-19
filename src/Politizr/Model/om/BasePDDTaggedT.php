@@ -77,12 +77,12 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
     /**
      * @var        PDDebate
      */
-    protected $aPddTaggedTPDDebate;
+    protected $aPDDebate;
 
     /**
      * @var        PTag
      */
-    protected $aPddTaggedTPTag;
+    protected $aPTag;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -258,8 +258,8 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             $this->modifiedColumns[] = PDDTaggedTPeer::P_D_DEBATE_ID;
         }
 
-        if ($this->aPddTaggedTPDDebate !== null && $this->aPddTaggedTPDDebate->getId() !== $v) {
-            $this->aPddTaggedTPDDebate = null;
+        if ($this->aPDDebate !== null && $this->aPDDebate->getId() !== $v) {
+            $this->aPDDebate = null;
         }
 
 
@@ -283,8 +283,8 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             $this->modifiedColumns[] = PDDTaggedTPeer::P_TAG_ID;
         }
 
-        if ($this->aPddTaggedTPTag !== null && $this->aPddTaggedTPTag->getId() !== $v) {
-            $this->aPddTaggedTPTag = null;
+        if ($this->aPTag !== null && $this->aPTag->getId() !== $v) {
+            $this->aPTag = null;
         }
 
 
@@ -406,11 +406,11 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPddTaggedTPDDebate !== null && $this->p_d_debate_id !== $this->aPddTaggedTPDDebate->getId()) {
-            $this->aPddTaggedTPDDebate = null;
+        if ($this->aPDDebate !== null && $this->p_d_debate_id !== $this->aPDDebate->getId()) {
+            $this->aPDDebate = null;
         }
-        if ($this->aPddTaggedTPTag !== null && $this->p_tag_id !== $this->aPddTaggedTPTag->getId()) {
-            $this->aPddTaggedTPTag = null;
+        if ($this->aPTag !== null && $this->p_tag_id !== $this->aPTag->getId()) {
+            $this->aPTag = null;
         }
     } // ensureConsistency
 
@@ -451,8 +451,8 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPddTaggedTPDDebate = null;
-            $this->aPddTaggedTPTag = null;
+            $this->aPDDebate = null;
+            $this->aPTag = null;
         } // if (deep)
     }
 
@@ -592,18 +592,18 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPddTaggedTPDDebate !== null) {
-                if ($this->aPddTaggedTPDDebate->isModified() || $this->aPddTaggedTPDDebate->isNew()) {
-                    $affectedRows += $this->aPddTaggedTPDDebate->save($con);
+            if ($this->aPDDebate !== null) {
+                if ($this->aPDDebate->isModified() || $this->aPDDebate->isNew()) {
+                    $affectedRows += $this->aPDDebate->save($con);
                 }
-                $this->setPddTaggedTPDDebate($this->aPddTaggedTPDDebate);
+                $this->setPDDebate($this->aPDDebate);
             }
 
-            if ($this->aPddTaggedTPTag !== null) {
-                if ($this->aPddTaggedTPTag->isModified() || $this->aPddTaggedTPTag->isNew()) {
-                    $affectedRows += $this->aPddTaggedTPTag->save($con);
+            if ($this->aPTag !== null) {
+                if ($this->aPTag->isModified() || $this->aPTag->isNew()) {
+                    $affectedRows += $this->aPTag->save($con);
                 }
-                $this->setPddTaggedTPTag($this->aPddTaggedTPTag);
+                $this->setPTag($this->aPTag);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -783,15 +783,15 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPddTaggedTPDDebate !== null) {
-                if (!$this->aPddTaggedTPDDebate->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPddTaggedTPDDebate->getValidationFailures());
+            if ($this->aPDDebate !== null) {
+                if (!$this->aPDDebate->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPDDebate->getValidationFailures());
                 }
             }
 
-            if ($this->aPddTaggedTPTag !== null) {
-                if (!$this->aPddTaggedTPTag->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPddTaggedTPTag->getValidationFailures());
+            if ($this->aPTag !== null) {
+                if (!$this->aPTag->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPTag->getValidationFailures());
                 }
             }
 
@@ -892,11 +892,11 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPddTaggedTPDDebate) {
-                $result['PddTaggedTPDDebate'] = $this->aPddTaggedTPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPDDebate) {
+                $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPddTaggedTPTag) {
-                $result['PddTaggedTPTag'] = $this->aPddTaggedTPTag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPTag) {
+                $result['PTag'] = $this->aPTag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1124,7 +1124,7 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
      * @return PDDTaggedT The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPddTaggedTPDDebate(PDDebate $v = null)
+    public function setPDDebate(PDDebate $v = null)
     {
         if ($v === null) {
             $this->setPDDebateId(NULL);
@@ -1132,12 +1132,12 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             $this->setPDDebateId($v->getId());
         }
 
-        $this->aPddTaggedTPDDebate = $v;
+        $this->aPDDebate = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PDDebate object, it will not be re-added.
         if ($v !== null) {
-            $v->addPddTaggedTPDDebate($this);
+            $v->addPDDTaggedT($this);
         }
 
 
@@ -1153,20 +1153,20 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
      * @return PDDebate The associated PDDebate object.
      * @throws PropelException
      */
-    public function getPddTaggedTPDDebate(PropelPDO $con = null, $doQuery = true)
+    public function getPDDebate(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPddTaggedTPDDebate === null && ($this->p_d_debate_id !== null) && $doQuery) {
-            $this->aPddTaggedTPDDebate = PDDebateQuery::create()->findPk($this->p_d_debate_id, $con);
+        if ($this->aPDDebate === null && ($this->p_d_debate_id !== null) && $doQuery) {
+            $this->aPDDebate = PDDebateQuery::create()->findPk($this->p_d_debate_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPddTaggedTPDDebate->addPddTaggedTPDDebates($this);
+                $this->aPDDebate->addPDDTaggedTs($this);
              */
         }
 
-        return $this->aPddTaggedTPDDebate;
+        return $this->aPDDebate;
     }
 
     /**
@@ -1176,7 +1176,7 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
      * @return PDDTaggedT The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPddTaggedTPTag(PTag $v = null)
+    public function setPTag(PTag $v = null)
     {
         if ($v === null) {
             $this->setPTagId(NULL);
@@ -1184,12 +1184,12 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
             $this->setPTagId($v->getId());
         }
 
-        $this->aPddTaggedTPTag = $v;
+        $this->aPTag = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PTag object, it will not be re-added.
         if ($v !== null) {
-            $v->addPddTaggedTPTag($this);
+            $v->addPDDTaggedT($this);
         }
 
 
@@ -1205,20 +1205,20 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
      * @return PTag The associated PTag object.
      * @throws PropelException
      */
-    public function getPddTaggedTPTag(PropelPDO $con = null, $doQuery = true)
+    public function getPTag(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPddTaggedTPTag === null && ($this->p_tag_id !== null) && $doQuery) {
-            $this->aPddTaggedTPTag = PTagQuery::create()->findPk($this->p_tag_id, $con);
+        if ($this->aPTag === null && ($this->p_tag_id !== null) && $doQuery) {
+            $this->aPTag = PTagQuery::create()->findPk($this->p_tag_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPddTaggedTPTag->addPddTaggedTPTags($this);
+                $this->aPTag->addPDDTaggedTs($this);
              */
         }
 
-        return $this->aPddTaggedTPTag;
+        return $this->aPTag;
     }
 
     /**
@@ -1253,18 +1253,18 @@ abstract class BasePDDTaggedT extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aPddTaggedTPDDebate instanceof Persistent) {
-              $this->aPddTaggedTPDDebate->clearAllReferences($deep);
+            if ($this->aPDDebate instanceof Persistent) {
+              $this->aPDDebate->clearAllReferences($deep);
             }
-            if ($this->aPddTaggedTPTag instanceof Persistent) {
-              $this->aPddTaggedTPTag->clearAllReferences($deep);
+            if ($this->aPTag instanceof Persistent) {
+              $this->aPTag->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aPddTaggedTPDDebate = null;
-        $this->aPddTaggedTPTag = null;
+        $this->aPDDebate = null;
+        $this->aPTag = null;
     }
 
     /**

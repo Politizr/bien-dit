@@ -480,7 +480,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PddTaggedTPDDebate table
+     * Returns the number of rows matching criteria, joining the related PDDebate table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -488,7 +488,7 @@ abstract class BasePDDTaggedTPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPddTaggedTPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -531,7 +531,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PddTaggedTPTag table
+     * Returns the number of rows matching criteria, joining the related PTag table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -539,7 +539,7 @@ abstract class BasePDDTaggedTPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPddTaggedTPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -590,7 +590,7 @@ abstract class BasePDDTaggedTPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPddTaggedTPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -636,7 +636,7 @@ abstract class BasePDDTaggedTPeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PDDTaggedT) to $obj2 (PDDebate)
-                $obj2->addPddTaggedTPDDebate($obj1);
+                $obj2->addPDDTaggedT($obj1);
 
             } // if joined row was not null
 
@@ -657,7 +657,7 @@ abstract class BasePDDTaggedTPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPddTaggedTPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -703,7 +703,7 @@ abstract class BasePDDTaggedTPeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PDDTaggedT) to $obj2 (PTag)
-                $obj2->addPddTaggedTPTag($obj1);
+                $obj2->addPDDTaggedT($obj1);
 
             } // if joined row was not null
 
@@ -831,7 +831,7 @@ abstract class BasePDDTaggedTPeer
                 } // if obj2 loaded
 
                 // Add the $obj1 (PDDTaggedT) to the collection in $obj2 (PDDebate)
-                $obj2->addPddTaggedTPDDebate($obj1);
+                $obj2->addPDDTaggedT($obj1);
             } // if joined row not null
 
             // Add objects for joined PTag rows
@@ -849,7 +849,7 @@ abstract class BasePDDTaggedTPeer
                 } // if obj3 loaded
 
                 // Add the $obj1 (PDDTaggedT) to the collection in $obj3 (PTag)
-                $obj3->addPddTaggedTPTag($obj1);
+                $obj3->addPDDTaggedT($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -861,7 +861,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PddTaggedTPDDebate table
+     * Returns the number of rows matching criteria, joining the related PDDebate table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -869,7 +869,7 @@ abstract class BasePDDTaggedTPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPddTaggedTPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -912,7 +912,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PddTaggedTPTag table
+     * Returns the number of rows matching criteria, joining the related PTag table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -920,7 +920,7 @@ abstract class BasePDDTaggedTPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPddTaggedTPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -963,7 +963,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Selects a collection of PDDTaggedT objects pre-filled with all related objects except PddTaggedTPDDebate.
+     * Selects a collection of PDDTaggedT objects pre-filled with all related objects except PDDebate.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -972,7 +972,7 @@ abstract class BasePDDTaggedTPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPddTaggedTPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1024,7 +1024,7 @@ abstract class BasePDDTaggedTPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (PDDTaggedT) to the collection in $obj2 (PTag)
-                $obj2->addPddTaggedTPTag($obj1);
+                $obj2->addPDDTaggedT($obj1);
 
             } // if joined row is not null
 
@@ -1037,7 +1037,7 @@ abstract class BasePDDTaggedTPeer
 
 
     /**
-     * Selects a collection of PDDTaggedT objects pre-filled with all related objects except PddTaggedTPTag.
+     * Selects a collection of PDDTaggedT objects pre-filled with all related objects except PTag.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1046,7 +1046,7 @@ abstract class BasePDDTaggedTPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPddTaggedTPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1098,7 +1098,7 @@ abstract class BasePDDTaggedTPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (PDDTaggedT) to the collection in $obj2 (PDDebate)
-                $obj2->addPddTaggedTPDDebate($obj1);
+                $obj2->addPDDTaggedT($obj1);
 
             } // if joined row is not null
 

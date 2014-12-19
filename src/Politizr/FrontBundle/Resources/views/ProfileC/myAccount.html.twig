@@ -13,7 +13,7 @@
 				Votre identité n'a pas été validé par nos services.
 			{% endif %}
 		</p>
-		{% if is_granted('ROLE_ELECTED') and app.user.PUStatusId == constant('Politizr\\Model\\PUStatus::VALIDATION_PROCESS') %}
+		{% if app.user.qualified and app.user.PUStatusId == constant('Politizr\\Model\\PUStatus::VALIDATION_PROCESS') %}
 			<p class="bg-info">
 				Votre profil est en cours de validation par nos services: merci de patienter avant de pouvoir accéder à votre compte débatteur!
 			</p>

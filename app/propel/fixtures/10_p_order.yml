@@ -1,0 +1,115 @@
+# ORDER DATAS
+Politizr\Model\POOrderState:
+    create:
+        id:         1
+        title:      Commande créée
+    waiting:
+        id:         2
+        title:      Commande en attente
+    open:
+        id:			3
+        title:		Commande ouverte
+    handled:
+        id:			4
+        title:		Commande traitée
+    cancel:
+        id:         5
+        title:      Commande annulée
+
+
+Politizr\Model\POPaymentState:
+    process:
+        id:         1
+        title:      Paiement en cours de traitement
+    waiting:
+        id:         2
+        title:      Paiement en attente
+    done:
+        id:         3
+        title:      Paiement effectué
+    refused:
+        id:         4
+        title:      Paiement refusé
+    canceled:
+        id:         5
+        title:      Paiement annulé
+
+
+Politizr\Model\POPaymentType:
+    virement:
+        id:				1
+        sortable_rank:  1
+        online:			true
+        title:			Virement
+        description:	|
+            Virement bancaire
+    cb:
+        id:				2
+        sortable_rank:  2
+        online:			true
+        title:			Carte Bancaire
+        description:	|
+            Carte Bancaire
+    cheque:
+        id:				3
+        sortable_rank:  3
+        online:			true
+        title:			Chèque
+        description:	|
+            Chèque
+    paypal:
+        id:				4
+        sortable_rank:  4
+        online:			true
+        title:			Paypal
+        description:	|
+            Paypal
+
+
+Politizr\Model\POSubscription:
+    1an:
+        online:			true
+        sortable_rank:  1
+        title:			Abonnement 1 an
+        description:	|
+            Abonnement annuel
+        price:			49.90
+    2ans:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 2 ans
+        description:    |
+            Abonnement pour 2 ans
+        price:          89.90
+    5ans:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 5 ans
+        description:    |
+            Abonnement pour 5 ans
+        price:          189.90
+
+
+# Politizr\Model\POrder:
+#     u1_invoice1:
+#         p_user_id:              user_qualifie1
+#         p_o_order_state_id:		open
+#         p_o_payment_state_id:   paid
+#         p_o_payment_type_id:	virement
+#         p_o_subscription_id:	annuel
+#         information:			|
+#             Souscription 2014 de Damien Abad
+#         subscription_title:     Abonnement annuel
+#         subscription_description:  |
+#             Abonnement annuel
+#         price:                  150.00
+#         promotion:              100.00
+#         total:                  50.00
+#         gender:                 Monsieur
+#         name:                   Abad
+#         firstname:              Damien
+#         address:                |
+#             1, av Foch
+#         zip:                    75000
+#         city:                   PARIS
+# 

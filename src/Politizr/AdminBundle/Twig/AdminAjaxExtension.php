@@ -384,7 +384,7 @@ class AdminAjaxExtension extends \Twig_Extension
     }
 
     /**
-     *  Gestion des affinités politiques d'un user
+     *  Gestion des affinités organisation d'un user
      *
      * @param $pUser        PUser
      *
@@ -397,9 +397,9 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserPoliticalParties.html.twig', array(
+                            'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig', array(
                                 'pUser' => $pUser,
-                                'politicalParties' => $pUser->getPoliticalParties(),
+                                'organizations' => $pUser->getOrganizations(),
                                 )
                     );
 
@@ -459,7 +459,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:DebateComments.html.twig', array(
                                 'pdDebate' => $pdDebate,
-                                'pddComments' => $pdDebate->getComments(),
+                                'pdComments' => $pdDebate->getComments(),
                                 )
                     );
 

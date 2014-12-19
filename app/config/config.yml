@@ -233,7 +233,7 @@ liip_imagine:
             quality:              100
             filters:
                 relative_resize:  { widen: 150 }
-        admin_political_party_thumb:
+        admin_organization:
             quality:              100
             filters:
                 relative_resize:  { widen: 50 }
@@ -267,10 +267,11 @@ liip_imagine:
             filters:
                 thumbnail:         { size: [50, 50], mode: outbound }
 
-        political_party_mini_thumb:
+        organization_mini:
             quality:              100
             filters:
                 relative_resize:  { widen: 50 }
+
 
         # FRONT / ESPACE CITOYEN
         c_document_list_thumb:
@@ -289,7 +290,6 @@ bazinga_faker:
         Politizr\Model\PUser:
             number:                     50
             custom_formatters:
-                PUTypeId:               { method: numberBetween, parameters: [ 1, 1 ] }
                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
                 Firstname:              { method: firstname }
@@ -317,19 +317,12 @@ bazinga_faker:
                 PasswordRequestedAt:    { method: null }
 
                 NbViews:                { method: numberBetween, parameters: [ 150, 1500 ] }
+                Qualified:              { method: boolean, parameters: [ 0 ] }
+                Validated:              { method: boolean, parameters: [ 0 ] }
+
                 Online:                 { method: boolean, parameters: [ 100 ] }
-                Validated:              { method: boolean, parameters: [ 10 ] }
                 Slug:                   { method: null }
 
-#         Politizr\Model\PUQualification:
-#             number:                     300
-#             custom_formatters:
-#                 Title:                  { method: realText, parameters: [ 20 ] }
-#                 Description:            { method: paragraphs, parameters: [ 4, true ] }
-# 
-#         Politizr\Model\PUFollowU:
-#             number:                     1
-# 
         Politizr\Model\PUFollowT:
             number:                     150
             custom_formatters:
@@ -342,11 +335,11 @@ bazinga_faker:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
-        Politizr\Model\PUAffinityUPP:
+        Politizr\Model\PUAffinityQO:
             number:                     150
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PUPoliticalPartyId:     { method: numberBetween, parameters: [ 1, 16 ] }
+                PQOrganizationId:       { method: numberBetween, parameters: [ 1, 16 ] }
 
 
         #################################################################################################################
@@ -446,21 +439,6 @@ bazinga_faker:
                 PublishedAt:            { method: dateTimeThisYear }
 
                 Online:                 { method: boolean, parameters: [ 100 ] }
-
-
-        #################################################################################################################
-        #                                   TAGS
-        #################################################################################################################
-        # Politizr\Model\PTag:
-        #     number:                     1000
-        #     custom_formatters:
-        #         PTTagTypeId:            { method: numberBetween, parameters: [ 3, 3 ] }
-        #         
-        #         # Title:                  { method: realText, parameters: [ 20 ] }
-        #         Title:                  { method: lexify, parameters: [ '???????????????' ], unique: true }
-        # 
-        #         Online:                 { method: boolean, parameters: [ 100 ] }
-        #         Slug:                   { method: null }
 
 
 # Géoloc

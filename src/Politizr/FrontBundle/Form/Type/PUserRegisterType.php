@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
-use Politizr\Model\PUType;
 
 /**
  * TODO: commentaires
@@ -25,8 +24,8 @@ class PUserRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('p_u_type_id', 'hidden', array(
-            'attr'     => array( 'value' => PUType::TYPE_CITOYEN )
+        $builder->add('qualified', 'hidden', array(
+            'attr'     => array( 'value' => false )
             )
         );
         $builder->add('p_u_status_id', 'hidden', array(

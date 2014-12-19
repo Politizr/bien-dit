@@ -17,7 +17,7 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 
 	{% block authorName %}
 		{# Nom & Type #}
-		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label {% if user.pUTypeId == constant('Politizr\\Model\\PUType::TYPE_CITOYEN') %}label-info{% else %}label-danger{% endif %}">
+		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
 			{{ user }}
 			{% if user.validated %}
 				<span class="fa fa-check-square-o" title="Profil validé"></span>
@@ -34,10 +34,10 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 
 	{% block authorQualification %}
 		{# Mandat en cours #}
-		{% if user.currentQualification %}
-			{% set qualification = user.currentQualification %}
-			{% if (qualification) %}
-		        <img src="{{ asset('uploads/political/'~qualification.politicalPartyLogo) | imagine_filter('political_party_mini_thumb') }}" alt="{{ qualification.politicalPartyInitials }}">
+		{% if user.currentMandate %}
+			{% set mandate = user.currentMandate %}
+			{% if (mandate) %}
+		        <img src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
 			{% endif %}	
 		{% endif %}
 	{% endblock authorQualification %}
