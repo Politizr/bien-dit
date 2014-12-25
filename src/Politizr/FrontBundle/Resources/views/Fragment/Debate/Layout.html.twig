@@ -61,12 +61,7 @@ LAYOUT DEBATE
 		<hr>
 		<div class="row debate-image">
 			<div class="col-sm-12">
-				{# TODO / TwigExtension Image #}
-				{% if (debate.FileName) %}
-			        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_header') }}" alt="{{ debate.title }}">
-			    {% else %}
-			        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}" alt="{{ debate.title }}">
-				{% endif %}
+				{{ debate | image('debate_header') }}
 			</div>
 		</div>
 
@@ -158,12 +153,7 @@ LAYOUT DEBATE
 		{% block listHeader %}
 			<div class="row">
 				<div class="col-sm-12">
-					{# TODO / TwigExtension Image #}
-					{% if (debate.FileName) %}
-				        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
-				    {% else %}
-				        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
-					{% endif %}
+					{{ debate | image('debate_list') }}
 				</div>
 			</div>
 		{% endblock listHeader %}
@@ -173,10 +163,8 @@ LAYOUT DEBATE
 			</div>
 			<div class="col-sm-2 text-center">
 				<span class="count-reactions">
-					{# TODO / TwigExtension NbReactions #}
-					{% set nbReactions = debate.countReactions(true, true) %}
 					<span class="badge alert-info">
-						<a href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">{{ nbReactions }} réactions</a>
+						{{ debate | nbReactions }}
 					</span>
 				</span>
 			</div>
@@ -233,10 +221,8 @@ LAYOUT DEBATE
 			</div>
 			<div class="col-sm-1 text-center">
 				<span class="count-reactions">
-					{# TODO / TwigExtension NbReactions #}
-					{% set nbReactions = debate.countReactions(true, true) %}
 					<span class="badge alert-info">
-						<a href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">{{ nbReactions }} réactions</a>
+						{{ debate | nbReactions }}
 					</span>
 				</span>
 			</div>
@@ -250,12 +236,7 @@ LAYOUT DEBATE
 			{# Bandeau #}
 			<div class="row">
 				<div class="col-sm-12 debate-image">
-					{# TODO / TwigExtension Image #}
-					{% if (debate.FileName) %}
-				        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~debate.fileName) | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
-				    {% else %}
-				        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_list') }}" alt="{{ debate.title }}">
-					{% endif %}
+					{{ debate | image('debate_list') }}
 				</div>
 			</div>
 
