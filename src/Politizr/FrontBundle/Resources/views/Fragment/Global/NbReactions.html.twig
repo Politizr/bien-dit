@@ -1,7 +1,5 @@
 {% if nbReactions > 0 %}
-	<a href="{{ url }}">
-{% endif %}
-{{ reactions }}
-{% if nbReactions > 0 %}
-	</a>
+	<span class="badge alert-info">
+		<a href="{{ url }}">{{ reactions }}</a>
+	</span>
 {% endif %}

@@ -6,7 +6,7 @@
 		<h3>Suggestions de débats par tags géographiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
-				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+				{{ app.user | followTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 			</div>
 		</div>
 		<hr>
@@ -21,7 +21,7 @@
 		<h3>Suggestions de débats par tags thématiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
-				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+				{{ app.user | followTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 			</div>
 		</div>
 		<hr>
@@ -36,7 +36,7 @@
 		<h3>Suggestions d'élus par tags géographiques</h3>
 		<div class="user-tags">
 			<div class="row text-center">
-				{{ userFollowTags(app.user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+				{{ app.user | followTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 			</div>
 		</div>
 		<hr>

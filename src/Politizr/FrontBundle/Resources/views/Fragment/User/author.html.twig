@@ -6,11 +6,7 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 	{% block authorPhoto %}
 		{# TODO / TwigExtension Photo #}
 		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
-			{% if (user.FileName) %}
-		        <img class="img-rounded" src="{{ asset('uploads/users/'~user.fileName) | imagine_filter('user_mini') }}" alt="{{ user.name }}">
-		    {% else %}
-		        <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_mini') }}" alt="{{ user.name }}">
-			{% endif %}
+			{{ user | photo('user_mini') }}
 		</a>
 		&nbsp;
 	{% endblock authorPhoto %}

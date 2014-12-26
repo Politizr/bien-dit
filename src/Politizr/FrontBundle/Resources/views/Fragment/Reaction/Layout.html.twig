@@ -16,10 +16,10 @@ LAYOUT REACTION
 					<h2>{{ reaction.title }}</h2>
 				</div>
 				<div class="col-sm-2 text-center">
-					<span class="label label-info">vu {{ reaction.NbViews }} fois</span>
+					{{ reaction.NbViews | nbViewsFormat }}
 				</div>
 				<div class="col-sm-2 text-center">
-					<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+					{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
 				</div>
 			</div>
 		{% endblock detailHeader %}
@@ -55,12 +55,7 @@ LAYOUT REACTION
 			<hr>
 			<div class="row debate-image">
 				<div class="col-sm-12">
-					{# TODO / TwigExtension Image #}
-					{% if (reaction.debate.FileName) %}
-				        <img class="img-rounded img-responsive" src="{{ asset('uploads/documents/'~reaction.debate.FileName) | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
-				    {% else %}
-				        <img  class="img-rounded img-responsive" src="{{ asset('bundles/politizrfront/images/default_debate.jpg') | imagine_filter('debate_header') }}" alt="{{ reaction.debate.title }}">
-					{% endif %}
+					{{ reaction.debate | image('debate_header') }}
 				</div>
 			</div>
 		{% endblock detailImage %}
@@ -155,14 +150,10 @@ LAYOUT REACTION
 				<h4><a href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">{{ reaction.title }}</a></h4>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="count-reactions">
-					<span class="badge alert-info">
-						{{ reaction | nbReactions }}
-					</span>
-				</span>
+				{{ reaction | nbReactions }}
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris" ) | capitalize }}</span>
+				{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
 			</div>
 		</div>
 		
@@ -222,7 +213,7 @@ LAYOUT REACTION
 				<h4><i class="fa fa-bell"></i></h4>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ reaction.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+				{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
 			</div>
 			<div class="col-sm-7">
 				<h4{% if isParentReactionMine or isParentDebateMine %} class="bg-info"{% endif %}>
@@ -235,11 +226,7 @@ LAYOUT REACTION
 				</h4>
 			</div>
 			<div class="col-sm-1 text-center">
-				<span class="count-reactions">
-					<span class="badge alert-info">
-						{{ reaction | nbReactions }}
-					</span>
-				</span>
+				{{ reaction | nbReactions }}
 			</div>
 			<div class="col-sm-1 text-center">
 				<a class="fa fa-info" action="more-info"></a>

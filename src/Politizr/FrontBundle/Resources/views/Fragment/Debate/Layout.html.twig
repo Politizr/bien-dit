@@ -16,10 +16,10 @@ LAYOUT DEBATE
 					<h1>{{ debate.title }}</h1>
 				</div>
 				<div class="col-sm-2 text-center">
-					<span class="label label-info text-center">vu {{ debate.NbViews }} fois</span>
+					{{ debate.NbViews | nbViewsFormat }}
 				</div>
 				<div class="col-sm-2 text-center">
-					<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+					{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
 				</div>
 			</div>
 		{% endblock detailHeader %}
@@ -71,10 +71,10 @@ LAYOUT DEBATE
 			{# Tags #}
 			<div class="row text-center">
 				<div class="col-sm-6">
-					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 				</div>
 				<div class="col-sm-6">
-					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 				</div>
 			</div>
 			<hr>
@@ -162,14 +162,10 @@ LAYOUT DEBATE
 				<h4><a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a></h4>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="count-reactions">
-					<span class="badge alert-info">
-						{{ debate | nbReactions }}
-					</span>
-				</span>
+				{{ debate | nbReactions }}
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris" ) | capitalize }}</span>
+				{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
 			</div>
 		</div>
 		{% block listAuthor %}
@@ -212,7 +208,7 @@ LAYOUT DEBATE
 				<h4><i class="fa fa-bullhorn"></i></h4>
 			</div>
 			<div class="col-sm-2 text-center">
-				<span class="label label-default text-center"><i class="fa fa-clock-o"></i>&nbsp;{{ debate.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+				{% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
 			</div>
 			<div class="col-sm-7">
 				<h4>
@@ -220,11 +216,7 @@ LAYOUT DEBATE
 				</h4>
 			</div>
 			<div class="col-sm-1 text-center">
-				<span class="count-reactions">
-					<span class="badge alert-info">
-						{{ debate | nbReactions }}
-					</span>
-				</span>
+				{{ debate | nbReactions }}
 			</div>
 			<div class="col-sm-1 text-center">
 				<a class="fa fa-info" action="more-info"></a>
@@ -252,10 +244,10 @@ LAYOUT DEBATE
 			{# Tags #}
 			<div class="row text-center">
 				<div class="col-sm-6">
-					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 				</div>
 				<div class="col-sm-6">
-					{{ debateTags(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
 				</div>
 			</div>
 

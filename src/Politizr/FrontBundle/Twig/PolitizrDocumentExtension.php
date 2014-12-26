@@ -72,6 +72,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            new \Twig_SimpleFilter('docTags', array($this, 'docTags'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('nbViewsFormat', array($this, 'nbViewsFormat'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
         );
     }
 
@@ -176,6 +184,64 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
 
+    /**
+     *  Tags d'un débat
+     *
+     *  @param $debate          PDDebate
+     *  @param $tagTypeId       Type de tag
+     *
+     *  @return html
+     */
+    public function docTags($debate, $tagTypeId)
+    {
+        // $this->logger->info('*** doctags');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+
+        $tags = $debate->getTags($tagTypeId);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
+                                'tags' => $tags,
+                                'tagTypeId' => $tagTypeId
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Nombre de vues d'un document
+     *
+     *  @param $nbViews         integer
+     *
+     *  @return html
+     */
+    public function nbViewsFormat($nbViews)
+    {
+        // $this->logger->info('*** nbViewsFormat');
+        // $this->logger->info('$nbViews = '.print_r($nbViews, true));
+
+        if ($nbViews < 10000) {
+            $nbViews = number_format($nbViews, 0, ',', ' ');
+        } else {
+            $d = $nbViews < 1000000 ? 1000 : 1000000;
+            $f = round($nbViews / $d, 1);
+            $nbViews = number_format($f, $f - intval($f) ? 1 : 0, ',', ' ') . ($d == 1000 ? 'k' : 'M');
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Global:NbViews.html.twig', array(
+                                'nbViews' => $nbViews,
+                                )
+                    );
+
+        return $html;
+
+    }
 
 
     /* ######################################################################################################## */

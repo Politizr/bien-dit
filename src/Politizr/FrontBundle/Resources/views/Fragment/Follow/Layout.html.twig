@@ -18,11 +18,7 @@ LAYOUT FOLLOW
 	            {% endif %}
 				<div class="col-sm-1">
 					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-						{% if (follower.fileName) %}
-				            <img class="img-circle" src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_follower') }}" alt="{{ follower }}" title="{{ follower }}">
-				        {% else %}
-				            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_follower') }}" alt="{{ follower }}" title="{{ follower }}">
-			        	{% endif %}
+						{{ follower | photo('user_follower', 'img-circle') }}
 					</a>
 				</div>
 				{% if ((loop.index%12) == 0 or loop.length == loop.index) %}
@@ -38,11 +34,7 @@ LAYOUT FOLLOW
 	            {% endif %}
 				<div class="col-sm-1">
 					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
-						{% if (follower.fileName) %}
-				            <img class="img-circle" src="{{ asset('uploads/users/'~follower.fileName) | imagine_filter('user_follower') }}" alt="{{ follower }}" title="{{ follower }}">
-				        {% else %}
-				            <img class="img-circle" src="{{ asset('bundles/politizrfront/images/default_user.png') | imagine_filter('user_follower') }}" alt="{{ follower }}" title="{{ follower }}">
-			        	{% endif %}
+						{{ follower | photo('user_follower', 'img-circle') }}
 					</a>
 				</div>
 				{% if ((loop.index%12) == 0 or loop.length == loop.index) %}

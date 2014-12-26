@@ -57,12 +57,23 @@ class PolitizrUserExtension extends \Twig_Extension
     /**
      *  Renvoie la liste des filtres
      */
-    // public function getFilters()
-    // {
-    //     return array(
-    //         new \Twig_SimpleFilter('isGranted', array($this, 'isGranted')),
-    //     );
-    // }
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('photo', array($this, 'photo'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('followTags', array($this, 'followTags'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('tags', array($this, 'tags'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+        );
+    }
 
     /**
      *  Renvoie la liste des fonctions
@@ -93,6 +104,90 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
+
+    /**
+     *  Photo de profil d'un user
+     *
+     *  @param $user         PUser       PUser
+     *
+     *  @return html
+     */
+    public function photo($user, $filterName = 'user_bio', $effect = 'img-rounded')
+    {
+        // $this->logger->info('*** photo');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $path = 'bundles/politizrfront/images/default_user.png';
+        if ($user && $fileName = $user->getFileName()) {
+            $path = 'uploads/users/'.$fileName;
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Global:UserPhoto.html.twig', array(
+                                'user' => $user,
+                                'path' => $path,
+                                'filterName' => $filterName,
+                                'effect' => $effect,
+                                )
+                    );
+
+        return $html;
+    }
+
+
+   /**
+     *  Affiche les tags suivis par un user suivant le type fourni
+     *
+     * @param $user         PUser       PUser
+     * @param $tagTypeId    integer     ID type de tag
+     *
+     * @return string
+     */
+    public function followTags($user, $tagTypeId)
+    {
+        $this->logger->info('*** followTags');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
+                                'tags' => $user->getFollowTags($tagTypeId),
+                                'tagTypeId' => $tagTypeId
+                                )
+                    );
+
+        return $html;
+
+    }
+
+   /**
+     *  Affiche les tags associés à un user suivant le type fourni
+     *
+     * @param $user         PUser       PUser
+     * @param $tagTypeId    integer     ID type de tag
+     *
+     * @return string
+     */
+    public function tags($user, $tagTypeId)
+    {
+        $this->logger->info('*** tags');
+        // $this->logger->info('$uiser = '.print_r($uiser, true));
+        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
+                                'tags' => $user->getTaggedTags($tagTypeId),
+                                'tagTypeId' => $tagTypeId
+                                )
+                    );
+
+        return $html;
+
+    }
+
 
 
     /* ######################################################################################################## */
