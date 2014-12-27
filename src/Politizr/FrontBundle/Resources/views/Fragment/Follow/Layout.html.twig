@@ -17,7 +17,7 @@ LAYOUT FOLLOW
 	                <div class="row">
 	            {% endif %}
 				<div class="col-sm-1">
-					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
+					<a href="{{ path('UserDetail', { 'slug': follower.slug }) }}">
 						{{ follower | photo('user_follower', 'img-circle') }}
 					</a>
 				</div>
@@ -33,7 +33,7 @@ LAYOUT FOLLOW
 	                <div class="row">
 	            {% endif %}
 				<div class="col-sm-1">
-					<a href="{{ path('UserDetail', { 'id': follower.id, 'slug': follower.slug }) }}">
+					<a href="{{ path('UserDetail', { 'slug': follower.slug }) }}">
 						{{ follower | photo('user_follower', 'img-circle') }}
 					</a>
 				</div>

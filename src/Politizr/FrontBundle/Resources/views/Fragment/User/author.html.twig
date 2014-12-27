@@ -5,7 +5,7 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 {% spaceless %}
 	{% block authorPhoto %}
 		{# TODO / TwigExtension Photo #}
-		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}">
+		<a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
 			{{ user | photo('user_mini') }}
 		</a>
 		&nbsp;
@@ -13,7 +13,7 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 
 	{% block authorName %}
 		{# Nom & Type #}
-		<a href="{{ path('UserDetail', { 'id': user.id, 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
+		<a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
 			{{ user }}
 			{% if user.validated %}
 				<span class="fa fa-check-square-o" title="Profil validé"></span>

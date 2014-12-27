@@ -8,7 +8,7 @@
 	{# Lien détail #}
 	<div class="row text-center">
 		<div class="col-sm-12">
-			<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">Détail</a>
+			<a class="btn btn-primary" href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">Détail</a>
 		</div>
 	</div>		
 {% endblock detailLink %}

@@ -30,9 +30,9 @@ LAYOUT REACTION
 				{# TODO / TwigExtension Parent Réaction #}
 				{% if reaction.level > 1 %}
 					{% set parentReaction = reaction.getParent %}
-					<h4>En réaction à <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
+					<h4>En réaction à <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
 				{% else %}
-					<h4>En réaction au débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
+					<h4>En réaction au débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>
 				{% endif %}
 			</div>
 		</div>
@@ -73,7 +73,7 @@ LAYOUT REACTION
 				{# Lien détail #}
 				<div class="row text-center">
 					<div class="col-sm-12">
-						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">Fil du débat</a>
+						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'slug': reaction.debate.slug }) }}">Fil du débat</a>
 					</div>
 				</div>
 			{% endblock detailLink %}
@@ -147,7 +147,7 @@ LAYOUT REACTION
 		{# Infos générales #}
 		<div class="row">
 			<div class="col-sm-8">
-				<h4><a href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">{{ reaction.title }}</a></h4>
+				<h4><a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">{{ reaction.title }}</a></h4>
 			</div>
 			<div class="col-sm-2 text-center">
 				{{ reaction | nbReactions }}
@@ -163,11 +163,11 @@ LAYOUT REACTION
 				{% if reaction.level > 1 %}
 					{% set parentReaction = reaction.getParent %}
 					<span class="label label-warning">
-						En réaction à <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+						En réaction à <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
 					</span>
 				{% else %}
 					<span class="label label-warning">
-						En réaction au débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+						En réaction au débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
 					</span>
 				{% endif %}
 			</div>
@@ -217,11 +217,11 @@ LAYOUT REACTION
 			</div>
 			<div class="col-sm-7">
 				<h4{% if isParentReactionMine or isParentDebateMine %} class="bg-info"{% endif %}>
-					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': reaction.user } only %} a rédigé une <a class="label label-warning" href="{{ path('ReactionDetail', { 'id': reaction.id, 'slug': reaction.slug }) }}">réaction</a>
+					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': reaction.user } only %} a rédigé une <a class="label label-warning" href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">réaction</a>
 					{% if reaction.level > 1 %}
-						{% if isParentReactionMine %}sur votre réaction{% else %}en réaction à{% endif %} <a href="{{ path('ReactionDetail', { 'id': parentReaction.id, 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur {% if isParentDebateMine %}votre{% else %}le{% endif %} débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+						{% if isParentReactionMine %}sur votre réaction{% else %}en réaction à{% endif %} <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur {% if isParentDebateMine %}votre{% else %}le{% endif %} débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
 					{% else %}
-						sur {% if isParentDebateMine %}votre{% else %}le{% endif %} débat <a href="{{ path('DebateDetail', { 'id': reaction.debate.id, 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
+						sur {% if isParentDebateMine %}votre{% else %}le{% endif %} débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a>
 					{% endif %}
 				</h4>
 			</div>

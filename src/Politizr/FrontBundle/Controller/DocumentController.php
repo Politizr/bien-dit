@@ -48,22 +48,21 @@ class DocumentController extends Controller {
     /**
      * Fil débat
      */
-    public function debateFeedAction($id, $slug)
+    public function debateFeedAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** debateFeedAction');
-        $logger->info('$id = '.print_r($id, true));
         $logger->info('$slug = '.print_r($slug, true));
 
         // *********************************** //
         //      Récupération objet
         // *********************************** //
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
-            throw new NotFoundHttpException('pDDebate n°'.$id.' not found.');
+            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
         }
         if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('pDDebate n°'.$id.' not online.');
+            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
         }
 
         // *********************************** //
@@ -77,25 +76,24 @@ class DocumentController extends Controller {
     /**
      * Détail débat
      */
-    public function debateDetailAction($id, $slug)
+    public function debateDetailAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** debateDetailAction');
-        $logger->info('$id = '.print_r($id, true));
         $logger->info('$slug = '.print_r($slug, true));
 
         // *********************************** //
         //      Récupération objet
         // *********************************** //
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
+            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
         }
         if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
+            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
         }
         if (!$debate->getPublished()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not published.');
+            throw new NotFoundHttpException('Debate "'.$slug.'" not published.');
         }
 
         $debate->setNbViews($debate->getNbViews() + 1);
@@ -156,30 +154,29 @@ class DocumentController extends Controller {
     /**
      * Détail réaction
      */
-    public function reactionDetailAction($id, $slug)
+    public function reactionDetailAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** reactionDetailAction');
-        $logger->info('$id = '.print_r($id, true));
         $logger->info('$slug = '.print_r($slug, true));
 
         // *********************************** //
         //      Récupération objet
         // *********************************** //
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
         if (!$reaction) {
-            throw new NotFoundHttpException('Reaction n°'.$id.' not found.');
+            throw new NotFoundHttpException('Reaction "'.$slug.'" not found.');
         }
         if (!$reaction->getOnline()) {
-            throw new NotFoundHttpException('Reaction n°'.$id.' not online.');
+            throw new NotFoundHttpException('Reaction "'.$slug.'" not online.');
         }
 
         $debate = $reaction ->getDebate();
         if (!$debate) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
+            throw new NotFoundHttpException('Debate of reaction "'.$slug.'" not found.');
         }
         if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
+            throw new NotFoundHttpException('Debate of reaction "'.$slug.'" not online.');
         }
 
         $reaction->setNbViews($reaction->getNbViews() + 1);
@@ -252,22 +249,21 @@ class DocumentController extends Controller {
     /**
      * Détail auteur
      */
-    public function userDetailAction($id, $slug)
+    public function userDetailAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** userDetailAction');
-        $logger->info('$id = '.print_r($id, true));
         $logger->info('$slug = '.print_r($slug, true));
 
         // *********************************** //
         //      Récupération objet
         // *********************************** //
-        $user = PUserQuery::create()->findPk($id);
+        $user = PUserQuery::create()->filterBySlug($slug)->findOne();
         if (!$user) {
-            throw new NotFoundHttpException('User n°'.$id.' not found.');
+            throw new NotFoundHttpException('User "'.$slug.'" not found.');
         }
         if (!$user->getOnline()) {
-            throw new NotFoundHttpException('User n°'.$id.' not online.');
+            throw new NotFoundHttpException('User "'.$slug.'" not online.');
         }
 
         $user->setNbViews($user->getNbViews() + 1);

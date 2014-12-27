@@ -118,32 +118,28 @@ MigrationElectedCheck:
 #				ROUTING DOCUMENT
 ################################################################################
 DebateFeed:
-    pattern:  /{id}/debat/fil/{slug}
+    pattern:  /fil-du-debat/{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
     requirements:
         _method:        GET
-        id:             \d+
 
 DebateDetail:
-    pattern:  /{id}/debat/detail/{slug}
+    pattern:  /{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
     requirements:
         _method:        GET
-        id:             \d+
 
 ReactionDetail:
-    pattern:  /{id}/reaction/detail/{slug}
+    pattern:  /reaction/{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
     requirements:
         _method:        GET
-        id:             \d+
 
 UserDetail:
-    pattern:  /{id}/auteur/{slug}
+    pattern:  /auteur/{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:userDetail }
     requirements:
         _method:        GET
-        id:             \d+
 
 
 ################################################################################

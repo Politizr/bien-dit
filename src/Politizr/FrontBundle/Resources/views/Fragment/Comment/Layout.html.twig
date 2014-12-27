@@ -42,9 +42,9 @@ LAYOUT COMMENT
 			{# Description + lien #}
 			<div class="col-sm-10">
 				{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-					<a href="{{ path('DebateDetail', { 'id': comment.document.id, 'slug': comment.debate.slug }) }}">
+					<a href="{{ path('DebateDetail', { 'slug': comment.debate.slug }) }}">
 				{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-					<a href="{{ path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.reaction.slug }) }}">
+					<a href="{{ path('ReactionDetail', { 'slug': comment.reaction.slug }) }}">
 				{% endif %}
 					<em>"{{ comment.description }}"</em>
 				</a>
@@ -103,9 +103,9 @@ LAYOUT COMMENT
 {% block timelineRow %}
 
 	{% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-		{% set route = path('DebateDetail', { 'id': comment.document.id, 'slug': comment.debate.slug }) %}
+		{% set route = path('DebateDetail', { 'slug': comment.debate.slug }) %}
 	{% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-		{% set route = path('ReactionDetail', { 'id': comment.document.id, 'slug': comment.reaction.slug }) %}
+		{% set route = path('ReactionDetail', { 'slug': comment.reaction.slug }) %}
 	{% endif %}
 
 	<div class="timeline-row">

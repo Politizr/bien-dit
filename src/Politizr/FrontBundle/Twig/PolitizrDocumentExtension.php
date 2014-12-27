@@ -177,11 +177,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         switch(get_class($document)) {
             case PDocument::TYPE_DEBATE:
                 $nbReactions = $document->countReactions(true, true);
-                $url = $this->router->generate('DebateFeed', array('id' => $document->getId(), 'slug' => $document->getSlug()));
+                $url = $this->router->generate('DebateFeed', array('slug' => $document->getSlug()));
                 break;
             case PDocument::TYPE_REACTION:
                 $nbReactions = $document->countChildrenReactions(true, true);
-                $url = $this->router->generate('ReactionDetail', array('id' => $document->getId(), 'slug' => $document->getSlug()));
+                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
                 break;
         }
 

@@ -88,7 +88,7 @@ LAYOUT DEBATE
 				{# Lien détail #}
 				<div class="row text-center">
 					<div class="col-sm-12">
-						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'id': debate.id, 'slug': debate.slug }) }}">Fil du débat</a>
+						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">Fil du débat</a>
 					</div>
 				</div>		
 			{% endblock detailLink %}
@@ -159,7 +159,7 @@ LAYOUT DEBATE
 		{% endblock listHeader %}
 		<div class="row">
 			<div class="col-sm-8">
-				<h4><a href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">{{ debate.title }}</a></h4>
+				<h4><a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a></h4>
 			</div>
 			<div class="col-sm-2 text-center">
 				{{ debate | nbReactions }}
@@ -212,7 +212,7 @@ LAYOUT DEBATE
 			</div>
 			<div class="col-sm-7">
 				<h4>
-					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': debate.user } only %} a rédigé un <a class="label label-success" href="{{ path('DebateDetail', { 'id': debate.id, 'slug': debate.slug }) }}">débat</a>.
+					{% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': debate.user } only %} a rédigé un <a class="label label-success" href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">débat</a>.
 				</h4>
 			</div>
 			<div class="col-sm-1 text-center">
