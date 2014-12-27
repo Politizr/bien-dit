@@ -45,7 +45,7 @@ LAYOUT REACTION
 				</div>
 				{# Notes #}
 				<div class="notes col-sm-4 text-center">
-					{{ linkNote(reaction, constant('Politizr\\Model\\PDocument::TYPE_REACTION')) }}
+					{{ reaction | linkNoteReaction }}
 				</div>
 			</div>
 		{% endblock detailAuthor %}

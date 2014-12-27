@@ -2,6 +2,9 @@
 namespace Politizr\Frontbundle\Twig;
 
 use Politizr\Model\PDocument;
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PDComment;
 use Politizr\Model\PRAction;
 
 use Politizr\Model\PDocumentQuery;
@@ -9,6 +12,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 
@@ -77,6 +81,26 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     )
             ),
             new \Twig_SimpleFilter('nbViewsFormat', array($this, 'nbViewsFormat'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('linkNoteDebate', array($this, 'linkNoteDebate'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('linkNoteReaction', array($this, 'linkNoteReaction'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('linkNoteComment', array($this, 'linkNoteComment'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('linkSubscribeDebate', array($this, 'linkSubscribeDebate'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('followersDebate', array($this, 'followersDebate'), array(
                     'is_safe' => array('html')
                     )
             ),
@@ -243,87 +267,47 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
-
-    /* ######################################################################################################## */
-    /*                                             FONCTIONS                                                    */
-    /* ######################################################################################################## */
-
     /**
      *  Affiche & active / désactive les Note + / Note -
      *
-     *  @param $object          objet
-     *  @param $context         PDocument::TYPE_DEBATE / TYPE_REACTION / TYPE_COMMENT
+     *  @param $nbViews         integer
      *
-     *  @return string
+     *  @return html
      */
-    public function linkNote($object, $context)
+    public function linkNoteDebate(PDDebate $debate)
     {
-        // $this->logger->info('*** linkNote');
-        // $this->logger->info('$object = '.print_r($object, true));
-        // $this->logger->info('$context = '.print_r($context, true));
+        // $this->logger->info('*** linkNoteDebate');
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
         $pos = false;
         $neg = false;
 
         if ($this->user) {
-            // Le user courant est-il l'auteur du debate / réaction / commentaire?
-            switch($context) {
-                case PDocument::TYPE_DEBATE:
-                case PDocument::TYPE_REACTION:
-                    $document = PDocumentQuery::create()
-                        ->filterByPUserId($this->user->getId())
-                        ->filterById($object->getId())
-                        ->findOne();
-                    break;
-                case PDocument::TYPE_COMMENT:
-                    $document = PDCommentQuery::create()
-                        ->filterByPUserId($this->user->getId())
-                        ->filterById($object->getId())
-                        ->findOne();
-                    break;
-            }
+            $document = PDocumentQuery::create()
+                ->filterByPUserId($this->user->getId())
+                ->filterById($debate->getId())
+                ->findOne();
 
             if ($document) {
                 $pos = true;
                 $neg = true;
             } else {
-                // Le document a-t-il déjà été noté pos et/ou neg?
-                switch($context) {
-                    case PDocument::TYPE_DEBATE:
-                        $queryPos = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
-                            ->filterByPObjectName('Politizr\Model\PDDebate');
-                        $queryNeg = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
-                            ->filterByPObjectName('Politizr\Model\PDDebate');
-                        break;
-                    case PDocument::TYPE_REACTION:
-                        $queryPos = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
-                            ->filterByPObjectName('Politizr\Model\PDReaction');
-                        $queryNeg = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
-                            ->filterByPObjectName('Politizr\Model\PDReaction');
-                        break;
-                    case PDocument::TYPE_COMMENT:
-                        $queryPos = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
-                            ->filterByPObjectName('Politizr\Model\PDComment');
-                        $queryNeg = PUReputationRAQuery::create()
-                            ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
-                            ->filterByPObjectName('Politizr\Model\PDComment');
-                        break;
-                }
+                $queryPos = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
+                    ->filterByPObjectName('Politizr\Model\PDDebate');
+                $queryNeg = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
+                    ->filterByPObjectName('Politizr\Model\PDDebate');
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
-                    ->filterByPObjectId($object->getId())
+                    ->filterByPObjectId($debate->getId())
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
-                    ->filterByPObjectId($object->getId())
+                    ->filterByPObjectId($debate->getId())
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
@@ -334,8 +318,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // Construction du rendu du tag
         $html = $this->templating->render(
                             'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
-                                'object' => $object,
-                                'context' => $context,
+                                'object' => $debate,
+                                'type' => PDocument::TYPE_DEBATE,
                                 'pos' => $pos,
                                 'neg' => $neg,
                                 )
@@ -345,6 +329,208 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
+    /**
+     *  Affiche & active / désactive les Note + / Note -
+     *
+     *  @param $nbViews         integer
+     *
+     *  @return html
+     */
+    public function linkNoteReaction(PDReaction $reaction)
+    {
+        // $this->logger->info('*** linkNoteReaction');
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
+
+        $pos = false;
+        $neg = false;
+
+        if ($this->user) {
+            $document = PDocumentQuery::create()
+                ->filterByPUserId($this->user->getId())
+                ->filterById($reaction->getId())
+                ->findOne();
+
+            if ($document) {
+                $pos = true;
+                $neg = true;
+            } else {
+                $queryPos = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
+                    ->filterByPObjectName('Politizr\Model\PDReaction');
+                $queryNeg = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
+                    ->filterByPObjectName('Politizr\Model\PDReaction');
+
+                $notePos = $queryPos->filterByPUserId($this->user->getId())
+                    ->filterByPObjectId($reaction->getId())
+                    ->findOne();
+                if ($notePos) {
+                    $pos = true;
+                }
+
+                $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
+                    ->filterByPObjectId($reaction->getId())
+                    ->findOne();
+                if ($noteNeg) {
+                    $neg = true;
+                }
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
+                                'object' => $reaction,
+                                'type' => PDocument::TYPE_REACTION,
+                                'pos' => $pos,
+                                'neg' => $neg,
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Affiche & active / désactive les Note + / Note -
+     *
+     *  @param $nbViews         integer
+     *
+     *  @return html
+     */
+    public function linkNoteComment(PDComment $comment)
+    {
+        // $this->logger->info('*** linkNoteComment');
+        // $this->logger->info('$comment = '.print_r($comment, true));
+
+        $pos = false;
+        $neg = false;
+
+        if ($this->user) {
+            $document = PDocumentQuery::create()
+                ->filterByPUserId($this->user->getId())
+                ->filterById($comment->getId())
+                ->findOne();
+
+            if ($document) {
+                $pos = true;
+                $neg = true;
+            } else {
+                $queryPos = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
+                    ->filterByPObjectName('Politizr\Model\PDComment');
+                $queryNeg = PUReputationRAQuery::create()
+                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
+                    ->filterByPObjectName('Politizr\Model\PDComment');
+
+                $notePos = $queryPos->filterByPUserId($this->user->getId())
+                    ->filterByPObjectId($comment->getId())
+                    ->findOne();
+                if ($notePos) {
+                    $pos = true;
+                }
+
+                $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
+                    ->filterByPObjectId($comment->getId())
+                    ->findOne();
+                if ($noteNeg) {
+                    $neg = true;
+                }
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
+                                'object' => $comment,
+                                'type' => PDocument::TYPE_COMMENT,
+                                'pos' => $pos,
+                                'neg' => $neg,
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     *
+     *  @param $debate       PDDebate
+     *
+     *  @return string
+     */
+    public function linkSubscribeDebate(PDDebate $debate)
+    {
+        // $this->logger->info('*** linkSubscribeDebate');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+
+        $follower = false;
+        if ($this->user) {
+            $follow = PUFollowDDQuery::create()
+                ->filterByPUserId($this->user->getId())
+                ->filterByPDDebateId($debate->getId())
+                ->findOne();
+            
+            if ($follow) {
+                $follower = true;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
+                                'object' => $debate,
+                                'type' => PDocument::TYPE_DEBATE,
+                                'follower' => $follower
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Affiche le bloc des followers
+     *
+     *  @param $debate       PDDebate
+     *
+     *  @return string
+     */
+    public function followersDebate(PDDebate $debate)
+    {
+        // $this->logger->info('*** followersDebate');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+
+        $nbC = 0;
+        $nbQ = 0;
+        $followersC = array();
+        $followersQ = array();
+
+        $nbC = $debate->countFollowersC();
+        $nbQ = $debate->countFollowersQ();
+        $followersC = $debate->getFollowersC();
+        $followersQ = $debate->getFollowersQ();
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig', array(
+                                'nbC' => $nbC,
+                                'nbQ' => $nbQ,
+                                'followersC' => $followersC,
+                                'followersQ' => $followersQ,
+                                )
+                    );
+
+        return $html;
+
+    }
+
+
+
+    /* ######################################################################################################## */
+    /*                                             FONCTIONS                                                    */
+    /* ######################################################################################################## */
 
     /**
      *  Rendu d'une ligne de la timeline en fonction du type

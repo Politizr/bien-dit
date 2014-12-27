@@ -4,7 +4,6 @@ namespace Politizr\Frontbundle\Twig;
 use Politizr\Model\PDocument;
 use Politizr\Model\PUStatus;
 
-use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 
 
@@ -72,6 +71,14 @@ class PolitizrUserExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            new \Twig_SimpleFilter('linkSubscribeUser', array($this, 'linkSubscribeUser'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('followersUser', array($this, 'followersUser'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
         );
     }
 
@@ -86,14 +93,6 @@ class PolitizrUserExtension extends \Twig_Extension
                     )
             ),
             'isGrantedE'  => new \Twig_Function_Method($this, 'isGrantedE', array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'linkSubscribe'  => new \Twig_Function_Method($this, 'linkSubscribe', array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'linkFollowers'  => new \Twig_Function_Method($this, 'linkFollowers', array(
                     'is_safe' => array('html')
                     )
             ),
@@ -189,6 +188,80 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
 
+    /**
+     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     *
+     * @param $user       PUser
+     *
+     * @return string
+     */
+    public function linkSubscribeUser(\Politizr\Model\PUser $user)
+    {
+        // $this->logger->info('*** linkSubscribeDebate');
+        // $this->logger->info('$debate = '.print_r($user, true));
+
+        $follower = false;
+        if ($this->user) {
+            $follow = PUFollowUQuery::create()
+                ->filterByPUserFollowerId($this->user->getId())
+                ->filterByPUserId($user->getId())
+                ->findOne();
+            
+            if ($follow) {
+                $follower = true;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
+                                'object' => $user,
+                                'type' => PDocument::TYPE_USER,
+                                'follower' => $follower
+                                )
+                    );
+
+        return $html;
+
+    }
+
+    /**
+     *  Affiche le bloc des followers
+     *
+     *  @param $user       PUser
+     *
+     *  @return string
+     */
+    public function followersUser(\Politizr\Model\PUser $user)
+    {
+        // $this->logger->info('*** followersUser');
+        // $this->logger->info('$debate = '.print_r($user, true));
+
+        $nbC = 0;
+        $nbQ = 0;
+        $followersC = array();
+        $followersQ = array();
+
+        $nbC = $user->countPUserFollowersC();
+        $nbQ = $user->countPUserFollowersQ();
+        $followersC = $user->getPUserFollowersC();
+        $followersQ = $user->getPUserFollowersQ();
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig', array(
+                                'nbC' => $nbC,
+                                'nbQ' => $nbQ,
+                                'followersC' => $followersC,
+                                'followersQ' => $followersQ,
+                                )
+                    );
+
+        return $html;
+
+    }
+
+
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
@@ -234,112 +307,6 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
-    }
-
-
-
-    /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
-     *
-     * @param $objectId     ID objet
-     * @param $context      Type d'objet suivi: user - debate
-     *
-     * @return string
-     */
-    public function linkSubscribe($object, $context)
-    {
-        $this->logger->info('*** linkSubscribe');
-        $this->logger->info('$object = '.print_r($object, true));
-        $this->logger->info('$context = '.print_r($context, true));
-
-        $follower = false;
-        if ($this->user) {
-            switch($context) {
-                case PDocument::TYPE_DEBATE:
-                    $follow = PUFollowDDQuery::create()
-                        ->filterByPUserId($this->user->getId())
-                        ->filterByPDDebateId($object->getId())
-                        ->findOne();
-                    
-                    if ($follow) {
-                        $follower = true;
-                    }
-
-                    break;
-                case PDocument::TYPE_USER:
-                    $follow = PUFollowUQuery::create()
-                        ->filterByPUserFollowerId($this->user->getId())
-                        ->filterByPUserId($object->getId())
-                        ->findOne();
-                    
-                    if ($follow) {
-                        $follower = true;
-                    }
-
-                    break;
-            }
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
-                                'object' => $object,
-                                'context' => $context,
-                                'follower' => $follower
-                                )
-                    );
-
-        return $html;
-
-    }
-
-    /**
-     *  Affiche le bloc des followers
-     *
-     * @param $objectId     ID objet
-     * @param $context      Type d'objet suivi: user - debate
-     *
-     * @return string
-     */
-    public function linkFollowers($object, $context)
-    {
-        $this->logger->info('*** linkFollowers');
-        $this->logger->info('$object = '.print_r($object, true));
-        $this->logger->info('$context = '.print_r($context, true));
-
-        $nbC = 0;
-        $nbQ = 0;
-        $followersC = array();
-        $followersQ = array();
-        switch($context) {
-            case PDocument::TYPE_DEBATE:
-                $nbC = $object->countFollowersC();
-                $nbQ = $object->countFollowersQ();
-                $followersC = $object->getFollowersC();
-                $followersQ = $object->getFollowersC();
-
-                break;
-            case PDocument::TYPE_USER:
-                $nbC = $object->countPUserFollowersC();
-                $nbQ = $object->countPUserFollowersQ();
-                $followersC = $object->getPUserFollowersC();
-                $followersQ = $object->getPUserFollowersQ();
-
-                break;
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig', array(
-                                'nbC' => $nbC,
-                                'nbQ' => $nbQ,
-                                'followersC' => $followersC,
-                                'followersQ' => $followersQ,
-                                )
-                    );
-
-        return $html;
-
     }
 
 

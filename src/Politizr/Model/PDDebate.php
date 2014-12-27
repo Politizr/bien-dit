@@ -277,14 +277,9 @@ class PDDebate extends BasePDDebate
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function getFollowers($puStatusId = PUStatus::ACTIVED, $qualified = null) {
+	public function getFollowers($qualified = false) {
 		$query = PUserQuery::create()
-					->_if($puStatusId)
-						->filterByPUStatusId($puStatusId)
-					->_endif()
-					->_if($qualified)
-						->filterByQualified($qualified)
-					->_endif()
+					->filterByQualified($qualified)
 					->filterByOnline(true)
 					->setDistinct();
 		
@@ -299,14 +294,9 @@ class PDDebate extends BasePDDebate
 	 *
 	 * @return 	integer 	Nombre de followers
 	 */
-	public function countFollowers($puStatusId = PUStatus::ACTIVED, $qualified = null) {
+	public function countFollowers($qualified = false) {
 		$query = PUserQuery::create()
-					->_if($puStatusId)
-						->filterByPUStatusId($puStatusId)
-					->_endif()
-					->_if($qualified)
-						->filterByQualified($qualified)
-					->_endif()
+					->filterByQualified($qualified)
 					->filterByOnline(true)
 					->setDistinct();
 		
@@ -319,7 +309,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersQ() {
-		$pUsers = $this->getFollowers(PUStatus::ACTIVED, true);
+		$pUsers = $this->getFollowers(true);
 
 		return $pUsers;
 	}
@@ -330,7 +320,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersQ() {
-        return $this->countFollowers(PUStatus::ACTIVED, true);
+        return $this->countFollowers(true);
     }
 
 	/**
@@ -339,7 +329,7 @@ class PDDebate extends BasePDDebate
      * @return     PropelObjectCollection PUser[] List
 	 */
 	public function getFollowersC() {
-		$pUsers = $this->getFollowers(PUStatus::ACTIVED, false);
+		$pUsers = $this->getFollowers(false);
 
 		return $pUsers;
 	}
@@ -350,7 +340,7 @@ class PDDebate extends BasePDDebate
      * @return     integer
      */
     public function countFollowersC() {
-        return $this->countFollowers(PUStatus::ACTIVED, false);
+        return $this->countFollowers(false);
     }
 
 

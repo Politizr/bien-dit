@@ -45,13 +45,13 @@ LAYOUT USER
 				{# Followers #}
 				<div class="col-sm-8">
 					<div id="followers">
-						{{ linkFollowers(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
+						{{ user | followersUser }}
 					</div>
 				</div>
 				{# Subscribe #}
 				<div class="col-sm-4 text-center">
 					<div id="subscribe">
-						{{ linkSubscribe(user, constant('Politizr\\Model\\PDocument::TYPE_USER')) }}
+						{{ user | linkSubscribeUser }}
 					</div>
 				</div>
 			</div>

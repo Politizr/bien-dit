@@ -305,11 +305,10 @@ class DocumentController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** followAction');
 
-        $context = $request->get('context');
-        $logger->info('$context = ' . print_r($context, true));
+        $type = $request->get('type');
+        $logger->info('$type = ' . print_r($type, true));
 
-        $jsonResponse = array('error' => 'Contexte non défini.');
-        switch($context) {
+        switch($type) {
             case PDocument::TYPE_DEBATE:
                 $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
                     'politizr.service.document',

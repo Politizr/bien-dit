@@ -13,7 +13,7 @@
             type: 'POST',
             url: "{{ path('Note') }}",
             context: $(this).closest('.notes'),
-            data: { 'objectId': $(this).attr('object-id'), 'context': $(this).attr('context'), 'way': $(this).attr('way') },
+            data: { 'objectId': $(this).attr('object-id'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {

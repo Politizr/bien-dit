@@ -33,7 +33,7 @@ LAYOUT DEBATE
 				{# Notes #}
 				<div class="notes col-sm-4 text-center">
 					<div id="notation">
-						{{ linkNote(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+						{{ debate | linkNoteDebate }}
 					</div>
 				</div>
 			</div>
@@ -45,16 +45,16 @@ LAYOUT DEBATE
 				{# Followers #}
 				<div class="col-sm-8">
 					<div id="followers">
-						{{ linkFollowers(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+						{{ debate | followersDebate }}
 					</div>
 				</div>
 				{# Subscribe #}
 				<div class="col-sm-4 text-center">
 					<div id="subscribe">
-						{{ linkSubscribe(debate, constant('Politizr\\Model\\PDocument::TYPE_DEBATE')) }}
+						{{ debate | linkSubscribeDebate }}
 					</div>
 				</div>
-			</div>
+			</div>			
 		{% endblock detailFollow %}
 
 		{# Image #}

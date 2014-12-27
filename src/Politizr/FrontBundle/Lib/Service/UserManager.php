@@ -95,13 +95,13 @@ class UserManager
         $html = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
                                 'object' => $object,
-                                'context' => PDocument::TYPE_USER
+                                'type' => PDocument::TYPE_USER
                                 )
                     );
         $followers = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
                                 'object' => $object,
-                                'context' => PDocument::TYPE_USER
+                                'type' => PDocument::TYPE_USER
                                 )
                     );
 

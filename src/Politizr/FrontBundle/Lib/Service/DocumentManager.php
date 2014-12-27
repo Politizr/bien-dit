@@ -198,13 +198,13 @@ class DocumentManager
         $html = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
                                 'object' => $object,
-                                'context' => PDocument::TYPE_DEBATE
+                                'type' => PDocument::TYPE_DEBATE
                                 )
                     );
         $followers = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
                                 'object' => $object,
-                                'context' => PDocument::TYPE_DEBATE
+                                'type' => PDocument::TYPE_DEBATE
                                 )
                     );
 
@@ -234,13 +234,13 @@ class DocumentManager
         // Récupération args
         $objectId = $request->get('objectId');
         $logger->info('$objectId = ' . print_r($objectId, true));
-        $context = $request->get('context');
-        $logger->info('$context = ' . print_r($context, true));
+        $type = $request->get('type');
+        $logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
         // Récupération objet
-        switch($context) {
+        switch($type) {
             case PDocument::TYPE_DEBATE:
                 $object = PDDebateQuery::create()->findPk($objectId);
                 break;
@@ -274,7 +274,7 @@ class DocumentManager
         $html = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig', array(
                                 'object' => $object,
-                                'context' => $context,
+                                'type' => $type,
                                 )
                     );
 
