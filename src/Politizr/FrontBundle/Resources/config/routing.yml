@@ -124,7 +124,7 @@ DebateFeed:
         _method:        GET
 
 DebateDetail:
-    pattern:  /{slug}
+    pattern:  /debat/{slug}
     defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
     requirements:
         _method:        GET
