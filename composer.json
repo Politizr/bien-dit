@@ -27,6 +27,9 @@
         "medium-editor" : {
             "type": "package",
             "package": {
+                "require": {
+                    "robloach/component-installer": "*"
+                },
                 "name": "daviferreira/medium-editor",
                 "type": "component",
                 "version": "master",
@@ -34,7 +37,7 @@
                     "url": "git://github.com/daviferreira/medium-editor.git",
                     "type": "git",
                     "reference": "master"
-                },
+                },                
                 "extra": {
                     "component": {
                         "scripts": [
@@ -51,6 +54,9 @@
         "classList" : {
             "type": "package",
             "package": {
+                "require": {
+                    "robloach/component-installer": "*"
+                },
                 "name": "eligrey/classList.js",
                 "type": "component",
                 "version": "master",
@@ -63,6 +69,29 @@
                     "component": {
                         "scripts": [
                             "classList.min.js"
+                        ]
+                    }
+                }
+            }
+        },
+        "jscroll" : {
+            "type": "package",
+            "package": {
+                "require": {
+                    "robloach/component-installer": "*"
+                },
+                "name": "pklauzinski/jscroll",
+                "type": "component",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/pklauzinski/jscroll.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "extra": {
+                    "component": {
+                        "scripts": [
+                            "jquery.jscroll.min.js"
                         ]
                     }
                 }
@@ -117,13 +146,15 @@
 
         "liip/imagine-bundle": "0.11.*",
 
+        "robloach/component-installer": "dev-master",
         "components/bootstrap": "v3.3.0",
         "fortawesome/font-awesome": "dev-master",
         "braincrafted/bootstrap-bundle": "dev-master",
         "components/bootbox": "dev-master",
         "malsup/form" : "dev-master",
         "daviferreira/medium-editor" : "dev-master",
-        "eligrey/classList.js" : "dev-master"
+        "eligrey/classList.js" : "dev-master",
+        "pklauzinski/jscroll" : "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

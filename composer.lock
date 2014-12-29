@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "70da09eef7c8d7674d01da6816a77d73",
+    "hash": "7ca42b79ba893bd7de4d0bcfbfc4b562",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -643,8 +643,22 @@
                 "url": "git://github.com/daviferreira/medium-editor.git",
                 "reference": "master"
             },
-            "type": "library",
-            "time": "2014-11-07 17:26:21"
+            "require": {
+                "robloach/component-installer": "*"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "dist/js/medium-editor.min.js"
+                    ],
+                    "styles": [
+                        "dist/css/medium-editor.min.css",
+                        "dist/css/themes/*.min.css"
+                    ]
+                }
+            },
+            "time": "2014-12-12 19:50:43"
         },
         {
             "name": "doctrine/annotations",
@@ -1110,8 +1124,18 @@
                 "url": "git://github.com/eligrey/classList.js.git",
                 "reference": "master"
             },
-            "type": "library",
-            "time": "2014-07-24 19:55:40"
+            "require": {
+                "robloach/component-installer": "*"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "classList.min.js"
+                    ]
+                }
+            },
+            "time": "2014-12-13 21:33:43"
         },
         {
             "name": "ensepar/html2pdf",
@@ -2704,6 +2728,27 @@
             "time": "2014-01-09 22:37:17"
         },
         {
+            "name": "pklauzinski/jscroll",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/pklauzinski/jscroll.git",
+                "reference": "master"
+            },
+            "require": {
+                "robloach/component-installer": "*"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.jscroll.min.js"
+                    ]
+                }
+            },
+            "time": "2013-11-28 08:03:49"
+        },
+        {
             "name": "propel/propel-bundle",
             "version": "1.2.14",
             "target-dir": "Propel/PropelBundle",
@@ -2857,19 +2902,20 @@
         },
         {
             "name": "robloach/component-installer",
-            "version": "0.0.12",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobLoach/component-installer.git",
-                "reference": "1864f25db21fc173e02a359f646acd596c1b0460"
+                "reference": "7aaa3d20fce87030d5f4094f4394c7c1e1f0e19d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/1864f25db21fc173e02a359f646acd596c1b0460",
-                "reference": "1864f25db21fc173e02a359f646acd596c1b0460",
+                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/7aaa3d20fce87030d5f4094f4394c7c1e1f0e19d",
+                "reference": "7aaa3d20fce87030d5f4094f4394c7c1e1f0e19d",
                 "shasum": ""
             },
             "require": {
+                "composer-plugin-api": "1.0.0",
                 "kriswallsmith/assetic": "1.*",
                 "php": ">=5.3.2"
             },
@@ -2892,12 +2938,11 @@
             "authors": [
                 {
                     "name": "Rob Loach",
-                    "email": "robloach@gmail.com",
                     "homepage": "http://robloach.net"
                 }
             ],
             "description": "Allows installation of Components via Composer.",
-            "time": "2013-08-31 23:46:48"
+            "time": "2014-09-16 17:57:47"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -3428,16 +3473,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.16.2",
+            "version": "v1.16.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fabpot/Twig.git",
-                "reference": "42f758d9fe2146d1f0470604fc05ee43580873fc"
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/42f758d9fe2146d1f0470604fc05ee43580873fc",
-                "reference": "42f758d9fe2146d1f0470604fc05ee43580873fc",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
+                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
                 "shasum": ""
             },
             "require": {
@@ -3472,7 +3517,7 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
                     "role": "Contributors"
                 }
             ],
@@ -3481,7 +3526,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-17 12:53:44"
+            "time": "2014-12-25 19:58:19"
         },
         {
             "name": "white-october/pagerfanta-bundle",
@@ -4125,12 +4170,14 @@
         "facebook/php-sdk": 20,
         "elao/web-profiler-extra-bundle": 20,
         "avocode/form-extensions-bundle": 20,
+        "robloach/component-installer": 20,
         "fortawesome/font-awesome": 20,
         "braincrafted/bootstrap-bundle": 20,
         "components/bootbox": 20,
         "malsup/form": 20,
         "daviferreira/medium-editor": 20,
-        "eligrey/classlist.js": 20
+        "eligrey/classlist.js": 20,
+        "pklauzinski/jscroll": 20
     },
     "prefer-stable": false,
     "platform": {

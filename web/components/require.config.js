@@ -17,8 +17,20 @@ var components = {
             "main": "jquery-ui-built.js"
         },
         {
+            "name": "medium-editor",
+            "main": "medium-editor-built.js"
+        },
+        {
+            "name": "classList.js",
+            "main": "classList.js-built.js"
+        },
+        {
             "name": "form",
             "main": "form-built.js"
+        },
+        {
+            "name": "jscroll",
+            "main": "jscroll-built.js"
         }
     ],
     "shim": {
