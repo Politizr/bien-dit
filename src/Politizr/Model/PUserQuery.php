@@ -18,18 +18,13 @@ class PUserQuery extends BasePUserQuery
     }
 
 	/**
-	 *	Filtre à appliquer aux objets retournés en page d'accueil
-	 *  TODO qu'est ce qu'un auteur "populaire"? + requête
-	 *		> + gros score reputation?   /!\ pas de note pour les élus?
-	 *		> + de followers?
+	 *	Ordonne les objets par nombre de followers
 	 *
 	 */
-	public function popularity($limit = 10) {
-		// followers
+	public function mostFollowed() {
 		return $this->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
 				->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
 				->groupBy('Id')
-				->setLimit($limit)
 				->orderBy('NbFollowers', \Criteria::DESC)
 				;
 	}
@@ -39,8 +34,8 @@ class PUserQuery extends BasePUserQuery
 	 *	Derniers users créés
 	 *
 	 */
-	public function last($limit = 10) {
-		return $this->orderByCreatedAt(\Criteria::DESC)->setLimit($limit);
+	public function last() {
+		return $this->orderByCreatedAt(\Criteria::DESC);
 	}
 
 }

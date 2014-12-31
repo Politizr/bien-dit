@@ -1,0 +1,52 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        userList();
+    });
+
+    // Tabulations
+    $("body").on("click", "a[action='suggestion']", function(e) {
+        console.log('*** click suggestion');
+        e.preventDefault();
+        $(this).tab('show');
+
+        userList($(this).attr('order'));
+    });
+    $("body").on("click", "a[action='most-followed']", function(e) {
+        console.log('*** click most-followed');
+        e.preventDefault();
+        $(this).tab('show');
+
+        userList($(this).attr('order'));
+    });
+    $("body").on("click", "a[action='last']", function(e) {
+        console.log('*** click last');
+        e.preventDefault();
+        $(this).tab('show');
+
+        userList($(this).attr('order'));
+    });
+
+    // Chargement ajax du début de la timeline
+    function userList (order = 'suggestion') {
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('UserList') }}",
+            data: { 'order': order },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('#user-tab-content').html(data['html']);          
+                }
+            }
+        });    
+    }
+
+</script>

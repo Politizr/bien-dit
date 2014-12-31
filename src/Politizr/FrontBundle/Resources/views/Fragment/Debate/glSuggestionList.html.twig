@@ -1,0 +1,4 @@
+{% for debate in debates %}
+	{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
+	<hr>
+{% endfor %}

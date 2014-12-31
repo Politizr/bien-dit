@@ -2,9 +2,30 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h3>Mes informations personnelles</h3>
+		<h1>Mon profil</h1>
+		<p>
+			Vous disposez actuellement d'un compte citoyen.
+		</p>
+		<p>
+			{% if app.user.validated %}
+				Votre identité a été validé par nos services.
+			{% else %}
+				Votre identité n'a pas été validé par nos services.
+			{% endif %}
+		</p>
+		{% if app.user.qualified and app.user.PUStatusId == constant('Politizr\\Model\\PUStatus::VALIDATION_PROCESS') %}
+			<p class="bg-info">
+				Votre profil est en cours de validation par nos services: merci de patienter avant de pouvoir accéder à votre compte débatteur!
+			</p>
+		{% else %}
+			<p>
+				Vous exercez ou avez exercé un mandat d'élu? Migrez vers le <a href="{{ path('MigrationElected') }}">compte débatteur</a>.
+			</p>
+		{% endif %}
 
-		<h4>Votre photo</h4>
+		<h1>Mes informations personnelles</h1>
+
+		<h3>Votre photo</h3>
 		<div class="row text-center">
 			<div id="current-photo">
 				{% if (fileName) %}
@@ -24,7 +45,7 @@
 		
 		<hr>
 
-		<h4>Votre identité</h4>
+		<h3>Votre identité</h3>
 		<div id="box-perso1">
 			{{ form_start(formPerso1, {'style': 'horizontal', 'attr': {'id': 'form-perso1'} }) }}
 			    {{ form_errors(formPerso1) }}
@@ -44,7 +65,7 @@
 		
 		<hr>
 
-		<h4>Votre email et votre abonnement newsletter</h4>
+		<h3>Votre email et votre abonnement newsletter</h3>
 		<div id="box-perso2">
 			{{ form_start(formPerso2, {'style': 'horizontal', 'attr': {'id': 'form-perso2'} }) }}
 			    {{ form_errors(formPerso2) }}
@@ -58,7 +79,7 @@
 		
 		<hr>
 
-		<h4>Vos informations personnelles</h4>
+		<h3>Vos informations personnelles</h3>
 		<div id="box-perso3">
 			{{ form_start(formPerso3, {'style': 'horizontal', 'attr': {'id': 'form-perso3'} }) }}
 			    {{ form_errors(formPerso3) }}
@@ -75,7 +96,7 @@
 		
 		<hr>
 
-		<h4>Vos identifiant et mot de passe de connexion</h4>
+		<h3>Vos identifiant et mot de passe de connexion</h3>
 		<div id="box-perso4">
 			{{ form_start(formPerso4, {'style': 'horizontal', 'attr': {'id': 'form-perso4'} }) }}
 			    {{ form_errors(formPerso4) }}

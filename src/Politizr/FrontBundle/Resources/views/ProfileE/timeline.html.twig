@@ -2,14 +2,8 @@
 
 {% block main %}
 	<div id="main" class="container">
-        {% for timelineRow in timeline %}
-			{{ timelineRow(timelineRow) }}
-			<hr>
-		{% else %}
-			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('SuggestionsE') }}">Suivez plus de débat ou d'utilisateurs!</a>
-			</div>
-		{% endfor %}
+		<div id="timeline">
+		</div>
 	</div>
 {% endblock main %}
 

@@ -1,0 +1,22 @@
+{% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
+
+
+{% block main %}
+	<div id="main" class="container">
+		<ul class="nav nav-tabs">
+			<li role="list" class="active"><a action="suggestion" order="suggestion">Suggestions</a></li>
+			<li role="list"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
+			<li role="list"><a action="last" order="last">Derniers</a></li>
+		</ul>
+		<div id="user-tab-content">
+		</div>
+
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+
+    {% include 'PolitizrFrontBundle:JS:findUsers.js.twig' %}
+{% endblock javascriptFooter %}

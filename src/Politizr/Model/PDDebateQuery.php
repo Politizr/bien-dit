@@ -23,22 +23,23 @@ class PDDebateQuery extends BasePDDebateQuery
     }
 
 	/**
-	 *	Filtre les objets par popularité
-	 *	TODO requête "populaire" à préciser et à affiner
-	 *		> + de followers?
+	 *	Ordonne les objets par meilleur note
 	 *
-	 * @param 	$limit 	integer
-	 *
-	 * @return  Query
+	 * 	@return  Query
 	 */
-	public function popularity($limit = 10) {
-		return $this->setLimit($limit);
+	public function bestNote() {
+		return $this->orderByNotePos(\Criteria::DESC);
+	}
 
-		// followers
+	/**
+	 *	Ordonne les objets par nombre de followers
+	 *
+	 * 	@return  Query
+	 */
+	public function mostFollowed() {
 		return $this->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
 				->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
 				->groupBy('Id')
-				->setLimit($limit)
 				->orderBy('NbFollowers', \Criteria::DESC)
 				;
 
@@ -49,8 +50,8 @@ class PDDebateQuery extends BasePDDebateQuery
 	 *	Derniers débats publiés
 	 *
 	 */
-	public function last($limit = 10) {
-		return $this->orderByPublishedAt(\Criteria::DESC)->setLimit($limit);
+	public function last() {
+		return $this->orderByPublishedAt(\Criteria::DESC);
 	}
 
 	/**
@@ -59,8 +60,7 @@ class PDDebateQuery extends BasePDDebateQuery
 	 *
 	 * @param 	$geocoded 	Geocoder\Result\Geocoded
 	 */
-	public function geolocalized(Geocoded $geocoded, $limit = 10) {
-		return $this->setLimit($limit);
+	public function geolocalized(Geocoded $geocoded) {
 	}
 
 

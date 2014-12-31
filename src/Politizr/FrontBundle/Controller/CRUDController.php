@@ -485,5 +485,41 @@ class CRUDController extends Controller {
     }
 
 
+    /* ######################################################################################################## */
+    /*                                          GESTION SUGGESTIONS                                             */
+    /* ######################################################################################################## */
+
+    /**
+     *  Chargement d'une liste de debats
+     */
+    public function debateListAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** debateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'debateList'
+        );
+
+        return $jsonResponse;
+    }
+
+
+    /**
+     *  Chargement d'une liste de users
+     */
+    public function userListAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'userList'
+        );
+
+        return $jsonResponse;
+    }
+
+
 
 }

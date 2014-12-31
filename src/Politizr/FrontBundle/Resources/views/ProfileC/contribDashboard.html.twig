@@ -2,7 +2,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h3>Mes brouillons</h3>
+		<h1>Mes brouillons</h1>
         {% for draft in drafts %}
 			<div class="table-responsive">
 				<table class="table table-hover">
@@ -32,7 +32,7 @@
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
 		{% endfor %}
-		<h3>Mes débats publiés</h3>
+		<h1>Mes débats publiés</h1>
         {% for debate in debates %}
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 			<hr>
@@ -42,7 +42,7 @@
 			<hr>
 			</div>
 		{% endfor %}
-		<h3>Mes commentaires</h3>
+		<h1>Mes commentaires</h1>
         {% for comment in comments %}
 			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
 			<hr>

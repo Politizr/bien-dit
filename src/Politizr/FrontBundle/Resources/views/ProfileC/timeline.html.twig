@@ -10,8 +10,5 @@
 {% block javascriptFooter %}
 	{{ parent() }}
     
-    {# jscroll #}
-    <script src="{{ asset('components/jscroll/jquery.jscroll.min.js') }}"></script>
-
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
 {% endblock javascriptFooter %}

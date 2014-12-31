@@ -48,16 +48,13 @@ class PublicController extends Controller
         // *********************************** //
 
         // deniers débats publiés
-        $debates = PDDebateQuery::create()
-                    ->online()
-                    ->last(5)
-                    ->find();
+        $debates = PDDebateQuery::create()->online()->last()->setLimit(5)->find();
 
         // profils les plus populaires
-        $users = PUserQuery::create()->filterByQualified(true)->online()->popularity(5)->find();
-
+        $users = PUserQuery::create()->filterByQualified(true)->online()->mostFollowed()->setLimit(5)->find();
+        
         // commentaires les plus populaires
-        $comments = PDCommentQuery::create()->online()->last(5)->find();
+        $comments = PDCommentQuery::create()->online()->last()->setLimit(5)->find();
 
         // débats locaux / adresse IP
         // $request = $this->get('request');

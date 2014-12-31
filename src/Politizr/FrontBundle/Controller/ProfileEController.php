@@ -85,112 +85,26 @@ class ProfileEController extends Controller {
     }
 
     /**
-     *  Suggestions
+     *  Trouver des débats
      */
-    public function suggestionsAction()
+    public function findDebatesAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** suggestionsAction');
+        $logger->info('*** findDebatesAction');
 
-        // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        //      Suggestions de documents
-
-        // Récupération listing débat "match" tags géo
-        // TODO: algo "match" à définir
-        // TODO > pagination ajax vis scrolling
-        $debatesGeo = $pUser->getTaggedDebates(PTTagType::TYPE_GEO);
-        $debatesTheme = $pUser->getTaggedDebates(PTTagType::TYPE_THEME);
-
-        //      Suggestions d'utilisateurs débatteurs
-        $usersGeo = $pUser->getTaggedPUsers(PTTagType::TYPE_GEO, true);
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:ProfileE:suggestions.html.twig', array(
-                    'debatesGeo' => $debatesGeo,
-                    'debatesTheme' => $debatesTheme,
-                    'usersGeo' => $usersGeo
+        return $this->render('PolitizrFrontBundle:ProfileE:findDebates.html.twig', array(
             ));
     }
 
     /**
-     *  Populaires
+     *  Trouver des users
      */
-    public function popularsAction()
+    public function findUsersAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** popularsAction');
+        $logger->info('*** findUsersAction');
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // débats les plus populaires
-        $debates = PDDebateQuery::create()->online()->popularity(5)->find();
-
-        // profils les plus populaires
-        $users = PUserQuery::create()->filterByQualified(true)->online()->popularity(5)->find();
-
-        // commentaires les plus populaires
-        $comments = PDCommentQuery::create()->online()->last(10)->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:populars.html.twig', array(
-                'debates' => $debates,
-                'users' => $users,
-                'comments' => $comments,
-            ));
-    }
-
-    /**
-     *  Derniers
-     */
-    public function lastAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** lastAction');
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // deniers débats publiés
-        $debates = PDDebateQuery::create()
-                    ->online()
-                    ->last()
-                    ->find();
-
-        // derniers profils qualifiés enregistrés
-        $users = PUserQuery::create()
-                    ->filterByQualified(true)
-                    ->online()
-                    ->last()
-                    ->find();
-
-        // commentaires les plus populaires
-        $comments = PDCommentQuery::create()
-                    ->online()
-                    ->last()
-                    ->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:last.html.twig', array(
-                'debates' => $debates,
-                'users' => $users,
-                'comments' => $comments,
+        return $this->render('PolitizrFrontBundle:ProfileE:findUsers.html.twig', array(
             ));
     }
 
@@ -200,12 +114,12 @@ class ProfileEController extends Controller {
 
 
     /**
-     *  Mes contributions - Accueil
+     *  Mes contributions - Tableau de bord
      */
-    public function myRatesAction()
+    public function contribDashboardAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myRatesAction');
+        $logger->info('*** contribDashboardAction');
 
         // Récupération user courant
         $pUser = $this->getUser();
@@ -233,7 +147,7 @@ class ProfileEController extends Controller {
         //      Affichage de la vue
         // *********************************** //
 
-        return $this->render('PolitizrFrontBundle:ProfileE:myRates.html.twig', array(
+        return $this->render('PolitizrFrontBundle:ProfileE:contribDashboard.html.twig', array(
             'debateDrafts' => $debateDrafts,
             'reactionDrafts' => $reactionDrafts,
             'debates' => $debates,
@@ -355,32 +269,8 @@ class ProfileEController extends Controller {
 
 
     /* ######################################################################################################## */
-    /*                                                    ACTUALITES                                            */
+    /*                                                    MON COMPTE                                            */
     /* ######################################################################################################## */
-
-    /**
-     *  Mon compte - Accueil
-     */
-    public function myAccountAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myAccountAction');
-
-        // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:myAccount.html.twig', array(
-            ));
-    }
-
 
     /**
      *  Mon compte - Mes Tags
@@ -392,14 +282,6 @@ class ProfileEController extends Controller {
 
         // Récupération user courant
         $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileE:myTags.html.twig', array(
                 'pUser' => $pUser,

@@ -756,19 +756,21 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PDDebate (collection)
      */
-    public function getTaggedDebates($typeId, $notFollowed = true) {
+    public function getTaggedDebates($typeId = null, $notFollowed = true) {
         // Récupère la liste des IDs des tags suivis
         $followedIds = PTagQuery::create()
-                            ->select('Id')
+                        ->select('Id')
+                        ->_if($typeId)
                             ->filterByPTTagTypeId($typeId)
-                            ->usePuFollowTPTagQuery()
-                                ->filterByPUserId($this->getId())
-                            ->endUse()
-                            ->setDistinct()
-                            ->find();
+                        ->_endif()
+                        ->usePuFollowTPTagQuery()
+                            ->filterByPUserId($this->getId())
+                        ->endUse()
+                        ->setDistinct()
+                        ->find();
 
         // Récupère les débats
-        $pDDebates = PDDebateQuery::create()
+        $debates = PDDebateQuery::create()
                         ->usePddTaggedTQuery()
                             ->filterByPTagId($followedIds->getData())
                         ->endUse()
@@ -776,11 +778,11 @@ class PUser extends BasePUser implements UserInterface
                             ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $this->getId())
                         ->_endif()
                         ->online()
-                        ->popularity()
+                        ->last()
                         ->setDistinct()
                         ->find();
 
-        return $pDDebates;
+        return $debates;
     }
 
 
@@ -790,17 +792,17 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PUser (collection)
      */
-    public function getTaggedPUsers($ptTagTypeId = null, $qualified = null, $notFollowed = true) {
+    public function getTaggedPUsers($typeId = null, $qualified = null, $notFollowed = true) {
         $followedTagsId = PTagQuery::create()
                         ->select('Id')
-                        ->_if($ptTagTypeId)
-                            ->filterByPTTagTypeId($ptTagTypeId)
+                        ->_if($typeId)
+                            ->filterByPTTagTypeId($typeId)
                         ->_endif()
                         ->filterByOnline(true)
                         ->filterByPuFollowTPUser($this)
                         ->find();
 
-        $pUsers = PUserQuery::create()
+        $users = PUserQuery::create()
                         ->usePuTaggedTPUserQuery()
                             ->filterByPTagId($followedTagsId->getData())
                         ->endUse()
@@ -812,11 +814,11 @@ class PUser extends BasePUser implements UserInterface
                         ->_endif()
                         ->filterById($this->getId(), \Criteria::NOT_EQUAL)
                         ->online()
-                        ->popularity()
+                        ->last()
                         ->setDistinct()
                         ->find();
 
-        return $pUsers;
+        return $users;
     }
     
 

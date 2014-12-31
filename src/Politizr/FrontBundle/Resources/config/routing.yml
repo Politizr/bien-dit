@@ -153,22 +153,18 @@ TimelineC:
     pattern:  /citoyen/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
 
-SuggestionsC:
-    pattern:  /citoyen/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestions }
+FindDebatesC:
+    pattern:  /citoyen/suggestions-debats
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:findDebates }
 
-PopularsC:
-    pattern:  /citoyen/populaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:populars }
-
-LastC:
-    pattern:  /citoyen/derniers
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:last }
+FindUsersC:
+    pattern:  /citoyen/suggestions-debatteurs
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:findUsers }
 
 
-MyRatesC:
+ContribDashboardC:
     pattern:  /citoyen/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myRates }
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:contribDashboard }
 
 MyDraftsC:
     pattern:  /citoyen/mes-contributions/brouillons
@@ -183,10 +179,6 @@ MyCommentsC:
     pattern:  /citoyen/mes-contributions/commentaires
     defaults: { _controller: PolitizrFrontBundle:ProfileC:myComments }
 
-
-MyAccountC:
-    pattern:  /citoyen/mon-compte
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myAccount }
 
 MyTagsC:
     pattern:  /citoyen/mon-compte/mes-tags
@@ -211,22 +203,18 @@ TimelineE:
     pattern:  /elu/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
 
-SuggestionsE:
-    pattern:  /elu/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:suggestions }
+FindDebatesE:
+    pattern:  /elu/suggestions-debats
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:findDebates }
 
-PopularsE:
-    pattern:  /elu/populaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:populars }
-
-LastE:
-    pattern:  /elu/derniers
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:last }
+FindUsersE:
+    pattern:  /elu/suggestions-debatteurs
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:findUsers }
 
 
-MyRatesE:
+ContribDashboardE:
     pattern:  /elu/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myRates }
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:contribDashboard }
 
 MyDraftsE:
     pattern:  /elu/mes-contributions/brouillons
@@ -244,10 +232,6 @@ MyCommentsE:
     pattern:  /elu/mes-contributions/commentaires
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myComments }
 
-
-MyAccountE:
-    pattern:  /elu/mon-compte
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myAccount }
 
 MyTagsE:
     pattern:  /elu/mon-compte/mes-tags
@@ -477,5 +461,19 @@ CommentNew:
 TimelinePaginated:
     pattern:  /profil/timeline/paginated.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:timelinePaginated, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+
+################################################################################
+# SUGGESTIONS
+################################################################################
+DebateList:
+    pattern:  /profil/debat/suggestions.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:debateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserList:
+    pattern:  /profil/user/suggestions.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 

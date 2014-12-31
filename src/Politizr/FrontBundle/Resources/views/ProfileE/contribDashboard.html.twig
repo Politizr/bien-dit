@@ -2,8 +2,8 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h3>Mes brouillons</h3>
-		<h4>Mes débats</h4>
+		<h1>Mes brouillons</h1>
+		<h3>Mes débats</h3>
         {% for draft in debateDrafts %}
 			<div class="table-responsive">
 				<table class="table table-hover">
@@ -33,7 +33,7 @@
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
 		{% endfor %}
-		<h4>Mes réactions</h4>
+		<h3>Mes réactions</h3>
         {% for draft in reactionDrafts %}
 			<div class="table-responsive">
 				<table class="table table-hover">
@@ -62,7 +62,7 @@
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de réaction pour le moment</a>
 			</div>
 		{% endfor %}
-		<h3>Mes débats publiés</h3>
+		<h1>Mes débats publiés</h1>
         {% for debate in debates %}
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
 			<hr>
@@ -71,7 +71,7 @@
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucun débat en ligne pour le moment</a>
 			</div>
 		{% endfor %}
-		<h3>Mes réactions publiés</h3>
+		<h1>Mes réactions publiés</h1>
         {% for reaction in reactions %}
 			{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowUser.html.twig' with { 'reaction': reaction } %}
 			<hr>
@@ -80,7 +80,7 @@
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucune réaction en ligne pour le moment</a>
 			</div>
 		{% endfor %}
-		<h3>Mes commentaires</h3>
+		<h1>Mes commentaires</h1>
         {% for comment in comments %}
 			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
 			<hr>

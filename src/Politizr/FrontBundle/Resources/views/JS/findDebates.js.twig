@@ -1,0 +1,59 @@
+<script>
+    // **************************** //
+    //      Initialisation
+    // **************************** //
+    $(document).ready(function () {
+        debateList();
+    });
+
+    // Tabulations
+    $("body").on("click", "a[action='suggestion']", function(e) {
+        console.log('*** click suggestion');
+        e.preventDefault();
+        $(this).tab('show');
+
+        debateList($(this).attr('order'));
+    });
+    $("body").on("click", "a[action='most-followed']", function(e) {
+        console.log('*** click most-followed');
+        e.preventDefault();
+        $(this).tab('show');
+
+        debateList($(this).attr('order'));
+    });
+    $("body").on("click", "a[action='best-note']", function(e) {
+        console.log('*** click best-note');
+        e.preventDefault();
+        $(this).tab('show');
+
+        debateList($(this).attr('order'));
+    });
+    $("body").on("click", "a[action='last']", function(e) {
+        console.log('*** click last');
+        e.preventDefault();
+        $(this).tab('show');
+
+        debateList($(this).attr('order'));
+    });
+
+    // Chargement ajax du début de la timeline
+    function debateList (order = 'suggestion') {
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('DebateList') }}",
+            data: { 'order': order },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('#debate-tab-content').html(data['html']);          
+                }
+            }
+        });    
+    }
+
+</script>

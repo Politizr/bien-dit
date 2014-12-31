@@ -1,0 +1,23 @@
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
+
+
+{% block main %}
+	<div id="main" class="container">
+		<ul class="nav nav-tabs">
+			<li role="list" class="active"><a action="suggestion" order="suggestion">Suggestions</a></li>
+			<li role="list"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
+			<li role="list"><a action="best-note" order="bestNote">Mieux notés</a></li>
+			<li role="list"><a action="last" order="last">Derniers</a></li>
+		</ul>
+		<div id="debate-tab-content">
+		</div>
+
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+
+    {% include 'PolitizrFrontBundle:JS:findDebates.js.twig' %}
+{% endblock javascriptFooter %}

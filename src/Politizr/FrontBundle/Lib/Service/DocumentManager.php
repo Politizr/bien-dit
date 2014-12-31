@@ -810,4 +810,57 @@ class DocumentManager
             'counter' => $counter,
             );
     }
+
+
+    /* ######################################################################################################## */
+    /*                                              SUGGESTIONS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Listing de débats ordonnancés suivant l'argument récupéré
+     *
+     */
+    public function debateList() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** debateList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+
+        // Requête suivant order
+        if($order == 'suggestion') {
+            $debates = $user->getTaggedDebates();
+        } else {
+            $debates = PDDebateQuery::create()->online()->limit(10)
+                            ->_if($order == 'mostFollowed')
+                                ->mostFollowed()
+                            ->_elseif($order == 'bestNote')
+                                ->bestNote()
+                            ->_elseif($order == 'last')
+                                ->last()
+                            ->_endif()
+                            ->find();
+        }
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Debate:glSuggestionList.html.twig', array(
+                                'debates' => $debates
+                                )
+                    );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
 }

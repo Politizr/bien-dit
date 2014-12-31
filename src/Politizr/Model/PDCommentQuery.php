@@ -17,10 +17,19 @@ class PDCommentQuery extends BasePDCommentQuery
     }
 
 	/**
+	 *	Ordonne les objets par meilleur note
+	 *
+	 * 	@return  Query
+	 */
+	public function bestNote() {
+		return $this->orderByNotePos(\Criteria::DESC);
+	}
+
+	/**
 	 *	Derniers commentaires publiés
 	 *
 	 */
-	public function last($limit = 10) {
-		return $this->orderByPublishedAt(\Criteria::DESC)->setLimit($limit);
+	public function last() {
+		return $this->orderByPublishedAt(\Criteria::DESC);
 	}
 }

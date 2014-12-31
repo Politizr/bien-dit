@@ -114,6 +114,57 @@ class UserManager
             );
     }
 
+
+    /* ######################################################################################################## */
+    /*                                              SUGGESTIONS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Listing de users ordonnancés suivant l'argument récupéré
+     *
+     */
+    public function userList() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** userList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+
+        // Requête suivant order
+        if($order == 'suggestion') {
+            $users = $user->getTaggedPUsers();
+        } else {
+            $users = PUserQuery::create()->filterByQualified(true)->online()->limit(10)
+                            ->_if($order == 'mostFollowed')
+                                ->mostFollowed()
+                            ->_elseif($order == 'last')
+                                ->last()
+                            ->_endif()
+                            ->find();
+        }
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\User:glSuggestionList.html.twig', array(
+                                'users' => $users
+                                )
+                    );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+
     /* ######################################################################################################## */
     /*                                       EDITIONS INFO PERSO (FONCTIONS AJAX)                               */
     /* ######################################################################################################## */
