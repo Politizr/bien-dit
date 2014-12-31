@@ -2,19 +2,16 @@
 
 {% block main %}
 	<div id="main" class="container">
-        {% for timelineRow in timeline %}
-			{{ timelineRow(timelineRow) }}
-			<hr>
-		{% else %}
-			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Suivez plus de débat ou d'utilisateurs!</a>
-			</div>
-		{% endfor %}
+		<div id="timeline">
+		</div>
 	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
     
+    {# jscroll #}
+    <script src="{{ asset('components/jscroll/jquery.jscroll.min.js') }}"></script>
+
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
 {% endblock javascriptFooter %}

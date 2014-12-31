@@ -1,0 +1,22 @@
+<div class="scroll">
+	{% for timelineRow in timeline %}
+		{{ timelineRow(timelineRow) }}
+		<hr>
+	{% endfor %}
+</div>
+<div id="scroll-nav" class="row">
+	<div class="col-sm-12 text-center">
+		{% if timeline | length == 10 %}
+			<a class="btn btn-primary" action="paginate-next" offset="{{ offset }}">suite</a>
+		{% else %}
+			<a class="btn btn-primary" href="{{ path('SuggestionsC') }}">Suivez plus de débat ou d'utilisateurs!</a>
+		{% endif %}
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+	    // Camouflage des détails
+	    $(".jumbotron").hide();
+	});
+</script>

@@ -153,8 +153,7 @@
         "components/bootbox": "dev-master",
         "malsup/form" : "dev-master",
         "daviferreira/medium-editor" : "dev-master",
-        "eligrey/classList.js" : "dev-master",
-        "pklauzinski/jscroll" : "dev-master"
+        "eligrey/classList.js" : "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

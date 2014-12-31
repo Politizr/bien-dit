@@ -27,10 +27,6 @@ var components = {
         {
             "name": "form",
             "main": "form-built.js"
-        },
-        {
-            "name": "jscroll",
-            "main": "jscroll-built.js"
         }
     ],
     "shim": {

@@ -44,9 +44,10 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PDCommentType;
 
 /**
- * Gestion des CRUD lié aux objets Politizr: débat, réaction, ...
- *
- * @author Lionel Bouzonville
+ *  Gestion des CRUD lié aux objets Politizr: débat, réaction, ...
+ *  Fonctions communes aux profils citoyens / débatteurs > TODO: à renommer en ProfileController?
+ *  
+ *  @author Lionel Bouzonville
  */
 class CRUDController extends Controller {
 
@@ -462,5 +463,27 @@ class CRUDController extends Controller {
 
         return $jsonResponse;
     }
+
+
+    /* ######################################################################################################## */
+    /*                                             GESTION TIMELINE                                             */
+    /* ######################################################################################################## */
+
+    /**
+     *  Chargement d'une partie de la timeline
+     */
+    public function timelinePaginatedAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** timelinePaginatedAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.timeline',
+            'timelinePaginated'
+        );
+
+        return $jsonResponse;
+    }
+
+
 
 }

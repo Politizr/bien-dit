@@ -78,14 +78,7 @@ class ProfileCController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** timelineAction');
 
-        // Récupération de la requête SQL
-        $sql = $this->get('politizr.service.timeline')->getSql();
-
-        // Exécution de la requête SQL & préparation du modèle
-        $timeline = $this->get('politizr.service.timeline')->getTimeline($sql);
-
         return $this->render('PolitizrFrontBundle:ProfileC:timeline.html.twig', array(
-                    'timeline' => $timeline
             ));
     }
 

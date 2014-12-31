@@ -193,9 +193,12 @@ class TimelineManager
      *  ORDER BY published_at DESC
      *  
      *
-     *  @param  PUser $user
+     *  @param  integer     $offset
+     *  @param  integer     $count
+     *
+     *  @return string
      */
-    public function getSql() {
+    public function getSql($offset, $count = 10) {
         $logger = $this->sc->get('logger');
         $logger->info('*** getSql');
         
@@ -296,8 +299,8 @@ UNION DISTINCT
 FROM p_d_comment
 WHERE p_d_comment.p_document_id IN (".$inQueryMyDocumentIds.") )
 
-
 ORDER BY published_at DESC
+LIMIT ".$offset.", ".$count."
         ";
         } else {
             $sql = null;
@@ -345,5 +348,50 @@ ORDER BY published_at DESC
 
         return $timeline;
     }
+
+    /* ######################################################################################################## */
+    /*                                          PAGINATION / FONCTIONS AJAX                                     */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Gestion du suivre / ne plus suivre un débat par le user courant
+     *
+     */
+    public function timelinePaginated() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** timelinePaginated');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // Récupération de la requête SQL
+        $sql = $this->getSql($offset);
+
+        // Exécution de la requête SQL & préparation du modèle
+        $timeline = $this->getTimeline($sql);
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Global:Timeline.html.twig', array(
+                                'timeline' => $timeline,
+                                'offset' => intval($offset) + 10,
+                                )
+                    );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+
 
 }

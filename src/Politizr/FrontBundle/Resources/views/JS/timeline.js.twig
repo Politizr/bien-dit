@@ -3,7 +3,7 @@
     //      Initialisation
     // **************************** //
     $(document).ready(function () {
-        $(".jumbotron").hide();
+        timelinePaginated();
     });
 
     // Ouverture box jumbotron
@@ -15,5 +15,35 @@
             $(this).closest('.timeline-row').find('.jumbotron').slideDown();
         }
     });
+
+    //
+    $("body").on("click", "a[action='paginate-next']", function(e) {
+        console.log('*** click paginate-next');
+
+        console.log($(this).attr('offset'));
+        timelinePaginated($(this).attr('offset'));
+    });
+
+
+    // Chargement ajax du début de la timeline
+    function timelinePaginated (offset = 0) {
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('TimelinePaginated') }}",
+            data: { 'offset': offset },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('#scroll-nav').remove();
+                    $('#timeline').append(data['html']);          
+                }
+            }
+        });    
+    }
 
 </script>
