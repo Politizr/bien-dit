@@ -2,9 +2,9 @@
 
 {% block detailHeader %}
 	{# Infos générales #}
-	{% set urlBack = path('MyDebatesC') %}
+	{% set urlBack = path('ContribDashboardC') %}
 	{% if isGrantedE() %}
-		{% set urlBack = path('MyDebatesE') %}
+		{% set urlBack = path('ContribDashboardE') %}
 	{% endif %}
 	<div class="row">
 		<div class="col-sm-8">
