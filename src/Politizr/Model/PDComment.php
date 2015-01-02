@@ -35,6 +35,15 @@ class PDComment extends BasePDComment
 	/******************************************************************************/
 
 	/**
+	 * 	Gestion de la réputation / pas de slug pour les commentaires.
+	 *
+	 * 	@return null
+	 */
+	public function getSlug() {
+		return null;
+	}
+
+	/**
 	 * Renvoit le type de document associé à la réaction
 	 *
 	 * @return 	PDDebate 	Objet débat

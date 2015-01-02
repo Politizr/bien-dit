@@ -1,7 +1,16 @@
 <?php
 namespace Politizr\Frontbundle\Twig;
 
+use Politizr\Model\PDocumentQuery;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PUserQuery;
+
 use Politizr\Model\PRBadgeMetal;
+use Politizr\Model\PUReputationRA;
+use Politizr\Model\PDocument;
+
 
 /**
  * Extension Twig / Gestion réputation
@@ -52,12 +61,18 @@ class PolitizrReputationExtension extends \Twig_Extension
     /**
      *  Renvoie la liste des filtres
      */
-    // public function getFilters()
-    // {
-    //     return array(
-    //         new \Twig_SimpleFilter('isGranted', array($this, 'isGranted')),
-    //     );
-    // }
+    /**
+     *  Renvoie la liste des filtres
+     */
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('linkedReputation', array($this, 'linkedReputation'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+        );
+    }
 
     /**
      *  Renvoie la liste des fonctions
@@ -76,6 +91,56 @@ class PolitizrReputationExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
+
+    /**
+     *  Construit un lien vers le débat / réaction / commentaire sur lequel il y a eu interaction.
+     *
+     *  @param $reputation          PUReputationRA
+     *
+     *  @return html
+     */
+    public function linkedReputation(PUReputationRA $reputation)
+    {
+        // $this->logger->info('*** linkedReputation');
+        // $this->logger->info('$reputation = '.print_r($reputation, true));
+
+
+        switch ($reputation->getPObjectName()) {
+            case PDocument::TYPE_DEBATE:
+                $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
+                $title = $subject->getTitle();
+                $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()));
+                break;
+            case PDocument::TYPE_REACTION:
+                $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
+                $title = $subject->getTitle();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()));
+                break;
+            case PDocument::TYPE_COMMENT:
+                $subject = PDCommentQuery::create()->findPk($reputation->getPObjectId());
+                
+                $title = $subject->getDescription();
+                $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
+                if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
+                } else {
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
+                }
+                break;
+            case PDocument::TYPE_USER:
+                $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
+                $title = $subject->getFirstname().' '.$subject->getName();
+                $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()));
+                break;
+        }
+
+
+        // Construction du rendu du tag
+        $html = '<a href="'.$url.'">'.$title.'</a>';
+
+        return $html;
+    }
+
 
 
     /* ######################################################################################################## */

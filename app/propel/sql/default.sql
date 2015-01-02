@@ -154,6 +154,7 @@ CREATE TABLE `p_r_badge_type`
     `description` TEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -170,6 +171,7 @@ CREATE TABLE `p_r_badge_metal`
     `description` TEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

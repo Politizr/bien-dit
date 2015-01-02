@@ -73,6 +73,12 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * The value for the sortable_rank field.
+     * @var        int
+     */
+    protected $sortable_rank;
+
+    /**
      * @var        PropelObjectCollection|PRBadge[] Collection to store aggregation of PRBadge objects.
      */
     protected $collPRBadges;
@@ -97,6 +103,14 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // sortable behavior
+
+    /**
+     * Queries to be executed in the save transaction
+     * @var        array
+     */
+    protected $sortableQueries = array();
 
     /**
      * An array of objects scheduled for deletion.
@@ -218,6 +232,17 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [sortable_rank] column value.
+     *
+     * @return int
+     */
+    public function getSortableRank()
+    {
+
+        return $this->sortable_rank;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -327,6 +352,27 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
+     * Set the value of [sortable_rank] column.
+     *
+     * @param  int $v new value
+     * @return PRBadgeType The current object (for fluent API support)
+     */
+    public function setSortableRank($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->sortable_rank !== $v) {
+            $this->sortable_rank = $v;
+            $this->modifiedColumns[] = PRBadgeTypePeer::SORTABLE_RANK;
+        }
+
+
+        return $this;
+    } // setSortableRank()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -363,6 +409,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             $this->description = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->sortable_rank = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -372,7 +419,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PRBadgeTypePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = PRBadgeTypePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PRBadgeType object", $e);
@@ -464,6 +511,11 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             $deleteQuery = PRBadgeTypeQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // sortable behavior
+
+            PRBadgeTypePeer::shiftRank(-1, $this->getSortableRank() + 1, null, $con);
+            PRBadgeTypePeer::clearInstancePool();
+
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -506,6 +558,8 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
+            // sortable behavior
+            $this->processSortableQueries($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -515,6 +569,11 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
                 if (!$this->isColumnModified(PRBadgeTypePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
+                // sortable behavior
+                if (!$this->isColumnModified(PRBadgeTypePeer::RANK_COL)) {
+                    $this->setSortableRank(PRBadgeTypeQuery::create()->getMaxRankArray($con) + 1);
+                }
+
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
@@ -629,6 +688,9 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         if ($this->isColumnModified(PRBadgeTypePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
+        if ($this->isColumnModified(PRBadgeTypePeer::SORTABLE_RANK)) {
+            $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_r_badge_type` (%s) VALUES (%s)',
@@ -654,6 +716,9 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`sortable_rank`':
+                        $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -812,6 +877,9 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             case 4:
                 return $this->getUpdatedAt();
                 break;
+            case 5:
+                return $this->getSortableRank();
+                break;
             default:
                 return null;
                 break;
@@ -846,6 +914,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             $keys[2] => $this->getDescription(),
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
+            $keys[5] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -905,6 +974,9 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             case 4:
                 $this->setUpdatedAt($value);
                 break;
+            case 5:
+                $this->setSortableRank($value);
+                break;
         } // switch()
     }
 
@@ -934,6 +1006,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setSortableRank($arr[$keys[5]]);
     }
 
     /**
@@ -950,6 +1023,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         if ($this->isColumnModified(PRBadgeTypePeer::DESCRIPTION)) $criteria->add(PRBadgeTypePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PRBadgeTypePeer::CREATED_AT)) $criteria->add(PRBadgeTypePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PRBadgeTypePeer::UPDATED_AT)) $criteria->add(PRBadgeTypePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PRBadgeTypePeer::SORTABLE_RANK)) $criteria->add(PRBadgeTypePeer::SORTABLE_RANK, $this->sortable_rank);
 
         return $criteria;
     }
@@ -1017,6 +1091,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         $copyObj->setDescription($this->getDescription());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSortableRank($this->getSortableRank());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1357,6 +1432,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         $this->description = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->sortable_rank = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1426,6 +1502,357 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         $this->modifiedColumns[] = PRBadgeTypePeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // sortable behavior
+
+    /**
+     * Wrap the getter for rank value
+     *
+     * @return    int
+     */
+    public function getRank()
+    {
+        return $this->sortable_rank;
+    }
+
+    /**
+     * Wrap the setter for rank value
+     *
+     * @param     int
+     * @return    PRBadgeType
+     */
+    public function setRank($v)
+    {
+        return $this->setSortableRank($v);
+    }
+
+    /**
+     * Check if the object is first in the list, i.e. if it has 1 for rank
+     *
+     * @return    boolean
+     */
+    public function isFirst()
+    {
+        return $this->getSortableRank() == 1;
+    }
+
+    /**
+     * Check if the object is last in the list, i.e. if its rank is the highest rank
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    boolean
+     */
+    public function isLast(PropelPDO $con = null)
+    {
+        return $this->getSortableRank() == PRBadgeTypeQuery::create()->getMaxRankArray($con);
+    }
+
+    /**
+     * Get the next item in the list, i.e. the one for which rank is immediately higher
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PRBadgeType
+     */
+    public function getNext(PropelPDO $con = null)
+    {
+
+        $query = PRBadgeTypeQuery::create();
+
+        $query->filterByRank($this->getSortableRank() + 1);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Get the previous item in the list, i.e. the one for which rank is immediately lower
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PRBadgeType
+     */
+    public function getPrevious(PropelPDO $con = null)
+    {
+
+        $query = PRBadgeTypeQuery::create();
+
+        $query->filterByRank($this->getSortableRank() - 1);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Insert at specified rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     integer    $rank rank value
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PRBadgeType the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtRank($rank, PropelPDO $con = null)
+    {
+        $maxRank = PRBadgeTypeQuery::create()->getMaxRankArray($con);
+        if ($rank < 1 || $rank > $maxRank + 1) {
+            throw new PropelException('Invalid rank ' . $rank);
+        }
+        // move the object in the list, at the given rank
+        $this->setSortableRank($rank);
+        if ($rank != $maxRank + 1) {
+            // Keep the list modification query for the save() transaction
+            $this->sortableQueries []= array(
+                'callable'  => array(self::PEER, 'shiftRank'),
+                'arguments' => array(1, $rank, null, )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Insert in the last rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtBottom(PropelPDO $con = null)
+    {
+        $this->setSortableRank(PRBadgeTypeQuery::create()->getMaxRankArray($con) + 1);
+
+        return $this;
+    }
+
+    /**
+     * Insert in the first rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @return    PRBadgeType the current object
+     */
+    public function insertAtTop()
+    {
+        return $this->insertAtRank(1);
+    }
+
+    /**
+     * Move the object to a new rank, and shifts the rank
+     * Of the objects inbetween the old and new rank accordingly
+     *
+     * @param     integer   $newRank rank value
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     *
+     * @throws    PropelException
+     */
+    public function moveToRank($newRank, PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be moved. Please use insertAtRank() instead');
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        if ($newRank < 1 || $newRank > PRBadgeTypeQuery::create()->getMaxRankArray($con)) {
+            throw new PropelException('Invalid rank ' . $newRank);
+        }
+
+        $oldRank = $this->getSortableRank();
+        if ($oldRank == $newRank) {
+            return $this;
+        }
+
+        $con->beginTransaction();
+        try {
+            // shift the objects between the old and the new rank
+            $delta = ($oldRank < $newRank) ? -1 : 1;
+            PRBadgeTypePeer::shiftRank($delta, min($oldRank, $newRank), max($oldRank, $newRank), $con);
+
+            // move the object to its new rank
+            $this->setSortableRank($newRank);
+            $this->save($con);
+
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Exchange the rank of the object with the one passed as argument, and saves both objects
+     *
+     * @param     PRBadgeType $object
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     *
+     * @throws Exception if the database cannot execute the two updates
+     */
+    public function swapWith($object, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $oldRank = $this->getSortableRank();
+            $newRank = $object->getSortableRank();
+            $this->setSortableRank($newRank);
+            $this->save($con);
+            $object->setSortableRank($oldRank);
+            $object->save($con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the previous object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     */
+    public function moveUp(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $prev = $this->getPrevious($con);
+            $this->swapWith($prev, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the next object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     */
+    public function moveDown(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $next = $this->getNext($con);
+            $this->swapWith($next, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object to the top of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     */
+    public function moveToTop(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+
+        return $this->moveToRank(1, $con);
+    }
+
+    /**
+     * Move the object to the bottom of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return integer the old object's rank
+     */
+    public function moveToBottom(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return false;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $bottom = PRBadgeTypeQuery::create()->getMaxRankArray($con);
+            $res = $this->moveToRank($bottom, $con);
+            $con->commit();
+
+            return $res;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Removes the current object from the list.
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeType the current object
+     */
+    public function removeFromList(PropelPDO $con = null)
+    {
+        // Keep the list modification query for the save() transaction
+        $this->sortableQueries []= array(
+            'callable'  => array(self::PEER, 'shiftRank'),
+            'arguments' => array(-1, $this->getSortableRank() + 1, null)
+        );
+        // remove the object from the list
+        $this->setSortableRank(null);
+
+        return $this;
+    }
+
+    /**
+     * Execute queries that were saved to be run inside the save transaction
+     */
+    protected function processSortableQueries($con)
+    {
+        foreach ($this->sortableQueries as $query) {
+            $query['arguments'][]= $con;
+            call_user_func_array($query['callable'], $query['arguments']);
+        }
+        $this->sortableQueries = array();
     }
 
 }

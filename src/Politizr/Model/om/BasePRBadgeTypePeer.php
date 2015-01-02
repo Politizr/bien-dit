@@ -12,6 +12,7 @@ use \PropelPDO;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeType;
 use Politizr\Model\PRBadgeTypePeer;
+use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\map\PRBadgeTypeTableMap;
 
 abstract class BasePRBadgeTypePeer
@@ -30,13 +31,13 @@ abstract class BasePRBadgeTypePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeTypeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'p_r_badge_type.id';
@@ -53,6 +54,9 @@ abstract class BasePRBadgeTypePeer
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_r_badge_type.updated_at';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_r_badge_type.sortable_rank';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -65,6 +69,13 @@ abstract class BasePRBadgeTypePeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_r_badge_type.sortable_rank';
+
     /**
      * holds an array of fieldnames
      *
@@ -72,12 +83,12 @@ abstract class BasePRBadgeTypePeer
      * e.g. PRBadgeTypePeer::$fieldNames[PRBadgeTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeTypePeer::ID, PRBadgeTypePeer::TITLE, PRBadgeTypePeer::DESCRIPTION, PRBadgeTypePeer::CREATED_AT, PRBadgeTypePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'createdAt', 'updatedAt', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeTypePeer::ID, PRBadgeTypePeer::TITLE, PRBadgeTypePeer::DESCRIPTION, PRBadgeTypePeer::CREATED_AT, PRBadgeTypePeer::UPDATED_AT, PRBadgeTypePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'created_at', 'updated_at', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -87,12 +98,12 @@ abstract class BasePRBadgeTypePeer
      * e.g. PRBadgeTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeTypePeer::ID => 0, PRBadgeTypePeer::TITLE => 1, PRBadgeTypePeer::DESCRIPTION => 2, PRBadgeTypePeer::CREATED_AT => 3, PRBadgeTypePeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'SortableRank' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'sortableRank' => 5, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeTypePeer::ID => 0, PRBadgeTypePeer::TITLE => 1, PRBadgeTypePeer::DESCRIPTION => 2, PRBadgeTypePeer::CREATED_AT => 3, PRBadgeTypePeer::UPDATED_AT => 4, PRBadgeTypePeer::SORTABLE_RANK => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'SORTABLE_RANK' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'created_at' => 3, 'updated_at' => 4, 'sortable_rank' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -171,12 +182,14 @@ abstract class BasePRBadgeTypePeer
             $criteria->addSelectColumn(PRBadgeTypePeer::DESCRIPTION);
             $criteria->addSelectColumn(PRBadgeTypePeer::CREATED_AT);
             $criteria->addSelectColumn(PRBadgeTypePeer::UPDATED_AT);
+            $criteria->addSelectColumn(PRBadgeTypePeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -775,6 +788,146 @@ abstract class BasePRBadgeTypePeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . PRBadgeTypePeer::RANK_COL . ')');
+        $stmt = PRBadgeTypePeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return PRBadgeType
+     */
+    public static function retrieveByRank($rank, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(PRBadgeTypePeer::RANK_COL, $rank);
+
+        return PRBadgeTypePeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = PRBadgeTypePeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(PRBadgeTypePeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(PRBadgeTypePeer::RANK_COL);
+        }
+
+        return PRBadgeTypePeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = PRBadgeTypeQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(PRBadgeTypePeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(PRBadgeTypePeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+
+        $valuesCriteria = new Criteria(PRBadgeTypePeer::DATABASE_NAME);
+        $valuesCriteria->add(PRBadgeTypePeer::RANK_COL, array('raw' => PRBadgeTypePeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        PRBadgeTypePeer::clearInstancePool();
     }
 
 } // BasePRBadgeTypePeer

@@ -2,24 +2,56 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Ma réputation</h1>
-		<span class="badge alert-success">{{ reputationScore }}</span>
-		<h1>Mes badges</h1>
-
-		<div class="table-responsive">
+		<h1>Ma réputation <span class="badge alert-success">{{ reputationScore }}</span></h1>
+		<div id="reputation-history" class="table-responsive">
 			<table class="table table-hover">
 				<thead>
-			        <tr>
-			            <th>Badges</th>
-			            <th>&nbsp;</th>
-			        </tr>
-		      	</thead>				
-				{% include 'PolitizrFrontBundle:Fragment\\Reputation:BadgeTableRow.html.twig' with { 'badgeTypes': badgeTypes, 'badgeIds': badgeIds } %}
+					<td>Évolution</td>
+					<td>Date</td>
+					<td>Action</td>
+					<td>Lien</td>
+				</thead>
+				{% for history in reputationHistory %}
+					<tr>
+					    <td>{{ history.PRAction.scoreEvolution }}</td>
+					    <td><span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ history.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span></td>
+					    <td>{{ history.PRAction.title }}</td>
+					    <td>{{ history | linkedReputation }}</td>
+					</tr>
+				{% else %}
+					<td colspan="4">
+						<p class="bg-info">Vous n'avez effectué aucune action ayant fait évoluer votre réputation.</p>
+					</td>
+				{% endfor %}
 			</table>
 		</div>
-</div>
+		<h1>Mes badges</h1>
+		<ul class="nav nav-tabs">
+			<li role="list" class="active"><a action="bronze">Bronze</a></li>
+			<li role="list"><a action="silver">Argent</a></li>
+			<li role="list"><a action="gold">Or</a></li>
+		</ul>
+		<div id="bronze-tab-content" class="table-responsive">
+			<table class="table table-hover">
+				{% include 'PolitizrFrontBundle:Fragment\\Reputation:BadgeTableRow.html.twig' with { 'badges': badgesBronze, 'badgeIds': badgeIds } %}
+			</table>
+		</div>
+		<div id="silver-tab-content" class="table-responsive">
+			<table class="table table-hover">
+				{% include 'PolitizrFrontBundle:Fragment\\Reputation:BadgeTableRow.html.twig' with { 'badges': badgesSilver, 'badgeIds': badgeIds } %}
+			</table>
+		</div>
+		<div id="gold-tab-content" class="table-responsive">
+			<table class="table table-hover">
+				{% include 'PolitizrFrontBundle:Fragment\\Reputation:BadgeTableRow.html.twig' with { 'badges': badgesGold, 'badgeIds': badgeIds } %}
+			</table>
+		</div>
+
+	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
+
+    {% include 'PolitizrFrontBundle:JS:badges.js.twig' %}
 {% endblock javascriptFooter %}

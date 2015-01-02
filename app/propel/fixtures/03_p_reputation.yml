@@ -1,36 +1,44 @@
 # REPUTATION DATAS
 Politizr\Model\PRBadgeType:
     debat:
+        sortable_rank:      1
         title:              Débat
         description:        |
             Badges relatifs à la mise en ligne de débat(s) devenu populaire(s)
     commentaire:
+        sortable_rank:      2
         title:              Commentaire
         description:        |
             Badges relatifs à la rédaction de commentaires
     participation:
+        sortable_rank:      3
         title:              Participation
         description:        |
             Badges relatifs à la participation à l'activité du site (votes, profil complété, followers)
     moderation:
+        sortable_rank:      4
         title:              Modération
         description:        |
             Badges relatifs aux demandes de modération
     autre:
+        sortable_rank:      5
         title:              Autre
         description:        |
             Badges autres
 
 Politizr\Model\PRBadgeMetal:
     or:
+        sortable_rank:      1
         title:              Or
         description:        |
             Niveau or
     argent:
+        sortable_rank:      2
         title:              Argent
         description:        |
             Niveau argent
     bronze:
+        sortable_rank:      3
         title:              Bronze
         description:        |
             Niveau bronze

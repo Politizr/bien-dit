@@ -24,12 +24,14 @@ use Politizr\Model\PRBadgeMetalQuery;
  * @method PRBadgeMetalQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PRBadgeMetalQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PRBadgeMetalQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PRBadgeMetalQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PRBadgeMetalQuery groupById() Group by the id column
  * @method PRBadgeMetalQuery groupByTitle() Group by the title column
  * @method PRBadgeMetalQuery groupByDescription() Group by the description column
  * @method PRBadgeMetalQuery groupByCreatedAt() Group by the created_at column
  * @method PRBadgeMetalQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PRBadgeMetalQuery groupBySortableRank() Group by the sortable_rank column
  *
  * @method PRBadgeMetalQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PRBadgeMetalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -46,12 +48,14 @@ use Politizr\Model\PRBadgeMetalQuery;
  * @method PRBadgeMetal findOneByDescription(string $description) Return the first PRBadgeMetal filtered by the description column
  * @method PRBadgeMetal findOneByCreatedAt(string $created_at) Return the first PRBadgeMetal filtered by the created_at column
  * @method PRBadgeMetal findOneByUpdatedAt(string $updated_at) Return the first PRBadgeMetal filtered by the updated_at column
+ * @method PRBadgeMetal findOneBySortableRank(int $sortable_rank) Return the first PRBadgeMetal filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PRBadgeMetal objects filtered by the id column
  * @method array findByTitle(string $title) Return PRBadgeMetal objects filtered by the title column
  * @method array findByDescription(string $description) Return PRBadgeMetal objects filtered by the description column
  * @method array findByCreatedAt(string $created_at) Return PRBadgeMetal objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PRBadgeMetal objects filtered by the updated_at column
+ * @method array findBySortableRank(int $sortable_rank) Return PRBadgeMetal objects filtered by the sortable_rank column
  */
 abstract class BasePRBadgeMetalQuery extends ModelCriteria
 {
@@ -160,7 +164,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `created_at`, `updated_at` FROM `p_r_badge_metal` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `created_at`, `updated_at`, `sortable_rank` FROM `p_r_badge_metal` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -433,6 +437,48 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeMetalPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeMetalQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank, $comparison);
     }
 
     /**
@@ -710,6 +756,152 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
         }
 
         return $stmt;
+    }
+
+    // sortable behavior
+
+    /**
+     * Filter the query based on a rank in the list
+     *
+     * @param     integer   $rank rank
+     *
+     * @return    PRBadgeMetalQuery The current query, for fluid interface
+     */
+    public function filterByRank($rank)
+    {
+
+
+        return $this
+            ->addUsingAlias(PRBadgeMetalPeer::RANK_COL, $rank, Criteria::EQUAL);
+    }
+
+    /**
+     * Order the query based on the rank in the list.
+     * Using the default $order, returns the item with the lowest rank first
+     *
+     * @param     string $order either Criteria::ASC (default) or Criteria::DESC
+     *
+     * @return    PRBadgeMetalQuery The current query, for fluid interface
+     */
+    public function orderByRank($order = Criteria::ASC)
+    {
+        $order = strtoupper($order);
+        switch ($order) {
+            case Criteria::ASC:
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(PRBadgeMetalPeer::RANK_COL));
+                break;
+            case Criteria::DESC:
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(PRBadgeMetalPeer::RANK_COL));
+                break;
+            default:
+                throw new PropelException('PRBadgeMetalQuery::orderBy() only accepts "asc" or "desc" as argument');
+        }
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PRBadgeMetal
+     */
+    public function findOneByRank($rank, PropelPDO $con = null)
+    {
+
+        return $this
+            ->filterByRank($rank)
+            ->findOne($con);
+    }
+
+    /**
+     * Returns the list of objects
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     mixed the list of results, formatted by the current formatter
+     */
+    public function findList($con = null)
+    {
+
+
+        return $this
+            ->orderByRank()
+            ->find($con);
+    }
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PRBadgeMetalPeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get the highest rank by a scope with a array format.
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRankArray(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PRBadgeMetalPeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = $this->findPks($ids, $con);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
     }
 
 }

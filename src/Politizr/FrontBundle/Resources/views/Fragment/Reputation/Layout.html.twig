@@ -8,26 +8,28 @@ LAYOUT REPUTATION
 
 {# Bloc ligne de tableau de badges #}
 {% block badgeTableRow %}
-	{% for type in badgeTypes %}
-		<tr>
-		    <td colspan="2">{{ type.title }}</td>
-		</tr>
-		{% for badge in type.badges %}
+	{% set prevTypeId = null %}
+	{% for badge in badges %}
+		{% if badge.PRBadgeTypeId != prevTypeId %}
 			<tr>
-				<td>
-					<span class="label {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
-				</td>
-				<td>
-					{% if badge.id in badgeIds %}
-						<!-- <span class="glyphicon glyphicon-ok"></span> -->
-						<span class="fa fa-check-square-o"></span>
-					{% else %}
-						<!-- <span class="glyphicon glyphicon-remove"></span> -->
-						<span class="fa fa-square-o"></span>
-					{% endif %}
-				</td>
+			    <td colspan="2">{{ badge.PRBadgeType }}</td>
 			</tr>
-		{% endfor %}
+		{% endif %}
+		<tr>
+			<td>
+				<span class="label {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
+			</td>
+			<td>
+				{% if badge.id in badgeIds %}
+					<!-- <span class="glyphicon glyphicon-ok"></span> -->
+					<span class="fa fa-check-square-o"></span>
+				{% else %}
+					<!-- <span class="glyphicon glyphicon-remove"></span> -->
+					<span class="fa fa-square-o"></span>
+				{% endif %}
+			</td>
+		</tr>
+		{% set prevTypeId = badge.PRBadgeTypeId %}
 	{% endfor %}
 {% endblock badgeTableRow %}
 

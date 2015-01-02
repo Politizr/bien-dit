@@ -24,8 +24,9 @@ use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
-use Politizr\Model\PRBadgeTypeQuery;
+use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUReputationRBQuery;
+use Politizr\Model\PUReputationRAQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
@@ -188,86 +189,6 @@ class ProfileEController extends Controller {
     }
 
 
-    /**
-     *  Mes contributions - Débats
-     */
-    public function myDebatesAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myDebatesAction');
-
-        // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-        // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:myDebates.html.twig', array(
-            'debates' => $debates
-            ));
-    }
-
-    /**
-     *  Mes contributions - Réactions
-     */
-    public function myReactionsAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myReactionsAction');
-
-        // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-        // Réactions rédigées
-        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:myReactions.html.twig', array(
-            'reactions' => $reactions
-            ));
-    }
-
-    /**
-     *  Mes contributions - Commentaires
-     */
-    public function myCommentsAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myCommentsAction');
-
-        // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
-        return $this->render('PolitizrFrontBundle:ProfileE:myComments.html.twig', array(
-            'comments' => $comments
-            ));
-    }
-
-
     /* ######################################################################################################## */
     /*                                                    MON COMPTE                                            */
     /* ######################################################################################################## */
@@ -298,39 +219,52 @@ class ProfileEController extends Controller {
         $logger->info('*** myReputationAction');
 
         // Récupération user courant
-        $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
+        $user = $this->getUser();
 
         // score de réputation
-        $reputationScore = $pUser->getReputationScore();
+        $reputationScore = $user->getReputationScore();
+
+        // historique de réputation
+        $reputationHistory = PUReputationRAQuery::create()
+                                ->filterByPUserId($user->getId())
+                                ->orderByCreatedAt(\Criteria::DESC)
+                                ->find();
         
         // badges
-        // type
-        $badgeTypes = PRBadgeTypeQuery::create()
-                        ->orderByTitle()
-                        ->find()
-                        ;
+        $badgesGold = PRBadgeQuery::create()
+                        ->filterByPRBadgeMetalId(PRBadgeMetal::GOLD)
+                        ->usePRBadgeTypeQuery()
+                            ->orderByRank()
+                        ->endUse()
+                        ->find();
+        $badgesSilver = PRBadgeQuery::create()
+                        ->filterByPRBadgeMetalId(PRBadgeMetal::SILVER)
+                        ->usePRBadgeTypeQuery()
+                            ->orderByRank()
+                        ->endUse()
+                        ->find();
+        $badgesBronze = PRBadgeQuery::create()
+                        ->filterByPRBadgeMetalId(PRBadgeMetal::BRONZE)
+                        ->usePRBadgeTypeQuery()
+                            ->orderByRank()
+                        ->endUse()
+                        ->find();
 
         // ids des badges du user
         $badgeIds = array();
         $badgeIds = PUReputationRBQuery::create()
-                        ->filterByPUserId($pUser->getId())
+                        ->filterByPUserId($user->getId())
                         ->find()
-                        ->toKeyValue('PRBadgeId', 'PRBadgeId')
-                        // ->getPrimaryKeys()
-                        ;
+                        ->toKeyValue('PRBadgeId', 'PRBadgeId');
         $badgeIds = array_keys($badgeIds);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-
+        // Affichage de la vue
         return $this->render('PolitizrFrontBundle:ProfileE:myReputation.html.twig', array(
             'reputationScore' => $reputationScore,
-            'badgeTypes' => $badgeTypes,
+            'reputationHistory' => $reputationHistory,
+            'badgesGold' => $badgesGold,
+            'badgesSilver' => $badgesSilver,
+            'badgesBronze' => $badgesBronze,
             'badgeIds' => $badgeIds,
             ));
     }
@@ -369,8 +303,6 @@ class ProfileEController extends Controller {
                         'fileName' => $fileName,
             ));
     }
-
-
 
 
     /* ######################################################################################################## */

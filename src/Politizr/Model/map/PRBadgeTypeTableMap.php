@@ -47,6 +47,7 @@ class PRBadgeTypeTableMap extends TableMap
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 
@@ -75,6 +76,11 @@ class PRBadgeTypeTableMap extends TableMap
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
+),
+            'sortable' =>  array (
+  'rank_column' => 'sortable_rank',
+  'use_scope' => 'false',
+  'scope_column' => '',
 ),
         );
     } // getBehaviors()

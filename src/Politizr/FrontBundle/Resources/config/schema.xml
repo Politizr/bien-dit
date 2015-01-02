@@ -64,6 +64,7 @@
     <table name="p_r_badge_type">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
@@ -74,6 +75,7 @@
     <table name="p_r_badge_metal">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
