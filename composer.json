@@ -125,7 +125,7 @@
         "willdurand/geocoder-bundle": "3.0.*",
 
         "hwi/oauth-bundle": "0.4.*@dev",
-        "facebook/php-sdk": "dev-master",
+        "facebook/php-sdk-v4": "dev-master",
         
         "propel/propel-bundle": "1.2.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",

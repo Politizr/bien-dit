@@ -37,7 +37,8 @@
     });
 
     // Chargement ajax du début de la timeline
-    function debateList (order = 'suggestion') {
+    function debateList (order) {
+        order = (typeof order === "undefined") ? 'suggestion' : order;
         $.ajax({
             type: 'POST',
             url: "{{ path('DebateList') }}",

@@ -26,7 +26,8 @@
 
 
     // Chargement ajax du début de la timeline
-    function timelinePaginated (offset = 0) {
+    function timelinePaginated (offset) {
+        offset = (typeof offset === "undefined") ? 0 : offset;
         $.ajax({
             type: 'POST',
             url: "{{ path('TimelinePaginated') }}",
