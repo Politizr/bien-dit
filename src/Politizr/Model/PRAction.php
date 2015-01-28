@@ -60,6 +60,10 @@ class PRAction extends BasePRAction
     const ID_U_TARGET_USER_FOLLOW = 26;
     const ID_U_TARGET_USER_UNFOLLOW = 27;
 
+
+    // ************ RESEAUX SOCIAUX ******* //
+    const ID_D_SHARE= 28;
+
 	/**
 	 *
 	 */

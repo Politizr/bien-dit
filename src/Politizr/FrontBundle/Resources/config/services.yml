@@ -52,17 +52,25 @@ services:
 
     politzr.listener.reputation:
         class:      Politizr\FrontBundle\Listener\ReputationListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: r_debate_publish }
+            - { name: kernel.event_listener, event: r_reaction_publish }
+            - { name: kernel.event_listener, event: r_comment_publish }
+            - { name: kernel.event_listener, event: r_note_pos }
+            - { name: kernel.event_listener, event: r_note_neg }
+            - { name: kernel.event_listener, event: r_debate_follow }
+            - { name: kernel.event_listener, event: r_debate_unfollow }
+            - { name: kernel.event_listener, event: r_user_follow }
+            - { name: kernel.event_listener, event: r_user_unfollow }
+
+
+    politzr.listener.badge:
+        class:      Politizr\FrontBundle\Listener\BadgeListener
         arguments:  [ @logger ]
         tags:
-            - { name: kernel.event_listener, event: debate_publish }
-            - { name: kernel.event_listener, event: reaction_publish }
-            - { name: kernel.event_listener, event: comment_publish }
-            - { name: kernel.event_listener, event: note_pos }
-            - { name: kernel.event_listener, event: note_neg }
-            - { name: kernel.event_listener, event: debate_follow }
-            - { name: kernel.event_listener, event: debate_unfollow }
-            - { name: kernel.event_listener, event: user_follow }
-            - { name: kernel.event_listener, event: user_unfollow }
+            - { name: kernel.event_listener, event: b_reaction_publish }
+            - { name: kernel.event_listener, event: b_document_note_pos }
 
 
     # EXTENSIONS TWIG

@@ -4,7 +4,7 @@ Politizr\Model\PRBadgeType:
         sortable_rank:      1
         title:              Débat
         description:        |
-            Badges relatifs à la mise en ligne de débat(s) devenu populaire(s)
+            Badges relatifs à la mise en ligne de débats et réactions
     commentaire:
         sortable_rank:      2
         title:              Commentaire
@@ -14,17 +14,12 @@ Politizr\Model\PRBadgeType:
         sortable_rank:      3
         title:              Participation
         description:        |
-            Badges relatifs à la participation à l'activité du site (votes, profil complété, followers)
-    moderation:
+            Badges relatifs à la participation à l'activité du site (votes, compte, tags)
+    communautaire:
         sortable_rank:      4
-        title:              Modération
+        title:              Communautaire
         description:        |
-            Badges relatifs aux demandes de modération
-    autre:
-        sortable_rank:      5
-        title:              Autre
-        description:        |
-            Badges autres
+            Badges relatifs aux suivis et abonnements de profils
 
 Politizr\Model\PRBadgeMetal:
     or:
@@ -43,91 +38,311 @@ Politizr\Model\PRBadgeMetal:
         description:        |
             Niveau bronze
 
+# Constantes de classe PRBadge à MAJ en parallèle
 Politizr\Model\PRBadge:
-    polemiqueur_or:
-        online:				true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: or
-        title:				Polémiqueur
-        description:		|
-            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
-    polemiqueur_argent:
-        online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: argent
-        title:              Polémiqueur
-        description:        |
-            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
-    polemiqueur_bronze:
+    # Type débat
+    querelle:
         online:             true
         p_r_badge_type_id:  debat
         p_r_badge_metal_id: bronze
-        title:              Polémiqueur
+        title:              Querellé
         description:        |
-            Être l’auteur de X contenus “débat” ayant obtenu au moins X réactions
-    redacteur_or:
-        online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: or
-        title:              Rédacteur
-        description:        |
-            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
-    redacteur_argent:
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+    controverse:
         online:             true
         p_r_badge_type_id:  debat
         p_r_badge_metal_id: argent
-        title:              Rédacteur
+        title:              Controversé
         description:        |
-            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
-    redacteur_bronze:
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+    polemique:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: or
+        title:              Polémiqué
+        description:        |
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+    redacteur:
         online:             true
         p_r_badge_type_id:  debat
         p_r_badge_metal_id: bronze
         title:              Rédacteur
         description:        |
-            Être l’auteur de X contenus “débat” ayant obtenu au moins +X
-    commentateur_or:
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
+    auteur:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: argent
+        title:              Auteur
+        description:        |
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
+    ecrivain:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: or
+        title:              Écrivain
+        description:        |
+            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
+    eclaireur:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: bronze
+        title:              Éclaireur
+        description:        |
+            Être l’auteur de la 1ère réaction sur X débats
+    avant-garde:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: argent
+        title:              Avant Garde
+        description:        |
+            Être l’auteur de la 1ère réaction sur X débats
+    guide:
+        online:             true
+        p_r_badge_type_id:  debat
+        p_r_badge_metal_id: or
+        title:              Guide
+        description:        |
+            Être l’auteur de la 1ère réaction sur X débats
+
+    # Type commentaire
+    annotateur:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        p_r_badge_metal_id: bronze
+        title:              Annotateur
+        description:        |
+            Écrire X commentaires
+    glossateur:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        p_r_badge_metal_id: argent
+        title:              Glossateur
+        description:        |
+            Écrire X commentaires
+    commentateur:
         online:             true
         p_r_badge_type_id:  commentaire
         p_r_badge_metal_id: or
         title:              Commentateur
         description:        |
             Écrire X commentaires
-    commentateur_argent:
-        online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: argent
-        title:              Commentateur
-        description:        |
-            Écrire X commentaires
-    commentateur_bronze:
+    effronté:
         online:             true
         p_r_badge_type_id:  commentaire
         p_r_badge_metal_id: bronze
-        title:              Commentateur
+        title:              Effronté
         description:        |
-            Écrire X commentaires
-    impertinent_or:
+            Atteindre un score de +X à un de ses commentaires
+    impertinent:
+        online:             true
+        p_r_badge_type_id:  commentaire
+        p_r_badge_metal_id: argent
+        title:              Impertinent
+        description:        |
+            Atteindre un score de +X à un de ses commentaires
+    audacieux:
         online:             true
         p_r_badge_type_id:  commentaire
         p_r_badge_metal_id: or
-        title:              Impertinent
+        title:              Audacieux
         description:        |
             Atteindre un score de +X à un de ses commentaires
-    impertinent_argent:
+
+
+    # Type participation
+    studieux:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: argent
-        title:              Impertinent
-        description:        |
-            Atteindre un score de +X à un de ses commentaires
-    impertinent_bronze:
-        online:             true
-        p_r_badge_type_id:  commentaire
+        p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
-        title:              Impertinent
+        title:              Studieux
         description:        |
-            Atteindre un score de +X à un de ses commentaires
+            Compléter son profil à 100%
+    tagueur:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: bronze
+        title:              Tagueur
+        description:        |
+            Avoir généré X nouveaux tags
+    surveillant:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: bronze
+        title:              Surveillant
+        description:        |
+            Avoir fait X demandes de modération pertinente
+    fougueux:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: bronze
+        title:              Fougueux
+        description:        |
+            Avoir attribué X notes positifs
+    enthousiaste:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: argent
+        title:              Enthousiaste
+        description:        |
+            Avoir attribué X notes positifs
+    passionné:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: or
+        title:              Passionné
+        description:        |
+            Avoir attribué X notes positifs
+    persifleur:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: bronze
+        title:              Persifleur
+        description:        |
+            Avoir attribué X notes négatifs
+    reprobateur:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: argent
+        title:              Réprobateur
+        description:        |
+            Avoir attribué X notes négatifs
+    critique:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: or
+        title:              Critique
+        description:        |
+            Avoir attribué X notes négatifs
+    attentif:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: bronze
+        title:              Attentif
+        description:        |
+            Visiter le site pendant X jours consécutifs
+    assidu:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: argent
+        title:              Assidu
+        description:        |
+            Visiter le site pendant X jours consécutifs
+    fidèle:
+        online:             true
+        p_r_badge_type_id:  participation
+        p_r_badge_metal_id: or
+        title:              Fidèle
+        description:        |
+            Visiter le site pendant X jours consécutifs
+
+    # Type communautaire
+    suiveur:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: bronze
+        title:              Suiveur
+        description:        |
+            Suivre X profils
+    disciple:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: argent
+        title:              Disciple
+        description:        |
+            Suivre X profils
+    inconditionnel:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: or
+        title:              Inconditionnel
+        description:        |
+            Suivre X profils
+    adepte:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: bronze
+        title:              Adepte
+        description:        |
+            Suivre X profils débatteurs
+    adherent:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: argent
+        title:              Adhérent
+        description:        |
+            Suivre X profils débatteurs
+    militant:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: or
+        title:              Militant
+        description:        |
+            Suivre X profils débatteurs
+    favori:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: bronze
+        title:              Favori
+        description:        |
+            Être suivi par X profils
+    coqueluche:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: argent
+        title:              Coqueluche
+        description:        |
+            Être suivi par X profils
+    idole:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: or
+        title:              Idole
+        description:        |
+            Être suivi par X profils
+    important:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: bronze
+        title:              Important
+        description:        |
+            Être suivi par X profils débatteurs
+    influent:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: argent
+        title:              Influent
+        description:        |
+            Être suivi par X profils débatteurs
+    incontournable:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: or
+        title:              Incontournable
+        description:        |
+            Être suivi par X profils débatteurs
+    porte-voix:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: bronze
+        title:              Porte Voix
+        description:        |
+            Avoir partagé X contenus Politizr sur les réseaux sociaux
+    annonceur:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: argent
+        title:              Annonceur
+        description:        |
+            Avoir partagé X contenus Politizr sur les réseaux sociaux
+    publicitaire:
+        online:             true
+        p_r_badge_type_id:  communautaire
+        p_r_badge_metal_id: or
+        title:              Publicitaire
+        description:        |
+            Avoir partagé X contenus Politizr sur les réseaux sociaux
+
 
 # Constantes de classe PRAction à MAJ en parallèle + check si notifications à maj en parallèle
 Politizr\Model\PRAction:
@@ -295,3 +510,10 @@ Politizr\Model\PRAction:
         description:        |
             Ne plus être suivi pour son profil
         score_evolution:    -1
+
+    d_share:
+        online:             true
+        title:              Partager sur Facebook ou Twitter
+        description:        |
+            Partager sur Facebook ou Twitter
+        score_evolution:    10

@@ -35,6 +35,7 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
+use Politizr\Model\PRBadgeMetal;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -132,7 +133,7 @@ class ProfileEController extends Controller {
         // Débats brouillons en attente de finalisation
         $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
-        // Débats brouillons en attente de finalisation
+        // Réactions brouillons en attente de finalisation
         $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
         // Débats rédigés

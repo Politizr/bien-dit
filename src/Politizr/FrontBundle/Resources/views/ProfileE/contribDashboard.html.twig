@@ -4,7 +4,7 @@
 	<div id="main" class="container">
 		<h1>Mes brouillons</h1>
 		<h3>Mes débats</h3>
-        {% for draft in debateDrafts %}
+        {% if debateDrafts | length > 0 %}
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -16,14 +16,8 @@
 				            <th>&nbsp;</th>
 				        </tr>
 			      	</thead>				
-			        {% for draft in drafts %}
+			        {% for draft in debateDrafts %}
 						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
-					{% else %}
-						<tr>
-							<td colspan="5">
-								Aucun brouillon rédigé pour le moment
-							</td>
-						</tr>
 					{% endfor %}
 				</table>
 			</div>
@@ -32,28 +26,23 @@
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
-		{% endfor %}
+		{% endif %}
 		<h3>Mes réactions</h3>
-        {% for draft in reactionDrafts %}
+        {% if reactionDrafts | length > 0 %}
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
 				        <tr>
-				            <th>Bandeau</th>
+				            <th>Débat</th>
+				            <th>Réaction</th>
 				            <th>Titre</th>
 				            <th>Résumé</th>
 				            <th>Date de création</th>
 				            <th>&nbsp;</th>
 				        </tr>
 			      	</thead>				
-			        {% for draft in drafts %}
-						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
-					{% else %}
-						<tr>
-							<td colspan="5">
-								Aucun brouillon rédigé pour le moment
-							</td>
-						</tr>
+			        {% for draft in reactionDrafts %}
+						{% include 'PolitizrFrontBundle:Fragment\\Reaction:DraftTableRow.html.twig' with { 'document': draft } %}
 					{% endfor %}
 				</table>
 			</div>
@@ -61,7 +50,7 @@
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez rédigé aucun brouillon de réaction pour le moment</a>
 			</div>
-		{% endfor %}
+		{% endif %}
 		<h1>Mes débats publiés</h1>
         {% for debate in debates %}
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}

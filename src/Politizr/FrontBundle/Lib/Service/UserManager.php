@@ -72,7 +72,7 @@ class UserManager
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('user_follow', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_user_follow', $event);
         } elseif ($way == 'unfollow') {
             $object = PUserQuery::create()->findPk($objectId);
 
@@ -87,7 +87,7 @@ class UserManager
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('user_unfollow', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_user_unfollow', $event);
         }
 
         // Construction rendu

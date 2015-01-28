@@ -5,6 +5,7 @@ namespace Politizr\FrontBundle\Listener;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PRAction;
+use Politizr\Model\PRBadge;
 use Politizr\Model\PDocument;
 use Politizr\Model\PUReputationRA;
 
@@ -16,12 +17,14 @@ use Politizr\Model\PUReputationRA;
 class ReputationListener {
 
     protected $logger;
+    protected $eventDispatcher;
 
     /**
      *
      */
-    public function __construct($logger) {
-    	$this->logger = $logger;
+    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher) {
+        $this->logger = $logger;
+    	$this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -30,8 +33,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onDebatePublish(GenericEvent $event) {
-        $this->logger->info('*** onDebatePublish');
+    public function onRDebatePublish(GenericEvent $event) {
+        $this->logger->info('*** onRDebatePublish');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -47,8 +50,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onReactionPublish(GenericEvent $event) {
-        $this->logger->info('*** onReactionPublish');
+    public function onRReactionPublish(GenericEvent $event) {
+        $this->logger->info('*** onRReactionPublish');
 
         // Réaction de la réaction
         $subject = $event->getSubject();
@@ -63,25 +66,31 @@ class ReputationListener {
         // Débat associé à la réaction
         $debate = $subject->getPDDebate();
 
-        $userId = $debate->getPUserId();
+        $debateUserId = $debate->getPUserId();
         $prActionId = PRAction::ID_D_TARGET_DEBATE_REACTION_PUBLISH;
         $objectName = get_class($debate);
         $objectId = $debate->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputationRA($debateUserId, $prActionId, $objectName, $objectId);
 
 
         // Réaction associée à la réaction
         if ($subject->getTreeLevel() > 1) {
             $parent = $subject->getParent();
 
-            $userId = $parent->getPUserId();
+            $parentUserId = $parent->getPUserId();
             $prActionId = PRAction::ID_D_TARGET_REACTION_REACTION_PUBLISH;
             $objectName = get_class($parent);
             $objectId = $parent->getId();
 
-            $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+            $this->insertPUReputationRA($parentUserId, $prActionId, $objectName, $objectId);
+        } else {
+            $parentUserId = $debate->getPUserId();
         }
+
+        // Badges associés
+        $event = new GenericEvent($subject, array('author_user_id' => $userId, 'parent_user_id' => $parentUserId));
+        $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);        
     }
 
     /**
@@ -89,8 +98,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onCommentPublish(GenericEvent $event) {
-        $this->logger->info('*** onCommentPublish');
+    public function onRCommentPublish(GenericEvent $event) {
+        $this->logger->info('*** onRCommentPublish');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -122,8 +131,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onNotePos(GenericEvent $event) {
-        $this->logger->info('*** onNotePos');
+    public function onRNotePos(GenericEvent $event) {
+        $this->logger->info('*** onRNotePos');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -141,6 +150,11 @@ class ReputationListener {
 
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+
+                // Badges associés
+                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
+                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
+
                 break;
             case 'Politizr\Model\PDReaction':
                 $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_POS;
@@ -151,6 +165,11 @@ class ReputationListener {
 
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+
+                // Badges associés
+                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
+                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
+
                 break;
             case 'Politizr\Model\PDComment':
                 $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS;
@@ -161,6 +180,7 @@ class ReputationListener {
 
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                
                 break;
         } 
     }
@@ -170,8 +190,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onNoteNeg(GenericEvent $event) {
-        $this->logger->info('*** onNoteNeg');
+    public function onRNoteNeg(GenericEvent $event) {
+        $this->logger->info('*** onRNoteNeg');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -219,8 +239,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onDebateFollow(GenericEvent $event) {
-        $this->logger->info('*** onDebateFollow');
+    public function onRDebateFollow(GenericEvent $event) {
+        $this->logger->info('*** onRDebateFollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -244,8 +264,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onUserFollow(GenericEvent $event) {
-        $this->logger->info('*** onUserFollow');
+    public function onRUserFollow(GenericEvent $event) {
+        $this->logger->info('*** onRUserFollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -268,8 +288,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onDebateUnfollow(GenericEvent $event) {
-        $this->logger->info('*** onDebateUnfollow');
+    public function onRDebateUnfollow(GenericEvent $event) {
+        $this->logger->info('*** onRDebateUnfollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -293,8 +313,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onUserUnfollow(GenericEvent $event) {
-        $this->logger->info('*** onUserUnfollow');
+    public function onRUserUnfollow(GenericEvent $event) {
+        $this->logger->info('*** onRUserUnfollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');

@@ -3,7 +3,7 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Mes brouillons</h1>
-        {% for draft in drafts %}
+        {% if drafts | length > 0 %}
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -17,12 +17,6 @@
 			      	</thead>				
 			        {% for draft in drafts %}
 						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
-					{% else %}
-						<tr>
-							<td colspan="5">
-								Aucun brouillon rédigé pour le moment
-							</td>
-						</tr>
 					{% endfor %}
 				</table>
 			</div>
@@ -31,7 +25,7 @@
 			<div class="no-results">
 				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
 			</div>
-		{% endfor %}
+		{% endif %}
 		<h1>Mes débats publiés</h1>
         {% for debate in debates %}
 			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}

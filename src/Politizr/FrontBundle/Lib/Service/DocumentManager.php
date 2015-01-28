@@ -119,6 +119,7 @@ class DocumentManager
         $reaction->setOnline(true);
         $reaction->setPublished(false);
 
+        // TODO: à revoir / l'intégration dans le nested set ne doit se faire qu'au moment de la publication! 
         // Gestion nested set
         if ($parent) {
             $reaction->insertAsLastChildOf($parent);
@@ -175,7 +176,7 @@ class DocumentManager
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('debate_follow', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_follow', $event);
         } elseif ($way == 'unfollow') {
             $object = PDDebateQuery::create()->findPk($objectId);
 
@@ -190,7 +191,7 @@ class DocumentManager
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('debate_unfollow', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_unfollow', $event);
         }
 
         // Construction rendu
@@ -259,14 +260,14 @@ class DocumentManager
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('note_pos', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_pos', $event);
         } elseif ($way == 'down') {
             $object->setNoteNeg($object->getNoteNeg() + 1);
             $object->save();
 
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('note_neg', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_neg', $event);
         }
 
         // Construction rendu
@@ -428,9 +429,9 @@ class DocumentManager
 
         $this->sc->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
 
-        // Réputation
+        // Réputation & badges
         $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('debate_publish', $event);
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_publish', $event);
 
         // Renvoi de l'url de redirection
         return array(
@@ -685,7 +686,7 @@ class DocumentManager
 
         // Réputation
         $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('reaction_publish', $event);
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
 
         // Renvoi de l'url de redirection
         return array(
@@ -765,7 +766,7 @@ class DocumentManager
 
             // Réputation
             $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('comment_publish', $event);
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_comment_publish', $event);
 
             // Récupération objet
             $objectId = $comment->getPDocumentId();

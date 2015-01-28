@@ -129,68 +129,77 @@ class TimelineManager
      *
      *
      *
-     *  #  Réactions aux débats suivis
-     *  ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, 'p_d_reaction' as   *  type
-     *  FROM p_document
-     *      LEFT JOIN p_d_reaction 
-     *          ON p_document.id = p_d_reaction.id
-     *  WHERE 
-     *      p_d_reaction.p_d_debate_id IN (1, 2, 3)
-     *      AND p_d_reaction.tree_level > 0 )
-     *  
-     *  UNION DISTINCT
-     *  
-     *  # Débats & réactions des users suivis
-     *  ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, 'p_document' as type
-     *  FROM p_document
-     *  WHERE p_document.p_user_id IN (1, 73) )
-     *  
-     *  
-     *  UNION DISTINCT
-     *  
-     *  # Commentaires des users suivis
-     *  ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'p_d_comment' as  'Politizr\\Model\\PDComment'  type
-     *  FROM p_d_comment
-     *  WHERE p_d_comment.p_user_id IN (1, 73) )
-     *  
-     *  
-     *  UNION DISTINCT
-     *  
-     *  # Réactions sur mes débats
-     *  ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     *  FROM p_d_reaction
-     *      LEFT JOIN p_d_debate 
-     *          ON p_d_reaction.p_d_debate_id = p_d_debate.id
-     *  WHERE 
-     *      p_d_debate.p_user_id = 72
-     *      AND p_d_reaction.tree_level > 0 )
-     *  
-     *  
-     *  UNION DISTINCT
-     *  
-     *  # Réactions sur mes réactions
-     *  ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     *  FROM p_d_reaction as p_d_reaction
-     *      LEFT JOIN p_d_reaction as my_reaction
-     *          ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
-     *  WHERE 
-     *    my_reaction.id IN (12, 16) 
-     *    AND p_d_reaction.tree_left > my_reaction.tree_left
-     *      AND p_d_reaction.tree_left < my_reaction.tree_right
-     *      AND p_d_reaction.tree_level > my_reaction.tree_level
-     *      AND p_d_reaction.tree_level > 1 )
-     *  
+     *           #  Réactions aux débats suivis
+     *           ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
+     *           FROM p_document
+     *               LEFT JOIN p_d_reaction 
+     *                   ON p_document.id = p_d_reaction.id
+     *           WHERE 
+     *               p_d_reaction.published = 1  
+     *               AND p_d_reaction.online = 1 
+     *               AND p_d_reaction.p_d_debate_id IN (5,1)
+     *               AND p_d_reaction.tree_level > 0 )
      *
-     *  UNION DISTINCT
-     *  
-     *  # Commentaires sur mes débats & réactions
-     *  ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-     *  FROM p_d_comment
-     *  WHERE p_d_comment.p_document_id IN (1, 12, 16) )
-     *  
-     *  
-     *  
-     *  ORDER BY published_at DESC
+     *           UNION DISTINCT
+     *
+     *           # Débats & réactions des users suivis
+     *           ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
+     *           FROM p_document
+     *           WHERE 
+     *               p_document.published = 1    
+     *               AND p_document.online = 1   
+     *               AND p_document.p_user_id IN (6,9,60) )
+     *
+     *           UNION DISTINCT
+     *
+     *           # Commentaires des users suivis
+     *           ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+     *           FROM p_d_comment
+     *           WHERE 
+     *               p_d_comment.online = 1  
+     *               AND p_d_comment.p_user_id IN (6,9,60) )
+     *
+     *           UNION DISTINCT
+     *
+     *           # Réactions sur mes débats
+     *           ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+     *           FROM p_d_reaction
+     *               LEFT JOIN p_d_debate 
+     *                   ON p_d_reaction.p_d_debate_id = p_d_debate.id
+     *           WHERE 
+     *               p_d_reaction.published = 1  
+     *               AND p_d_reaction.online = 1 
+     *               AND p_d_debate.p_user_id = 72
+     *               AND p_d_reaction.tree_level > 0 )
+     *
+     *           UNION DISTINCT
+     *
+     *           # Réactions sur mes réactions
+     *           ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.summary as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+     *           FROM p_d_reaction as p_d_reaction
+     *               LEFT JOIN p_d_reaction as my_reaction
+     *                   ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
+     *           WHERE 
+     *               p_d_reaction.published = 1  
+     *               AND p_d_reaction.online = 1 
+     *               AND my_reaction.id IN (12, 16) 
+     *               AND p_d_reaction.tree_left > my_reaction.tree_left
+     *               AND p_d_reaction.tree_left < my_reaction.tree_right
+     *               AND p_d_reaction.tree_level > my_reaction.tree_level
+     *               AND p_d_reaction.tree_level > 1 )
+     *
+     *           UNION DISTINCT
+     *
+     *           # Commentaires sur mes débats & réactions
+     *           ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+     *           FROM p_d_comment
+     *           WHERE 
+     *               p_d_comment.online = 1  
+     *               AND p_d_comment.p_document_id IN (1, 12, 16) )
+     *
+     *
+     *           ORDER BY published_at DESC
+     *
      *  
      *
      *  @param  integer     $offset
@@ -250,7 +259,9 @@ FROM p_document
     LEFT JOIN p_d_reaction 
         ON p_document.id = p_d_reaction.id
 WHERE 
-    p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+    p_d_reaction.published = 1  
+    AND p_d_reaction.online = 1 
+    AND p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
     AND p_d_reaction.tree_level > 0 )
 
 UNION DISTINCT
@@ -258,14 +269,19 @@ UNION DISTINCT
 # Débats & réactions des users suivis
 ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
 FROM p_document
-WHERE p_document.p_user_id IN (".$inQueryUserIds.") )
+WHERE 
+    p_document.published = 1    
+    AND p_document.online = 1   
+    AND p_document.p_user_id IN (".$inQueryUserIds.") )
 
 UNION DISTINCT
 
 # Commentaires des users suivis
 ( SELECT p_d_comment.id as id, 'commentaire' as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDComment' as type
 FROM p_d_comment
-WHERE p_d_comment.p_user_id IN (".$inQueryUserIds.") )
+WHERE 
+    p_d_comment.online = 1  
+    AND p_d_comment.p_user_id IN (".$inQueryUserIds.") )
 
 UNION DISTINCT
 
@@ -275,7 +291,9 @@ FROM p_d_reaction
     LEFT JOIN p_d_debate 
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
 WHERE 
-    p_d_debate.p_user_id = ".$userId."
+    p_d_reaction.published = 1  
+    AND p_d_reaction.online = 1 
+    AND p_d_debate.p_user_id = ".$userId."
     AND p_d_reaction.tree_level > 0 )
 
 UNION DISTINCT
@@ -286,8 +304,10 @@ FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
 WHERE 
-  my_reaction.id IN (".$inQueryMyReactionIds.") 
-  AND p_d_reaction.tree_left > my_reaction.tree_left
+    p_d_reaction.published = 1  
+    AND p_d_reaction.online = 1 
+    AND my_reaction.id IN (".$inQueryMyReactionIds.") 
+    AND p_d_reaction.tree_left > my_reaction.tree_left
     AND p_d_reaction.tree_left < my_reaction.tree_right
     AND p_d_reaction.tree_level > my_reaction.tree_level
     AND p_d_reaction.tree_level > 1 )
@@ -297,7 +317,9 @@ UNION DISTINCT
 # Commentaires sur mes débats & réactions
 ( SELECT p_d_comment.id as id, 'commentaire' as title, p_d_comment.description as summary, p_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDComment' as type
 FROM p_d_comment
-WHERE p_d_comment.p_document_id IN (".$inQueryMyDocumentIds.") )
+WHERE
+    p_d_comment.online = 1  
+    AND p_d_comment.p_document_id IN (".$inQueryMyDocumentIds.") )
 
 ORDER BY published_at DESC
 LIMIT ".$offset.", ".$count."
