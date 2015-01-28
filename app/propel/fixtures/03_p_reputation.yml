@@ -47,21 +47,21 @@ Politizr\Model\PRBadge:
         p_r_badge_metal_id: bronze
         title:              Querellé
         description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     controverse:
         online:             true
         p_r_badge_type_id:  debat
         p_r_badge_metal_id: argent
         title:              Controversé
         description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     polemique:
         online:             true
         p_r_badge_type_id:  debat
         p_r_badge_metal_id: or
         title:              Polémiqué
         description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     redacteur:
         online:             true
         p_r_badge_type_id:  debat
@@ -152,21 +152,21 @@ Politizr\Model\PRBadge:
 
     # Type participation
     studieux:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
         title:              Studieux
         description:        |
             Compléter son profil à 100%
     tagueur:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
         title:              Tagueur
         description:        |
             Avoir généré X nouveaux tags
     surveillant:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
         title:              Surveillant
@@ -178,58 +178,58 @@ Politizr\Model\PRBadge:
         p_r_badge_metal_id: bronze
         title:              Fougueux
         description:        |
-            Avoir attribué X notes positifs
+            Avoir attribué X notes positives
     enthousiaste:
         online:             true
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: argent
         title:              Enthousiaste
         description:        |
-            Avoir attribué X notes positifs
+            Avoir attribué X notes positives
     passionné:
         online:             true
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: or
         title:              Passionné
         description:        |
-            Avoir attribué X notes positifs
+            Avoir attribué X notes positives
     persifleur:
         online:             true
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
         title:              Persifleur
         description:        |
-            Avoir attribué X notes négatifs
+            Avoir attribué X notes négatives
     reprobateur:
         online:             true
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: argent
         title:              Réprobateur
         description:        |
-            Avoir attribué X notes négatifs
+            Avoir attribué X notes négatives
     critique:
         online:             true
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: or
         title:              Critique
         description:        |
-            Avoir attribué X notes négatifs
+            Avoir attribué X notes négatives
     attentif:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: bronze
         title:              Attentif
         description:        |
             Visiter le site pendant X jours consécutifs
     assidu:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: argent
         title:              Assidu
         description:        |
             Visiter le site pendant X jours consécutifs
     fidèle:
-        online:             true
+        online:             false
         p_r_badge_type_id:  participation
         p_r_badge_metal_id: or
         title:              Fidèle

@@ -71,6 +71,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: b_reaction_publish }
             - { name: kernel.event_listener, event: b_document_note_pos }
+            - { name: kernel.event_listener, event: b_document_note_neg }
+            - { name: kernel.event_listener, event: b_comment_publish }
+            - { name: kernel.event_listener, event: b_comment_note_pos }
+            - { name: kernel.event_listener, event: b_comment_note_neg }
 
 
     # EXTENSIONS TWIG

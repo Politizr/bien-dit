@@ -60,11 +60,8 @@ class PRBadge extends BasePRBadge
 	// ******************************************************** //
 	//			Constantes fonctionnelles / badges				//
 	// ******************************************************** //
-    const QUERELLE_NB_DOCUMENTS = 3;
-    const QUERELLE_NB_REACTIONS = 1;
-    const CONTROVERSE_NB_DOCUMENTS = 5;
+    const QUERELLE_NB_REACTIONS = 3;
     const CONTROVERSE_NB_REACTIONS = 5;
-    const POLEMIQUE_NB_DOCUMENTS = 10;
     const POLEMIQUE_NB_REACTIONS = 10;
 
     const REDACTEUR_NB_DOCUMENTS = 3;

@@ -250,8 +250,7 @@ class TimelineManager
         
 
         // Préparation requête SQL
-        if (!empty($debateIds) || !empty($userIds) || !empty($myReactionIds) || !empty($myDocumentIds)) {
-            $sql = "
+        $sql = "
 
 #  Réactions aux débats suivis
 ( SELECT p_document.id as id, p_document.title as title, p_document.summary as summary, p_document.published_at as published_at, descendant_class as type
@@ -324,10 +323,6 @@ WHERE
 ORDER BY published_at DESC
 LIMIT ".$offset.", ".$count."
         ";
-        } else {
-            $sql = null;
-            $listPKs = array();
-        }
 
         return $sql;
     }
