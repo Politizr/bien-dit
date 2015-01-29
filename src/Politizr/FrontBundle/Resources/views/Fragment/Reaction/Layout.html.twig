@@ -50,15 +50,13 @@ LAYOUT REACTION
 			</div>
 		{% endblock detailAuthor %}
 
-		{% block detailImage %}
-			{# Image du débat #}
-			<hr>
-			<div class="row debate-image">
-				<div class="col-sm-12">
-					{{ reaction.debate | image('debate_header') }}
-				</div>
+		{# Image #}
+		<hr>
+		<div class="row debate-image">
+			<div class="col-sm-12">
+				{{ reaction | image('debate_header') }}
 			</div>
-		{% endblock detailImage %}
+		</div>
 
 		{# Résumé #}
 		<hr>
@@ -113,14 +111,6 @@ LAYOUT REACTION
 					</div>
 				{% endfor %}
 			</div>
-
-			{# Plus d'infos #}
-			{% if reaction.moreInfo | striptags | trim is not empty %}
-				<hr>
-				<div class="debate-more-info well">
-					{{ reaction.moreInfo | raw }}
-				</div>
-			{% endif %}
 		{% endblock detailDescription %}
 
 		{% block detailGlobalComments %}		
@@ -141,8 +131,13 @@ LAYOUT REACTION
 {# Bloc ligne de listing de réactions #}
 {% block listRow %}
 	<div class="reaction-list-row">
-		{% block listImage %}
-		{% endblock listImage %}
+		{% block listHeader %}
+			<div class="row">
+				<div class="col-sm-12">
+					{{ reaction | image('debate_list') }}
+				</div>
+			</div>
+		{% endblock listHeader %}
 
 		{# Infos générales #}
 		<div class="row">
@@ -187,6 +182,13 @@ LAYOUT REACTION
 {# Bloc ligne d'un tableau de brouillon de débats #}
 {% block draftTableRow %}
 	<tr>
+		<td>
+			{% if document.fileName %}
+				<img src="{{ asset('uploads/documents/'~document.fileName) | imagine_filter('c_document_list_thumb') }}" />
+			{% else %}
+				Aucun
+			{% endif %}
+		</td>
 		<td>{{ document.debate.title }}</td>
 		<td>
 			{% if document.level > 1 %}

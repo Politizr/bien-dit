@@ -67,6 +67,12 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $p_t_tag_type_id;
 
     /**
+     * The value for the p_user_id field.
+     * @var        int
+     */
+    protected $p_user_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -100,6 +106,11 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @var        PTTagType
      */
     protected $aPTTagType;
+
+    /**
+     * @var        PUser
+     */
+    protected $aPUser;
 
     /**
      * @var        PropelObjectCollection|PUTaggedT[] Collection to store aggregation of PUTaggedT objects.
@@ -213,6 +224,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
 
         return $this->p_t_tag_type_id;
+    }
+
+    /**
+     * Get the [p_user_id] column value.
+     *
+     * @return int
+     */
+    public function getPUserId()
+    {
+
+        return $this->p_user_id;
     }
 
     /**
@@ -375,6 +397,31 @@ abstract class BasePTag extends BaseObject implements Persistent
     } // setPTTagTypeId()
 
     /**
+     * Set the value of [p_user_id] column.
+     *
+     * @param  int $v new value
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPUserId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_user_id !== $v) {
+            $this->p_user_id = $v;
+            $this->modifiedColumns[] = PTagPeer::P_USER_ID;
+        }
+
+        if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
+            $this->aPUser = null;
+        }
+
+
+        return $this;
+    } // setPUserId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -525,11 +572,12 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_t_tag_type_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -539,7 +587,7 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PTagPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PTagPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PTag object", $e);
@@ -564,6 +612,9 @@ abstract class BasePTag extends BaseObject implements Persistent
 
         if ($this->aPTTagType !== null && $this->p_t_tag_type_id !== $this->aPTTagType->getId()) {
             $this->aPTTagType = null;
+        }
+        if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
+            $this->aPUser = null;
         }
     } // ensureConsistency
 
@@ -605,6 +656,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPTTagType = null;
+            $this->aPUser = null;
             $this->collPuTaggedTPTags = null;
 
             $this->collPuFollowTPTags = null;
@@ -767,6 +819,13 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $affectedRows += $this->aPTTagType->save($con);
                 }
                 $this->setPTTagType($this->aPTTagType);
+            }
+
+            if ($this->aPUser !== null) {
+                if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
+                    $affectedRows += $this->aPUser->save($con);
+                }
+                $this->setPUser($this->aPUser);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -941,6 +1000,9 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagPeer::P_T_TAG_TYPE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_t_tag_type_id`';
         }
+        if ($this->isColumnModified(PTagPeer::P_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
+        }
         if ($this->isColumnModified(PTagPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -972,6 +1034,9 @@ abstract class BasePTag extends BaseObject implements Persistent
                         break;
                     case '`p_t_tag_type_id`':
                         $stmt->bindValue($identifier, $this->p_t_tag_type_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_user_id`':
+                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1093,6 +1158,12 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aPUser !== null) {
+                if (!$this->aPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
+                }
+            }
+
 
             if (($retval = PTagPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -1165,18 +1236,21 @@ abstract class BasePTag extends BaseObject implements Persistent
                 return $this->getPTTagTypeId();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getOnline();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 5:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 6:
+                return $this->getUpdatedAt();
+                break;
+            case 7:
                 return $this->getSlug();
                 break;
             default:
@@ -1210,11 +1284,12 @@ abstract class BasePTag extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPTTagTypeId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getOnline(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
-            $keys[6] => $this->getSlug(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getOnline(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
+            $keys[7] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1224,6 +1299,9 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aPTTagType) {
                 $result['PTTagType'] = $this->aPTTagType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPUser) {
+                $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collPuTaggedTPTags) {
                 $result['PuTaggedTPTags'] = $this->collPuTaggedTPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1275,18 +1353,21 @@ abstract class BasePTag extends BaseObject implements Persistent
                 $this->setPTTagTypeId($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setOnline($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 5:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 6:
+                $this->setUpdatedAt($value);
+                break;
+            case 7:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1315,11 +1396,12 @@ abstract class BasePTag extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPTTagTypeId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
     }
 
     /**
@@ -1333,6 +1415,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PTagPeer::ID)) $criteria->add(PTagPeer::ID, $this->id);
         if ($this->isColumnModified(PTagPeer::P_T_TAG_TYPE_ID)) $criteria->add(PTagPeer::P_T_TAG_TYPE_ID, $this->p_t_tag_type_id);
+        if ($this->isColumnModified(PTagPeer::P_USER_ID)) $criteria->add(PTagPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PTagPeer::TITLE)) $criteria->add(PTagPeer::TITLE, $this->title);
         if ($this->isColumnModified(PTagPeer::ONLINE)) $criteria->add(PTagPeer::ONLINE, $this->online);
         if ($this->isColumnModified(PTagPeer::CREATED_AT)) $criteria->add(PTagPeer::CREATED_AT, $this->created_at);
@@ -1402,6 +1485,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPTTagTypeId($this->getPTTagTypeId());
+        $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1533,6 +1617,58 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
 
         return $this->aPTTagType;
+    }
+
+    /**
+     * Declares an association between this object and a PUser object.
+     *
+     * @param                  PUser $v
+     * @return PTag The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUser(PUser $v = null)
+    {
+        if ($v === null) {
+            $this->setPUserId(NULL);
+        } else {
+            $this->setPUserId($v->getId());
+        }
+
+        $this->aPUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPTag($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUser object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUser The associated PUser object.
+     * @throws PropelException
+     */
+    public function getPUser(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUser->addPTags($this);
+             */
+        }
+
+        return $this->aPUser;
     }
 
 
@@ -2875,6 +3011,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->p_t_tag_type_id = null;
+        $this->p_user_id = null;
         $this->title = null;
         $this->online = null;
         $this->created_at = null;
@@ -2935,6 +3072,9 @@ abstract class BasePTag extends BaseObject implements Persistent
             if ($this->aPTTagType instanceof Persistent) {
               $this->aPTTagType->clearAllReferences($deep);
             }
+            if ($this->aPUser instanceof Persistent) {
+              $this->aPUser->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2964,6 +3104,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
         $this->collPDDebates = null;
         $this->aPTTagType = null;
+        $this->aPUser = null;
     }
 
     /**
@@ -3083,6 +3224,7 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->setId($archive->getId());
         }
         $this->setPTTagTypeId($archive->getPTTagTypeId());
+        $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
         $this->setOnline($archive->getOnline());
         $this->setCreatedAt($archive->getCreatedAt());

@@ -25,33 +25,33 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDocumentQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDocumentQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PDocumentQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDocumentQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDocumentQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PDocumentQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDocumentQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDocumentQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
  * @method PDocumentQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDocumentQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDocumentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDocumentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
+ * @method PDocumentQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDocumentQuery orderByOnline($order = Criteria::ASC) Order by the online column
- * @method PDocumentQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDocumentQuery orderByDescendantClass($order = Criteria::ASC) Order by the descendant_class column
  *
  * @method PDocumentQuery groupById() Group by the id column
  * @method PDocumentQuery groupByPUserId() Group by the p_user_id column
  * @method PDocumentQuery groupByTitle() Group by the title column
+ * @method PDocumentQuery groupByFileName() Group by the file_name column
  * @method PDocumentQuery groupBySummary() Group by the summary column
  * @method PDocumentQuery groupByDescription() Group by the description column
- * @method PDocumentQuery groupByMoreInfo() Group by the more_info column
  * @method PDocumentQuery groupByNotePos() Group by the note_pos column
  * @method PDocumentQuery groupByNoteNeg() Group by the note_neg column
  * @method PDocumentQuery groupByNbViews() Group by the nb_views column
  * @method PDocumentQuery groupByPublished() Group by the published column
  * @method PDocumentQuery groupByPublishedAt() Group by the published_at column
  * @method PDocumentQuery groupByPublishedBy() Group by the published_by column
+ * @method PDocumentQuery groupByFavorite() Group by the favorite column
  * @method PDocumentQuery groupByOnline() Group by the online column
- * @method PDocumentQuery groupByBroadcast() Group by the broadcast column
  * @method PDocumentQuery groupByDescendantClass() Group by the descendant_class column
  *
  * @method PDocumentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -79,33 +79,33 @@ use Politizr\Model\PUser;
  *
  * @method PDocument findOneByPUserId(int $p_user_id) Return the first PDocument filtered by the p_user_id column
  * @method PDocument findOneByTitle(string $title) Return the first PDocument filtered by the title column
+ * @method PDocument findOneByFileName(string $file_name) Return the first PDocument filtered by the file_name column
  * @method PDocument findOneBySummary(string $summary) Return the first PDocument filtered by the summary column
  * @method PDocument findOneByDescription(string $description) Return the first PDocument filtered by the description column
- * @method PDocument findOneByMoreInfo(string $more_info) Return the first PDocument filtered by the more_info column
  * @method PDocument findOneByNotePos(int $note_pos) Return the first PDocument filtered by the note_pos column
  * @method PDocument findOneByNoteNeg(int $note_neg) Return the first PDocument filtered by the note_neg column
  * @method PDocument findOneByNbViews(int $nb_views) Return the first PDocument filtered by the nb_views column
  * @method PDocument findOneByPublished(boolean $published) Return the first PDocument filtered by the published column
  * @method PDocument findOneByPublishedAt(string $published_at) Return the first PDocument filtered by the published_at column
  * @method PDocument findOneByPublishedBy(string $published_by) Return the first PDocument filtered by the published_by column
+ * @method PDocument findOneByFavorite(boolean $favorite) Return the first PDocument filtered by the favorite column
  * @method PDocument findOneByOnline(boolean $online) Return the first PDocument filtered by the online column
- * @method PDocument findOneByBroadcast(boolean $broadcast) Return the first PDocument filtered by the broadcast column
  * @method PDocument findOneByDescendantClass(string $descendant_class) Return the first PDocument filtered by the descendant_class column
  *
  * @method array findById(int $id) Return PDocument objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDocument objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDocument objects filtered by the title column
+ * @method array findByFileName(string $file_name) Return PDocument objects filtered by the file_name column
  * @method array findBySummary(string $summary) Return PDocument objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDocument objects filtered by the description column
- * @method array findByMoreInfo(string $more_info) Return PDocument objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDocument objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDocument objects filtered by the note_neg column
  * @method array findByNbViews(int $nb_views) Return PDocument objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDocument objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDocument objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDocument objects filtered by the published_by column
+ * @method array findByFavorite(boolean $favorite) Return PDocument objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDocument objects filtered by the online column
- * @method array findByBroadcast(boolean $broadcast) Return PDocument objects filtered by the broadcast column
  * @method array findByDescendantClass(string $descendant_class) Return PDocument objects filtered by the descendant_class column
  */
 abstract class BasePDocumentQuery extends ModelCriteria
@@ -218,7 +218,7 @@ abstract class BasePDocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -423,6 +423,35 @@ abstract class BasePDocumentQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::FILE_NAME, $fileName, $comparison);
+    }
+
+    /**
      * Filter the query on the summary column
      *
      * Example usage:
@@ -478,35 +507,6 @@ abstract class BasePDocumentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentPeer::DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the more_info column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByMoreInfo('fooValue');   // WHERE more_info = 'fooValue'
-     * $query->filterByMoreInfo('%fooValue%'); // WHERE more_info LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $moreInfo The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function filterByMoreInfo($moreInfo = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($moreInfo)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $moreInfo)) {
-                $moreInfo = str_replace('*', '%', $moreInfo);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDocumentPeer::MORE_INFO, $moreInfo, $comparison);
     }
 
     /**
@@ -735,6 +735,33 @@ abstract class BasePDocumentQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the favorite column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFavorite(true); // WHERE favorite = true
+     * $query->filterByFavorite('yes'); // WHERE favorite = true
+     * </code>
+     *
+     * @param     boolean|string $favorite The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByFavorite($favorite = null, $comparison = null)
+    {
+        if (is_string($favorite)) {
+            $favorite = in_array(strtolower($favorite), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::FAVORITE, $favorite, $comparison);
+    }
+
+    /**
      * Filter the query on the online column
      *
      * Example usage:
@@ -759,33 +786,6 @@ abstract class BasePDocumentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentPeer::ONLINE, $online, $comparison);
-    }
-
-    /**
-     * Filter the query on the broadcast column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByBroadcast(true); // WHERE broadcast = true
-     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
-     * </code>
-     *
-     * @param     boolean|string $broadcast The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDocumentQuery The current query, for fluid interface
-     */
-    public function filterByBroadcast($broadcast = null, $comparison = null)
-    {
-        if (is_string($broadcast)) {
-            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PDocumentPeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

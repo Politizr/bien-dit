@@ -345,13 +345,13 @@ bazinga_faker:
         #################################################################################################################
         #                                   REPUTATION
         #################################################################################################################
-        Politizr\Model\PUReputationRB:
+        Politizr\Model\PUBadges:
             number:                     50
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
 
-        Politizr\Model\PUReputationRA:
+        Politizr\Model\PUReputation:
             number:                     150
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
@@ -399,10 +399,11 @@ bazinga_faker:
 
                 Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
-                MoreInfo:               { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+
+                Favorite:               { method: boolean, parameters: [ 10 ] }
 
                 Published:              { method: boolean, parameters: [ 90 ] }
                 PublishedAt:            { method: dateTimeThisYear }

@@ -13,26 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PRBadge;
-use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PUReputationRB;
-use Politizr\Model\PUReputationRBPeer;
-use Politizr\Model\PUReputationRBQuery;
+use Politizr\Model\PRAction;
+use Politizr\Model\PRActionQuery;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PUReputationPeer;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePUReputationRB extends BaseObject implements Persistent
+abstract class BasePUReputation extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PUReputationRBPeer';
+    const PEER = 'Politizr\\Model\\PUReputationPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PUReputationRBPeer
+     * @var        PUReputationPeer
      */
     protected static $peer;
 
@@ -55,10 +55,22 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
-     * The value for the p_r_badge_id field.
+     * The value for the p_r_action_id field.
      * @var        int
      */
-    protected $p_r_badge_id;
+    protected $p_r_action_id;
+
+    /**
+     * The value for the p_object_name field.
+     * @var        string
+     */
+    protected $p_object_name;
+
+    /**
+     * The value for the p_object_id field.
+     * @var        int
+     */
+    protected $p_object_id;
 
     /**
      * The value for the created_at field.
@@ -78,9 +90,9 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     protected $aPUser;
 
     /**
-     * @var        PRBadge
+     * @var        PRAction
      */
-    protected $aPRBadge;
+    protected $aPRAction;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -125,14 +137,36 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_r_badge_id] column value.
+     * Get the [p_r_action_id] column value.
      *
      * @return int
      */
-    public function getPRBadgeId()
+    public function getPRActionId()
     {
 
-        return $this->p_r_badge_id;
+        return $this->p_r_action_id;
+    }
+
+    /**
+     * Get the [p_object_name] column value.
+     *
+     * @return string
+     */
+    public function getPObjectName()
+    {
+
+        return $this->p_object_name;
+    }
+
+    /**
+     * Get the [p_object_id] column value.
+     *
+     * @return int
+     */
+    public function getPObjectId()
+    {
+
+        return $this->p_object_id;
     }
 
     /**
@@ -219,7 +253,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -229,7 +263,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PUReputationRBPeer::ID;
+            $this->modifiedColumns[] = PUReputationPeer::ID;
         }
 
 
@@ -240,7 +274,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * Set the value of [p_user_id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      */
     public function setPUserId($v)
     {
@@ -250,7 +284,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
 
         if ($this->p_user_id !== $v) {
             $this->p_user_id = $v;
-            $this->modifiedColumns[] = PUReputationRBPeer::P_USER_ID;
+            $this->modifiedColumns[] = PUReputationPeer::P_USER_ID;
         }
 
         if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
@@ -262,36 +296,78 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
-     * Set the value of [p_r_badge_id] column.
+     * Set the value of [p_r_action_id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      */
-    public function setPRBadgeId($v)
+    public function setPRActionId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_r_badge_id !== $v) {
-            $this->p_r_badge_id = $v;
-            $this->modifiedColumns[] = PUReputationRBPeer::P_R_BADGE_ID;
+        if ($this->p_r_action_id !== $v) {
+            $this->p_r_action_id = $v;
+            $this->modifiedColumns[] = PUReputationPeer::P_R_ACTION_ID;
         }
 
-        if ($this->aPRBadge !== null && $this->aPRBadge->getId() !== $v) {
-            $this->aPRBadge = null;
+        if ($this->aPRAction !== null && $this->aPRAction->getId() !== $v) {
+            $this->aPRAction = null;
         }
 
 
         return $this;
-    } // setPRBadgeId()
+    } // setPRActionId()
+
+    /**
+     * Set the value of [p_object_name] column.
+     *
+     * @param  string $v new value
+     * @return PUReputation The current object (for fluent API support)
+     */
+    public function setPObjectName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->p_object_name !== $v) {
+            $this->p_object_name = $v;
+            $this->modifiedColumns[] = PUReputationPeer::P_OBJECT_NAME;
+        }
+
+
+        return $this;
+    } // setPObjectName()
+
+    /**
+     * Set the value of [p_object_id] column.
+     *
+     * @param  int $v new value
+     * @return PUReputation The current object (for fluent API support)
+     */
+    public function setPObjectId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_object_id !== $v) {
+            $this->p_object_id = $v;
+            $this->modifiedColumns[] = PUReputationPeer::P_OBJECT_ID;
+        }
+
+
+        return $this;
+    } // setPObjectId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -301,7 +377,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PUReputationRBPeer::CREATED_AT;
+                $this->modifiedColumns[] = PUReputationPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -314,7 +390,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -324,7 +400,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PUReputationRBPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PUReputationPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -366,9 +442,11 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_r_badge_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->p_r_action_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -378,10 +456,10 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUReputationRBPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PUReputationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PUReputationRB object", $e);
+            throw new PropelException("Error populating PUReputation object", $e);
         }
     }
 
@@ -404,8 +482,8 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
         }
-        if ($this->aPRBadge !== null && $this->p_r_badge_id !== $this->aPRBadge->getId()) {
-            $this->aPRBadge = null;
+        if ($this->aPRAction !== null && $this->p_r_action_id !== $this->aPRAction->getId()) {
+            $this->aPRAction = null;
         }
     } // ensureConsistency
 
@@ -430,13 +508,13 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PUReputationRBPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PUReputationPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -447,7 +525,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPUser = null;
-            $this->aPRBadge = null;
+            $this->aPRAction = null;
         } // if (deep)
     }
 
@@ -468,12 +546,12 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PUReputationRBQuery::create()
+            $deleteQuery = PUReputationQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -511,7 +589,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -521,16 +599,16 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PUReputationRBPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PUReputationPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PUReputationRBPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PUReputationPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PUReputationRBPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PUReputationPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -542,7 +620,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PUReputationRBPeer::addInstanceToPool($this);
+                PUReputationPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -584,11 +662,11 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                 $this->setPUser($this->aPUser);
             }
 
-            if ($this->aPRBadge !== null) {
-                if ($this->aPRBadge->isModified() || $this->aPRBadge->isNew()) {
-                    $affectedRows += $this->aPRBadge->save($con);
+            if ($this->aPRAction !== null) {
+                if ($this->aPRAction->isModified() || $this->aPRAction->isNew()) {
+                    $affectedRows += $this->aPRAction->save($con);
                 }
-                $this->setPRBadge($this->aPRBadge);
+                $this->setPRAction($this->aPRAction);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -622,30 +700,36 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PUReputationRBPeer::ID;
+        $this->modifiedColumns[] = PUReputationPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUReputationRBPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUReputationPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PUReputationRBPeer::ID)) {
+        if ($this->isColumnModified(PUReputationPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PUReputationRBPeer::P_USER_ID)) {
+        if ($this->isColumnModified(PUReputationPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PUReputationRBPeer::P_R_BADGE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_r_badge_id`';
+        if ($this->isColumnModified(PUReputationPeer::P_R_ACTION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_r_action_id`';
         }
-        if ($this->isColumnModified(PUReputationRBPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PUReputationPeer::P_OBJECT_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`p_object_name`';
+        }
+        if ($this->isColumnModified(PUReputationPeer::P_OBJECT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_object_id`';
+        }
+        if ($this->isColumnModified(PUReputationPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PUReputationRBPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PUReputationPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_u_reputation_r_b` (%s) VALUES (%s)',
+            'INSERT INTO `p_u_reputation` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -660,8 +744,14 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
-                    case '`p_r_badge_id`':
-                        $stmt->bindValue($identifier, $this->p_r_badge_id, PDO::PARAM_INT);
+                    case '`p_r_action_id`':
+                        $stmt->bindValue($identifier, $this->p_r_action_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_object_name`':
+                        $stmt->bindValue($identifier, $this->p_object_name, PDO::PARAM_STR);
+                        break;
+                    case '`p_object_id`':
+                        $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -774,14 +864,14 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aPRBadge !== null) {
-                if (!$this->aPRBadge->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPRBadge->getValidationFailures());
+            if ($this->aPRAction !== null) {
+                if (!$this->aPRAction->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPRAction->getValidationFailures());
                 }
             }
 
 
-            if (($retval = PUReputationRBPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = PUReputationPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -805,7 +895,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUReputationRBPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUReputationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -828,12 +918,18 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 2:
-                return $this->getPRBadgeId();
+                return $this->getPRActionId();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getPObjectName();
                 break;
             case 4:
+                return $this->getPObjectId();
+                break;
+            case 5:
+                return $this->getCreatedAt();
+                break;
+            case 6:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -859,17 +955,19 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUReputationRB'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUReputation'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUReputationRB'][$this->getPrimaryKey()] = true;
-        $keys = PUReputationRBPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PUReputation'][$this->getPrimaryKey()] = true;
+        $keys = PUReputationPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPRBadgeId(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
+            $keys[2] => $this->getPRActionId(),
+            $keys[3] => $this->getPObjectName(),
+            $keys[4] => $this->getPObjectId(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -880,8 +978,8 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPRBadge) {
-                $result['PRBadge'] = $this->aPRBadge->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPRAction) {
+                $result['PRAction'] = $this->aPRAction->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -901,7 +999,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUReputationRBPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUReputationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -924,12 +1022,18 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 2:
-                $this->setPRBadgeId($value);
+                $this->setPRActionId($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setPObjectName($value);
                 break;
             case 4:
+                $this->setPObjectId($value);
+                break;
+            case 5:
+                $this->setCreatedAt($value);
+                break;
+            case 6:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -954,13 +1058,15 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PUReputationRBPeer::getFieldNames($keyType);
+        $keys = PUReputationPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPRBadgeId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPRActionId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
     }
 
     /**
@@ -970,13 +1076,15 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
+        $criteria = new Criteria(PUReputationPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PUReputationRBPeer::ID)) $criteria->add(PUReputationRBPeer::ID, $this->id);
-        if ($this->isColumnModified(PUReputationRBPeer::P_USER_ID)) $criteria->add(PUReputationRBPeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PUReputationRBPeer::P_R_BADGE_ID)) $criteria->add(PUReputationRBPeer::P_R_BADGE_ID, $this->p_r_badge_id);
-        if ($this->isColumnModified(PUReputationRBPeer::CREATED_AT)) $criteria->add(PUReputationRBPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PUReputationRBPeer::UPDATED_AT)) $criteria->add(PUReputationRBPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUReputationPeer::ID)) $criteria->add(PUReputationPeer::ID, $this->id);
+        if ($this->isColumnModified(PUReputationPeer::P_USER_ID)) $criteria->add(PUReputationPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUReputationPeer::P_R_ACTION_ID)) $criteria->add(PUReputationPeer::P_R_ACTION_ID, $this->p_r_action_id);
+        if ($this->isColumnModified(PUReputationPeer::P_OBJECT_NAME)) $criteria->add(PUReputationPeer::P_OBJECT_NAME, $this->p_object_name);
+        if ($this->isColumnModified(PUReputationPeer::P_OBJECT_ID)) $criteria->add(PUReputationPeer::P_OBJECT_ID, $this->p_object_id);
+        if ($this->isColumnModified(PUReputationPeer::CREATED_AT)) $criteria->add(PUReputationPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PUReputationPeer::UPDATED_AT)) $criteria->add(PUReputationPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -991,8 +1099,8 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
-        $criteria->add(PUReputationRBPeer::ID, $this->id);
+        $criteria = new Criteria(PUReputationPeer::DATABASE_NAME);
+        $criteria->add(PUReputationPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1033,7 +1141,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PUReputationRB (or compatible) type.
+     * @param object $copyObj An object of PUReputation (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1041,7 +1149,9 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPUserId($this->getPUserId());
-        $copyObj->setPRBadgeId($this->getPRBadgeId());
+        $copyObj->setPRActionId($this->getPRActionId());
+        $copyObj->setPObjectName($this->getPObjectName());
+        $copyObj->setPObjectId($this->getPObjectId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1071,7 +1181,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PUReputationRB Clone of current object.
+     * @return PUReputation Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1091,12 +1201,12 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PUReputationRBPeer
+     * @return PUReputationPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PUReputationRBPeer();
+            self::$peer = new PUReputationPeer();
         }
 
         return self::$peer;
@@ -1106,7 +1216,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      * Declares an association between this object and a PUser object.
      *
      * @param                  PUser $v
-     * @return PUReputationRB The current object (for fluent API support)
+     * @return PUReputation The current object (for fluent API support)
      * @throws PropelException
      */
     public function setPUser(PUser $v = null)
@@ -1122,7 +1232,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUReputationRB($this);
+            $v->addPUReputation($this);
         }
 
 
@@ -1147,7 +1257,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUser->addPUReputationRBs($this);
+                $this->aPUser->addPUReputations($this);
              */
         }
 
@@ -1155,26 +1265,26 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a PRBadge object.
+     * Declares an association between this object and a PRAction object.
      *
-     * @param                  PRBadge $v
-     * @return PUReputationRB The current object (for fluent API support)
+     * @param                  PRAction $v
+     * @return PUReputation The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPRBadge(PRBadge $v = null)
+    public function setPRAction(PRAction $v = null)
     {
         if ($v === null) {
-            $this->setPRBadgeId(NULL);
+            $this->setPRActionId(NULL);
         } else {
-            $this->setPRBadgeId($v->getId());
+            $this->setPRActionId($v->getId());
         }
 
-        $this->aPRBadge = $v;
+        $this->aPRAction = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PRBadge object, it will not be re-added.
+        // If this object has already been added to the PRAction object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUReputationRB($this);
+            $v->addPUReputation($this);
         }
 
 
@@ -1183,27 +1293,27 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated PRBadge object
+     * Get the associated PRAction object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return PRBadge The associated PRBadge object.
+     * @return PRAction The associated PRAction object.
      * @throws PropelException
      */
-    public function getPRBadge(PropelPDO $con = null, $doQuery = true)
+    public function getPRAction(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPRBadge === null && ($this->p_r_badge_id !== null) && $doQuery) {
-            $this->aPRBadge = PRBadgeQuery::create()->findPk($this->p_r_badge_id, $con);
+        if ($this->aPRAction === null && ($this->p_r_action_id !== null) && $doQuery) {
+            $this->aPRAction = PRActionQuery::create()->findPk($this->p_r_action_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPRBadge->addPUReputationRBs($this);
+                $this->aPRAction->addPUReputations($this);
              */
         }
 
-        return $this->aPRBadge;
+        return $this->aPRAction;
     }
 
     /**
@@ -1213,7 +1323,9 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->p_user_id = null;
-        $this->p_r_badge_id = null;
+        $this->p_r_action_id = null;
+        $this->p_object_name = null;
+        $this->p_object_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1241,15 +1353,15 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
-            if ($this->aPRBadge instanceof Persistent) {
-              $this->aPRBadge->clearAllReferences($deep);
+            if ($this->aPRAction instanceof Persistent) {
+              $this->aPRAction->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aPUser = null;
-        $this->aPRBadge = null;
+        $this->aPRAction = null;
     }
 
     /**
@@ -1259,7 +1371,7 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PUReputationRBPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PUReputationPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1277,11 +1389,11 @@ abstract class BasePUReputationRB extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PUReputationRB The current object (for fluent API support)
+     * @return     PUReputation The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PUReputationRBPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PUReputationPeer::UPDATED_AT;
 
         return $this;
     }

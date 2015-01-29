@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_u_reputation_r_a' table.
+ * This class defines the structure of the 'p_u_reputation' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PUReputationRATableMap extends TableMap
+class PUReputationTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PUReputationRATableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PUReputationTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,9 +36,9 @@ class PUReputationRATableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_u_reputation_r_a');
-        $this->setPhpName('PUReputationRA');
-        $this->setClassname('Politizr\\Model\\PUReputationRA');
+        $this->setName('p_u_reputation');
+        $this->setPhpName('PUReputation');
+        $this->setClassname('Politizr\\Model\\PUReputation');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
@@ -83,4 +83,4 @@ class PUReputationRATableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PUReputationRATableMap
+} // PUReputationTableMap

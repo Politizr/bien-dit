@@ -50,14 +50,14 @@ abstract class BasePDocumentPeer
     /** the column name for the title field */
     const TITLE = 'p_document.title';
 
+    /** the column name for the file_name field */
+    const FILE_NAME = 'p_document.file_name';
+
     /** the column name for the summary field */
     const SUMMARY = 'p_document.summary';
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_document.description';
-
-    /** the column name for the more_info field */
-    const MORE_INFO = 'p_document.more_info';
 
     /** the column name for the note_pos field */
     const NOTE_POS = 'p_document.note_pos';
@@ -77,11 +77,11 @@ abstract class BasePDocumentPeer
     /** the column name for the published_by field */
     const PUBLISHED_BY = 'p_document.published_by';
 
+    /** the column name for the favorite field */
+    const FAVORITE = 'p_document.favorite';
+
     /** the column name for the online field */
     const ONLINE = 'p_document.online';
-
-    /** the column name for the broadcast field */
-    const BROADCAST = 'p_document.broadcast';
 
     /** the column name for the descendant_class field */
     const DESCENDANT_CLASS = 'p_document.descendant_class';
@@ -105,11 +105,11 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[PDocumentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'Summary', 'Description', 'MoreInfo', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Online', 'Broadcast', 'DescendantClass', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'summary', 'description', 'moreInfo', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'online', 'broadcast', 'descendantClass', ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::MORE_INFO, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::NB_VIEWS, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::ONLINE, PDocumentPeer::BROADCAST, PDocumentPeer::DESCENDANT_CLASS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'BROADCAST', 'DESCENDANT_CLASS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'summary', 'description', 'more_info', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'online', 'broadcast', 'descendant_class', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'FileName', 'Summary', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'DescendantClass', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'fileName', 'summary', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'descendantClass', ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID, PDocumentPeer::P_USER_ID, PDocumentPeer::TITLE, PDocumentPeer::FILE_NAME, PDocumentPeer::SUMMARY, PDocumentPeer::DESCRIPTION, PDocumentPeer::NOTE_POS, PDocumentPeer::NOTE_NEG, PDocumentPeer::NB_VIEWS, PDocumentPeer::PUBLISHED, PDocumentPeer::PUBLISHED_AT, PDocumentPeer::PUBLISHED_BY, PDocumentPeer::FAVORITE, PDocumentPeer::ONLINE, PDocumentPeer::DESCENDANT_CLASS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'FILE_NAME', 'SUMMARY', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'DESCENDANT_CLASS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'file_name', 'summary', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'descendant_class', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
@@ -120,11 +120,11 @@ abstract class BasePDocumentPeer
      * e.g. PDocumentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'NbViews' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Online' => 12, 'Broadcast' => 13, 'DescendantClass' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'nbViews' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'online' => 12, 'broadcast' => 13, 'descendantClass' => 14, ),
-        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::SUMMARY => 3, PDocumentPeer::DESCRIPTION => 4, PDocumentPeer::MORE_INFO => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::NB_VIEWS => 8, PDocumentPeer::PUBLISHED => 9, PDocumentPeer::PUBLISHED_AT => 10, PDocumentPeer::PUBLISHED_BY => 11, PDocumentPeer::ONLINE => 12, PDocumentPeer::BROADCAST => 13, PDocumentPeer::DESCENDANT_CLASS => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'NB_VIEWS' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'ONLINE' => 12, 'BROADCAST' => 13, 'DESCENDANT_CLASS' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info' => 5, 'note_pos' => 6, 'note_neg' => 7, 'nb_views' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'online' => 12, 'broadcast' => 13, 'descendant_class' => 14, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'FileName' => 3, 'Summary' => 4, 'Description' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'NbViews' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Favorite' => 12, 'Online' => 13, 'DescendantClass' => 14, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'fileName' => 3, 'summary' => 4, 'description' => 5, 'notePos' => 6, 'noteNeg' => 7, 'nbViews' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'favorite' => 12, 'online' => 13, 'descendantClass' => 14, ),
+        BasePeer::TYPE_COLNAME => array (PDocumentPeer::ID => 0, PDocumentPeer::P_USER_ID => 1, PDocumentPeer::TITLE => 2, PDocumentPeer::FILE_NAME => 3, PDocumentPeer::SUMMARY => 4, PDocumentPeer::DESCRIPTION => 5, PDocumentPeer::NOTE_POS => 6, PDocumentPeer::NOTE_NEG => 7, PDocumentPeer::NB_VIEWS => 8, PDocumentPeer::PUBLISHED => 9, PDocumentPeer::PUBLISHED_AT => 10, PDocumentPeer::PUBLISHED_BY => 11, PDocumentPeer::FAVORITE => 12, PDocumentPeer::ONLINE => 13, PDocumentPeer::DESCENDANT_CLASS => 14, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'FILE_NAME' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'NB_VIEWS' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'FAVORITE' => 12, 'ONLINE' => 13, 'DESCENDANT_CLASS' => 14, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'file_name' => 3, 'summary' => 4, 'description' => 5, 'note_pos' => 6, 'note_neg' => 7, 'nb_views' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'favorite' => 12, 'online' => 13, 'descendant_class' => 14, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
@@ -202,33 +202,33 @@ abstract class BasePDocumentPeer
             $criteria->addSelectColumn(PDocumentPeer::ID);
             $criteria->addSelectColumn(PDocumentPeer::P_USER_ID);
             $criteria->addSelectColumn(PDocumentPeer::TITLE);
+            $criteria->addSelectColumn(PDocumentPeer::FILE_NAME);
             $criteria->addSelectColumn(PDocumentPeer::SUMMARY);
             $criteria->addSelectColumn(PDocumentPeer::DESCRIPTION);
-            $criteria->addSelectColumn(PDocumentPeer::MORE_INFO);
             $criteria->addSelectColumn(PDocumentPeer::NOTE_POS);
             $criteria->addSelectColumn(PDocumentPeer::NOTE_NEG);
             $criteria->addSelectColumn(PDocumentPeer::NB_VIEWS);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDocumentPeer::PUBLISHED_BY);
+            $criteria->addSelectColumn(PDocumentPeer::FAVORITE);
             $criteria->addSelectColumn(PDocumentPeer::ONLINE);
-            $criteria->addSelectColumn(PDocumentPeer::BROADCAST);
             $criteria->addSelectColumn(PDocumentPeer::DESCENDANT_CLASS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.more_info');
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');
             $criteria->addSelectColumn($alias . '.nb_views');
             $criteria->addSelectColumn($alias . '.published');
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');
+            $criteria->addSelectColumn($alias . '.favorite');
             $criteria->addSelectColumn($alias . '.online');
-            $criteria->addSelectColumn($alias . '.broadcast');
             $criteria->addSelectColumn($alias . '.descendant_class');
         }
     }

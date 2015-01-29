@@ -54,6 +54,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $p_d_debate_id;
 
     /**
+     * The value for the parent_reaction_id field.
+     * @var        int
+     */
+    protected $parent_reaction_id;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -108,6 +114,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $title;
 
     /**
+     * The value for the file_name field.
+     * @var        string
+     */
+    protected $file_name;
+
+    /**
      * The value for the summary field.
      * @var        string
      */
@@ -118,12 +130,6 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * @var        string
      */
     protected $description;
-
-    /**
-     * The value for the more_info field.
-     * @var        string
-     */
-    protected $more_info;
 
     /**
      * The value for the note_pos field.
@@ -164,16 +170,16 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $published_by;
 
     /**
+     * The value for the favorite field.
+     * @var        boolean
+     */
+    protected $favorite;
+
+    /**
      * The value for the online field.
      * @var        boolean
      */
     protected $online;
-
-    /**
-     * The value for the broadcast field.
-     * @var        boolean
-     */
-    protected $broadcast;
 
     /**
      * @var        PDDebate
@@ -265,6 +271,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
     {
 
         return $this->p_d_debate_id;
+    }
+
+    /**
+     * Get the [parent_reaction_id] column value.
+     *
+     * @return int
+     */
+    public function getParentReactionId()
+    {
+
+        return $this->parent_reaction_id;
     }
 
     /**
@@ -425,6 +442,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
     }
 
     /**
+     * Get the [file_name] column value.
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+
+        return $this->file_name;
+    }
+
+    /**
      * Get the [summary] column value.
      *
      * @return string
@@ -444,17 +472,6 @@ abstract class BasePDReaction extends PDocument implements Persistent
     {
 
         return $this->description;
-    }
-
-    /**
-     * Get the [more_info] column value.
-     *
-     * @return string
-     */
-    public function getMoreInfo()
-    {
-
-        return $this->more_info;
     }
 
     /**
@@ -553,6 +570,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
     }
 
     /**
+     * Get the [favorite] column value.
+     *
+     * @return boolean
+     */
+    public function getFavorite()
+    {
+
+        return $this->favorite;
+    }
+
+    /**
      * Get the [online] column value.
      *
      * @return boolean
@@ -561,17 +589,6 @@ abstract class BasePDReaction extends PDocument implements Persistent
     {
 
         return $this->online;
-    }
-
-    /**
-     * Get the [broadcast] column value.
-     *
-     * @return boolean
-     */
-    public function getBroadcast()
-    {
-
-        return $this->broadcast;
     }
 
     /**
@@ -598,6 +615,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
 
         return $this;
     } // setPDDebateId()
+
+    /**
+     * Set the value of [parent_reaction_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setParentReactionId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->parent_reaction_id !== $v) {
+            $this->parent_reaction_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::PARENT_REACTION_ID;
+        }
+
+
+        return $this;
+    } // setParentReactionId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -801,6 +839,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
     } // setTitle()
 
     /**
+     * Set the value of [file_name] column.
+     *
+     * @param  string $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setFileName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->file_name !== $v) {
+            $this->file_name = $v;
+            $this->modifiedColumns[] = PDReactionPeer::FILE_NAME;
+        }
+
+
+        return $this;
+    } // setFileName()
+
+    /**
      * Set the value of [summary] column.
      *
      * @param  string $v new value
@@ -841,27 +900,6 @@ abstract class BasePDReaction extends PDocument implements Persistent
 
         return $this;
     } // setDescription()
-
-    /**
-     * Set the value of [more_info] column.
-     *
-     * @param  string $v new value
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function setMoreInfo($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->more_info !== $v) {
-            $this->more_info = $v;
-            $this->modifiedColumns[] = PDReactionPeer::MORE_INFO;
-        }
-
-
-        return $this;
-    } // setMoreInfo()
 
     /**
      * Set the value of [note_pos] column.
@@ -1000,6 +1038,35 @@ abstract class BasePDReaction extends PDocument implements Persistent
     } // setPublishedBy()
 
     /**
+     * Sets the value of the [favorite] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setFavorite($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->favorite !== $v) {
+            $this->favorite = $v;
+            $this->modifiedColumns[] = PDReactionPeer::FAVORITE;
+        }
+
+
+        return $this;
+    } // setFavorite()
+
+    /**
      * Sets the value of the [online] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1027,35 +1094,6 @@ abstract class BasePDReaction extends PDocument implements Persistent
 
         return $this;
     } // setOnline()
-
-    /**
-     * Sets the value of the [broadcast] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function setBroadcast($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->broadcast !== $v) {
-            $this->broadcast = $v;
-            $this->modifiedColumns[] = PDReactionPeer::BROADCAST;
-        }
-
-
-        return $this;
-    } // setBroadcast()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -1098,26 +1136,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
         try {
 
             $this->p_d_debate_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->created_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->updated_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->slug = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->tree_left = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->tree_right = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->tree_level = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->p_user_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->title = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->summary = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->more_info = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->note_pos = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-            $this->note_neg = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->nb_views = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->published = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->broadcast = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->parent_reaction_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->updated_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->slug = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->tree_left = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->tree_right = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->tree_level = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->p_user_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->title = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->file_name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->summary = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->note_pos = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->note_neg = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->nb_views = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->published = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->published_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->published_by = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->favorite = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->online = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1127,7 +1166,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 21; // 21 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1441,6 +1480,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_D_DEBATE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_d_debate_id`';
         }
+        if ($this->isColumnModified(PDReactionPeer::PARENT_REACTION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`parent_reaction_id`';
+        }
         if ($this->isColumnModified(PDReactionPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1468,14 +1510,14 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
+        if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`file_name`';
+        }
         if ($this->isColumnModified(PDReactionPeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
         if ($this->isColumnModified(PDReactionPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
-        }
-        if ($this->isColumnModified(PDReactionPeer::MORE_INFO)) {
-            $modifiedColumns[':p' . $index++]  = '`more_info`';
         }
         if ($this->isColumnModified(PDReactionPeer::NOTE_POS)) {
             $modifiedColumns[':p' . $index++]  = '`note_pos`';
@@ -1495,11 +1537,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_BY)) {
             $modifiedColumns[':p' . $index++]  = '`published_by`';
         }
+        if ($this->isColumnModified(PDReactionPeer::FAVORITE)) {
+            $modifiedColumns[':p' . $index++]  = '`favorite`';
+        }
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
-        }
-        if ($this->isColumnModified(PDReactionPeer::BROADCAST)) {
-            $modifiedColumns[':p' . $index++]  = '`broadcast`';
         }
 
         $sql = sprintf(
@@ -1514,6 +1556,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 switch ($columnName) {
                     case '`p_d_debate_id`':
                         $stmt->bindValue($identifier, $this->p_d_debate_id, PDO::PARAM_INT);
+                        break;
+                    case '`parent_reaction_id`':
+                        $stmt->bindValue($identifier, $this->parent_reaction_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1542,14 +1587,14 @@ abstract class BasePDReaction extends PDocument implements Persistent
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
+                    case '`file_name`':
+                        $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
+                        break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case '`more_info`':
-                        $stmt->bindValue($identifier, $this->more_info, PDO::PARAM_STR);
                         break;
                     case '`note_pos`':
                         $stmt->bindValue($identifier, $this->note_pos, PDO::PARAM_INT);
@@ -1569,11 +1614,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
                     case '`published_by`':
                         $stmt->bindValue($identifier, $this->published_by, PDO::PARAM_STR);
                         break;
+                    case '`favorite`':
+                        $stmt->bindValue($identifier, (int) $this->favorite, PDO::PARAM_INT);
+                        break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
-                        break;
-                    case '`broadcast`':
-                        $stmt->bindValue($identifier, (int) $this->broadcast, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1730,64 +1775,67 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 return $this->getPDDebateId();
                 break;
             case 1:
-                return $this->getCreatedAt();
+                return $this->getParentReactionId();
                 break;
             case 2:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 3:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 4:
-                return $this->getTreeLeft();
+                return $this->getSlug();
                 break;
             case 5:
-                return $this->getTreeRight();
+                return $this->getTreeLeft();
                 break;
             case 6:
-                return $this->getTreeLevel();
+                return $this->getTreeRight();
                 break;
             case 7:
-                return $this->getId();
+                return $this->getTreeLevel();
                 break;
             case 8:
-                return $this->getPUserId();
+                return $this->getId();
                 break;
             case 9:
-                return $this->getTitle();
+                return $this->getPUserId();
                 break;
             case 10:
-                return $this->getSummary();
+                return $this->getTitle();
                 break;
             case 11:
-                return $this->getDescription();
+                return $this->getFileName();
                 break;
             case 12:
-                return $this->getMoreInfo();
+                return $this->getSummary();
                 break;
             case 13:
-                return $this->getNotePos();
+                return $this->getDescription();
                 break;
             case 14:
-                return $this->getNoteNeg();
+                return $this->getNotePos();
                 break;
             case 15:
-                return $this->getNbViews();
+                return $this->getNoteNeg();
                 break;
             case 16:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 17:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 18:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 19:
-                return $this->getOnline();
+                return $this->getPublishedBy();
                 break;
             case 20:
-                return $this->getBroadcast();
+                return $this->getFavorite();
+                break;
+            case 21:
+                return $this->getOnline();
                 break;
             default:
                 return null;
@@ -1819,26 +1867,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $keys = PDReactionPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getPDDebateId(),
-            $keys[1] => $this->getCreatedAt(),
-            $keys[2] => $this->getUpdatedAt(),
-            $keys[3] => $this->getSlug(),
-            $keys[4] => $this->getTreeLeft(),
-            $keys[5] => $this->getTreeRight(),
-            $keys[6] => $this->getTreeLevel(),
-            $keys[7] => $this->getId(),
-            $keys[8] => $this->getPUserId(),
-            $keys[9] => $this->getTitle(),
-            $keys[10] => $this->getSummary(),
-            $keys[11] => $this->getDescription(),
-            $keys[12] => $this->getMoreInfo(),
-            $keys[13] => $this->getNotePos(),
-            $keys[14] => $this->getNoteNeg(),
-            $keys[15] => $this->getNbViews(),
-            $keys[16] => $this->getPublished(),
-            $keys[17] => $this->getPublishedAt(),
-            $keys[18] => $this->getPublishedBy(),
-            $keys[19] => $this->getOnline(),
-            $keys[20] => $this->getBroadcast(),
+            $keys[1] => $this->getParentReactionId(),
+            $keys[2] => $this->getCreatedAt(),
+            $keys[3] => $this->getUpdatedAt(),
+            $keys[4] => $this->getSlug(),
+            $keys[5] => $this->getTreeLeft(),
+            $keys[6] => $this->getTreeRight(),
+            $keys[7] => $this->getTreeLevel(),
+            $keys[8] => $this->getId(),
+            $keys[9] => $this->getPUserId(),
+            $keys[10] => $this->getTitle(),
+            $keys[11] => $this->getFileName(),
+            $keys[12] => $this->getSummary(),
+            $keys[13] => $this->getDescription(),
+            $keys[14] => $this->getNotePos(),
+            $keys[15] => $this->getNoteNeg(),
+            $keys[16] => $this->getNbViews(),
+            $keys[17] => $this->getPublished(),
+            $keys[18] => $this->getPublishedAt(),
+            $keys[19] => $this->getPublishedBy(),
+            $keys[20] => $this->getFavorite(),
+            $keys[21] => $this->getOnline(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1893,64 +1942,67 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 $this->setPDDebateId($value);
                 break;
             case 1:
-                $this->setCreatedAt($value);
+                $this->setParentReactionId($value);
                 break;
             case 2:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 3:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 4:
-                $this->setTreeLeft($value);
+                $this->setSlug($value);
                 break;
             case 5:
-                $this->setTreeRight($value);
+                $this->setTreeLeft($value);
                 break;
             case 6:
-                $this->setTreeLevel($value);
+                $this->setTreeRight($value);
                 break;
             case 7:
-                $this->setId($value);
+                $this->setTreeLevel($value);
                 break;
             case 8:
-                $this->setPUserId($value);
+                $this->setId($value);
                 break;
             case 9:
-                $this->setTitle($value);
+                $this->setPUserId($value);
                 break;
             case 10:
-                $this->setSummary($value);
+                $this->setTitle($value);
                 break;
             case 11:
-                $this->setDescription($value);
+                $this->setFileName($value);
                 break;
             case 12:
-                $this->setMoreInfo($value);
+                $this->setSummary($value);
                 break;
             case 13:
-                $this->setNotePos($value);
+                $this->setDescription($value);
                 break;
             case 14:
-                $this->setNoteNeg($value);
+                $this->setNotePos($value);
                 break;
             case 15:
-                $this->setNbViews($value);
+                $this->setNoteNeg($value);
                 break;
             case 16:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 17:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 18:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 19:
-                $this->setOnline($value);
+                $this->setPublishedBy($value);
                 break;
             case 20:
-                $this->setBroadcast($value);
+                $this->setFavorite($value);
+                break;
+            case 21:
+                $this->setOnline($value);
                 break;
         } // switch()
     }
@@ -1977,26 +2029,27 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $keys = PDReactionPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setPDDebateId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setCreatedAt($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setUpdatedAt($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSlug($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setTreeLeft($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTreeRight($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setTreeLevel($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setId($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setPUserId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setTitle($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setSummary($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setMoreInfo($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setNotePos($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setNoteNeg($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setNbViews($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublished($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setBroadcast($arr[$keys[20]]);
+        if (array_key_exists($keys[1], $arr)) $this->setParentReactionId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setUpdatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSlug($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setTreeLeft($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setTreeRight($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setTreeLevel($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setId($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPUserId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setTitle($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setFileName($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSummary($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setNotePos($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setNoteNeg($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setNbViews($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublished($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublishedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setPublishedBy($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setFavorite($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setOnline($arr[$keys[21]]);
     }
 
     /**
@@ -2009,6 +2062,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $criteria = new Criteria(PDReactionPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PDReactionPeer::P_D_DEBATE_ID)) $criteria->add(PDReactionPeer::P_D_DEBATE_ID, $this->p_d_debate_id);
+        if ($this->isColumnModified(PDReactionPeer::PARENT_REACTION_ID)) $criteria->add(PDReactionPeer::PARENT_REACTION_ID, $this->parent_reaction_id);
         if ($this->isColumnModified(PDReactionPeer::CREATED_AT)) $criteria->add(PDReactionPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDReactionPeer::UPDATED_AT)) $criteria->add(PDReactionPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDReactionPeer::SLUG)) $criteria->add(PDReactionPeer::SLUG, $this->slug);
@@ -2018,17 +2072,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::ID)) $criteria->add(PDReactionPeer::ID, $this->id);
         if ($this->isColumnModified(PDReactionPeer::P_USER_ID)) $criteria->add(PDReactionPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDReactionPeer::TITLE)) $criteria->add(PDReactionPeer::TITLE, $this->title);
+        if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) $criteria->add(PDReactionPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDReactionPeer::SUMMARY)) $criteria->add(PDReactionPeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PDReactionPeer::DESCRIPTION)) $criteria->add(PDReactionPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PDReactionPeer::MORE_INFO)) $criteria->add(PDReactionPeer::MORE_INFO, $this->more_info);
         if ($this->isColumnModified(PDReactionPeer::NOTE_POS)) $criteria->add(PDReactionPeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDReactionPeer::NOTE_NEG)) $criteria->add(PDReactionPeer::NOTE_NEG, $this->note_neg);
         if ($this->isColumnModified(PDReactionPeer::NB_VIEWS)) $criteria->add(PDReactionPeer::NB_VIEWS, $this->nb_views);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED)) $criteria->add(PDReactionPeer::PUBLISHED, $this->published);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_AT)) $criteria->add(PDReactionPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_BY)) $criteria->add(PDReactionPeer::PUBLISHED_BY, $this->published_by);
+        if ($this->isColumnModified(PDReactionPeer::FAVORITE)) $criteria->add(PDReactionPeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) $criteria->add(PDReactionPeer::ONLINE, $this->online);
-        if ($this->isColumnModified(PDReactionPeer::BROADCAST)) $criteria->add(PDReactionPeer::BROADCAST, $this->broadcast);
 
         return $criteria;
     }
@@ -2093,6 +2147,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPDDebateId($this->getPDDebateId());
+        $copyObj->setParentReactionId($this->getParentReactionId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -2101,17 +2156,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $copyObj->setTreeLevel($this->getTreeLevel());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
+        $copyObj->setFileName($this->getFileName());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setMoreInfo($this->getMoreInfo());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
         $copyObj->setNbViews($this->getNbViews());
         $copyObj->setPublished($this->getPublished());
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
+        $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
-        $copyObj->setBroadcast($this->getBroadcast());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2331,6 +2386,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
     public function clear()
     {
         $this->p_d_debate_id = null;
+        $this->parent_reaction_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -2340,17 +2396,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->id = null;
         $this->p_user_id = null;
         $this->title = null;
+        $this->file_name = null;
         $this->summary = null;
         $this->description = null;
-        $this->more_info = null;
         $this->note_pos = null;
         $this->note_neg = null;
         $this->nb_views = null;
         $this->published = null;
         $this->published_at = null;
         $this->published_by = null;
+        $this->favorite = null;
         $this->online = null;
-        $this->broadcast = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3514,17 +3570,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $parent = $this->getParentOrCreate($con);
         $parent->setPUserId($this->getPUserId());
         $parent->setTitle($this->getTitle());
+        $parent->setFileName($this->getFileName());
         $parent->setSummary($this->getSummary());
         $parent->setDescription($this->getDescription());
-        $parent->setMoreInfo($this->getMoreInfo());
         $parent->setNotePos($this->getNotePos());
         $parent->setNoteNeg($this->getNoteNeg());
         $parent->setNbViews($this->getNbViews());
         $parent->setPublished($this->getPublished());
         $parent->setPublishedAt($this->getPublishedAt());
         $parent->setPublishedBy($this->getPublishedBy());
+        $parent->setFavorite($this->getFavorite());
         $parent->setOnline($this->getOnline());
-        $parent->setBroadcast($this->getBroadcast());
         if ($this->getPUser() && $this->getPUser()->isNew()) {
             $parent->setPUser($this->getPUser());
         }
@@ -3610,6 +3666,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      */
     public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
         $this->setPDDebateId($archive->getPDDebateId());
+        $this->setParentReactionId($archive->getParentReactionId());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());
@@ -3619,17 +3676,17 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->setId($archive->getId());
         $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
+        $this->setFileName($archive->getFileName());
         $this->setSummary($archive->getSummary());
         $this->setDescription($archive->getDescription());
-        $this->setMoreInfo($archive->getMoreInfo());
         $this->setNotePos($archive->getNotePos());
         $this->setNoteNeg($archive->getNoteNeg());
         $this->setNbViews($archive->getNbViews());
         $this->setPublished($archive->getPublished());
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
+        $this->setFavorite($archive->getFavorite());
         $this->setOnline($archive->getOnline());
-        $this->setBroadcast($archive->getBroadcast());
 
         return $this;
     }

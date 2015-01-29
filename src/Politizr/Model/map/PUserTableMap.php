@@ -80,6 +80,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
+        $this->addColumn('nb_connected_days', 'NbConnectedDays', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('qualified', 'Qualified', 'BOOLEAN', false, 1, null);
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
@@ -96,10 +97,11 @@ class PUserTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUStatus', 'Politizr\\Model\\PUStatus', RelationMap::MANY_TO_ONE, array('p_u_status_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PTags');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
-        $this->addRelation('PUReputationRB', 'Politizr\\Model\\PUReputationRB', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUReputationRBs');
-        $this->addRelation('PUReputationRA', 'Politizr\\Model\\PUReputationRA', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUReputationRAs');
+        $this->addRelation('PUBadges', 'Politizr\\Model\\PUBadges', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUBadgess');
+        $this->addRelation('PUReputation', 'Politizr\\Model\\PUReputation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUReputations');
         $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
         $this->addRelation('PuFollowTPUser', 'Politizr\\Model\\PUFollowT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowTPUsers');
         $this->addRelation('PURoleQ', 'Politizr\\Model\\PURoleQ', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PURoleQs');

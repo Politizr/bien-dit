@@ -44,6 +44,7 @@ class PTagTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_t_tag_type_id', 'PTTagTypeId', 'INTEGER', 'p_t_tag_type', 'id', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
@@ -58,6 +59,7 @@ class PTagTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PTTagType', 'Politizr\\Model\\PTTagType', RelationMap::MANY_TO_ONE, array('p_t_tag_type_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
         $this->addRelation('PuFollowTPTag', 'Politizr\\Model\\PUFollowT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuFollowTPTags');
         $this->addRelation('PDDTaggedT', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PDDTaggedTs');

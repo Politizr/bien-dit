@@ -58,15 +58,6 @@ class PDReactionType extends AbstractType
             )
         );
 
-        $builder->add('more_info', 'hidden', array(
-            'required' => false,
-            'label' => 'Pour en savoir plus', 
-            'attr' =>   array(
-                'class' => 'editor',
-                )
-            )
-        );
-
         
     }
 

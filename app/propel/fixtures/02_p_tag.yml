@@ -17,10 +17,15 @@ Politizr\Model\PTag:
         online:             true
         p_t_tag_type_id:    geo
         title:              Monde
+    europe:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Europe
     france:
         online:             true
         p_t_tag_type_id:    geo
         title:              France
+
     alsace:
         online:             true
         p_t_tag_type_id:    geo
@@ -129,6 +134,411 @@ Politizr\Model\PTag:
         online:             true
         p_t_tag_type_id:    geo
         title:              Rhône-Alpes
+
+    Ain:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ain
+    Aisne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Aisne
+    Allier:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Allier
+    Alpes-de-Haute-Provence:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Alpes-de-Haute-Provence
+    Hautes-Alpes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Hautes-Alpes
+    Alpes-Maritimes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Alpes-Maritimes
+    Ardèche:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ardèche
+    Ardennes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ardennes
+    Ariège:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ariège
+    Aube:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Aube
+    Aude:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Aude
+    Aveyron:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Aveyron
+    Bouches-du-Rhône:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bouches-du-Rhône
+    Calvados:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Calvados
+    Cantal:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Cantal
+    Charente:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Charente
+    Charente-Maritime:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Charente-Maritime
+    Cher:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Cher
+    Corrèze:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Corrèze
+    Corse-du-Sud:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Corse-du-Sud
+    Haute-Corse:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Corse
+    Côte-d'Or:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Côte-d'Or
+    Côtes-d'Armor:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Côtes-d'Armor
+    Creuse:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Creuse
+    Dordogne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Dordogne
+    Doubs:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Doubs
+    Drôme:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Drôme
+    Eure:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Eure
+    Eure-et-Loir:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Eure-et-Loir
+    Finistère:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Finistère
+    Gard:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Gard
+    Haute-Garonne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Garonne
+    Gers:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Gers
+    Gironde:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Gironde
+    Hérault:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Hérault
+    Ille-et-Vilaine:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Ille-et-Vilaine
+    Indre:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Indre
+    Indre-et-Loire:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Indre-et-Loire
+    Isère:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Isère
+    Jura:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Jura
+    Landes:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Landes
+    Loir-et-Cher:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Loir-et-Cher
+    Loire:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Loire
+    Haute-Loire:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Loire
+    Loire-Atlantique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Loire-Atlantique
+    Loiret:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Loiret
+    Lot:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Lot
+    Lot-et-Garonne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Lot-et-Garonne
+    Lozère:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Lozère
+    Maine-et-Loire:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Maine-et-Loire
+    Manche:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Manche
+    Marne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Marne
+    Haute-Marne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Marne
+    Mayenne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Mayenne
+    Meurthe-et-Moselle:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Meurthe-et-Moselle
+    Meuse:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Meuse
+    Morbihan:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Morbihan
+    Moselle:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Moselle
+    Nièvre:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Nièvre
+    Nord:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Nord
+    Oise:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Oise
+    Orne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Orne
+    Pas-de-Calais:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Pas-de-Calais
+    Puy-de-Dôme:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Puy-de-Dôme
+    Pyrénées-Atlantiques:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Pyrénées-Atlantiques
+    Hautes-Pyrénées:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Hautes-Pyrénées
+    Pyrénées-Orientales:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Pyrénées-Orientales
+    Bas-Rhin:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bas-Rhin
+    Haut-Rhin:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haut-Rhin
+    Rhône:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Rhône
+    Haute-Saône:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Saône
+    Saône-et-Loire:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Saône-et-Loire
+    Sarthe:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Sarthe
+    Savoie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Savoie
+    Haute-Savoie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Savoie
+    Paris:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Paris
+    Seine-Maritime:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Seine-Maritime
+    Seine-et-Marne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Seine-et-Marne
+    Yvelines:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Yvelines
+    Deux-Sèvres:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Deux-Sèvres
+    Somme:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Somme
+    Tarn:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Tarn
+    Tarn-et-Garonne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Tarn-et-Garonne
+    Var:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Var
+    Vaucluse:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Vaucluse
+    Vendée:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Vendée
+    Vienne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Vienne
+    Haute-Vienne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Haute-Vienne
+    Vosges:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Vosges
+    Yonne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Yonne
+    Territoire-de-Belfort:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Territoire de Belfort
+    Essonne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Essonne
+    Hauts-de-Seine:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Hauts-de-Seine
+    Seine-Saint-Denis:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Seine-Saint-Denis
+    Val-de-Marne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Val-de-Marne
+    Val-d-Oise:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Val-d'Oise
+    Guadeloupe:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Guadeloupe
+    Martinique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Martinique
+    Guyane:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Guyane
+    La-Réunion:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              La Réunion
+    Mayotte:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Mayotte
 
 
 

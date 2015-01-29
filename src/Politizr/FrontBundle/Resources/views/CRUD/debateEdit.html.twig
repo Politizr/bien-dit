@@ -25,7 +25,7 @@
 			            <p>Aucune photo téléchargée</p>
 		        	{% endif %}
 				</div>
-			    <form id="form-debate-photo" action="{{ path('DebatePhotoUpload') }}" method="post" enctype="multipart/form-data">
+			    <form id="form-document-photo" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
 			    	<input type="hidden" name="id" value="{{ debate.id }}">
 			    	<div id="upload-file-container">
 			        	<input type="file" name="file-name" id="file-name">
@@ -41,7 +41,6 @@
 
 			    {{ form_row(form.summary) }}
 			    {{ form_row(form.description) }}
-			    {{ form_row(form.more_info) }}
 
 			    <div class="form-group">
 					<div class="col-lg-12">
@@ -63,15 +62,6 @@
 						<p class="text-muted">Description</p>
 					    <div class="description-editable">
 					    	{{ debate.description | raw }}
-					    </div>
-					</div>
-				</div>
-			    <hr>
-			    <div class="form-group">
-					<div class="col-lg-12">
-						<p class="text-muted">Plus d'informations</p>
-					    <div class="moreInfo-editable">
-					    	{{ debate.moreInfo | raw }}
 					    </div>
 					</div>
 				</div>
@@ -111,5 +101,6 @@
 	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
 
     {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentUploadPhoto.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:debatePublishDelete.js.twig' %}
 {% endblock javascriptFooter %}

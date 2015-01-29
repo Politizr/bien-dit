@@ -114,13 +114,6 @@ LAYOUT DEBATE
 					</div>
 				{% endfor %}
 			</div>
-
-			{% if debate.moreInfo | striptags | trim is not empty %}
-				<hr>
-				<div class="debate-more-info well">
-					{{ debate.moreInfo | raw }}
-				</div>
-			{% endif %}
 		{% endblock detailDescription %}
 
 		{% block detailAction %}

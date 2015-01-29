@@ -7,10 +7,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PRBadge;
 use Politizr\Model\PRAction;
-use Politizr\Model\PUReputationRB;
+use Politizr\Model\PUBadges;
 
-use Politizr\Model\PUReputationRBQuery;
-use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDCommentQuery;
@@ -193,7 +193,7 @@ class BadgeListener {
      *
      */
     private function hasBadge($userId, $badgeId) {
-        $nbBadges = PUReputationRBQuery::create()
+        $nbBadges = PUBadgesQuery::create()
                     ->filterByPUserId($userId)
                     ->filterByPRBadgeId($badgeId)
                     ->count();
@@ -212,7 +212,7 @@ class BadgeListener {
      *
      */
     private function addUserBadge($userId, $badgeId) {
-        $userBadge = new PUReputationRB();
+        $userBadge = new PUBadges();
         $userBadge->setPUserId($userId);
         $userBadge->setPRBadgeId($badgeId);
         $userBadge->save();
@@ -385,7 +385,7 @@ GROUP BY p_d_debate_id
     private function checkFougueux($userId, $badgeId, $nbNotePos) {
         if (!$this->hasBadge($userId, $badgeId)) {
 
-            $nb = PUReputationRAQuery::create()
+            $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS, PRAction::ID_D_AUTHOR_REACTION_NOTE_POS, PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS))
                         ->count();
@@ -407,7 +407,7 @@ GROUP BY p_d_debate_id
     private function checkPersifleur($userId, $badgeId, $nbNoteNeg) {
         if (!$this->hasBadge($userId, $badgeId)) {
 
-            $nb = PUReputationRAQuery::create()
+            $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG, PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG, PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG))
                         ->count();

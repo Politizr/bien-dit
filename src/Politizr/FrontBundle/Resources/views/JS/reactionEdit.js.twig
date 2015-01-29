@@ -10,10 +10,6 @@
         // buttonLabels: 'fontawesome'
         anchorButtonClass: 'mdm-btn',
     });
-    var moreInfoEditor = new MediumEditor('.moreInfo-editable', {
-        // buttonLabels: 'fontawesome'
-        anchorButtonClass: 'mdm-btn',
-    });
 
     // **************************** //
     //      POST
@@ -27,15 +23,12 @@
 
         var summary = summaryEditor.serialize();
         var description = descriptionEditor.serialize();
-        var moreInfo = moreInfoEditor.serialize();
 
         console.log(summary['element-0']['value']);
         console.log(description['element-0']['value']);
-        console.log(moreInfo['element-0']['value']);
 
         $('#reaction_summary').val(summary['element-0']['value']);
         $('#reaction_description').val(description['element-0']['value']);
-        $('#reaction_more_info').val(moreInfo['element-0']['value']);
         
         $.ajax({
             type: 'POST',

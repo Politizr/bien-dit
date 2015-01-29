@@ -80,6 +80,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);
+        $this->addColumn('nb_connected_days', 'NbConnectedDays', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
         $this->addColumn('qualified', 'Qualified', 'BOOLEAN', false, 1, null);
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);

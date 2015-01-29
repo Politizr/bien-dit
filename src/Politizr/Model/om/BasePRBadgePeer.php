@@ -13,7 +13,7 @@ use Politizr\Model\PRBadge;
 use Politizr\Model\PRBadgeMetalPeer;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeTypePeer;
-use Politizr\Model\PUReputationRBPeer;
+use Politizr\Model\PUBadgesPeer;
 use Politizr\Model\map\PRBadgeTableMap;
 
 abstract class BasePRBadgePeer
@@ -403,9 +403,9 @@ abstract class BasePRBadgePeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUReputationRBPeer instance pool,
+        // Invalidate objects in PUBadgesPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUReputationRBPeer::clearInstancePool();
+        PUBadgesPeer::clearInstancePool();
     }
 
     /**

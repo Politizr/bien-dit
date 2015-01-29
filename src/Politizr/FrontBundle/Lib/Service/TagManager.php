@@ -57,8 +57,10 @@ class TagManager
             if ($tag) {
                 $tagId = $tag->getId();
             } elseif($newTag) {
-                $tagId = PTagQuery::create()->addTag($tagTitle, $tagTypeId, true);
-                
+                // Récupération user
+                $user = $this->sc->get('security.context')->getToken()->getUser();
+
+                $tagId = PTagQuery::create()->addTag($tagTitle, $tagTypeId, $user->getId(), true);
             } else {
                 throw new \Exception('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
             }

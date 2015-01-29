@@ -12,12 +12,31 @@
 		<h1>Ma réaction</h1>
 		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, puis prévisualisez le afin de pouvoir le publier. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
 		<div id="box-edit-reaction">
+			<p class="text-muted">Bandeau</p>
+			<div class="row text-center">
+				<div id="current-photo">
+					{% if (reaction.fileName) %}
+			            <img class="img-rounded" src="{{ asset('uploads/documents/'~reaction.fileName) }}">
+			        {% else %}
+			            <p>Aucune photo téléchargée</p>
+		        	{% endif %}
+				</div>
+			    <form id="form-document-photo" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
+			    	<input type="hidden" name="id" value="{{ reaction.id }}">
+			    	<div id="upload-file-container">
+			        	<input type="file" name="file-name" id="file-name">
+			        	<button id="file-select">Choisir la photo</button>
+			        	<button id="file-delete">Supprimer la photo</button>
+			        </div>
+			    </form>
+			</div>
+			
+
 			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-reaction-update'}}) }}
 			    {{ form_errors(form) }}
 
 			    {{ form_row(form.summary) }}
 			    {{ form_row(form.description) }}
-			    {{ form_row(form.more_info) }}
 
 			    <div class="form-group">
 					<div class="col-lg-12">
@@ -39,15 +58,6 @@
 						<p class="text-muted">Description</p>
 					    <div class="description-editable">
 					    	{{ reaction.description | raw }}
-					    </div>
-					</div>
-				</div>
-			    <hr>
-			    <div class="form-group">
-					<div class="col-lg-12">
-						<p class="text-muted">Plus d'informations</p>
-					    <div class="moreInfo-editable">
-					    	{{ reaction.moreInfo | raw }}
 					    </div>
 					</div>
 				</div>
@@ -74,6 +84,10 @@
     <script src="{{ asset('components/medium-editor/dist/js/medium-editor.min.js') }}"></script>
     <script src="{{ asset('components/classList.js/classList.min.js') }}"></script> <!-- IE9 compatibility -->
     
+    {# Upload ajax #}
+	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
+
     {% include 'PolitizrFrontBundle:JS:reactionEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentUploadPhoto.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:reactionPublishDelete.js.twig' %}
 {% endblock javascriptFooter %}

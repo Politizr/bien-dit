@@ -171,6 +171,42 @@ class CRUDController extends Controller {
     /*                                                  FONCTIONS AJAX                                          */
     /* ######################################################################################################## */
 
+
+    /* ######################################################################################################## */
+    /*                                             GESTION DEBAT + REACTION                                     */
+    /* ######################################################################################################## */
+
+    /**
+     *  Upload d'une photo
+     */
+    public function documentPhotoUploadAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** documentPhotoUploadAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'documentPhotoUpload'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Suppression d'une photo
+     */
+    public function documentPhotoDeleteAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** documentPhotoDeleteAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.document',
+            'documentPhotoDelete'
+        );
+
+        return $jsonResponse;
+    }
+
+
     /* ######################################################################################################## */
     /*                                                  GESTION DEBAT                                           */
     /* ######################################################################################################## */
@@ -215,36 +251,6 @@ class CRUDController extends Controller {
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonRedirectResponse(
             'politizr.service.document',
             'debateDelete'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Upload d'une photo
-     */
-    public function debatePhotoUploadAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** debatePhotoUploadAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
-            'debatePhotoUpload'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Suppression d'une photo
-     */
-    public function debatePhotoDeleteAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** debatePhotoDeleteAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.document',
-            'debatePhotoDelete'
         );
 
         return $jsonResponse;

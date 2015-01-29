@@ -9,59 +9,65 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PRBadgePeer;
-use Politizr\Model\PUReputationRB;
-use Politizr\Model\PUReputationRBPeer;
+use Politizr\Model\PRActionPeer;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PUReputationPeer;
 use Politizr\Model\PUserPeer;
-use Politizr\Model\map\PUReputationRBTableMap;
+use Politizr\Model\map\PUReputationTableMap;
 
-abstract class BasePUReputationRBPeer
+abstract class BasePUReputationPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_u_reputation_r_b';
+    const TABLE_NAME = 'p_u_reputation';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PUReputationRB';
+    const OM_CLASS = 'Politizr\\Model\\PUReputation';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PUReputationRBTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PUReputationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
-    const ID = 'p_u_reputation_r_b.id';
+    const ID = 'p_u_reputation.id';
 
     /** the column name for the p_user_id field */
-    const P_USER_ID = 'p_u_reputation_r_b.p_user_id';
+    const P_USER_ID = 'p_u_reputation.p_user_id';
 
-    /** the column name for the p_r_badge_id field */
-    const P_R_BADGE_ID = 'p_u_reputation_r_b.p_r_badge_id';
+    /** the column name for the p_r_action_id field */
+    const P_R_ACTION_ID = 'p_u_reputation.p_r_action_id';
+
+    /** the column name for the p_object_name field */
+    const P_OBJECT_NAME = 'p_u_reputation.p_object_name';
+
+    /** the column name for the p_object_id field */
+    const P_OBJECT_ID = 'p_u_reputation.p_object_id';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_u_reputation_r_b.created_at';
+    const CREATED_AT = 'p_u_reputation.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_u_reputation_r_b.updated_at';
+    const UPDATED_AT = 'p_u_reputation.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PUReputationRB objects.
+     * An identity map to hold any loaded instances of PUReputation objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PUReputationRB[]
+     * @var        array PUReputation[]
      */
     public static $instances = array();
 
@@ -70,30 +76,30 @@ abstract class BasePUReputationRBPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PUReputationRBPeer::$fieldNames[PUReputationRBPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PUReputationPeer::$fieldNames[PUReputationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PRBadgeId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pRBadgeId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUReputationRBPeer::ID, PUReputationRBPeer::P_USER_ID, PUReputationRBPeer::P_R_BADGE_ID, PUReputationRBPeer::CREATED_AT, PUReputationRBPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_R_BADGE_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_r_badge_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PRActionId', 'PObjectName', 'PObjectId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pRActionId', 'pObjectName', 'pObjectId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUReputationPeer::ID, PUReputationPeer::P_USER_ID, PUReputationPeer::P_R_ACTION_ID, PUReputationPeer::P_OBJECT_NAME, PUReputationPeer::P_OBJECT_ID, PUReputationPeer::CREATED_AT, PUReputationPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_R_ACTION_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_r_action_id', 'p_object_name', 'p_object_id', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PUReputationRBPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PUReputationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PRBadgeId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pRBadgeId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PUReputationRBPeer::ID => 0, PUReputationRBPeer::P_USER_ID => 1, PUReputationRBPeer::P_R_BADGE_ID => 2, PUReputationRBPeer::CREATED_AT => 3, PUReputationRBPeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_R_BADGE_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_r_badge_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PRActionId' => 2, 'PObjectName' => 3, 'PObjectId' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pRActionId' => 2, 'pObjectName' => 3, 'pObjectId' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (PUReputationPeer::ID => 0, PUReputationPeer::P_USER_ID => 1, PUReputationPeer::P_R_ACTION_ID => 2, PUReputationPeer::P_OBJECT_NAME => 3, PUReputationPeer::P_OBJECT_ID => 4, PUReputationPeer::CREATED_AT => 5, PUReputationPeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_R_ACTION_ID' => 2, 'P_OBJECT_NAME' => 3, 'P_OBJECT_ID' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_r_action_id' => 2, 'p_object_name' => 3, 'p_object_id' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -108,10 +114,10 @@ abstract class BasePUReputationRBPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PUReputationRBPeer::getFieldNames($toType);
-        $key = isset(PUReputationRBPeer::$fieldKeys[$fromType][$name]) ? PUReputationRBPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PUReputationPeer::getFieldNames($toType);
+        $key = isset(PUReputationPeer::$fieldKeys[$fromType][$name]) ? PUReputationPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUReputationRBPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUReputationPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -128,11 +134,11 @@ abstract class BasePUReputationRBPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PUReputationRBPeer::$fieldNames)) {
+        if (!array_key_exists($type, PUReputationPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PUReputationRBPeer::$fieldNames[$type];
+        return PUReputationPeer::$fieldNames[$type];
     }
 
     /**
@@ -144,12 +150,12 @@ abstract class BasePUReputationRBPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PUReputationRBPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PUReputationPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PUReputationRBPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PUReputationPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -167,15 +173,19 @@ abstract class BasePUReputationRBPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PUReputationRBPeer::ID);
-            $criteria->addSelectColumn(PUReputationRBPeer::P_USER_ID);
-            $criteria->addSelectColumn(PUReputationRBPeer::P_R_BADGE_ID);
-            $criteria->addSelectColumn(PUReputationRBPeer::CREATED_AT);
-            $criteria->addSelectColumn(PUReputationRBPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PUReputationPeer::ID);
+            $criteria->addSelectColumn(PUReputationPeer::P_USER_ID);
+            $criteria->addSelectColumn(PUReputationPeer::P_R_ACTION_ID);
+            $criteria->addSelectColumn(PUReputationPeer::P_OBJECT_NAME);
+            $criteria->addSelectColumn(PUReputationPeer::P_OBJECT_ID);
+            $criteria->addSelectColumn(PUReputationPeer::CREATED_AT);
+            $criteria->addSelectColumn(PUReputationPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
-            $criteria->addSelectColumn($alias . '.p_r_badge_id');
+            $criteria->addSelectColumn($alias . '.p_r_action_id');
+            $criteria->addSelectColumn($alias . '.p_object_name');
+            $criteria->addSelectColumn($alias . '.p_object_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -197,21 +207,21 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -230,7 +240,7 @@ abstract class BasePUReputationRBPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PUReputationRB
+     * @return PUReputation
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -238,7 +248,7 @@ abstract class BasePUReputationRBPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PUReputationRBPeer::doSelect($critcopy, $con);
+        $objects = PUReputationPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -256,7 +266,7 @@ abstract class BasePUReputationRBPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PUReputationRBPeer::populateObjects(PUReputationRBPeer::doSelectStmt($criteria, $con));
+        return PUReputationPeer::populateObjects(PUReputationPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -274,16 +284,16 @@ abstract class BasePUReputationRBPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -297,7 +307,7 @@ abstract class BasePUReputationRBPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PUReputationRB $obj A PUReputationRB object.
+     * @param PUReputation $obj A PUReputation object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -306,7 +316,7 @@ abstract class BasePUReputationRBPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PUReputationRBPeer::$instances[$key] = $obj;
+            PUReputationPeer::$instances[$key] = $obj;
         }
     }
 
@@ -318,7 +328,7 @@ abstract class BasePUReputationRBPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PUReputationRB object or a primary key value.
+     * @param      mixed $value A PUReputation object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -326,17 +336,17 @@ abstract class BasePUReputationRBPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PUReputationRB) {
+            if (is_object($value) && $value instanceof PUReputation) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUReputationRB object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUReputation object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PUReputationRBPeer::$instances[$key]);
+            unset(PUReputationPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -347,14 +357,14 @@ abstract class BasePUReputationRBPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PUReputationRB Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PUReputation Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PUReputationRBPeer::$instances[$key])) {
-                return PUReputationRBPeer::$instances[$key];
+            if (isset(PUReputationPeer::$instances[$key])) {
+                return PUReputationPeer::$instances[$key];
             }
         }
 
@@ -369,15 +379,15 @@ abstract class BasePUReputationRBPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PUReputationRBPeer::$instances as $instance) {
+        foreach (PUReputationPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PUReputationRBPeer::$instances = array();
+        PUReputationPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_u_reputation_r_b
+     * Method to invalidate the instance pool of all tables related to p_u_reputation
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -431,11 +441,11 @@ abstract class BasePUReputationRBPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PUReputationRBPeer::getOMClass();
+        $cls = PUReputationPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PUReputationRBPeer::getInstanceFromPool($key))) {
+            $key = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PUReputationPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -444,7 +454,7 @@ abstract class BasePUReputationRBPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PUReputationRBPeer::addInstanceToPool($obj, $key);
+                PUReputationPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -458,21 +468,21 @@ abstract class BasePUReputationRBPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PUReputationRB object, last column rank)
+     * @return array (PUReputation object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PUReputationRBPeer::getInstanceFromPool($key))) {
+        $key = PUReputationPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PUReputationPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PUReputationPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUReputationRBPeer::OM_CLASS;
+            $cls = PUReputationPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PUReputationRBPeer::addInstanceToPool($obj, $key);
+            PUReputationPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -496,26 +506,26 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -531,7 +541,7 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PRBadge table
+     * Returns the number of rows matching criteria, joining the related PRAction table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -539,7 +549,7 @@ abstract class BasePUReputationRBPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPRBadge(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPRAction(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -547,26 +557,26 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -582,11 +592,11 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Selects a collection of PUReputationRB objects pre-filled with their PUser objects.
+     * Selects a collection of PUReputation objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUReputationRB objects.
+     * @return array           Array of PUReputation objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -596,31 +606,31 @@ abstract class BasePUReputationRBPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+            $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
         }
 
-        PUReputationRBPeer::addSelectColumns($criteria);
-        $startcol = PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
+        PUReputationPeer::addSelectColumns($criteria);
+        $startcol = PUReputationPeer::NUM_HYDRATE_COLUMNS;
         PUserPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUReputationRBPeer::getInstanceFromPool($key1))) {
+            $key1 = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUReputationPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUReputationRBPeer::getOMClass();
+                $cls = PUReputationPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUReputationRBPeer::addInstanceToPool($obj1, $key1);
+                PUReputationPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -635,8 +645,8 @@ abstract class BasePUReputationRBPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUReputationRB) to $obj2 (PUser)
-                $obj2->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to $obj2 (PUser)
+                $obj2->addPUReputation($obj1);
 
             } // if joined row was not null
 
@@ -649,61 +659,61 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Selects a collection of PUReputationRB objects pre-filled with their PRBadge objects.
+     * Selects a collection of PUReputation objects pre-filled with their PRAction objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUReputationRB objects.
+     * @return array           Array of PUReputation objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPRBadge(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPRAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+            $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
         }
 
-        PUReputationRBPeer::addSelectColumns($criteria);
-        $startcol = PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
-        PRBadgePeer::addSelectColumns($criteria);
+        PUReputationPeer::addSelectColumns($criteria);
+        $startcol = PUReputationPeer::NUM_HYDRATE_COLUMNS;
+        PRActionPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUReputationRBPeer::getInstanceFromPool($key1))) {
+            $key1 = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUReputationPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUReputationRBPeer::getOMClass();
+                $cls = PUReputationPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUReputationRBPeer::addInstanceToPool($obj1, $key1);
+                PUReputationPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = PRBadgePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = PRActionPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = PRBadgePeer::getInstanceFromPool($key2);
+                $obj2 = PRActionPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = PRBadgePeer::getOMClass();
+                    $cls = PRActionPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    PRBadgePeer::addInstanceToPool($obj2, $key2);
+                    PRActionPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUReputationRB) to $obj2 (PRBadge)
-                $obj2->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to $obj2 (PRAction)
+                $obj2->addPUReputation($obj1);
 
             } // if joined row was not null
 
@@ -732,28 +742,28 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -768,12 +778,12 @@ abstract class BasePUReputationRBPeer
     }
 
     /**
-     * Selects a collection of PUReputationRB objects pre-filled with all related objects.
+     * Selects a collection of PUReputation objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUReputationRB objects.
+     * @return array           Array of PUReputation objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -783,37 +793,37 @@ abstract class BasePUReputationRBPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+            $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
         }
 
-        PUReputationRBPeer::addSelectColumns($criteria);
-        $startcol2 = PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
+        PUReputationPeer::addSelectColumns($criteria);
+        $startcol2 = PUReputationPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        PRBadgePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + PRBadgePeer::NUM_HYDRATE_COLUMNS;
+        PRActionPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PRActionPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUReputationRBPeer::getInstanceFromPool($key1))) {
+            $key1 = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUReputationPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUReputationRBPeer::getOMClass();
+                $cls = PUReputationPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUReputationRBPeer::addInstanceToPool($obj1, $key1);
+                PUReputationPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
             // Add objects for joined PUser rows
@@ -830,26 +840,26 @@ abstract class BasePUReputationRBPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PUReputationRB) to the collection in $obj2 (PUser)
-                $obj2->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to the collection in $obj2 (PUser)
+                $obj2->addPUReputation($obj1);
             } // if joined row not null
 
-            // Add objects for joined PRBadge rows
+            // Add objects for joined PRAction rows
 
-            $key3 = PRBadgePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = PRActionPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = PRBadgePeer::getInstanceFromPool($key3);
+                $obj3 = PRActionPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = PRBadgePeer::getOMClass();
+                    $cls = PRActionPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    PRBadgePeer::addInstanceToPool($obj3, $key3);
+                    PRActionPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (PUReputationRB) to the collection in $obj3 (PRBadge)
-                $obj3->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to the collection in $obj3 (PRAction)
+                $obj3->addPUReputation($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -877,26 +887,26 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -912,7 +922,7 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PRBadge table
+     * Returns the number of rows matching criteria, joining the related PRAction table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -920,7 +930,7 @@ abstract class BasePUReputationRBPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPRBadge(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPRAction(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -928,26 +938,26 @@ abstract class BasePUReputationRBPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUReputationRBPeer::addSelectColumns($criteria);
+            PUReputationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -963,12 +973,12 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Selects a collection of PUReputationRB objects pre-filled with all related objects except PUser.
+     * Selects a collection of PUReputation objects pre-filled with all related objects except PUser.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUReputationRB objects.
+     * @return array           Array of PUReputation objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -980,51 +990,51 @@ abstract class BasePUReputationRBPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+            $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
         }
 
-        PUReputationRBPeer::addSelectColumns($criteria);
-        $startcol2 = PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
+        PUReputationPeer::addSelectColumns($criteria);
+        $startcol2 = PUReputationPeer::NUM_HYDRATE_COLUMNS;
 
-        PRBadgePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PRBadgePeer::NUM_HYDRATE_COLUMNS;
+        PRActionPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PRActionPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUReputationRBPeer::P_R_BADGE_ID, PRBadgePeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_R_ACTION_ID, PRActionPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUReputationRBPeer::getInstanceFromPool($key1))) {
+            $key1 = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUReputationPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUReputationRBPeer::getOMClass();
+                $cls = PUReputationPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUReputationRBPeer::addInstanceToPool($obj1, $key1);
+                PUReputationPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined PRBadge rows
+                // Add objects for joined PRAction rows
 
-                $key2 = PRBadgePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = PRActionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = PRBadgePeer::getInstanceFromPool($key2);
+                    $obj2 = PRActionPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = PRBadgePeer::getOMClass();
+                        $cls = PRActionPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    PRBadgePeer::addInstanceToPool($obj2, $key2);
+                    PRActionPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUReputationRB) to the collection in $obj2 (PRBadge)
-                $obj2->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to the collection in $obj2 (PRAction)
+                $obj2->addPUReputation($obj1);
 
             } // if joined row is not null
 
@@ -1037,16 +1047,16 @@ abstract class BasePUReputationRBPeer
 
 
     /**
-     * Selects a collection of PUReputationRB objects pre-filled with all related objects except PRBadge.
+     * Selects a collection of PUReputation objects pre-filled with all related objects except PRAction.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUReputationRB objects.
+     * @return array           Array of PUReputation objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPRBadge(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPRAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1054,33 +1064,33 @@ abstract class BasePUReputationRBPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+            $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
         }
 
-        PUReputationRBPeer::addSelectColumns($criteria);
-        $startcol2 = PUReputationRBPeer::NUM_HYDRATE_COLUMNS;
+        PUReputationPeer::addSelectColumns($criteria);
+        $startcol2 = PUReputationPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUReputationRBPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUReputationPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUReputationRBPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUReputationRBPeer::getInstanceFromPool($key1))) {
+            $key1 = PUReputationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUReputationPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUReputationRBPeer::getOMClass();
+                $cls = PUReputationPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUReputationRBPeer::addInstanceToPool($obj1, $key1);
+                PUReputationPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PUser rows
@@ -1097,8 +1107,8 @@ abstract class BasePUReputationRBPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUReputationRB) to the collection in $obj2 (PUser)
-                $obj2->addPUReputationRB($obj1);
+                // Add the $obj1 (PUReputation) to the collection in $obj2 (PUser)
+                $obj2->addPUReputation($obj1);
 
             } // if joined row is not null
 
@@ -1118,7 +1128,7 @@ abstract class BasePUReputationRBPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PUReputationRBPeer::DATABASE_NAME)->getTable(PUReputationRBPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PUReputationPeer::DATABASE_NAME)->getTable(PUReputationPeer::TABLE_NAME);
     }
 
     /**
@@ -1126,9 +1136,9 @@ abstract class BasePUReputationRBPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePUReputationRBPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePUReputationRBPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PUReputationRBTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePUReputationPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePUReputationPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PUReputationTableMap());
       }
     }
 
@@ -1140,13 +1150,13 @@ abstract class BasePUReputationRBPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PUReputationRBPeer::OM_CLASS;
+        return PUReputationPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PUReputationRB or Criteria object.
+     * Performs an INSERT on the database, given a PUReputation or Criteria object.
      *
-     * @param      mixed $values Criteria or PUReputationRB object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PUReputation object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1155,22 +1165,22 @@ abstract class BasePUReputationRBPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PUReputationRB object
+            $criteria = $values->buildCriteria(); // build Criteria from PUReputation object
         }
 
-        if ($criteria->containsKey(PUReputationRBPeer::ID) && $criteria->keyContainsValue(PUReputationRBPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUReputationRBPeer::ID.')');
+        if ($criteria->containsKey(PUReputationPeer::ID) && $criteria->keyContainsValue(PUReputationPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUReputationPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1187,9 +1197,9 @@ abstract class BasePUReputationRBPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PUReputationRB or Criteria object.
+     * Performs an UPDATE on the database, given a PUReputation or Criteria object.
      *
-     * @param      mixed $values Criteria or PUReputationRB object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PUReputation object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1198,35 +1208,35 @@ abstract class BasePUReputationRBPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PUReputationPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PUReputationRBPeer::ID);
-            $value = $criteria->remove(PUReputationRBPeer::ID);
+            $comparison = $criteria->getComparison(PUReputationPeer::ID);
+            $value = $criteria->remove(PUReputationPeer::ID);
             if ($value) {
-                $selectCriteria->add(PUReputationRBPeer::ID, $value, $comparison);
+                $selectCriteria->add(PUReputationPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PUReputationRBPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PUReputationPeer::TABLE_NAME);
             }
 
-        } else { // $values is PUReputationRB object
+        } else { // $values is PUReputation object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_u_reputation_r_b table.
+     * Deletes all rows from the p_u_reputation table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1235,19 +1245,19 @@ abstract class BasePUReputationRBPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PUReputationRBPeer::TABLE_NAME, $con, PUReputationRBPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PUReputationPeer::TABLE_NAME, $con, PUReputationPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PUReputationRBPeer::clearInstancePool();
-            PUReputationRBPeer::clearRelatedInstancePool();
+            PUReputationPeer::clearInstancePool();
+            PUReputationPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1258,9 +1268,9 @@ abstract class BasePUReputationRBPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PUReputationRB or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PUReputation or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PUReputationRB object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PUReputation object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1271,32 +1281,32 @@ abstract class BasePUReputationRBPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PUReputationRBPeer::clearInstancePool();
+            PUReputationPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PUReputationRB) { // it's a model object
+        } elseif ($values instanceof PUReputation) { // it's a model object
             // invalidate the cache for this single object
-            PUReputationRBPeer::removeInstanceFromPool($values);
+            PUReputationPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
-            $criteria->add(PUReputationRBPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PUReputationPeer::DATABASE_NAME);
+            $criteria->add(PUReputationPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PUReputationRBPeer::removeInstanceFromPool($singleval);
+                PUReputationPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUReputationRBPeer::DATABASE_NAME);
+        $criteria->setDbName(PUReputationPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1306,7 +1316,7 @@ abstract class BasePUReputationRBPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PUReputationRBPeer::clearRelatedInstancePool();
+            PUReputationPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1317,13 +1327,13 @@ abstract class BasePUReputationRBPeer
     }
 
     /**
-     * Validates all modified columns of given PUReputationRB object.
+     * Validates all modified columns of given PUReputation object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PUReputationRB $obj The object to validate.
+     * @param PUReputation $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1333,8 +1343,8 @@ abstract class BasePUReputationRBPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PUReputationRBPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PUReputationRBPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PUReputationPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PUReputationPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1350,7 +1360,7 @@ abstract class BasePUReputationRBPeer
 
         }
 
-        return BasePeer::doValidate(PUReputationRBPeer::DATABASE_NAME, PUReputationRBPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PUReputationPeer::DATABASE_NAME, PUReputationPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1358,23 +1368,23 @@ abstract class BasePUReputationRBPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PUReputationRB
+     * @return PUReputation
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PUReputationRBPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PUReputationPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
-        $criteria->add(PUReputationRBPeer::ID, $pk);
+        $criteria = new Criteria(PUReputationPeer::DATABASE_NAME);
+        $criteria->add(PUReputationPeer::ID, $pk);
 
-        $v = PUReputationRBPeer::doSelect($criteria, $con);
+        $v = PUReputationPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1384,31 +1394,31 @@ abstract class BasePUReputationRBPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PUReputationRB[]
+     * @return PUReputation[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PUReputationRBPeer::DATABASE_NAME);
-            $criteria->add(PUReputationRBPeer::ID, $pks, Criteria::IN);
-            $objs = PUReputationRBPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PUReputationPeer::DATABASE_NAME);
+            $criteria->add(PUReputationPeer::ID, $pks, Criteria::IN);
+            $objs = PUReputationPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePUReputationRBPeer
+} // BasePUReputationPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePUReputationRBPeer::buildTableMap();
+BasePUReputationPeer::buildTableMap();
 

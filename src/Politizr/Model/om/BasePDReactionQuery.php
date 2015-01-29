@@ -23,6 +23,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PDReactionQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
+ * @method PDReactionQuery orderByParentReactionId($order = Criteria::ASC) Order by the parent_reaction_id column
  * @method PDReactionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDReactionQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -32,19 +33,20 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDReactionQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDReactionQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PDReactionQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDReactionQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PDReactionQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDReactionQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDReactionQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
  * @method PDReactionQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDReactionQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDReactionQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
+ * @method PDReactionQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDReactionQuery orderByOnline($order = Criteria::ASC) Order by the online column
- * @method PDReactionQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  *
  * @method PDReactionQuery groupByPDDebateId() Group by the p_d_debate_id column
+ * @method PDReactionQuery groupByParentReactionId() Group by the parent_reaction_id column
  * @method PDReactionQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDReactionQuery groupBySlug() Group by the slug column
@@ -54,17 +56,17 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupById() Group by the id column
  * @method PDReactionQuery groupByPUserId() Group by the p_user_id column
  * @method PDReactionQuery groupByTitle() Group by the title column
+ * @method PDReactionQuery groupByFileName() Group by the file_name column
  * @method PDReactionQuery groupBySummary() Group by the summary column
  * @method PDReactionQuery groupByDescription() Group by the description column
- * @method PDReactionQuery groupByMoreInfo() Group by the more_info column
  * @method PDReactionQuery groupByNotePos() Group by the note_pos column
  * @method PDReactionQuery groupByNoteNeg() Group by the note_neg column
  * @method PDReactionQuery groupByNbViews() Group by the nb_views column
  * @method PDReactionQuery groupByPublished() Group by the published column
  * @method PDReactionQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionQuery groupByPublishedBy() Group by the published_by column
+ * @method PDReactionQuery groupByFavorite() Group by the favorite column
  * @method PDReactionQuery groupByOnline() Group by the online column
- * @method PDReactionQuery groupByBroadcast() Group by the broadcast column
  *
  * @method PDReactionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDReactionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -86,6 +88,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneOrCreate(PropelPDO $con = null) Return the first PDReaction matching the query, or a new PDReaction object populated from the query conditions when no match is found
  *
  * @method PDReaction findOneByPDDebateId(int $p_d_debate_id) Return the first PDReaction filtered by the p_d_debate_id column
+ * @method PDReaction findOneByParentReactionId(int $parent_reaction_id) Return the first PDReaction filtered by the parent_reaction_id column
  * @method PDReaction findOneByCreatedAt(string $created_at) Return the first PDReaction filtered by the created_at column
  * @method PDReaction findOneByUpdatedAt(string $updated_at) Return the first PDReaction filtered by the updated_at column
  * @method PDReaction findOneBySlug(string $slug) Return the first PDReaction filtered by the slug column
@@ -94,19 +97,20 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByTreeLevel(int $tree_level) Return the first PDReaction filtered by the tree_level column
  * @method PDReaction findOneByPUserId(int $p_user_id) Return the first PDReaction filtered by the p_user_id column
  * @method PDReaction findOneByTitle(string $title) Return the first PDReaction filtered by the title column
+ * @method PDReaction findOneByFileName(string $file_name) Return the first PDReaction filtered by the file_name column
  * @method PDReaction findOneBySummary(string $summary) Return the first PDReaction filtered by the summary column
  * @method PDReaction findOneByDescription(string $description) Return the first PDReaction filtered by the description column
- * @method PDReaction findOneByMoreInfo(string $more_info) Return the first PDReaction filtered by the more_info column
  * @method PDReaction findOneByNotePos(int $note_pos) Return the first PDReaction filtered by the note_pos column
  * @method PDReaction findOneByNoteNeg(int $note_neg) Return the first PDReaction filtered by the note_neg column
  * @method PDReaction findOneByNbViews(int $nb_views) Return the first PDReaction filtered by the nb_views column
  * @method PDReaction findOneByPublished(boolean $published) Return the first PDReaction filtered by the published column
  * @method PDReaction findOneByPublishedAt(string $published_at) Return the first PDReaction filtered by the published_at column
  * @method PDReaction findOneByPublishedBy(string $published_by) Return the first PDReaction filtered by the published_by column
+ * @method PDReaction findOneByFavorite(boolean $favorite) Return the first PDReaction filtered by the favorite column
  * @method PDReaction findOneByOnline(boolean $online) Return the first PDReaction filtered by the online column
- * @method PDReaction findOneByBroadcast(boolean $broadcast) Return the first PDReaction filtered by the broadcast column
  *
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReaction objects filtered by the p_d_debate_id column
+ * @method array findByParentReactionId(int $parent_reaction_id) Return PDReaction objects filtered by the parent_reaction_id column
  * @method array findByCreatedAt(string $created_at) Return PDReaction objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReaction objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDReaction objects filtered by the slug column
@@ -116,17 +120,17 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PDReaction objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDReaction objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDReaction objects filtered by the title column
+ * @method array findByFileName(string $file_name) Return PDReaction objects filtered by the file_name column
  * @method array findBySummary(string $summary) Return PDReaction objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDReaction objects filtered by the description column
- * @method array findByMoreInfo(string $more_info) Return PDReaction objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDReaction objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDReaction objects filtered by the note_neg column
  * @method array findByNbViews(int $nb_views) Return PDReaction objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDReaction objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDReaction objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReaction objects filtered by the published_by column
+ * @method array findByFavorite(boolean $favorite) Return PDReaction objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDReaction objects filtered by the online column
- * @method array findByBroadcast(boolean $broadcast) Return PDReaction objects filtered by the broadcast column
  */
 abstract class BasePDReactionQuery extends PDocumentQuery
 {
@@ -238,7 +242,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `p_d_debate_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `p_d_debate_id`, `parent_reaction_id`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `id`, `p_user_id`, `title`, `file_name`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -369,6 +373,48 @@ abstract class BasePDReactionQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDReactionPeer::P_D_DEBATE_ID, $pDDebateId, $comparison);
+    }
+
+    /**
+     * Filter the query on the parent_reaction_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByParentReactionId(1234); // WHERE parent_reaction_id = 1234
+     * $query->filterByParentReactionId(array(12, 34)); // WHERE parent_reaction_id IN (12, 34)
+     * $query->filterByParentReactionId(array('min' => 12)); // WHERE parent_reaction_id >= 12
+     * $query->filterByParentReactionId(array('max' => 12)); // WHERE parent_reaction_id <= 12
+     * </code>
+     *
+     * @param     mixed $parentReactionId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByParentReactionId($parentReactionId = null, $comparison = null)
+    {
+        if (is_array($parentReactionId)) {
+            $useMinMax = false;
+            if (isset($parentReactionId['min'])) {
+                $this->addUsingAlias(PDReactionPeer::PARENT_REACTION_ID, $parentReactionId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($parentReactionId['max'])) {
+                $this->addUsingAlias(PDReactionPeer::PARENT_REACTION_ID, $parentReactionId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::PARENT_REACTION_ID, $parentReactionId, $comparison);
     }
 
     /**
@@ -730,6 +776,35 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     }
 
     /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::FILE_NAME, $fileName, $comparison);
+    }
+
+    /**
      * Filter the query on the summary column
      *
      * Example usage:
@@ -785,35 +860,6 @@ abstract class BasePDReactionQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDReactionPeer::DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the more_info column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByMoreInfo('fooValue');   // WHERE more_info = 'fooValue'
-     * $query->filterByMoreInfo('%fooValue%'); // WHERE more_info LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $moreInfo The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function filterByMoreInfo($moreInfo = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($moreInfo)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $moreInfo)) {
-                $moreInfo = str_replace('*', '%', $moreInfo);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDReactionPeer::MORE_INFO, $moreInfo, $comparison);
     }
 
     /**
@@ -1042,6 +1088,33 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     }
 
     /**
+     * Filter the query on the favorite column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFavorite(true); // WHERE favorite = true
+     * $query->filterByFavorite('yes'); // WHERE favorite = true
+     * </code>
+     *
+     * @param     boolean|string $favorite The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByFavorite($favorite = null, $comparison = null)
+    {
+        if (is_string($favorite)) {
+            $favorite = in_array(strtolower($favorite), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::FAVORITE, $favorite, $comparison);
+    }
+
+    /**
      * Filter the query on the online column
      *
      * Example usage:
@@ -1066,33 +1139,6 @@ abstract class BasePDReactionQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDReactionPeer::ONLINE, $online, $comparison);
-    }
-
-    /**
-     * Filter the query on the broadcast column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByBroadcast(true); // WHERE broadcast = true
-     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
-     * </code>
-     *
-     * @param     boolean|string $broadcast The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function filterByBroadcast($broadcast = null, $comparison = null)
-    {
-        if (is_string($broadcast)) {
-            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PDReactionPeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

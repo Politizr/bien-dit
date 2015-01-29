@@ -51,16 +51,7 @@ class PDDebateType extends AbstractType
                 'class' => 'editor',
                 )
             )
-        );
-
-        $builder->add('more_info', 'hidden', array(
-            'required' => false,
-            'label' => 'Pour en savoir plus', 
-            'attr' =>   array(
-                'class' => 'editor',
-                )
-            )
-        );        
+        );     
     }
 
     /**

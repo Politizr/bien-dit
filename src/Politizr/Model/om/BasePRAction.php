@@ -18,8 +18,8 @@ use \PropelPDO;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRActionPeer;
 use Politizr\Model\PRActionQuery;
-use Politizr\Model\PUReputationRA;
-use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -105,10 +105,10 @@ abstract class BasePRAction extends BaseObject implements Persistent
     protected $slug;
 
     /**
-     * @var        PropelObjectCollection|PUReputationRA[] Collection to store aggregation of PUReputationRA objects.
+     * @var        PropelObjectCollection|PUReputation[] Collection to store aggregation of PUReputation objects.
      */
-    protected $collPUReputationRAs;
-    protected $collPUReputationRAsPartial;
+    protected $collPUReputations;
+    protected $collPUReputationsPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
@@ -145,7 +145,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUReputationRAsScheduledForDeletion = null;
+    protected $pUReputationsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -650,7 +650,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collPUReputationRAs = null;
+            $this->collPUReputations = null;
 
             $this->collPUsers = null;
         } // if (deep)
@@ -804,7 +804,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
                     foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PUReputationRAQuery::create()
+                    PUReputationQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pUsersScheduledForDeletion = null;
@@ -823,17 +823,17 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUReputationRAsScheduledForDeletion !== null) {
-                if (!$this->pUReputationRAsScheduledForDeletion->isEmpty()) {
-                    PUReputationRAQuery::create()
-                        ->filterByPrimaryKeys($this->pUReputationRAsScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pUReputationsScheduledForDeletion !== null) {
+                if (!$this->pUReputationsScheduledForDeletion->isEmpty()) {
+                    PUReputationQuery::create()
+                        ->filterByPrimaryKeys($this->pUReputationsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pUReputationRAsScheduledForDeletion = null;
+                    $this->pUReputationsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPUReputationRAs !== null) {
-                foreach ($this->collPUReputationRAs as $referrerFK) {
+            if ($this->collPUReputations !== null) {
+                foreach ($this->collPUReputations as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1036,8 +1036,8 @@ abstract class BasePRAction extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPUReputationRAs !== null) {
-                    foreach ($this->collPUReputationRAs as $referrerFK) {
+                if ($this->collPUReputations !== null) {
+                    foreach ($this->collPUReputations as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1155,8 +1155,8 @@ abstract class BasePRAction extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collPUReputationRAs) {
-                $result['PUReputationRAs'] = $this->collPUReputationRAs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUReputations) {
+                $result['PUReputations'] = $this->collPUReputations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1357,9 +1357,9 @@ abstract class BasePRAction extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPUReputationRAs() as $relObj) {
+            foreach ($this->getPUReputations() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUReputationRA($relObj->copy($deepCopy));
+                    $copyObj->addPUReputation($relObj->copy($deepCopy));
                 }
             }
 
@@ -1424,42 +1424,42 @@ abstract class BasePRAction extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PUReputationRA' == $relationName) {
-            $this->initPUReputationRAs();
+        if ('PUReputation' == $relationName) {
+            $this->initPUReputations();
         }
     }
 
     /**
-     * Clears out the collPUReputationRAs collection
+     * Clears out the collPUReputations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PRAction The current object (for fluent API support)
-     * @see        addPUReputationRAs()
+     * @see        addPUReputations()
      */
-    public function clearPUReputationRAs()
+    public function clearPUReputations()
     {
-        $this->collPUReputationRAs = null; // important to set this to null since that means it is uninitialized
-        $this->collPUReputationRAsPartial = null;
+        $this->collPUReputations = null; // important to set this to null since that means it is uninitialized
+        $this->collPUReputationsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUReputationRAs collection loaded partially
+     * reset is the collPUReputations collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUReputationRAs($v = true)
+    public function resetPartialPUReputations($v = true)
     {
-        $this->collPUReputationRAsPartial = $v;
+        $this->collPUReputationsPartial = $v;
     }
 
     /**
-     * Initializes the collPUReputationRAs collection.
+     * Initializes the collPUReputations collection.
      *
-     * By default this just sets the collPUReputationRAs collection to an empty array (like clearcollPUReputationRAs());
+     * By default this just sets the collPUReputations collection to an empty array (like clearcollPUReputations());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1468,17 +1468,17 @@ abstract class BasePRAction extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUReputationRAs($overrideExisting = true)
+    public function initPUReputations($overrideExisting = true)
     {
-        if (null !== $this->collPUReputationRAs && !$overrideExisting) {
+        if (null !== $this->collPUReputations && !$overrideExisting) {
             return;
         }
-        $this->collPUReputationRAs = new PropelObjectCollection();
-        $this->collPUReputationRAs->setModel('PUReputationRA');
+        $this->collPUReputations = new PropelObjectCollection();
+        $this->collPUReputations->setModel('PUReputation');
     }
 
     /**
-     * Gets an array of PUReputationRA objects which contain a foreign key that references this object.
+     * Gets an array of PUReputation objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1488,107 +1488,107 @@ abstract class BasePRAction extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUReputationRA[] List of PUReputationRA objects
+     * @return PropelObjectCollection|PUReputation[] List of PUReputation objects
      * @throws PropelException
      */
-    public function getPUReputationRAs($criteria = null, PropelPDO $con = null)
+    public function getPUReputations($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUReputationRAsPartial && !$this->isNew();
-        if (null === $this->collPUReputationRAs || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUReputationRAs) {
+        $partial = $this->collPUReputationsPartial && !$this->isNew();
+        if (null === $this->collPUReputations || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUReputations) {
                 // return empty collection
-                $this->initPUReputationRAs();
+                $this->initPUReputations();
             } else {
-                $collPUReputationRAs = PUReputationRAQuery::create(null, $criteria)
+                $collPUReputations = PUReputationQuery::create(null, $criteria)
                     ->filterByPRAction($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUReputationRAsPartial && count($collPUReputationRAs)) {
-                      $this->initPUReputationRAs(false);
+                    if (false !== $this->collPUReputationsPartial && count($collPUReputations)) {
+                      $this->initPUReputations(false);
 
-                      foreach ($collPUReputationRAs as $obj) {
-                        if (false == $this->collPUReputationRAs->contains($obj)) {
-                          $this->collPUReputationRAs->append($obj);
+                      foreach ($collPUReputations as $obj) {
+                        if (false == $this->collPUReputations->contains($obj)) {
+                          $this->collPUReputations->append($obj);
                         }
                       }
 
-                      $this->collPUReputationRAsPartial = true;
+                      $this->collPUReputationsPartial = true;
                     }
 
-                    $collPUReputationRAs->getInternalIterator()->rewind();
+                    $collPUReputations->getInternalIterator()->rewind();
 
-                    return $collPUReputationRAs;
+                    return $collPUReputations;
                 }
 
-                if ($partial && $this->collPUReputationRAs) {
-                    foreach ($this->collPUReputationRAs as $obj) {
+                if ($partial && $this->collPUReputations) {
+                    foreach ($this->collPUReputations as $obj) {
                         if ($obj->isNew()) {
-                            $collPUReputationRAs[] = $obj;
+                            $collPUReputations[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUReputationRAs = $collPUReputationRAs;
-                $this->collPUReputationRAsPartial = false;
+                $this->collPUReputations = $collPUReputations;
+                $this->collPUReputationsPartial = false;
             }
         }
 
-        return $this->collPUReputationRAs;
+        return $this->collPUReputations;
     }
 
     /**
-     * Sets a collection of PUReputationRA objects related by a one-to-many relationship
+     * Sets a collection of PUReputation objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUReputationRAs A Propel collection.
+     * @param PropelCollection $pUReputations A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PRAction The current object (for fluent API support)
      */
-    public function setPUReputationRAs(PropelCollection $pUReputationRAs, PropelPDO $con = null)
+    public function setPUReputations(PropelCollection $pUReputations, PropelPDO $con = null)
     {
-        $pUReputationRAsToDelete = $this->getPUReputationRAs(new Criteria(), $con)->diff($pUReputationRAs);
+        $pUReputationsToDelete = $this->getPUReputations(new Criteria(), $con)->diff($pUReputations);
 
 
-        $this->pUReputationRAsScheduledForDeletion = $pUReputationRAsToDelete;
+        $this->pUReputationsScheduledForDeletion = $pUReputationsToDelete;
 
-        foreach ($pUReputationRAsToDelete as $pUReputationRARemoved) {
-            $pUReputationRARemoved->setPRAction(null);
+        foreach ($pUReputationsToDelete as $pUReputationRemoved) {
+            $pUReputationRemoved->setPRAction(null);
         }
 
-        $this->collPUReputationRAs = null;
-        foreach ($pUReputationRAs as $pUReputationRA) {
-            $this->addPUReputationRA($pUReputationRA);
+        $this->collPUReputations = null;
+        foreach ($pUReputations as $pUReputation) {
+            $this->addPUReputation($pUReputation);
         }
 
-        $this->collPUReputationRAs = $pUReputationRAs;
-        $this->collPUReputationRAsPartial = false;
+        $this->collPUReputations = $pUReputations;
+        $this->collPUReputationsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PUReputationRA objects.
+     * Returns the number of related PUReputation objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PUReputationRA objects.
+     * @return int             Count of related PUReputation objects.
      * @throws PropelException
      */
-    public function countPUReputationRAs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUReputations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUReputationRAsPartial && !$this->isNew();
-        if (null === $this->collPUReputationRAs || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUReputationRAs) {
+        $partial = $this->collPUReputationsPartial && !$this->isNew();
+        if (null === $this->collPUReputations || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUReputations) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUReputationRAs());
+                return count($this->getPUReputations());
             }
-            $query = PUReputationRAQuery::create(null, $criteria);
+            $query = PUReputationQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1598,28 +1598,28 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPUReputationRAs);
+        return count($this->collPUReputations);
     }
 
     /**
-     * Method called to associate a PUReputationRA object to this object
-     * through the PUReputationRA foreign key attribute.
+     * Method called to associate a PUReputation object to this object
+     * through the PUReputation foreign key attribute.
      *
-     * @param    PUReputationRA $l PUReputationRA
+     * @param    PUReputation $l PUReputation
      * @return PRAction The current object (for fluent API support)
      */
-    public function addPUReputationRA(PUReputationRA $l)
+    public function addPUReputation(PUReputation $l)
     {
-        if ($this->collPUReputationRAs === null) {
-            $this->initPUReputationRAs();
-            $this->collPUReputationRAsPartial = true;
+        if ($this->collPUReputations === null) {
+            $this->initPUReputations();
+            $this->collPUReputationsPartial = true;
         }
 
-        if (!in_array($l, $this->collPUReputationRAs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUReputationRA($l);
+        if (!in_array($l, $this->collPUReputations->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUReputation($l);
 
-            if ($this->pUReputationRAsScheduledForDeletion and $this->pUReputationRAsScheduledForDeletion->contains($l)) {
-                $this->pUReputationRAsScheduledForDeletion->remove($this->pUReputationRAsScheduledForDeletion->search($l));
+            if ($this->pUReputationsScheduledForDeletion and $this->pUReputationsScheduledForDeletion->contains($l)) {
+                $this->pUReputationsScheduledForDeletion->remove($this->pUReputationsScheduledForDeletion->search($l));
             }
         }
 
@@ -1627,28 +1627,28 @@ abstract class BasePRAction extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUReputationRA $pUReputationRA The pUReputationRA object to add.
+     * @param	PUReputation $pUReputation The pUReputation object to add.
      */
-    protected function doAddPUReputationRA($pUReputationRA)
+    protected function doAddPUReputation($pUReputation)
     {
-        $this->collPUReputationRAs[]= $pUReputationRA;
-        $pUReputationRA->setPRAction($this);
+        $this->collPUReputations[]= $pUReputation;
+        $pUReputation->setPRAction($this);
     }
 
     /**
-     * @param	PUReputationRA $pUReputationRA The pUReputationRA object to remove.
+     * @param	PUReputation $pUReputation The pUReputation object to remove.
      * @return PRAction The current object (for fluent API support)
      */
-    public function removePUReputationRA($pUReputationRA)
+    public function removePUReputation($pUReputation)
     {
-        if ($this->getPUReputationRAs()->contains($pUReputationRA)) {
-            $this->collPUReputationRAs->remove($this->collPUReputationRAs->search($pUReputationRA));
-            if (null === $this->pUReputationRAsScheduledForDeletion) {
-                $this->pUReputationRAsScheduledForDeletion = clone $this->collPUReputationRAs;
-                $this->pUReputationRAsScheduledForDeletion->clear();
+        if ($this->getPUReputations()->contains($pUReputation)) {
+            $this->collPUReputations->remove($this->collPUReputations->search($pUReputation));
+            if (null === $this->pUReputationsScheduledForDeletion) {
+                $this->pUReputationsScheduledForDeletion = clone $this->collPUReputations;
+                $this->pUReputationsScheduledForDeletion->clear();
             }
-            $this->pUReputationRAsScheduledForDeletion[]= clone $pUReputationRA;
-            $pUReputationRA->setPRAction(null);
+            $this->pUReputationsScheduledForDeletion[]= clone $pUReputation;
+            $pUReputation->setPRAction(null);
         }
 
         return $this;
@@ -1660,7 +1660,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PRAction is new, it will return
      * an empty collection; or if this PRAction has previously
-     * been saved, it will retrieve related PUReputationRAs from storage.
+     * been saved, it will retrieve related PUReputations from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1669,14 +1669,14 @@ abstract class BasePRAction extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUReputationRA[] List of PUReputationRA objects
+     * @return PropelObjectCollection|PUReputation[] List of PUReputation objects
      */
-    public function getPUReputationRAsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUReputationsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PUReputationRAQuery::create(null, $criteria);
+        $query = PUReputationQuery::create(null, $criteria);
         $query->joinWith('PUser', $join_behavior);
 
-        return $this->getPUReputationRAs($query, $con);
+        return $this->getPUReputations($query, $con);
     }
 
     /**
@@ -1713,7 +1713,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
     /**
      * Gets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_reputation_r_a cross-reference table.
+     * to the current object by way of the p_u_reputation cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1748,7 +1748,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
     /**
      * Sets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_reputation_r_a cross-reference table.
+     * to the current object by way of the p_u_reputation cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
@@ -1776,7 +1776,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
     /**
      * Gets the number of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_reputation_r_a cross-reference table.
+     * to the current object by way of the p_u_reputation cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -1806,9 +1806,9 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
     /**
      * Associate a PUser object to this object
-     * through the p_u_reputation_r_a cross reference table.
+     * through the p_u_reputation cross reference table.
      *
-     * @param  PUser $pUser The PUReputationRA object to relate
+     * @param  PUser $pUser The PUReputation object to relate
      * @return PRAction The current object (for fluent API support)
      */
     public function addPUser(PUser $pUser)
@@ -1836,9 +1836,9 @@ abstract class BasePRAction extends BaseObject implements Persistent
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pUser->getPRActions()->contains($this)) { $pUReputationRA = new PUReputationRA();
-            $pUReputationRA->setPUser($pUser);
-            $this->addPUReputationRA($pUReputationRA);
+        if (!$pUser->getPRActions()->contains($this)) { $pUReputation = new PUReputation();
+            $pUReputation->setPUser($pUser);
+            $this->addPUReputation($pUReputation);
 
             $foreignCollection = $pUser->getPRActions();
             $foreignCollection[] = $this;
@@ -1847,9 +1847,9 @@ abstract class BasePRAction extends BaseObject implements Persistent
 
     /**
      * Remove a PUser object to this object
-     * through the p_u_reputation_r_a cross reference table.
+     * through the p_u_reputation cross reference table.
      *
-     * @param PUser $pUser The PUReputationRA object to relate
+     * @param PUser $pUser The PUReputation object to relate
      * @return PRAction The current object (for fluent API support)
      */
     public function removePUser(PUser $pUser)
@@ -1903,8 +1903,8 @@ abstract class BasePRAction extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPUReputationRAs) {
-                foreach ($this->collPUReputationRAs as $o) {
+            if ($this->collPUReputations) {
+                foreach ($this->collPUReputations as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1917,10 +1917,10 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPUReputationRAs instanceof PropelCollection) {
-            $this->collPUReputationRAs->clearIterator();
+        if ($this->collPUReputations instanceof PropelCollection) {
+            $this->collPUReputations->clearIterator();
         }
-        $this->collPUReputationRAs = null;
+        $this->collPUReputations = null;
         if ($this->collPUsers instanceof PropelCollection) {
             $this->collPUsers->clearIterator();
         }

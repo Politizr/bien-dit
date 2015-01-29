@@ -11,7 +11,7 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRActionPeer;
-use Politizr\Model\PUReputationRAPeer;
+use Politizr\Model\PUReputationPeer;
 use Politizr\Model\map\PRActionTableMap;
 
 abstract class BasePRActionPeer
@@ -406,9 +406,9 @@ abstract class BasePRActionPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUReputationRAPeer instance pool,
+        // Invalidate objects in PUReputationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUReputationRAPeer::clearInstancePool();
+        PUReputationPeer::clearInstancePool();
     }
 
     /**

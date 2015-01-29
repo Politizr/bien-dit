@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PDocument;
-use Politizr\Model\PUReputationRA;
+use Politizr\Model\PUReputation;
 
 /**
  * 	Gestion des actions mettant à jour la réputation
@@ -42,7 +42,7 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
     }
 
     /**
@@ -61,7 +61,7 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // Débat associé à la réaction
         $debate = $subject->getPDDebate();
@@ -71,7 +71,7 @@ class ReputationListener {
         $objectName = get_class($debate);
         $objectId = $debate->getId();
 
-        $this->insertPUReputationRA($debateUserId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($debateUserId, $prActionId, $objectName, $objectId);
 
 
         // Réaction associée à la réaction
@@ -83,7 +83,7 @@ class ReputationListener {
             $objectName = get_class($parent);
             $objectId = $parent->getId();
 
-            $this->insertPUReputationRA($parentUserId, $prActionId, $objectName, $objectId);
+            $this->insertPUReputation($parentUserId, $prActionId, $objectName, $objectId);
         } else {
             $parentUserId = $debate->getPUserId();
         }
@@ -103,7 +103,7 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // Document associé au commentaire
         $document = $subject->getPDocument();
@@ -112,11 +112,11 @@ class ReputationListener {
         switch ($document->getType()) {
             case PDocument::TYPE_DEBATE:
                 $prActionId = PRAction::ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
-                $this->insertPUReputationRA($targetUserId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
             case PDocument::TYPE_REACTION:
                 $prActionId = PRAction::ID_D_TARGET_REACTION_COMMENT_PUBLISH;
-                $this->insertPUReputationRA($targetUserId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
         }
     }
@@ -144,8 +144,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_POS;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDReaction':
@@ -155,8 +155,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_POS;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDComment':
@@ -166,8 +166,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_POS;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
         } 
@@ -195,8 +195,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_NEG;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDReaction':
@@ -206,8 +206,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_NEG;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDComment':
@@ -217,8 +217,8 @@ class ReputationListener {
                 $userIdAuthor = $subject->getPUserId();
                 $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_NEG;
 
-                $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
-                $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
+                $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+                $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
         } 
@@ -240,13 +240,13 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // Auteur du débat
         $userId = $subject->getPUserId();
         $prActionId = PRAction::ID_D_TARGET_DEBATE_FOLLOW;
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
     }
 
@@ -265,13 +265,13 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // User suivi
         $userId = $subject->getId();
         $prActionId = PRAction::ID_U_TARGET_USER_FOLLOW;
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
     }
 
     /**
@@ -289,13 +289,13 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // Auteur du débat
         $userId = $subject->getPUserId();
         $prActionId = PRAction::ID_D_TARGET_DEBATE_UNFOLLOW;
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
     }
 
@@ -314,13 +314,13 @@ class ReputationListener {
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // User suivi
         $userId = $subject->getId();
         $prActionId = PRAction::ID_U_TARGET_USER_UNFOLLOW;
 
-        $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
     }
 
 
@@ -334,14 +334,14 @@ class ReputationListener {
      *
      * @param
      */
-    private function insertPUReputationRA($userId, $prActionId, $objectName, $objectId) {
-        $this->logger->info('*** insertPUReputationRA');
+    private function insertPUReputation($userId, $prActionId, $objectName, $objectId) {
+        $this->logger->info('*** insertPUReputation');
         $this->logger->info('userId = '.print_r($userId, true));
         $this->logger->info('prActionId = '.print_r($prActionId, true));
         $this->logger->info('objectName = '.print_r($objectName, true));
         $this->logger->info('objectId = '.print_r($objectId, true));
 
-        $userRepAction = new PUReputationRA();
+        $userRepAction = new PUReputation();
 
         $userRepAction->setPUserId($userId);
         $userRepAction->setPRActionId($prActionId);

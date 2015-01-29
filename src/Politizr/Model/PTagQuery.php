@@ -20,23 +20,24 @@ class PTagQuery extends BasePTagQuery
 	 *
 	 *  @return 	integer 	ID du nouveau tag, ou false si aucun tag créé
 	 */
-	public function addTag($title = '', $typeId = PTTagType::TYPE_GEO, $online = true) {
+	public function addTag($title = '', $typeId = PTTagType::TYPE_GEO, $userId = null, $online = true) {
         $slug = \StudioEcho\Lib\StudioEchoUtils::generateSlug($title);
-        $pTag = PTagQuery::create()->filterByPTTagTypeId($typeId)->filterBySlug($slug)->findOne();
+        $tag = PTagQuery::create()->filterByPTTagTypeId($typeId)->filterBySlug($slug)->findOne();
 
-        if ($pTag) {
+        if ($tag) {
             return false;
         } else {
             // Création du nouveau tag
-            $pTag = new PTag();
+            $tag = new PTag();
 
-            $pTag->setTitle($title);
-            $pTag->setPTTagTypeId($typeId);
-            $pTag->setOnline($online);
+            $tag->setTitle($title);
+            $tag->setPTTagTypeId($typeId);
+            $tag->setPUserId($userId);
+            $tag->setOnline($online);
 
-            $pTag->save();
+            $tag->save();
         }
 
-        return $pTag->getId();
+        return $tag->getId();
 	}
 }

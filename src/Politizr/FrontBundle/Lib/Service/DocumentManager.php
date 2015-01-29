@@ -16,9 +16,9 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PDComment;
 
+use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PDCommentQuery;
 
@@ -509,12 +509,12 @@ class DocumentManager
 
 
     /**
-     *  Upload du bandeau photo du débat
+     *  Upload du bandeau photo du document (débat ou réaction)
      *
      */
-    public function debatePhotoUpload() {
+    public function documentPhotoUpload() {
         $logger = $this->sc->get('logger');
-        $logger->info('*** debatePhotoUpload');
+        $logger->info('*** documentPhotoUpload');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -525,10 +525,13 @@ class DocumentManager
         // Récupération débat courant
         $id = $request->get('id');
         $logger->info(print_r($id, true));
-        $debate = PDDebateQuery::create()->findPk($id);
+        $document = PDocumentQuery::create()->findPk($id);
+
+        // Récupération de l'objet descendant
+        $child = $document->getChildObject();
 
         // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDDebate::UPLOAD_WEB_PATH;
+        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
 
         // Taille max 5Mo
         $sizeLimit = 5 * 1024 * 1024;
@@ -558,7 +561,7 @@ class DocumentManager
         }
 
         // Suppression photo déjà uploadée
-        $filename = $debate->getFilename();
+        $filename = $child->getFilename();
         if ($filename && $fileExists = file_exists($path . $filename)) {
             unlink($path . $filename);
         }
@@ -581,8 +584,8 @@ class DocumentManager
         }
 
         // MAJ du modèle
-        $debate->setFilename($destName);
-        $debate->save();
+        $child->setFilename($destName);
+        $child->save();
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -595,9 +598,9 @@ class DocumentManager
      *  Upload du bandeau photo du débat
      *
      */
-    public function debatePhotoDelete() {
+    public function documentPhotoDelete() {
         $logger = $this->sc->get('logger');
-        $logger->info('*** debatePhotoDelete');
+        $logger->info('*** documentPhotoDelete');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -608,20 +611,20 @@ class DocumentManager
         // Récupération débat courant
         $id = $request->get('id');
         $logger->info(print_r($id, true));
-        $debate = PDDebateQuery::create()->findPk($id);
+        $document = PDocumentQuery::create()->findPk($id);
 
         // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDDebate::UPLOAD_WEB_PATH;
+        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
-        $filename = $debate->getFilename();
+        $filename = $document->getFilename();
         if ($filename && $fileExists = file_exists($path . $filename)) {
             unlink($path . $filename);
         }
 
         // MAJ du modèle
-        $debate->setFilename(null);
-        $debate->save();
+        $document->setFilename(null);
+        $document->save();
 
         return true;
     }

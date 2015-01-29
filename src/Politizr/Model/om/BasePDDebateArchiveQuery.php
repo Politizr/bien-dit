@@ -15,44 +15,42 @@ use Politizr\Model\PDDebateArchivePeer;
 use Politizr\Model\PDDebateArchiveQuery;
 
 /**
- * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDebateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDDebateArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PDDebateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDebateArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDDebateArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PDDebateArchiveQuery orderByMoreInfo($order = Criteria::ASC) Order by the more_info column
  * @method PDDebateArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDDebateArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
  * @method PDDebateArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PDDebateArchiveQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDDebateArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDDebateArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
+ * @method PDDebateArchiveQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDDebateArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
- * @method PDDebateArchiveQuery orderByBroadcast($order = Criteria::ASC) Order by the broadcast column
  * @method PDDebateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
- * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
  * @method PDDebateArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDDebateArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDDebateArchiveQuery groupBySlug() Group by the slug column
  * @method PDDebateArchiveQuery groupById() Group by the id column
  * @method PDDebateArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDDebateArchiveQuery groupByTitle() Group by the title column
+ * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
  * @method PDDebateArchiveQuery groupBySummary() Group by the summary column
  * @method PDDebateArchiveQuery groupByDescription() Group by the description column
- * @method PDDebateArchiveQuery groupByMoreInfo() Group by the more_info column
  * @method PDDebateArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDDebateArchiveQuery groupByNoteNeg() Group by the note_neg column
  * @method PDDebateArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PDDebateArchiveQuery groupByPublished() Group by the published column
  * @method PDDebateArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDDebateArchiveQuery groupByPublishedBy() Group by the published_by column
+ * @method PDDebateArchiveQuery groupByFavorite() Group by the favorite column
  * @method PDDebateArchiveQuery groupByOnline() Group by the online column
- * @method PDDebateArchiveQuery groupByBroadcast() Group by the broadcast column
  * @method PDDebateArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDDebateArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -62,43 +60,41 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOne(PropelPDO $con = null) Return the first PDDebateArchive matching the query
  * @method PDDebateArchive findOneOrCreate(PropelPDO $con = null) Return the first PDDebateArchive matching the query, or a new PDDebateArchive object populated from the query conditions when no match is found
  *
- * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
  * @method PDDebateArchive findOneByCreatedAt(string $created_at) Return the first PDDebateArchive filtered by the created_at column
  * @method PDDebateArchive findOneByUpdatedAt(string $updated_at) Return the first PDDebateArchive filtered by the updated_at column
  * @method PDDebateArchive findOneBySlug(string $slug) Return the first PDDebateArchive filtered by the slug column
  * @method PDDebateArchive findOneByPUserId(int $p_user_id) Return the first PDDebateArchive filtered by the p_user_id column
  * @method PDDebateArchive findOneByTitle(string $title) Return the first PDDebateArchive filtered by the title column
+ * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
  * @method PDDebateArchive findOneBySummary(string $summary) Return the first PDDebateArchive filtered by the summary column
  * @method PDDebateArchive findOneByDescription(string $description) Return the first PDDebateArchive filtered by the description column
- * @method PDDebateArchive findOneByMoreInfo(string $more_info) Return the first PDDebateArchive filtered by the more_info column
  * @method PDDebateArchive findOneByNotePos(int $note_pos) Return the first PDDebateArchive filtered by the note_pos column
  * @method PDDebateArchive findOneByNoteNeg(int $note_neg) Return the first PDDebateArchive filtered by the note_neg column
  * @method PDDebateArchive findOneByNbViews(int $nb_views) Return the first PDDebateArchive filtered by the nb_views column
  * @method PDDebateArchive findOneByPublished(boolean $published) Return the first PDDebateArchive filtered by the published column
  * @method PDDebateArchive findOneByPublishedAt(string $published_at) Return the first PDDebateArchive filtered by the published_at column
  * @method PDDebateArchive findOneByPublishedBy(string $published_by) Return the first PDDebateArchive filtered by the published_by column
+ * @method PDDebateArchive findOneByFavorite(boolean $favorite) Return the first PDDebateArchive filtered by the favorite column
  * @method PDDebateArchive findOneByOnline(boolean $online) Return the first PDDebateArchive filtered by the online column
- * @method PDDebateArchive findOneByBroadcast(boolean $broadcast) Return the first PDDebateArchive filtered by the broadcast column
  * @method PDDebateArchive findOneByArchivedAt(string $archived_at) Return the first PDDebateArchive filtered by the archived_at column
  *
- * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
  * @method array findByCreatedAt(string $created_at) Return PDDebateArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDebateArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDDebateArchive objects filtered by the slug column
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDDebateArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDDebateArchive objects filtered by the title column
+ * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
  * @method array findBySummary(string $summary) Return PDDebateArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDDebateArchive objects filtered by the description column
- * @method array findByMoreInfo(string $more_info) Return PDDebateArchive objects filtered by the more_info column
  * @method array findByNotePos(int $note_pos) Return PDDebateArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDDebateArchive objects filtered by the note_neg column
  * @method array findByNbViews(int $nb_views) Return PDDebateArchive objects filtered by the nb_views column
  * @method array findByPublished(boolean $published) Return PDDebateArchive objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDDebateArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDDebateArchive objects filtered by the published_by column
+ * @method array findByFavorite(boolean $favorite) Return PDDebateArchive objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDDebateArchive objects filtered by the online column
- * @method array findByBroadcast(boolean $broadcast) Return PDDebateArchive objects filtered by the broadcast column
  * @method array findByArchivedAt(string $archived_at) Return PDDebateArchive objects filtered by the archived_at column
  */
 abstract class BasePDDebateArchiveQuery extends ModelCriteria
@@ -205,7 +201,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `file_name`, `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `summary`, `description`, `more_info`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `online`, `broadcast`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `file_name`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -292,35 +288,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
     {
 
         return $this->addUsingAlias(PDDebateArchivePeer::ID, $keys, Criteria::IN);
-    }
-
-    /**
-     * Filter the query on the file_name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
-     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $fileName The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByFileName($fileName = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($fileName)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $fileName)) {
-                $fileName = str_replace('*', '%', $fileName);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**
@@ -552,6 +519,35 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::FILE_NAME, $fileName, $comparison);
+    }
+
+    /**
      * Filter the query on the summary column
      *
      * Example usage:
@@ -607,35 +603,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the more_info column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByMoreInfo('fooValue');   // WHERE more_info = 'fooValue'
-     * $query->filterByMoreInfo('%fooValue%'); // WHERE more_info LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $moreInfo The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByMoreInfo($moreInfo = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($moreInfo)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $moreInfo)) {
-                $moreInfo = str_replace('*', '%', $moreInfo);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::MORE_INFO, $moreInfo, $comparison);
     }
 
     /**
@@ -864,6 +831,33 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the favorite column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFavorite(true); // WHERE favorite = true
+     * $query->filterByFavorite('yes'); // WHERE favorite = true
+     * </code>
+     *
+     * @param     boolean|string $favorite The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByFavorite($favorite = null, $comparison = null)
+    {
+        if (is_string($favorite)) {
+            $favorite = in_array(strtolower($favorite), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::FAVORITE, $favorite, $comparison);
+    }
+
+    /**
      * Filter the query on the online column
      *
      * Example usage:
@@ -888,33 +882,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::ONLINE, $online, $comparison);
-    }
-
-    /**
-     * Filter the query on the broadcast column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByBroadcast(true); // WHERE broadcast = true
-     * $query->filterByBroadcast('yes'); // WHERE broadcast = true
-     * </code>
-     *
-     * @param     boolean|string $broadcast The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByBroadcast($broadcast = null, $comparison = null)
-    {
-        if (is_string($broadcast)) {
-            $broadcast = in_array(strtolower($broadcast), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::BROADCAST, $broadcast, $comparison);
     }
 
     /**

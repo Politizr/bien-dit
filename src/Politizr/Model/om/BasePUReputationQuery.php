@@ -13,58 +13,66 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PRBadge;
-use Politizr\Model\PUReputationRB;
-use Politizr\Model\PUReputationRBPeer;
-use Politizr\Model\PUReputationRBQuery;
+use Politizr\Model\PRAction;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PUReputationPeer;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUReputationRBQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PUReputationRBQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUReputationRBQuery orderByPRBadgeId($order = Criteria::ASC) Order by the p_r_badge_id column
- * @method PUReputationRBQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PUReputationRBQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUReputationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUReputationQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUReputationQuery orderByPRActionId($order = Criteria::ASC) Order by the p_r_action_id column
+ * @method PUReputationQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
+ * @method PUReputationQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
+ * @method PUReputationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PUReputationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUReputationRBQuery groupById() Group by the id column
- * @method PUReputationRBQuery groupByPUserId() Group by the p_user_id column
- * @method PUReputationRBQuery groupByPRBadgeId() Group by the p_r_badge_id column
- * @method PUReputationRBQuery groupByCreatedAt() Group by the created_at column
- * @method PUReputationRBQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUReputationQuery groupById() Group by the id column
+ * @method PUReputationQuery groupByPUserId() Group by the p_user_id column
+ * @method PUReputationQuery groupByPRActionId() Group by the p_r_action_id column
+ * @method PUReputationQuery groupByPObjectName() Group by the p_object_name column
+ * @method PUReputationQuery groupByPObjectId() Group by the p_object_id column
+ * @method PUReputationQuery groupByCreatedAt() Group by the created_at column
+ * @method PUReputationQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PUReputationRBQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PUReputationRBQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PUReputationRBQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PUReputationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PUReputationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PUReputationQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUReputationRBQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
- * @method PUReputationRBQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
- * @method PUReputationRBQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ * @method PUReputationQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PUReputationQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PUReputationQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
- * @method PUReputationRBQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
- * @method PUReputationRBQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
- * @method PUReputationRBQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
+ * @method PUReputationQuery leftJoinPRAction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRAction relation
+ * @method PUReputationQuery rightJoinPRAction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRAction relation
+ * @method PUReputationQuery innerJoinPRAction($relationAlias = null) Adds a INNER JOIN clause to the query using the PRAction relation
  *
- * @method PUReputationRB findOne(PropelPDO $con = null) Return the first PUReputationRB matching the query
- * @method PUReputationRB findOneOrCreate(PropelPDO $con = null) Return the first PUReputationRB matching the query, or a new PUReputationRB object populated from the query conditions when no match is found
+ * @method PUReputation findOne(PropelPDO $con = null) Return the first PUReputation matching the query
+ * @method PUReputation findOneOrCreate(PropelPDO $con = null) Return the first PUReputation matching the query, or a new PUReputation object populated from the query conditions when no match is found
  *
- * @method PUReputationRB findOneByPUserId(int $p_user_id) Return the first PUReputationRB filtered by the p_user_id column
- * @method PUReputationRB findOneByPRBadgeId(int $p_r_badge_id) Return the first PUReputationRB filtered by the p_r_badge_id column
- * @method PUReputationRB findOneByCreatedAt(string $created_at) Return the first PUReputationRB filtered by the created_at column
- * @method PUReputationRB findOneByUpdatedAt(string $updated_at) Return the first PUReputationRB filtered by the updated_at column
+ * @method PUReputation findOneByPUserId(int $p_user_id) Return the first PUReputation filtered by the p_user_id column
+ * @method PUReputation findOneByPRActionId(int $p_r_action_id) Return the first PUReputation filtered by the p_r_action_id column
+ * @method PUReputation findOneByPObjectName(string $p_object_name) Return the first PUReputation filtered by the p_object_name column
+ * @method PUReputation findOneByPObjectId(int $p_object_id) Return the first PUReputation filtered by the p_object_id column
+ * @method PUReputation findOneByCreatedAt(string $created_at) Return the first PUReputation filtered by the created_at column
+ * @method PUReputation findOneByUpdatedAt(string $updated_at) Return the first PUReputation filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUReputationRB objects filtered by the id column
- * @method array findByPUserId(int $p_user_id) Return PUReputationRB objects filtered by the p_user_id column
- * @method array findByPRBadgeId(int $p_r_badge_id) Return PUReputationRB objects filtered by the p_r_badge_id column
- * @method array findByCreatedAt(string $created_at) Return PUReputationRB objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PUReputationRB objects filtered by the updated_at column
+ * @method array findById(int $id) Return PUReputation objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PUReputation objects filtered by the p_user_id column
+ * @method array findByPRActionId(int $p_r_action_id) Return PUReputation objects filtered by the p_r_action_id column
+ * @method array findByPObjectName(string $p_object_name) Return PUReputation objects filtered by the p_object_name column
+ * @method array findByPObjectId(int $p_object_id) Return PUReputation objects filtered by the p_object_id column
+ * @method array findByCreatedAt(string $created_at) Return PUReputation objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PUReputation objects filtered by the updated_at column
  */
-abstract class BasePUReputationRBQuery extends ModelCriteria
+abstract class BasePUReputationQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePUReputationRBQuery object.
+     * Initializes internal state of BasePUReputationQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -76,25 +84,25 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PUReputationRB';
+            $modelName = 'Politizr\\Model\\PUReputation';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PUReputationRBQuery object.
+     * Returns a new PUReputationQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PUReputationRBQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PUReputationQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PUReputationRBQuery
+     * @return PUReputationQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PUReputationRBQuery) {
+        if ($criteria instanceof PUReputationQuery) {
             return $criteria;
         }
-        $query = new PUReputationRBQuery(null, null, $modelAlias);
+        $query = new PUReputationQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -115,19 +123,19 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PUReputationRB|PUReputationRB[]|mixed the result, formatted by the current formatter
+     * @return   PUReputation|PUReputation[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUReputationRBPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUReputationPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRBPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUReputationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -145,7 +153,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUReputationRB A model object, or null if the key is not found
+     * @return                 PUReputation A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -160,12 +168,12 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUReputationRB A model object, or null if the key is not found
+     * @return                 PUReputation A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_r_badge_id`, `created_at`, `updated_at` FROM `p_u_reputation_r_b` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_r_action_id`, `p_object_name`, `p_object_id`, `created_at`, `updated_at` FROM `p_u_reputation` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -176,9 +184,9 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PUReputationRB();
+            $obj = new PUReputation();
             $obj->hydrate($row);
-            PUReputationRBPeer::addInstanceToPool($obj, (string) $key);
+            PUReputationPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -191,7 +199,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PUReputationRB|PUReputationRB[]|mixed the result, formatted by the current formatter
+     * @return PUReputation|PUReputation[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,7 +220,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PUReputationRB[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PUReputation[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -233,12 +241,12 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PUReputationRBPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PUReputationPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -246,12 +254,12 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PUReputationRBPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PUReputationPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,18 +279,18 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PUReputationRBPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PUReputationRBPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -293,7 +301,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUReputationRBPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PUReputationPeer::ID, $id, $comparison);
     }
 
     /**
@@ -315,18 +323,18 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterByPUserId($pUserId = null, $comparison = null)
     {
         if (is_array($pUserId)) {
             $useMinMax = false;
             if (isset($pUserId['min'])) {
-                $this->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pUserId['max'])) {
-                $this->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -337,40 +345,40 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUserId, $comparison);
+        return $this->addUsingAlias(PUReputationPeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
-     * Filter the query on the p_r_badge_id column
+     * Filter the query on the p_r_action_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByPRBadgeId(1234); // WHERE p_r_badge_id = 1234
-     * $query->filterByPRBadgeId(array(12, 34)); // WHERE p_r_badge_id IN (12, 34)
-     * $query->filterByPRBadgeId(array('min' => 12)); // WHERE p_r_badge_id >= 12
-     * $query->filterByPRBadgeId(array('max' => 12)); // WHERE p_r_badge_id <= 12
+     * $query->filterByPRActionId(1234); // WHERE p_r_action_id = 1234
+     * $query->filterByPRActionId(array(12, 34)); // WHERE p_r_action_id IN (12, 34)
+     * $query->filterByPRActionId(array('min' => 12)); // WHERE p_r_action_id >= 12
+     * $query->filterByPRActionId(array('max' => 12)); // WHERE p_r_action_id <= 12
      * </code>
      *
-     * @see       filterByPRBadge()
+     * @see       filterByPRAction()
      *
-     * @param     mixed $pRBadgeId The value to use as filter.
+     * @param     mixed $pRActionId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
-    public function filterByPRBadgeId($pRBadgeId = null, $comparison = null)
+    public function filterByPRActionId($pRActionId = null, $comparison = null)
     {
-        if (is_array($pRBadgeId)) {
+        if (is_array($pRActionId)) {
             $useMinMax = false;
-            if (isset($pRBadgeId['min'])) {
-                $this->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadgeId['min'], Criteria::GREATER_EQUAL);
+            if (isset($pRActionId['min'])) {
+                $this->addUsingAlias(PUReputationPeer::P_R_ACTION_ID, $pRActionId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($pRBadgeId['max'])) {
-                $this->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadgeId['max'], Criteria::LESS_EQUAL);
+            if (isset($pRActionId['max'])) {
+                $this->addUsingAlias(PUReputationPeer::P_R_ACTION_ID, $pRActionId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -381,7 +389,78 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadgeId, $comparison);
+        return $this->addUsingAlias(PUReputationPeer::P_R_ACTION_ID, $pRActionId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_object_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPObjectName('fooValue');   // WHERE p_object_name = 'fooValue'
+     * $query->filterByPObjectName('%fooValue%'); // WHERE p_object_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $pObjectName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUReputationQuery The current query, for fluid interface
+     */
+    public function filterByPObjectName($pObjectName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($pObjectName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pObjectName)) {
+                $pObjectName = str_replace('*', '%', $pObjectName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUReputationPeer::P_OBJECT_NAME, $pObjectName, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_object_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPObjectId(1234); // WHERE p_object_id = 1234
+     * $query->filterByPObjectId(array(12, 34)); // WHERE p_object_id IN (12, 34)
+     * $query->filterByPObjectId(array('min' => 12)); // WHERE p_object_id >= 12
+     * $query->filterByPObjectId(array('max' => 12)); // WHERE p_object_id <= 12
+     * </code>
+     *
+     * @param     mixed $pObjectId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUReputationQuery The current query, for fluid interface
+     */
+    public function filterByPObjectId($pObjectId = null, $comparison = null)
+    {
+        if (is_array($pObjectId)) {
+            $useMinMax = false;
+            if (isset($pObjectId['min'])) {
+                $this->addUsingAlias(PUReputationPeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pObjectId['max'])) {
+                $this->addUsingAlias(PUReputationPeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUReputationPeer::P_OBJECT_ID, $pObjectId, $comparison);
     }
 
     /**
@@ -402,18 +481,18 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PUReputationRBPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PUReputationRBPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -424,7 +503,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUReputationRBPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PUReputationPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -445,18 +524,18 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PUReputationRBPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PUReputationRBPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUReputationPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -467,7 +546,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUReputationRBPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PUReputationPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -476,21 +555,21 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUReputationRBQuery The current query, for fluid interface
+     * @return                 PUReputationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
-                ->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUser->getId(), $comparison);
+                ->addUsingAlias(PUReputationPeer::P_USER_ID, $pUser->getId(), $comparison);
         } elseif ($pUser instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUReputationRBPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUReputationPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
         }
@@ -502,7 +581,7 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
     public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -547,43 +626,43 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PRBadge object
+     * Filter the query by a related PRAction object
      *
-     * @param   PRBadge|PropelObjectCollection $pRBadge The related object(s) to use as filter
+     * @param   PRAction|PropelObjectCollection $pRAction The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUReputationRBQuery The current query, for fluid interface
+     * @return                 PUReputationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPRBadge($pRBadge, $comparison = null)
+    public function filterByPRAction($pRAction, $comparison = null)
     {
-        if ($pRBadge instanceof PRBadge) {
+        if ($pRAction instanceof PRAction) {
             return $this
-                ->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadge->getId(), $comparison);
-        } elseif ($pRBadge instanceof PropelObjectCollection) {
+                ->addUsingAlias(PUReputationPeer::P_R_ACTION_ID, $pRAction->getId(), $comparison);
+        } elseif ($pRAction instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUReputationRBPeer::P_R_BADGE_ID, $pRBadge->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUReputationPeer::P_R_ACTION_ID, $pRAction->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPRBadge() only accepts arguments of type PRBadge or PropelCollection');
+            throw new PropelException('filterByPRAction() only accepts arguments of type PRAction or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PRBadge relation
+     * Adds a JOIN clause to the query using the PRAction relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
-    public function joinPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPRAction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PRBadge');
+        $relationMap = $tableMap->getRelation('PRAction');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -598,14 +677,14 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PRBadge');
+            $this->addJoinObject($join, 'PRAction');
         }
 
         return $this;
     }
 
     /**
-     * Use the PRBadge relation PRBadge object
+     * Use the PRAction relation PRAction object
      *
      * @see       useQuery()
      *
@@ -613,26 +692,26 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PRBadgeQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PRActionQuery A secondary query class using the current class as primary query
      */
-    public function usePRBadgeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePRActionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPRBadge($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PRBadge', '\Politizr\Model\PRBadgeQuery');
+            ->joinPRAction($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PRAction', '\Politizr\Model\PRActionQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   PUReputationRB $pUReputationRB Object to remove from the list of results
+     * @param   PUReputation $pUReputation Object to remove from the list of results
      *
-     * @return PUReputationRBQuery The current query, for fluid interface
+     * @return PUReputationQuery The current query, for fluid interface
      */
-    public function prune($pUReputationRB = null)
+    public function prune($pUReputation = null)
     {
-        if ($pUReputationRB) {
-            $this->addUsingAlias(PUReputationRBPeer::ID, $pUReputationRB->getId(), Criteria::NOT_EQUAL);
+        if ($pUReputation) {
+            $this->addUsingAlias(PUReputationPeer::ID, $pUReputation->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -645,31 +724,31 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUReputationRBPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUReputationPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUReputationRBPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PUReputationPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUReputationRBPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PUReputationPeer::UPDATED_AT);
     }
 
     /**
@@ -677,31 +756,31 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUReputationRBPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUReputationPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUReputationRBPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PUReputationPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PUReputationRBQuery The current query, for fluid interface
+     * @return     PUReputationQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUReputationRBPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PUReputationPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -742,8 +821,8 @@ abstract class BasePUReputationRBQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PUReputationRBPeer::DATABASE_NAME);
-        $db = Propel::getDB(PUReputationRBPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PUReputationPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUReputationPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

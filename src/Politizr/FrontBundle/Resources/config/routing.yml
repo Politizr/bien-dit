@@ -399,6 +399,19 @@ Comments:
     defaults: { _controller: PolitizrFrontBundle:Document:comments, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+# EDITION DEBAT + REACTION
+################################################################################
+DocumentPhotoUpload:
+    pattern:  /profil/document/upload-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DocumentPhotoDelete:
+    pattern:  /profil/document/delete-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 
 ################################################################################
 # EDITION DEBAT
@@ -416,16 +429,6 @@ DebatePublish:
 DebateDelete:
     pattern:  /profil/debat/delete.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DebatePhotoUpload:
-    pattern:  /profil/debat/upload-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoUpload, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DebatePhotoDelete:
-    pattern:  /profil/debat/delete-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################

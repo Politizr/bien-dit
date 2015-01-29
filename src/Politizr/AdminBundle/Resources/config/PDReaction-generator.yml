@@ -22,14 +22,14 @@ params:
             label:          ID Utilisateur
         p_user:
             label:          Utilisateur
+        file_name:
+            label:          Image
         title:
             label:          Titre
         summary:
             label:          Résumé
         description:
             label:          Description
-        more_info:
-            label:          Encart
         note_pos:
             label:          Notes +
         note_neg:
@@ -109,7 +109,7 @@ builders:
             title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ p_d_debate_id, title, summary, description, more_info ]
+                    "Texte":                    [ p_d_debate_id, uploadedFileName, title, summary, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user_id ] ]
                 "Statut":
@@ -120,6 +120,14 @@ builders:
             fields:
                 p_d_debate_id:
                     formType:                   hidden
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   afe_single_upload
+                    addFormOptions:
+                        # nameable:               fileName
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user_id:
                     label:                      Utilisateur
                     formType:                   choice
@@ -130,9 +138,6 @@ builders:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 description:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
-                more_info:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 published_at:
@@ -155,7 +160,7 @@ builders:
             title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ title, summary, description, more_info ]
+                    "Texte":                    [ file_name, title, summary, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
                     "Débat":                    [ [ p_d_debate ] ]

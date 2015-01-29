@@ -24,8 +24,8 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PUReputationRBQuery;
-use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUReputationQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
@@ -222,7 +222,7 @@ class ProfileCController extends Controller {
         $reputationScore = $user->getReputationScore();
 
         // historique de réputation
-        $reputationHistory = PUReputationRAQuery::create()
+        $reputationHistory = PUReputationQuery::create()
                                 ->filterByPUserId($user->getId())
                                 ->orderByCreatedAt(\Criteria::DESC)
                                 ->find();
@@ -252,7 +252,7 @@ class ProfileCController extends Controller {
 
         // ids des badges du user
         $badgeIds = array();
-        $badgeIds = PUReputationRBQuery::create()
+        $badgeIds = PUBadgesQuery::create()
                         ->filterByPUserId($user->getId())
                         ->find()
                         ->toKeyValue('PRBadgeId', 'PRBadgeId');

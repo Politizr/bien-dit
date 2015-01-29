@@ -13,26 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PRAction;
-use Politizr\Model\PRActionQuery;
-use Politizr\Model\PUReputationRA;
-use Politizr\Model\PUReputationRAPeer;
-use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PRBadge;
+use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PUBadges;
+use Politizr\Model\PUBadgesPeer;
+use Politizr\Model\PUBadgesQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePUReputationRA extends BaseObject implements Persistent
+abstract class BasePUBadges extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PUReputationRAPeer';
+    const PEER = 'Politizr\\Model\\PUBadgesPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PUReputationRAPeer
+     * @var        PUBadgesPeer
      */
     protected static $peer;
 
@@ -55,22 +55,10 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
-     * The value for the p_r_action_id field.
+     * The value for the p_r_badge_id field.
      * @var        int
      */
-    protected $p_r_action_id;
-
-    /**
-     * The value for the p_object_name field.
-     * @var        string
-     */
-    protected $p_object_name;
-
-    /**
-     * The value for the p_object_id field.
-     * @var        int
-     */
-    protected $p_object_id;
+    protected $p_r_badge_id;
 
     /**
      * The value for the created_at field.
@@ -90,9 +78,9 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     protected $aPUser;
 
     /**
-     * @var        PRAction
+     * @var        PRBadge
      */
-    protected $aPRAction;
+    protected $aPRBadge;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -137,36 +125,14 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_r_action_id] column value.
+     * Get the [p_r_badge_id] column value.
      *
      * @return int
      */
-    public function getPRActionId()
+    public function getPRBadgeId()
     {
 
-        return $this->p_r_action_id;
-    }
-
-    /**
-     * Get the [p_object_name] column value.
-     *
-     * @return string
-     */
-    public function getPObjectName()
-    {
-
-        return $this->p_object_name;
-    }
-
-    /**
-     * Get the [p_object_id] column value.
-     *
-     * @return int
-     */
-    public function getPObjectId()
-    {
-
-        return $this->p_object_id;
+        return $this->p_r_badge_id;
     }
 
     /**
@@ -253,7 +219,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -263,7 +229,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PUReputationRAPeer::ID;
+            $this->modifiedColumns[] = PUBadgesPeer::ID;
         }
 
 
@@ -274,7 +240,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * Set the value of [p_user_id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      */
     public function setPUserId($v)
     {
@@ -284,7 +250,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
         if ($this->p_user_id !== $v) {
             $this->p_user_id = $v;
-            $this->modifiedColumns[] = PUReputationRAPeer::P_USER_ID;
+            $this->modifiedColumns[] = PUBadgesPeer::P_USER_ID;
         }
 
         if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
@@ -296,78 +262,36 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
-     * Set the value of [p_r_action_id] column.
+     * Set the value of [p_r_badge_id] column.
      *
      * @param  int $v new value
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      */
-    public function setPRActionId($v)
+    public function setPRBadgeId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_r_action_id !== $v) {
-            $this->p_r_action_id = $v;
-            $this->modifiedColumns[] = PUReputationRAPeer::P_R_ACTION_ID;
+        if ($this->p_r_badge_id !== $v) {
+            $this->p_r_badge_id = $v;
+            $this->modifiedColumns[] = PUBadgesPeer::P_R_BADGE_ID;
         }
 
-        if ($this->aPRAction !== null && $this->aPRAction->getId() !== $v) {
-            $this->aPRAction = null;
-        }
-
-
-        return $this;
-    } // setPRActionId()
-
-    /**
-     * Set the value of [p_object_name] column.
-     *
-     * @param  string $v new value
-     * @return PUReputationRA The current object (for fluent API support)
-     */
-    public function setPObjectName($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->p_object_name !== $v) {
-            $this->p_object_name = $v;
-            $this->modifiedColumns[] = PUReputationRAPeer::P_OBJECT_NAME;
+        if ($this->aPRBadge !== null && $this->aPRBadge->getId() !== $v) {
+            $this->aPRBadge = null;
         }
 
 
         return $this;
-    } // setPObjectName()
-
-    /**
-     * Set the value of [p_object_id] column.
-     *
-     * @param  int $v new value
-     * @return PUReputationRA The current object (for fluent API support)
-     */
-    public function setPObjectId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_object_id !== $v) {
-            $this->p_object_id = $v;
-            $this->modifiedColumns[] = PUReputationRAPeer::P_OBJECT_ID;
-        }
-
-
-        return $this;
-    } // setPObjectId()
+    } // setPRBadgeId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -377,7 +301,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PUReputationRAPeer::CREATED_AT;
+                $this->modifiedColumns[] = PUBadgesPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -390,7 +314,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -400,7 +324,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PUReputationRAPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PUBadgesPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -442,11 +366,9 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_r_action_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->p_r_badge_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -456,10 +378,10 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PUReputationRAPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PUBadgesPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PUReputationRA object", $e);
+            throw new PropelException("Error populating PUBadges object", $e);
         }
     }
 
@@ -482,8 +404,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
         }
-        if ($this->aPRAction !== null && $this->p_r_action_id !== $this->aPRAction->getId()) {
-            $this->aPRAction = null;
+        if ($this->aPRBadge !== null && $this->p_r_badge_id !== $this->aPRBadge->getId()) {
+            $this->aPRBadge = null;
         }
     } // ensureConsistency
 
@@ -508,13 +430,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRAPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUBadgesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PUReputationRAPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PUBadgesPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -525,7 +447,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPUser = null;
-            $this->aPRAction = null;
+            $this->aPRBadge = null;
         } // if (deep)
     }
 
@@ -546,12 +468,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRAPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUBadgesPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PUReputationRAQuery::create()
+            $deleteQuery = PUBadgesQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -589,7 +511,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUReputationRAPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUBadgesPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -599,16 +521,16 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PUReputationRAPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PUBadgesPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PUReputationRAPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PUBadgesPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PUReputationRAPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PUBadgesPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -620,7 +542,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PUReputationRAPeer::addInstanceToPool($this);
+                PUBadgesPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -662,11 +584,11 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 $this->setPUser($this->aPUser);
             }
 
-            if ($this->aPRAction !== null) {
-                if ($this->aPRAction->isModified() || $this->aPRAction->isNew()) {
-                    $affectedRows += $this->aPRAction->save($con);
+            if ($this->aPRBadge !== null) {
+                if ($this->aPRBadge->isModified() || $this->aPRBadge->isNew()) {
+                    $affectedRows += $this->aPRBadge->save($con);
                 }
-                $this->setPRAction($this->aPRAction);
+                $this->setPRBadge($this->aPRBadge);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -700,36 +622,30 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PUReputationRAPeer::ID;
+        $this->modifiedColumns[] = PUBadgesPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUReputationRAPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUBadgesPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PUReputationRAPeer::ID)) {
+        if ($this->isColumnModified(PUBadgesPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PUReputationRAPeer::P_USER_ID)) {
+        if ($this->isColumnModified(PUBadgesPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PUReputationRAPeer::P_R_ACTION_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_r_action_id`';
+        if ($this->isColumnModified(PUBadgesPeer::P_R_BADGE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_r_badge_id`';
         }
-        if ($this->isColumnModified(PUReputationRAPeer::P_OBJECT_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`p_object_name`';
-        }
-        if ($this->isColumnModified(PUReputationRAPeer::P_OBJECT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_object_id`';
-        }
-        if ($this->isColumnModified(PUReputationRAPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PUBadgesPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PUReputationRAPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PUBadgesPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_u_reputation_r_a` (%s) VALUES (%s)',
+            'INSERT INTO `p_u_badges` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -744,14 +660,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
-                    case '`p_r_action_id`':
-                        $stmt->bindValue($identifier, $this->p_r_action_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_object_name`':
-                        $stmt->bindValue($identifier, $this->p_object_name, PDO::PARAM_STR);
-                        break;
-                    case '`p_object_id`':
-                        $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
+                    case '`p_r_badge_id`':
+                        $stmt->bindValue($identifier, $this->p_r_badge_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -864,14 +774,14 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aPRAction !== null) {
-                if (!$this->aPRAction->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPRAction->getValidationFailures());
+            if ($this->aPRBadge !== null) {
+                if (!$this->aPRBadge->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPRBadge->getValidationFailures());
                 }
             }
 
 
-            if (($retval = PUReputationRAPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = PUBadgesPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -895,7 +805,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUReputationRAPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUBadgesPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -918,18 +828,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 2:
-                return $this->getPRActionId();
+                return $this->getPRBadgeId();
                 break;
             case 3:
-                return $this->getPObjectName();
-                break;
-            case 4:
-                return $this->getPObjectId();
-                break;
-            case 5:
                 return $this->getCreatedAt();
                 break;
-            case 6:
+            case 4:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -955,19 +859,17 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUReputationRA'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUBadges'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUReputationRA'][$this->getPrimaryKey()] = true;
-        $keys = PUReputationRAPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PUBadges'][$this->getPrimaryKey()] = true;
+        $keys = PUBadgesPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPRActionId(),
-            $keys[3] => $this->getPObjectName(),
-            $keys[4] => $this->getPObjectId(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[2] => $this->getPRBadgeId(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -978,8 +880,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPRAction) {
-                $result['PRAction'] = $this->aPRAction->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPRBadge) {
+                $result['PRBadge'] = $this->aPRBadge->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -999,7 +901,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUReputationRAPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUBadgesPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1022,18 +924,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 2:
-                $this->setPRActionId($value);
+                $this->setPRBadgeId($value);
                 break;
             case 3:
-                $this->setPObjectName($value);
-                break;
-            case 4:
-                $this->setPObjectId($value);
-                break;
-            case 5:
                 $this->setCreatedAt($value);
                 break;
-            case 6:
+            case 4:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1058,15 +954,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PUReputationRAPeer::getFieldNames($keyType);
+        $keys = PUBadgesPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPRActionId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPRBadgeId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
 
     /**
@@ -1076,15 +970,13 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PUReputationRAPeer::DATABASE_NAME);
+        $criteria = new Criteria(PUBadgesPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PUReputationRAPeer::ID)) $criteria->add(PUReputationRAPeer::ID, $this->id);
-        if ($this->isColumnModified(PUReputationRAPeer::P_USER_ID)) $criteria->add(PUReputationRAPeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PUReputationRAPeer::P_R_ACTION_ID)) $criteria->add(PUReputationRAPeer::P_R_ACTION_ID, $this->p_r_action_id);
-        if ($this->isColumnModified(PUReputationRAPeer::P_OBJECT_NAME)) $criteria->add(PUReputationRAPeer::P_OBJECT_NAME, $this->p_object_name);
-        if ($this->isColumnModified(PUReputationRAPeer::P_OBJECT_ID)) $criteria->add(PUReputationRAPeer::P_OBJECT_ID, $this->p_object_id);
-        if ($this->isColumnModified(PUReputationRAPeer::CREATED_AT)) $criteria->add(PUReputationRAPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PUReputationRAPeer::UPDATED_AT)) $criteria->add(PUReputationRAPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUBadgesPeer::ID)) $criteria->add(PUBadgesPeer::ID, $this->id);
+        if ($this->isColumnModified(PUBadgesPeer::P_USER_ID)) $criteria->add(PUBadgesPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUBadgesPeer::P_R_BADGE_ID)) $criteria->add(PUBadgesPeer::P_R_BADGE_ID, $this->p_r_badge_id);
+        if ($this->isColumnModified(PUBadgesPeer::CREATED_AT)) $criteria->add(PUBadgesPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PUBadgesPeer::UPDATED_AT)) $criteria->add(PUBadgesPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1099,8 +991,8 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PUReputationRAPeer::DATABASE_NAME);
-        $criteria->add(PUReputationRAPeer::ID, $this->id);
+        $criteria = new Criteria(PUBadgesPeer::DATABASE_NAME);
+        $criteria->add(PUBadgesPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1141,7 +1033,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PUReputationRA (or compatible) type.
+     * @param object $copyObj An object of PUBadges (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1149,9 +1041,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPUserId($this->getPUserId());
-        $copyObj->setPRActionId($this->getPRActionId());
-        $copyObj->setPObjectName($this->getPObjectName());
-        $copyObj->setPObjectId($this->getPObjectId());
+        $copyObj->setPRBadgeId($this->getPRBadgeId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1181,7 +1071,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PUReputationRA Clone of current object.
+     * @return PUBadges Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1201,12 +1091,12 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PUReputationRAPeer
+     * @return PUBadgesPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PUReputationRAPeer();
+            self::$peer = new PUBadgesPeer();
         }
 
         return self::$peer;
@@ -1216,7 +1106,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      * Declares an association between this object and a PUser object.
      *
      * @param                  PUser $v
-     * @return PUReputationRA The current object (for fluent API support)
+     * @return PUBadges The current object (for fluent API support)
      * @throws PropelException
      */
     public function setPUser(PUser $v = null)
@@ -1232,7 +1122,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUReputationRA($this);
+            $v->addPUBadges($this);
         }
 
 
@@ -1257,7 +1147,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUser->addPUReputationRAs($this);
+                $this->aPUser->addPUBadgess($this);
              */
         }
 
@@ -1265,26 +1155,26 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a PRAction object.
+     * Declares an association between this object and a PRBadge object.
      *
-     * @param                  PRAction $v
-     * @return PUReputationRA The current object (for fluent API support)
+     * @param                  PRBadge $v
+     * @return PUBadges The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPRAction(PRAction $v = null)
+    public function setPRBadge(PRBadge $v = null)
     {
         if ($v === null) {
-            $this->setPRActionId(NULL);
+            $this->setPRBadgeId(NULL);
         } else {
-            $this->setPRActionId($v->getId());
+            $this->setPRBadgeId($v->getId());
         }
 
-        $this->aPRAction = $v;
+        $this->aPRBadge = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PRAction object, it will not be re-added.
+        // If this object has already been added to the PRBadge object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUReputationRA($this);
+            $v->addPUBadges($this);
         }
 
 
@@ -1293,27 +1183,27 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated PRAction object
+     * Get the associated PRBadge object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return PRAction The associated PRAction object.
+     * @return PRBadge The associated PRBadge object.
      * @throws PropelException
      */
-    public function getPRAction(PropelPDO $con = null, $doQuery = true)
+    public function getPRBadge(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPRAction === null && ($this->p_r_action_id !== null) && $doQuery) {
-            $this->aPRAction = PRActionQuery::create()->findPk($this->p_r_action_id, $con);
+        if ($this->aPRBadge === null && ($this->p_r_badge_id !== null) && $doQuery) {
+            $this->aPRBadge = PRBadgeQuery::create()->findPk($this->p_r_badge_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPRAction->addPUReputationRAs($this);
+                $this->aPRBadge->addPUBadgess($this);
              */
         }
 
-        return $this->aPRAction;
+        return $this->aPRBadge;
     }
 
     /**
@@ -1323,9 +1213,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->p_user_id = null;
-        $this->p_r_action_id = null;
-        $this->p_object_name = null;
-        $this->p_object_id = null;
+        $this->p_r_badge_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1353,15 +1241,15 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
-            if ($this->aPRAction instanceof Persistent) {
-              $this->aPRAction->clearAllReferences($deep);
+            if ($this->aPRBadge instanceof Persistent) {
+              $this->aPRBadge->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aPUser = null;
-        $this->aPRAction = null;
+        $this->aPRBadge = null;
     }
 
     /**
@@ -1371,7 +1259,7 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PUReputationRAPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PUBadgesPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1389,11 +1277,11 @@ abstract class BasePUReputationRA extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PUReputationRA The current object (for fluent API support)
+     * @return     PUBadges The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PUReputationRAPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PUBadgesPeer::UPDATED_AT;
 
         return $this;
     }

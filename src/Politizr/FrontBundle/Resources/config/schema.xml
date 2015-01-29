@@ -11,6 +11,7 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
 
@@ -18,6 +19,9 @@
 
         <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_t_tag_type_id" foreign="id" />
+        </foreign-key>        
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
         </foreign-key>        
     </table>
 
@@ -417,6 +421,7 @@
         <column name="newsletter" type="boolean" />
         
         <column name="last_connect" type="timestamp" />
+        <column name="nb_connected_days" type="integer" defaultValue="0" />
 
         <column name="nb_views" type="integer" />
 
@@ -466,7 +471,7 @@
         </foreign-key>
     </table>
 
-    <table name="p_u_reputation_r_b" isCrossRef="true">
+    <table name="p_u_badges" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
@@ -482,7 +487,7 @@
         </foreign-key>
     </table>
 
-    <table name="p_u_reputation_r_a" isCrossRef="true">
+    <table name="p_u_reputation" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
@@ -651,9 +656,10 @@
 
         <column name="title" type="varchar" size="100" />
 
+        <column name="file_name" type="varchar" size="150" />
+
         <column name="summary" type="longvarchar" />
         <column name="description" type="longvarchar" />
-        <column name="more_info" type="longvarchar" />
 
         <column name="note_pos" type="integer" defaultValue="0" />
         <column name="note_neg" type="integer" defaultValue="0" />
@@ -664,8 +670,8 @@
         <column name="published_at" type="timestamp" />
         <column name="published_by" type="varchar" size="300" />
 
+        <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
-        <column name="broadcast" type="boolean" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -682,7 +688,6 @@
             <parameter name="extends" value="p_document" />
         </behavior>
 
-        <column name="file_name" type="varchar" size="150" />
     </table>
 
     <table name="p_d_reaction">
@@ -700,6 +705,7 @@
         </behavior>
 
         <column name="p_d_debate_id" type="integer" required="true" />
+        <column name="parent_reaction_id" type="integer" required="false" />
 
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />

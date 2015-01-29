@@ -1,5 +1,11 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
+
+{# Image #}
+{% block show_column_file_name %}
+	<img src="{{ asset('uploads/documents/'~PDReaction.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDReaction.fileName }}" />
+{% endblock %}
+
 {# Contenus #}
 {% block show_column_summary %}
 	{{ PDReaction.getSummary | raw }}
@@ -8,11 +14,6 @@
 {% block show_column_description %}
 	{{ PDReaction.getDescription | raw }}
 {% endblock %}
-
-{% block show_column_more_info %}
-	{{ PDReaction.getMoreInfo | raw }}
-{% endblock %}
-
 
 {# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
 

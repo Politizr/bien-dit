@@ -104,7 +104,7 @@ class AdminAjaxController extends Controller {
 
                 // Gestion tag non existant
                 if (!$pTagId) {
-                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, true);
+                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, null, true);
                 }
 
                 // Association du tag au user
@@ -214,7 +214,7 @@ class AdminAjaxController extends Controller {
 
                 // Gestion tag non existant
                 if (!$pTagId) {
-                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, true);
+                    $pTagId = PTagQuery::create()->addTag($pTagTitle, $ptTagTypeId, null, true);
                 }
 
                 // Association du tag au debat

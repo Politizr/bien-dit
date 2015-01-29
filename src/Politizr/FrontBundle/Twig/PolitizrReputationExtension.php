@@ -8,7 +8,7 @@ use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PUReputationRA;
+use Politizr\Model\PUReputation;
 use Politizr\Model\PDocument;
 
 
@@ -95,11 +95,11 @@ class PolitizrReputationExtension extends \Twig_Extension
     /**
      *  Construit un lien vers le débat / réaction / commentaire sur lequel il y a eu interaction.
      *
-     *  @param $reputation          PUReputationRA
+     *  @param $reputation          PUReputation
      *
      *  @return html
      */
-    public function linkedReputation(PUReputationRA $reputation)
+    public function linkedReputation(PUReputation $reputation)
     {
         // $this->logger->info('*** linkedReputation');
         // $this->logger->info('$reputation = '.print_r($reputation, true));

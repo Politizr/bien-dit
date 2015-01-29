@@ -10,79 +10,6 @@
         // buttonLabels: 'fontawesome'
         anchorButtonClass: 'mdm-btn',
     });
-    var moreInfoEditor = new MediumEditor('.moreInfo-editable', {
-        // buttonLabels: 'fontawesome'
-        anchorButtonClass: 'mdm-btn',
-    });
-
-
-    // **************************** //
-    //      Initialisation
-    // **************************** //
-    $(document).ready(function () {
-        // Initialisation form ajax upload
-        $("#form-debate-photo").ajaxForm(options);
-    });
-
-    // **************************** //
-    //      LISTENERS
-    // **************************** //
-    // Clic bouton upload photo local
-    $("body").on("click", "#file-select", function() {
-        console.log('click file select');
-        $("#file-name").trigger('click');
-        return false;
-    });
-
-    // Upload simple
-    $("body").on("change", "#file-name", function() {
-        console.log('change file name');
-        $('#form-debate-photo').submit();
-    });
-
-
-    // **************************** //
-    //      VARIABLES
-    // **************************** //
-    // Options Jquery Form JS > upload ajax
-    var options = {
-        // iframe: true,
-        beforeSend: function() 
-        {
-            $('#ajax-loader').show();
-        },
-        success: function() 
-        {
-            $('#ajax-loader').hide();
-        },
-        complete: function(data) 
-        {
-            data = data.responseText;
-            console.log('data.responseText = ' + data);
-
-            // Gestion retour iframe IE
-            data = data.replace('<PRE>', '');
-            data = data.replace('</PRE>', '');
-            data = data.replace('<pre>', '');
-            data = data.replace('</pre>', '');
-            console.log('data replace = ' + data);
-            data = $.parseJSON( data );
-            console.log('data parse JSON = ' + data);
-
-            if (!data['success']) {
-                $('.alert-danger-msg').html(data['error']);
-                $('.alert.alert-danger').show();
-            } else {
-                $('#current-photo').html('<img class="img-rounded" src="/uploads/documents/'+data['filename']+'" />')
-            }
-        },
-        error: function(data)
-        {
-            $('#ajax-loader').hide();
-            $('.alert-danger-msg').html('Erreur inconnue: merci de recharger la page.');
-            $('.alert.alert-danger').show();
-        }
-    }; 
 
 
     // **************************** //
@@ -97,15 +24,12 @@
 
         var summary = summaryEditor.serialize();
         var description = descriptionEditor.serialize();
-        var moreInfo = moreInfoEditor.serialize();
 
         console.log(summary['element-0']['value']);
         console.log(description['element-0']['value']);
-        console.log(moreInfo['element-0']['value']);
 
         $('#debate_summary').val(summary['element-0']['value']);
         $('#debate_description').val(description['element-0']['value']);
-        $('#debate_more_info').val(moreInfo['element-0']['value']);
      
         $.ajax({
             type: 'POST',
@@ -150,33 +74,5 @@
             }
         });
     });
-
-
-
-    // Suppression photo
-    $('body').on('click', '#file-delete', function(e){
-        console.log('*** click file delete');
-
-        e.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : "{{ path('DebatePhotoDelete') }}",
-            data: $("#form-debate-photo").serialize(),
-            dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
-            success: function(data) {
-                $('#ajax-loader').hide();
-                if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
-                } else {
-                    $('#current-photo').html('<p>Aucune photo téléchargée</p>');
-                }
-            }
-        });
-    });
-
 
 </script>

@@ -19,6 +19,12 @@ use Politizr\Exception\InconsistentDataException;
  */
 class PDocument extends BasePDocument
 {
+	// ************************************************************************************ //
+	//										CONSTANTES
+	// ************************************************************************************ //
+  	const UPLOAD_PATH = '/../../../web/uploads/documents/';
+  	const UPLOAD_WEB_PATH = '/uploads/documents/';
+
 	// TODO > migrer le stockage des types sur un objet dédié
 	const TYPE_DEBATE = 'Politizr\Model\PDDebate';
 	const TYPE_REACTION = 'Politizr\Model\PDReaction';

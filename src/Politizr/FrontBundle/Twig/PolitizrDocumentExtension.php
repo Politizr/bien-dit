@@ -11,7 +11,7 @@ use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDCommentQuery;
-use Politizr\Model\PUReputationRAQuery;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
@@ -292,10 +292,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $pos = true;
                 $neg = true;
             } else {
-                $queryPos = PUReputationRAQuery::create()
+                $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
-                $queryNeg = PUReputationRAQuery::create()
+                $queryNeg = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
 
@@ -354,10 +354,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $pos = true;
                 $neg = true;
             } else {
-                $queryPos = PUReputationRAQuery::create()
+                $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
-                $queryNeg = PUReputationRAQuery::create()
+                $queryNeg = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
 
@@ -416,10 +416,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $pos = true;
                 $neg = true;
             } else {
-                $queryPos = PUReputationRAQuery::create()
+                $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDComment');
-                $queryNeg = PUReputationRAQuery::create()
+                $queryNeg = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDComment');
 

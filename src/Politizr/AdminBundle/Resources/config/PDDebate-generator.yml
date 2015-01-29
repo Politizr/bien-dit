@@ -20,8 +20,6 @@ params:
             label:          Résumé
         description:
             label:          Description
-        more_info:
-            label:          Encart
         note_pos:
             label:          Notes +
         note_neg:
@@ -103,7 +101,7 @@ builders:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ uploadedFileName, title, summary, description, more_info ]
+                    "Texte":                    [ uploadedFileName, title, summary, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user_id ] ]
                 "Réactions":
@@ -134,9 +132,6 @@ builders:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 description:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
-                more_info:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 block_reactions:
@@ -177,7 +172,7 @@ builders:
             title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, summary, description, more_info ]
+                    "Texte":                    [ file_name, title, summary, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
                 "Réactions":

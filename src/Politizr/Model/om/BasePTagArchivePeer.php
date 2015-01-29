@@ -29,19 +29,22 @@ abstract class BasePTagArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PTagArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_tag_archive.id';
 
     /** the column name for the p_t_tag_type_id field */
     const P_T_TAG_TYPE_ID = 'p_tag_archive.p_t_tag_type_id';
+
+    /** the column name for the p_user_id field */
+    const P_USER_ID = 'p_tag_archive.p_user_id';
 
     /** the column name for the title field */
     const TITLE = 'p_tag_archive.title';
@@ -77,12 +80,12 @@ abstract class BasePTagArchivePeer
      * e.g. PTagArchivePeer::$fieldNames[PTagArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PTTagTypeId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pTTagTypeId', 'title', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PTagArchivePeer::ID, PTagArchivePeer::P_T_TAG_TYPE_ID, PTagArchivePeer::TITLE, PTagArchivePeer::ONLINE, PTagArchivePeer::CREATED_AT, PTagArchivePeer::UPDATED_AT, PTagArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_T_TAG_TYPE_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_t_tag_type_id', 'title', 'online', 'created_at', 'updated_at', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PTTagTypeId', 'PUserId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pTTagTypeId', 'pUserId', 'title', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PTagArchivePeer::ID, PTagArchivePeer::P_T_TAG_TYPE_ID, PTagArchivePeer::P_USER_ID, PTagArchivePeer::TITLE, PTagArchivePeer::ONLINE, PTagArchivePeer::CREATED_AT, PTagArchivePeer::UPDATED_AT, PTagArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_T_TAG_TYPE_ID', 'P_USER_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_t_tag_type_id', 'p_user_id', 'title', 'online', 'created_at', 'updated_at', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -92,12 +95,12 @@ abstract class BasePTagArchivePeer
      * e.g. PTagArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PTTagTypeId' => 1, 'Title' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'ArchivedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pTTagTypeId' => 1, 'title' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'archivedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PTagArchivePeer::ID => 0, PTagArchivePeer::P_T_TAG_TYPE_ID => 1, PTagArchivePeer::TITLE => 2, PTagArchivePeer::ONLINE => 3, PTagArchivePeer::CREATED_AT => 4, PTagArchivePeer::UPDATED_AT => 5, PTagArchivePeer::ARCHIVED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_T_TAG_TYPE_ID' => 1, 'TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'ARCHIVED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_t_tag_type_id' => 1, 'title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'archived_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PTTagTypeId' => 1, 'PUserId' => 2, 'Title' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'ArchivedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pTTagTypeId' => 1, 'pUserId' => 2, 'title' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'archivedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PTagArchivePeer::ID => 0, PTagArchivePeer::P_T_TAG_TYPE_ID => 1, PTagArchivePeer::P_USER_ID => 2, PTagArchivePeer::TITLE => 3, PTagArchivePeer::ONLINE => 4, PTagArchivePeer::CREATED_AT => 5, PTagArchivePeer::UPDATED_AT => 6, PTagArchivePeer::ARCHIVED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_T_TAG_TYPE_ID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'ARCHIVED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_t_tag_type_id' => 1, 'p_user_id' => 2, 'title' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'archived_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -173,6 +176,7 @@ abstract class BasePTagArchivePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PTagArchivePeer::ID);
             $criteria->addSelectColumn(PTagArchivePeer::P_T_TAG_TYPE_ID);
+            $criteria->addSelectColumn(PTagArchivePeer::P_USER_ID);
             $criteria->addSelectColumn(PTagArchivePeer::TITLE);
             $criteria->addSelectColumn(PTagArchivePeer::ONLINE);
             $criteria->addSelectColumn(PTagArchivePeer::CREATED_AT);
@@ -181,6 +185,7 @@ abstract class BasePTagArchivePeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_t_tag_type_id');
+            $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
