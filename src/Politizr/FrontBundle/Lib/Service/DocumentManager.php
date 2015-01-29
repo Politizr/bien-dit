@@ -261,6 +261,19 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_pos', $event);
+
+            // Badges associés
+            switch($type) {
+                case PDocument::TYPE_DEBATE:
+                case PDocument::TYPE_REACTION:
+                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_document_note_pos', $event);
+                    break;
+                case PDocument::TYPE_COMMENT:
+                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_note_pos', $event);
+                    break;
+            }
         } elseif ($way == 'down') {
             $object->setNoteNeg($object->getNoteNeg() + 1);
             $object->save();
@@ -268,6 +281,19 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_neg', $event);
+
+            // Badges associés
+            switch($type) {
+                case PDocument::TYPE_DEBATE:
+                case PDocument::TYPE_REACTION:
+                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_document_note_neg', $event);
+                    break;
+                case PDocument::TYPE_COMMENT:
+                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_note_neg', $event);
+                    break;
+            }
         }
 
         // Construction rendu
@@ -688,6 +714,15 @@ class DocumentManager
         $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
         $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
 
+        // Badges associés
+        if ($reaction->getTreeLevel() > 1) {
+            $parentUserId = $reaction->getParent()->getPUserId();
+        } else {
+            $parentUserId = $reaction->getDebate()->getPUserId();
+        }       
+        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_reaction_publish', $event);        
+
         // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
@@ -767,6 +802,10 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_comment_publish', $event);
+
+            // Badges associés
+            $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_publish', $event);
 
             // Récupération objet
             $objectId = $comment->getPDocumentId();

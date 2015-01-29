@@ -90,7 +90,6 @@ class BadgeListener {
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Persifleur / Réprobateur / Critique
         $this->checkPersifleur($authorUserId, PRBadge::ID_PERSIFLEUR, PRBadge::PERSIFLEUR_NB_NOTENEG);
@@ -109,7 +108,6 @@ class BadgeListener {
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Rédacteur / Auteur / Ecrivain
         $this->checkAnnotateur($authorUserId, PRBadge::ID_ANNOTATEUR, PRBadge::ANNOTATEUR_NB_COMMENTS);
@@ -151,7 +149,6 @@ class BadgeListener {
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Persifleur / Réprobateur / Critique
         $this->checkPersifleur($authorUserId, PRBadge::ID_PERSIFLEUR, PRBadge::PERSIFLEUR_NB_NOTENEG);

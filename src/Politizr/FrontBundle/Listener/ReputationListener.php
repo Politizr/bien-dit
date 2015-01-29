@@ -87,10 +87,6 @@ class ReputationListener {
         } else {
             $parentUserId = $debate->getPUserId();
         }
-
-        // Badges associés
-        $event = new GenericEvent($subject, array('author_user_id' => $userId, 'parent_user_id' => $parentUserId));
-        $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);        
     }
 
     /**
@@ -123,10 +119,6 @@ class ReputationListener {
                 $this->insertPUReputationRA($targetUserId, $prActionId, $objectName, $objectId);
                 break;
         }
-
-        // Badges associés
-        $event = new GenericEvent($subject, array('author_user_id' => $userId));
-        $dispatcher = $this->eventDispatcher->dispatch('b_comment_publish', $event);
     }
 
 
@@ -155,10 +147,6 @@ class ReputationListener {
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
-
                 break;
             case 'Politizr\Model\PDReaction':
                 $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_POS;
@@ -169,10 +157,6 @@ class ReputationListener {
 
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
-
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
 
                 break;
             case 'Politizr\Model\PDComment':
@@ -185,10 +169,6 @@ class ReputationListener {
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_pos', $event);
-                
                 break;
         } 
     }
@@ -218,10 +198,6 @@ class ReputationListener {
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_neg', $event);
-
                 break;
             case 'Politizr\Model\PDReaction':
                 $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG;
@@ -232,10 +208,6 @@ class ReputationListener {
 
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
-
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_document_note_neg', $event);
 
                 break;
             case 'Politizr\Model\PDComment':
@@ -248,10 +220,6 @@ class ReputationListener {
                 $this->insertPUReputationRA($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputationRA($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
-                // Badges associés
-                $event = new GenericEvent($subject, array('author_user_id' => $userId, 'target_user_id' => $subject->getPUserId()));
-                $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_neg', $event);
-                
                 break;
         } 
     }
