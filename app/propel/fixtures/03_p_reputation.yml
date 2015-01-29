@@ -243,84 +243,42 @@ Politizr\Model\PRBadge:
         p_r_badge_metal_id: bronze
         title:              Suiveur
         description:        |
-            Suivre X profils
+            Suivre X profils citoyens
     disciple:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: argent
         title:              Disciple
         description:        |
-            Suivre X profils
+            Suivre X profils citoyens
     inconditionnel:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: or
         title:              Inconditionnel
         description:        |
-            Suivre X profils
-    adepte:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: bronze
-        title:              Adepte
-        description:        |
-            Suivre X profils débatteurs
-    adherent:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: argent
-        title:              Adhérent
-        description:        |
-            Suivre X profils débatteurs
-    militant:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: or
-        title:              Militant
-        description:        |
-            Suivre X profils débatteurs
-    favori:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: bronze
-        title:              Favori
-        description:        |
-            Être suivi par X profils
-    coqueluche:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: argent
-        title:              Coqueluche
-        description:        |
-            Être suivi par X profils
-    idole:
-        online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: or
-        title:              Idole
-        description:        |
-            Être suivi par X profils
+            Suivre X profils citoyens
     important:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: bronze
         title:              Important
         description:        |
-            Être suivi par X profils débatteurs
+            Être suivi par X profils
     influent:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: argent
         title:              Influent
         description:        |
-            Être suivi par X profils débatteurs
+            Être suivi par X profils
     incontournable:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: or
         title:              Incontournable
         description:        |
-            Être suivi par X profils débatteurs
+            Être suivi par X profils
     porte-voix:
         online:             true
         p_r_badge_type_id:  communautaire
@@ -328,18 +286,18 @@ Politizr\Model\PRBadge:
         title:              Porte Voix
         description:        |
             Avoir partagé X contenus Politizr sur les réseaux sociaux
-    annonceur:
+    fan:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: argent
-        title:              Annonceur
+        title:              Fan
         description:        |
             Avoir partagé X contenus Politizr sur les réseaux sociaux
-    publicitaire:
+    ambassadeur:
         online:             true
         p_r_badge_type_id:  communautaire
         p_r_badge_metal_id: or
-        title:              Publicitaire
+        title:              Ambassadeur
         description:        |
             Avoir partagé X contenus Politizr sur les réseaux sociaux
 

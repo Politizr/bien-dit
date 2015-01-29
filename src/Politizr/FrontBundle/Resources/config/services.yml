@@ -75,6 +75,7 @@ services:
             - { name: kernel.event_listener, event: b_comment_publish }
             - { name: kernel.event_listener, event: b_comment_note_pos }
             - { name: kernel.event_listener, event: b_comment_note_neg }
+            - { name: kernel.event_listener, event: b_user_follow }
 
 
     # EXTENSIONS TWIG

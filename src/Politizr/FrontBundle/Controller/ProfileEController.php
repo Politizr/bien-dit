@@ -234,18 +234,21 @@ class ProfileEController extends Controller {
         // badges
         $badgesGold = PRBadgeQuery::create()
                         ->filterByPRBadgeMetalId(PRBadgeMetal::GOLD)
+                        ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesSilver = PRBadgeQuery::create()
                         ->filterByPRBadgeMetalId(PRBadgeMetal::SILVER)
+                        ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesBronze = PRBadgeQuery::create()
                         ->filterByPRBadgeMetalId(PRBadgeMetal::BRONZE)
+                        ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()

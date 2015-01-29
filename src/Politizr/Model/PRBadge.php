@@ -44,18 +44,12 @@ class PRBadge extends BasePRBadge
     const ID_SUIVEUR = 28;
     const ID_DISCIPLE = 29;
     const ID_INCONDITIONNEL = 30;
-    const ID_ADEPTE = 31;
-    const ID_ADHERENT = 32;
-    const ID_MILITANT = 33;
-    const ID_FAVORI = 34;
-    const ID_COQUELUCHE = 35;
-    const ID_IDOLE = 36;
-    const ID_IMPORTANT = 37;
-    const ID_INFLUENT = 38;
-    const ID_INCONTOURNABLE = 39;
-    const ID_PORTE_VOIX = 40;
-    const ID_ANNONCEUR = 41;
-    const ID_PUBLICITAIRE = 42;
+    const ID_IMPORTANT = 31;
+    const ID_INFLUENT = 32;
+    const ID_INCONTOURNABLE = 33;
+    const ID_PORTE_VOIX = 34;
+    const ID_FAN = 35;
+    const ID_AMBASSADEUR = 36;
 
 	// ******************************************************** //
 	//			Constantes fonctionnelles / badges				//
@@ -98,13 +92,17 @@ class PRBadge extends BasePRBadge
     const ASSIDU_NB_DAYS = 15;
     const FIDELE_NB_DAYS = 30;
 
-    const ATTENTIF_NB_SUBSCRIBES = 5;
+    const SUIVEUR_NB_SUBSCRIBES = 5;
     const DISCIPLE_NB_SUBSCRIBES = 20;
     const INCONDITIONNEL_NB_SUBSCRIBES = 50;
 
-    const ADEPTE_NB_SUBSCRIBES = 5;
-    const ADHERENT_NB_SUBSCRIBES = 20;
-    const MILITANT_NB_SUBSCRIBES = 50;
+    const IMPORTANT_NB_FOLLOWERS = 5;
+    const INFLUENT_NB_FOLLOWERS = 20;
+    const INCONTOURNABLE_NB_FOLLOWERS = 50;
+
+    const PORTE_VOIX_NB_SHARE = 5;
+    const FAN_NB_SHARE = 20;
+    const AMBASSADEUR_NB_SHARE = 50;
 
 	// ******************************************************** //
 

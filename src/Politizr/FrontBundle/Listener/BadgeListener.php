@@ -14,6 +14,7 @@ use Politizr\Model\PUReputationRAQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PUFollowUQuery;
 
 
 /**
@@ -155,6 +156,34 @@ class BadgeListener {
         $this->checkPersifleur($authorUserId, PRBadge::ID_REPROBATEUR, PRBadge::REPROBATEUR_NB_NOTENEG);
         $this->checkPersifleur($authorUserId, PRBadge::ID_CRITIQUE, PRBadge::CRITIQUE_NB_NOTENEG);
     }
+
+
+
+    /**
+     *  Suivi d'un utilisateur
+     *
+     *  @param  GenericEvent
+     */
+    public function onBUserFollow(GenericEvent $event) {
+        $this->logger->info('*** onBUserFollow');
+
+        $subject = $event->getSubject();
+        $authorUserId = $event->getArgument('author_user_id');
+        $targetUserId = $event->getArgument('target_user_id');
+
+        // Badges Suiveur / Disciple / Inconditionnel
+        $this->checkSuiveur($authorUserId, PRBadge::ID_SUIVEUR, PRBadge::SUIVEUR_NB_SUBSCRIBES);
+        $this->checkSuiveur($authorUserId, PRBadge::ID_DISCIPLE, PRBadge::DISCIPLE_NB_SUBSCRIBES);
+        $this->checkSuiveur($authorUserId, PRBadge::ID_INCONDITIONNEL, PRBadge::INCONDITIONNEL_NB_SUBSCRIBES);
+
+        // Badges Important / Influent / Incontournable
+        $this->checkImportant($targetUserId, PRBadge::ID_IMPORTANT, PRBadge::IMPORTANT_NB_FOLLOWERS);
+        $this->checkImportant($targetUserId, PRBadge::ID_INFLUENT, PRBadge::INFLUENT_NB_FOLLOWERS);
+        $this->checkImportant($targetUserId, PRBadge::ID_INCONTOURNABLE, PRBadge::INCONTOURNABLE_NB_FOLLOWERS);
+
+    }
+
+
 
     // ******************************************************************************************************************** //
 
@@ -388,6 +417,52 @@ GROUP BY p_d_debate_id
             }
         }
     }
+
+
+
+    /**
+     *  Badges Suiveur / Disciple / Inconditionnel
+     *  Suivre X profils
+     *
+     *  @param  $userId     integer     ID user
+     *  @param  $badgeId    integer     ID badge
+     *  @param  $nbNoteNeg  integer     Nombre de notes négatives
+     */
+    private function checkSuiveur($userId, $badgeId, $nbFollow) {
+        if (!$this->hasBadge($userId, $badgeId)) {
+
+            $nb = PUFollowUQuery::create()
+                            ->filterByPUserFollowerId($userId)
+                            ->count();
+
+            if ($nb >= $nbFollow) {
+                $this->addUserBadge($userId, $badgeId);
+            }
+        }
+    }
+
+    /**
+     *  Badges Important / Influent / Incontournable
+     *  Être suivi par X profils
+     *
+     *  @param  $userId     integer     ID user
+     *  @param  $badgeId    integer     ID badge
+     *  @param  $nbNoteNeg  integer     Nombre de notes négatives
+     */
+    private function checkImportant($userId, $badgeId, $nbFollowers) {
+        if (!$this->hasBadge($userId, $badgeId)) {
+
+            $nb = PUFollowUQuery::create()
+                            ->filterByPUserId($userId)
+                            ->count();
+
+            if ($nb >= $nbFollowers) {
+                $this->addUserBadge($userId, $badgeId);
+            }
+        }
+    }
+
+
 
 
 
