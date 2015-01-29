@@ -119,19 +119,10 @@ class DocumentManager
         $reaction->setOnline(true);
         $reaction->setPublished(false);
 
-        // TODO: à revoir / l'intégration dans le nested set ne doit se faire qu'au moment de la publication! 
-        // Gestion nested set
         if ($parent) {
-            $reaction->insertAsLastChildOf($parent);
-        } else {
-            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
-            if ($nbReactions = $debate->countReactions() == 0) {
-                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
-            } else {
-                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
-            }
+            $reaction->setParentReactionId($parentId);
         }
-        
+
         $reaction->save();
 
         return $reaction;
@@ -702,11 +693,38 @@ class DocumentManager
             throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
         }
 
+        // Récupération de l'objet réaction
+        $reaction = PDReactionQuery::create()->findPk($id);
+
+        // Récupération du débat sur lequel la réaction a lieu
+        $debate = PDDebateQuery::create()->findPk($reaction->getPDDebateId());
+        if (!$debate) {
+            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
+        }
+
         // Récupération URL redirection
         $redirectUrl = $request->get('url');
 
-        // MAJ de l'objet
-        $reaction = PDReactionQuery::create()->findPk($id);
+        // Gestion nested set
+        // Récupération de la réaction parente sur laquelle la réaction a lieu
+        $parent = null;
+        $parentId = $reaction->getParentReactionId();
+        if ($parentId) {
+            $parent = PDReactionQuery::create()->findPk($parentId);
+            if (!$parent) {
+                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
+            }
+
+            $reaction->insertAsLastChildOf($parent);
+        } else {
+            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
+            if ($nbReactions = $debate->countReactions() == 0) {
+                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
+            } else {
+                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
+            }
+        }
+
         $reaction->setPublished(true);
         $reaction->setPublishedAt(time());
         $reaction->save();
