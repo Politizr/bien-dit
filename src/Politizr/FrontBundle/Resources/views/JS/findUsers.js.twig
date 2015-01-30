@@ -7,13 +7,6 @@
     });
 
     // Tabulations
-    $("body").on("click", "a[action='suggestion']", function(e) {
-        console.log('*** click suggestion');
-        e.preventDefault();
-        $(this).tab('show');
-
-        userList($(this).attr('order'));
-    });
     $("body").on("click", "a[action='most-followed']", function(e) {
         console.log('*** click most-followed');
         e.preventDefault();
@@ -31,7 +24,7 @@
 
     // Chargement ajax du début de la timeline
     function userList (order) {
-        order = (typeof order === "undefined") ? 'suggestion' : order;
+        order = (typeof order === "undefined") ? 'most-followed' : order;
         $.ajax({
             type: 'POST',
             url: "{{ path('UserList') }}",

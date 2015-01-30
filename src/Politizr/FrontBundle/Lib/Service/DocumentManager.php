@@ -919,20 +919,31 @@ class DocumentManager
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
 
-        // Requête suivant order
-        if($order == 'suggestion') {
-            $debates = $user->getTaggedDebates();
-        } else {
-            $debates = PDDebateQuery::create()->online()->limit(10)
-                            ->_if($order == 'mostFollowed')
-                                ->mostFollowed()
-                            ->_elseif($order == 'bestNote')
-                                ->bestNote()
-                            ->_elseif($order == 'last')
-                                ->last()
-                            ->_endif()
-                            ->find();
+        // Dates début / fin
+        $now = new \DateTime();
+        $nowMin24 = new \DateTime();
+        $nowMin24->modify('-1 day');
+
+        // -24h tant qu'il n'y a pas de résultats significatifs
+        $nb = 0;
+        while($nb < 10) {
+            $nb = PDDebateQuery::create()->online()->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))->count();
+            $logger->info('$nb = ' . print_r($nb, true));
+            $nowMin24->modify('-1 day');
         }
+
+        $debates = PDDebateQuery::create()
+                        ->online()
+                        ->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))
+                        ->_if($order == 'mostFollowed')
+                            ->mostFollowed()
+                        ->_elseif($order == 'bestNote')
+                            ->bestNote()
+                        ->_elseif($order == 'last')
+                            ->last()
+                        ->_endif()
+
+                        ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');

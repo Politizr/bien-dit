@@ -85,6 +85,26 @@ class ProfileCController extends Controller {
     }
 
     /**
+     *  Suggestions
+     */
+    public function suggestionsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** suggestionsAction');
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        $debates = $user->getTaggedDebates();
+        $users = $user->getTaggedPUsers();
+
+        return $this->render('PolitizrFrontBundle:ProfileC:suggestions.html.twig', array(
+            'debates' => $debates,
+            'users' => $users,
+            ));
+    }
+
+    /**
      *  Trouver des débats
      */
     public function findDebatesAction()
@@ -123,20 +143,20 @@ class ProfileCController extends Controller {
         $logger->info('*** contribDashboardAction');
 
         // Récupération user courant
-        $pUser = $this->getUser();
+        $user = $this->getUser();
 
         // *********************************** //
         //      Récupération objets vue
         // *********************************** //
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
+        $drafts = PDDebateQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
         // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
+        $debates = PDDebateQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
 
         // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
+        $comments = PDCommentQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
 
         // *********************************** //
         //      Affichage de la vue

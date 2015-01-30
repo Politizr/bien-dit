@@ -1,0 +1,30 @@
+{% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
+
+
+{% block main %}
+	<div id="main" class="container">
+		<h1>Suggestions de débats</h1>
+		{% for debate in debates %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
+			<hr>
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyTagsE') }}">Suivez plus de tags!</a>
+			</div>
+		{% endfor %}
+		<h1>Suggestions de profils</h1>
+		{% for user in users %}
+			{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } only %}
+			<hr>
+		{% else %}
+			<div class="no-results">
+				<a class="btn btn-primary" href="{{ path('MyTagsE') }}">Suivez plus de tags!</a>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock main %}
+
+
+{% block javascriptFooter %}
+	{{ parent() }}
+{% endblock javascriptFooter %}

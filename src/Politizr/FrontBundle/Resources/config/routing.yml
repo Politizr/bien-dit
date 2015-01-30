@@ -153,12 +153,16 @@ TimelineC:
     pattern:  /citoyen/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
 
+SuggestionsC:
+    pattern:  /citoyen/suggestions
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestions }
+
 FindDebatesC:
-    pattern:  /citoyen/suggestions-debats
+    pattern:  /citoyen/debats-du-jour
     defaults: { _controller: PolitizrFrontBundle:ProfileC:findDebates }
 
 FindUsersC:
-    pattern:  /citoyen/suggestions-debatteurs
+    pattern:  /citoyen/debatteurs-du-jour
     defaults: { _controller: PolitizrFrontBundle:ProfileC:findUsers }
 
 
@@ -203,12 +207,16 @@ TimelineE:
     pattern:  /elu/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
 
+SuggestionsE:
+    pattern:  /elu/suggestions
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:suggestions }
+
 FindDebatesE:
-    pattern:  /elu/suggestions-debats
+    pattern:  /elu/debats-du-jour
     defaults: { _controller: PolitizrFrontBundle:ProfileE:findDebates }
 
 FindUsersE:
-    pattern:  /elu/suggestions-debatteurs
+    pattern:  /elu/debatteurs-du-jour
     defaults: { _controller: PolitizrFrontBundle:ProfileE:findUsers }
 
 
@@ -454,7 +462,7 @@ TimelinePaginated:
 
 
 ################################################################################
-# SUGGESTIONS
+# PLUS DE DEBATS / DE DEBATTEURS
 ################################################################################
 DebateList:
     pattern:  /profil/debat/suggestions.{_format}

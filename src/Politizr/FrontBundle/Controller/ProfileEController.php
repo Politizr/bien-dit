@@ -87,6 +87,26 @@ class ProfileEController extends Controller {
     }
 
     /**
+     *  Suggestions
+     */
+    public function suggestionsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** suggestionsAction');
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        $debates = $user->getTaggedDebates();
+        $users = $user->getTaggedPUsers();
+
+        return $this->render('PolitizrFrontBundle:ProfileE:suggestions.html.twig', array(
+            'debates' => $debates,
+            'users' => $users,
+            ));
+    }
+
+    /**
      *  Trouver des débats
      */
     public function findDebatesAction()

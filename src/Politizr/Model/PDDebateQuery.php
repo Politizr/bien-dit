@@ -45,7 +45,6 @@ class PDDebateQuery extends BasePDDebateQuery
 
 	}
 
-
 	/**
 	 *	Derniers débats publiés
 	 *

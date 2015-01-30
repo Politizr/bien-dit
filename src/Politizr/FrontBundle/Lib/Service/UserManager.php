@@ -141,18 +141,29 @@ class UserManager
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
 
+        // Dates début / fin
+        $now = new \DateTime();
+        $nowMin24 = new \DateTime();
+
+        // -24h tant qu'il n'y a pas de résultats significatifs
+        $nb = 0;
+        while($nb < 10) {
+            $nb = PUserQuery::create()->online()->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))->count();
+            $logger->info('$nb = ' . print_r($nb, true));
+            $nowMin24->modify('-1 day');
+        }
+
         // Requête suivant order
-        if($order == 'suggestion') {
-            $users = $user->getTaggedPUsers();
-        } else {
-            $users = PUserQuery::create()->filterByQualified(true)->online()->limit(10)
+        $users = PUserQuery::create()
+                            // ->filterByQualified(true)
+                            ->online()
+                            ->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))
                             ->_if($order == 'mostFollowed')
                                 ->mostFollowed()
                             ->_elseif($order == 'last')
                                 ->last()
                             ->_endif()
                             ->find();
-        }
 
         // Construction rendu
         $templating = $this->sc->get('templating');
