@@ -246,13 +246,6 @@ MyPersoE:
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
 
 
-ReactionDraftPreview:
-    pattern:  /elu/{id}/brouillon/reaction/detail
-    defaults: { _controller: PolitizrFrontBundle:Document:reactionDraft }
-    requirements:
-        _method:        GET
-        id:             \d+
-
 ReactionDraftNew:
     pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
     defaults: { _controller: PolitizrFrontBundle:CRUD:reactionNew }
@@ -272,13 +265,6 @@ ReactionDraftEdit:
 ################################################################################
 #               ROUTING CITOYEN OU ELU
 ################################################################################
-DebateDraftPreview:
-    pattern:  /profil/{id}/brouillon/debat/detail
-    defaults: { _controller: PolitizrFrontBundle:Document:debateDraft }
-    requirements:
-        _method:        GET
-        id:             \d+
-
 DebateDraftNew:
     pattern:  /profil/mes-contributions/nouveau
     defaults: { _controller: PolitizrFrontBundle:CRUD:debateNew }

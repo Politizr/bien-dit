@@ -5,22 +5,64 @@
     var summaryEditor = new MediumEditor('.summary-editable', {
         // buttonLabels: 'fontawesome',
         anchorButtonClass: 'mdm-btn',
+        placeholder: 'Saisissez ici le résumé du débat.',
     });
     var descriptionEditor = new MediumEditor('.description-editable', {
         // buttonLabels: 'fontawesome'
         anchorButtonClass: 'mdm-btn',
+        placeholder: 'Saisissez ici le corps du débat.',
+    });
+
+
+    // **************************** //
+    //      Suppression style Bootstrap sur input
+    // **************************** //
+    $(function () {
+        $("body").find("input.form-control").attr("class", "h1");
+    });
+
+    // **************************** //
+    //      Auto save silencieuse
+    //      TODO: à affiner
+    // **************************** //
+
+    // MAJ des tags
+    $(".auto_submit_form").change(function() {
+        $('a[action="debate-save"]').trigger('click', 'silence');
+    });
+
+    // Saisie de texte sur les éditeurs medium
+    // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+    var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
+    function dataRequest() {
+        // $('a[action="debate-save"]').click();
+        $('a[action="debate-save"]').trigger('click', 'silence');
+    }
+    function delayRequest(ev) {
+        if(delayRequest.timeout) {
+            clearTimeout(delayRequest.timeout);
+        }
+    
+        var target = this;
+    
+        delayRequest.timeout = setTimeout(function() {
+            dataRequest.call(target, ev);
+        }, 2000); // 2s
+    }
+
+    // Mise en forme sur les éditeurs medium
+    $('.summary-editable, .description-editable').on('mouseup', function() {
+        $('a[action="debate-save"]').trigger('click', 'silence');
     });
 
 
     // **************************** //
     //      POST
     // **************************** //
-
     // Update debate
-    $('body').on('submit', '#form-debate-update', function(e){
-        console.log('*** click submit');
-
-        e.preventDefault();
+    $("body").on("click", "a[action='debate-save']", function(e, mode) {
+        console.log('*** click save');
+        console.log(mode);
 
         var summary = summaryEditor.serialize();
         var description = descriptionEditor.serialize();
@@ -31,48 +73,35 @@
         $('#debate_summary').val(summary['element-0']['value']);
         $('#debate_description').val(description['element-0']['value']);
      
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : "{{ path('DebateUpdate') }}",
-            data: $("#form-debate-update").serialize(),
-            dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
-            success: function(data) {
-                $('#ajax-loader').hide();
-                if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
-                } else {
-                    $('.alert-success-msg').html('Objet bien enregistré!');
-                    $('.alert.alert-success').show();
+        if (mode === 'silence') {
+            // sauvegarde silencieuse
+            $.ajax({type: 'POST', url : "{{ path('DebateUpdate') }}", data: $("#form-debate-update").serialize() });
+        } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : "{{ path('DebateUpdate') }}",
+                data: $("#form-debate-update").serialize(),
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    $('#ajax-loader').hide();
+                    if (data['error']) {
+                        $('.alert-danger-msg').html(data['error']);
+                        $('.alert.alert-danger').show();
+                    } else {
+                        $('.alert-success-msg').html('Objet bien enregistré!');
+                        $('.alert.alert-success').show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return false;
     });
 
     // Retour liste
     $('body').on('click', "a[action='debate-list']", function(e){
-        console.log('*** click list');
-
-        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous continuer?', function(result) {
-            if (result) {
-                window.location = $("a[action='debate-list']").attr('url');
-            }
-        });
-    });
-
-    // Prévisualisation
-    $('body').on('click', "a[action='debate-preview']", function(e){
-        console.log('*** click preview');
-
-        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre débat. Voulez-vous continuer?', function(result) {
-            if (result) {
-                window.location = "{{ path('DebateDraftPreview', { 'id': debate.id }) }}";
-            }
-        });
+        window.location = $("a[action='debate-list']").attr('url');
     });
 
 </script>

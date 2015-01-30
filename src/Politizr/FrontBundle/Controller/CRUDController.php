@@ -176,6 +176,7 @@ class CRUDController extends Controller {
     /*                                             GESTION DEBAT + REACTION                                     */
     /* ######################################################################################################## */
 
+
     /**
      *  Upload d'une photo
      */
@@ -198,7 +199,7 @@ class CRUDController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** documentPhotoDeleteAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.document',
             'documentPhotoDelete'
         );

@@ -5,21 +5,64 @@
     var summaryEditor = new MediumEditor('.summary-editable', {
         // buttonLabels: 'fontawesome',
         anchorButtonClass: 'mdm-btn',
+        placeholder: 'Saisissez ici le résumé de la réaction.',
     });
     var descriptionEditor = new MediumEditor('.description-editable', {
         // buttonLabels: 'fontawesome'
         anchorButtonClass: 'mdm-btn',
+        placeholder: 'Saisissez ici le corps de la réaction.',
     });
+
+
+    // **************************** //
+    //      Suppression style Bootstrap sur input
+    // **************************** //
+    $(function () {
+        $("body").find("input.form-control").attr("class", "h1");
+    });
+
+    // **************************** //
+    //      Auto save silencieuse
+    //      TODO: à affiner
+    // **************************** //
+
+    // MAJ des tags
+    $(".auto_submit_form").change(function() {
+        $('a[action="reaction-save"]').trigger('click', 'silence');
+    });
+
+    // Saisie de texte sur les éditeurs medium
+    // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+    var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
+    function dataRequest() {
+        // $('a[action="reaction-save"]').click();
+        $('a[action="reaction-save"]').trigger('click', 'silence');
+    }
+    function delayRequest(ev) {
+        if(delayRequest.timeout) {
+            clearTimeout(delayRequest.timeout);
+        }
+    
+        var target = this;
+    
+        delayRequest.timeout = setTimeout(function() {
+            dataRequest.call(target, ev);
+        }, 2000); // 2s
+    }
+
+    // Mise en forme sur les éditeurs medium
+    $('.summary-editable, .description-editable').on('mouseup', function() {
+        $('a[action="reaction-save"]').trigger('click', 'silence');
+    });
+
 
     // **************************** //
     //      POST
     // **************************** //
-
     // Update reaction
-    $('body').on('submit', '#form-reaction-update', function(e){
-        console.log('*** click submit');
-
-        e.preventDefault();
+    $("body").on("click", "a[action='reaction-save']", function(e, mode) {
+        console.log('*** click save');
+        console.log(mode);
 
         var summary = summaryEditor.serialize();
         var description = descriptionEditor.serialize();
@@ -29,49 +72,36 @@
 
         $('#reaction_summary').val(summary['element-0']['value']);
         $('#reaction_description').val(description['element-0']['value']);
-        
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : "{{ path('ReactionUpdate') }}",
-            data: $("#form-reaction-update").serialize(),
-            dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
-            success: function(data) {
-                $('#ajax-loader').hide();
-                if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
-                } else {
-                    $('.alert-success-msg').html('Objet bien enregistré!');
-                    $('.alert.alert-success').show();
+     
+        if (mode === 'silence') {
+            // sauvegarde silencieuse
+            $.ajax({type: 'POST', url : "{{ path('ReactionUpdate') }}", data: $("#form-reaction-update").serialize() });
+        } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : "{{ path('ReactionUpdate') }}",
+                data: $("#form-reaction-update").serialize(),
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    $('#ajax-loader').hide();
+                    if (data['error']) {
+                        $('.alert-danger-msg').html(data['error']);
+                        $('.alert.alert-danger').show();
+                    } else {
+                        $('.alert-success-msg').html('Objet bien enregistré!');
+                        $('.alert.alert-success').show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return false;
     });
 
     // Retour liste
     $('body').on('click', "a[action='reaction-list']", function(e){
-        console.log('*** click list');
-
-        bootbox.confirm('Pensez à enregistrer votre travail avant de revenir à la liste. Voulez-vous continuer?', function(result) {
-            if (result) {
-                window.location = $("a[action='reaction-list']").attr('url');
-            }
-        });
-    });
-
-    // Prévisualisation
-    $('body').on('click', "a[action='reaction-preview']", function(e){
-        console.log('*** click preview');
-
-        bootbox.confirm('Pensez à enregistrer votre travail avant de prévisualiser votre réaction. Voulez-vous continuer?', function(result) {
-            if (result) {
-                window.location = "{{ path('ReactionDraftPreview', { 'id': reaction.id }) }}";
-            }
-        });
+        window.location = $("a[action='reaction-list']").attr('url');
     });
 
 

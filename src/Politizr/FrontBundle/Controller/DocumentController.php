@@ -113,44 +113,6 @@ class DocumentController extends Controller {
         ));
     }
 
-
-    /**
-     * Détail brouillon débat
-     */
-    public function debateDraftAction($id)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** debateDraftAction');
-        $logger->info('$id = '.print_r($id, true));
-
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
-        $debate = PDDebateQuery::create()->findPk($id);
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
-        }
-        if ($debate->getPublished()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' has been published.');
-        }
-
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $debate->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:Document:debateDraft.html.twig', array(
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
-        ));
-    }
-
     /**
      * Détail réaction
      */
@@ -191,55 +153,6 @@ class DocumentController extends Controller {
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
-                    'reaction' => $reaction,
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
-        ));
-    }
-
-    /**
-     * Détail réaction
-     */
-    public function reactionDraftAction($id)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** reactionDraftAction');
-        $logger->info('$id = '.print_r($id, true));
-
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
-        $reaction = PDReactionQuery::create()->findPk($id);
-        if (!$reaction) {
-            throw new NotFoundHttpException('Reaction n°'.$id.' not found.');
-        }
-        if (!$reaction->getOnline()) {
-            throw new NotFoundHttpException('Reaction n°'.$id.' not online.');
-        }
-        if ($reaction->getPublished()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' has been published.');
-        }
-
-        // TODO > UseCase à gérer = suppression d'un débat pour lesquels des réaction sont en cours de rédaction => via event sur suppression debat?
-        $debate = $reaction ->getDebate();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate n°'.$id.' not online.');
-        }
-
-
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $reaction->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
-
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
-        return $this->render('PolitizrFrontBundle:Document:reactionDraft.html.twig', array(
                     'reaction' => $reaction,
                     'debate' => $debate,
                     'paragraphs' => $paragraphs,

@@ -130,13 +130,13 @@ class ProfileCController extends Controller {
         // *********************************** //
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
         // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
         // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
         // *********************************** //
         //      Affichage de la vue

@@ -58,41 +58,45 @@ LAYOUT DEBATE
 		{% endblock detailFollow %}
 
 		{# Image #}
-		<hr>
-		<div class="row debate-image">
-			<div class="col-sm-12">
-				{{ debate | image('debate_header') }}
+		{% block detailImage %}
+			<hr>
+			<div class="row debate-image">
+				<div class="col-sm-12">
+					{{ debate | image('debate_header') }}
+				</div>
 			</div>
-		</div>
+		{% endblock detailImage %}
 
 		{# Résumé #}
-		<hr>
-		<div class="jumbotron">
-			{# Tags #}
-			<div class="row text-center">
-				<div class="col-sm-6">
-					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
-				</div>
-				<div class="col-sm-6">
-					{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
-				</div>
-			</div>
+		{% block detailSummary %}
 			<hr>
-			{# Résumé #}
-			<div class="row">
-				<div class="col-sm-12">
-					{{ debate.summary | raw }}
-				</div>
-			</div>
-			{% block detailLink %}
-				{# Lien détail #}
+			<div class="jumbotron">
+				{# Tags #}
 				<div class="row text-center">
-					<div class="col-sm-12">
-						<a class="btn btn-primary" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">Fil du débat</a>
+					<div class="col-sm-6">
+						{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
 					</div>
-				</div>		
-			{% endblock detailLink %}
-		</div>
+					<div class="col-sm-6">
+						{{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+					</div>
+				</div>
+				<hr>
+				{# Résumé #}
+				<div class="row">
+					<div class="col-sm-12">
+						{{ debate.summary | raw }}
+					</div>
+				</div>
+				{% block detailLink %}
+					{# Lien détail #}
+					<div class="row text-center">
+						<div class="col-sm-12">
+							<a class="btn btn-primary" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">Fil du débat</a>
+						</div>
+					</div>		
+				{% endblock detailLink %}
+			</div>
+		{% endblock detailSummary %}
 
 		{# Description & plus d'infos #}
 		{% block detailDescription %}
@@ -186,7 +190,6 @@ LAYOUT DEBATE
 		<td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
 		<td>
 			<a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': document.id }) }}">Editer</a>
-			<a class="btn btn-info" href="{{ path('DebateDraftPreview', { 'id': document.id }) }}">Prévisualiser</a>
 		</td>
 	</tr>
 {% endblock draftTableRow %}

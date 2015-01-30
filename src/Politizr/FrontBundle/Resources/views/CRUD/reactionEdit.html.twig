@@ -9,71 +9,23 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Ma réaction</h1>
-		<p class="bg-info">Editez votre brouillon, sauvegardez le régulièrement, puis prévisualisez le afin de pouvoir le publier. Attention, une fois publié, vous ne pourrez plus le retoucher.</p>
-		<div id="box-edit-reaction">
-			<p class="text-muted">Bandeau</p>
-			<div class="row text-center">
-				<div id="current-photo">
-					{% if (reaction.fileName) %}
-			            <img class="img-rounded" src="{{ asset('uploads/documents/'~reaction.fileName) }}">
-			        {% else %}
-			            <p>Aucune photo téléchargée</p>
-		        	{% endif %}
-				</div>
-			    <form id="form-document-photo" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
-			    	<input type="hidden" name="id" value="{{ reaction.id }}">
-			    	<div id="upload-file-container">
-			        	<input type="file" name="file-name" id="file-name">
-			        	<button id="file-select">Choisir la photo</button>
-			        	<button id="file-delete">Supprimer la photo</button>
-			        </div>
-			    </form>
-			</div>
-			
-
-			{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-reaction-update'}}) }}
-			    {{ form_errors(form) }}
-
-			    {{ form_row(form.summary) }}
-			    {{ form_row(form.description) }}
-
-			    <div class="form-group">
-					<div class="col-lg-12">
-						<p class="text-muted">Titre</p>
-					    {{ form_widget(form.title) }}
-					</div>
-				</div>
-			    <div class="form-group">
-					<div class="col-lg-12">
-						<p class="text-muted">Résumé</p>
-					    <div class="summary-editable">
-					    	{{ reaction.summary | raw }}
-					    </div>
-					</div>
-				</div>
-			    <hr>
-			    <div class="form-group">
-					<div class="col-lg-12">
-						<p class="text-muted">Description</p>
-					    <div class="description-editable">
-					    	{{ reaction.description | raw }}
-					    </div>
-					</div>
-				</div>
-			    <hr>
-				{% set urlBack = path('MyDraftsC') %}
-				{% if isGrantedE() %}
-					{% set urlBack = path('MyDraftsE') %}
-				{% endif %}
-				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-success">Enregistrer</button>
-					<a action="reaction-preview" class="btn btn-info">Prévisualiser</a>
-					<a action="reaction-delete" class="btn btn-warning" url="{{ urlBack }}">Supprimer</a>
-					<a action="reaction-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
-				</div>	
-			{{ form_end(form) }}
-		</div>
+		<p class="bg-info">Trouvez un titre accrocheur pour votre réaction.</p>
+		<p class="bg-info">Attention, une fois publié, vous ne pourrez plus modifier votre réaction.</p>
+		<hr>
+		{% include 'PolitizrFrontBundle:Fragment\\Reaction:DetailDraft.html.twig' with { 'reaction': reaction, 'form': form } %}
+	    <hr>
+		{% set urlBack = path('MyDraftsC') %}
+		{% set urlPublishBack = path('ContribDashboardC') %}
+		{% if isGrantedE() %}
+			{% set urlBack = path('MyDraftsE') %}
+			{% set urlPublishBack = path('ContribDashboardE') %}
+		{% endif %}
+		<div class="text-center">
+			<a action="reaction-save" class="btn btn-success">Enregistrer</a>
+			<a action="reaction-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
+			<a action="reaction-delete" class="btn btn-danger" url="{{ urlBack }}">Supprimer</a>
+			<a action="reaction-publish" class="btn btn-warning" object-id="{{ reaction.id }}" url="{{ urlPublishBack }}">Publier</a>
+		</div>	
 	</div>
 {% endblock main %}
 

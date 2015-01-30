@@ -724,9 +724,9 @@ class PUser extends BasePUser implements UserInterface
 
         $sql = "
     SELECT SUM(score_evolution) as score
-    FROM p_u_reputation_r_a
-    LEFT JOIN p_r_action ON p_u_reputation_r_a.p_r_action_id=p_r_action.id
-    WHERE p_u_reputation_r_a.p_user_id = ?
+    FROM p_u_reputation
+    LEFT JOIN p_r_action ON p_u_reputation.p_r_action_id=p_r_action.id
+    WHERE p_u_reputation.p_user_id = ?
     ";
 
         $stmt = $con->prepare($sql);

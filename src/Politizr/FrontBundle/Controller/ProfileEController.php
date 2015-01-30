@@ -131,19 +131,19 @@ class ProfileEController extends Controller {
         // *********************************** //
 
         // Débats brouillons en attente de finalisation
-        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
         // Réactions brouillons en attente de finalisation
-        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
         // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
         // Réactions rédigées
-        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
         // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->find();
+        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
         // *********************************** //
         //      Affichage de la vue

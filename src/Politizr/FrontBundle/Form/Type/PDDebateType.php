@@ -35,6 +35,9 @@ class PDDebateType extends AbstractType
         $builder->add('title', 'text', array(
             'required' => false,
             'label' => 'Titre', 
+            'attr' =>   array(
+                'class' => 'h1',
+                )
             )
         );
         
@@ -46,10 +49,7 @@ class PDDebateType extends AbstractType
         
         $builder->add('description', 'hidden', array(
             'required' => false,
-            'label' => 'Description', 
-            'attr' =>   array(
-                'class' => 'editor',
-                )
+            'label' => 'Description',
             )
         );     
     }

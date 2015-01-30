@@ -22,6 +22,17 @@ h6,
     font-family: "Merriweather", Helvetica, Arial, sans-serif!important;
 }
 
+.h1 {
+  border:none;
+  width: 100%;
+  
+  font-size: 36px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  font-weight: 500;
+  line-height: 1.1;
+  font-family: "Merriweather", Helvetica, Arial, sans-serif!important;
+}
 
  /* styles génériques */
 .alert {

@@ -57,7 +57,7 @@
                 $('.alert-danger-msg').html(data['error']);
                 $('.alert.alert-danger').show();
             } else {
-                $('#current-photo').html('<img class="img-rounded" src="/uploads/documents/'+data['filename']+'" />')
+                $('#current-photo').html(data['html']);
             }
         },
         error: function(data)
@@ -81,7 +81,6 @@
             dataType: 'json',
             url : "{{ path('DocumentPhotoDelete') }}",
             data: $("#form-document-photo").serialize(),
-            dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 $('#ajax-loader').hide();
@@ -89,7 +88,7 @@
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
-                    $('#current-photo').html('<p>Aucune photo téléchargée</p>');
+                    $('#current-photo').html(data['html']);
                 }
             }
         });

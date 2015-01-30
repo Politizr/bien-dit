@@ -1,29 +1,23 @@
 {% extends 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' %}
 
-{% block detailHeader %}
-	{# Infos générales #}
-	{% set urlBack = path('ContribDashboardC') %}
-	{% if isGrantedE() %}
-		{% set urlBack = path('ContribDashboardE') %}
-	{% endif %}
-	<div class="row">
-		<div class="col-sm-8">
-			<h1>{{ debate.title }}</h1>
-		</div>
+{% set urlBack = path('ContribDashboardC') %}
+{% if isGrantedE() %}
+	{% set urlBack = path('ContribDashboardE') %}
+{% endif %}
 
-		<div class="col-sm-1 text-center">
-			&nbsp;
+{% block detailHeader %}
+	{{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-debate-update', 'class': 'auto_submit_form'}}) }}
+	    {{ form_errors(form) }}
+
+	    {{ form_row(form.summary) }}
+	    {{ form_row(form.description) }}
+
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>{{ form_widget(form.title) }}</h1>
+			</div>
 		</div>
-		<div class="col-sm-1 text-center">
-			<span class="label label-default pull-right">non publié</span>
-		</div>
-		<div class="col-sm-1 text-center">
-			<a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': debate.id }) }}">Editer</a>
-		</div>
-		<div class="col-sm-1 text-center">
-			<a action="debate-publish" class="btn btn-danger" object-id="{{ debate.id }}" url="{{ urlBack }}">Publier</a>
-		</div>
-	</div>
+	{{ form_end(form) }}
 {% endblock detailHeader %}
 
 {% block detailAuthor %}
@@ -32,13 +26,69 @@
 {% block detailFollow %}
 {% endblock detailFollow %}
 
-{% block detailLink %}
-{% endblock detailLink %}
+{% block detailImage %}
+	{# Image #}
+	<hr>
+	<div class="row debate-image">
+		<div class="col-sm-12" id="current-photo">
+            {{ debate | image('debate_header') }}
+	    </div>
+    	<div class="text-center">
+		    <form id="form-document-photo" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
+		    	<input type="hidden" name="id" value="{{ debate.id }}">
+		    	<div id="upload-file-container">
+		        	<input type="file" name="file-name" id="file-name">
+		        	<button id="file-select" class="btn btn-success">Choisir la photo</button>
+		        	<button id="file-delete" class="btn btn-danger">Supprimer la photo</button>
+		        </div>
+		    </form>
+		</div>
+	</div>
+{% endblock detailImage %}
 
-{% block detailParagraphComment %}
-	{# Désactivation des commentaires #}
-	<span class="badge alert-warning">{{ debate.countComments(true, loop.index) }}</span>
-{% endblock detailParagraphComment %}
+{% block detailSummary %}
+	{# Résumé #}
+	<hr>
+	<div class="jumbotron">
+		{# Tags #}
+		<div class="row text-center">
+			<div class="col-sm-6">
+				<span class="tag label label-success">
+					<i class="fa fa-tag"></i>&nbsp;Tags géographiques
+				</span>
+				<hr>
+				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
+			</div>
+			<div class="col-sm-6">
+				<span class="tag label label-primary">
+					<i class="fa fa-tag"></i>&nbsp;Tags thématiques
+				</span>
+				<hr>
+				{{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
+			</div>
+		</div>
+		<hr>
+		{# Résumé #}
+		<div class="row">
+			<div class="summary-editable col-sm-12">
+		    	{{ debate.summary | raw }}
+			</div>
+		</div>
+	</div>
+{% endblock detailSummary %}
+
+{% block detailDescription %}
+	<hr>
+	<div class="debate-body">
+		<div class="paragraph">
+			<div class="row debate-description sizeup">
+				<div class="description-editable col-sm-12">
+					<p>{{ debate.description | raw }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock detailDescription %}
 
 {% block detailAction %}
 {% endblock detailAction %}

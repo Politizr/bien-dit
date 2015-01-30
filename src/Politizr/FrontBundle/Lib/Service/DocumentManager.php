@@ -519,7 +519,7 @@ class DocumentManager
         $document = PDocumentQuery::create()->findPk($id);
 
         // Récupération de l'objet descendant
-        $child = $document->getChildObject();
+        $docChild = $document->getChildObject();
 
         // Chemin des images
         $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
@@ -552,7 +552,7 @@ class DocumentManager
         }
 
         // Suppression photo déjà uploadée
-        $filename = $child->getFilename();
+        $filename = $docChild->getFilename();
         if ($filename && $fileExists = file_exists($path . $filename)) {
             unlink($path . $filename);
         }
@@ -575,12 +575,21 @@ class DocumentManager
         }
 
         // MAJ du modèle
-        $child->setFilename($destName);
-        $child->save();
+        $docChild->setFilename($destName);
+        $docChild->save();
 
-        // Renvoi de l'ensemble des blocs HTML maj
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
+                                'document' => $document,
+                                'path' => 'uploads/documents/'.$destName,
+                                'filterName' => 'debate_header',
+                                )
+                    );
+
         return array(
-            'filename' => $destName,
+            'html' => $html,
             );
     }
 
@@ -604,20 +613,35 @@ class DocumentManager
         $logger->info(print_r($id, true));
         $document = PDocumentQuery::create()->findPk($id);
 
+        // Récupération de l'objet descendant
+        $docChild = $document->getChildObject();
+
         // Chemin des images
         $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
-        $filename = $document->getFilename();
+        $filename = $docChild->getFilename();
         if ($filename && $fileExists = file_exists($path . $filename)) {
             unlink($path . $filename);
         }
 
         // MAJ du modèle
-        $document->setFilename(null);
-        $document->save();
+        $docChild->setFilename(null);
+        $docChild->save();
 
-        return true;
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
+                                'document' => $document,
+                                'path' => 'bundles/politizrfront/images/default_debate.jpg',
+                                'filterName' => 'debate_header',
+                                )
+                    );
+
+        return array(
+            'html' => $html,
+            );
     }
 
     /* ######################################################################################################## */
