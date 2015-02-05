@@ -14,73 +14,77 @@ use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PNotification;
-use Politizr\Model\PUNotifiedPN;
-use Politizr\Model\PUNotifiedPNPeer;
-use Politizr\Model\PUNotifiedPNQuery;
+use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotificationsPeer;
+use Politizr\Model\PUNotificationsQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUNotifiedPNQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PUNotifiedPNQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUNotifiedPNQuery orderByPNotificationId($order = Criteria::ASC) Order by the p_notification_id column
- * @method PUNotifiedPNQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
- * @method PUNotifiedPNQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
- * @method PUNotifiedPNQuery orderByChecked($order = Criteria::ASC) Order by the checked column
- * @method PUNotifiedPNQuery orderByCheckedAt($order = Criteria::ASC) Order by the checked_at column
- * @method PUNotifiedPNQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PUNotifiedPNQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUNotificationsQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUNotificationsQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUNotificationsQuery orderByPNotificationId($order = Criteria::ASC) Order by the p_notification_id column
+ * @method PUNotificationsQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
+ * @method PUNotificationsQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
+ * @method PUNotificationsQuery orderByPAuthorUserId($order = Criteria::ASC) Order by the p_author_user_id column
+ * @method PUNotificationsQuery orderByChecked($order = Criteria::ASC) Order by the checked column
+ * @method PUNotificationsQuery orderByCheckedAt($order = Criteria::ASC) Order by the checked_at column
+ * @method PUNotificationsQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PUNotificationsQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUNotifiedPNQuery groupById() Group by the id column
- * @method PUNotifiedPNQuery groupByPUserId() Group by the p_user_id column
- * @method PUNotifiedPNQuery groupByPNotificationId() Group by the p_notification_id column
- * @method PUNotifiedPNQuery groupByPObjectName() Group by the p_object_name column
- * @method PUNotifiedPNQuery groupByPObjectId() Group by the p_object_id column
- * @method PUNotifiedPNQuery groupByChecked() Group by the checked column
- * @method PUNotifiedPNQuery groupByCheckedAt() Group by the checked_at column
- * @method PUNotifiedPNQuery groupByCreatedAt() Group by the created_at column
- * @method PUNotifiedPNQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUNotificationsQuery groupById() Group by the id column
+ * @method PUNotificationsQuery groupByPUserId() Group by the p_user_id column
+ * @method PUNotificationsQuery groupByPNotificationId() Group by the p_notification_id column
+ * @method PUNotificationsQuery groupByPObjectName() Group by the p_object_name column
+ * @method PUNotificationsQuery groupByPObjectId() Group by the p_object_id column
+ * @method PUNotificationsQuery groupByPAuthorUserId() Group by the p_author_user_id column
+ * @method PUNotificationsQuery groupByChecked() Group by the checked column
+ * @method PUNotificationsQuery groupByCheckedAt() Group by the checked_at column
+ * @method PUNotificationsQuery groupByCreatedAt() Group by the created_at column
+ * @method PUNotificationsQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PUNotifiedPNQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PUNotifiedPNQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PUNotifiedPNQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PUNotificationsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PUNotificationsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PUNotificationsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUNotifiedPNQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
- * @method PUNotifiedPNQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
- * @method PUNotifiedPNQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ * @method PUNotificationsQuery leftJoinPUNotificationsPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationsPUser relation
+ * @method PUNotificationsQuery rightJoinPUNotificationsPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationsPUser relation
+ * @method PUNotificationsQuery innerJoinPUNotificationsPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUNotificationsPUser relation
  *
- * @method PUNotifiedPNQuery leftJoinPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PNotification relation
- * @method PUNotifiedPNQuery rightJoinPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PNotification relation
- * @method PUNotifiedPNQuery innerJoinPNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the PNotification relation
+ * @method PUNotificationsQuery leftJoinPUNotificationsPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationsPNotification relation
+ * @method PUNotificationsQuery rightJoinPUNotificationsPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationsPNotification relation
+ * @method PUNotificationsQuery innerJoinPUNotificationsPNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUNotificationsPNotification relation
  *
- * @method PUNotifiedPN findOne(PropelPDO $con = null) Return the first PUNotifiedPN matching the query
- * @method PUNotifiedPN findOneOrCreate(PropelPDO $con = null) Return the first PUNotifiedPN matching the query, or a new PUNotifiedPN object populated from the query conditions when no match is found
+ * @method PUNotifications findOne(PropelPDO $con = null) Return the first PUNotifications matching the query
+ * @method PUNotifications findOneOrCreate(PropelPDO $con = null) Return the first PUNotifications matching the query, or a new PUNotifications object populated from the query conditions when no match is found
  *
- * @method PUNotifiedPN findOneByPUserId(int $p_user_id) Return the first PUNotifiedPN filtered by the p_user_id column
- * @method PUNotifiedPN findOneByPNotificationId(int $p_notification_id) Return the first PUNotifiedPN filtered by the p_notification_id column
- * @method PUNotifiedPN findOneByPObjectName(string $p_object_name) Return the first PUNotifiedPN filtered by the p_object_name column
- * @method PUNotifiedPN findOneByPObjectId(int $p_object_id) Return the first PUNotifiedPN filtered by the p_object_id column
- * @method PUNotifiedPN findOneByChecked(boolean $checked) Return the first PUNotifiedPN filtered by the checked column
- * @method PUNotifiedPN findOneByCheckedAt(string $checked_at) Return the first PUNotifiedPN filtered by the checked_at column
- * @method PUNotifiedPN findOneByCreatedAt(string $created_at) Return the first PUNotifiedPN filtered by the created_at column
- * @method PUNotifiedPN findOneByUpdatedAt(string $updated_at) Return the first PUNotifiedPN filtered by the updated_at column
+ * @method PUNotifications findOneByPUserId(int $p_user_id) Return the first PUNotifications filtered by the p_user_id column
+ * @method PUNotifications findOneByPNotificationId(int $p_notification_id) Return the first PUNotifications filtered by the p_notification_id column
+ * @method PUNotifications findOneByPObjectName(string $p_object_name) Return the first PUNotifications filtered by the p_object_name column
+ * @method PUNotifications findOneByPObjectId(int $p_object_id) Return the first PUNotifications filtered by the p_object_id column
+ * @method PUNotifications findOneByPAuthorUserId(int $p_author_user_id) Return the first PUNotifications filtered by the p_author_user_id column
+ * @method PUNotifications findOneByChecked(boolean $checked) Return the first PUNotifications filtered by the checked column
+ * @method PUNotifications findOneByCheckedAt(string $checked_at) Return the first PUNotifications filtered by the checked_at column
+ * @method PUNotifications findOneByCreatedAt(string $created_at) Return the first PUNotifications filtered by the created_at column
+ * @method PUNotifications findOneByUpdatedAt(string $updated_at) Return the first PUNotifications filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUNotifiedPN objects filtered by the id column
- * @method array findByPUserId(int $p_user_id) Return PUNotifiedPN objects filtered by the p_user_id column
- * @method array findByPNotificationId(int $p_notification_id) Return PUNotifiedPN objects filtered by the p_notification_id column
- * @method array findByPObjectName(string $p_object_name) Return PUNotifiedPN objects filtered by the p_object_name column
- * @method array findByPObjectId(int $p_object_id) Return PUNotifiedPN objects filtered by the p_object_id column
- * @method array findByChecked(boolean $checked) Return PUNotifiedPN objects filtered by the checked column
- * @method array findByCheckedAt(string $checked_at) Return PUNotifiedPN objects filtered by the checked_at column
- * @method array findByCreatedAt(string $created_at) Return PUNotifiedPN objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PUNotifiedPN objects filtered by the updated_at column
+ * @method array findById(int $id) Return PUNotifications objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PUNotifications objects filtered by the p_user_id column
+ * @method array findByPNotificationId(int $p_notification_id) Return PUNotifications objects filtered by the p_notification_id column
+ * @method array findByPObjectName(string $p_object_name) Return PUNotifications objects filtered by the p_object_name column
+ * @method array findByPObjectId(int $p_object_id) Return PUNotifications objects filtered by the p_object_id column
+ * @method array findByPAuthorUserId(int $p_author_user_id) Return PUNotifications objects filtered by the p_author_user_id column
+ * @method array findByChecked(boolean $checked) Return PUNotifications objects filtered by the checked column
+ * @method array findByCheckedAt(string $checked_at) Return PUNotifications objects filtered by the checked_at column
+ * @method array findByCreatedAt(string $created_at) Return PUNotifications objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PUNotifications objects filtered by the updated_at column
  */
-abstract class BasePUNotifiedPNQuery extends ModelCriteria
+abstract class BasePUNotificationsQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePUNotifiedPNQuery object.
+     * Initializes internal state of BasePUNotificationsQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -92,25 +96,25 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PUNotifiedPN';
+            $modelName = 'Politizr\\Model\\PUNotifications';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PUNotifiedPNQuery object.
+     * Returns a new PUNotificationsQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PUNotifiedPNQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PUNotificationsQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PUNotifiedPNQuery
+     * @return PUNotificationsQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PUNotifiedPNQuery) {
+        if ($criteria instanceof PUNotificationsQuery) {
             return $criteria;
         }
-        $query = new PUNotifiedPNQuery(null, null, $modelAlias);
+        $query = new PUNotificationsQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -131,19 +135,19 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PUNotifiedPN|PUNotifiedPN[]|mixed the result, formatted by the current formatter
+     * @return   PUNotifications|PUNotifications[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUNotifiedPNPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUNotificationsPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PUNotifiedPNPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUNotificationsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -161,7 +165,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUNotifiedPN A model object, or null if the key is not found
+     * @return                 PUNotifications A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -176,12 +180,12 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUNotifiedPN A model object, or null if the key is not found
+     * @return                 PUNotifications A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notified_p_n` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notifications` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -192,9 +196,9 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PUNotifiedPN();
+            $obj = new PUNotifications();
             $obj->hydrate($row);
-            PUNotifiedPNPeer::addInstanceToPool($obj, (string) $key);
+            PUNotificationsPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -207,7 +211,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PUNotifiedPN|PUNotifiedPN[]|mixed the result, formatted by the current formatter
+     * @return PUNotifications|PUNotifications[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -228,7 +232,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PUNotifiedPN[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PUNotifications[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -249,12 +253,12 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PUNotificationsPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -262,12 +266,12 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PUNotificationsPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -287,18 +291,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -309,7 +313,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::ID, $id, $comparison);
     }
 
     /**
@@ -323,7 +327,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
      * </code>
      *
-     * @see       filterByPUser()
+     * @see       filterByPUNotificationsPUser()
      *
      * @param     mixed $pUserId The value to use as filter.
      *              Use scalar values for equality.
@@ -331,18 +335,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPUserId($pUserId = null, $comparison = null)
     {
         if (is_array($pUserId)) {
             $useMinMax = false;
             if (isset($pUserId['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pUserId['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -353,7 +357,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::P_USER_ID, $pUserId, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
@@ -367,7 +371,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * $query->filterByPNotificationId(array('max' => 12)); // WHERE p_notification_id <= 12
      * </code>
      *
-     * @see       filterByPNotification()
+     * @see       filterByPUNotificationsPNotification()
      *
      * @param     mixed $pNotificationId The value to use as filter.
      *              Use scalar values for equality.
@@ -375,18 +379,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPNotificationId($pNotificationId = null, $comparison = null)
     {
         if (is_array($pNotificationId)) {
             $useMinMax = false;
             if (isset($pNotificationId['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_NOTIFICATION_ID, $pNotificationId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_NOTIFICATION_ID, $pNotificationId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pNotificationId['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_NOTIFICATION_ID, $pNotificationId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_NOTIFICATION_ID, $pNotificationId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -397,7 +401,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::P_NOTIFICATION_ID, $pNotificationId, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::P_NOTIFICATION_ID, $pNotificationId, $comparison);
     }
 
     /**
@@ -413,7 +417,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPObjectName($pObjectName = null, $comparison = null)
     {
@@ -426,7 +430,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::P_OBJECT_NAME, $pObjectName, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::P_OBJECT_NAME, $pObjectName, $comparison);
     }
 
     /**
@@ -446,18 +450,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByPObjectId($pObjectId = null, $comparison = null)
     {
         if (is_array($pObjectId)) {
             $useMinMax = false;
             if (isset($pObjectId['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pObjectId['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -468,7 +472,49 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::P_OBJECT_ID, $pObjectId, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::P_OBJECT_ID, $pObjectId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_author_user_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPAuthorUserId(1234); // WHERE p_author_user_id = 1234
+     * $query->filterByPAuthorUserId(array(12, 34)); // WHERE p_author_user_id IN (12, 34)
+     * $query->filterByPAuthorUserId(array('min' => 12)); // WHERE p_author_user_id >= 12
+     * $query->filterByPAuthorUserId(array('max' => 12)); // WHERE p_author_user_id <= 12
+     * </code>
+     *
+     * @param     mixed $pAuthorUserId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUNotificationsQuery The current query, for fluid interface
+     */
+    public function filterByPAuthorUserId($pAuthorUserId = null, $comparison = null)
+    {
+        if (is_array($pAuthorUserId)) {
+            $useMinMax = false;
+            if (isset($pAuthorUserId['min'])) {
+                $this->addUsingAlias(PUNotificationsPeer::P_AUTHOR_USER_ID, $pAuthorUserId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pAuthorUserId['max'])) {
+                $this->addUsingAlias(PUNotificationsPeer::P_AUTHOR_USER_ID, $pAuthorUserId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUNotificationsPeer::P_AUTHOR_USER_ID, $pAuthorUserId, $comparison);
     }
 
     /**
@@ -487,7 +533,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByChecked($checked = null, $comparison = null)
     {
@@ -495,7 +541,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             $checked = in_array(strtolower($checked), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::CHECKED, $checked, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::CHECKED, $checked, $comparison);
     }
 
     /**
@@ -516,18 +562,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByCheckedAt($checkedAt = null, $comparison = null)
     {
         if (is_array($checkedAt)) {
             $useMinMax = false;
             if (isset($checkedAt['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::CHECKED_AT, $checkedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::CHECKED_AT, $checkedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($checkedAt['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::CHECKED_AT, $checkedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::CHECKED_AT, $checkedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -538,7 +584,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::CHECKED_AT, $checkedAt, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::CHECKED_AT, $checkedAt, $comparison);
     }
 
     /**
@@ -559,18 +605,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -581,7 +627,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -602,18 +648,18 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PUNotifiedPNPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUNotificationsPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -624,7 +670,7 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUNotifiedPNPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PUNotificationsPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -633,38 +679,38 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUNotifiedPNQuery The current query, for fluid interface
+     * @return                 PUNotificationsQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUser($pUser, $comparison = null)
+    public function filterByPUNotificationsPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
-                ->addUsingAlias(PUNotifiedPNPeer::P_USER_ID, $pUser->getId(), $comparison);
+                ->addUsingAlias(PUNotificationsPeer::P_USER_ID, $pUser->getId(), $comparison);
         } elseif ($pUser instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUNotifiedPNPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUNotificationsPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
+            throw new PropelException('filterByPUNotificationsPUser() only accepts arguments of type PUser or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUser relation
+     * Adds a JOIN clause to the query using the PUNotificationsPUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
-    public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUNotificationsPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUser');
+        $relationMap = $tableMap->getRelation('PUNotificationsPUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -679,14 +725,14 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUser');
+            $this->addJoinObject($join, 'PUNotificationsPUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUser relation PUser object
+     * Use the PUNotificationsPUser relation PUser object
      *
      * @see       useQuery()
      *
@@ -696,11 +742,11 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
      */
-    public function usePUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUNotificationsPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
+            ->joinPUNotificationsPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUNotificationsPUser', '\Politizr\Model\PUserQuery');
     }
 
     /**
@@ -709,38 +755,38 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      * @param   PNotification|PropelObjectCollection $pNotification The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUNotifiedPNQuery The current query, for fluid interface
+     * @return                 PUNotificationsQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPNotification($pNotification, $comparison = null)
+    public function filterByPUNotificationsPNotification($pNotification, $comparison = null)
     {
         if ($pNotification instanceof PNotification) {
             return $this
-                ->addUsingAlias(PUNotifiedPNPeer::P_NOTIFICATION_ID, $pNotification->getId(), $comparison);
+                ->addUsingAlias(PUNotificationsPeer::P_NOTIFICATION_ID, $pNotification->getId(), $comparison);
         } elseif ($pNotification instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUNotifiedPNPeer::P_NOTIFICATION_ID, $pNotification->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUNotificationsPeer::P_NOTIFICATION_ID, $pNotification->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPNotification() only accepts arguments of type PNotification or PropelCollection');
+            throw new PropelException('filterByPUNotificationsPNotification() only accepts arguments of type PNotification or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PNotification relation
+     * Adds a JOIN clause to the query using the PUNotificationsPNotification relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
-    public function joinPNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUNotificationsPNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PNotification');
+        $relationMap = $tableMap->getRelation('PUNotificationsPNotification');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -755,14 +801,14 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PNotification');
+            $this->addJoinObject($join, 'PUNotificationsPNotification');
         }
 
         return $this;
     }
 
     /**
-     * Use the PNotification relation PNotification object
+     * Use the PUNotificationsPNotification relation PNotification object
      *
      * @see       useQuery()
      *
@@ -772,24 +818,24 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PNotificationQuery A secondary query class using the current class as primary query
      */
-    public function usePNotificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUNotificationsPNotificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPNotification($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PNotification', '\Politizr\Model\PNotificationQuery');
+            ->joinPUNotificationsPNotification($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUNotificationsPNotification', '\Politizr\Model\PNotificationQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   PUNotifiedPN $pUNotifiedPN Object to remove from the list of results
+     * @param   PUNotifications $pUNotifications Object to remove from the list of results
      *
-     * @return PUNotifiedPNQuery The current query, for fluid interface
+     * @return PUNotificationsQuery The current query, for fluid interface
      */
-    public function prune($pUNotifiedPN = null)
+    public function prune($pUNotifications = null)
     {
-        if ($pUNotifiedPN) {
-            $this->addUsingAlias(PUNotifiedPNPeer::ID, $pUNotifiedPN->getId(), Criteria::NOT_EQUAL);
+        if ($pUNotifications) {
+            $this->addUsingAlias(PUNotificationsPeer::ID, $pUNotifications->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -802,31 +848,31 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUNotifiedPNPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUNotificationsPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUNotifiedPNPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PUNotificationsPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUNotifiedPNPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PUNotificationsPeer::UPDATED_AT);
     }
 
     /**
@@ -834,31 +880,31 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUNotifiedPNPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUNotificationsPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUNotifiedPNPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PUNotificationsPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PUNotifiedPNQuery The current query, for fluid interface
+     * @return     PUNotificationsQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUNotifiedPNPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PUNotificationsPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -899,8 +945,8 @@ abstract class BasePUNotifiedPNQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PUNotifiedPNPeer::DATABASE_NAME);
-        $db = Propel::getDB(PUNotifiedPNPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PUNotificationsPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUNotificationsPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

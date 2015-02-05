@@ -350,20 +350,6 @@
         <column name="online" type="boolean" />
     </table>
 
-    <table name="p_n_email">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-
-        <column name="title" type="varchar" size="250" />
-        <column name="description" type="longvarchar" />
-        
-        <column name="online" type="boolean" />
-    </table>
-
-
-
 
     <table name="p_user">
         <behavior name="timestampable" />
@@ -605,7 +591,7 @@
 
 
 
-    <table name="p_u_notified_p_n" isCrossRef="true">
+    <table name="p_u_notifications" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
@@ -615,31 +601,51 @@
 
         <column name="p_object_name" type="varchar" size="150" />
         <column name="p_object_id" type="integer" />
+        <column name="p_author_user_id" type="integer" />
 
         <column name="checked" type="boolean" />
         <column name="checked_at" type="timestamp" />
 
-        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" phpName="PUNotificationsPUser" refPhpName="PUNotificationsPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_notification" onDelete="CASCADE" onUpdate="CASCADE">
+
+        <foreign-key foreignTable="p_notification" phpName="PUNotificationsPNotification" refPhpName="PUNotificationsPNotification" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_notification_id" foreign="id" />
         </foreign-key>
     </table>
 
-    <table name="p_u_subscribe_n_o" isCrossRef="true">
+    <table name="p_u_subscribe_email" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
-        <column name="p_n_email_id" type="integer" required="true" />
+        <column name="p_notification_id" type="integer" required="true" />
 
-        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" phpName="PUSubscribeEmailPUser" refPhpName="PUSubscribeEmailPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_n_email" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_n_email_id" foreign="id" />
+
+        <foreign-key foreignTable="p_notification" phpName="PUSubscribeEmailPNotification" refPhpName="PUSubscribeEmailPNotification" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_notification_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_subscribe_screen" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_notification_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PUSubscribeScreenPUser" refPhpName="PUSubscribeScreenPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_notification" phpName="PUSubscribeScreenPNotification" refPhpName="PUSubscribeScreenPNotification" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_notification_id" foreign="id" />
         </foreign-key>
     </table>
 

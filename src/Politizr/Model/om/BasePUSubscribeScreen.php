@@ -13,26 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PNEmail;
-use Politizr\Model\PNEmailQuery;
-use Politizr\Model\PUSubscribeNO;
-use Politizr\Model\PUSubscribeNOPeer;
-use Politizr\Model\PUSubscribeNOQuery;
+use Politizr\Model\PNotification;
+use Politizr\Model\PNotificationQuery;
+use Politizr\Model\PUSubscribeScreen;
+use Politizr\Model\PUSubscribeScreenPeer;
+use Politizr\Model\PUSubscribeScreenQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePUSubscribeNO extends BaseObject implements Persistent
+abstract class BasePUSubscribeScreen extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PUSubscribeNOPeer';
+    const PEER = 'Politizr\\Model\\PUSubscribeScreenPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PUSubscribeNOPeer
+     * @var        PUSubscribeScreenPeer
      */
     protected static $peer;
 
@@ -55,10 +55,10 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
-     * The value for the p_n_email_id field.
+     * The value for the p_notification_id field.
      * @var        int
      */
-    protected $p_n_email_id;
+    protected $p_notification_id;
 
     /**
      * The value for the created_at field.
@@ -75,12 +75,12 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     /**
      * @var        PUser
      */
-    protected $aPUser;
+    protected $aPUSubscribeScreenPUser;
 
     /**
-     * @var        PNEmail
+     * @var        PNotification
      */
-    protected $aPNEmail;
+    protected $aPUSubscribeScreenPNotification;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -125,14 +125,14 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_n_email_id] column value.
+     * Get the [p_notification_id] column value.
      *
      * @return int
      */
-    public function getPNEmailId()
+    public function getPNotificationId()
     {
 
-        return $this->p_n_email_id;
+        return $this->p_notification_id;
     }
 
     /**
@@ -219,7 +219,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -229,7 +229,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PUSubscribeNOPeer::ID;
+            $this->modifiedColumns[] = PUSubscribeScreenPeer::ID;
         }
 
 
@@ -240,7 +240,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * Set the value of [p_user_id] column.
      *
      * @param  int $v new value
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      */
     public function setPUserId($v)
     {
@@ -250,11 +250,11 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
 
         if ($this->p_user_id !== $v) {
             $this->p_user_id = $v;
-            $this->modifiedColumns[] = PUSubscribeNOPeer::P_USER_ID;
+            $this->modifiedColumns[] = PUSubscribeScreenPeer::P_USER_ID;
         }
 
-        if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
-            $this->aPUser = null;
+        if ($this->aPUSubscribeScreenPUser !== null && $this->aPUSubscribeScreenPUser->getId() !== $v) {
+            $this->aPUSubscribeScreenPUser = null;
         }
 
 
@@ -262,36 +262,36 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
-     * Set the value of [p_n_email_id] column.
+     * Set the value of [p_notification_id] column.
      *
      * @param  int $v new value
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      */
-    public function setPNEmailId($v)
+    public function setPNotificationId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_n_email_id !== $v) {
-            $this->p_n_email_id = $v;
-            $this->modifiedColumns[] = PUSubscribeNOPeer::P_N_EMAIL_ID;
+        if ($this->p_notification_id !== $v) {
+            $this->p_notification_id = $v;
+            $this->modifiedColumns[] = PUSubscribeScreenPeer::P_NOTIFICATION_ID;
         }
 
-        if ($this->aPNEmail !== null && $this->aPNEmail->getId() !== $v) {
-            $this->aPNEmail = null;
+        if ($this->aPUSubscribeScreenPNotification !== null && $this->aPUSubscribeScreenPNotification->getId() !== $v) {
+            $this->aPUSubscribeScreenPNotification = null;
         }
 
 
         return $this;
-    } // setPNEmailId()
+    } // setPNotificationId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -301,7 +301,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PUSubscribeNOPeer::CREATED_AT;
+                $this->modifiedColumns[] = PUSubscribeScreenPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -314,7 +314,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -324,7 +324,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PUSubscribeNOPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PUSubscribeScreenPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -366,7 +366,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_n_email_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_notification_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
@@ -378,10 +378,10 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PUSubscribeNO object", $e);
+            throw new PropelException("Error populating PUSubscribeScreen object", $e);
         }
     }
 
@@ -401,11 +401,11 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
-            $this->aPUser = null;
+        if ($this->aPUSubscribeScreenPUser !== null && $this->p_user_id !== $this->aPUSubscribeScreenPUser->getId()) {
+            $this->aPUSubscribeScreenPUser = null;
         }
-        if ($this->aPNEmail !== null && $this->p_n_email_id !== $this->aPNEmail->getId()) {
-            $this->aPNEmail = null;
+        if ($this->aPUSubscribeScreenPNotification !== null && $this->p_notification_id !== $this->aPUSubscribeScreenPNotification->getId()) {
+            $this->aPUSubscribeScreenPNotification = null;
         }
     } // ensureConsistency
 
@@ -430,13 +430,13 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PUSubscribeNOPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PUSubscribeScreenPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -446,8 +446,8 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPUser = null;
-            $this->aPNEmail = null;
+            $this->aPUSubscribeScreenPUser = null;
+            $this->aPUSubscribeScreenPNotification = null;
         } // if (deep)
     }
 
@@ -468,12 +468,12 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PUSubscribeNOQuery::create()
+            $deleteQuery = PUSubscribeScreenQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -511,7 +511,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -521,16 +521,16 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PUSubscribeNOPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PUSubscribeScreenPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PUSubscribeNOPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PUSubscribeScreenPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PUSubscribeNOPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PUSubscribeScreenPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -542,7 +542,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PUSubscribeNOPeer::addInstanceToPool($this);
+                PUSubscribeScreenPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -577,18 +577,18 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPUser !== null) {
-                if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
-                    $affectedRows += $this->aPUser->save($con);
+            if ($this->aPUSubscribeScreenPUser !== null) {
+                if ($this->aPUSubscribeScreenPUser->isModified() || $this->aPUSubscribeScreenPUser->isNew()) {
+                    $affectedRows += $this->aPUSubscribeScreenPUser->save($con);
                 }
-                $this->setPUser($this->aPUser);
+                $this->setPUSubscribeScreenPUser($this->aPUSubscribeScreenPUser);
             }
 
-            if ($this->aPNEmail !== null) {
-                if ($this->aPNEmail->isModified() || $this->aPNEmail->isNew()) {
-                    $affectedRows += $this->aPNEmail->save($con);
+            if ($this->aPUSubscribeScreenPNotification !== null) {
+                if ($this->aPUSubscribeScreenPNotification->isModified() || $this->aPUSubscribeScreenPNotification->isNew()) {
+                    $affectedRows += $this->aPUSubscribeScreenPNotification->save($con);
                 }
-                $this->setPNEmail($this->aPNEmail);
+                $this->setPUSubscribeScreenPNotification($this->aPUSubscribeScreenPNotification);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -622,30 +622,30 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PUSubscribeNOPeer::ID;
+        $this->modifiedColumns[] = PUSubscribeScreenPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUSubscribeNOPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUSubscribeScreenPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PUSubscribeNOPeer::ID)) {
+        if ($this->isColumnModified(PUSubscribeScreenPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PUSubscribeNOPeer::P_USER_ID)) {
+        if ($this->isColumnModified(PUSubscribeScreenPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PUSubscribeNOPeer::P_N_EMAIL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_n_email_id`';
+        if ($this->isColumnModified(PUSubscribeScreenPeer::P_NOTIFICATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_notification_id`';
         }
-        if ($this->isColumnModified(PUSubscribeNOPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PUSubscribeScreenPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PUSubscribeNOPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PUSubscribeScreenPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_u_subscribe_n_o` (%s) VALUES (%s)',
+            'INSERT INTO `p_u_subscribe_screen` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -660,8 +660,8 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
-                    case '`p_n_email_id`':
-                        $stmt->bindValue($identifier, $this->p_n_email_id, PDO::PARAM_INT);
+                    case '`p_notification_id`':
+                        $stmt->bindValue($identifier, $this->p_notification_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -768,20 +768,20 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPUser !== null) {
-                if (!$this->aPUser->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
+            if ($this->aPUSubscribeScreenPUser !== null) {
+                if (!$this->aPUSubscribeScreenPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUSubscribeScreenPUser->getValidationFailures());
                 }
             }
 
-            if ($this->aPNEmail !== null) {
-                if (!$this->aPNEmail->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPNEmail->getValidationFailures());
+            if ($this->aPUSubscribeScreenPNotification !== null) {
+                if (!$this->aPUSubscribeScreenPNotification->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUSubscribeScreenPNotification->getValidationFailures());
                 }
             }
 
 
-            if (($retval = PUSubscribeNOPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = PUSubscribeScreenPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -805,7 +805,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUSubscribeNOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUSubscribeScreenPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -828,7 +828,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 2:
-                return $this->getPNEmailId();
+                return $this->getPNotificationId();
                 break;
             case 3:
                 return $this->getCreatedAt();
@@ -859,15 +859,15 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUSubscribeNO'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUSubscribeScreen'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUSubscribeNO'][$this->getPrimaryKey()] = true;
-        $keys = PUSubscribeNOPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PUSubscribeScreen'][$this->getPrimaryKey()] = true;
+        $keys = PUSubscribeScreenPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPNEmailId(),
+            $keys[2] => $this->getPNotificationId(),
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
         );
@@ -877,11 +877,11 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPUser) {
-                $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPUSubscribeScreenPUser) {
+                $result['PUSubscribeScreenPUser'] = $this->aPUSubscribeScreenPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPNEmail) {
-                $result['PNEmail'] = $this->aPNEmail->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPUSubscribeScreenPNotification) {
+                $result['PUSubscribeScreenPNotification'] = $this->aPUSubscribeScreenPNotification->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -901,7 +901,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUSubscribeNOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUSubscribeScreenPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -924,7 +924,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 2:
-                $this->setPNEmailId($value);
+                $this->setPNotificationId($value);
                 break;
             case 3:
                 $this->setCreatedAt($value);
@@ -954,11 +954,11 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PUSubscribeNOPeer::getFieldNames($keyType);
+        $keys = PUSubscribeScreenPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPNEmailId($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPNotificationId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
@@ -970,13 +970,13 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PUSubscribeNOPeer::ID)) $criteria->add(PUSubscribeNOPeer::ID, $this->id);
-        if ($this->isColumnModified(PUSubscribeNOPeer::P_USER_ID)) $criteria->add(PUSubscribeNOPeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PUSubscribeNOPeer::P_N_EMAIL_ID)) $criteria->add(PUSubscribeNOPeer::P_N_EMAIL_ID, $this->p_n_email_id);
-        if ($this->isColumnModified(PUSubscribeNOPeer::CREATED_AT)) $criteria->add(PUSubscribeNOPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PUSubscribeNOPeer::UPDATED_AT)) $criteria->add(PUSubscribeNOPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUSubscribeScreenPeer::ID)) $criteria->add(PUSubscribeScreenPeer::ID, $this->id);
+        if ($this->isColumnModified(PUSubscribeScreenPeer::P_USER_ID)) $criteria->add(PUSubscribeScreenPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUSubscribeScreenPeer::P_NOTIFICATION_ID)) $criteria->add(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $this->p_notification_id);
+        if ($this->isColumnModified(PUSubscribeScreenPeer::CREATED_AT)) $criteria->add(PUSubscribeScreenPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PUSubscribeScreenPeer::UPDATED_AT)) $criteria->add(PUSubscribeScreenPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -991,8 +991,8 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
-        $criteria->add(PUSubscribeNOPeer::ID, $this->id);
+        $criteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
+        $criteria->add(PUSubscribeScreenPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1033,7 +1033,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PUSubscribeNO (or compatible) type.
+     * @param object $copyObj An object of PUSubscribeScreen (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1041,7 +1041,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPUserId($this->getPUserId());
-        $copyObj->setPNEmailId($this->getPNEmailId());
+        $copyObj->setPNotificationId($this->getPNotificationId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1071,7 +1071,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PUSubscribeNO Clone of current object.
+     * @return PUSubscribeScreen Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1091,12 +1091,12 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PUSubscribeNOPeer
+     * @return PUSubscribeScreenPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PUSubscribeNOPeer();
+            self::$peer = new PUSubscribeScreenPeer();
         }
 
         return self::$peer;
@@ -1106,10 +1106,10 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * Declares an association between this object and a PUser object.
      *
      * @param                  PUser $v
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @return PUSubscribeScreen The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPUser(PUser $v = null)
+    public function setPUSubscribeScreenPUser(PUser $v = null)
     {
         if ($v === null) {
             $this->setPUserId(NULL);
@@ -1117,12 +1117,12 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
             $this->setPUserId($v->getId());
         }
 
-        $this->aPUser = $v;
+        $this->aPUSubscribeScreenPUser = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUSubscribeNO($this);
+            $v->addPUSubscribeScreenPUser($this);
         }
 
 
@@ -1138,43 +1138,43 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      * @return PUser The associated PUser object.
      * @throws PropelException
      */
-    public function getPUser(PropelPDO $con = null, $doQuery = true)
+    public function getPUSubscribeScreenPUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPUser === null && ($this->p_user_id !== null) && $doQuery) {
-            $this->aPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+        if ($this->aPUSubscribeScreenPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUSubscribeScreenPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUser->addPUSubscribeNos($this);
+                $this->aPUSubscribeScreenPUser->addPUSubscribeScreenPUsers($this);
              */
         }
 
-        return $this->aPUser;
+        return $this->aPUSubscribeScreenPUser;
     }
 
     /**
-     * Declares an association between this object and a PNEmail object.
+     * Declares an association between this object and a PNotification object.
      *
-     * @param                  PNEmail $v
-     * @return PUSubscribeNO The current object (for fluent API support)
+     * @param                  PNotification $v
+     * @return PUSubscribeScreen The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPNEmail(PNEmail $v = null)
+    public function setPUSubscribeScreenPNotification(PNotification $v = null)
     {
         if ($v === null) {
-            $this->setPNEmailId(NULL);
+            $this->setPNotificationId(NULL);
         } else {
-            $this->setPNEmailId($v->getId());
+            $this->setPNotificationId($v->getId());
         }
 
-        $this->aPNEmail = $v;
+        $this->aPUSubscribeScreenPNotification = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PNEmail object, it will not be re-added.
+        // If this object has already been added to the PNotification object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUSubscribeNO($this);
+            $v->addPUSubscribeScreenPNotification($this);
         }
 
 
@@ -1183,27 +1183,27 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated PNEmail object
+     * Get the associated PNotification object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return PNEmail The associated PNEmail object.
+     * @return PNotification The associated PNotification object.
      * @throws PropelException
      */
-    public function getPNEmail(PropelPDO $con = null, $doQuery = true)
+    public function getPUSubscribeScreenPNotification(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPNEmail === null && ($this->p_n_email_id !== null) && $doQuery) {
-            $this->aPNEmail = PNEmailQuery::create()->findPk($this->p_n_email_id, $con);
+        if ($this->aPUSubscribeScreenPNotification === null && ($this->p_notification_id !== null) && $doQuery) {
+            $this->aPUSubscribeScreenPNotification = PNotificationQuery::create()->findPk($this->p_notification_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPNEmail->addPUSubscribeNos($this);
+                $this->aPUSubscribeScreenPNotification->addPUSubscribeScreenPNotifications($this);
              */
         }
 
-        return $this->aPNEmail;
+        return $this->aPUSubscribeScreenPNotification;
     }
 
     /**
@@ -1213,7 +1213,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->p_user_id = null;
-        $this->p_n_email_id = null;
+        $this->p_notification_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1238,18 +1238,18 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aPUser instanceof Persistent) {
-              $this->aPUser->clearAllReferences($deep);
+            if ($this->aPUSubscribeScreenPUser instanceof Persistent) {
+              $this->aPUSubscribeScreenPUser->clearAllReferences($deep);
             }
-            if ($this->aPNEmail instanceof Persistent) {
-              $this->aPNEmail->clearAllReferences($deep);
+            if ($this->aPUSubscribeScreenPNotification instanceof Persistent) {
+              $this->aPUSubscribeScreenPNotification->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aPUser = null;
-        $this->aPNEmail = null;
+        $this->aPUSubscribeScreenPUser = null;
+        $this->aPUSubscribeScreenPNotification = null;
     }
 
     /**
@@ -1259,7 +1259,7 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PUSubscribeNOPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PUSubscribeScreenPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1277,11 +1277,11 @@ abstract class BasePUSubscribeNO extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PUSubscribeNO The current object (for fluent API support)
+     * @return     PUSubscribeScreen The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PUSubscribeNOPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PUSubscribeScreenPeer::UPDATED_AT;
 
         return $this;
     }

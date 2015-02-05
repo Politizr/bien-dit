@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_n_email' table.
+ * This class defines the structure of the 'p_u_subscribe_screen' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PNEmailTableMap extends TableMap
+class PUSubscribeScreenTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PNEmailTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PUSubscribeScreenTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,16 +36,16 @@ class PNEmailTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_n_email');
-        $this->setPhpName('PNEmail');
-        $this->setClassname('Politizr\\Model\\PNEmail');
+        $this->setName('p_u_subscribe_screen');
+        $this->setPhpName('PUSubscribeScreen');
+        $this->setClassname('Politizr\\Model\\PUSubscribeScreen');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
+        $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
+        $this->addForeignKey('p_notification_id', 'PNotificationId', 'INTEGER', 'p_notification', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -56,8 +56,8 @@ class PNEmailTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PUSubscribeNO', 'Politizr\\Model\\PUSubscribeNO', RelationMap::ONE_TO_MANY, array('id' => 'p_n_email_id', ), 'CASCADE', 'CASCADE', 'PUSubscribeNos');
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
+        $this->addRelation('PUSubscribeScreenPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUSubscribeScreenPNotification', 'Politizr\\Model\\PNotification', RelationMap::MANY_TO_ONE, array('p_notification_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -81,4 +81,4 @@ class PNEmailTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PNEmailTableMap
+} // PUSubscribeScreenTableMap

@@ -10,31 +10,29 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
-use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PNEmail;
-use Politizr\Model\PNEmailPeer;
-use Politizr\Model\PNEmailQuery;
-use Politizr\Model\PUSubscribeNO;
-use Politizr\Model\PUSubscribeNOQuery;
+use Politizr\Model\PNotification;
+use Politizr\Model\PNotificationQuery;
+use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotificationsPeer;
+use Politizr\Model\PUNotificationsQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePNEmail extends BaseObject implements Persistent
+abstract class BasePUNotifications extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PNEmailPeer';
+    const PEER = 'Politizr\\Model\\PUNotificationsPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PNEmailPeer
+     * @var        PUNotificationsPeer
      */
     protected static $peer;
 
@@ -51,22 +49,46 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the title field.
-     * @var        string
+     * The value for the p_user_id field.
+     * @var        int
      */
-    protected $title;
+    protected $p_user_id;
 
     /**
-     * The value for the description field.
-     * @var        string
+     * The value for the p_notification_id field.
+     * @var        int
      */
-    protected $description;
+    protected $p_notification_id;
 
     /**
-     * The value for the online field.
+     * The value for the p_object_name field.
+     * @var        string
+     */
+    protected $p_object_name;
+
+    /**
+     * The value for the p_object_id field.
+     * @var        int
+     */
+    protected $p_object_id;
+
+    /**
+     * The value for the p_author_user_id field.
+     * @var        int
+     */
+    protected $p_author_user_id;
+
+    /**
+     * The value for the checked field.
      * @var        boolean
      */
-    protected $online;
+    protected $checked;
+
+    /**
+     * The value for the checked_at field.
+     * @var        string
+     */
+    protected $checked_at;
 
     /**
      * The value for the created_at field.
@@ -81,15 +103,14 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * @var        PropelObjectCollection|PUSubscribeNO[] Collection to store aggregation of PUSubscribeNO objects.
+     * @var        PUser
      */
-    protected $collPUSubscribeNos;
-    protected $collPUSubscribeNosPartial;
+    protected $aPUNotificationsPUser;
 
     /**
-     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     * @var        PNotification
      */
-    protected $collPUsers;
+    protected $aPUNotificationsPNotification;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,18 +133,6 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pUsersScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pUSubscribeNosScheduledForDeletion = null;
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -135,36 +144,109 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [title] column value.
+     * Get the [p_user_id] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function getPUserId()
     {
 
-        return $this->title;
+        return $this->p_user_id;
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [p_notification_id] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getDescription()
+    public function getPNotificationId()
     {
 
-        return $this->description;
+        return $this->p_notification_id;
     }
 
     /**
-     * Get the [online] column value.
+     * Get the [p_object_name] column value.
+     *
+     * @return string
+     */
+    public function getPObjectName()
+    {
+
+        return $this->p_object_name;
+    }
+
+    /**
+     * Get the [p_object_id] column value.
+     *
+     * @return int
+     */
+    public function getPObjectId()
+    {
+
+        return $this->p_object_id;
+    }
+
+    /**
+     * Get the [p_author_user_id] column value.
+     *
+     * @return int
+     */
+    public function getPAuthorUserId()
+    {
+
+        return $this->p_author_user_id;
+    }
+
+    /**
+     * Get the [checked] column value.
      *
      * @return boolean
      */
-    public function getOnline()
+    public function getChecked()
     {
 
-        return $this->online;
+        return $this->checked;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [checked_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCheckedAt($format = null)
+    {
+        if ($this->checked_at === null) {
+            return null;
+        }
+
+        if ($this->checked_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->checked_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->checked_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -251,7 +333,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PNEmail The current object (for fluent API support)
+     * @return PUNotifications The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -261,7 +343,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PNEmailPeer::ID;
+            $this->modifiedColumns[] = PUNotificationsPeer::ID;
         }
 
 
@@ -269,58 +351,129 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [title] column.
+     * Set the value of [p_user_id] column.
+     *
+     * @param  int $v new value
+     * @return PUNotifications The current object (for fluent API support)
+     */
+    public function setPUserId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_user_id !== $v) {
+            $this->p_user_id = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::P_USER_ID;
+        }
+
+        if ($this->aPUNotificationsPUser !== null && $this->aPUNotificationsPUser->getId() !== $v) {
+            $this->aPUNotificationsPUser = null;
+        }
+
+
+        return $this;
+    } // setPUserId()
+
+    /**
+     * Set the value of [p_notification_id] column.
+     *
+     * @param  int $v new value
+     * @return PUNotifications The current object (for fluent API support)
+     */
+    public function setPNotificationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_notification_id !== $v) {
+            $this->p_notification_id = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::P_NOTIFICATION_ID;
+        }
+
+        if ($this->aPUNotificationsPNotification !== null && $this->aPUNotificationsPNotification->getId() !== $v) {
+            $this->aPUNotificationsPNotification = null;
+        }
+
+
+        return $this;
+    } // setPNotificationId()
+
+    /**
+     * Set the value of [p_object_name] column.
      *
      * @param  string $v new value
-     * @return PNEmail The current object (for fluent API support)
+     * @return PUNotifications The current object (for fluent API support)
      */
-    public function setTitle($v)
+    public function setPObjectName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = PNEmailPeer::TITLE;
+        if ($this->p_object_name !== $v) {
+            $this->p_object_name = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::P_OBJECT_NAME;
         }
 
 
         return $this;
-    } // setTitle()
+    } // setPObjectName()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [p_object_id] column.
      *
-     * @param  string $v new value
-     * @return PNEmail The current object (for fluent API support)
+     * @param  int $v new value
+     * @return PUNotifications The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setPObjectId($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[] = PNEmailPeer::DESCRIPTION;
+        if ($this->p_object_id !== $v) {
+            $this->p_object_id = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::P_OBJECT_ID;
         }
 
 
         return $this;
-    } // setDescription()
+    } // setPObjectId()
 
     /**
-     * Sets the value of the [online] column.
+     * Set the value of [p_author_user_id] column.
+     *
+     * @param  int $v new value
+     * @return PUNotifications The current object (for fluent API support)
+     */
+    public function setPAuthorUserId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_author_user_id !== $v) {
+            $this->p_author_user_id = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::P_AUTHOR_USER_ID;
+        }
+
+
+        return $this;
+    } // setPAuthorUserId()
+
+    /**
+     * Sets the value of the [checked] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
      * @param boolean|integer|string $v The new value
-     * @return PNEmail The current object (for fluent API support)
+     * @return PUNotifications The current object (for fluent API support)
      */
-    public function setOnline($v)
+    public function setChecked($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -330,21 +483,44 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             }
         }
 
-        if ($this->online !== $v) {
-            $this->online = $v;
-            $this->modifiedColumns[] = PNEmailPeer::ONLINE;
+        if ($this->checked !== $v) {
+            $this->checked = $v;
+            $this->modifiedColumns[] = PUNotificationsPeer::CHECKED;
         }
 
 
         return $this;
-    } // setOnline()
+    } // setChecked()
+
+    /**
+     * Sets the value of [checked_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PUNotifications The current object (for fluent API support)
+     */
+    public function setCheckedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->checked_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->checked_at !== null && $tmpDt = new DateTime($this->checked_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->checked_at = $newDateAsString;
+                $this->modifiedColumns[] = PUNotificationsPeer::CHECKED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCheckedAt()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PNEmail The current object (for fluent API support)
+     * @return PUNotifications The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -354,7 +530,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PNEmailPeer::CREATED_AT;
+                $this->modifiedColumns[] = PUNotificationsPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -367,7 +543,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PNEmail The current object (for fluent API support)
+     * @return PUNotifications The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -377,7 +553,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PNEmailPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PUNotificationsPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -418,11 +594,15 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->description = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->p_notification_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->p_author_user_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->checked = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+            $this->checked_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,10 +612,10 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = PNEmailPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PUNotificationsPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PNEmail object", $e);
+            throw new PropelException("Error populating PUNotifications object", $e);
         }
     }
 
@@ -455,6 +635,12 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPUNotificationsPUser !== null && $this->p_user_id !== $this->aPUNotificationsPUser->getId()) {
+            $this->aPUNotificationsPUser = null;
+        }
+        if ($this->aPUNotificationsPNotification !== null && $this->p_notification_id !== $this->aPUNotificationsPNotification->getId()) {
+            $this->aPUNotificationsPNotification = null;
+        }
     } // ensureConsistency
 
     /**
@@ -478,13 +664,13 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PNEmailPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUNotificationsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PNEmailPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PUNotificationsPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -494,9 +680,8 @@ abstract class BasePNEmail extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collPUSubscribeNos = null;
-
-            $this->collPUsers = null;
+            $this->aPUNotificationsPUser = null;
+            $this->aPUNotificationsPNotification = null;
         } // if (deep)
     }
 
@@ -517,12 +702,12 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PNEmailPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUNotificationsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PNEmailQuery::create()
+            $deleteQuery = PUNotificationsQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -560,7 +745,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PNEmailPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUNotificationsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -570,16 +755,16 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PNEmailPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PUNotificationsPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PNEmailPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PUNotificationsPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PNEmailPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PUNotificationsPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -591,7 +776,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PNEmailPeer::addInstanceToPool($this);
+                PUNotificationsPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -621,6 +806,25 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUNotificationsPUser !== null) {
+                if ($this->aPUNotificationsPUser->isModified() || $this->aPUNotificationsPUser->isNew()) {
+                    $affectedRows += $this->aPUNotificationsPUser->save($con);
+                }
+                $this->setPUNotificationsPUser($this->aPUNotificationsPUser);
+            }
+
+            if ($this->aPUNotificationsPNotification !== null) {
+                if ($this->aPUNotificationsPNotification->isModified() || $this->aPUNotificationsPNotification->isNew()) {
+                    $affectedRows += $this->aPUNotificationsPNotification->save($con);
+                }
+                $this->setPUNotificationsPNotification($this->aPUNotificationsPNotification);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -630,49 +834,6 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->pUsersScheduledForDeletion !== null) {
-                if (!$this->pUsersScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($remotePk, $pk);
-                    }
-                    PUSubscribeNOQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->pUsersScheduledForDeletion = null;
-                }
-
-                foreach ($this->getPUsers() as $pUser) {
-                    if ($pUser->isModified()) {
-                        $pUser->save($con);
-                    }
-                }
-            } elseif ($this->collPUsers) {
-                foreach ($this->collPUsers as $pUser) {
-                    if ($pUser->isModified()) {
-                        $pUser->save($con);
-                    }
-                }
-            }
-
-            if ($this->pUSubscribeNosScheduledForDeletion !== null) {
-                if (!$this->pUSubscribeNosScheduledForDeletion->isEmpty()) {
-                    PUSubscribeNOQuery::create()
-                        ->filterByPrimaryKeys($this->pUSubscribeNosScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pUSubscribeNosScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPUSubscribeNos !== null) {
-                foreach ($this->collPUSubscribeNos as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -695,33 +856,45 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PNEmailPeer::ID;
+        $this->modifiedColumns[] = PUNotificationsPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PNEmailPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUNotificationsPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PNEmailPeer::ID)) {
+        if ($this->isColumnModified(PUNotificationsPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PNEmailPeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
+        if ($this->isColumnModified(PUNotificationsPeer::P_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PNEmailPeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`description`';
+        if ($this->isColumnModified(PUNotificationsPeer::P_NOTIFICATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_notification_id`';
         }
-        if ($this->isColumnModified(PNEmailPeer::ONLINE)) {
-            $modifiedColumns[':p' . $index++]  = '`online`';
+        if ($this->isColumnModified(PUNotificationsPeer::P_OBJECT_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`p_object_name`';
         }
-        if ($this->isColumnModified(PNEmailPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PUNotificationsPeer::P_OBJECT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_object_id`';
+        }
+        if ($this->isColumnModified(PUNotificationsPeer::P_AUTHOR_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_author_user_id`';
+        }
+        if ($this->isColumnModified(PUNotificationsPeer::CHECKED)) {
+            $modifiedColumns[':p' . $index++]  = '`checked`';
+        }
+        if ($this->isColumnModified(PUNotificationsPeer::CHECKED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`checked_at`';
+        }
+        if ($this->isColumnModified(PUNotificationsPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PNEmailPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PUNotificationsPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_n_email` (%s) VALUES (%s)',
+            'INSERT INTO `p_u_notifications` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -733,14 +906,26 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case '`p_user_id`':
+                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
-                    case '`description`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case '`p_notification_id`':
+                        $stmt->bindValue($identifier, $this->p_notification_id, PDO::PARAM_INT);
                         break;
-                    case '`online`':
-                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                    case '`p_object_name`':
+                        $stmt->bindValue($identifier, $this->p_object_name, PDO::PARAM_STR);
+                        break;
+                    case '`p_object_id`':
+                        $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_author_user_id`':
+                        $stmt->bindValue($identifier, $this->p_author_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`checked`':
+                        $stmt->bindValue($identifier, (int) $this->checked, PDO::PARAM_INT);
+                        break;
+                    case '`checked_at`':
+                        $stmt->bindValue($identifier, $this->checked_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -842,18 +1027,28 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = PNEmailPeer::doValidate($this, $columns)) !== true) {
-                $failureMap = array_merge($failureMap, $retval);
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUNotificationsPUser !== null) {
+                if (!$this->aPUNotificationsPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUNotificationsPUser->getValidationFailures());
+                }
+            }
+
+            if ($this->aPUNotificationsPNotification !== null) {
+                if (!$this->aPUNotificationsPNotification->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUNotificationsPNotification->getValidationFailures());
+                }
             }
 
 
-                if ($this->collPUSubscribeNos !== null) {
-                    foreach ($this->collPUSubscribeNos as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
+            if (($retval = PUNotificationsPeer::doValidate($this, $columns)) !== true) {
+                $failureMap = array_merge($failureMap, $retval);
+            }
+
 
 
             $this->alreadyInValidation = false;
@@ -874,7 +1069,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PNEmailPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUNotificationsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -894,18 +1089,30 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getPUserId();
                 break;
             case 2:
-                return $this->getDescription();
+                return $this->getPNotificationId();
                 break;
             case 3:
-                return $this->getOnline();
+                return $this->getPObjectName();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getPObjectId();
                 break;
             case 5:
+                return $this->getPAuthorUserId();
+                break;
+            case 6:
+                return $this->getChecked();
+                break;
+            case 7:
+                return $this->getCheckedAt();
+                break;
+            case 8:
+                return $this->getCreatedAt();
+                break;
+            case 9:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -931,18 +1138,22 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PNEmail'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUNotifications'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PNEmail'][$this->getPrimaryKey()] = true;
-        $keys = PNEmailPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PUNotifications'][$this->getPrimaryKey()] = true;
+        $keys = PUNotificationsPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getOnline(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getPNotificationId(),
+            $keys[3] => $this->getPObjectName(),
+            $keys[4] => $this->getPObjectId(),
+            $keys[5] => $this->getPAuthorUserId(),
+            $keys[6] => $this->getChecked(),
+            $keys[7] => $this->getCheckedAt(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -950,8 +1161,11 @@ abstract class BasePNEmail extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collPUSubscribeNos) {
-                $result['PUSubscribeNos'] = $this->collPUSubscribeNos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aPUNotificationsPUser) {
+                $result['PUNotificationsPUser'] = $this->aPUNotificationsPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPUNotificationsPNotification) {
+                $result['PUNotificationsPNotification'] = $this->aPUNotificationsPNotification->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -971,7 +1185,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PNEmailPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUNotificationsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -991,18 +1205,30 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setPUserId($value);
                 break;
             case 2:
-                $this->setDescription($value);
+                $this->setPNotificationId($value);
                 break;
             case 3:
-                $this->setOnline($value);
+                $this->setPObjectName($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setPObjectId($value);
                 break;
             case 5:
+                $this->setPAuthorUserId($value);
+                break;
+            case 6:
+                $this->setChecked($value);
+                break;
+            case 7:
+                $this->setCheckedAt($value);
+                break;
+            case 8:
+                $this->setCreatedAt($value);
+                break;
+            case 9:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1027,14 +1253,18 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PNEmailPeer::getFieldNames($keyType);
+        $keys = PUNotificationsPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPNotificationId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPAuthorUserId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setChecked($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCheckedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1044,14 +1274,18 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PNEmailPeer::DATABASE_NAME);
+        $criteria = new Criteria(PUNotificationsPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PNEmailPeer::ID)) $criteria->add(PNEmailPeer::ID, $this->id);
-        if ($this->isColumnModified(PNEmailPeer::TITLE)) $criteria->add(PNEmailPeer::TITLE, $this->title);
-        if ($this->isColumnModified(PNEmailPeer::DESCRIPTION)) $criteria->add(PNEmailPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PNEmailPeer::ONLINE)) $criteria->add(PNEmailPeer::ONLINE, $this->online);
-        if ($this->isColumnModified(PNEmailPeer::CREATED_AT)) $criteria->add(PNEmailPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PNEmailPeer::UPDATED_AT)) $criteria->add(PNEmailPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUNotificationsPeer::ID)) $criteria->add(PUNotificationsPeer::ID, $this->id);
+        if ($this->isColumnModified(PUNotificationsPeer::P_USER_ID)) $criteria->add(PUNotificationsPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUNotificationsPeer::P_NOTIFICATION_ID)) $criteria->add(PUNotificationsPeer::P_NOTIFICATION_ID, $this->p_notification_id);
+        if ($this->isColumnModified(PUNotificationsPeer::P_OBJECT_NAME)) $criteria->add(PUNotificationsPeer::P_OBJECT_NAME, $this->p_object_name);
+        if ($this->isColumnModified(PUNotificationsPeer::P_OBJECT_ID)) $criteria->add(PUNotificationsPeer::P_OBJECT_ID, $this->p_object_id);
+        if ($this->isColumnModified(PUNotificationsPeer::P_AUTHOR_USER_ID)) $criteria->add(PUNotificationsPeer::P_AUTHOR_USER_ID, $this->p_author_user_id);
+        if ($this->isColumnModified(PUNotificationsPeer::CHECKED)) $criteria->add(PUNotificationsPeer::CHECKED, $this->checked);
+        if ($this->isColumnModified(PUNotificationsPeer::CHECKED_AT)) $criteria->add(PUNotificationsPeer::CHECKED_AT, $this->checked_at);
+        if ($this->isColumnModified(PUNotificationsPeer::CREATED_AT)) $criteria->add(PUNotificationsPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PUNotificationsPeer::UPDATED_AT)) $criteria->add(PUNotificationsPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1066,8 +1300,8 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PNEmailPeer::DATABASE_NAME);
-        $criteria->add(PNEmailPeer::ID, $this->id);
+        $criteria = new Criteria(PUNotificationsPeer::DATABASE_NAME);
+        $criteria->add(PUNotificationsPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1108,16 +1342,20 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PNEmail (or compatible) type.
+     * @param object $copyObj An object of PUNotifications (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setOnline($this->getOnline());
+        $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setPNotificationId($this->getPNotificationId());
+        $copyObj->setPObjectName($this->getPObjectName());
+        $copyObj->setPObjectId($this->getPObjectId());
+        $copyObj->setPAuthorUserId($this->getPAuthorUserId());
+        $copyObj->setChecked($this->getChecked());
+        $copyObj->setCheckedAt($this->getCheckedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1127,12 +1365,6 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getPUSubscribeNos() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUSubscribeNO($relObj->copy($deepCopy));
-                }
-            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -1153,7 +1385,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PNEmail Clone of current object.
+     * @return PUNotifications Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1173,468 +1405,119 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PNEmailPeer
+     * @return PUNotificationsPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PNEmailPeer();
+            self::$peer = new PUNotificationsPeer();
         }
 
         return self::$peer;
     }
 
-
     /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
+     * Declares an association between this object and a PUser object.
      *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('PUSubscribeNO' == $relationName) {
-            $this->initPUSubscribeNos();
-        }
-    }
-
-    /**
-     * Clears out the collPUSubscribeNos collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PNEmail The current object (for fluent API support)
-     * @see        addPUSubscribeNos()
-     */
-    public function clearPUSubscribeNos()
-    {
-        $this->collPUSubscribeNos = null; // important to set this to null since that means it is uninitialized
-        $this->collPUSubscribeNosPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPUSubscribeNos collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPUSubscribeNos($v = true)
-    {
-        $this->collPUSubscribeNosPartial = $v;
-    }
-
-    /**
-     * Initializes the collPUSubscribeNos collection.
-     *
-     * By default this just sets the collPUSubscribeNos collection to an empty array (like clearcollPUSubscribeNos());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPUSubscribeNos($overrideExisting = true)
-    {
-        if (null !== $this->collPUSubscribeNos && !$overrideExisting) {
-            return;
-        }
-        $this->collPUSubscribeNos = new PropelObjectCollection();
-        $this->collPUSubscribeNos->setModel('PUSubscribeNO');
-    }
-
-    /**
-     * Gets an array of PUSubscribeNO objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PNEmail is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUSubscribeNO[] List of PUSubscribeNO objects
+     * @param                  PUser $v
+     * @return PUNotifications The current object (for fluent API support)
      * @throws PropelException
      */
-    public function getPUSubscribeNos($criteria = null, PropelPDO $con = null)
+    public function setPUNotificationsPUser(PUser $v = null)
     {
-        $partial = $this->collPUSubscribeNosPartial && !$this->isNew();
-        if (null === $this->collPUSubscribeNos || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUSubscribeNos) {
-                // return empty collection
-                $this->initPUSubscribeNos();
-            } else {
-                $collPUSubscribeNos = PUSubscribeNOQuery::create(null, $criteria)
-                    ->filterByPNEmail($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPUSubscribeNosPartial && count($collPUSubscribeNos)) {
-                      $this->initPUSubscribeNos(false);
-
-                      foreach ($collPUSubscribeNos as $obj) {
-                        if (false == $this->collPUSubscribeNos->contains($obj)) {
-                          $this->collPUSubscribeNos->append($obj);
-                        }
-                      }
-
-                      $this->collPUSubscribeNosPartial = true;
-                    }
-
-                    $collPUSubscribeNos->getInternalIterator()->rewind();
-
-                    return $collPUSubscribeNos;
-                }
-
-                if ($partial && $this->collPUSubscribeNos) {
-                    foreach ($this->collPUSubscribeNos as $obj) {
-                        if ($obj->isNew()) {
-                            $collPUSubscribeNos[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPUSubscribeNos = $collPUSubscribeNos;
-                $this->collPUSubscribeNosPartial = false;
-            }
-        }
-
-        return $this->collPUSubscribeNos;
-    }
-
-    /**
-     * Sets a collection of PUSubscribeNO objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pUSubscribeNos A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PNEmail The current object (for fluent API support)
-     */
-    public function setPUSubscribeNos(PropelCollection $pUSubscribeNos, PropelPDO $con = null)
-    {
-        $pUSubscribeNosToDelete = $this->getPUSubscribeNos(new Criteria(), $con)->diff($pUSubscribeNos);
-
-
-        $this->pUSubscribeNosScheduledForDeletion = $pUSubscribeNosToDelete;
-
-        foreach ($pUSubscribeNosToDelete as $pUSubscribeNORemoved) {
-            $pUSubscribeNORemoved->setPNEmail(null);
-        }
-
-        $this->collPUSubscribeNos = null;
-        foreach ($pUSubscribeNos as $pUSubscribeNO) {
-            $this->addPUSubscribeNO($pUSubscribeNO);
-        }
-
-        $this->collPUSubscribeNos = $pUSubscribeNos;
-        $this->collPUSubscribeNosPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PUSubscribeNO objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PUSubscribeNO objects.
-     * @throws PropelException
-     */
-    public function countPUSubscribeNos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPUSubscribeNosPartial && !$this->isNew();
-        if (null === $this->collPUSubscribeNos || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUSubscribeNos) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPUSubscribeNos());
-            }
-            $query = PUSubscribeNOQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPNEmail($this)
-                ->count($con);
-        }
-
-        return count($this->collPUSubscribeNos);
-    }
-
-    /**
-     * Method called to associate a PUSubscribeNO object to this object
-     * through the PUSubscribeNO foreign key attribute.
-     *
-     * @param    PUSubscribeNO $l PUSubscribeNO
-     * @return PNEmail The current object (for fluent API support)
-     */
-    public function addPUSubscribeNO(PUSubscribeNO $l)
-    {
-        if ($this->collPUSubscribeNos === null) {
-            $this->initPUSubscribeNos();
-            $this->collPUSubscribeNosPartial = true;
-        }
-
-        if (!in_array($l, $this->collPUSubscribeNos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUSubscribeNO($l);
-
-            if ($this->pUSubscribeNosScheduledForDeletion and $this->pUSubscribeNosScheduledForDeletion->contains($l)) {
-                $this->pUSubscribeNosScheduledForDeletion->remove($this->pUSubscribeNosScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PUSubscribeNO $pUSubscribeNO The pUSubscribeNO object to add.
-     */
-    protected function doAddPUSubscribeNO($pUSubscribeNO)
-    {
-        $this->collPUSubscribeNos[]= $pUSubscribeNO;
-        $pUSubscribeNO->setPNEmail($this);
-    }
-
-    /**
-     * @param	PUSubscribeNO $pUSubscribeNO The pUSubscribeNO object to remove.
-     * @return PNEmail The current object (for fluent API support)
-     */
-    public function removePUSubscribeNO($pUSubscribeNO)
-    {
-        if ($this->getPUSubscribeNos()->contains($pUSubscribeNO)) {
-            $this->collPUSubscribeNos->remove($this->collPUSubscribeNos->search($pUSubscribeNO));
-            if (null === $this->pUSubscribeNosScheduledForDeletion) {
-                $this->pUSubscribeNosScheduledForDeletion = clone $this->collPUSubscribeNos;
-                $this->pUSubscribeNosScheduledForDeletion->clear();
-            }
-            $this->pUSubscribeNosScheduledForDeletion[]= clone $pUSubscribeNO;
-            $pUSubscribeNO->setPNEmail(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PNEmail is new, it will return
-     * an empty collection; or if this PNEmail has previously
-     * been saved, it will retrieve related PUSubscribeNos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PNEmail.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUSubscribeNO[] List of PUSubscribeNO objects
-     */
-    public function getPUSubscribeNosJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PUSubscribeNOQuery::create(null, $criteria);
-        $query->joinWith('PUser', $join_behavior);
-
-        return $this->getPUSubscribeNos($query, $con);
-    }
-
-    /**
-     * Clears out the collPUsers collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PNEmail The current object (for fluent API support)
-     * @see        addPUsers()
-     */
-    public function clearPUsers()
-    {
-        $this->collPUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collPUsersPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * Initializes the collPUsers collection.
-     *
-     * By default this just sets the collPUsers collection to an empty collection (like clearPUsers());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initPUsers()
-    {
-        $this->collPUsers = new PropelObjectCollection();
-        $this->collPUsers->setModel('PUser');
-    }
-
-    /**
-     * Gets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_subscribe_n_o cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PNEmail is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|PUser[] List of PUser objects
-     */
-    public function getPUsers($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUsers) {
-                // return empty collection
-                $this->initPUsers();
-            } else {
-                $collPUsers = PUserQuery::create(null, $criteria)
-                    ->filterByPNEmail($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collPUsers;
-                }
-                $this->collPUsers = $collPUsers;
-            }
-        }
-
-        return $this->collPUsers;
-    }
-
-    /**
-     * Sets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_subscribe_n_o cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pUsers A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PNEmail The current object (for fluent API support)
-     */
-    public function setPUsers(PropelCollection $pUsers, PropelPDO $con = null)
-    {
-        $this->clearPUsers();
-        $currentPUsers = $this->getPUsers(null, $con);
-
-        $this->pUsersScheduledForDeletion = $currentPUsers->diff($pUsers);
-
-        foreach ($pUsers as $pUser) {
-            if (!$currentPUsers->contains($pUser)) {
-                $this->doAddPUser($pUser);
-            }
-        }
-
-        $this->collPUsers = $pUsers;
-
-        return $this;
-    }
-
-    /**
-     * Gets the number of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_subscribe_n_o cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related PUser objects
-     */
-    public function countPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUsers) {
-                return 0;
-            } else {
-                $query = PUserQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByPNEmail($this)
-                    ->count($con);
-            }
+        if ($v === null) {
+            $this->setPUserId(NULL);
         } else {
-            return count($this->collPUsers);
-        }
-    }
-
-    /**
-     * Associate a PUser object to this object
-     * through the p_u_subscribe_n_o cross reference table.
-     *
-     * @param  PUser $pUser The PUSubscribeNO object to relate
-     * @return PNEmail The current object (for fluent API support)
-     */
-    public function addPUser(PUser $pUser)
-    {
-        if ($this->collPUsers === null) {
-            $this->initPUsers();
+            $this->setPUserId($v->getId());
         }
 
-        if (!$this->collPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
-            $this->doAddPUser($pUser);
-            $this->collPUsers[] = $pUser;
+        $this->aPUNotificationsPUser = $v;
 
-            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($pUser)) {
-                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($pUser));
-            }
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUNotificationsPUser($this);
         }
+
 
         return $this;
     }
 
-    /**
-     * @param	PUser $pUser The pUser object to add.
-     */
-    protected function doAddPUser(PUser $pUser)
-    {
-        // set the back reference to this object directly as using provided method either results
-        // in endless loop or in multiple relations
-        if (!$pUser->getPNEmails()->contains($this)) { $pUSubscribeNO = new PUSubscribeNO();
-            $pUSubscribeNO->setPUser($pUser);
-            $this->addPUSubscribeNO($pUSubscribeNO);
 
-            $foreignCollection = $pUser->getPNEmails();
-            $foreignCollection[] = $this;
+    /**
+     * Get the associated PUser object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUser The associated PUser object.
+     * @throws PropelException
+     */
+    public function getPUNotificationsPUser(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUNotificationsPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUNotificationsPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUNotificationsPUser->addPUNotificationsPUsers($this);
+             */
         }
+
+        return $this->aPUNotificationsPUser;
     }
 
     /**
-     * Remove a PUser object to this object
-     * through the p_u_subscribe_n_o cross reference table.
+     * Declares an association between this object and a PNotification object.
      *
-     * @param PUser $pUser The PUSubscribeNO object to relate
-     * @return PNEmail The current object (for fluent API support)
+     * @param                  PNotification $v
+     * @return PUNotifications The current object (for fluent API support)
+     * @throws PropelException
      */
-    public function removePUser(PUser $pUser)
+    public function setPUNotificationsPNotification(PNotification $v = null)
     {
-        if ($this->getPUsers()->contains($pUser)) {
-            $this->collPUsers->remove($this->collPUsers->search($pUser));
-            if (null === $this->pUsersScheduledForDeletion) {
-                $this->pUsersScheduledForDeletion = clone $this->collPUsers;
-                $this->pUsersScheduledForDeletion->clear();
-            }
-            $this->pUsersScheduledForDeletion[]= $pUser;
+        if ($v === null) {
+            $this->setPNotificationId(NULL);
+        } else {
+            $this->setPNotificationId($v->getId());
         }
 
+        $this->aPUNotificationsPNotification = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PNotification object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPUNotificationsPNotification($this);
+        }
+
+
         return $this;
+    }
+
+
+    /**
+     * Get the associated PNotification object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PNotification The associated PNotification object.
+     * @throws PropelException
+     */
+    public function getPUNotificationsPNotification(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUNotificationsPNotification === null && ($this->p_notification_id !== null) && $doQuery) {
+            $this->aPUNotificationsPNotification = PNotificationQuery::create()->findPk($this->p_notification_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUNotificationsPNotification->addPUNotificationsPNotifications($this);
+             */
+        }
+
+        return $this->aPUNotificationsPNotification;
     }
 
     /**
@@ -1643,9 +1526,13 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->title = null;
-        $this->description = null;
-        $this->online = null;
+        $this->p_user_id = null;
+        $this->p_notification_id = null;
+        $this->p_object_name = null;
+        $this->p_object_id = null;
+        $this->p_author_user_id = null;
+        $this->checked = null;
+        $this->checked_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1670,28 +1557,18 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPUSubscribeNos) {
-                foreach ($this->collPUSubscribeNos as $o) {
-                    $o->clearAllReferences($deep);
-                }
+            if ($this->aPUNotificationsPUser instanceof Persistent) {
+              $this->aPUNotificationsPUser->clearAllReferences($deep);
             }
-            if ($this->collPUsers) {
-                foreach ($this->collPUsers as $o) {
-                    $o->clearAllReferences($deep);
-                }
+            if ($this->aPUNotificationsPNotification instanceof Persistent) {
+              $this->aPUNotificationsPNotification->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPUSubscribeNos instanceof PropelCollection) {
-            $this->collPUSubscribeNos->clearIterator();
-        }
-        $this->collPUSubscribeNos = null;
-        if ($this->collPUsers instanceof PropelCollection) {
-            $this->collPUsers->clearIterator();
-        }
-        $this->collPUsers = null;
+        $this->aPUNotificationsPUser = null;
+        $this->aPUNotificationsPNotification = null;
     }
 
     /**
@@ -1701,7 +1578,7 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PNEmailPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PUNotificationsPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1719,11 +1596,11 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PNEmail The current object (for fluent API support)
+     * @return     PUNotifications The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PNEmailPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PUNotificationsPeer::UPDATED_AT;
 
         return $this;
     }

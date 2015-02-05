@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/AvocodeFormExtensionsBundle.git",
-                "reference": "1d2d41c70c282a5626dc652ae5b8025ced560781"
+                "reference": "d0d07ae48eb132552c1421d630776206cc649ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/AvocodeFormExtensionsBundle/zipball/1d2d41c70c282a5626dc652ae5b8025ced560781",
-                "reference": "1d2d41c70c282a5626dc652ae5b8025ced560781",
+                "url": "https://api.github.com/repos/symfony2admingenerator/AvocodeFormExtensionsBundle/zipball/d0d07ae48eb132552c1421d630776206cc649ec3",
+                "reference": "d0d07ae48eb132552c1421d630776206cc649ec3",
                 "shasum": ""
             },
             "require": {
@@ -93,7 +93,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2014-10-08 19:07:31"
+            "time": "2015-01-31 23:49:38"
         },
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/braincrafted/bootstrap-bundle.git",
-                "reference": "56231594bfce2b4fd293592662f508becc4c494e"
+                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/56231594bfce2b4fd293592662f508becc4c494e",
-                "reference": "56231594bfce2b4fd293592662f508becc4c494e",
+                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/2dc17466f95a035869b51c845024f6a92bc1d6d1",
+                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1",
                 "shasum": ""
             },
             "require": {
@@ -122,7 +122,7 @@
                 "knplabs/knp-menu": "~2.0@alpha",
                 "knplabs/knp-menu-bundle": "~2.0@alpha",
                 "knplabs/knp-paginator-bundle": "dev-master",
-                "mockery/mockery": "0.8.*",
+                "mockery/mockery": "0.9.*",
                 "phpunit/phpunit": "3.7.*",
                 "symfony/assetic-bundle": "~2.3"
             },
@@ -153,7 +153,7 @@
             "keywords": [
                 "bootstrap"
             ],
-            "time": "2014-08-31 10:47:30"
+            "time": "2015-01-31 10:32:31"
         },
         {
             "name": "cedriclombardot/admingenerator-generator-bundle",
@@ -655,7 +655,7 @@
                     ]
                 }
             },
-            "time": "2015-01-21 10:56:33"
+            "time": "2015-01-30 15:55:07"
         },
         {
             "name": "doctrine/annotations",
@@ -1068,12 +1068,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "082755c2af114ead713259ec7472782917605aaf"
+                "reference": "8090ced6d6621cefcc468a23e01b02a3f6bcfdb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/082755c2af114ead713259ec7472782917605aaf",
-                "reference": "082755c2af114ead713259ec7472782917605aaf",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/8090ced6d6621cefcc468a23e01b02a3f6bcfdb7",
+                "reference": "8090ced6d6621cefcc468a23e01b02a3f6bcfdb7",
                 "shasum": ""
             },
             "require": {
@@ -1114,7 +1114,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2014-11-06 09:36:21"
+            "time": "2015-01-30 08:28:07"
         },
         {
             "name": "eligrey/classList.js",
@@ -1135,7 +1135,7 @@
                     ]
                 }
             },
-            "time": "2015-01-21 10:56:33"
+            "time": "2015-01-30 15:55:07"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "be383ddf8ac5dc86f96e9eca902fa86f477112ee"
+                "reference": "c43d138c864b0836b903dffdf2904416a7b49e91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/be383ddf8ac5dc86f96e9eca902fa86f477112ee",
-                "reference": "be383ddf8ac5dc86f96e9eca902fa86f477112ee",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/c43d138c864b0836b903dffdf2904416a7b49e91",
+                "reference": "c43d138c864b0836b903dffdf2904416a7b49e91",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-01-06 20:19:43"
+            "time": "2015-02-03 18:47:28"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -2934,17 +2934,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.8",
+            "version": "v2.3.9",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "9a72f821957141ee3d9703da3fa8266d59ef4b1c"
+                "reference": "ac4893621b30faf8f970758afea7640122767817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/9a72f821957141ee3d9703da3fa8266d59ef4b1c",
-                "reference": "9a72f821957141ee3d9703da3fa8266d59ef4b1c",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ac4893621b30faf8f970758afea7640122767817",
+                "reference": "ac4893621b30faf8f970758afea7640122767817",
                 "shasum": ""
             },
             "require": {
@@ -2976,7 +2976,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-01-07 07:11:03"
+            "time": "2015-02-01 05:39:51"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3307,16 +3307,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.24",
+            "version": "v2.3.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "5b2c33be25fdb94233e2c2625ee2d69289f24300"
+                "reference": "959733dc4b1da99b9e93a1762f4217eee20fc933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/5b2c33be25fdb94233e2c2625ee2d69289f24300",
-                "reference": "5b2c33be25fdb94233e2c2625ee2d69289f24300",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/959733dc4b1da99b9e93a1762f4217eee20fc933",
+                "reference": "959733dc4b1da99b9e93a1762f4217eee20fc933",
                 "shasum": ""
             },
             "require": {
@@ -3410,7 +3410,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-01-07 10:32:09"
+            "time": "2015-01-30 13:55:40"
         },
         {
             "name": "twig/extensions",

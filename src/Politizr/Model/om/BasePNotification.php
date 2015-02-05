@@ -18,8 +18,12 @@ use \PropelPDO;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PNotificationQuery;
-use Politizr\Model\PUNotifiedPN;
-use Politizr\Model\PUNotifiedPNQuery;
+use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotificationsQuery;
+use Politizr\Model\PUSubscribeEmail;
+use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUSubscribeScreen;
+use Politizr\Model\PUSubscribeScreenQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -81,15 +85,37 @@ abstract class BasePNotification extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * @var        PropelObjectCollection|PUNotifiedPN[] Collection to store aggregation of PUNotifiedPN objects.
+     * @var        PropelObjectCollection|PUNotifications[] Collection to store aggregation of PUNotifications objects.
      */
-    protected $collPUNotifiedPNs;
-    protected $collPUNotifiedPNsPartial;
+    protected $collPUNotificationsPNotifications;
+    protected $collPUNotificationsPNotificationsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUSubscribeEmail[] Collection to store aggregation of PUSubscribeEmail objects.
+     */
+    protected $collPUSubscribeEmailPNotifications;
+    protected $collPUSubscribeEmailPNotificationsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUSubscribeScreen[] Collection to store aggregation of PUSubscribeScreen objects.
+     */
+    protected $collPUSubscribeScreenPNotifications;
+    protected $collPUSubscribeScreenPNotificationsPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
-    protected $collPUsers;
+    protected $collPUNotificationsPUsers;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPUSubscribeEmailPUsers;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPUSubscribeScreenPUsers;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -115,13 +141,37 @@ abstract class BasePNotification extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUsersScheduledForDeletion = null;
+    protected $pUNotificationsPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUNotifiedPNsScheduledForDeletion = null;
+    protected $pUSubscribeEmailPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUSubscribeScreenPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUNotificationsPNotificationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUSubscribeEmailPNotificationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUSubscribeScreenPNotificationsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -494,9 +544,15 @@ abstract class BasePNotification extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collPUNotifiedPNs = null;
+            $this->collPUNotificationsPNotifications = null;
 
-            $this->collPUsers = null;
+            $this->collPUSubscribeEmailPNotifications = null;
+
+            $this->collPUSubscribeScreenPNotifications = null;
+
+            $this->collPUNotificationsPUsers = null;
+            $this->collPUSubscribeEmailPUsers = null;
+            $this->collPUSubscribeScreenPUsers = null;
         } // if (deep)
     }
 
@@ -632,43 +688,129 @@ abstract class BasePNotification extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->pUsersScheduledForDeletion !== null) {
-                if (!$this->pUsersScheduledForDeletion->isEmpty()) {
+            if ($this->pUNotificationsPUsersScheduledForDeletion !== null) {
+                if (!$this->pUNotificationsPUsersScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                    foreach ($this->pUNotificationsPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PUNotifiedPNQuery::create()
+                    PUNotificationsQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->pUsersScheduledForDeletion = null;
+                    $this->pUNotificationsPUsersScheduledForDeletion = null;
                 }
 
-                foreach ($this->getPUsers() as $pUser) {
-                    if ($pUser->isModified()) {
-                        $pUser->save($con);
+                foreach ($this->getPUNotificationsPUsers() as $pUNotificationsPUser) {
+                    if ($pUNotificationsPUser->isModified()) {
+                        $pUNotificationsPUser->save($con);
                     }
                 }
-            } elseif ($this->collPUsers) {
-                foreach ($this->collPUsers as $pUser) {
-                    if ($pUser->isModified()) {
-                        $pUser->save($con);
+            } elseif ($this->collPUNotificationsPUsers) {
+                foreach ($this->collPUNotificationsPUsers as $pUNotificationsPUser) {
+                    if ($pUNotificationsPUser->isModified()) {
+                        $pUNotificationsPUser->save($con);
                     }
                 }
             }
 
-            if ($this->pUNotifiedPNsScheduledForDeletion !== null) {
-                if (!$this->pUNotifiedPNsScheduledForDeletion->isEmpty()) {
-                    PUNotifiedPNQuery::create()
-                        ->filterByPrimaryKeys($this->pUNotifiedPNsScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pUSubscribeEmailPUsersScheduledForDeletion !== null) {
+                if (!$this->pUSubscribeEmailPUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pUSubscribeEmailPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PUSubscribeEmailQuery::create()
+                        ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->pUNotifiedPNsScheduledForDeletion = null;
+                    $this->pUSubscribeEmailPUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPUSubscribeEmailPUsers() as $pUSubscribeEmailPUser) {
+                    if ($pUSubscribeEmailPUser->isModified()) {
+                        $pUSubscribeEmailPUser->save($con);
+                    }
+                }
+            } elseif ($this->collPUSubscribeEmailPUsers) {
+                foreach ($this->collPUSubscribeEmailPUsers as $pUSubscribeEmailPUser) {
+                    if ($pUSubscribeEmailPUser->isModified()) {
+                        $pUSubscribeEmailPUser->save($con);
+                    }
                 }
             }
 
-            if ($this->collPUNotifiedPNs !== null) {
-                foreach ($this->collPUNotifiedPNs as $referrerFK) {
+            if ($this->pUSubscribeScreenPUsersScheduledForDeletion !== null) {
+                if (!$this->pUSubscribeScreenPUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pUSubscribeScreenPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PUSubscribeScreenQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pUSubscribeScreenPUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPUSubscribeScreenPUsers() as $pUSubscribeScreenPUser) {
+                    if ($pUSubscribeScreenPUser->isModified()) {
+                        $pUSubscribeScreenPUser->save($con);
+                    }
+                }
+            } elseif ($this->collPUSubscribeScreenPUsers) {
+                foreach ($this->collPUSubscribeScreenPUsers as $pUSubscribeScreenPUser) {
+                    if ($pUSubscribeScreenPUser->isModified()) {
+                        $pUSubscribeScreenPUser->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUNotificationsPNotificationsScheduledForDeletion !== null) {
+                if (!$this->pUNotificationsPNotificationsScheduledForDeletion->isEmpty()) {
+                    PUNotificationsQuery::create()
+                        ->filterByPrimaryKeys($this->pUNotificationsPNotificationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUNotificationsPNotificationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUNotificationsPNotifications !== null) {
+                foreach ($this->collPUNotificationsPNotifications as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUSubscribeEmailPNotificationsScheduledForDeletion !== null) {
+                if (!$this->pUSubscribeEmailPNotificationsScheduledForDeletion->isEmpty()) {
+                    PUSubscribeEmailQuery::create()
+                        ->filterByPrimaryKeys($this->pUSubscribeEmailPNotificationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUSubscribeEmailPNotificationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUSubscribeEmailPNotifications !== null) {
+                foreach ($this->collPUSubscribeEmailPNotifications as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUSubscribeScreenPNotificationsScheduledForDeletion !== null) {
+                if (!$this->pUSubscribeScreenPNotificationsScheduledForDeletion->isEmpty()) {
+                    PUSubscribeScreenQuery::create()
+                        ->filterByPrimaryKeys($this->pUSubscribeScreenPNotificationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUSubscribeScreenPNotificationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUSubscribeScreenPNotifications !== null) {
+                foreach ($this->collPUSubscribeScreenPNotifications as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -847,8 +989,24 @@ abstract class BasePNotification extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPUNotifiedPNs !== null) {
-                    foreach ($this->collPUNotifiedPNs as $referrerFK) {
+                if ($this->collPUNotificationsPNotifications !== null) {
+                    foreach ($this->collPUNotificationsPNotifications as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPUSubscribeEmailPNotifications !== null) {
+                    foreach ($this->collPUSubscribeEmailPNotifications as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPUSubscribeScreenPNotifications !== null) {
+                    foreach ($this->collPUSubscribeScreenPNotifications as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -950,8 +1108,14 @@ abstract class BasePNotification extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collPUNotifiedPNs) {
-                $result['PUNotifiedPNs'] = $this->collPUNotifiedPNs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUNotificationsPNotifications) {
+                $result['PUNotificationsPNotifications'] = $this->collPUNotificationsPNotifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUSubscribeEmailPNotifications) {
+                $result['PUSubscribeEmailPNotifications'] = $this->collPUSubscribeEmailPNotifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUSubscribeScreenPNotifications) {
+                $result['PUSubscribeScreenPNotifications'] = $this->collPUSubscribeScreenPNotifications->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1128,9 +1292,21 @@ abstract class BasePNotification extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPUNotifiedPNs() as $relObj) {
+            foreach ($this->getPUNotificationsPNotifications() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUNotifiedPN($relObj->copy($deepCopy));
+                    $copyObj->addPUNotificationsPNotification($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPUSubscribeEmailPNotifications() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUSubscribeEmailPNotification($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPUSubscribeScreenPNotifications() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUSubscribeScreenPNotification($relObj->copy($deepCopy));
                 }
             }
 
@@ -1195,42 +1371,48 @@ abstract class BasePNotification extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PUNotifiedPN' == $relationName) {
-            $this->initPUNotifiedPNs();
+        if ('PUNotificationsPNotification' == $relationName) {
+            $this->initPUNotificationsPNotifications();
+        }
+        if ('PUSubscribeEmailPNotification' == $relationName) {
+            $this->initPUSubscribeEmailPNotifications();
+        }
+        if ('PUSubscribeScreenPNotification' == $relationName) {
+            $this->initPUSubscribeScreenPNotifications();
         }
     }
 
     /**
-     * Clears out the collPUNotifiedPNs collection
+     * Clears out the collPUNotificationsPNotifications collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PNotification The current object (for fluent API support)
-     * @see        addPUNotifiedPNs()
+     * @see        addPUNotificationsPNotifications()
      */
-    public function clearPUNotifiedPNs()
+    public function clearPUNotificationsPNotifications()
     {
-        $this->collPUNotifiedPNs = null; // important to set this to null since that means it is uninitialized
-        $this->collPUNotifiedPNsPartial = null;
+        $this->collPUNotificationsPNotifications = null; // important to set this to null since that means it is uninitialized
+        $this->collPUNotificationsPNotificationsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUNotifiedPNs collection loaded partially
+     * reset is the collPUNotificationsPNotifications collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUNotifiedPNs($v = true)
+    public function resetPartialPUNotificationsPNotifications($v = true)
     {
-        $this->collPUNotifiedPNsPartial = $v;
+        $this->collPUNotificationsPNotificationsPartial = $v;
     }
 
     /**
-     * Initializes the collPUNotifiedPNs collection.
+     * Initializes the collPUNotificationsPNotifications collection.
      *
-     * By default this just sets the collPUNotifiedPNs collection to an empty array (like clearcollPUNotifiedPNs());
+     * By default this just sets the collPUNotificationsPNotifications collection to an empty array (like clearcollPUNotificationsPNotifications());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1239,17 +1421,17 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUNotifiedPNs($overrideExisting = true)
+    public function initPUNotificationsPNotifications($overrideExisting = true)
     {
-        if (null !== $this->collPUNotifiedPNs && !$overrideExisting) {
+        if (null !== $this->collPUNotificationsPNotifications && !$overrideExisting) {
             return;
         }
-        $this->collPUNotifiedPNs = new PropelObjectCollection();
-        $this->collPUNotifiedPNs->setModel('PUNotifiedPN');
+        $this->collPUNotificationsPNotifications = new PropelObjectCollection();
+        $this->collPUNotificationsPNotifications->setModel('PUNotifications');
     }
 
     /**
-     * Gets an array of PUNotifiedPN objects which contain a foreign key that references this object.
+     * Gets an array of PUNotifications objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1259,138 +1441,138 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUNotifiedPN[] List of PUNotifiedPN objects
+     * @return PropelObjectCollection|PUNotifications[] List of PUNotifications objects
      * @throws PropelException
      */
-    public function getPUNotifiedPNs($criteria = null, PropelPDO $con = null)
+    public function getPUNotificationsPNotifications($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUNotifiedPNsPartial && !$this->isNew();
-        if (null === $this->collPUNotifiedPNs || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUNotifiedPNs) {
+        $partial = $this->collPUNotificationsPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUNotificationsPNotifications || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUNotificationsPNotifications) {
                 // return empty collection
-                $this->initPUNotifiedPNs();
+                $this->initPUNotificationsPNotifications();
             } else {
-                $collPUNotifiedPNs = PUNotifiedPNQuery::create(null, $criteria)
-                    ->filterByPNotification($this)
+                $collPUNotificationsPNotifications = PUNotificationsQuery::create(null, $criteria)
+                    ->filterByPUNotificationsPNotification($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUNotifiedPNsPartial && count($collPUNotifiedPNs)) {
-                      $this->initPUNotifiedPNs(false);
+                    if (false !== $this->collPUNotificationsPNotificationsPartial && count($collPUNotificationsPNotifications)) {
+                      $this->initPUNotificationsPNotifications(false);
 
-                      foreach ($collPUNotifiedPNs as $obj) {
-                        if (false == $this->collPUNotifiedPNs->contains($obj)) {
-                          $this->collPUNotifiedPNs->append($obj);
+                      foreach ($collPUNotificationsPNotifications as $obj) {
+                        if (false == $this->collPUNotificationsPNotifications->contains($obj)) {
+                          $this->collPUNotificationsPNotifications->append($obj);
                         }
                       }
 
-                      $this->collPUNotifiedPNsPartial = true;
+                      $this->collPUNotificationsPNotificationsPartial = true;
                     }
 
-                    $collPUNotifiedPNs->getInternalIterator()->rewind();
+                    $collPUNotificationsPNotifications->getInternalIterator()->rewind();
 
-                    return $collPUNotifiedPNs;
+                    return $collPUNotificationsPNotifications;
                 }
 
-                if ($partial && $this->collPUNotifiedPNs) {
-                    foreach ($this->collPUNotifiedPNs as $obj) {
+                if ($partial && $this->collPUNotificationsPNotifications) {
+                    foreach ($this->collPUNotificationsPNotifications as $obj) {
                         if ($obj->isNew()) {
-                            $collPUNotifiedPNs[] = $obj;
+                            $collPUNotificationsPNotifications[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUNotifiedPNs = $collPUNotifiedPNs;
-                $this->collPUNotifiedPNsPartial = false;
+                $this->collPUNotificationsPNotifications = $collPUNotificationsPNotifications;
+                $this->collPUNotificationsPNotificationsPartial = false;
             }
         }
 
-        return $this->collPUNotifiedPNs;
+        return $this->collPUNotificationsPNotifications;
     }
 
     /**
-     * Sets a collection of PUNotifiedPN objects related by a one-to-many relationship
+     * Sets a collection of PUNotificationsPNotification objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUNotifiedPNs A Propel collection.
+     * @param PropelCollection $pUNotificationsPNotifications A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PNotification The current object (for fluent API support)
      */
-    public function setPUNotifiedPNs(PropelCollection $pUNotifiedPNs, PropelPDO $con = null)
+    public function setPUNotificationsPNotifications(PropelCollection $pUNotificationsPNotifications, PropelPDO $con = null)
     {
-        $pUNotifiedPNsToDelete = $this->getPUNotifiedPNs(new Criteria(), $con)->diff($pUNotifiedPNs);
+        $pUNotificationsPNotificationsToDelete = $this->getPUNotificationsPNotifications(new Criteria(), $con)->diff($pUNotificationsPNotifications);
 
 
-        $this->pUNotifiedPNsScheduledForDeletion = $pUNotifiedPNsToDelete;
+        $this->pUNotificationsPNotificationsScheduledForDeletion = $pUNotificationsPNotificationsToDelete;
 
-        foreach ($pUNotifiedPNsToDelete as $pUNotifiedPNRemoved) {
-            $pUNotifiedPNRemoved->setPNotification(null);
+        foreach ($pUNotificationsPNotificationsToDelete as $pUNotificationsPNotificationRemoved) {
+            $pUNotificationsPNotificationRemoved->setPUNotificationsPNotification(null);
         }
 
-        $this->collPUNotifiedPNs = null;
-        foreach ($pUNotifiedPNs as $pUNotifiedPN) {
-            $this->addPUNotifiedPN($pUNotifiedPN);
+        $this->collPUNotificationsPNotifications = null;
+        foreach ($pUNotificationsPNotifications as $pUNotificationsPNotification) {
+            $this->addPUNotificationsPNotification($pUNotificationsPNotification);
         }
 
-        $this->collPUNotifiedPNs = $pUNotifiedPNs;
-        $this->collPUNotifiedPNsPartial = false;
+        $this->collPUNotificationsPNotifications = $pUNotificationsPNotifications;
+        $this->collPUNotificationsPNotificationsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PUNotifiedPN objects.
+     * Returns the number of related PUNotifications objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PUNotifiedPN objects.
+     * @return int             Count of related PUNotifications objects.
      * @throws PropelException
      */
-    public function countPUNotifiedPNs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUNotificationsPNotifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUNotifiedPNsPartial && !$this->isNew();
-        if (null === $this->collPUNotifiedPNs || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUNotifiedPNs) {
+        $partial = $this->collPUNotificationsPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUNotificationsPNotifications || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUNotificationsPNotifications) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUNotifiedPNs());
+                return count($this->getPUNotificationsPNotifications());
             }
-            $query = PUNotifiedPNQuery::create(null, $criteria);
+            $query = PUNotificationsQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByPNotification($this)
+                ->filterByPUNotificationsPNotification($this)
                 ->count($con);
         }
 
-        return count($this->collPUNotifiedPNs);
+        return count($this->collPUNotificationsPNotifications);
     }
 
     /**
-     * Method called to associate a PUNotifiedPN object to this object
-     * through the PUNotifiedPN foreign key attribute.
+     * Method called to associate a PUNotifications object to this object
+     * through the PUNotifications foreign key attribute.
      *
-     * @param    PUNotifiedPN $l PUNotifiedPN
+     * @param    PUNotifications $l PUNotifications
      * @return PNotification The current object (for fluent API support)
      */
-    public function addPUNotifiedPN(PUNotifiedPN $l)
+    public function addPUNotificationsPNotification(PUNotifications $l)
     {
-        if ($this->collPUNotifiedPNs === null) {
-            $this->initPUNotifiedPNs();
-            $this->collPUNotifiedPNsPartial = true;
+        if ($this->collPUNotificationsPNotifications === null) {
+            $this->initPUNotificationsPNotifications();
+            $this->collPUNotificationsPNotificationsPartial = true;
         }
 
-        if (!in_array($l, $this->collPUNotifiedPNs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUNotifiedPN($l);
+        if (!in_array($l, $this->collPUNotificationsPNotifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUNotificationsPNotification($l);
 
-            if ($this->pUNotifiedPNsScheduledForDeletion and $this->pUNotifiedPNsScheduledForDeletion->contains($l)) {
-                $this->pUNotifiedPNsScheduledForDeletion->remove($this->pUNotifiedPNsScheduledForDeletion->search($l));
+            if ($this->pUNotificationsPNotificationsScheduledForDeletion and $this->pUNotificationsPNotificationsScheduledForDeletion->contains($l)) {
+                $this->pUNotificationsPNotificationsScheduledForDeletion->remove($this->pUNotificationsPNotificationsScheduledForDeletion->search($l));
             }
         }
 
@@ -1398,28 +1580,28 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotifiedPN $pUNotifiedPN The pUNotifiedPN object to add.
+     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
      */
-    protected function doAddPUNotifiedPN($pUNotifiedPN)
+    protected function doAddPUNotificationsPNotification($pUNotificationsPNotification)
     {
-        $this->collPUNotifiedPNs[]= $pUNotifiedPN;
-        $pUNotifiedPN->setPNotification($this);
+        $this->collPUNotificationsPNotifications[]= $pUNotificationsPNotification;
+        $pUNotificationsPNotification->setPUNotificationsPNotification($this);
     }
 
     /**
-     * @param	PUNotifiedPN $pUNotifiedPN The pUNotifiedPN object to remove.
+     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to remove.
      * @return PNotification The current object (for fluent API support)
      */
-    public function removePUNotifiedPN($pUNotifiedPN)
+    public function removePUNotificationsPNotification($pUNotificationsPNotification)
     {
-        if ($this->getPUNotifiedPNs()->contains($pUNotifiedPN)) {
-            $this->collPUNotifiedPNs->remove($this->collPUNotifiedPNs->search($pUNotifiedPN));
-            if (null === $this->pUNotifiedPNsScheduledForDeletion) {
-                $this->pUNotifiedPNsScheduledForDeletion = clone $this->collPUNotifiedPNs;
-                $this->pUNotifiedPNsScheduledForDeletion->clear();
+        if ($this->getPUNotificationsPNotifications()->contains($pUNotificationsPNotification)) {
+            $this->collPUNotificationsPNotifications->remove($this->collPUNotificationsPNotifications->search($pUNotificationsPNotification));
+            if (null === $this->pUNotificationsPNotificationsScheduledForDeletion) {
+                $this->pUNotificationsPNotificationsScheduledForDeletion = clone $this->collPUNotificationsPNotifications;
+                $this->pUNotificationsPNotificationsScheduledForDeletion->clear();
             }
-            $this->pUNotifiedPNsScheduledForDeletion[]= clone $pUNotifiedPN;
-            $pUNotifiedPN->setPNotification(null);
+            $this->pUNotificationsPNotificationsScheduledForDeletion[]= clone $pUNotificationsPNotification;
+            $pUNotificationsPNotification->setPUNotificationsPNotification(null);
         }
 
         return $this;
@@ -1431,7 +1613,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PNotification is new, it will return
      * an empty collection; or if this PNotification has previously
-     * been saved, it will retrieve related PUNotifiedPNs from storage.
+     * been saved, it will retrieve related PUNotificationsPNotifications from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1440,51 +1622,551 @@ abstract class BasePNotification extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUNotifiedPN[] List of PUNotifiedPN objects
+     * @return PropelObjectCollection|PUNotifications[] List of PUNotifications objects
      */
-    public function getPUNotifiedPNsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUNotificationsPNotificationsJoinPUNotificationsPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PUNotifiedPNQuery::create(null, $criteria);
-        $query->joinWith('PUser', $join_behavior);
+        $query = PUNotificationsQuery::create(null, $criteria);
+        $query->joinWith('PUNotificationsPUser', $join_behavior);
 
-        return $this->getPUNotifiedPNs($query, $con);
+        return $this->getPUNotificationsPNotifications($query, $con);
     }
 
     /**
-     * Clears out the collPUsers collection
+     * Clears out the collPUSubscribeEmailPNotifications collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PNotification The current object (for fluent API support)
-     * @see        addPUsers()
+     * @see        addPUSubscribeEmailPNotifications()
      */
-    public function clearPUsers()
+    public function clearPUSubscribeEmailPNotifications()
     {
-        $this->collPUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collPUsersPartial = null;
+        $this->collPUSubscribeEmailPNotifications = null; // important to set this to null since that means it is uninitialized
+        $this->collPUSubscribeEmailPNotificationsPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collPUsers collection.
+     * reset is the collPUSubscribeEmailPNotifications collection loaded partially
      *
-     * By default this just sets the collPUsers collection to an empty collection (like clearPUsers());
+     * @return void
+     */
+    public function resetPartialPUSubscribeEmailPNotifications($v = true)
+    {
+        $this->collPUSubscribeEmailPNotificationsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUSubscribeEmailPNotifications collection.
+     *
+     * By default this just sets the collPUSubscribeEmailPNotifications collection to an empty array (like clearcollPUSubscribeEmailPNotifications());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUSubscribeEmailPNotifications($overrideExisting = true)
+    {
+        if (null !== $this->collPUSubscribeEmailPNotifications && !$overrideExisting) {
+            return;
+        }
+        $this->collPUSubscribeEmailPNotifications = new PropelObjectCollection();
+        $this->collPUSubscribeEmailPNotifications->setModel('PUSubscribeEmail');
+    }
+
+    /**
+     * Gets an array of PUSubscribeEmail objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PNotification is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUSubscribeEmail[] List of PUSubscribeEmail objects
+     * @throws PropelException
+     */
+    public function getPUSubscribeEmailPNotifications($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUSubscribeEmailPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUSubscribeEmailPNotifications || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUSubscribeEmailPNotifications) {
+                // return empty collection
+                $this->initPUSubscribeEmailPNotifications();
+            } else {
+                $collPUSubscribeEmailPNotifications = PUSubscribeEmailQuery::create(null, $criteria)
+                    ->filterByPUSubscribeEmailPNotification($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUSubscribeEmailPNotificationsPartial && count($collPUSubscribeEmailPNotifications)) {
+                      $this->initPUSubscribeEmailPNotifications(false);
+
+                      foreach ($collPUSubscribeEmailPNotifications as $obj) {
+                        if (false == $this->collPUSubscribeEmailPNotifications->contains($obj)) {
+                          $this->collPUSubscribeEmailPNotifications->append($obj);
+                        }
+                      }
+
+                      $this->collPUSubscribeEmailPNotificationsPartial = true;
+                    }
+
+                    $collPUSubscribeEmailPNotifications->getInternalIterator()->rewind();
+
+                    return $collPUSubscribeEmailPNotifications;
+                }
+
+                if ($partial && $this->collPUSubscribeEmailPNotifications) {
+                    foreach ($this->collPUSubscribeEmailPNotifications as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUSubscribeEmailPNotifications[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUSubscribeEmailPNotifications = $collPUSubscribeEmailPNotifications;
+                $this->collPUSubscribeEmailPNotificationsPartial = false;
+            }
+        }
+
+        return $this->collPUSubscribeEmailPNotifications;
+    }
+
+    /**
+     * Sets a collection of PUSubscribeEmailPNotification objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUSubscribeEmailPNotifications A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function setPUSubscribeEmailPNotifications(PropelCollection $pUSubscribeEmailPNotifications, PropelPDO $con = null)
+    {
+        $pUSubscribeEmailPNotificationsToDelete = $this->getPUSubscribeEmailPNotifications(new Criteria(), $con)->diff($pUSubscribeEmailPNotifications);
+
+
+        $this->pUSubscribeEmailPNotificationsScheduledForDeletion = $pUSubscribeEmailPNotificationsToDelete;
+
+        foreach ($pUSubscribeEmailPNotificationsToDelete as $pUSubscribeEmailPNotificationRemoved) {
+            $pUSubscribeEmailPNotificationRemoved->setPUSubscribeEmailPNotification(null);
+        }
+
+        $this->collPUSubscribeEmailPNotifications = null;
+        foreach ($pUSubscribeEmailPNotifications as $pUSubscribeEmailPNotification) {
+            $this->addPUSubscribeEmailPNotification($pUSubscribeEmailPNotification);
+        }
+
+        $this->collPUSubscribeEmailPNotifications = $pUSubscribeEmailPNotifications;
+        $this->collPUSubscribeEmailPNotificationsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUSubscribeEmail objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUSubscribeEmail objects.
+     * @throws PropelException
+     */
+    public function countPUSubscribeEmailPNotifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUSubscribeEmailPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUSubscribeEmailPNotifications || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUSubscribeEmailPNotifications) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUSubscribeEmailPNotifications());
+            }
+            $query = PUSubscribeEmailQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUSubscribeEmailPNotification($this)
+                ->count($con);
+        }
+
+        return count($this->collPUSubscribeEmailPNotifications);
+    }
+
+    /**
+     * Method called to associate a PUSubscribeEmail object to this object
+     * through the PUSubscribeEmail foreign key attribute.
+     *
+     * @param    PUSubscribeEmail $l PUSubscribeEmail
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function addPUSubscribeEmailPNotification(PUSubscribeEmail $l)
+    {
+        if ($this->collPUSubscribeEmailPNotifications === null) {
+            $this->initPUSubscribeEmailPNotifications();
+            $this->collPUSubscribeEmailPNotificationsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUSubscribeEmailPNotifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUSubscribeEmailPNotification($l);
+
+            if ($this->pUSubscribeEmailPNotificationsScheduledForDeletion and $this->pUSubscribeEmailPNotificationsScheduledForDeletion->contains($l)) {
+                $this->pUSubscribeEmailPNotificationsScheduledForDeletion->remove($this->pUSubscribeEmailPNotificationsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
+     */
+    protected function doAddPUSubscribeEmailPNotification($pUSubscribeEmailPNotification)
+    {
+        $this->collPUSubscribeEmailPNotifications[]= $pUSubscribeEmailPNotification;
+        $pUSubscribeEmailPNotification->setPUSubscribeEmailPNotification($this);
+    }
+
+    /**
+     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to remove.
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function removePUSubscribeEmailPNotification($pUSubscribeEmailPNotification)
+    {
+        if ($this->getPUSubscribeEmailPNotifications()->contains($pUSubscribeEmailPNotification)) {
+            $this->collPUSubscribeEmailPNotifications->remove($this->collPUSubscribeEmailPNotifications->search($pUSubscribeEmailPNotification));
+            if (null === $this->pUSubscribeEmailPNotificationsScheduledForDeletion) {
+                $this->pUSubscribeEmailPNotificationsScheduledForDeletion = clone $this->collPUSubscribeEmailPNotifications;
+                $this->pUSubscribeEmailPNotificationsScheduledForDeletion->clear();
+            }
+            $this->pUSubscribeEmailPNotificationsScheduledForDeletion[]= clone $pUSubscribeEmailPNotification;
+            $pUSubscribeEmailPNotification->setPUSubscribeEmailPNotification(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PNotification is new, it will return
+     * an empty collection; or if this PNotification has previously
+     * been saved, it will retrieve related PUSubscribeEmailPNotifications from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PNotification.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUSubscribeEmail[] List of PUSubscribeEmail objects
+     */
+    public function getPUSubscribeEmailPNotificationsJoinPUSubscribeEmailPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUSubscribeEmailQuery::create(null, $criteria);
+        $query->joinWith('PUSubscribeEmailPUser', $join_behavior);
+
+        return $this->getPUSubscribeEmailPNotifications($query, $con);
+    }
+
+    /**
+     * Clears out the collPUSubscribeScreenPNotifications collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PNotification The current object (for fluent API support)
+     * @see        addPUSubscribeScreenPNotifications()
+     */
+    public function clearPUSubscribeScreenPNotifications()
+    {
+        $this->collPUSubscribeScreenPNotifications = null; // important to set this to null since that means it is uninitialized
+        $this->collPUSubscribeScreenPNotificationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUSubscribeScreenPNotifications collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUSubscribeScreenPNotifications($v = true)
+    {
+        $this->collPUSubscribeScreenPNotificationsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUSubscribeScreenPNotifications collection.
+     *
+     * By default this just sets the collPUSubscribeScreenPNotifications collection to an empty array (like clearcollPUSubscribeScreenPNotifications());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUSubscribeScreenPNotifications($overrideExisting = true)
+    {
+        if (null !== $this->collPUSubscribeScreenPNotifications && !$overrideExisting) {
+            return;
+        }
+        $this->collPUSubscribeScreenPNotifications = new PropelObjectCollection();
+        $this->collPUSubscribeScreenPNotifications->setModel('PUSubscribeScreen');
+    }
+
+    /**
+     * Gets an array of PUSubscribeScreen objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PNotification is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUSubscribeScreen[] List of PUSubscribeScreen objects
+     * @throws PropelException
+     */
+    public function getPUSubscribeScreenPNotifications($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUSubscribeScreenPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUSubscribeScreenPNotifications || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUSubscribeScreenPNotifications) {
+                // return empty collection
+                $this->initPUSubscribeScreenPNotifications();
+            } else {
+                $collPUSubscribeScreenPNotifications = PUSubscribeScreenQuery::create(null, $criteria)
+                    ->filterByPUSubscribeScreenPNotification($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUSubscribeScreenPNotificationsPartial && count($collPUSubscribeScreenPNotifications)) {
+                      $this->initPUSubscribeScreenPNotifications(false);
+
+                      foreach ($collPUSubscribeScreenPNotifications as $obj) {
+                        if (false == $this->collPUSubscribeScreenPNotifications->contains($obj)) {
+                          $this->collPUSubscribeScreenPNotifications->append($obj);
+                        }
+                      }
+
+                      $this->collPUSubscribeScreenPNotificationsPartial = true;
+                    }
+
+                    $collPUSubscribeScreenPNotifications->getInternalIterator()->rewind();
+
+                    return $collPUSubscribeScreenPNotifications;
+                }
+
+                if ($partial && $this->collPUSubscribeScreenPNotifications) {
+                    foreach ($this->collPUSubscribeScreenPNotifications as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUSubscribeScreenPNotifications[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUSubscribeScreenPNotifications = $collPUSubscribeScreenPNotifications;
+                $this->collPUSubscribeScreenPNotificationsPartial = false;
+            }
+        }
+
+        return $this->collPUSubscribeScreenPNotifications;
+    }
+
+    /**
+     * Sets a collection of PUSubscribeScreenPNotification objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUSubscribeScreenPNotifications A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function setPUSubscribeScreenPNotifications(PropelCollection $pUSubscribeScreenPNotifications, PropelPDO $con = null)
+    {
+        $pUSubscribeScreenPNotificationsToDelete = $this->getPUSubscribeScreenPNotifications(new Criteria(), $con)->diff($pUSubscribeScreenPNotifications);
+
+
+        $this->pUSubscribeScreenPNotificationsScheduledForDeletion = $pUSubscribeScreenPNotificationsToDelete;
+
+        foreach ($pUSubscribeScreenPNotificationsToDelete as $pUSubscribeScreenPNotificationRemoved) {
+            $pUSubscribeScreenPNotificationRemoved->setPUSubscribeScreenPNotification(null);
+        }
+
+        $this->collPUSubscribeScreenPNotifications = null;
+        foreach ($pUSubscribeScreenPNotifications as $pUSubscribeScreenPNotification) {
+            $this->addPUSubscribeScreenPNotification($pUSubscribeScreenPNotification);
+        }
+
+        $this->collPUSubscribeScreenPNotifications = $pUSubscribeScreenPNotifications;
+        $this->collPUSubscribeScreenPNotificationsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUSubscribeScreen objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUSubscribeScreen objects.
+     * @throws PropelException
+     */
+    public function countPUSubscribeScreenPNotifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUSubscribeScreenPNotificationsPartial && !$this->isNew();
+        if (null === $this->collPUSubscribeScreenPNotifications || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUSubscribeScreenPNotifications) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUSubscribeScreenPNotifications());
+            }
+            $query = PUSubscribeScreenQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUSubscribeScreenPNotification($this)
+                ->count($con);
+        }
+
+        return count($this->collPUSubscribeScreenPNotifications);
+    }
+
+    /**
+     * Method called to associate a PUSubscribeScreen object to this object
+     * through the PUSubscribeScreen foreign key attribute.
+     *
+     * @param    PUSubscribeScreen $l PUSubscribeScreen
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function addPUSubscribeScreenPNotification(PUSubscribeScreen $l)
+    {
+        if ($this->collPUSubscribeScreenPNotifications === null) {
+            $this->initPUSubscribeScreenPNotifications();
+            $this->collPUSubscribeScreenPNotificationsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUSubscribeScreenPNotifications->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUSubscribeScreenPNotification($l);
+
+            if ($this->pUSubscribeScreenPNotificationsScheduledForDeletion and $this->pUSubscribeScreenPNotificationsScheduledForDeletion->contains($l)) {
+                $this->pUSubscribeScreenPNotificationsScheduledForDeletion->remove($this->pUSubscribeScreenPNotificationsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
+     */
+    protected function doAddPUSubscribeScreenPNotification($pUSubscribeScreenPNotification)
+    {
+        $this->collPUSubscribeScreenPNotifications[]= $pUSubscribeScreenPNotification;
+        $pUSubscribeScreenPNotification->setPUSubscribeScreenPNotification($this);
+    }
+
+    /**
+     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to remove.
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function removePUSubscribeScreenPNotification($pUSubscribeScreenPNotification)
+    {
+        if ($this->getPUSubscribeScreenPNotifications()->contains($pUSubscribeScreenPNotification)) {
+            $this->collPUSubscribeScreenPNotifications->remove($this->collPUSubscribeScreenPNotifications->search($pUSubscribeScreenPNotification));
+            if (null === $this->pUSubscribeScreenPNotificationsScheduledForDeletion) {
+                $this->pUSubscribeScreenPNotificationsScheduledForDeletion = clone $this->collPUSubscribeScreenPNotifications;
+                $this->pUSubscribeScreenPNotificationsScheduledForDeletion->clear();
+            }
+            $this->pUSubscribeScreenPNotificationsScheduledForDeletion[]= clone $pUSubscribeScreenPNotification;
+            $pUSubscribeScreenPNotification->setPUSubscribeScreenPNotification(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PNotification is new, it will return
+     * an empty collection; or if this PNotification has previously
+     * been saved, it will retrieve related PUSubscribeScreenPNotifications from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PNotification.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUSubscribeScreen[] List of PUSubscribeScreen objects
+     */
+    public function getPUSubscribeScreenPNotificationsJoinPUSubscribeScreenPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUSubscribeScreenQuery::create(null, $criteria);
+        $query->joinWith('PUSubscribeScreenPUser', $join_behavior);
+
+        return $this->getPUSubscribeScreenPNotifications($query, $con);
+    }
+
+    /**
+     * Clears out the collPUNotificationsPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PNotification The current object (for fluent API support)
+     * @see        addPUNotificationsPUsers()
+     */
+    public function clearPUNotificationsPUsers()
+    {
+        $this->collPUNotificationsPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUNotificationsPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPUNotificationsPUsers collection.
+     *
+     * By default this just sets the collPUNotificationsPUsers collection to an empty collection (like clearPUNotificationsPUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initPUsers()
+    public function initPUNotificationsPUsers()
     {
-        $this->collPUsers = new PropelObjectCollection();
-        $this->collPUsers->setModel('PUser');
+        $this->collPUNotificationsPUsers = new PropelObjectCollection();
+        $this->collPUNotificationsPUsers->setModel('PUser');
     }
 
     /**
      * Gets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notified_p_n cross-reference table.
+     * to the current object by way of the p_u_notifications cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1497,57 +2179,57 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      * @return PropelObjectCollection|PUser[] List of PUser objects
      */
-    public function getPUsers($criteria = null, PropelPDO $con = null)
+    public function getPUNotificationsPUsers($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUsers) {
+        if (null === $this->collPUNotificationsPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUNotificationsPUsers) {
                 // return empty collection
-                $this->initPUsers();
+                $this->initPUNotificationsPUsers();
             } else {
-                $collPUsers = PUserQuery::create(null, $criteria)
-                    ->filterByPNotification($this)
+                $collPUNotificationsPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPUNotificationsPNotification($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collPUsers;
+                    return $collPUNotificationsPUsers;
                 }
-                $this->collPUsers = $collPUsers;
+                $this->collPUNotificationsPUsers = $collPUNotificationsPUsers;
             }
         }
 
-        return $this->collPUsers;
+        return $this->collPUNotificationsPUsers;
     }
 
     /**
      * Sets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notified_p_n cross-reference table.
+     * to the current object by way of the p_u_notifications cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUsers A Propel collection.
+     * @param PropelCollection $pUNotificationsPUsers A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PNotification The current object (for fluent API support)
      */
-    public function setPUsers(PropelCollection $pUsers, PropelPDO $con = null)
+    public function setPUNotificationsPUsers(PropelCollection $pUNotificationsPUsers, PropelPDO $con = null)
     {
-        $this->clearPUsers();
-        $currentPUsers = $this->getPUsers(null, $con);
+        $this->clearPUNotificationsPUsers();
+        $currentPUNotificationsPUsers = $this->getPUNotificationsPUsers(null, $con);
 
-        $this->pUsersScheduledForDeletion = $currentPUsers->diff($pUsers);
+        $this->pUNotificationsPUsersScheduledForDeletion = $currentPUNotificationsPUsers->diff($pUNotificationsPUsers);
 
-        foreach ($pUsers as $pUser) {
-            if (!$currentPUsers->contains($pUser)) {
-                $this->doAddPUser($pUser);
+        foreach ($pUNotificationsPUsers as $pUNotificationsPUser) {
+            if (!$currentPUNotificationsPUsers->contains($pUNotificationsPUser)) {
+                $this->doAddPUNotificationsPUser($pUNotificationsPUser);
             }
         }
 
-        $this->collPUsers = $pUsers;
+        $this->collPUNotificationsPUsers = $pUNotificationsPUsers;
 
         return $this;
     }
 
     /**
      * Gets the number of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notified_p_n cross-reference table.
+     * to the current object by way of the p_u_notifications cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -1555,10 +2237,10 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      * @return int the number of related PUser objects
      */
-    public function countPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUNotificationsPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collPUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUsers) {
+        if (null === $this->collPUNotificationsPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUNotificationsPUsers) {
                 return 0;
             } else {
                 $query = PUserQuery::create(null, $criteria);
@@ -1567,33 +2249,33 @@ abstract class BasePNotification extends BaseObject implements Persistent
                 }
 
                 return $query
-                    ->filterByPNotification($this)
+                    ->filterByPUNotificationsPNotification($this)
                     ->count($con);
             }
         } else {
-            return count($this->collPUsers);
+            return count($this->collPUNotificationsPUsers);
         }
     }
 
     /**
      * Associate a PUser object to this object
-     * through the p_u_notified_p_n cross reference table.
+     * through the p_u_notifications cross reference table.
      *
-     * @param  PUser $pUser The PUNotifiedPN object to relate
+     * @param  PUser $pUser The PUNotifications object to relate
      * @return PNotification The current object (for fluent API support)
      */
-    public function addPUser(PUser $pUser)
+    public function addPUNotificationsPUser(PUser $pUser)
     {
-        if ($this->collPUsers === null) {
-            $this->initPUsers();
+        if ($this->collPUNotificationsPUsers === null) {
+            $this->initPUNotificationsPUsers();
         }
 
-        if (!$this->collPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
-            $this->doAddPUser($pUser);
-            $this->collPUsers[] = $pUser;
+        if (!$this->collPUNotificationsPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPUNotificationsPUser($pUser);
+            $this->collPUNotificationsPUsers[] = $pUser;
 
-            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($pUser)) {
-                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($pUser));
+            if ($this->pUNotificationsPUsersScheduledForDeletion and $this->pUNotificationsPUsersScheduledForDeletion->contains($pUser)) {
+                $this->pUNotificationsPUsersScheduledForDeletion->remove($this->pUNotificationsPUsersScheduledForDeletion->search($pUser));
             }
         }
 
@@ -1601,37 +2283,411 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUser $pUser The pUser object to add.
+     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
      */
-    protected function doAddPUser(PUser $pUser)
+    protected function doAddPUNotificationsPUser(PUser $pUNotificationsPUser)
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pUser->getPNotifications()->contains($this)) { $pUNotifiedPN = new PUNotifiedPN();
-            $pUNotifiedPN->setPUser($pUser);
-            $this->addPUNotifiedPN($pUNotifiedPN);
+        if (!$pUNotificationsPUser->getPUNotificationsPNotifications()->contains($this)) { $pUNotifications = new PUNotifications();
+            $pUNotifications->setPUNotificationsPUser($pUNotificationsPUser);
+            $this->addPUNotificationsPNotification($pUNotifications);
 
-            $foreignCollection = $pUser->getPNotifications();
+            $foreignCollection = $pUNotificationsPUser->getPUNotificationsPNotifications();
             $foreignCollection[] = $this;
         }
     }
 
     /**
      * Remove a PUser object to this object
-     * through the p_u_notified_p_n cross reference table.
+     * through the p_u_notifications cross reference table.
      *
-     * @param PUser $pUser The PUNotifiedPN object to relate
+     * @param PUser $pUser The PUNotifications object to relate
      * @return PNotification The current object (for fluent API support)
      */
-    public function removePUser(PUser $pUser)
+    public function removePUNotificationsPUser(PUser $pUser)
     {
-        if ($this->getPUsers()->contains($pUser)) {
-            $this->collPUsers->remove($this->collPUsers->search($pUser));
-            if (null === $this->pUsersScheduledForDeletion) {
-                $this->pUsersScheduledForDeletion = clone $this->collPUsers;
-                $this->pUsersScheduledForDeletion->clear();
+        if ($this->getPUNotificationsPUsers()->contains($pUser)) {
+            $this->collPUNotificationsPUsers->remove($this->collPUNotificationsPUsers->search($pUser));
+            if (null === $this->pUNotificationsPUsersScheduledForDeletion) {
+                $this->pUNotificationsPUsersScheduledForDeletion = clone $this->collPUNotificationsPUsers;
+                $this->pUNotificationsPUsersScheduledForDeletion->clear();
             }
-            $this->pUsersScheduledForDeletion[]= $pUser;
+            $this->pUNotificationsPUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPUSubscribeEmailPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PNotification The current object (for fluent API support)
+     * @see        addPUSubscribeEmailPUsers()
+     */
+    public function clearPUSubscribeEmailPUsers()
+    {
+        $this->collPUSubscribeEmailPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUSubscribeEmailPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPUSubscribeEmailPUsers collection.
+     *
+     * By default this just sets the collPUSubscribeEmailPUsers collection to an empty collection (like clearPUSubscribeEmailPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPUSubscribeEmailPUsers()
+    {
+        $this->collPUSubscribeEmailPUsers = new PropelObjectCollection();
+        $this->collPUSubscribeEmailPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_email cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PNotification is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPUSubscribeEmailPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPUSubscribeEmailPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUSubscribeEmailPUsers) {
+                // return empty collection
+                $this->initPUSubscribeEmailPUsers();
+            } else {
+                $collPUSubscribeEmailPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPUSubscribeEmailPNotification($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPUSubscribeEmailPUsers;
+                }
+                $this->collPUSubscribeEmailPUsers = $collPUSubscribeEmailPUsers;
+            }
+        }
+
+        return $this->collPUSubscribeEmailPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_email cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUSubscribeEmailPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function setPUSubscribeEmailPUsers(PropelCollection $pUSubscribeEmailPUsers, PropelPDO $con = null)
+    {
+        $this->clearPUSubscribeEmailPUsers();
+        $currentPUSubscribeEmailPUsers = $this->getPUSubscribeEmailPUsers(null, $con);
+
+        $this->pUSubscribeEmailPUsersScheduledForDeletion = $currentPUSubscribeEmailPUsers->diff($pUSubscribeEmailPUsers);
+
+        foreach ($pUSubscribeEmailPUsers as $pUSubscribeEmailPUser) {
+            if (!$currentPUSubscribeEmailPUsers->contains($pUSubscribeEmailPUser)) {
+                $this->doAddPUSubscribeEmailPUser($pUSubscribeEmailPUser);
+            }
+        }
+
+        $this->collPUSubscribeEmailPUsers = $pUSubscribeEmailPUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_email cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPUSubscribeEmailPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPUSubscribeEmailPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUSubscribeEmailPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPUSubscribeEmailPNotification($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPUSubscribeEmailPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_subscribe_email cross reference table.
+     *
+     * @param  PUser $pUser The PUSubscribeEmail object to relate
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function addPUSubscribeEmailPUser(PUser $pUser)
+    {
+        if ($this->collPUSubscribeEmailPUsers === null) {
+            $this->initPUSubscribeEmailPUsers();
+        }
+
+        if (!$this->collPUSubscribeEmailPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPUSubscribeEmailPUser($pUser);
+            $this->collPUSubscribeEmailPUsers[] = $pUser;
+
+            if ($this->pUSubscribeEmailPUsersScheduledForDeletion and $this->pUSubscribeEmailPUsersScheduledForDeletion->contains($pUser)) {
+                $this->pUSubscribeEmailPUsersScheduledForDeletion->remove($this->pUSubscribeEmailPUsersScheduledForDeletion->search($pUser));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
+     */
+    protected function doAddPUSubscribeEmailPUser(PUser $pUSubscribeEmailPUser)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pUSubscribeEmailPUser->getPUSubscribeEmailPNotifications()->contains($this)) { $pUSubscribeEmail = new PUSubscribeEmail();
+            $pUSubscribeEmail->setPUSubscribeEmailPUser($pUSubscribeEmailPUser);
+            $this->addPUSubscribeEmailPNotification($pUSubscribeEmail);
+
+            $foreignCollection = $pUSubscribeEmailPUser->getPUSubscribeEmailPNotifications();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_subscribe_email cross reference table.
+     *
+     * @param PUser $pUser The PUSubscribeEmail object to relate
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function removePUSubscribeEmailPUser(PUser $pUser)
+    {
+        if ($this->getPUSubscribeEmailPUsers()->contains($pUser)) {
+            $this->collPUSubscribeEmailPUsers->remove($this->collPUSubscribeEmailPUsers->search($pUser));
+            if (null === $this->pUSubscribeEmailPUsersScheduledForDeletion) {
+                $this->pUSubscribeEmailPUsersScheduledForDeletion = clone $this->collPUSubscribeEmailPUsers;
+                $this->pUSubscribeEmailPUsersScheduledForDeletion->clear();
+            }
+            $this->pUSubscribeEmailPUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPUSubscribeScreenPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PNotification The current object (for fluent API support)
+     * @see        addPUSubscribeScreenPUsers()
+     */
+    public function clearPUSubscribeScreenPUsers()
+    {
+        $this->collPUSubscribeScreenPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUSubscribeScreenPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPUSubscribeScreenPUsers collection.
+     *
+     * By default this just sets the collPUSubscribeScreenPUsers collection to an empty collection (like clearPUSubscribeScreenPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPUSubscribeScreenPUsers()
+    {
+        $this->collPUSubscribeScreenPUsers = new PropelObjectCollection();
+        $this->collPUSubscribeScreenPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_screen cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PNotification is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPUSubscribeScreenPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPUSubscribeScreenPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUSubscribeScreenPUsers) {
+                // return empty collection
+                $this->initPUSubscribeScreenPUsers();
+            } else {
+                $collPUSubscribeScreenPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPUSubscribeScreenPNotification($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPUSubscribeScreenPUsers;
+                }
+                $this->collPUSubscribeScreenPUsers = $collPUSubscribeScreenPUsers;
+            }
+        }
+
+        return $this->collPUSubscribeScreenPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_screen cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUSubscribeScreenPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function setPUSubscribeScreenPUsers(PropelCollection $pUSubscribeScreenPUsers, PropelPDO $con = null)
+    {
+        $this->clearPUSubscribeScreenPUsers();
+        $currentPUSubscribeScreenPUsers = $this->getPUSubscribeScreenPUsers(null, $con);
+
+        $this->pUSubscribeScreenPUsersScheduledForDeletion = $currentPUSubscribeScreenPUsers->diff($pUSubscribeScreenPUsers);
+
+        foreach ($pUSubscribeScreenPUsers as $pUSubscribeScreenPUser) {
+            if (!$currentPUSubscribeScreenPUsers->contains($pUSubscribeScreenPUser)) {
+                $this->doAddPUSubscribeScreenPUser($pUSubscribeScreenPUser);
+            }
+        }
+
+        $this->collPUSubscribeScreenPUsers = $pUSubscribeScreenPUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_subscribe_screen cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPUSubscribeScreenPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPUSubscribeScreenPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUSubscribeScreenPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPUSubscribeScreenPNotification($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPUSubscribeScreenPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_subscribe_screen cross reference table.
+     *
+     * @param  PUser $pUser The PUSubscribeScreen object to relate
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function addPUSubscribeScreenPUser(PUser $pUser)
+    {
+        if ($this->collPUSubscribeScreenPUsers === null) {
+            $this->initPUSubscribeScreenPUsers();
+        }
+
+        if (!$this->collPUSubscribeScreenPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPUSubscribeScreenPUser($pUser);
+            $this->collPUSubscribeScreenPUsers[] = $pUser;
+
+            if ($this->pUSubscribeScreenPUsersScheduledForDeletion and $this->pUSubscribeScreenPUsersScheduledForDeletion->contains($pUser)) {
+                $this->pUSubscribeScreenPUsersScheduledForDeletion->remove($this->pUSubscribeScreenPUsersScheduledForDeletion->search($pUser));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
+     */
+    protected function doAddPUSubscribeScreenPUser(PUser $pUSubscribeScreenPUser)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pUSubscribeScreenPUser->getPUSubscribeScreenPNotifications()->contains($this)) { $pUSubscribeScreen = new PUSubscribeScreen();
+            $pUSubscribeScreen->setPUSubscribeScreenPUser($pUSubscribeScreenPUser);
+            $this->addPUSubscribeScreenPNotification($pUSubscribeScreen);
+
+            $foreignCollection = $pUSubscribeScreenPUser->getPUSubscribeScreenPNotifications();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_subscribe_screen cross reference table.
+     *
+     * @param PUser $pUser The PUSubscribeScreen object to relate
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function removePUSubscribeScreenPUser(PUser $pUser)
+    {
+        if ($this->getPUSubscribeScreenPUsers()->contains($pUser)) {
+            $this->collPUSubscribeScreenPUsers->remove($this->collPUSubscribeScreenPUsers->search($pUser));
+            if (null === $this->pUSubscribeScreenPUsersScheduledForDeletion) {
+                $this->pUSubscribeScreenPUsersScheduledForDeletion = clone $this->collPUSubscribeScreenPUsers;
+                $this->pUSubscribeScreenPUsersScheduledForDeletion->clear();
+            }
+            $this->pUSubscribeScreenPUsersScheduledForDeletion[]= $pUser;
         }
 
         return $this;
@@ -1670,13 +2726,33 @@ abstract class BasePNotification extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPUNotifiedPNs) {
-                foreach ($this->collPUNotifiedPNs as $o) {
+            if ($this->collPUNotificationsPNotifications) {
+                foreach ($this->collPUNotificationsPNotifications as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPUsers) {
-                foreach ($this->collPUsers as $o) {
+            if ($this->collPUSubscribeEmailPNotifications) {
+                foreach ($this->collPUSubscribeEmailPNotifications as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUSubscribeScreenPNotifications) {
+                foreach ($this->collPUSubscribeScreenPNotifications as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUNotificationsPUsers) {
+                foreach ($this->collPUNotificationsPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUSubscribeEmailPUsers) {
+                foreach ($this->collPUSubscribeEmailPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUSubscribeScreenPUsers) {
+                foreach ($this->collPUSubscribeScreenPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1684,14 +2760,30 @@ abstract class BasePNotification extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPUNotifiedPNs instanceof PropelCollection) {
-            $this->collPUNotifiedPNs->clearIterator();
+        if ($this->collPUNotificationsPNotifications instanceof PropelCollection) {
+            $this->collPUNotificationsPNotifications->clearIterator();
         }
-        $this->collPUNotifiedPNs = null;
-        if ($this->collPUsers instanceof PropelCollection) {
-            $this->collPUsers->clearIterator();
+        $this->collPUNotificationsPNotifications = null;
+        if ($this->collPUSubscribeEmailPNotifications instanceof PropelCollection) {
+            $this->collPUSubscribeEmailPNotifications->clearIterator();
         }
-        $this->collPUsers = null;
+        $this->collPUSubscribeEmailPNotifications = null;
+        if ($this->collPUSubscribeScreenPNotifications instanceof PropelCollection) {
+            $this->collPUSubscribeScreenPNotifications->clearIterator();
+        }
+        $this->collPUSubscribeScreenPNotifications = null;
+        if ($this->collPUNotificationsPUsers instanceof PropelCollection) {
+            $this->collPUNotificationsPUsers->clearIterator();
+        }
+        $this->collPUNotificationsPUsers = null;
+        if ($this->collPUSubscribeEmailPUsers instanceof PropelCollection) {
+            $this->collPUSubscribeEmailPUsers->clearIterator();
+        }
+        $this->collPUSubscribeEmailPUsers = null;
+        if ($this->collPUSubscribeScreenPUsers instanceof PropelCollection) {
+            $this->collPUSubscribeScreenPUsers->clearIterator();
+        }
+        $this->collPUSubscribeScreenPUsers = null;
     }
 
     /**

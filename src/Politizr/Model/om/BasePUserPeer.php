@@ -21,11 +21,12 @@ use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowTPeer;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUMandatePeer;
-use Politizr\Model\PUNotifiedPNPeer;
+use Politizr\Model\PUNotificationsPeer;
 use Politizr\Model\PUReputationPeer;
 use Politizr\Model\PURoleQPeer;
 use Politizr\Model\PUStatusPeer;
-use Politizr\Model\PUSubscribeNOPeer;
+use Politizr\Model\PUSubscribeEmailPeer;
+use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\PUTaggedTPeer;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
@@ -670,12 +671,15 @@ abstract class BasePUserPeer
         // Invalidate objects in PUAffinityQOPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUAffinityQOPeer::clearInstancePool();
-        // Invalidate objects in PUNotifiedPNPeer instance pool,
+        // Invalidate objects in PUNotificationsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUNotifiedPNPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeNOPeer instance pool,
+        PUNotificationsPeer::clearInstancePool();
+        // Invalidate objects in PUSubscribeEmailPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeNOPeer::clearInstancePool();
+        PUSubscribeEmailPeer::clearInstancePool();
+        // Invalidate objects in PUSubscribeScreenPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUSubscribeScreenPeer::clearInstancePool();
         // Invalidate objects in PDocumentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDocumentPeer::clearInstancePool();

@@ -29,8 +29,9 @@ class BadgeListener {
     /**
      *
      */
-    public function __construct($logger) {
+    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher) {
     	$this->logger = $logger;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -216,6 +217,10 @@ class BadgeListener {
         $userBadge->setPUserId($userId);
         $userBadge->setPRBadgeId($badgeId);
         $userBadge->save();
+
+        // Notification
+        $event = new GenericEvent($userBadge);
+        $dispatcher = $this->eventDispatcher->dispatch('n_badge_win', $event);
     }
 
 
@@ -266,7 +271,7 @@ GROUP BY child.p_d_debate_id
             $stmt->execute();
             $result = $stmt->fetchAll();
 
-            if ($result[0]['nb'] > 0) {
+            if ($result[0]['nb'] >= $nbReactions) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }

@@ -11,7 +11,9 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
-use Politizr\Model\PUNotifiedPNPeer;
+use Politizr\Model\PUNotificationsPeer;
+use Politizr\Model\PUSubscribeEmailPeer;
+use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\map\PNotificationTableMap;
 
 abstract class BasePNotificationPeer
@@ -386,9 +388,15 @@ abstract class BasePNotificationPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUNotifiedPNPeer instance pool,
+        // Invalidate objects in PUNotificationsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUNotifiedPNPeer::clearInstancePool();
+        PUNotificationsPeer::clearInstancePool();
+        // Invalidate objects in PUSubscribeEmailPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUSubscribeEmailPeer::clearInstancePool();
+        // Invalidate objects in PUSubscribeScreenPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUSubscribeScreenPeer::clearInstancePool();
     }
 
     /**

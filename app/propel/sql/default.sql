@@ -508,23 +508,6 @@ CREATE TABLE `p_notification`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_n_email
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_n_email`;
-
-CREATE TABLE `p_n_email`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(250),
-    `description` TEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- p_user
 -- ---------------------------------------------------------------------
 
@@ -869,31 +852,32 @@ CREATE TABLE `p_u_affinity_q_o`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_notified_p_n
+-- p_u_notifications
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_notified_p_n`;
+DROP TABLE IF EXISTS `p_u_notifications`;
 
-CREATE TABLE `p_u_notified_p_n`
+CREATE TABLE `p_u_notifications`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_notification_id` INTEGER NOT NULL,
     `p_object_name` VARCHAR(150),
     `p_object_id` INTEGER,
+    `p_author_user_id` INTEGER,
     `checked` TINYINT(1),
     `checked_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_notified_p_n_FI_1` (`p_user_id`),
-    INDEX `p_u_notified_p_n_FI_2` (`p_notification_id`),
-    CONSTRAINT `p_u_notified_p_n_FK_1`
+    INDEX `p_u_notifications_FI_1` (`p_user_id`),
+    INDEX `p_u_notifications_FI_2` (`p_notification_id`),
+    CONSTRAINT `p_u_notifications_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_notified_p_n_FK_2`
+    CONSTRAINT `p_u_notifications_FK_2`
         FOREIGN KEY (`p_notification_id`)
         REFERENCES `p_notification` (`id`)
         ON UPDATE CASCADE
@@ -901,29 +885,57 @@ CREATE TABLE `p_u_notified_p_n`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_subscribe_n_o
+-- p_u_subscribe_email
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_subscribe_n_o`;
+DROP TABLE IF EXISTS `p_u_subscribe_email`;
 
-CREATE TABLE `p_u_subscribe_n_o`
+CREATE TABLE `p_u_subscribe_email`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
-    `p_n_email_id` INTEGER NOT NULL,
+    `p_notification_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_subscribe_n_o_FI_1` (`p_user_id`),
-    INDEX `p_u_subscribe_n_o_FI_2` (`p_n_email_id`),
-    CONSTRAINT `p_u_subscribe_n_o_FK_1`
+    INDEX `p_u_subscribe_email_FI_1` (`p_user_id`),
+    INDEX `p_u_subscribe_email_FI_2` (`p_notification_id`),
+    CONSTRAINT `p_u_subscribe_email_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_subscribe_n_o_FK_2`
-        FOREIGN KEY (`p_n_email_id`)
-        REFERENCES `p_n_email` (`id`)
+    CONSTRAINT `p_u_subscribe_email_FK_2`
+        FOREIGN KEY (`p_notification_id`)
+        REFERENCES `p_notification` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_subscribe_screen
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_subscribe_screen`;
+
+CREATE TABLE `p_u_subscribe_screen`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_notification_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_subscribe_screen_FI_1` (`p_user_id`),
+    INDEX `p_u_subscribe_screen_FI_2` (`p_notification_id`),
+    CONSTRAINT `p_u_subscribe_screen_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_subscribe_screen_FK_2`
+        FOREIGN KEY (`p_notification_id`)
+        REFERENCES `p_notification` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

@@ -168,6 +168,10 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_follow', $event);
+
+            // Notification
+            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_debate_follow', $event);
         } elseif ($way == 'unfollow') {
             $object = PDDebateQuery::create()->findPk($objectId);
 
@@ -252,6 +256,10 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_pos', $event);
+            
+            // Notification
+            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_note_pos', $event);
 
             // Badges associés
             switch($type) {
@@ -272,6 +280,10 @@ class DocumentManager
             // Réputation
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_neg', $event);
+            
+            // Notification
+            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_note_neg', $event);
 
             // Badges associés
             switch($type) {
@@ -758,6 +770,10 @@ class DocumentManager
         // Réputation
         $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
         $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
+   
+        // Notification
+        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_reaction_publish', $event);
 
         // Badges associés
         if ($reaction->getTreeLevel() > 1) {
@@ -844,6 +860,7 @@ class DocumentManager
             $comment = $form->getData();
             $comment->save();
 
+            // TODO / regrouper la construction d'un seul objet GenericEvent + homogénéisation / normalisation
             // Réputation
             $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_comment_publish', $event);
@@ -851,6 +868,11 @@ class DocumentManager
             // Badges associés
             $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_publish', $event);
+
+            // Notification
+            $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_comment_publish', $event);
+
 
             // Récupération objet
             $objectId = $comment->getPDocumentId();

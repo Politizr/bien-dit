@@ -9,26 +9,26 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PNEmailPeer;
-use Politizr\Model\PUSubscribeNO;
-use Politizr\Model\PUSubscribeNOPeer;
+use Politizr\Model\PNotificationPeer;
+use Politizr\Model\PUSubscribeScreen;
+use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\PUserPeer;
-use Politizr\Model\map\PUSubscribeNOTableMap;
+use Politizr\Model\map\PUSubscribeScreenTableMap;
 
-abstract class BasePUSubscribeNOPeer
+abstract class BasePUSubscribeScreenPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_u_subscribe_n_o';
+    const TABLE_NAME = 'p_u_subscribe_screen';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PUSubscribeNO';
+    const OM_CLASS = 'Politizr\\Model\\PUSubscribeScreen';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PUSubscribeNOTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PUSubscribeScreenTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -40,28 +40,28 @@ abstract class BasePUSubscribeNOPeer
     const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_u_subscribe_n_o.id';
+    const ID = 'p_u_subscribe_screen.id';
 
     /** the column name for the p_user_id field */
-    const P_USER_ID = 'p_u_subscribe_n_o.p_user_id';
+    const P_USER_ID = 'p_u_subscribe_screen.p_user_id';
 
-    /** the column name for the p_n_email_id field */
-    const P_N_EMAIL_ID = 'p_u_subscribe_n_o.p_n_email_id';
+    /** the column name for the p_notification_id field */
+    const P_NOTIFICATION_ID = 'p_u_subscribe_screen.p_notification_id';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_u_subscribe_n_o.created_at';
+    const CREATED_AT = 'p_u_subscribe_screen.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_u_subscribe_n_o.updated_at';
+    const UPDATED_AT = 'p_u_subscribe_screen.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PUSubscribeNO objects.
+     * An identity map to hold any loaded instances of PUSubscribeScreen objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PUSubscribeNO[]
+     * @var        array PUSubscribeScreen[]
      */
     public static $instances = array();
 
@@ -70,14 +70,14 @@ abstract class BasePUSubscribeNOPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PUSubscribeNOPeer::$fieldNames[PUSubscribeNOPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PUSubscribeScreenPeer::$fieldNames[PUSubscribeScreenPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PNEmailId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pNEmailId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUSubscribeNOPeer::ID, PUSubscribeNOPeer::P_USER_ID, PUSubscribeNOPeer::P_N_EMAIL_ID, PUSubscribeNOPeer::CREATED_AT, PUSubscribeNOPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_N_EMAIL_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_n_email_id', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PNotificationId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pNotificationId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUSubscribeScreenPeer::ID, PUSubscribeScreenPeer::P_USER_ID, PUSubscribeScreenPeer::P_NOTIFICATION_ID, PUSubscribeScreenPeer::CREATED_AT, PUSubscribeScreenPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_NOTIFICATION_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_notification_id', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -85,14 +85,14 @@ abstract class BasePUSubscribeNOPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PUSubscribeNOPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PUSubscribeScreenPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PNEmailId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pNEmailId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PUSubscribeNOPeer::ID => 0, PUSubscribeNOPeer::P_USER_ID => 1, PUSubscribeNOPeer::P_N_EMAIL_ID => 2, PUSubscribeNOPeer::CREATED_AT => 3, PUSubscribeNOPeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_N_EMAIL_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_n_email_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PNotificationId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pNotificationId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUSubscribeScreenPeer::ID => 0, PUSubscribeScreenPeer::P_USER_ID => 1, PUSubscribeScreenPeer::P_NOTIFICATION_ID => 2, PUSubscribeScreenPeer::CREATED_AT => 3, PUSubscribeScreenPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_NOTIFICATION_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_notification_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -108,10 +108,10 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PUSubscribeNOPeer::getFieldNames($toType);
-        $key = isset(PUSubscribeNOPeer::$fieldKeys[$fromType][$name]) ? PUSubscribeNOPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PUSubscribeScreenPeer::getFieldNames($toType);
+        $key = isset(PUSubscribeScreenPeer::$fieldKeys[$fromType][$name]) ? PUSubscribeScreenPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUSubscribeNOPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUSubscribeScreenPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -128,11 +128,11 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PUSubscribeNOPeer::$fieldNames)) {
+        if (!array_key_exists($type, PUSubscribeScreenPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PUSubscribeNOPeer::$fieldNames[$type];
+        return PUSubscribeScreenPeer::$fieldNames[$type];
     }
 
     /**
@@ -144,12 +144,12 @@ abstract class BasePUSubscribeNOPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PUSubscribeNOPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PUSubscribeScreenPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PUSubscribeNOPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PUSubscribeScreenPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -167,15 +167,15 @@ abstract class BasePUSubscribeNOPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PUSubscribeNOPeer::ID);
-            $criteria->addSelectColumn(PUSubscribeNOPeer::P_USER_ID);
-            $criteria->addSelectColumn(PUSubscribeNOPeer::P_N_EMAIL_ID);
-            $criteria->addSelectColumn(PUSubscribeNOPeer::CREATED_AT);
-            $criteria->addSelectColumn(PUSubscribeNOPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PUSubscribeScreenPeer::ID);
+            $criteria->addSelectColumn(PUSubscribeScreenPeer::P_USER_ID);
+            $criteria->addSelectColumn(PUSubscribeScreenPeer::P_NOTIFICATION_ID);
+            $criteria->addSelectColumn(PUSubscribeScreenPeer::CREATED_AT);
+            $criteria->addSelectColumn(PUSubscribeScreenPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
-            $criteria->addSelectColumn($alias . '.p_n_email_id');
+            $criteria->addSelectColumn($alias . '.p_notification_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -197,21 +197,21 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -230,7 +230,7 @@ abstract class BasePUSubscribeNOPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PUSubscribeNO
+     * @return PUSubscribeScreen
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -238,7 +238,7 @@ abstract class BasePUSubscribeNOPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PUSubscribeNOPeer::doSelect($critcopy, $con);
+        $objects = PUSubscribeScreenPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -256,7 +256,7 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PUSubscribeNOPeer::populateObjects(PUSubscribeNOPeer::doSelectStmt($criteria, $con));
+        return PUSubscribeScreenPeer::populateObjects(PUSubscribeScreenPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -274,16 +274,16 @@ abstract class BasePUSubscribeNOPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -297,7 +297,7 @@ abstract class BasePUSubscribeNOPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PUSubscribeNO $obj A PUSubscribeNO object.
+     * @param PUSubscribeScreen $obj A PUSubscribeScreen object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -306,7 +306,7 @@ abstract class BasePUSubscribeNOPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PUSubscribeNOPeer::$instances[$key] = $obj;
+            PUSubscribeScreenPeer::$instances[$key] = $obj;
         }
     }
 
@@ -318,7 +318,7 @@ abstract class BasePUSubscribeNOPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PUSubscribeNO object or a primary key value.
+     * @param      mixed $value A PUSubscribeScreen object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -326,17 +326,17 @@ abstract class BasePUSubscribeNOPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PUSubscribeNO) {
+            if (is_object($value) && $value instanceof PUSubscribeScreen) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUSubscribeNO object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUSubscribeScreen object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PUSubscribeNOPeer::$instances[$key]);
+            unset(PUSubscribeScreenPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -347,14 +347,14 @@ abstract class BasePUSubscribeNOPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PUSubscribeNO Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PUSubscribeScreen Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PUSubscribeNOPeer::$instances[$key])) {
-                return PUSubscribeNOPeer::$instances[$key];
+            if (isset(PUSubscribeScreenPeer::$instances[$key])) {
+                return PUSubscribeScreenPeer::$instances[$key];
             }
         }
 
@@ -369,15 +369,15 @@ abstract class BasePUSubscribeNOPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PUSubscribeNOPeer::$instances as $instance) {
+        foreach (PUSubscribeScreenPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PUSubscribeNOPeer::$instances = array();
+        PUSubscribeScreenPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_u_subscribe_n_o
+     * Method to invalidate the instance pool of all tables related to p_u_subscribe_screen
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -431,11 +431,11 @@ abstract class BasePUSubscribeNOPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PUSubscribeNOPeer::getOMClass();
+        $cls = PUSubscribeScreenPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PUSubscribeNOPeer::getInstanceFromPool($key))) {
+            $key = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PUSubscribeScreenPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -444,7 +444,7 @@ abstract class BasePUSubscribeNOPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PUSubscribeNOPeer::addInstanceToPool($obj, $key);
+                PUSubscribeScreenPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -458,21 +458,21 @@ abstract class BasePUSubscribeNOPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PUSubscribeNO object, last column rank)
+     * @return array (PUSubscribeScreen object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PUSubscribeNOPeer::getInstanceFromPool($key))) {
+        $key = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PUSubscribeScreenPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUSubscribeNOPeer::OM_CLASS;
+            $cls = PUSubscribeScreenPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PUSubscribeNOPeer::addInstanceToPool($obj, $key);
+            PUSubscribeScreenPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -480,7 +480,7 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUser table
+     * Returns the number of rows matching criteria, joining the related PUSubscribeScreenPUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -488,7 +488,7 @@ abstract class BasePUSubscribeNOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPUSubscribeScreenPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -496,26 +496,26 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -531,7 +531,7 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PNEmail table
+     * Returns the number of rows matching criteria, joining the related PUSubscribeScreenPNotification table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -539,7 +539,7 @@ abstract class BasePUSubscribeNOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPNEmail(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPUSubscribeScreenPNotification(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -547,26 +547,26 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -582,45 +582,45 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Selects a collection of PUSubscribeNO objects pre-filled with their PUser objects.
+     * Selects a collection of PUSubscribeScreen objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUSubscribeNO objects.
+     * @return array           Array of PUSubscribeScreen objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPUSubscribeScreenPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
         }
 
-        PUSubscribeNOPeer::addSelectColumns($criteria);
-        $startcol = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
+        PUSubscribeScreenPeer::addSelectColumns($criteria);
+        $startcol = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
         PUserPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUSubscribeNOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUSubscribeScreenPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUSubscribeNOPeer::getOMClass();
+                $cls = PUSubscribeScreenPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUSubscribeNOPeer::addInstanceToPool($obj1, $key1);
+                PUSubscribeScreenPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -635,8 +635,8 @@ abstract class BasePUSubscribeNOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUSubscribeNO) to $obj2 (PUser)
-                $obj2->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to $obj2 (PUser)
+                $obj2->addPUSubscribeScreenPUser($obj1);
 
             } // if joined row was not null
 
@@ -649,61 +649,61 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Selects a collection of PUSubscribeNO objects pre-filled with their PNEmail objects.
+     * Selects a collection of PUSubscribeScreen objects pre-filled with their PNotification objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUSubscribeNO objects.
+     * @return array           Array of PUSubscribeScreen objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPNEmail(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPUSubscribeScreenPNotification(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
         }
 
-        PUSubscribeNOPeer::addSelectColumns($criteria);
-        $startcol = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
-        PNEmailPeer::addSelectColumns($criteria);
+        PUSubscribeScreenPeer::addSelectColumns($criteria);
+        $startcol = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
+        PNotificationPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUSubscribeNOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUSubscribeScreenPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUSubscribeNOPeer::getOMClass();
+                $cls = PUSubscribeScreenPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUSubscribeNOPeer::addInstanceToPool($obj1, $key1);
+                PUSubscribeScreenPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = PNEmailPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = PNotificationPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = PNEmailPeer::getInstanceFromPool($key2);
+                $obj2 = PNotificationPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = PNEmailPeer::getOMClass();
+                    $cls = PNotificationPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    PNEmailPeer::addInstanceToPool($obj2, $key2);
+                    PNotificationPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUSubscribeNO) to $obj2 (PNEmail)
-                $obj2->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to $obj2 (PNotification)
+                $obj2->addPUSubscribeScreenPNotification($obj1);
 
             } // if joined row was not null
 
@@ -732,28 +732,28 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -768,12 +768,12 @@ abstract class BasePUSubscribeNOPeer
     }
 
     /**
-     * Selects a collection of PUSubscribeNO objects pre-filled with all related objects.
+     * Selects a collection of PUSubscribeScreen objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUSubscribeNO objects.
+     * @return array           Array of PUSubscribeScreen objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -783,37 +783,37 @@ abstract class BasePUSubscribeNOPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
         }
 
-        PUSubscribeNOPeer::addSelectColumns($criteria);
-        $startcol2 = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
+        PUSubscribeScreenPeer::addSelectColumns($criteria);
+        $startcol2 = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        PNEmailPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + PNEmailPeer::NUM_HYDRATE_COLUMNS;
+        PNotificationPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PNotificationPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUSubscribeNOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUSubscribeScreenPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUSubscribeNOPeer::getOMClass();
+                $cls = PUSubscribeScreenPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUSubscribeNOPeer::addInstanceToPool($obj1, $key1);
+                PUSubscribeScreenPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
             // Add objects for joined PUser rows
@@ -830,26 +830,26 @@ abstract class BasePUSubscribeNOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PUSubscribeNO) to the collection in $obj2 (PUser)
-                $obj2->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to the collection in $obj2 (PUser)
+                $obj2->addPUSubscribeScreenPUser($obj1);
             } // if joined row not null
 
-            // Add objects for joined PNEmail rows
+            // Add objects for joined PNotification rows
 
-            $key3 = PNEmailPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = PNotificationPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = PNEmailPeer::getInstanceFromPool($key3);
+                $obj3 = PNotificationPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = PNEmailPeer::getOMClass();
+                    $cls = PNotificationPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    PNEmailPeer::addInstanceToPool($obj3, $key3);
+                    PNotificationPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (PUSubscribeNO) to the collection in $obj3 (PNEmail)
-                $obj3->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to the collection in $obj3 (PNotification)
+                $obj3->addPUSubscribeScreenPNotification($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -861,7 +861,7 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUser table
+     * Returns the number of rows matching criteria, joining the related PUSubscribeScreenPUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -869,7 +869,7 @@ abstract class BasePUSubscribeNOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPUSubscribeScreenPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -877,26 +877,26 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -912,7 +912,7 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PNEmail table
+     * Returns the number of rows matching criteria, joining the related PUSubscribeScreenPNotification table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -920,7 +920,7 @@ abstract class BasePUSubscribeNOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPNEmail(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPUSubscribeScreenPNotification(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -928,26 +928,26 @@ abstract class BasePUSubscribeNOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUSubscribeNOPeer::addSelectColumns($criteria);
+            PUSubscribeScreenPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -963,16 +963,16 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Selects a collection of PUSubscribeNO objects pre-filled with all related objects except PUser.
+     * Selects a collection of PUSubscribeScreen objects pre-filled with all related objects except PUSubscribeScreenPUser.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUSubscribeNO objects.
+     * @return array           Array of PUSubscribeScreen objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPUSubscribeScreenPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -980,51 +980,51 @@ abstract class BasePUSubscribeNOPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
         }
 
-        PUSubscribeNOPeer::addSelectColumns($criteria);
-        $startcol2 = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
+        PUSubscribeScreenPeer::addSelectColumns($criteria);
+        $startcol2 = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
 
-        PNEmailPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PNEmailPeer::NUM_HYDRATE_COLUMNS;
+        PNotificationPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PNotificationPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_N_EMAIL_ID, PNEmailPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_NOTIFICATION_ID, PNotificationPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUSubscribeNOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUSubscribeScreenPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUSubscribeNOPeer::getOMClass();
+                $cls = PUSubscribeScreenPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUSubscribeNOPeer::addInstanceToPool($obj1, $key1);
+                PUSubscribeScreenPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined PNEmail rows
+                // Add objects for joined PNotification rows
 
-                $key2 = PNEmailPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = PNotificationPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = PNEmailPeer::getInstanceFromPool($key2);
+                    $obj2 = PNotificationPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = PNEmailPeer::getOMClass();
+                        $cls = PNotificationPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    PNEmailPeer::addInstanceToPool($obj2, $key2);
+                    PNotificationPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUSubscribeNO) to the collection in $obj2 (PNEmail)
-                $obj2->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to the collection in $obj2 (PNotification)
+                $obj2->addPUSubscribeScreenPNotification($obj1);
 
             } // if joined row is not null
 
@@ -1037,16 +1037,16 @@ abstract class BasePUSubscribeNOPeer
 
 
     /**
-     * Selects a collection of PUSubscribeNO objects pre-filled with all related objects except PNEmail.
+     * Selects a collection of PUSubscribeScreen objects pre-filled with all related objects except PUSubscribeScreenPNotification.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUSubscribeNO objects.
+     * @return array           Array of PUSubscribeScreen objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPNEmail(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPUSubscribeScreenPNotification(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1054,33 +1054,33 @@ abstract class BasePUSubscribeNOPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
         }
 
-        PUSubscribeNOPeer::addSelectColumns($criteria);
-        $startcol2 = PUSubscribeNOPeer::NUM_HYDRATE_COLUMNS;
+        PUSubscribeScreenPeer::addSelectColumns($criteria);
+        $startcol2 = PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUSubscribeNOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUSubscribeScreenPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUSubscribeNOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUSubscribeNOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUSubscribeScreenPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUSubscribeScreenPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUSubscribeNOPeer::getOMClass();
+                $cls = PUSubscribeScreenPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUSubscribeNOPeer::addInstanceToPool($obj1, $key1);
+                PUSubscribeScreenPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PUser rows
@@ -1097,8 +1097,8 @@ abstract class BasePUSubscribeNOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUSubscribeNO) to the collection in $obj2 (PUser)
-                $obj2->addPUSubscribeNO($obj1);
+                // Add the $obj1 (PUSubscribeScreen) to the collection in $obj2 (PUser)
+                $obj2->addPUSubscribeScreenPUser($obj1);
 
             } // if joined row is not null
 
@@ -1118,7 +1118,7 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PUSubscribeNOPeer::DATABASE_NAME)->getTable(PUSubscribeNOPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PUSubscribeScreenPeer::DATABASE_NAME)->getTable(PUSubscribeScreenPeer::TABLE_NAME);
     }
 
     /**
@@ -1126,9 +1126,9 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePUSubscribeNOPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePUSubscribeNOPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PUSubscribeNOTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePUSubscribeScreenPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePUSubscribeScreenPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PUSubscribeScreenTableMap());
       }
     }
 
@@ -1140,13 +1140,13 @@ abstract class BasePUSubscribeNOPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PUSubscribeNOPeer::OM_CLASS;
+        return PUSubscribeScreenPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PUSubscribeNO or Criteria object.
+     * Performs an INSERT on the database, given a PUSubscribeScreen or Criteria object.
      *
-     * @param      mixed $values Criteria or PUSubscribeNO object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PUSubscribeScreen object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1155,22 +1155,22 @@ abstract class BasePUSubscribeNOPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PUSubscribeNO object
+            $criteria = $values->buildCriteria(); // build Criteria from PUSubscribeScreen object
         }
 
-        if ($criteria->containsKey(PUSubscribeNOPeer::ID) && $criteria->keyContainsValue(PUSubscribeNOPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUSubscribeNOPeer::ID.')');
+        if ($criteria->containsKey(PUSubscribeScreenPeer::ID) && $criteria->keyContainsValue(PUSubscribeScreenPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUSubscribeScreenPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1187,9 +1187,9 @@ abstract class BasePUSubscribeNOPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PUSubscribeNO or Criteria object.
+     * Performs an UPDATE on the database, given a PUSubscribeScreen or Criteria object.
      *
-     * @param      mixed $values Criteria or PUSubscribeNO object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PUSubscribeScreen object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1198,35 +1198,35 @@ abstract class BasePUSubscribeNOPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PUSubscribeNOPeer::ID);
-            $value = $criteria->remove(PUSubscribeNOPeer::ID);
+            $comparison = $criteria->getComparison(PUSubscribeScreenPeer::ID);
+            $value = $criteria->remove(PUSubscribeScreenPeer::ID);
             if ($value) {
-                $selectCriteria->add(PUSubscribeNOPeer::ID, $value, $comparison);
+                $selectCriteria->add(PUSubscribeScreenPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PUSubscribeNOPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PUSubscribeScreenPeer::TABLE_NAME);
             }
 
-        } else { // $values is PUSubscribeNO object
+        } else { // $values is PUSubscribeScreen object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_u_subscribe_n_o table.
+     * Deletes all rows from the p_u_subscribe_screen table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1235,19 +1235,19 @@ abstract class BasePUSubscribeNOPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PUSubscribeNOPeer::TABLE_NAME, $con, PUSubscribeNOPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PUSubscribeScreenPeer::TABLE_NAME, $con, PUSubscribeScreenPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PUSubscribeNOPeer::clearInstancePool();
-            PUSubscribeNOPeer::clearRelatedInstancePool();
+            PUSubscribeScreenPeer::clearInstancePool();
+            PUSubscribeScreenPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1258,9 +1258,9 @@ abstract class BasePUSubscribeNOPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PUSubscribeNO or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PUSubscribeScreen or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PUSubscribeNO object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PUSubscribeScreen object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1271,32 +1271,32 @@ abstract class BasePUSubscribeNOPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PUSubscribeNOPeer::clearInstancePool();
+            PUSubscribeScreenPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PUSubscribeNO) { // it's a model object
+        } elseif ($values instanceof PUSubscribeScreen) { // it's a model object
             // invalidate the cache for this single object
-            PUSubscribeNOPeer::removeInstanceFromPool($values);
+            PUSubscribeScreenPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
-            $criteria->add(PUSubscribeNOPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
+            $criteria->add(PUSubscribeScreenPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PUSubscribeNOPeer::removeInstanceFromPool($singleval);
+                PUSubscribeScreenPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUSubscribeNOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUSubscribeScreenPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1306,7 +1306,7 @@ abstract class BasePUSubscribeNOPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PUSubscribeNOPeer::clearRelatedInstancePool();
+            PUSubscribeScreenPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1317,13 +1317,13 @@ abstract class BasePUSubscribeNOPeer
     }
 
     /**
-     * Validates all modified columns of given PUSubscribeNO object.
+     * Validates all modified columns of given PUSubscribeScreen object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PUSubscribeNO $obj The object to validate.
+     * @param PUSubscribeScreen $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1333,8 +1333,8 @@ abstract class BasePUSubscribeNOPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PUSubscribeNOPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PUSubscribeNOPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PUSubscribeScreenPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PUSubscribeScreenPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1350,7 +1350,7 @@ abstract class BasePUSubscribeNOPeer
 
         }
 
-        return BasePeer::doValidate(PUSubscribeNOPeer::DATABASE_NAME, PUSubscribeNOPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PUSubscribeScreenPeer::DATABASE_NAME, PUSubscribeScreenPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1358,23 +1358,23 @@ abstract class BasePUSubscribeNOPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PUSubscribeNO
+     * @return PUSubscribeScreen
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PUSubscribeNOPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PUSubscribeScreenPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
-        $criteria->add(PUSubscribeNOPeer::ID, $pk);
+        $criteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
+        $criteria->add(PUSubscribeScreenPeer::ID, $pk);
 
-        $v = PUSubscribeNOPeer::doSelect($criteria, $con);
+        $v = PUSubscribeScreenPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1384,31 +1384,31 @@ abstract class BasePUSubscribeNOPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PUSubscribeNO[]
+     * @return PUSubscribeScreen[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PUSubscribeNOPeer::DATABASE_NAME);
-            $criteria->add(PUSubscribeNOPeer::ID, $pks, Criteria::IN);
-            $objs = PUSubscribeNOPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PUSubscribeScreenPeer::DATABASE_NAME);
+            $criteria->add(PUSubscribeScreenPeer::ID, $pks, Criteria::IN);
+            $objs = PUSubscribeScreenPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePUSubscribeNOPeer
+} // BasePUSubscribeScreenPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePUSubscribeNOPeer::buildTableMap();
+BasePUSubscribeScreenPeer::buildTableMap();
 

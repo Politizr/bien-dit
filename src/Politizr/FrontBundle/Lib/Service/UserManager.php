@@ -74,6 +74,10 @@ class UserManager
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_user_follow', $event);
 
+            // Notification
+            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_user_follow', $event);
+
             // Badges associés
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getId()));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_user_follow', $event);

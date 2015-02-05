@@ -13,58 +13,58 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PNEmail;
-use Politizr\Model\PUSubscribeNO;
-use Politizr\Model\PUSubscribeNOPeer;
-use Politizr\Model\PUSubscribeNOQuery;
+use Politizr\Model\PNotification;
+use Politizr\Model\PUSubscribeScreen;
+use Politizr\Model\PUSubscribeScreenPeer;
+use Politizr\Model\PUSubscribeScreenQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUSubscribeNOQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PUSubscribeNOQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUSubscribeNOQuery orderByPNEmailId($order = Criteria::ASC) Order by the p_n_email_id column
- * @method PUSubscribeNOQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PUSubscribeNOQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUSubscribeScreenQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUSubscribeScreenQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUSubscribeScreenQuery orderByPNotificationId($order = Criteria::ASC) Order by the p_notification_id column
+ * @method PUSubscribeScreenQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PUSubscribeScreenQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUSubscribeNOQuery groupById() Group by the id column
- * @method PUSubscribeNOQuery groupByPUserId() Group by the p_user_id column
- * @method PUSubscribeNOQuery groupByPNEmailId() Group by the p_n_email_id column
- * @method PUSubscribeNOQuery groupByCreatedAt() Group by the created_at column
- * @method PUSubscribeNOQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUSubscribeScreenQuery groupById() Group by the id column
+ * @method PUSubscribeScreenQuery groupByPUserId() Group by the p_user_id column
+ * @method PUSubscribeScreenQuery groupByPNotificationId() Group by the p_notification_id column
+ * @method PUSubscribeScreenQuery groupByCreatedAt() Group by the created_at column
+ * @method PUSubscribeScreenQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PUSubscribeNOQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PUSubscribeNOQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PUSubscribeNOQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PUSubscribeScreenQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PUSubscribeScreenQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PUSubscribeScreenQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUSubscribeNOQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
- * @method PUSubscribeNOQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
- * @method PUSubscribeNOQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ * @method PUSubscribeScreenQuery leftJoinPUSubscribeScreenPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUSubscribeScreenPUser relation
+ * @method PUSubscribeScreenQuery rightJoinPUSubscribeScreenPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribeScreenPUser relation
+ * @method PUSubscribeScreenQuery innerJoinPUSubscribeScreenPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUSubscribeScreenPUser relation
  *
- * @method PUSubscribeNOQuery leftJoinPNEmail($relationAlias = null) Adds a LEFT JOIN clause to the query using the PNEmail relation
- * @method PUSubscribeNOQuery rightJoinPNEmail($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PNEmail relation
- * @method PUSubscribeNOQuery innerJoinPNEmail($relationAlias = null) Adds a INNER JOIN clause to the query using the PNEmail relation
+ * @method PUSubscribeScreenQuery leftJoinPUSubscribeScreenPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUSubscribeScreenPNotification relation
+ * @method PUSubscribeScreenQuery rightJoinPUSubscribeScreenPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribeScreenPNotification relation
+ * @method PUSubscribeScreenQuery innerJoinPUSubscribeScreenPNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUSubscribeScreenPNotification relation
  *
- * @method PUSubscribeNO findOne(PropelPDO $con = null) Return the first PUSubscribeNO matching the query
- * @method PUSubscribeNO findOneOrCreate(PropelPDO $con = null) Return the first PUSubscribeNO matching the query, or a new PUSubscribeNO object populated from the query conditions when no match is found
+ * @method PUSubscribeScreen findOne(PropelPDO $con = null) Return the first PUSubscribeScreen matching the query
+ * @method PUSubscribeScreen findOneOrCreate(PropelPDO $con = null) Return the first PUSubscribeScreen matching the query, or a new PUSubscribeScreen object populated from the query conditions when no match is found
  *
- * @method PUSubscribeNO findOneByPUserId(int $p_user_id) Return the first PUSubscribeNO filtered by the p_user_id column
- * @method PUSubscribeNO findOneByPNEmailId(int $p_n_email_id) Return the first PUSubscribeNO filtered by the p_n_email_id column
- * @method PUSubscribeNO findOneByCreatedAt(string $created_at) Return the first PUSubscribeNO filtered by the created_at column
- * @method PUSubscribeNO findOneByUpdatedAt(string $updated_at) Return the first PUSubscribeNO filtered by the updated_at column
+ * @method PUSubscribeScreen findOneByPUserId(int $p_user_id) Return the first PUSubscribeScreen filtered by the p_user_id column
+ * @method PUSubscribeScreen findOneByPNotificationId(int $p_notification_id) Return the first PUSubscribeScreen filtered by the p_notification_id column
+ * @method PUSubscribeScreen findOneByCreatedAt(string $created_at) Return the first PUSubscribeScreen filtered by the created_at column
+ * @method PUSubscribeScreen findOneByUpdatedAt(string $updated_at) Return the first PUSubscribeScreen filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUSubscribeNO objects filtered by the id column
- * @method array findByPUserId(int $p_user_id) Return PUSubscribeNO objects filtered by the p_user_id column
- * @method array findByPNEmailId(int $p_n_email_id) Return PUSubscribeNO objects filtered by the p_n_email_id column
- * @method array findByCreatedAt(string $created_at) Return PUSubscribeNO objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PUSubscribeNO objects filtered by the updated_at column
+ * @method array findById(int $id) Return PUSubscribeScreen objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PUSubscribeScreen objects filtered by the p_user_id column
+ * @method array findByPNotificationId(int $p_notification_id) Return PUSubscribeScreen objects filtered by the p_notification_id column
+ * @method array findByCreatedAt(string $created_at) Return PUSubscribeScreen objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PUSubscribeScreen objects filtered by the updated_at column
  */
-abstract class BasePUSubscribeNOQuery extends ModelCriteria
+abstract class BasePUSubscribeScreenQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePUSubscribeNOQuery object.
+     * Initializes internal state of BasePUSubscribeScreenQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -76,25 +76,25 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PUSubscribeNO';
+            $modelName = 'Politizr\\Model\\PUSubscribeScreen';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PUSubscribeNOQuery object.
+     * Returns a new PUSubscribeScreenQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PUSubscribeNOQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PUSubscribeScreenQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PUSubscribeNOQuery
+     * @return PUSubscribeScreenQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PUSubscribeNOQuery) {
+        if ($criteria instanceof PUSubscribeScreenQuery) {
             return $criteria;
         }
-        $query = new PUSubscribeNOQuery(null, null, $modelAlias);
+        $query = new PUSubscribeScreenQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -115,19 +115,19 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PUSubscribeNO|PUSubscribeNO[]|mixed the result, formatted by the current formatter
+     * @return   PUSubscribeScreen|PUSubscribeScreen[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUSubscribeNOPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUSubscribeScreenPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PUSubscribeNOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUSubscribeScreenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -145,7 +145,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUSubscribeNO A model object, or null if the key is not found
+     * @return                 PUSubscribeScreen A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -160,12 +160,12 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUSubscribeNO A model object, or null if the key is not found
+     * @return                 PUSubscribeScreen A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_n_email_id`, `created_at`, `updated_at` FROM `p_u_subscribe_n_o` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_notification_id`, `created_at`, `updated_at` FROM `p_u_subscribe_screen` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -176,9 +176,9 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PUSubscribeNO();
+            $obj = new PUSubscribeScreen();
             $obj->hydrate($row);
-            PUSubscribeNOPeer::addInstanceToPool($obj, (string) $key);
+            PUSubscribeScreenPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -191,7 +191,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PUSubscribeNO|PUSubscribeNO[]|mixed the result, formatted by the current formatter
+     * @return PUSubscribeScreen|PUSubscribeScreen[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,7 +212,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PUSubscribeNO[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PUSubscribeScreen[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -233,12 +233,12 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -246,12 +246,12 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,18 +271,18 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -293,7 +293,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::ID, $id, $comparison);
     }
 
     /**
@@ -307,7 +307,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
      * </code>
      *
-     * @see       filterByPUser()
+     * @see       filterByPUSubscribeScreenPUser()
      *
      * @param     mixed $pUserId The value to use as filter.
      *              Use scalar values for equality.
@@ -315,18 +315,18 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterByPUserId($pUserId = null, $comparison = null)
     {
         if (is_array($pUserId)) {
             $useMinMax = false;
             if (isset($pUserId['min'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pUserId['max'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -337,40 +337,40 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::P_USER_ID, $pUserId, $comparison);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
-     * Filter the query on the p_n_email_id column
+     * Filter the query on the p_notification_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByPNEmailId(1234); // WHERE p_n_email_id = 1234
-     * $query->filterByPNEmailId(array(12, 34)); // WHERE p_n_email_id IN (12, 34)
-     * $query->filterByPNEmailId(array('min' => 12)); // WHERE p_n_email_id >= 12
-     * $query->filterByPNEmailId(array('max' => 12)); // WHERE p_n_email_id <= 12
+     * $query->filterByPNotificationId(1234); // WHERE p_notification_id = 1234
+     * $query->filterByPNotificationId(array(12, 34)); // WHERE p_notification_id IN (12, 34)
+     * $query->filterByPNotificationId(array('min' => 12)); // WHERE p_notification_id >= 12
+     * $query->filterByPNotificationId(array('max' => 12)); // WHERE p_notification_id <= 12
      * </code>
      *
-     * @see       filterByPNEmail()
+     * @see       filterByPUSubscribeScreenPNotification()
      *
-     * @param     mixed $pNEmailId The value to use as filter.
+     * @param     mixed $pNotificationId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
-    public function filterByPNEmailId($pNEmailId = null, $comparison = null)
+    public function filterByPNotificationId($pNotificationId = null, $comparison = null)
     {
-        if (is_array($pNEmailId)) {
+        if (is_array($pNotificationId)) {
             $useMinMax = false;
-            if (isset($pNEmailId['min'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::P_N_EMAIL_ID, $pNEmailId['min'], Criteria::GREATER_EQUAL);
+            if (isset($pNotificationId['min'])) {
+                $this->addUsingAlias(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $pNotificationId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($pNEmailId['max'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::P_N_EMAIL_ID, $pNEmailId['max'], Criteria::LESS_EQUAL);
+            if (isset($pNotificationId['max'])) {
+                $this->addUsingAlias(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $pNotificationId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -381,7 +381,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::P_N_EMAIL_ID, $pNEmailId, $comparison);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $pNotificationId, $comparison);
     }
 
     /**
@@ -402,18 +402,18 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -424,7 +424,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -445,18 +445,18 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PUSubscribeNOPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUSubscribeScreenPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -467,7 +467,7 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUSubscribeNOPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -476,38 +476,38 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUSubscribeNOQuery The current query, for fluid interface
+     * @return                 PUSubscribeScreenQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUser($pUser, $comparison = null)
+    public function filterByPUSubscribeScreenPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
-                ->addUsingAlias(PUSubscribeNOPeer::P_USER_ID, $pUser->getId(), $comparison);
+                ->addUsingAlias(PUSubscribeScreenPeer::P_USER_ID, $pUser->getId(), $comparison);
         } elseif ($pUser instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUSubscribeNOPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUSubscribeScreenPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
+            throw new PropelException('filterByPUSubscribeScreenPUser() only accepts arguments of type PUser or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUser relation
+     * Adds a JOIN clause to the query using the PUSubscribeScreenPUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
-    public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUSubscribeScreenPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUser');
+        $relationMap = $tableMap->getRelation('PUSubscribeScreenPUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -522,14 +522,14 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUser');
+            $this->addJoinObject($join, 'PUSubscribeScreenPUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUser relation PUser object
+     * Use the PUSubscribeScreenPUser relation PUser object
      *
      * @see       useQuery()
      *
@@ -539,51 +539,51 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
      */
-    public function usePUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUSubscribeScreenPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
+            ->joinPUSubscribeScreenPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUSubscribeScreenPUser', '\Politizr\Model\PUserQuery');
     }
 
     /**
-     * Filter the query by a related PNEmail object
+     * Filter the query by a related PNotification object
      *
-     * @param   PNEmail|PropelObjectCollection $pNEmail The related object(s) to use as filter
+     * @param   PNotification|PropelObjectCollection $pNotification The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUSubscribeNOQuery The current query, for fluid interface
+     * @return                 PUSubscribeScreenQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPNEmail($pNEmail, $comparison = null)
+    public function filterByPUSubscribeScreenPNotification($pNotification, $comparison = null)
     {
-        if ($pNEmail instanceof PNEmail) {
+        if ($pNotification instanceof PNotification) {
             return $this
-                ->addUsingAlias(PUSubscribeNOPeer::P_N_EMAIL_ID, $pNEmail->getId(), $comparison);
-        } elseif ($pNEmail instanceof PropelObjectCollection) {
+                ->addUsingAlias(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $pNotification->getId(), $comparison);
+        } elseif ($pNotification instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUSubscribeNOPeer::P_N_EMAIL_ID, $pNEmail->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUSubscribeScreenPeer::P_NOTIFICATION_ID, $pNotification->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPNEmail() only accepts arguments of type PNEmail or PropelCollection');
+            throw new PropelException('filterByPUSubscribeScreenPNotification() only accepts arguments of type PNotification or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PNEmail relation
+     * Adds a JOIN clause to the query using the PUSubscribeScreenPNotification relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
-    public function joinPNEmail($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUSubscribeScreenPNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PNEmail');
+        $relationMap = $tableMap->getRelation('PUSubscribeScreenPNotification');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -598,14 +598,14 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PNEmail');
+            $this->addJoinObject($join, 'PUSubscribeScreenPNotification');
         }
 
         return $this;
     }
 
     /**
-     * Use the PNEmail relation PNEmail object
+     * Use the PUSubscribeScreenPNotification relation PNotification object
      *
      * @see       useQuery()
      *
@@ -613,26 +613,26 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PNEmailQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PNotificationQuery A secondary query class using the current class as primary query
      */
-    public function usePNEmailQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUSubscribeScreenPNotificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPNEmail($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PNEmail', '\Politizr\Model\PNEmailQuery');
+            ->joinPUSubscribeScreenPNotification($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUSubscribeScreenPNotification', '\Politizr\Model\PNotificationQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   PUSubscribeNO $pUSubscribeNO Object to remove from the list of results
+     * @param   PUSubscribeScreen $pUSubscribeScreen Object to remove from the list of results
      *
-     * @return PUSubscribeNOQuery The current query, for fluid interface
+     * @return PUSubscribeScreenQuery The current query, for fluid interface
      */
-    public function prune($pUSubscribeNO = null)
+    public function prune($pUSubscribeScreen = null)
     {
-        if ($pUSubscribeNO) {
-            $this->addUsingAlias(PUSubscribeNOPeer::ID, $pUSubscribeNO->getId(), Criteria::NOT_EQUAL);
+        if ($pUSubscribeScreen) {
+            $this->addUsingAlias(PUSubscribeScreenPeer::ID, $pUSubscribeScreen->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -645,31 +645,31 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUSubscribeNOPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUSubscribeNOPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PUSubscribeScreenPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUSubscribeNOPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PUSubscribeScreenPeer::UPDATED_AT);
     }
 
     /**
@@ -677,31 +677,31 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUSubscribeNOPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUSubscribeScreenPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUSubscribeNOPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PUSubscribeScreenPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PUSubscribeNOQuery The current query, for fluid interface
+     * @return     PUSubscribeScreenQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUSubscribeNOPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PUSubscribeScreenPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -742,8 +742,8 @@ abstract class BasePUSubscribeNOQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PUSubscribeNOPeer::DATABASE_NAME);
-        $db = Propel::getDB(PUSubscribeNOPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PUSubscribeScreenPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUSubscribeScreenPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {
