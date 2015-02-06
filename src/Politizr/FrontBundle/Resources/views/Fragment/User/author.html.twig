@@ -3,38 +3,42 @@ Fragment non (html-)structuré exploité partout
 Normalisation: nom de fichier sans majuscule ni d'héritage twig
  #}
 {% spaceless %}
-	{% block authorPhoto %}
-		{# TODO / TwigExtension Photo #}
-		<a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
-			{{ user | photo('user_mini') }}
-		</a>
-		&nbsp;
-	{% endblock authorPhoto %}
+	{% if user %}
+		{% block authorPhoto %}
+			{# TODO / TwigExtension Photo #}
+			<a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
+				{{ user | photo('user_mini') }}
+			</a>
+			&nbsp;
+		{% endblock authorPhoto %}
 
-	{% block authorName %}
-		{# Nom & Type #}
-		<a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
-			{{ user }}
-			{% if user.validated %}
-				<span class="fa fa-check-square-o" title="Profil validé"></span>
+		{% block authorName %}
+			{# Nom & Type #}
+			<a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
+				{{ user }}
+				{% if user.validated %}
+					<span class="fa fa-check-square-o" title="Profil validé"></span>
+				{% endif %}
+			</a>
+			&nbsp;
+		{% endblock authorName %}
+
+		{% block authorReputation %}	
+			{# Score réputation #}
+			<span class="badge alert-success">{{ user.reputationScore }}</span>
+			&nbsp;
+		{% endblock authorReputation %}
+
+		{% block authorQualification %}
+			{# Mandat en cours #}
+			{% if user.currentMandate %}
+				{% set mandate = user.currentMandate %}
+				{% if (mandate) %}
+			        <img src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
+				{% endif %}	
 			{% endif %}
-		</a>
-		&nbsp;
-	{% endblock authorName %}
-
-	{% block authorReputation %}	
-		{# Score réputation #}
-		<span class="badge alert-success">{{ user.reputationScore }}</span>
-		&nbsp;
-	{% endblock authorReputation %}
-
-	{% block authorQualification %}
-		{# Mandat en cours #}
-		{% if user.currentMandate %}
-			{% set mandate = user.currentMandate %}
-			{% if (mandate) %}
-		        <img src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
-			{% endif %}	
-		{% endif %}
-	{% endblock authorQualification %}
+		{% endblock authorQualification %}
+	{% else %}
+		<span class="label label-default">Utilisateur supprimé</span>
+	{% endif %}
 {% endspaceless %}

@@ -1,0 +1,70 @@
+<script>
+	// initialisation des notifications
+	$(function() {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : "{{ path('NotificationsLoad') }}",
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+
+               	// MAJ compteur
+               	$('#notif-counter').html(data['nb']);
+
+                // http://getbootstrap.com/javascript/#popovers
+		    	$('[data-toggle=popover]').popover({
+		    		container: 'body',
+	                placement: 'bottom',
+	                trigger: 'click',
+	                html: 'true',
+					content: data['html'],
+		    	});
+            }
+        });
+	})
+
+	// check une notification
+	$("body").on("click", "i[action='notification-check']", function(e) {
+        console.log('*** click notification-check');
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : "{{ path('NotificationCheck') }}",
+            context: $(this).closest('tr'),
+            data: { 'subjectId': $(this).attr('subject-id') },
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+           		$(this).attr('class', '');
+           		$('#notif-counter').html(parseInt($('#notif-counter').text()) - 1);
+
+                $('#ajax-loader').hide();
+            }
+        });
+
+    })
+	
+	// check / uncheck toutes les notifications
+	$("body").on("click", "a[action='notification-check-all']", function(e) {
+        console.log('*** click notification-check-all');
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : "{{ path('NotificationsCheckAll') }}",
+            context: $(this).closest('table'),
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+               	// MAJ du style des lignes du tableau
+				$('#notifTable tr').not('thead tr').attr('class', '');
+
+	            // MAJ du compteur
+               	$('#notif-counter').html('-');
+                $('#ajax-loader').hide();
+            }
+        });
+
+    })
+	
+</script>

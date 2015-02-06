@@ -3,9 +3,16 @@ namespace Politizr\Frontbundle\Twig;
 
 use Politizr\Model\PDocument;
 use Politizr\Model\PUStatus;
+use Politizr\Model\PNotification;
+use Politizr\Model\PUNotifications;
 
 use Politizr\Model\PUFollowUQuery;
-
+use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PDocumentQuery;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PUserQuery;
 
 /**
  * Extension Twig / Gestion des users
@@ -76,6 +83,10 @@ class PolitizrUserExtension extends \Twig_Extension
                     )
             ),
             new \Twig_SimpleFilter('followersUser', array($this, 'followersUser'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            new \Twig_SimpleFilter('linkedNotification', array($this, 'linkedNotification'), array(
                     'is_safe' => array('html')
                     )
             ),
@@ -259,6 +270,79 @@ class PolitizrUserExtension extends \Twig_Extension
 
         return $html;
 
+    }
+
+
+    /**
+     *  Construit la structure texte + liens associé à une notification.
+     *
+     *  @param $notification          PUNotifications
+     *
+     *  @return html
+     */
+    public function linkedNotification(PUNotifications $notification)
+    {
+        // $this->logger->info('*** linkedNotification');
+        // $this->logger->info('$notification = '.print_r($notification, true));
+
+        // Récupération de l'objet d'interaction
+        $commentDoc = '';
+        switch ($notification->getPObjectName()) {
+            case PDocument::TYPE_DEBATE:
+                $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
+                $title = $subject->getTitle();
+                $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()));
+                break;
+            case PDocument::TYPE_REACTION:
+                $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
+                $title = $subject->getTitle();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()));
+                break;
+            case PDocument::TYPE_COMMENT:
+                $subject = PDCommentQuery::create()->findPk($notification->getPObjectId());
+                
+                $title = $subject->getDescription();
+                $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
+                $commentDoc = $document->getTitle();
+                if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
+                } else {
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
+                }
+                break;
+            case PDocument::TYPE_USER:
+                $subject = PUserQuery::create()->findPk($notification->getPObjectId());
+                $title = $subject->getFirstname().' '.$subject->getName();
+                $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()));
+                break;
+            case 'Politizr\Model\PRBadge':
+                $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
+                $title = $subject->getTitle();
+
+                $url = $this->router->generate('MyReputationC');
+                if ($this->isGrantedE()) {
+                    $url = $this->router->generate('MyReputationE');
+                }
+                break;                
+        }
+
+        // Récupération de l'auteur de l'interaction
+        $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
+        $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Fragment\\User:glNotification.html.twig', array(
+                                'id' => $notification->getPNotificationId(),
+                                'author' => $author,
+                                'authorUrl' => $authorUrl,
+                                'title' => $title,
+                                'url' => $url,
+                                'commentDoc' => $commentDoc,
+                                )
+                    );
+
+        return $html;
     }
 
 

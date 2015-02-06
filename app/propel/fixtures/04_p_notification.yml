@@ -1,6 +1,6 @@
 # NOTIFICATION
 
-# Constantes de classe PNotification à MAJ en parallèle
+# Constantes de classe PNotification + glNotification.html.twig à MAJ en parallèle
 Politizr\Model\PNotification:
     d_comment_publish:
         online:             true

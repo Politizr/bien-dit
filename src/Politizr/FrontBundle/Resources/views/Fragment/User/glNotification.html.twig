@@ -1,0 +1,21 @@
+{% if id == constant('Politizr\\Model\\PNotification::ID_D_COMMENT_PUBLISH') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a commenté "{{ title | slice(0, 50) }}..." sur <a href="{{ url }}">{{ commentDoc }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_NOTE_POS') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a donné une note positive sur <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_NOTE_NEG') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a donné une note négative sur <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_D_REACTION_PUBLISH') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a publié une réaction sur le débat <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_D_FOLLOWED') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> s'est abonné au débat <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_R_REACTION_PUBLISH') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a publié une réaction sur <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_C_NOTE_POS') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a donné une note positive sur <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_D_C_NOTE_NEG') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> a donné une note négative sur <a href="{{ url }}">{{ title }}</a>.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_U_FOLLOWED') %}
+    <a href="{{ authorUrl }}">{{ author }}</a> s'est abonné à votre profil.
+{% elseif id == constant('Politizr\\Model\\PNotification::ID_U_BADGE') %}
+    Félicitations, vous avez obtenu le badge <a href="{{ url }}">{{ title }}</a>.
+{% endif %}

@@ -137,11 +137,7 @@ LAYOUT USER
 	<div class="user-list-row">
 		<div class="row">
 			<div class="col-sm-6">
-				{% if user %}
-					{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
-				{% else %}
-					<span class="label label-default">Utilisateur supprimé</span>
-				{% endif %}
+				{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
 			</div>
 			<div class="col-sm-2 text-center">
 				<span class="badge alert-info">{{ user.countDebates }} débats</span>

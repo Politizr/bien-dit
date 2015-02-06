@@ -13,6 +13,7 @@ use Politizr\Model\PUFollowU;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUNotificationsQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -373,5 +374,97 @@ class UserManager
         return true;
     }
 
+    /* ######################################################################################################## */
+    /*                                            NOTIFICATIONS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
 
+
+    /**
+     *  Notifications
+     *
+     */
+    public function notificationsLoad() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notificationsLoad');
+        
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Requête notifs
+        $notifs = PUNotificationsQuery::create()
+                            ->filterByPUserId($user->getId())
+                            // ->setLimit(10)
+                            ->find();
+
+        $nbNotifs = PUNotificationsQuery::create()
+                            ->filterByPUserId($user->getId())
+                            ->filterByChecked(false)
+                            ->count();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\User:glNotificationList.html.twig', array(
+                                'notifs' => $notifs,
+                                )
+                    );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            'nb' => $nbNotifs > 0 ? $nbNotifs:'-',
+            );
+    }
+
+    /**
+     *  Notification checkée
+     *
+     */
+    public function notificationCheck() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notificationChek');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        // MAJ checked
+        $puNotif = PUNotificationsQuery::create()->findPk($subjectId);
+        $puNotif->setChecked(true);
+        $puNotif->setCheckedAt(new \DateTime());
+        $puNotif->save();
+
+        return true;
+    }
+
+    /**
+     *  Notifications
+     *
+     */
+    public function notificationsCheckAll() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notificationsLoad');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Check / Uncheck all
+        $notifs = PUNotificationsQuery::create()
+                            ->filterByPUserId($user->getId())
+                            ->find();
+
+        foreach ($notifs as $puNotif) {
+            $puNotif->setChecked(true);
+            $puNotif->setCheckedAt(new \DateTime());
+            $puNotif->save();
+        }
+
+        return true;
+    }
 }

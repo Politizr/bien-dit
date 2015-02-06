@@ -474,3 +474,20 @@ UserList:
     defaults: { _controller: PolitizrFrontBundle:CRUD:userList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+# TIMELINE
+################################################################################
+NotificationsLoad:
+    pattern:  /profil/load-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsLoad, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationCheck:
+    pattern:  /profil/check-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationCheck, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationsCheckAll:
+    pattern:  /profil/check-all-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsCheckAll, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
