@@ -394,7 +394,7 @@ class UserManager
         // Requête notifs
         $notifs = PUNotificationsQuery::create()
                             ->filterByPUserId($user->getId())
-                            // ->setLimit(10)
+                            ->orderByCreatedAt('desc')
                             ->find();
 
         $nbNotifs = PUNotificationsQuery::create()
