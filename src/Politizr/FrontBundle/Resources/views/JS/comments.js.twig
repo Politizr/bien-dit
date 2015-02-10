@@ -26,6 +26,9 @@
     $("body").on("click", "a[action='comments']", function(e) {
         console.log('*** click comments');
 
+        // Fermeture préalable de tous les paragraphes ouverts
+        context = $('.comments').slideUp().html('');
+
         var context = $(this).closest('.paragraph');
         $.ajax({
             type: 'POST',
