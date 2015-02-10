@@ -108,29 +108,48 @@ class PolitizrReputationExtension extends \Twig_Extension
         switch ($reputation->getPObjectName()) {
             case PDocument::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()));
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()));
+                } else {
+                    $title = 'Débat supprimé';
+                    $url = '#';
+                }
                 break;
             case PDocument::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()));
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()));
+                } else {
+                    $title = 'Réaction supprimée';
+                    $url = '#';
+                }
                 break;
             case PDocument::TYPE_COMMENT:
                 $subject = PDCommentQuery::create()->findPk($reputation->getPObjectId());
-                
-                $title = $subject->getDescription();
-                $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
-                if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
+                if ($subject) {
+                    $title = $subject->getDescription();
+                    $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
+                    if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
+                        $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
+                    } else {
+                        $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
+                    }
                 } else {
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
+                    $title = 'Commentaire supprimé';
+                    $url = '#';
                 }
                 break;
             case PDocument::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
-                $title = $subject->getFirstname().' '.$subject->getName();
-                $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()));
+                if ($subject) {
+                    $title = $subject->getFirstname().' '.$subject->getName();
+                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()));
+                } else {
+                    $title = 'Utilisateur supprimé';
+                    $url = '#';
+                }
                 break;
         }
 

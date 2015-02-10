@@ -1,28 +1,42 @@
 <script>
 	// initialisation des notifications
 	$(function() {
+        notificationsCheck();
+	})
+
+    // Regular function with arguments
+    function notificationsCheck(){
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url : "{{ path('NotificationsLoad') }}",
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
                 $('#ajax-loader').hide();
 
-               	// MAJ compteur
-               	$('#notif-counter').html(data['nb']);
+                // MAJ compteur
+                $('#notif-counter').html(data['nb']);
 
                 // http://getbootstrap.com/javascript/#popovers
-		    	$('[data-toggle=popover]').popover({
-		    		container: 'body',
-	                placement: 'bottom',
-	                trigger: 'click',
-	                html: 'true',
-					content: data['html'],
-		    	});
+                // $('[data-toggle=popover]').popover('destroy');
+                $('[data-toggle=popover]').popover({
+                    container: 'body',
+                    placement: 'bottom',
+                    trigger: 'click',
+                    html: 'true',
+                    content: function (){return data['html']},
+                });
+
+                $(".popover-content").html(data['html'])
+
             }
         });
-	})
+
+        // Rappel toutes les 60 secondes
+        setTimeout(function(){
+            notificationsCheck();
+        }, 60000);
+    }    
 
 	// check une notification
 	$("body").on("click", "i[action='notification-check']", function(e) {
@@ -34,7 +48,7 @@
             url : "{{ path('NotificationCheck') }}",
             context: $(this).closest('tr'),
             data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
            		$(this).attr('class', '');
            		$('#notif-counter').html(parseInt($('#notif-counter').text()) - 1);
@@ -55,7 +69,7 @@
             url : "{{ path('NotificationCheck') }}",
             context: this,
             data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
            		window.location = $(this).attr('href');
             }
@@ -72,7 +86,7 @@
             dataType: 'json',
             url : "{{ path('NotificationsCheckAll') }}",
             context: $(this).closest('table'),
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
                	// MAJ du style des lignes du tableau
 				$('#notifTable tr').not('thead tr').attr('class', '');

@@ -386,14 +386,21 @@ class UserManager
     public function notificationsLoad() {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationsLoad');
-        
 
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
 
         // Requête notifs
+        $lastWeek = new \DateTime();
+        $lastWeek->modify('-7 day');
+        $logger->info('lastWeek = '.print_r($lastWeek, true));
+
+        // Notifications de moins d'une semaine ou non checkées
         $notifs = PUNotificationsQuery::create()
                             ->filterByPUserId($user->getId())
+                            ->filterByCreatedAt(array('min' => $lastWeek))
+                            ->_or()
+                            ->filterByChecked(false)
                             ->orderByCreatedAt('desc')
                             ->find();
 

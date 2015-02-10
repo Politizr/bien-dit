@@ -42,6 +42,11 @@
 				</li>
 			</ul>
 			<ul class="navbar-form navbar-right">
+				<!-- http://getbootstrap.com/javascript/#popovers -->
+				<a class="badge badge-success"
+					id="notif-counter"
+					data-toggle="popover"
+					>-</a>&nbsp;|&nbsp;
 				<span class="label label-danger">
 					{{ app.user.firstname }} {{ app.user.name }}
 					{% if app.user.validated %}
@@ -51,6 +56,7 @@
 				&nbsp;
 				<a class="btn btn-warning btn-xs" href="{{ path('Logout') }}">Déconnexion</a>
 			</ul>
+
 		</div><!-- /.navbar-collapse -->
 	</div>
 </nav>
