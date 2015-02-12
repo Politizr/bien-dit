@@ -24,11 +24,13 @@
                     placement: 'bottom',
                     trigger: 'click',
                     html: 'true',
-                    content: function (){return data['html']},
+                    content: function (){ return data['html'] },
                 });
 
-                $(".popover-content").html(data['html'])
-
+                // maj contenu pour gérer les pb de rafraichissement / cache
+                var myPopover = $('[data-toggle=popover]').data('bs.popover');
+                myPopover.options.html = true;
+                myPopover.options.content = data['html'];
             }
         });
 
@@ -36,7 +38,7 @@
         setTimeout(function(){
             notificationsCheck();
         }, 60000);
-    }    
+    }
 
 	// check une notification
 	$("body").on("click", "i[action='notification-check']", function(e) {
