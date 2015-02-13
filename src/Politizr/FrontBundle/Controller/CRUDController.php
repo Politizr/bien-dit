@@ -427,19 +427,19 @@ class CRUDController extends Controller {
 
     /**
      *  Mise à jour des informations personnelles du user
-     *  TODO > + gestion affinités politiques
      */
-    public function userPersoUpdateAction(Request $request) {
+    public function userProfileUpdateAction(Request $request) {
         $logger = $this->get('logger');
-        $logger->info('*** userPersoUpdateAction');
+        $logger->info('*** userProfileUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.user',
-            'userPersoUpdate'
+            'userProfileUpdate'
         );
 
         return $jsonResponse;
     }
+
 
     /**
      *  Upload de la photo de profil du user
@@ -466,6 +466,53 @@ class CRUDController extends Controller {
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.user',
             'userPhotoDelete'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Upload de la photo de fond du profil du user
+     */
+    public function userBackPhotoUploadAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userBackPhotoUploadAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'userBackPhotoUpload'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Suppression de la photo de fond du profil du user
+     */
+    public function userBackPhotoDeleteAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userBackPhotoDeleteAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'userBackPhotoDelete'
+        );
+
+        return $jsonResponse;
+    }
+
+
+
+    /**
+     *  Mise à jour des informations personnelles du user
+     */
+    public function userPersoUpdateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** userPersoUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'userPersoUpdate'
         );
 
         return $jsonResponse;

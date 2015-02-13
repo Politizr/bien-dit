@@ -41,6 +41,8 @@ use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUAffinityQOQuery;
 use Politizr\Model\PUBadges;
 use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowT;
@@ -241,6 +243,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $file_name;
 
     /**
+     * The value for the back_file_name field.
+     * @var        string
+     */
+    protected $back_file_name;
+
+    /**
      * The value for the gender field.
      * @var        int
      */
@@ -263,6 +271,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var        string
      */
     protected $birthday;
+
+    /**
+     * The value for the subtitle field.
+     * @var        string
+     */
+    protected $subtitle;
 
     /**
      * The value for the biography field.
@@ -418,8 +432,14 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PUAffinityQO[] Collection to store aggregation of PUAffinityQO objects.
      */
-    protected $collPUAffinityQos;
-    protected $collPUAffinityQosPartial;
+    protected $collPUAffinityQOPUsers;
+    protected $collPUAffinityQOPUsersPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUCurrentQO[] Collection to store aggregation of PUCurrentQO objects.
+     */
+    protected $collPUCurrentQOPUsers;
+    protected $collPUCurrentQOPUsersPartial;
 
     /**
      * @var        PropelObjectCollection|PUNotifications[] Collection to store aggregation of PUNotifications objects.
@@ -508,7 +528,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PQOrganization[] Collection to store aggregation of PQOrganization objects.
      */
-    protected $collPQOrganizations;
+    protected $collPUAffinityQOPQOrganizations;
+
+    /**
+     * @var        PropelObjectCollection|PQOrganization[] Collection to store aggregation of PQOrganization objects.
+     */
+    protected $collPUCurrentQOPQOrganizations;
 
     /**
      * @var        PropelObjectCollection|PNotification[] Collection to store aggregation of PNotification objects.
@@ -603,7 +628,13 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pQOrganizationsScheduledForDeletion = null;
+    protected $pUAffinityQOPQOrganizationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUCurrentQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -681,7 +712,13 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUAffinityQosScheduledForDeletion = null;
+    protected $pUAffinityQOPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUCurrentQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1151,6 +1188,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [back_file_name] column value.
+     *
+     * @return string
+     */
+    public function getBackFileName()
+    {
+
+        return $this->back_file_name;
+    }
+
+    /**
      * Get the [gender] column value.
      *
      * @return int
@@ -1229,6 +1277,17 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         return $dt->format($format);
 
+    }
+
+    /**
+     * Get the [subtitle] column value.
+     *
+     * @return string
+     */
+    public function getSubtitle()
+    {
+
+        return $this->subtitle;
     }
 
     /**
@@ -2042,6 +2101,27 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setFileName()
 
     /**
+     * Set the value of [back_file_name] column.
+     *
+     * @param  string $v new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setBackFileName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->back_file_name !== $v) {
+            $this->back_file_name = $v;
+            $this->modifiedColumns[] = PUserPeer::BACK_FILE_NAME;
+        }
+
+
+        return $this;
+    } // setBackFileName()
+
+    /**
      * Set the value of [gender] column.
      *
      * @param  int $v new value
@@ -2131,6 +2211,27 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         return $this;
     } // setBirthday()
+
+    /**
+     * Set the value of [subtitle] column.
+     *
+     * @param  string $v new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setSubtitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->subtitle !== $v) {
+            $this->subtitle = $v;
+            $this->modifiedColumns[] = PUserPeer::SUBTITLE;
+        }
+
+
+        return $this;
+    } // setSubtitle()
 
     /**
      * Set the value of [biography] column.
@@ -2565,25 +2666,27 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->roles_unserialized = null;
             $this->p_u_status_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
             $this->file_name = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->gender = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
-            $this->firstname = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->name = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->birthday = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->biography = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->website = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->twitter = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->facebook = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->phone = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->newsletter = ($row[$startcol + 32] !== null) ? (boolean) $row[$startcol + 32] : null;
-            $this->last_connect = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
-            $this->nb_connected_days = ($row[$startcol + 34] !== null) ? (int) $row[$startcol + 34] : null;
-            $this->nb_views = ($row[$startcol + 35] !== null) ? (int) $row[$startcol + 35] : null;
-            $this->qualified = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
-            $this->validated = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
-            $this->online = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
-            $this->created_at = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
-            $this->updated_at = ($row[$startcol + 40] !== null) ? (string) $row[$startcol + 40] : null;
-            $this->slug = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
+            $this->back_file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->gender = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
+            $this->firstname = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->name = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->birthday = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->subtitle = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->biography = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->website = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->twitter = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->facebook = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->phone = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->newsletter = ($row[$startcol + 34] !== null) ? (boolean) $row[$startcol + 34] : null;
+            $this->last_connect = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
+            $this->nb_connected_days = ($row[$startcol + 36] !== null) ? (int) $row[$startcol + 36] : null;
+            $this->nb_views = ($row[$startcol + 37] !== null) ? (int) $row[$startcol + 37] : null;
+            $this->qualified = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
+            $this->validated = ($row[$startcol + 39] !== null) ? (boolean) $row[$startcol + 39] : null;
+            $this->online = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
+            $this->created_at = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
+            $this->updated_at = ($row[$startcol + 42] !== null) ? (string) $row[$startcol + 42] : null;
+            $this->slug = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2593,7 +2696,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 42; // 42 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 44; // 44 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -2677,7 +2780,9 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPUMandates = null;
 
-            $this->collPUAffinityQos = null;
+            $this->collPUAffinityQOPUsers = null;
+
+            $this->collPUCurrentQOPUsers = null;
 
             $this->collPUNotificationsPUsers = null;
 
@@ -2703,7 +2808,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuTaggedTPTags = null;
             $this->collPuFollowTPTags = null;
             $this->collPQualifications = null;
-            $this->collPQOrganizations = null;
+            $this->collPUAffinityQOPQOrganizations = null;
+            $this->collPUCurrentQOPQOrganizations = null;
             $this->collPUNotificationsPNotifications = null;
             $this->collPUSubscribeEmailPNotifications = null;
             $this->collPUSubscribeScreenPNotifications = null;
@@ -3030,28 +3136,54 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pQOrganizationsScheduledForDeletion !== null) {
-                if (!$this->pQOrganizationsScheduledForDeletion->isEmpty()) {
+            if ($this->pUAffinityQOPQOrganizationsScheduledForDeletion !== null) {
+                if (!$this->pUAffinityQOPQOrganizationsScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->pQOrganizationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                    foreach ($this->pUAffinityQOPQOrganizationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
                     PUAffinityQOQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->pQOrganizationsScheduledForDeletion = null;
+                    $this->pUAffinityQOPQOrganizationsScheduledForDeletion = null;
                 }
 
-                foreach ($this->getPQOrganizations() as $pQOrganization) {
-                    if ($pQOrganization->isModified()) {
-                        $pQOrganization->save($con);
+                foreach ($this->getPUAffinityQOPQOrganizations() as $pUAffinityQOPQOrganization) {
+                    if ($pUAffinityQOPQOrganization->isModified()) {
+                        $pUAffinityQOPQOrganization->save($con);
                     }
                 }
-            } elseif ($this->collPQOrganizations) {
-                foreach ($this->collPQOrganizations as $pQOrganization) {
-                    if ($pQOrganization->isModified()) {
-                        $pQOrganization->save($con);
+            } elseif ($this->collPUAffinityQOPQOrganizations) {
+                foreach ($this->collPUAffinityQOPQOrganizations as $pUAffinityQOPQOrganization) {
+                    if ($pUAffinityQOPQOrganization->isModified()) {
+                        $pUAffinityQOPQOrganization->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUCurrentQOPQOrganizationsScheduledForDeletion !== null) {
+                if (!$this->pUCurrentQOPQOrganizationsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pUCurrentQOPQOrganizationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUCurrentQOQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pUCurrentQOPQOrganizationsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPUCurrentQOPQOrganizations() as $pUCurrentQOPQOrganization) {
+                    if ($pUCurrentQOPQOrganization->isModified()) {
+                        $pUCurrentQOPQOrganization->save($con);
+                    }
+                }
+            } elseif ($this->collPUCurrentQOPQOrganizations) {
+                foreach ($this->collPUCurrentQOPQOrganizations as $pUCurrentQOPQOrganization) {
+                    if ($pUCurrentQOPQOrganization->isModified()) {
+                        $pUCurrentQOPQOrganization->save($con);
                     }
                 }
             }
@@ -3289,17 +3421,34 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUAffinityQosScheduledForDeletion !== null) {
-                if (!$this->pUAffinityQosScheduledForDeletion->isEmpty()) {
+            if ($this->pUAffinityQOPUsersScheduledForDeletion !== null) {
+                if (!$this->pUAffinityQOPUsersScheduledForDeletion->isEmpty()) {
                     PUAffinityQOQuery::create()
-                        ->filterByPrimaryKeys($this->pUAffinityQosScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->pUAffinityQOPUsersScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pUAffinityQosScheduledForDeletion = null;
+                    $this->pUAffinityQOPUsersScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPUAffinityQos !== null) {
-                foreach ($this->collPUAffinityQos as $referrerFK) {
+            if ($this->collPUAffinityQOPUsers !== null) {
+                foreach ($this->collPUAffinityQOPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUCurrentQOPUsersScheduledForDeletion !== null) {
+                if (!$this->pUCurrentQOPUsersScheduledForDeletion->isEmpty()) {
+                    PUCurrentQOQuery::create()
+                        ->filterByPrimaryKeys($this->pUCurrentQOPUsersScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUCurrentQOPUsersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUCurrentQOPUsers !== null) {
+                foreach ($this->collPUCurrentQOPUsers as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3558,6 +3707,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
+        if ($this->isColumnModified(PUserPeer::BACK_FILE_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`back_file_name`';
+        }
         if ($this->isColumnModified(PUserPeer::GENDER)) {
             $modifiedColumns[':p' . $index++]  = '`gender`';
         }
@@ -3569,6 +3721,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PUserPeer::BIRTHDAY)) {
             $modifiedColumns[':p' . $index++]  = '`birthday`';
+        }
+        if ($this->isColumnModified(PUserPeer::SUBTITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`subtitle`';
         }
         if ($this->isColumnModified(PUserPeer::BIOGRAPHY)) {
             $modifiedColumns[':p' . $index++]  = '`biography`';
@@ -3695,6 +3850,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
+                    case '`back_file_name`':
+                        $stmt->bindValue($identifier, $this->back_file_name, PDO::PARAM_STR);
+                        break;
                     case '`gender`':
                         $stmt->bindValue($identifier, $this->gender, PDO::PARAM_INT);
                         break;
@@ -3706,6 +3864,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`birthday`':
                         $stmt->bindValue($identifier, $this->birthday, PDO::PARAM_STR);
+                        break;
+                    case '`subtitle`':
+                        $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
                         break;
                     case '`biography`':
                         $stmt->bindValue($identifier, $this->biography, PDO::PARAM_STR);
@@ -3935,8 +4096,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPUAffinityQos !== null) {
-                    foreach ($this->collPUAffinityQos as $referrerFK) {
+                if ($this->collPUAffinityQOPUsers !== null) {
+                    foreach ($this->collPUAffinityQOPUsers as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPUCurrentQOPUsers !== null) {
+                    foreach ($this->collPUCurrentQOPUsers as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -4120,60 +4289,66 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getFileName();
                 break;
             case 23:
-                return $this->getGender();
+                return $this->getBackFileName();
                 break;
             case 24:
-                return $this->getFirstname();
+                return $this->getGender();
                 break;
             case 25:
-                return $this->getName();
+                return $this->getFirstname();
                 break;
             case 26:
-                return $this->getBirthday();
+                return $this->getName();
                 break;
             case 27:
-                return $this->getBiography();
+                return $this->getBirthday();
                 break;
             case 28:
-                return $this->getWebsite();
+                return $this->getSubtitle();
                 break;
             case 29:
-                return $this->getTwitter();
+                return $this->getBiography();
                 break;
             case 30:
-                return $this->getFacebook();
+                return $this->getWebsite();
                 break;
             case 31:
-                return $this->getPhone();
+                return $this->getTwitter();
                 break;
             case 32:
-                return $this->getNewsletter();
+                return $this->getFacebook();
                 break;
             case 33:
-                return $this->getLastConnect();
+                return $this->getPhone();
                 break;
             case 34:
-                return $this->getNbConnectedDays();
+                return $this->getNewsletter();
                 break;
             case 35:
-                return $this->getNbViews();
+                return $this->getLastConnect();
                 break;
             case 36:
-                return $this->getQualified();
+                return $this->getNbConnectedDays();
                 break;
             case 37:
-                return $this->getValidated();
+                return $this->getNbViews();
                 break;
             case 38:
-                return $this->getOnline();
+                return $this->getQualified();
                 break;
             case 39:
-                return $this->getCreatedAt();
+                return $this->getValidated();
                 break;
             case 40:
-                return $this->getUpdatedAt();
+                return $this->getOnline();
                 break;
             case 41:
+                return $this->getCreatedAt();
+                break;
+            case 42:
+                return $this->getUpdatedAt();
+                break;
+            case 43:
                 return $this->getSlug();
                 break;
             default:
@@ -4228,25 +4403,27 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[20] => $this->getRoles(),
             $keys[21] => $this->getPUStatusId(),
             $keys[22] => $this->getFileName(),
-            $keys[23] => $this->getGender(),
-            $keys[24] => $this->getFirstname(),
-            $keys[25] => $this->getName(),
-            $keys[26] => $this->getBirthday(),
-            $keys[27] => $this->getBiography(),
-            $keys[28] => $this->getWebsite(),
-            $keys[29] => $this->getTwitter(),
-            $keys[30] => $this->getFacebook(),
-            $keys[31] => $this->getPhone(),
-            $keys[32] => $this->getNewsletter(),
-            $keys[33] => $this->getLastConnect(),
-            $keys[34] => $this->getNbConnectedDays(),
-            $keys[35] => $this->getNbViews(),
-            $keys[36] => $this->getQualified(),
-            $keys[37] => $this->getValidated(),
-            $keys[38] => $this->getOnline(),
-            $keys[39] => $this->getCreatedAt(),
-            $keys[40] => $this->getUpdatedAt(),
-            $keys[41] => $this->getSlug(),
+            $keys[23] => $this->getBackFileName(),
+            $keys[24] => $this->getGender(),
+            $keys[25] => $this->getFirstname(),
+            $keys[26] => $this->getName(),
+            $keys[27] => $this->getBirthday(),
+            $keys[28] => $this->getSubtitle(),
+            $keys[29] => $this->getBiography(),
+            $keys[30] => $this->getWebsite(),
+            $keys[31] => $this->getTwitter(),
+            $keys[32] => $this->getFacebook(),
+            $keys[33] => $this->getPhone(),
+            $keys[34] => $this->getNewsletter(),
+            $keys[35] => $this->getLastConnect(),
+            $keys[36] => $this->getNbConnectedDays(),
+            $keys[37] => $this->getNbViews(),
+            $keys[38] => $this->getQualified(),
+            $keys[39] => $this->getValidated(),
+            $keys[40] => $this->getOnline(),
+            $keys[41] => $this->getCreatedAt(),
+            $keys[42] => $this->getUpdatedAt(),
+            $keys[43] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -4284,8 +4461,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPUMandates) {
                 $result['PUMandates'] = $this->collPUMandates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPUAffinityQos) {
-                $result['PUAffinityQos'] = $this->collPUAffinityQos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUAffinityQOPUsers) {
+                $result['PUAffinityQOPUsers'] = $this->collPUAffinityQOPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUCurrentQOPUsers) {
+                $result['PUCurrentQOPUsers'] = $this->collPUCurrentQOPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPUNotificationsPUsers) {
                 $result['PUNotificationsPUsers'] = $this->collPUNotificationsPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -4422,64 +4602,70 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setFileName($value);
                 break;
             case 23:
+                $this->setBackFileName($value);
+                break;
+            case 24:
                 $valueSet = PUserPeer::getValueSet(PUserPeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 24:
+            case 25:
                 $this->setFirstname($value);
                 break;
-            case 25:
+            case 26:
                 $this->setName($value);
                 break;
-            case 26:
+            case 27:
                 $this->setBirthday($value);
                 break;
-            case 27:
-                $this->setBiography($value);
-                break;
             case 28:
-                $this->setWebsite($value);
+                $this->setSubtitle($value);
                 break;
             case 29:
-                $this->setTwitter($value);
+                $this->setBiography($value);
                 break;
             case 30:
-                $this->setFacebook($value);
+                $this->setWebsite($value);
                 break;
             case 31:
-                $this->setPhone($value);
+                $this->setTwitter($value);
                 break;
             case 32:
-                $this->setNewsletter($value);
+                $this->setFacebook($value);
                 break;
             case 33:
-                $this->setLastConnect($value);
+                $this->setPhone($value);
                 break;
             case 34:
-                $this->setNbConnectedDays($value);
+                $this->setNewsletter($value);
                 break;
             case 35:
-                $this->setNbViews($value);
+                $this->setLastConnect($value);
                 break;
             case 36:
-                $this->setQualified($value);
+                $this->setNbConnectedDays($value);
                 break;
             case 37:
-                $this->setValidated($value);
+                $this->setNbViews($value);
                 break;
             case 38:
-                $this->setOnline($value);
+                $this->setQualified($value);
                 break;
             case 39:
-                $this->setCreatedAt($value);
+                $this->setValidated($value);
                 break;
             case 40:
-                $this->setUpdatedAt($value);
+                $this->setOnline($value);
                 break;
             case 41:
+                $this->setCreatedAt($value);
+                break;
+            case 42:
+                $this->setUpdatedAt($value);
+                break;
+            case 43:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -4529,25 +4715,27 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[20], $arr)) $this->setRoles($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setPUStatusId($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setFileName($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setGender($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setFirstname($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setName($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setBirthday($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setBiography($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setWebsite($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setTwitter($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setFacebook($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setPhone($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setNewsletter($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setLastConnect($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setNbConnectedDays($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setNbViews($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setQualified($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setValidated($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setOnline($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setCreatedAt($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setUpdatedAt($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setSlug($arr[$keys[41]]);
+        if (array_key_exists($keys[23], $arr)) $this->setBackFileName($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setGender($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setFirstname($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setName($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setBirthday($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setSubtitle($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setBiography($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setWebsite($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setTwitter($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setFacebook($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setNewsletter($arr[$keys[34]]);
+        if (array_key_exists($keys[35], $arr)) $this->setLastConnect($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setNbConnectedDays($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setNbViews($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setQualified($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setValidated($arr[$keys[39]]);
+        if (array_key_exists($keys[40], $arr)) $this->setOnline($arr[$keys[40]]);
+        if (array_key_exists($keys[41], $arr)) $this->setCreatedAt($arr[$keys[41]]);
+        if (array_key_exists($keys[42], $arr)) $this->setUpdatedAt($arr[$keys[42]]);
+        if (array_key_exists($keys[43], $arr)) $this->setSlug($arr[$keys[43]]);
     }
 
     /**
@@ -4582,10 +4770,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::ROLES)) $criteria->add(PUserPeer::ROLES, $this->roles);
         if ($this->isColumnModified(PUserPeer::P_U_STATUS_ID)) $criteria->add(PUserPeer::P_U_STATUS_ID, $this->p_u_status_id);
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) $criteria->add(PUserPeer::FILE_NAME, $this->file_name);
+        if ($this->isColumnModified(PUserPeer::BACK_FILE_NAME)) $criteria->add(PUserPeer::BACK_FILE_NAME, $this->back_file_name);
         if ($this->isColumnModified(PUserPeer::GENDER)) $criteria->add(PUserPeer::GENDER, $this->gender);
         if ($this->isColumnModified(PUserPeer::FIRSTNAME)) $criteria->add(PUserPeer::FIRSTNAME, $this->firstname);
         if ($this->isColumnModified(PUserPeer::NAME)) $criteria->add(PUserPeer::NAME, $this->name);
         if ($this->isColumnModified(PUserPeer::BIRTHDAY)) $criteria->add(PUserPeer::BIRTHDAY, $this->birthday);
+        if ($this->isColumnModified(PUserPeer::SUBTITLE)) $criteria->add(PUserPeer::SUBTITLE, $this->subtitle);
         if ($this->isColumnModified(PUserPeer::BIOGRAPHY)) $criteria->add(PUserPeer::BIOGRAPHY, $this->biography);
         if ($this->isColumnModified(PUserPeer::WEBSITE)) $criteria->add(PUserPeer::WEBSITE, $this->website);
         if ($this->isColumnModified(PUserPeer::TWITTER)) $criteria->add(PUserPeer::TWITTER, $this->twitter);
@@ -4686,10 +4876,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setRoles($this->getRoles());
         $copyObj->setPUStatusId($this->getPUStatusId());
         $copyObj->setFileName($this->getFileName());
+        $copyObj->setBackFileName($this->getBackFileName());
         $copyObj->setGender($this->getGender());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setName($this->getName());
         $copyObj->setBirthday($this->getBirthday());
+        $copyObj->setSubtitle($this->getSubtitle());
         $copyObj->setBiography($this->getBiography());
         $copyObj->setWebsite($this->getWebsite());
         $copyObj->setTwitter($this->getTwitter());
@@ -4767,9 +4959,15 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPUAffinityQos() as $relObj) {
+            foreach ($this->getPUAffinityQOPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUAffinityQO($relObj->copy($deepCopy));
+                    $copyObj->addPUAffinityQOPUser($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPUCurrentQOPUsers() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUCurrentQOPUser($relObj->copy($deepCopy));
                 }
             }
 
@@ -4967,8 +5165,11 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ('PUMandate' == $relationName) {
             $this->initPUMandates();
         }
-        if ('PUAffinityQO' == $relationName) {
-            $this->initPUAffinityQos();
+        if ('PUAffinityQOPUser' == $relationName) {
+            $this->initPUAffinityQOPUsers();
+        }
+        if ('PUCurrentQOPUser' == $relationName) {
+            $this->initPUCurrentQOPUsers();
         }
         if ('PUNotificationsPUser' == $relationName) {
             $this->initPUNotificationsPUsers();
@@ -7375,36 +7576,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPUAffinityQos collection
+     * Clears out the collPUAffinityQOPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPUAffinityQos()
+     * @see        addPUAffinityQOPUsers()
      */
-    public function clearPUAffinityQos()
+    public function clearPUAffinityQOPUsers()
     {
-        $this->collPUAffinityQos = null; // important to set this to null since that means it is uninitialized
-        $this->collPUAffinityQosPartial = null;
+        $this->collPUAffinityQOPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUAffinityQOPUsersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUAffinityQos collection loaded partially
+     * reset is the collPUAffinityQOPUsers collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUAffinityQos($v = true)
+    public function resetPartialPUAffinityQOPUsers($v = true)
     {
-        $this->collPUAffinityQosPartial = $v;
+        $this->collPUAffinityQOPUsersPartial = $v;
     }
 
     /**
-     * Initializes the collPUAffinityQos collection.
+     * Initializes the collPUAffinityQOPUsers collection.
      *
-     * By default this just sets the collPUAffinityQos collection to an empty array (like clearcollPUAffinityQos());
+     * By default this just sets the collPUAffinityQOPUsers collection to an empty array (like clearcollPUAffinityQOPUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -7413,13 +7614,13 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUAffinityQos($overrideExisting = true)
+    public function initPUAffinityQOPUsers($overrideExisting = true)
     {
-        if (null !== $this->collPUAffinityQos && !$overrideExisting) {
+        if (null !== $this->collPUAffinityQOPUsers && !$overrideExisting) {
             return;
         }
-        $this->collPUAffinityQos = new PropelObjectCollection();
-        $this->collPUAffinityQos->setModel('PUAffinityQO');
+        $this->collPUAffinityQOPUsers = new PropelObjectCollection();
+        $this->collPUAffinityQOPUsers->setModel('PUAffinityQO');
     }
 
     /**
@@ -7436,79 +7637,79 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @return PropelObjectCollection|PUAffinityQO[] List of PUAffinityQO objects
      * @throws PropelException
      */
-    public function getPUAffinityQos($criteria = null, PropelPDO $con = null)
+    public function getPUAffinityQOPUsers($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUAffinityQosPartial && !$this->isNew();
-        if (null === $this->collPUAffinityQos || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUAffinityQos) {
+        $partial = $this->collPUAffinityQOPUsersPartial && !$this->isNew();
+        if (null === $this->collPUAffinityQOPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUAffinityQOPUsers) {
                 // return empty collection
-                $this->initPUAffinityQos();
+                $this->initPUAffinityQOPUsers();
             } else {
-                $collPUAffinityQos = PUAffinityQOQuery::create(null, $criteria)
-                    ->filterByPUser($this)
+                $collPUAffinityQOPUsers = PUAffinityQOQuery::create(null, $criteria)
+                    ->filterByPUAffinityQOPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUAffinityQosPartial && count($collPUAffinityQos)) {
-                      $this->initPUAffinityQos(false);
+                    if (false !== $this->collPUAffinityQOPUsersPartial && count($collPUAffinityQOPUsers)) {
+                      $this->initPUAffinityQOPUsers(false);
 
-                      foreach ($collPUAffinityQos as $obj) {
-                        if (false == $this->collPUAffinityQos->contains($obj)) {
-                          $this->collPUAffinityQos->append($obj);
+                      foreach ($collPUAffinityQOPUsers as $obj) {
+                        if (false == $this->collPUAffinityQOPUsers->contains($obj)) {
+                          $this->collPUAffinityQOPUsers->append($obj);
                         }
                       }
 
-                      $this->collPUAffinityQosPartial = true;
+                      $this->collPUAffinityQOPUsersPartial = true;
                     }
 
-                    $collPUAffinityQos->getInternalIterator()->rewind();
+                    $collPUAffinityQOPUsers->getInternalIterator()->rewind();
 
-                    return $collPUAffinityQos;
+                    return $collPUAffinityQOPUsers;
                 }
 
-                if ($partial && $this->collPUAffinityQos) {
-                    foreach ($this->collPUAffinityQos as $obj) {
+                if ($partial && $this->collPUAffinityQOPUsers) {
+                    foreach ($this->collPUAffinityQOPUsers as $obj) {
                         if ($obj->isNew()) {
-                            $collPUAffinityQos[] = $obj;
+                            $collPUAffinityQOPUsers[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUAffinityQos = $collPUAffinityQos;
-                $this->collPUAffinityQosPartial = false;
+                $this->collPUAffinityQOPUsers = $collPUAffinityQOPUsers;
+                $this->collPUAffinityQOPUsersPartial = false;
             }
         }
 
-        return $this->collPUAffinityQos;
+        return $this->collPUAffinityQOPUsers;
     }
 
     /**
-     * Sets a collection of PUAffinityQO objects related by a one-to-many relationship
+     * Sets a collection of PUAffinityQOPUser objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUAffinityQos A Propel collection.
+     * @param PropelCollection $pUAffinityQOPUsers A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPUAffinityQos(PropelCollection $pUAffinityQos, PropelPDO $con = null)
+    public function setPUAffinityQOPUsers(PropelCollection $pUAffinityQOPUsers, PropelPDO $con = null)
     {
-        $pUAffinityQosToDelete = $this->getPUAffinityQos(new Criteria(), $con)->diff($pUAffinityQos);
+        $pUAffinityQOPUsersToDelete = $this->getPUAffinityQOPUsers(new Criteria(), $con)->diff($pUAffinityQOPUsers);
 
 
-        $this->pUAffinityQosScheduledForDeletion = $pUAffinityQosToDelete;
+        $this->pUAffinityQOPUsersScheduledForDeletion = $pUAffinityQOPUsersToDelete;
 
-        foreach ($pUAffinityQosToDelete as $pUAffinityQORemoved) {
-            $pUAffinityQORemoved->setPUser(null);
+        foreach ($pUAffinityQOPUsersToDelete as $pUAffinityQOPUserRemoved) {
+            $pUAffinityQOPUserRemoved->setPUAffinityQOPUser(null);
         }
 
-        $this->collPUAffinityQos = null;
-        foreach ($pUAffinityQos as $pUAffinityQO) {
-            $this->addPUAffinityQO($pUAffinityQO);
+        $this->collPUAffinityQOPUsers = null;
+        foreach ($pUAffinityQOPUsers as $pUAffinityQOPUser) {
+            $this->addPUAffinityQOPUser($pUAffinityQOPUser);
         }
 
-        $this->collPUAffinityQos = $pUAffinityQos;
-        $this->collPUAffinityQosPartial = false;
+        $this->collPUAffinityQOPUsers = $pUAffinityQOPUsers;
+        $this->collPUAffinityQOPUsersPartial = false;
 
         return $this;
     }
@@ -7522,16 +7723,16 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @return int             Count of related PUAffinityQO objects.
      * @throws PropelException
      */
-    public function countPUAffinityQos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUAffinityQOPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUAffinityQosPartial && !$this->isNew();
-        if (null === $this->collPUAffinityQos || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUAffinityQos) {
+        $partial = $this->collPUAffinityQOPUsersPartial && !$this->isNew();
+        if (null === $this->collPUAffinityQOPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUAffinityQOPUsers) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUAffinityQos());
+                return count($this->getPUAffinityQOPUsers());
             }
             $query = PUAffinityQOQuery::create(null, $criteria);
             if ($distinct) {
@@ -7539,11 +7740,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByPUser($this)
+                ->filterByPUAffinityQOPUser($this)
                 ->count($con);
         }
 
-        return count($this->collPUAffinityQos);
+        return count($this->collPUAffinityQOPUsers);
     }
 
     /**
@@ -7553,18 +7754,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param    PUAffinityQO $l PUAffinityQO
      * @return PUser The current object (for fluent API support)
      */
-    public function addPUAffinityQO(PUAffinityQO $l)
+    public function addPUAffinityQOPUser(PUAffinityQO $l)
     {
-        if ($this->collPUAffinityQos === null) {
-            $this->initPUAffinityQos();
-            $this->collPUAffinityQosPartial = true;
+        if ($this->collPUAffinityQOPUsers === null) {
+            $this->initPUAffinityQOPUsers();
+            $this->collPUAffinityQOPUsersPartial = true;
         }
 
-        if (!in_array($l, $this->collPUAffinityQos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUAffinityQO($l);
+        if (!in_array($l, $this->collPUAffinityQOPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUAffinityQOPUser($l);
 
-            if ($this->pUAffinityQosScheduledForDeletion and $this->pUAffinityQosScheduledForDeletion->contains($l)) {
-                $this->pUAffinityQosScheduledForDeletion->remove($this->pUAffinityQosScheduledForDeletion->search($l));
+            if ($this->pUAffinityQOPUsersScheduledForDeletion and $this->pUAffinityQOPUsersScheduledForDeletion->contains($l)) {
+                $this->pUAffinityQOPUsersScheduledForDeletion->remove($this->pUAffinityQOPUsersScheduledForDeletion->search($l));
             }
         }
 
@@ -7572,28 +7773,28 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUAffinityQO $pUAffinityQO The pUAffinityQO object to add.
+     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
      */
-    protected function doAddPUAffinityQO($pUAffinityQO)
+    protected function doAddPUAffinityQOPUser($pUAffinityQOPUser)
     {
-        $this->collPUAffinityQos[]= $pUAffinityQO;
-        $pUAffinityQO->setPUser($this);
+        $this->collPUAffinityQOPUsers[]= $pUAffinityQOPUser;
+        $pUAffinityQOPUser->setPUAffinityQOPUser($this);
     }
 
     /**
-     * @param	PUAffinityQO $pUAffinityQO The pUAffinityQO object to remove.
+     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePUAffinityQO($pUAffinityQO)
+    public function removePUAffinityQOPUser($pUAffinityQOPUser)
     {
-        if ($this->getPUAffinityQos()->contains($pUAffinityQO)) {
-            $this->collPUAffinityQos->remove($this->collPUAffinityQos->search($pUAffinityQO));
-            if (null === $this->pUAffinityQosScheduledForDeletion) {
-                $this->pUAffinityQosScheduledForDeletion = clone $this->collPUAffinityQos;
-                $this->pUAffinityQosScheduledForDeletion->clear();
+        if ($this->getPUAffinityQOPUsers()->contains($pUAffinityQOPUser)) {
+            $this->collPUAffinityQOPUsers->remove($this->collPUAffinityQOPUsers->search($pUAffinityQOPUser));
+            if (null === $this->pUAffinityQOPUsersScheduledForDeletion) {
+                $this->pUAffinityQOPUsersScheduledForDeletion = clone $this->collPUAffinityQOPUsers;
+                $this->pUAffinityQOPUsersScheduledForDeletion->clear();
             }
-            $this->pUAffinityQosScheduledForDeletion[]= clone $pUAffinityQO;
-            $pUAffinityQO->setPUser(null);
+            $this->pUAffinityQOPUsersScheduledForDeletion[]= clone $pUAffinityQOPUser;
+            $pUAffinityQOPUser->setPUAffinityQOPUser(null);
         }
 
         return $this;
@@ -7605,7 +7806,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PUAffinityQos from storage.
+     * been saved, it will retrieve related PUAffinityQOPUsers from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -7616,12 +7817,262 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PUAffinityQO[] List of PUAffinityQO objects
      */
-    public function getPUAffinityQosJoinPQOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUAffinityQOPUsersJoinPUAffinityQOPQOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PUAffinityQOQuery::create(null, $criteria);
-        $query->joinWith('PQOrganization', $join_behavior);
+        $query->joinWith('PUAffinityQOPQOrganization', $join_behavior);
 
-        return $this->getPUAffinityQos($query, $con);
+        return $this->getPUAffinityQOPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPUCurrentQOPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPUCurrentQOPUsers()
+     */
+    public function clearPUCurrentQOPUsers()
+    {
+        $this->collPUCurrentQOPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUCurrentQOPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUCurrentQOPUsers collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUCurrentQOPUsers($v = true)
+    {
+        $this->collPUCurrentQOPUsersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUCurrentQOPUsers collection.
+     *
+     * By default this just sets the collPUCurrentQOPUsers collection to an empty array (like clearcollPUCurrentQOPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUCurrentQOPUsers($overrideExisting = true)
+    {
+        if (null !== $this->collPUCurrentQOPUsers && !$overrideExisting) {
+            return;
+        }
+        $this->collPUCurrentQOPUsers = new PropelObjectCollection();
+        $this->collPUCurrentQOPUsers->setModel('PUCurrentQO');
+    }
+
+    /**
+     * Gets an array of PUCurrentQO objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUCurrentQO[] List of PUCurrentQO objects
+     * @throws PropelException
+     */
+    public function getPUCurrentQOPUsers($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUCurrentQOPUsersPartial && !$this->isNew();
+        if (null === $this->collPUCurrentQOPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUCurrentQOPUsers) {
+                // return empty collection
+                $this->initPUCurrentQOPUsers();
+            } else {
+                $collPUCurrentQOPUsers = PUCurrentQOQuery::create(null, $criteria)
+                    ->filterByPUCurrentQOPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUCurrentQOPUsersPartial && count($collPUCurrentQOPUsers)) {
+                      $this->initPUCurrentQOPUsers(false);
+
+                      foreach ($collPUCurrentQOPUsers as $obj) {
+                        if (false == $this->collPUCurrentQOPUsers->contains($obj)) {
+                          $this->collPUCurrentQOPUsers->append($obj);
+                        }
+                      }
+
+                      $this->collPUCurrentQOPUsersPartial = true;
+                    }
+
+                    $collPUCurrentQOPUsers->getInternalIterator()->rewind();
+
+                    return $collPUCurrentQOPUsers;
+                }
+
+                if ($partial && $this->collPUCurrentQOPUsers) {
+                    foreach ($this->collPUCurrentQOPUsers as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUCurrentQOPUsers[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUCurrentQOPUsers = $collPUCurrentQOPUsers;
+                $this->collPUCurrentQOPUsersPartial = false;
+            }
+        }
+
+        return $this->collPUCurrentQOPUsers;
+    }
+
+    /**
+     * Sets a collection of PUCurrentQOPUser objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUCurrentQOPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPUCurrentQOPUsers(PropelCollection $pUCurrentQOPUsers, PropelPDO $con = null)
+    {
+        $pUCurrentQOPUsersToDelete = $this->getPUCurrentQOPUsers(new Criteria(), $con)->diff($pUCurrentQOPUsers);
+
+
+        $this->pUCurrentQOPUsersScheduledForDeletion = $pUCurrentQOPUsersToDelete;
+
+        foreach ($pUCurrentQOPUsersToDelete as $pUCurrentQOPUserRemoved) {
+            $pUCurrentQOPUserRemoved->setPUCurrentQOPUser(null);
+        }
+
+        $this->collPUCurrentQOPUsers = null;
+        foreach ($pUCurrentQOPUsers as $pUCurrentQOPUser) {
+            $this->addPUCurrentQOPUser($pUCurrentQOPUser);
+        }
+
+        $this->collPUCurrentQOPUsers = $pUCurrentQOPUsers;
+        $this->collPUCurrentQOPUsersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUCurrentQO objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUCurrentQO objects.
+     * @throws PropelException
+     */
+    public function countPUCurrentQOPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUCurrentQOPUsersPartial && !$this->isNew();
+        if (null === $this->collPUCurrentQOPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUCurrentQOPUsers) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUCurrentQOPUsers());
+            }
+            $query = PUCurrentQOQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUCurrentQOPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPUCurrentQOPUsers);
+    }
+
+    /**
+     * Method called to associate a PUCurrentQO object to this object
+     * through the PUCurrentQO foreign key attribute.
+     *
+     * @param    PUCurrentQO $l PUCurrentQO
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPUCurrentQOPUser(PUCurrentQO $l)
+    {
+        if ($this->collPUCurrentQOPUsers === null) {
+            $this->initPUCurrentQOPUsers();
+            $this->collPUCurrentQOPUsersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUCurrentQOPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUCurrentQOPUser($l);
+
+            if ($this->pUCurrentQOPUsersScheduledForDeletion and $this->pUCurrentQOPUsersScheduledForDeletion->contains($l)) {
+                $this->pUCurrentQOPUsersScheduledForDeletion->remove($this->pUCurrentQOPUsersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
+     */
+    protected function doAddPUCurrentQOPUser($pUCurrentQOPUser)
+    {
+        $this->collPUCurrentQOPUsers[]= $pUCurrentQOPUser;
+        $pUCurrentQOPUser->setPUCurrentQOPUser($this);
+    }
+
+    /**
+     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePUCurrentQOPUser($pUCurrentQOPUser)
+    {
+        if ($this->getPUCurrentQOPUsers()->contains($pUCurrentQOPUser)) {
+            $this->collPUCurrentQOPUsers->remove($this->collPUCurrentQOPUsers->search($pUCurrentQOPUser));
+            if (null === $this->pUCurrentQOPUsersScheduledForDeletion) {
+                $this->pUCurrentQOPUsersScheduledForDeletion = clone $this->collPUCurrentQOPUsers;
+                $this->pUCurrentQOPUsersScheduledForDeletion->clear();
+            }
+            $this->pUCurrentQOPUsersScheduledForDeletion[]= clone $pUCurrentQOPUser;
+            $pUCurrentQOPUser->setPUCurrentQOPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PUCurrentQOPUsers from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUCurrentQO[] List of PUCurrentQO objects
+     */
+    public function getPUCurrentQOPUsersJoinPUCurrentQOPQOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUCurrentQOQuery::create(null, $criteria);
+        $query->joinWith('PUCurrentQOPQOrganization', $join_behavior);
+
+        return $this->getPUCurrentQOPUsers($query, $con);
     }
 
     /**
@@ -10953,35 +11404,35 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPQOrganizations collection
+     * Clears out the collPUAffinityQOPQOrganizations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPQOrganizations()
+     * @see        addPUAffinityQOPQOrganizations()
      */
-    public function clearPQOrganizations()
+    public function clearPUAffinityQOPQOrganizations()
     {
-        $this->collPQOrganizations = null; // important to set this to null since that means it is uninitialized
-        $this->collPQOrganizationsPartial = null;
+        $this->collPUAffinityQOPQOrganizations = null; // important to set this to null since that means it is uninitialized
+        $this->collPUAffinityQOPQOrganizationsPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collPQOrganizations collection.
+     * Initializes the collPUAffinityQOPQOrganizations collection.
      *
-     * By default this just sets the collPQOrganizations collection to an empty collection (like clearPQOrganizations());
+     * By default this just sets the collPUAffinityQOPQOrganizations collection to an empty collection (like clearPUAffinityQOPQOrganizations());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initPQOrganizations()
+    public function initPUAffinityQOPQOrganizations()
     {
-        $this->collPQOrganizations = new PropelObjectCollection();
-        $this->collPQOrganizations->setModel('PQOrganization');
+        $this->collPUAffinityQOPQOrganizations = new PropelObjectCollection();
+        $this->collPUAffinityQOPQOrganizations->setModel('PQOrganization');
     }
 
     /**
@@ -10999,24 +11450,24 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return PropelObjectCollection|PQOrganization[] List of PQOrganization objects
      */
-    public function getPQOrganizations($criteria = null, PropelPDO $con = null)
+    public function getPUAffinityQOPQOrganizations($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collPQOrganizations || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPQOrganizations) {
+        if (null === $this->collPUAffinityQOPQOrganizations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUAffinityQOPQOrganizations) {
                 // return empty collection
-                $this->initPQOrganizations();
+                $this->initPUAffinityQOPQOrganizations();
             } else {
-                $collPQOrganizations = PQOrganizationQuery::create(null, $criteria)
-                    ->filterByPUser($this)
+                $collPUAffinityQOPQOrganizations = PQOrganizationQuery::create(null, $criteria)
+                    ->filterByPUAffinityQOPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collPQOrganizations;
+                    return $collPUAffinityQOPQOrganizations;
                 }
-                $this->collPQOrganizations = $collPQOrganizations;
+                $this->collPUAffinityQOPQOrganizations = $collPUAffinityQOPQOrganizations;
             }
         }
 
-        return $this->collPQOrganizations;
+        return $this->collPUAffinityQOPQOrganizations;
     }
 
     /**
@@ -11025,24 +11476,24 @@ abstract class BasePUser extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pQOrganizations A Propel collection.
+     * @param PropelCollection $pUAffinityQOPQOrganizations A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPQOrganizations(PropelCollection $pQOrganizations, PropelPDO $con = null)
+    public function setPUAffinityQOPQOrganizations(PropelCollection $pUAffinityQOPQOrganizations, PropelPDO $con = null)
     {
-        $this->clearPQOrganizations();
-        $currentPQOrganizations = $this->getPQOrganizations(null, $con);
+        $this->clearPUAffinityQOPQOrganizations();
+        $currentPUAffinityQOPQOrganizations = $this->getPUAffinityQOPQOrganizations(null, $con);
 
-        $this->pQOrganizationsScheduledForDeletion = $currentPQOrganizations->diff($pQOrganizations);
+        $this->pUAffinityQOPQOrganizationsScheduledForDeletion = $currentPUAffinityQOPQOrganizations->diff($pUAffinityQOPQOrganizations);
 
-        foreach ($pQOrganizations as $pQOrganization) {
-            if (!$currentPQOrganizations->contains($pQOrganization)) {
-                $this->doAddPQOrganization($pQOrganization);
+        foreach ($pUAffinityQOPQOrganizations as $pUAffinityQOPQOrganization) {
+            if (!$currentPUAffinityQOPQOrganizations->contains($pUAffinityQOPQOrganization)) {
+                $this->doAddPUAffinityQOPQOrganization($pUAffinityQOPQOrganization);
             }
         }
 
-        $this->collPQOrganizations = $pQOrganizations;
+        $this->collPUAffinityQOPQOrganizations = $pUAffinityQOPQOrganizations;
 
         return $this;
     }
@@ -11057,10 +11508,10 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return int the number of related PQOrganization objects
      */
-    public function countPQOrganizations($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUAffinityQOPQOrganizations($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collPQOrganizations || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPQOrganizations) {
+        if (null === $this->collPUAffinityQOPQOrganizations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUAffinityQOPQOrganizations) {
                 return 0;
             } else {
                 $query = PQOrganizationQuery::create(null, $criteria);
@@ -11069,11 +11520,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
 
                 return $query
-                    ->filterByPUser($this)
+                    ->filterByPUAffinityQOPUser($this)
                     ->count($con);
             }
         } else {
-            return count($this->collPQOrganizations);
+            return count($this->collPUAffinityQOPQOrganizations);
         }
     }
 
@@ -11084,18 +11535,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param  PQOrganization $pQOrganization The PUAffinityQO object to relate
      * @return PUser The current object (for fluent API support)
      */
-    public function addPQOrganization(PQOrganization $pQOrganization)
+    public function addPUAffinityQOPQOrganization(PQOrganization $pQOrganization)
     {
-        if ($this->collPQOrganizations === null) {
-            $this->initPQOrganizations();
+        if ($this->collPUAffinityQOPQOrganizations === null) {
+            $this->initPUAffinityQOPQOrganizations();
         }
 
-        if (!$this->collPQOrganizations->contains($pQOrganization)) { // only add it if the **same** object is not already associated
-            $this->doAddPQOrganization($pQOrganization);
-            $this->collPQOrganizations[] = $pQOrganization;
+        if (!$this->collPUAffinityQOPQOrganizations->contains($pQOrganization)) { // only add it if the **same** object is not already associated
+            $this->doAddPUAffinityQOPQOrganization($pQOrganization);
+            $this->collPUAffinityQOPQOrganizations[] = $pQOrganization;
 
-            if ($this->pQOrganizationsScheduledForDeletion and $this->pQOrganizationsScheduledForDeletion->contains($pQOrganization)) {
-                $this->pQOrganizationsScheduledForDeletion->remove($this->pQOrganizationsScheduledForDeletion->search($pQOrganization));
+            if ($this->pUAffinityQOPQOrganizationsScheduledForDeletion and $this->pUAffinityQOPQOrganizationsScheduledForDeletion->contains($pQOrganization)) {
+                $this->pUAffinityQOPQOrganizationsScheduledForDeletion->remove($this->pUAffinityQOPQOrganizationsScheduledForDeletion->search($pQOrganization));
             }
         }
 
@@ -11103,17 +11554,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQOrganization $pQOrganization The pQOrganization object to add.
+     * @param	PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
      */
-    protected function doAddPQOrganization(PQOrganization $pQOrganization)
+    protected function doAddPUAffinityQOPQOrganization(PQOrganization $pUAffinityQOPQOrganization)
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pQOrganization->getPUsers()->contains($this)) { $pUAffinityQO = new PUAffinityQO();
-            $pUAffinityQO->setPQOrganization($pQOrganization);
-            $this->addPUAffinityQO($pUAffinityQO);
+        if (!$pUAffinityQOPQOrganization->getPUAffinityQOPUsers()->contains($this)) { $pUAffinityQO = new PUAffinityQO();
+            $pUAffinityQO->setPUAffinityQOPQOrganization($pUAffinityQOPQOrganization);
+            $this->addPUAffinityQOPUser($pUAffinityQO);
 
-            $foreignCollection = $pQOrganization->getPUsers();
+            $foreignCollection = $pUAffinityQOPQOrganization->getPUAffinityQOPUsers();
             $foreignCollection[] = $this;
         }
     }
@@ -11125,15 +11576,202 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param PQOrganization $pQOrganization The PUAffinityQO object to relate
      * @return PUser The current object (for fluent API support)
      */
-    public function removePQOrganization(PQOrganization $pQOrganization)
+    public function removePUAffinityQOPQOrganization(PQOrganization $pQOrganization)
     {
-        if ($this->getPQOrganizations()->contains($pQOrganization)) {
-            $this->collPQOrganizations->remove($this->collPQOrganizations->search($pQOrganization));
-            if (null === $this->pQOrganizationsScheduledForDeletion) {
-                $this->pQOrganizationsScheduledForDeletion = clone $this->collPQOrganizations;
-                $this->pQOrganizationsScheduledForDeletion->clear();
+        if ($this->getPUAffinityQOPQOrganizations()->contains($pQOrganization)) {
+            $this->collPUAffinityQOPQOrganizations->remove($this->collPUAffinityQOPQOrganizations->search($pQOrganization));
+            if (null === $this->pUAffinityQOPQOrganizationsScheduledForDeletion) {
+                $this->pUAffinityQOPQOrganizationsScheduledForDeletion = clone $this->collPUAffinityQOPQOrganizations;
+                $this->pUAffinityQOPQOrganizationsScheduledForDeletion->clear();
             }
-            $this->pQOrganizationsScheduledForDeletion[]= $pQOrganization;
+            $this->pUAffinityQOPQOrganizationsScheduledForDeletion[]= $pQOrganization;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPUCurrentQOPQOrganizations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPUCurrentQOPQOrganizations()
+     */
+    public function clearPUCurrentQOPQOrganizations()
+    {
+        $this->collPUCurrentQOPQOrganizations = null; // important to set this to null since that means it is uninitialized
+        $this->collPUCurrentQOPQOrganizationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPUCurrentQOPQOrganizations collection.
+     *
+     * By default this just sets the collPUCurrentQOPQOrganizations collection to an empty collection (like clearPUCurrentQOPQOrganizations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPUCurrentQOPQOrganizations()
+    {
+        $this->collPUCurrentQOPQOrganizations = new PropelObjectCollection();
+        $this->collPUCurrentQOPQOrganizations->setModel('PQOrganization');
+    }
+
+    /**
+     * Gets a collection of PQOrganization objects related by a many-to-many relationship
+     * to the current object by way of the p_u_current_q_o cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PQOrganization[] List of PQOrganization objects
+     */
+    public function getPUCurrentQOPQOrganizations($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPUCurrentQOPQOrganizations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUCurrentQOPQOrganizations) {
+                // return empty collection
+                $this->initPUCurrentQOPQOrganizations();
+            } else {
+                $collPUCurrentQOPQOrganizations = PQOrganizationQuery::create(null, $criteria)
+                    ->filterByPUCurrentQOPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPUCurrentQOPQOrganizations;
+                }
+                $this->collPUCurrentQOPQOrganizations = $collPUCurrentQOPQOrganizations;
+            }
+        }
+
+        return $this->collPUCurrentQOPQOrganizations;
+    }
+
+    /**
+     * Sets a collection of PQOrganization objects related by a many-to-many relationship
+     * to the current object by way of the p_u_current_q_o cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUCurrentQOPQOrganizations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPUCurrentQOPQOrganizations(PropelCollection $pUCurrentQOPQOrganizations, PropelPDO $con = null)
+    {
+        $this->clearPUCurrentQOPQOrganizations();
+        $currentPUCurrentQOPQOrganizations = $this->getPUCurrentQOPQOrganizations(null, $con);
+
+        $this->pUCurrentQOPQOrganizationsScheduledForDeletion = $currentPUCurrentQOPQOrganizations->diff($pUCurrentQOPQOrganizations);
+
+        foreach ($pUCurrentQOPQOrganizations as $pUCurrentQOPQOrganization) {
+            if (!$currentPUCurrentQOPQOrganizations->contains($pUCurrentQOPQOrganization)) {
+                $this->doAddPUCurrentQOPQOrganization($pUCurrentQOPQOrganization);
+            }
+        }
+
+        $this->collPUCurrentQOPQOrganizations = $pUCurrentQOPQOrganizations;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PQOrganization objects related by a many-to-many relationship
+     * to the current object by way of the p_u_current_q_o cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PQOrganization objects
+     */
+    public function countPUCurrentQOPQOrganizations($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPUCurrentQOPQOrganizations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUCurrentQOPQOrganizations) {
+                return 0;
+            } else {
+                $query = PQOrganizationQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPUCurrentQOPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPUCurrentQOPQOrganizations);
+        }
+    }
+
+    /**
+     * Associate a PQOrganization object to this object
+     * through the p_u_current_q_o cross reference table.
+     *
+     * @param  PQOrganization $pQOrganization The PUCurrentQO object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPUCurrentQOPQOrganization(PQOrganization $pQOrganization)
+    {
+        if ($this->collPUCurrentQOPQOrganizations === null) {
+            $this->initPUCurrentQOPQOrganizations();
+        }
+
+        if (!$this->collPUCurrentQOPQOrganizations->contains($pQOrganization)) { // only add it if the **same** object is not already associated
+            $this->doAddPUCurrentQOPQOrganization($pQOrganization);
+            $this->collPUCurrentQOPQOrganizations[] = $pQOrganization;
+
+            if ($this->pUCurrentQOPQOrganizationsScheduledForDeletion and $this->pUCurrentQOPQOrganizationsScheduledForDeletion->contains($pQOrganization)) {
+                $this->pUCurrentQOPQOrganizationsScheduledForDeletion->remove($this->pUCurrentQOPQOrganizationsScheduledForDeletion->search($pQOrganization));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
+     */
+    protected function doAddPUCurrentQOPQOrganization(PQOrganization $pUCurrentQOPQOrganization)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pUCurrentQOPQOrganization->getPUCurrentQOPUsers()->contains($this)) { $pUCurrentQO = new PUCurrentQO();
+            $pUCurrentQO->setPUCurrentQOPQOrganization($pUCurrentQOPQOrganization);
+            $this->addPUCurrentQOPUser($pUCurrentQO);
+
+            $foreignCollection = $pUCurrentQOPQOrganization->getPUCurrentQOPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PQOrganization object to this object
+     * through the p_u_current_q_o cross reference table.
+     *
+     * @param PQOrganization $pQOrganization The PUCurrentQO object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePUCurrentQOPQOrganization(PQOrganization $pQOrganization)
+    {
+        if ($this->getPUCurrentQOPQOrganizations()->contains($pQOrganization)) {
+            $this->collPUCurrentQOPQOrganizations->remove($this->collPUCurrentQOPQOrganizations->search($pQOrganization));
+            if (null === $this->pUCurrentQOPQOrganizationsScheduledForDeletion) {
+                $this->pUCurrentQOPQOrganizationsScheduledForDeletion = clone $this->collPUCurrentQOPQOrganizations;
+                $this->pUCurrentQOPQOrganizationsScheduledForDeletion->clear();
+            }
+            $this->pUCurrentQOPQOrganizationsScheduledForDeletion[]= $pQOrganization;
         }
 
         return $this;
@@ -11729,10 +12367,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->roles_unserialized = null;
         $this->p_u_status_id = null;
         $this->file_name = null;
+        $this->back_file_name = null;
         $this->gender = null;
         $this->firstname = null;
         $this->name = null;
         $this->birthday = null;
+        $this->subtitle = null;
         $this->biography = null;
         $this->website = null;
         $this->twitter = null;
@@ -11816,8 +12456,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPUAffinityQos) {
-                foreach ($this->collPUAffinityQos as $o) {
+            if ($this->collPUAffinityQOPUsers) {
+                foreach ($this->collPUAffinityQOPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUCurrentQOPUsers) {
+                foreach ($this->collPUCurrentQOPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -11896,8 +12541,13 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPQOrganizations) {
-                foreach ($this->collPQOrganizations as $o) {
+            if ($this->collPUAffinityQOPQOrganizations) {
+                foreach ($this->collPUAffinityQOPQOrganizations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUCurrentQOPQOrganizations) {
+                foreach ($this->collPUCurrentQOPQOrganizations as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -11972,10 +12622,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUMandates->clearIterator();
         }
         $this->collPUMandates = null;
-        if ($this->collPUAffinityQos instanceof PropelCollection) {
-            $this->collPUAffinityQos->clearIterator();
+        if ($this->collPUAffinityQOPUsers instanceof PropelCollection) {
+            $this->collPUAffinityQOPUsers->clearIterator();
         }
-        $this->collPUAffinityQos = null;
+        $this->collPUAffinityQOPUsers = null;
+        if ($this->collPUCurrentQOPUsers instanceof PropelCollection) {
+            $this->collPUCurrentQOPUsers->clearIterator();
+        }
+        $this->collPUCurrentQOPUsers = null;
         if ($this->collPUNotificationsPUsers instanceof PropelCollection) {
             $this->collPUNotificationsPUsers->clearIterator();
         }
@@ -12036,10 +12690,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPQualifications->clearIterator();
         }
         $this->collPQualifications = null;
-        if ($this->collPQOrganizations instanceof PropelCollection) {
-            $this->collPQOrganizations->clearIterator();
+        if ($this->collPUAffinityQOPQOrganizations instanceof PropelCollection) {
+            $this->collPUAffinityQOPQOrganizations->clearIterator();
         }
-        $this->collPQOrganizations = null;
+        $this->collPUAffinityQOPQOrganizations = null;
+        if ($this->collPUCurrentQOPQOrganizations instanceof PropelCollection) {
+            $this->collPUCurrentQOPQOrganizations->clearIterator();
+        }
+        $this->collPUCurrentQOPQOrganizations = null;
         if ($this->collPUNotificationsPNotifications instanceof PropelCollection) {
             $this->collPUNotificationsPNotifications->clearIterator();
         }
@@ -12334,10 +12992,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setRoles($archive->getRoles());
         $this->setPUStatusId($archive->getPUStatusId());
         $this->setFileName($archive->getFileName());
+        $this->setBackFileName($archive->getBackFileName());
         $this->setGender($archive->getGender());
         $this->setFirstname($archive->getFirstname());
         $this->setName($archive->getName());
         $this->setBirthday($archive->getBirthday());
+        $this->setSubtitle($archive->getSubtitle());
         $this->setBiography($archive->getBiography());
         $this->setWebsite($archive->getWebsite());
         $this->setTwitter($archive->getTwitter());

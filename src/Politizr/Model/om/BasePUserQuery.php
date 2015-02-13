@@ -26,6 +26,7 @@ use Politizr\Model\PRBadge;
 use Politizr\Model\PTag;
 use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUBadges;
+use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowT;
 use Politizr\Model\PUFollowU;
@@ -65,10 +66,12 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
  * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
+ * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method PUserQuery orderByBirthday($order = Criteria::ASC) Order by the birthday column
+ * @method PUserQuery orderBySubtitle($order = Criteria::ASC) Order by the subtitle column
  * @method PUserQuery orderByBiography($order = Criteria::ASC) Order by the biography column
  * @method PUserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method PUserQuery orderByTwitter($order = Criteria::ASC) Order by the twitter column
@@ -108,10 +111,12 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByRoles() Group by the roles column
  * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
+ * @method PUserQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
  * @method PUserQuery groupByName() Group by the name column
  * @method PUserQuery groupByBirthday() Group by the birthday column
+ * @method PUserQuery groupBySubtitle() Group by the subtitle column
  * @method PUserQuery groupByBiography() Group by the biography column
  * @method PUserQuery groupByWebsite() Group by the website column
  * @method PUserQuery groupByTwitter() Group by the twitter column
@@ -172,9 +177,13 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPUMandate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUMandate relation
  * @method PUserQuery innerJoinPUMandate($relationAlias = null) Adds a INNER JOIN clause to the query using the PUMandate relation
  *
- * @method PUserQuery leftJoinPUAffinityQO($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQO relation
- * @method PUserQuery rightJoinPUAffinityQO($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQO relation
- * @method PUserQuery innerJoinPUAffinityQO($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQO relation
+ * @method PUserQuery leftJoinPUAffinityQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQOPUser relation
+ * @method PUserQuery rightJoinPUAffinityQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQOPUser relation
+ * @method PUserQuery innerJoinPUAffinityQOPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQOPUser relation
+ *
+ * @method PUserQuery leftJoinPUCurrentQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUCurrentQOPUser relation
+ * @method PUserQuery rightJoinPUCurrentQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUCurrentQOPUser relation
+ * @method PUserQuery innerJoinPUCurrentQOPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUCurrentQOPUser relation
  *
  * @method PUserQuery leftJoinPUNotificationsPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationsPUser relation
  * @method PUserQuery rightJoinPUNotificationsPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationsPUser relation
@@ -237,10 +246,12 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
  * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
+ * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
  * @method PUser findOneByName(string $name) Return the first PUser filtered by the name column
  * @method PUser findOneByBirthday(string $birthday) Return the first PUser filtered by the birthday column
+ * @method PUser findOneBySubtitle(string $subtitle) Return the first PUser filtered by the subtitle column
  * @method PUser findOneByBiography(string $biography) Return the first PUser filtered by the biography column
  * @method PUser findOneByWebsite(string $website) Return the first PUser filtered by the website column
  * @method PUser findOneByTwitter(string $twitter) Return the first PUser filtered by the twitter column
@@ -280,10 +291,12 @@ use Politizr\Model\PUserQuery;
  * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
  * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
+ * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
  * @method array findByName(string $name) Return PUser objects filtered by the name column
  * @method array findByBirthday(string $birthday) Return PUser objects filtered by the birthday column
+ * @method array findBySubtitle(string $subtitle) Return PUser objects filtered by the subtitle column
  * @method array findByBiography(string $biography) Return PUser objects filtered by the biography column
  * @method array findByWebsite(string $website) Return PUser objects filtered by the website column
  * @method array findByTwitter(string $twitter) Return PUser objects filtered by the twitter column
@@ -410,7 +423,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1295,6 +1308,35 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the back_file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBackFileName('fooValue');   // WHERE back_file_name = 'fooValue'
+     * $query->filterByBackFileName('%fooValue%'); // WHERE back_file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $backFileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByBackFileName($backFileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($backFileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $backFileName)) {
+                $backFileName = str_replace('*', '%', $backFileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::BACK_FILE_NAME, $backFileName, $comparison);
+    }
+
+    /**
      * Filter the query on the gender column
      *
      * @param     mixed $gender The value to use as filter
@@ -1420,6 +1462,35 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::BIRTHDAY, $birthday, $comparison);
+    }
+
+    /**
+     * Filter the query on the subtitle column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySubtitle('fooValue');   // WHERE subtitle = 'fooValue'
+     * $query->filterBySubtitle('%fooValue%'); // WHERE subtitle LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $subtitle The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterBySubtitle($subtitle = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($subtitle)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $subtitle)) {
+                $subtitle = str_replace('*', '%', $subtitle);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::SUBTITLE, $subtitle, $comparison);
     }
 
     /**
@@ -2668,33 +2739,33 @@ abstract class BasePUserQuery extends ModelCriteria
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUAffinityQO($pUAffinityQO, $comparison = null)
+    public function filterByPUAffinityQOPUser($pUAffinityQO, $comparison = null)
     {
         if ($pUAffinityQO instanceof PUAffinityQO) {
             return $this
                 ->addUsingAlias(PUserPeer::ID, $pUAffinityQO->getPUserId(), $comparison);
         } elseif ($pUAffinityQO instanceof PropelObjectCollection) {
             return $this
-                ->usePUAffinityQOQuery()
+                ->usePUAffinityQOPUserQuery()
                 ->filterByPrimaryKeys($pUAffinityQO->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPUAffinityQO() only accepts arguments of type PUAffinityQO or PropelCollection');
+            throw new PropelException('filterByPUAffinityQOPUser() only accepts arguments of type PUAffinityQO or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUAffinityQO relation
+     * Adds a JOIN clause to the query using the PUAffinityQOPUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPUAffinityQO($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUAffinityQOPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUAffinityQO');
+        $relationMap = $tableMap->getRelation('PUAffinityQOPUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2709,14 +2780,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUAffinityQO');
+            $this->addJoinObject($join, 'PUAffinityQOPUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUAffinityQO relation PUAffinityQO object
+     * Use the PUAffinityQOPUser relation PUAffinityQO object
      *
      * @see       useQuery()
      *
@@ -2726,11 +2797,85 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUAffinityQOQuery A secondary query class using the current class as primary query
      */
-    public function usePUAffinityQOQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUAffinityQOPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUAffinityQO($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQO', '\Politizr\Model\PUAffinityQOQuery');
+            ->joinPUAffinityQOPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQOPUser', '\Politizr\Model\PUAffinityQOQuery');
+    }
+
+    /**
+     * Filter the query by a related PUCurrentQO object
+     *
+     * @param   PUCurrentQO|PropelObjectCollection $pUCurrentQO  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUCurrentQOPUser($pUCurrentQO, $comparison = null)
+    {
+        if ($pUCurrentQO instanceof PUCurrentQO) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUCurrentQO->getPUserId(), $comparison);
+        } elseif ($pUCurrentQO instanceof PropelObjectCollection) {
+            return $this
+                ->usePUCurrentQOPUserQuery()
+                ->filterByPrimaryKeys($pUCurrentQO->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUCurrentQOPUser() only accepts arguments of type PUCurrentQO or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUCurrentQOPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUCurrentQOPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUCurrentQOPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUCurrentQOPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUCurrentQOPUser relation PUCurrentQO object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUCurrentQOQuery A secondary query class using the current class as primary query
+     */
+    public function usePUCurrentQOPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUCurrentQOPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUCurrentQOPUser', '\Politizr\Model\PUCurrentQOQuery');
     }
 
     /**
@@ -3510,11 +3655,28 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   PUserQuery The current query, for fluid interface
      */
-    public function filterByPQOrganization($pQOrganization, $comparison = Criteria::EQUAL)
+    public function filterByPUAffinityQOPQOrganization($pQOrganization, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePUAffinityQOQuery()
-            ->filterByPQOrganization($pQOrganization, $comparison)
+            ->usePUAffinityQOPUserQuery()
+            ->filterByPUAffinityQOPQOrganization($pQOrganization, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PQOrganization object
+     * using the p_u_current_q_o table as cross reference
+     *
+     * @param   PQOrganization $pQOrganization the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPUCurrentQOPQOrganization($pQOrganization, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUCurrentQOPUserQuery()
+            ->filterByPUCurrentQOPQOrganization($pQOrganization, $comparison)
             ->endUse();
     }
 

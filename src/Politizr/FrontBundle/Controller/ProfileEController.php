@@ -37,9 +37,10 @@ use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
 use Politizr\Model\PRBadgeMetal;
 
+use Politizr\FrontBundle\Form\Type\PUserBiographyType;
+
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
-use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
 /**
@@ -295,6 +296,37 @@ class ProfileEController extends Controller {
 
 
     /**
+     *  Mon compte - Mon profil
+     */
+    public function myProfileAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myProfileAction');
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        // Récupération photos profil
+        $backFileName = $user->getBackFileName();
+        $fileName = $user->getFileName();
+
+        // *********************************** //
+        //      Formulaires
+        // *********************************** //
+        $formBio = $this->createForm(new PUserBiographyType($user), $user);
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileE:myProfile.html.twig', array(
+                        'user' => $user,
+                        'form' => $formBio->createView(),
+                        'backFileName' => $backFileName,
+                        'fileName' => $fileName,
+            ));
+    }
+
+    /**
      *  Mon compte - Mes informations personnelles
      */
     public function myPersoAction()
@@ -305,26 +337,21 @@ class ProfileEController extends Controller {
         // Récupération user courant
         $user = $this->getUser();
 
-        // Récupération photo profil
-        $fileName = $user->getFileName();
-
         // *********************************** //
         //      Formulaires
         // *********************************** //
         $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
-        $formPerso3 = $this->createForm(new PUserBiographyType(), $user);
-        $formPerso4 = $this->createForm(new PUserConnectionType(), $user);
+        $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myPerso.html.twig', array(
+                        'user' => $user,
                         'formPerso1' => $formPerso1->createView(),
                         'formPerso2' => $formPerso2->createView(),
-                        'formPerso3' => $formPerso3->createView(),
-                        'formPerso4' => $formPerso4->createView(),
-                        'fileName' => $fileName,
+                        'formPerso3' => $formPerso3->createView()
             ));
     }
 

@@ -38,10 +38,12 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByRoles($order = Criteria::ASC) Order by the roles column
  * @method PUserArchiveQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
+ * @method PUserArchiveQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserArchiveQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserArchiveQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserArchiveQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method PUserArchiveQuery orderByBirthday($order = Criteria::ASC) Order by the birthday column
+ * @method PUserArchiveQuery orderBySubtitle($order = Criteria::ASC) Order by the subtitle column
  * @method PUserArchiveQuery orderByBiography($order = Criteria::ASC) Order by the biography column
  * @method PUserArchiveQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method PUserArchiveQuery orderByTwitter($order = Criteria::ASC) Order by the twitter column
@@ -82,10 +84,12 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByRoles() Group by the roles column
  * @method PUserArchiveQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserArchiveQuery groupByFileName() Group by the file_name column
+ * @method PUserArchiveQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserArchiveQuery groupByGender() Group by the gender column
  * @method PUserArchiveQuery groupByFirstname() Group by the firstname column
  * @method PUserArchiveQuery groupByName() Group by the name column
  * @method PUserArchiveQuery groupByBirthday() Group by the birthday column
+ * @method PUserArchiveQuery groupBySubtitle() Group by the subtitle column
  * @method PUserArchiveQuery groupByBiography() Group by the biography column
  * @method PUserArchiveQuery groupByWebsite() Group by the website column
  * @method PUserArchiveQuery groupByTwitter() Group by the twitter column
@@ -132,10 +136,12 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByRoles(array $roles) Return the first PUserArchive filtered by the roles column
  * @method PUserArchive findOneByPUStatusId(int $p_u_status_id) Return the first PUserArchive filtered by the p_u_status_id column
  * @method PUserArchive findOneByFileName(string $file_name) Return the first PUserArchive filtered by the file_name column
+ * @method PUserArchive findOneByBackFileName(string $back_file_name) Return the first PUserArchive filtered by the back_file_name column
  * @method PUserArchive findOneByGender(int $gender) Return the first PUserArchive filtered by the gender column
  * @method PUserArchive findOneByFirstname(string $firstname) Return the first PUserArchive filtered by the firstname column
  * @method PUserArchive findOneByName(string $name) Return the first PUserArchive filtered by the name column
  * @method PUserArchive findOneByBirthday(string $birthday) Return the first PUserArchive filtered by the birthday column
+ * @method PUserArchive findOneBySubtitle(string $subtitle) Return the first PUserArchive filtered by the subtitle column
  * @method PUserArchive findOneByBiography(string $biography) Return the first PUserArchive filtered by the biography column
  * @method PUserArchive findOneByWebsite(string $website) Return the first PUserArchive filtered by the website column
  * @method PUserArchive findOneByTwitter(string $twitter) Return the first PUserArchive filtered by the twitter column
@@ -176,10 +182,12 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByRoles(array $roles) Return PUserArchive objects filtered by the roles column
  * @method array findByPUStatusId(int $p_u_status_id) Return PUserArchive objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUserArchive objects filtered by the file_name column
+ * @method array findByBackFileName(string $back_file_name) Return PUserArchive objects filtered by the back_file_name column
  * @method array findByGender(int $gender) Return PUserArchive objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUserArchive objects filtered by the firstname column
  * @method array findByName(string $name) Return PUserArchive objects filtered by the name column
  * @method array findByBirthday(string $birthday) Return PUserArchive objects filtered by the birthday column
+ * @method array findBySubtitle(string $subtitle) Return PUserArchive objects filtered by the subtitle column
  * @method array findByBiography(string $biography) Return PUserArchive objects filtered by the biography column
  * @method array findByWebsite(string $website) Return PUserArchive objects filtered by the website column
  * @method array findByTwitter(string $twitter) Return PUserArchive objects filtered by the twitter column
@@ -301,7 +309,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `gender`, `firstname`, `name`, `birthday`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1184,6 +1192,35 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the back_file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBackFileName('fooValue');   // WHERE back_file_name = 'fooValue'
+     * $query->filterByBackFileName('%fooValue%'); // WHERE back_file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $backFileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByBackFileName($backFileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($backFileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $backFileName)) {
+                $backFileName = str_replace('*', '%', $backFileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::BACK_FILE_NAME, $backFileName, $comparison);
+    }
+
+    /**
      * Filter the query on the gender column
      *
      * @param     mixed $gender The value to use as filter
@@ -1309,6 +1346,35 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::BIRTHDAY, $birthday, $comparison);
+    }
+
+    /**
+     * Filter the query on the subtitle column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySubtitle('fooValue');   // WHERE subtitle = 'fooValue'
+     * $query->filterBySubtitle('%fooValue%'); // WHERE subtitle LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $subtitle The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySubtitle($subtitle = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($subtitle)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $subtitle)) {
+                $subtitle = str_replace('*', '%', $subtitle);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::SUBTITLE, $subtitle, $comparison);
     }
 
     /**

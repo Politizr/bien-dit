@@ -968,7 +968,7 @@ abstract class BasePUMandateQuery extends ModelCriteria
      *
      * @return PUMandateQuery The current query, for fluid interface
      */
-    public function joinPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPQOrganization($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PQOrganization');
@@ -1003,7 +1003,7 @@ abstract class BasePUMandateQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQOrganizationQuery A secondary query class using the current class as primary query
      */
-    public function usePQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePQOrganizationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPQOrganization($relationAlias, $joinType)

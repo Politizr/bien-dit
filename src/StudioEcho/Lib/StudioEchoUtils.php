@@ -7,6 +7,8 @@ namespace StudioEcho\Lib;
  * TODO: MAJ avec la version github
  * /!\ nouvelles méthodes
  *
+ * TODO > méthodes utilisées à migrer vers le serice UtilsManager
+ * 
  * @author Studio Echo / Lionel Bouzonville
  */
 class StudioEchoUtils {

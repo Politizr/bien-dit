@@ -46,7 +46,7 @@ class PUMandateArchiveTableMap extends TableMap
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', true, null, null);
         $this->addColumn('p_q_type_id', 'PQTypeId', 'INTEGER', true, null, null);
         $this->addColumn('p_q_mandate_id', 'PQMandateId', 'INTEGER', true, null, null);
-        $this->addColumn('p_q_organization_id', 'PQOrganizationId', 'INTEGER', true, null, null);
+        $this->addColumn('p_q_organization_id', 'PQOrganizationId', 'INTEGER', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('begin_at', 'BeginAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('end_at', 'EndAt', 'TIMESTAMP', false, null, null);

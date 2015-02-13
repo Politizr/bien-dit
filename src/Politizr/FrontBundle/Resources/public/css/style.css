@@ -66,6 +66,10 @@ h6,
     margin: 0 auto;
 }
 
+.user-back-image .img-responsive {
+    margin: 0 auto;
+}
+
 .overlay-loader
  {
     position: fixed;

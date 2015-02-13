@@ -15,24 +15,24 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PQOrganization;
 use Politizr\Model\PQOrganizationQuery;
-use Politizr\Model\PUAffinityQO;
-use Politizr\Model\PUAffinityQOPeer;
-use Politizr\Model\PUAffinityQOQuery;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUCurrentQOPeer;
+use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePUAffinityQO extends BaseObject implements Persistent
+abstract class BasePUCurrentQO extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PUAffinityQOPeer';
+    const PEER = 'Politizr\\Model\\PUCurrentQOPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PUAffinityQOPeer
+     * @var        PUCurrentQOPeer
      */
     protected static $peer;
 
@@ -75,12 +75,12 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
     /**
      * @var        PUser
      */
-    protected $aPUAffinityQOPUser;
+    protected $aPUCurrentQOPUser;
 
     /**
      * @var        PQOrganization
      */
-    protected $aPUAffinityQOPQOrganization;
+    protected $aPUCurrentQOPQOrganization;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -219,7 +219,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -229,7 +229,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PUAffinityQOPeer::ID;
+            $this->modifiedColumns[] = PUCurrentQOPeer::ID;
         }
 
 
@@ -240,7 +240,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * Set the value of [p_user_id] column.
      *
      * @param  int $v new value
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      */
     public function setPUserId($v)
     {
@@ -250,11 +250,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
 
         if ($this->p_user_id !== $v) {
             $this->p_user_id = $v;
-            $this->modifiedColumns[] = PUAffinityQOPeer::P_USER_ID;
+            $this->modifiedColumns[] = PUCurrentQOPeer::P_USER_ID;
         }
 
-        if ($this->aPUAffinityQOPUser !== null && $this->aPUAffinityQOPUser->getId() !== $v) {
-            $this->aPUAffinityQOPUser = null;
+        if ($this->aPUCurrentQOPUser !== null && $this->aPUCurrentQOPUser->getId() !== $v) {
+            $this->aPUCurrentQOPUser = null;
         }
 
 
@@ -265,7 +265,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * Set the value of [p_q_organization_id] column.
      *
      * @param  int $v new value
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      */
     public function setPQOrganizationId($v)
     {
@@ -275,11 +275,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
 
         if ($this->p_q_organization_id !== $v) {
             $this->p_q_organization_id = $v;
-            $this->modifiedColumns[] = PUAffinityQOPeer::P_Q_ORGANIZATION_ID;
+            $this->modifiedColumns[] = PUCurrentQOPeer::P_Q_ORGANIZATION_ID;
         }
 
-        if ($this->aPUAffinityQOPQOrganization !== null && $this->aPUAffinityQOPQOrganization->getId() !== $v) {
-            $this->aPUAffinityQOPQOrganization = null;
+        if ($this->aPUCurrentQOPQOrganization !== null && $this->aPUCurrentQOPQOrganization->getId() !== $v) {
+            $this->aPUCurrentQOPQOrganization = null;
         }
 
 
@@ -291,7 +291,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -301,7 +301,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PUAffinityQOPeer::CREATED_AT;
+                $this->modifiedColumns[] = PUCurrentQOPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -314,7 +314,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -324,7 +324,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PUAffinityQOPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PUCurrentQOPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -378,10 +378,10 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PUAffinityQO object", $e);
+            throw new PropelException("Error populating PUCurrentQO object", $e);
         }
     }
 
@@ -401,11 +401,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPUAffinityQOPUser !== null && $this->p_user_id !== $this->aPUAffinityQOPUser->getId()) {
-            $this->aPUAffinityQOPUser = null;
+        if ($this->aPUCurrentQOPUser !== null && $this->p_user_id !== $this->aPUCurrentQOPUser->getId()) {
+            $this->aPUCurrentQOPUser = null;
         }
-        if ($this->aPUAffinityQOPQOrganization !== null && $this->p_q_organization_id !== $this->aPUAffinityQOPQOrganization->getId()) {
-            $this->aPUAffinityQOPQOrganization = null;
+        if ($this->aPUCurrentQOPQOrganization !== null && $this->p_q_organization_id !== $this->aPUCurrentQOPQOrganization->getId()) {
+            $this->aPUCurrentQOPQOrganization = null;
         }
     } // ensureConsistency
 
@@ -430,13 +430,13 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PUAffinityQOPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PUCurrentQOPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -446,8 +446,8 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPUAffinityQOPUser = null;
-            $this->aPUAffinityQOPQOrganization = null;
+            $this->aPUCurrentQOPUser = null;
+            $this->aPUCurrentQOPQOrganization = null;
         } // if (deep)
     }
 
@@ -468,12 +468,12 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PUAffinityQOQuery::create()
+            $deleteQuery = PUCurrentQOQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -511,7 +511,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -521,16 +521,16 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PUAffinityQOPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PUCurrentQOPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PUAffinityQOPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PUCurrentQOPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PUAffinityQOPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PUCurrentQOPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -542,7 +542,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PUAffinityQOPeer::addInstanceToPool($this);
+                PUCurrentQOPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -577,18 +577,18 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPUAffinityQOPUser !== null) {
-                if ($this->aPUAffinityQOPUser->isModified() || $this->aPUAffinityQOPUser->isNew()) {
-                    $affectedRows += $this->aPUAffinityQOPUser->save($con);
+            if ($this->aPUCurrentQOPUser !== null) {
+                if ($this->aPUCurrentQOPUser->isModified() || $this->aPUCurrentQOPUser->isNew()) {
+                    $affectedRows += $this->aPUCurrentQOPUser->save($con);
                 }
-                $this->setPUAffinityQOPUser($this->aPUAffinityQOPUser);
+                $this->setPUCurrentQOPUser($this->aPUCurrentQOPUser);
             }
 
-            if ($this->aPUAffinityQOPQOrganization !== null) {
-                if ($this->aPUAffinityQOPQOrganization->isModified() || $this->aPUAffinityQOPQOrganization->isNew()) {
-                    $affectedRows += $this->aPUAffinityQOPQOrganization->save($con);
+            if ($this->aPUCurrentQOPQOrganization !== null) {
+                if ($this->aPUCurrentQOPQOrganization->isModified() || $this->aPUCurrentQOPQOrganization->isNew()) {
+                    $affectedRows += $this->aPUCurrentQOPQOrganization->save($con);
                 }
-                $this->setPUAffinityQOPQOrganization($this->aPUAffinityQOPQOrganization);
+                $this->setPUCurrentQOPQOrganization($this->aPUCurrentQOPQOrganization);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -622,30 +622,30 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PUAffinityQOPeer::ID;
+        $this->modifiedColumns[] = PUCurrentQOPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUAffinityQOPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUCurrentQOPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PUAffinityQOPeer::ID)) {
+        if ($this->isColumnModified(PUCurrentQOPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PUAffinityQOPeer::P_USER_ID)) {
+        if ($this->isColumnModified(PUCurrentQOPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
-        if ($this->isColumnModified(PUAffinityQOPeer::P_Q_ORGANIZATION_ID)) {
+        if ($this->isColumnModified(PUCurrentQOPeer::P_Q_ORGANIZATION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_q_organization_id`';
         }
-        if ($this->isColumnModified(PUAffinityQOPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PUCurrentQOPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PUAffinityQOPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PUCurrentQOPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_u_affinity_q_o` (%s) VALUES (%s)',
+            'INSERT INTO `p_u_current_q_o` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -768,20 +768,20 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPUAffinityQOPUser !== null) {
-                if (!$this->aPUAffinityQOPUser->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPUAffinityQOPUser->getValidationFailures());
+            if ($this->aPUCurrentQOPUser !== null) {
+                if (!$this->aPUCurrentQOPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUCurrentQOPUser->getValidationFailures());
                 }
             }
 
-            if ($this->aPUAffinityQOPQOrganization !== null) {
-                if (!$this->aPUAffinityQOPQOrganization->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPUAffinityQOPQOrganization->getValidationFailures());
+            if ($this->aPUCurrentQOPQOrganization !== null) {
+                if (!$this->aPUCurrentQOPQOrganization->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUCurrentQOPQOrganization->getValidationFailures());
                 }
             }
 
 
-            if (($retval = PUAffinityQOPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = PUCurrentQOPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -805,7 +805,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUAffinityQOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUCurrentQOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -859,11 +859,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUAffinityQO'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUCurrentQO'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUAffinityQO'][$this->getPrimaryKey()] = true;
-        $keys = PUAffinityQOPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PUCurrentQO'][$this->getPrimaryKey()] = true;
+        $keys = PUCurrentQOPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
@@ -877,11 +877,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPUAffinityQOPUser) {
-                $result['PUAffinityQOPUser'] = $this->aPUAffinityQOPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPUCurrentQOPUser) {
+                $result['PUCurrentQOPUser'] = $this->aPUCurrentQOPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPUAffinityQOPQOrganization) {
-                $result['PUAffinityQOPQOrganization'] = $this->aPUAffinityQOPQOrganization->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPUCurrentQOPQOrganization) {
+                $result['PUCurrentQOPQOrganization'] = $this->aPUCurrentQOPQOrganization->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -901,7 +901,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PUAffinityQOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PUCurrentQOPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -954,7 +954,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PUAffinityQOPeer::getFieldNames($keyType);
+        $keys = PUCurrentQOPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
@@ -970,13 +970,13 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PUAffinityQOPeer::ID)) $criteria->add(PUAffinityQOPeer::ID, $this->id);
-        if ($this->isColumnModified(PUAffinityQOPeer::P_USER_ID)) $criteria->add(PUAffinityQOPeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PUAffinityQOPeer::P_Q_ORGANIZATION_ID)) $criteria->add(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $this->p_q_organization_id);
-        if ($this->isColumnModified(PUAffinityQOPeer::CREATED_AT)) $criteria->add(PUAffinityQOPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PUAffinityQOPeer::UPDATED_AT)) $criteria->add(PUAffinityQOPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PUCurrentQOPeer::ID)) $criteria->add(PUCurrentQOPeer::ID, $this->id);
+        if ($this->isColumnModified(PUCurrentQOPeer::P_USER_ID)) $criteria->add(PUCurrentQOPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUCurrentQOPeer::P_Q_ORGANIZATION_ID)) $criteria->add(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $this->p_q_organization_id);
+        if ($this->isColumnModified(PUCurrentQOPeer::CREATED_AT)) $criteria->add(PUCurrentQOPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PUCurrentQOPeer::UPDATED_AT)) $criteria->add(PUCurrentQOPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -991,8 +991,8 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
-        $criteria->add(PUAffinityQOPeer::ID, $this->id);
+        $criteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
+        $criteria->add(PUCurrentQOPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1033,7 +1033,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PUAffinityQO (or compatible) type.
+     * @param object $copyObj An object of PUCurrentQO (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1071,7 +1071,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PUAffinityQO Clone of current object.
+     * @return PUCurrentQO Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1091,12 +1091,12 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PUAffinityQOPeer
+     * @return PUCurrentQOPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PUAffinityQOPeer();
+            self::$peer = new PUCurrentQOPeer();
         }
 
         return self::$peer;
@@ -1106,10 +1106,10 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * Declares an association between this object and a PUser object.
      *
      * @param                  PUser $v
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPUAffinityQOPUser(PUser $v = null)
+    public function setPUCurrentQOPUser(PUser $v = null)
     {
         if ($v === null) {
             $this->setPUserId(NULL);
@@ -1117,12 +1117,12 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             $this->setPUserId($v->getId());
         }
 
-        $this->aPUAffinityQOPUser = $v;
+        $this->aPUCurrentQOPUser = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUAffinityQOPUser($this);
+            $v->addPUCurrentQOPUser($this);
         }
 
 
@@ -1138,30 +1138,30 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * @return PUser The associated PUser object.
      * @throws PropelException
      */
-    public function getPUAffinityQOPUser(PropelPDO $con = null, $doQuery = true)
+    public function getPUCurrentQOPUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPUAffinityQOPUser === null && ($this->p_user_id !== null) && $doQuery) {
-            $this->aPUAffinityQOPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+        if ($this->aPUCurrentQOPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUCurrentQOPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUAffinityQOPUser->addPUAffinityQOPUsers($this);
+                $this->aPUCurrentQOPUser->addPUCurrentQOPUsers($this);
              */
         }
 
-        return $this->aPUAffinityQOPUser;
+        return $this->aPUCurrentQOPUser;
     }
 
     /**
      * Declares an association between this object and a PQOrganization object.
      *
      * @param                  PQOrganization $v
-     * @return PUAffinityQO The current object (for fluent API support)
+     * @return PUCurrentQO The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPUAffinityQOPQOrganization(PQOrganization $v = null)
+    public function setPUCurrentQOPQOrganization(PQOrganization $v = null)
     {
         if ($v === null) {
             $this->setPQOrganizationId(NULL);
@@ -1169,12 +1169,12 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
             $this->setPQOrganizationId($v->getId());
         }
 
-        $this->aPUAffinityQOPQOrganization = $v;
+        $this->aPUCurrentQOPQOrganization = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PQOrganization object, it will not be re-added.
         if ($v !== null) {
-            $v->addPUAffinityQOPQOrganization($this);
+            $v->addPUCurrentQOPQOrganization($this);
         }
 
 
@@ -1190,20 +1190,20 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      * @return PQOrganization The associated PQOrganization object.
      * @throws PropelException
      */
-    public function getPUAffinityQOPQOrganization(PropelPDO $con = null, $doQuery = true)
+    public function getPUCurrentQOPQOrganization(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPUAffinityQOPQOrganization === null && ($this->p_q_organization_id !== null) && $doQuery) {
-            $this->aPUAffinityQOPQOrganization = PQOrganizationQuery::create()->findPk($this->p_q_organization_id, $con);
+        if ($this->aPUCurrentQOPQOrganization === null && ($this->p_q_organization_id !== null) && $doQuery) {
+            $this->aPUCurrentQOPQOrganization = PQOrganizationQuery::create()->findPk($this->p_q_organization_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUAffinityQOPQOrganization->addPUAffinityQOPQOrganizations($this);
+                $this->aPUCurrentQOPQOrganization->addPUCurrentQOPQOrganizations($this);
              */
         }
 
-        return $this->aPUAffinityQOPQOrganization;
+        return $this->aPUCurrentQOPQOrganization;
     }
 
     /**
@@ -1238,18 +1238,18 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aPUAffinityQOPUser instanceof Persistent) {
-              $this->aPUAffinityQOPUser->clearAllReferences($deep);
+            if ($this->aPUCurrentQOPUser instanceof Persistent) {
+              $this->aPUCurrentQOPUser->clearAllReferences($deep);
             }
-            if ($this->aPUAffinityQOPQOrganization instanceof Persistent) {
-              $this->aPUAffinityQOPQOrganization->clearAllReferences($deep);
+            if ($this->aPUCurrentQOPQOrganization instanceof Persistent) {
+              $this->aPUCurrentQOPQOrganization->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aPUAffinityQOPUser = null;
-        $this->aPUAffinityQOPQOrganization = null;
+        $this->aPUCurrentQOPUser = null;
+        $this->aPUCurrentQOPQOrganization = null;
     }
 
     /**
@@ -1259,7 +1259,7 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PUAffinityQOPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PUCurrentQOPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1277,11 +1277,11 @@ abstract class BasePUAffinityQO extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PUAffinityQO The current object (for fluent API support)
+     * @return     PUCurrentQO The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PUAffinityQOPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PUCurrentQOPeer::UPDATED_AT;
 
         return $this;
     }

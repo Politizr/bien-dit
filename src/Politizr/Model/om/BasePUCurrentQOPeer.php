@@ -10,25 +10,25 @@ use \Propel;
 use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PQOrganizationPeer;
-use Politizr\Model\PUAffinityQO;
-use Politizr\Model\PUAffinityQOPeer;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUCurrentQOPeer;
 use Politizr\Model\PUserPeer;
-use Politizr\Model\map\PUAffinityQOTableMap;
+use Politizr\Model\map\PUCurrentQOTableMap;
 
-abstract class BasePUAffinityQOPeer
+abstract class BasePUCurrentQOPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_u_affinity_q_o';
+    const TABLE_NAME = 'p_u_current_q_o';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PUAffinityQO';
+    const OM_CLASS = 'Politizr\\Model\\PUCurrentQO';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PUAffinityQOTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PUCurrentQOTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -40,28 +40,28 @@ abstract class BasePUAffinityQOPeer
     const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_u_affinity_q_o.id';
+    const ID = 'p_u_current_q_o.id';
 
     /** the column name for the p_user_id field */
-    const P_USER_ID = 'p_u_affinity_q_o.p_user_id';
+    const P_USER_ID = 'p_u_current_q_o.p_user_id';
 
     /** the column name for the p_q_organization_id field */
-    const P_Q_ORGANIZATION_ID = 'p_u_affinity_q_o.p_q_organization_id';
+    const P_Q_ORGANIZATION_ID = 'p_u_current_q_o.p_q_organization_id';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_u_affinity_q_o.created_at';
+    const CREATED_AT = 'p_u_current_q_o.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_u_affinity_q_o.updated_at';
+    const UPDATED_AT = 'p_u_current_q_o.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PUAffinityQO objects.
+     * An identity map to hold any loaded instances of PUCurrentQO objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PUAffinityQO[]
+     * @var        array PUCurrentQO[]
      */
     public static $instances = array();
 
@@ -70,12 +70,12 @@ abstract class BasePUAffinityQOPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PUAffinityQOPeer::$fieldNames[PUAffinityQOPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PUCurrentQOPeer::$fieldNames[PUCurrentQOPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PQOrganizationId', 'CreatedAt', 'UpdatedAt', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pQOrganizationId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUAffinityQOPeer::ID, PUAffinityQOPeer::P_USER_ID, PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PUAffinityQOPeer::CREATED_AT, PUAffinityQOPeer::UPDATED_AT, ),
+        BasePeer::TYPE_COLNAME => array (PUCurrentQOPeer::ID, PUCurrentQOPeer::P_USER_ID, PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PUCurrentQOPeer::CREATED_AT, PUCurrentQOPeer::UPDATED_AT, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_Q_ORGANIZATION_ID', 'CREATED_AT', 'UPDATED_AT', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_q_organization_id', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -85,12 +85,12 @@ abstract class BasePUAffinityQOPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PUAffinityQOPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PUCurrentQOPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PQOrganizationId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pQOrganizationId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PUAffinityQOPeer::ID => 0, PUAffinityQOPeer::P_USER_ID => 1, PUAffinityQOPeer::P_Q_ORGANIZATION_ID => 2, PUAffinityQOPeer::CREATED_AT => 3, PUAffinityQOPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUCurrentQOPeer::ID => 0, PUCurrentQOPeer::P_USER_ID => 1, PUCurrentQOPeer::P_Q_ORGANIZATION_ID => 2, PUCurrentQOPeer::CREATED_AT => 3, PUCurrentQOPeer::UPDATED_AT => 4, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_Q_ORGANIZATION_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_q_organization_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -108,10 +108,10 @@ abstract class BasePUAffinityQOPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PUAffinityQOPeer::getFieldNames($toType);
-        $key = isset(PUAffinityQOPeer::$fieldKeys[$fromType][$name]) ? PUAffinityQOPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PUCurrentQOPeer::getFieldNames($toType);
+        $key = isset(PUCurrentQOPeer::$fieldKeys[$fromType][$name]) ? PUCurrentQOPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUAffinityQOPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUCurrentQOPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -128,11 +128,11 @@ abstract class BasePUAffinityQOPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PUAffinityQOPeer::$fieldNames)) {
+        if (!array_key_exists($type, PUCurrentQOPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PUAffinityQOPeer::$fieldNames[$type];
+        return PUCurrentQOPeer::$fieldNames[$type];
     }
 
     /**
@@ -144,12 +144,12 @@ abstract class BasePUAffinityQOPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PUAffinityQOPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PUCurrentQOPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PUAffinityQOPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PUCurrentQOPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -167,11 +167,11 @@ abstract class BasePUAffinityQOPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PUAffinityQOPeer::ID);
-            $criteria->addSelectColumn(PUAffinityQOPeer::P_USER_ID);
-            $criteria->addSelectColumn(PUAffinityQOPeer::P_Q_ORGANIZATION_ID);
-            $criteria->addSelectColumn(PUAffinityQOPeer::CREATED_AT);
-            $criteria->addSelectColumn(PUAffinityQOPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PUCurrentQOPeer::ID);
+            $criteria->addSelectColumn(PUCurrentQOPeer::P_USER_ID);
+            $criteria->addSelectColumn(PUCurrentQOPeer::P_Q_ORGANIZATION_ID);
+            $criteria->addSelectColumn(PUCurrentQOPeer::CREATED_AT);
+            $criteria->addSelectColumn(PUCurrentQOPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
@@ -197,21 +197,21 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -230,7 +230,7 @@ abstract class BasePUAffinityQOPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PUAffinityQO
+     * @return PUCurrentQO
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -238,7 +238,7 @@ abstract class BasePUAffinityQOPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PUAffinityQOPeer::doSelect($critcopy, $con);
+        $objects = PUCurrentQOPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -256,7 +256,7 @@ abstract class BasePUAffinityQOPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PUAffinityQOPeer::populateObjects(PUAffinityQOPeer::doSelectStmt($criteria, $con));
+        return PUCurrentQOPeer::populateObjects(PUCurrentQOPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -274,16 +274,16 @@ abstract class BasePUAffinityQOPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -297,7 +297,7 @@ abstract class BasePUAffinityQOPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PUAffinityQO $obj A PUAffinityQO object.
+     * @param PUCurrentQO $obj A PUCurrentQO object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -306,7 +306,7 @@ abstract class BasePUAffinityQOPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PUAffinityQOPeer::$instances[$key] = $obj;
+            PUCurrentQOPeer::$instances[$key] = $obj;
         }
     }
 
@@ -318,7 +318,7 @@ abstract class BasePUAffinityQOPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PUAffinityQO object or a primary key value.
+     * @param      mixed $value A PUCurrentQO object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -326,17 +326,17 @@ abstract class BasePUAffinityQOPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PUAffinityQO) {
+            if (is_object($value) && $value instanceof PUCurrentQO) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUAffinityQO object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUCurrentQO object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PUAffinityQOPeer::$instances[$key]);
+            unset(PUCurrentQOPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -347,14 +347,14 @@ abstract class BasePUAffinityQOPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PUAffinityQO Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PUCurrentQO Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PUAffinityQOPeer::$instances[$key])) {
-                return PUAffinityQOPeer::$instances[$key];
+            if (isset(PUCurrentQOPeer::$instances[$key])) {
+                return PUCurrentQOPeer::$instances[$key];
             }
         }
 
@@ -369,15 +369,15 @@ abstract class BasePUAffinityQOPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PUAffinityQOPeer::$instances as $instance) {
+        foreach (PUCurrentQOPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PUAffinityQOPeer::$instances = array();
+        PUCurrentQOPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_u_affinity_q_o
+     * Method to invalidate the instance pool of all tables related to p_u_current_q_o
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -431,11 +431,11 @@ abstract class BasePUAffinityQOPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PUAffinityQOPeer::getOMClass();
+        $cls = PUCurrentQOPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PUAffinityQOPeer::getInstanceFromPool($key))) {
+            $key = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PUCurrentQOPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -444,7 +444,7 @@ abstract class BasePUAffinityQOPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PUAffinityQOPeer::addInstanceToPool($obj, $key);
+                PUCurrentQOPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -458,21 +458,21 @@ abstract class BasePUAffinityQOPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PUAffinityQO object, last column rank)
+     * @return array (PUCurrentQO object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PUAffinityQOPeer::getInstanceFromPool($key))) {
+        $key = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PUCurrentQOPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUAffinityQOPeer::OM_CLASS;
+            $cls = PUCurrentQOPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PUAffinityQOPeer::addInstanceToPool($obj, $key);
+            PUCurrentQOPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -480,7 +480,7 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUAffinityQOPUser table
+     * Returns the number of rows matching criteria, joining the related PUCurrentQOPUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -488,7 +488,7 @@ abstract class BasePUAffinityQOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPUAffinityQOPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPUCurrentQOPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -496,26 +496,26 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -531,7 +531,7 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUAffinityQOPQOrganization table
+     * Returns the number of rows matching criteria, joining the related PUCurrentQOPQOrganization table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -539,7 +539,7 @@ abstract class BasePUAffinityQOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPUAffinityQOPQOrganization(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPUCurrentQOPQOrganization(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -547,26 +547,26 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -582,45 +582,45 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Selects a collection of PUAffinityQO objects pre-filled with their PUser objects.
+     * Selects a collection of PUCurrentQO objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUAffinityQO objects.
+     * @return array           Array of PUCurrentQO objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPUAffinityQOPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPUCurrentQOPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
         }
 
-        PUAffinityQOPeer::addSelectColumns($criteria);
-        $startcol = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+        PUCurrentQOPeer::addSelectColumns($criteria);
+        $startcol = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
         PUserPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUAffinityQOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUCurrentQOPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUAffinityQOPeer::getOMClass();
+                $cls = PUCurrentQOPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUAffinityQOPeer::addInstanceToPool($obj1, $key1);
+                PUCurrentQOPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -635,8 +635,8 @@ abstract class BasePUAffinityQOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUAffinityQO) to $obj2 (PUser)
-                $obj2->addPUAffinityQOPUser($obj1);
+                // Add the $obj1 (PUCurrentQO) to $obj2 (PUser)
+                $obj2->addPUCurrentQOPUser($obj1);
 
             } // if joined row was not null
 
@@ -649,45 +649,45 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Selects a collection of PUAffinityQO objects pre-filled with their PQOrganization objects.
+     * Selects a collection of PUCurrentQO objects pre-filled with their PQOrganization objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUAffinityQO objects.
+     * @return array           Array of PUCurrentQO objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPUAffinityQOPQOrganization(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPUCurrentQOPQOrganization(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
         }
 
-        PUAffinityQOPeer::addSelectColumns($criteria);
-        $startcol = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+        PUCurrentQOPeer::addSelectColumns($criteria);
+        $startcol = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
         PQOrganizationPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUAffinityQOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUCurrentQOPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PUAffinityQOPeer::getOMClass();
+                $cls = PUCurrentQOPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUAffinityQOPeer::addInstanceToPool($obj1, $key1);
+                PUCurrentQOPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PQOrganizationPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -702,8 +702,8 @@ abstract class BasePUAffinityQOPeer
                     PQOrganizationPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PUAffinityQO) to $obj2 (PQOrganization)
-                $obj2->addPUAffinityQOPQOrganization($obj1);
+                // Add the $obj1 (PUCurrentQO) to $obj2 (PQOrganization)
+                $obj2->addPUCurrentQOPQOrganization($obj1);
 
             } // if joined row was not null
 
@@ -732,28 +732,28 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -768,12 +768,12 @@ abstract class BasePUAffinityQOPeer
     }
 
     /**
-     * Selects a collection of PUAffinityQO objects pre-filled with all related objects.
+     * Selects a collection of PUCurrentQO objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUAffinityQO objects.
+     * @return array           Array of PUCurrentQO objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -783,11 +783,11 @@ abstract class BasePUAffinityQOPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
         }
 
-        PUAffinityQOPeer::addSelectColumns($criteria);
-        $startcol2 = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+        PUCurrentQOPeer::addSelectColumns($criteria);
+        $startcol2 = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
@@ -795,25 +795,25 @@ abstract class BasePUAffinityQOPeer
         PQOrganizationPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + PQOrganizationPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUAffinityQOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUCurrentQOPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUAffinityQOPeer::getOMClass();
+                $cls = PUCurrentQOPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUAffinityQOPeer::addInstanceToPool($obj1, $key1);
+                PUCurrentQOPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
             // Add objects for joined PUser rows
@@ -830,8 +830,8 @@ abstract class BasePUAffinityQOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PUAffinityQO) to the collection in $obj2 (PUser)
-                $obj2->addPUAffinityQOPUser($obj1);
+                // Add the $obj1 (PUCurrentQO) to the collection in $obj2 (PUser)
+                $obj2->addPUCurrentQOPUser($obj1);
             } // if joined row not null
 
             // Add objects for joined PQOrganization rows
@@ -848,8 +848,8 @@ abstract class BasePUAffinityQOPeer
                     PQOrganizationPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (PUAffinityQO) to the collection in $obj3 (PQOrganization)
-                $obj3->addPUAffinityQOPQOrganization($obj1);
+                // Add the $obj1 (PUCurrentQO) to the collection in $obj3 (PQOrganization)
+                $obj3->addPUCurrentQOPQOrganization($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -861,7 +861,7 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUAffinityQOPUser table
+     * Returns the number of rows matching criteria, joining the related PUCurrentQOPUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -869,7 +869,7 @@ abstract class BasePUAffinityQOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPUAffinityQOPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPUCurrentQOPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -877,26 +877,26 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -912,7 +912,7 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUAffinityQOPQOrganization table
+     * Returns the number of rows matching criteria, joining the related PUCurrentQOPQOrganization table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -920,7 +920,7 @@ abstract class BasePUAffinityQOPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptPUAffinityQOPQOrganization(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptPUCurrentQOPQOrganization(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -928,26 +928,26 @@ abstract class BasePUAffinityQOPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PUAffinityQOPeer::addSelectColumns($criteria);
+            PUCurrentQOPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -963,16 +963,16 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Selects a collection of PUAffinityQO objects pre-filled with all related objects except PUAffinityQOPUser.
+     * Selects a collection of PUCurrentQO objects pre-filled with all related objects except PUCurrentQOPUser.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUAffinityQO objects.
+     * @return array           Array of PUCurrentQO objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPUAffinityQOPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPUCurrentQOPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -980,33 +980,33 @@ abstract class BasePUAffinityQOPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
         }
 
-        PUAffinityQOPeer::addSelectColumns($criteria);
-        $startcol2 = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+        PUCurrentQOPeer::addSelectColumns($criteria);
+        $startcol2 = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
 
         PQOrganizationPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PQOrganizationPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, PQOrganizationPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUAffinityQOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUCurrentQOPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUAffinityQOPeer::getOMClass();
+                $cls = PUCurrentQOPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUAffinityQOPeer::addInstanceToPool($obj1, $key1);
+                PUCurrentQOPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PQOrganization rows
@@ -1023,8 +1023,8 @@ abstract class BasePUAffinityQOPeer
                     PQOrganizationPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUAffinityQO) to the collection in $obj2 (PQOrganization)
-                $obj2->addPUAffinityQOPQOrganization($obj1);
+                // Add the $obj1 (PUCurrentQO) to the collection in $obj2 (PQOrganization)
+                $obj2->addPUCurrentQOPQOrganization($obj1);
 
             } // if joined row is not null
 
@@ -1037,16 +1037,16 @@ abstract class BasePUAffinityQOPeer
 
 
     /**
-     * Selects a collection of PUAffinityQO objects pre-filled with all related objects except PUAffinityQOPQOrganization.
+     * Selects a collection of PUCurrentQO objects pre-filled with all related objects except PUCurrentQOPQOrganization.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PUAffinityQO objects.
+     * @return array           Array of PUCurrentQO objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPUAffinityQOPQOrganization(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptPUCurrentQOPQOrganization(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1054,33 +1054,33 @@ abstract class BasePUAffinityQOPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+            $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
         }
 
-        PUAffinityQOPeer::addSelectColumns($criteria);
-        $startcol2 = PUAffinityQOPeer::NUM_HYDRATE_COLUMNS;
+        PUCurrentQOPeer::addSelectColumns($criteria);
+        $startcol2 = PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PUAffinityQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUCurrentQOPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PUAffinityQOPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PUAffinityQOPeer::getInstanceFromPool($key1))) {
+            $key1 = PUCurrentQOPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUCurrentQOPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PUAffinityQOPeer::getOMClass();
+                $cls = PUCurrentQOPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PUAffinityQOPeer::addInstanceToPool($obj1, $key1);
+                PUCurrentQOPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PUser rows
@@ -1097,8 +1097,8 @@ abstract class BasePUAffinityQOPeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PUAffinityQO) to the collection in $obj2 (PUser)
-                $obj2->addPUAffinityQOPUser($obj1);
+                // Add the $obj1 (PUCurrentQO) to the collection in $obj2 (PUser)
+                $obj2->addPUCurrentQOPUser($obj1);
 
             } // if joined row is not null
 
@@ -1118,7 +1118,7 @@ abstract class BasePUAffinityQOPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PUAffinityQOPeer::DATABASE_NAME)->getTable(PUAffinityQOPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PUCurrentQOPeer::DATABASE_NAME)->getTable(PUCurrentQOPeer::TABLE_NAME);
     }
 
     /**
@@ -1126,9 +1126,9 @@ abstract class BasePUAffinityQOPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePUAffinityQOPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePUAffinityQOPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PUAffinityQOTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePUCurrentQOPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePUCurrentQOPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PUCurrentQOTableMap());
       }
     }
 
@@ -1140,13 +1140,13 @@ abstract class BasePUAffinityQOPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PUAffinityQOPeer::OM_CLASS;
+        return PUCurrentQOPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PUAffinityQO or Criteria object.
+     * Performs an INSERT on the database, given a PUCurrentQO or Criteria object.
      *
-     * @param      mixed $values Criteria or PUAffinityQO object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PUCurrentQO object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1155,22 +1155,22 @@ abstract class BasePUAffinityQOPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PUAffinityQO object
+            $criteria = $values->buildCriteria(); // build Criteria from PUCurrentQO object
         }
 
-        if ($criteria->containsKey(PUAffinityQOPeer::ID) && $criteria->keyContainsValue(PUAffinityQOPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUAffinityQOPeer::ID.')');
+        if ($criteria->containsKey(PUCurrentQOPeer::ID) && $criteria->keyContainsValue(PUCurrentQOPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUCurrentQOPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1187,9 +1187,9 @@ abstract class BasePUAffinityQOPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PUAffinityQO or Criteria object.
+     * Performs an UPDATE on the database, given a PUCurrentQO or Criteria object.
      *
-     * @param      mixed $values Criteria or PUAffinityQO object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PUCurrentQO object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1198,35 +1198,35 @@ abstract class BasePUAffinityQOPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PUAffinityQOPeer::ID);
-            $value = $criteria->remove(PUAffinityQOPeer::ID);
+            $comparison = $criteria->getComparison(PUCurrentQOPeer::ID);
+            $value = $criteria->remove(PUCurrentQOPeer::ID);
             if ($value) {
-                $selectCriteria->add(PUAffinityQOPeer::ID, $value, $comparison);
+                $selectCriteria->add(PUCurrentQOPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PUAffinityQOPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PUCurrentQOPeer::TABLE_NAME);
             }
 
-        } else { // $values is PUAffinityQO object
+        } else { // $values is PUCurrentQO object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_u_affinity_q_o table.
+     * Deletes all rows from the p_u_current_q_o table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1235,19 +1235,19 @@ abstract class BasePUAffinityQOPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PUAffinityQOPeer::TABLE_NAME, $con, PUAffinityQOPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PUCurrentQOPeer::TABLE_NAME, $con, PUCurrentQOPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PUAffinityQOPeer::clearInstancePool();
-            PUAffinityQOPeer::clearRelatedInstancePool();
+            PUCurrentQOPeer::clearInstancePool();
+            PUCurrentQOPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1258,9 +1258,9 @@ abstract class BasePUAffinityQOPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PUAffinityQO or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PUCurrentQO or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PUAffinityQO object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PUCurrentQO object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1271,32 +1271,32 @@ abstract class BasePUAffinityQOPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PUAffinityQOPeer::clearInstancePool();
+            PUCurrentQOPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PUAffinityQO) { // it's a model object
+        } elseif ($values instanceof PUCurrentQO) { // it's a model object
             // invalidate the cache for this single object
-            PUAffinityQOPeer::removeInstanceFromPool($values);
+            PUCurrentQOPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
-            $criteria->add(PUAffinityQOPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
+            $criteria->add(PUCurrentQOPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PUAffinityQOPeer::removeInstanceFromPool($singleval);
+                PUCurrentQOPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PUAffinityQOPeer::DATABASE_NAME);
+        $criteria->setDbName(PUCurrentQOPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1306,7 +1306,7 @@ abstract class BasePUAffinityQOPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PUAffinityQOPeer::clearRelatedInstancePool();
+            PUCurrentQOPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1317,13 +1317,13 @@ abstract class BasePUAffinityQOPeer
     }
 
     /**
-     * Validates all modified columns of given PUAffinityQO object.
+     * Validates all modified columns of given PUCurrentQO object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PUAffinityQO $obj The object to validate.
+     * @param PUCurrentQO $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1333,8 +1333,8 @@ abstract class BasePUAffinityQOPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PUAffinityQOPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PUAffinityQOPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PUCurrentQOPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PUCurrentQOPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1350,7 +1350,7 @@ abstract class BasePUAffinityQOPeer
 
         }
 
-        return BasePeer::doValidate(PUAffinityQOPeer::DATABASE_NAME, PUAffinityQOPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PUCurrentQOPeer::DATABASE_NAME, PUCurrentQOPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1358,23 +1358,23 @@ abstract class BasePUAffinityQOPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PUAffinityQO
+     * @return PUCurrentQO
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PUAffinityQOPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PUCurrentQOPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
-        $criteria->add(PUAffinityQOPeer::ID, $pk);
+        $criteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
+        $criteria->add(PUCurrentQOPeer::ID, $pk);
 
-        $v = PUAffinityQOPeer::doSelect($criteria, $con);
+        $v = PUCurrentQOPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1384,31 +1384,31 @@ abstract class BasePUAffinityQOPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PUAffinityQO[]
+     * @return PUCurrentQO[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PUAffinityQOPeer::DATABASE_NAME);
-            $criteria->add(PUAffinityQOPeer::ID, $pks, Criteria::IN);
-            $objs = PUAffinityQOPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PUCurrentQOPeer::DATABASE_NAME);
+            $criteria->add(PUCurrentQOPeer::ID, $pks, Criteria::IN);
+            $objs = PUCurrentQOPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePUAffinityQOPeer
+} // BasePUCurrentQOPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePUAffinityQOPeer::buildTableMap();
+BasePUCurrentQOPeer::buildTableMap();
 

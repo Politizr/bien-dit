@@ -392,11 +392,13 @@
         <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
+        <column name="back_file_name" type="varchar" size="150" />
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="firstname" type="varchar" size="150" />
         <column name="name" type="varchar" size="150" />
         <column name="birthday" type="date" />
 
+        <column name="subtitle" type="varchar" size="500" />
         <column name="biography" type="longvarchar" />
 
         <column name="website" type="varchar" size="150" />
@@ -552,7 +554,7 @@
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_q_type_id" type="integer" required="true" />
         <column name="p_q_mandate_id" type="integer" required="true" />
-        <column name="p_q_organization_id" type="integer" required="true" />
+        <column name="p_q_organization_id" type="integer" required="false" />
 
         <column name="description" type="longvarchar" />
 
@@ -568,7 +570,7 @@
         <foreign-key foreignTable="p_q_mandate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_q_mandate_id" foreign="id" />
         </foreign-key>        
-        <foreign-key foreignTable="p_q_organization" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_q_organization" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_q_organization_id" foreign="id" />
         </foreign-key>        
     </table>
@@ -581,12 +583,30 @@
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_q_organization_id" type="integer" required="true" />
 
-        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" phpName="PUAffinityQOPUser" refPhpName="PUAffinityQOPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_q_organization" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_q_organization" phpName="PUAffinityQOPQOrganization" refPhpName="PUAffinityQOPQOrganization" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_q_organization_id" foreign="id" />
         </foreign-key>
+
+    </table>
+
+    <table name="p_u_current_q_o" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_q_organization_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PUCurrentQOPUser" refPhpName="PUCurrentQOPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_q_organization" phpName="PUCurrentQOPQOrganization" refPhpName="PUCurrentQOPQOrganization" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_q_organization_id" foreign="id" />
+        </foreign-key>
+
     </table>
 
 

@@ -14,57 +14,57 @@ use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PQOrganization;
-use Politizr\Model\PUAffinityQO;
-use Politizr\Model\PUAffinityQOPeer;
-use Politizr\Model\PUAffinityQOQuery;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUCurrentQOPeer;
+use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUAffinityQOQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PUAffinityQOQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUAffinityQOQuery orderByPQOrganizationId($order = Criteria::ASC) Order by the p_q_organization_id column
- * @method PUAffinityQOQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PUAffinityQOQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUCurrentQOQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUCurrentQOQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUCurrentQOQuery orderByPQOrganizationId($order = Criteria::ASC) Order by the p_q_organization_id column
+ * @method PUCurrentQOQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PUCurrentQOQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUAffinityQOQuery groupById() Group by the id column
- * @method PUAffinityQOQuery groupByPUserId() Group by the p_user_id column
- * @method PUAffinityQOQuery groupByPQOrganizationId() Group by the p_q_organization_id column
- * @method PUAffinityQOQuery groupByCreatedAt() Group by the created_at column
- * @method PUAffinityQOQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUCurrentQOQuery groupById() Group by the id column
+ * @method PUCurrentQOQuery groupByPUserId() Group by the p_user_id column
+ * @method PUCurrentQOQuery groupByPQOrganizationId() Group by the p_q_organization_id column
+ * @method PUCurrentQOQuery groupByCreatedAt() Group by the created_at column
+ * @method PUCurrentQOQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PUAffinityQOQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PUAffinityQOQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PUAffinityQOQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PUCurrentQOQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PUCurrentQOQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PUCurrentQOQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUAffinityQOQuery leftJoinPUAffinityQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQOPUser relation
- * @method PUAffinityQOQuery rightJoinPUAffinityQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQOPUser relation
- * @method PUAffinityQOQuery innerJoinPUAffinityQOPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQOPUser relation
+ * @method PUCurrentQOQuery leftJoinPUCurrentQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUCurrentQOPUser relation
+ * @method PUCurrentQOQuery rightJoinPUCurrentQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUCurrentQOPUser relation
+ * @method PUCurrentQOQuery innerJoinPUCurrentQOPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUCurrentQOPUser relation
  *
- * @method PUAffinityQOQuery leftJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQOPQOrganization relation
- * @method PUAffinityQOQuery rightJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQOPQOrganization relation
- * @method PUAffinityQOQuery innerJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQOPQOrganization relation
+ * @method PUCurrentQOQuery leftJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUCurrentQOPQOrganization relation
+ * @method PUCurrentQOQuery rightJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUCurrentQOPQOrganization relation
+ * @method PUCurrentQOQuery innerJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PUCurrentQOPQOrganization relation
  *
- * @method PUAffinityQO findOne(PropelPDO $con = null) Return the first PUAffinityQO matching the query
- * @method PUAffinityQO findOneOrCreate(PropelPDO $con = null) Return the first PUAffinityQO matching the query, or a new PUAffinityQO object populated from the query conditions when no match is found
+ * @method PUCurrentQO findOne(PropelPDO $con = null) Return the first PUCurrentQO matching the query
+ * @method PUCurrentQO findOneOrCreate(PropelPDO $con = null) Return the first PUCurrentQO matching the query, or a new PUCurrentQO object populated from the query conditions when no match is found
  *
- * @method PUAffinityQO findOneByPUserId(int $p_user_id) Return the first PUAffinityQO filtered by the p_user_id column
- * @method PUAffinityQO findOneByPQOrganizationId(int $p_q_organization_id) Return the first PUAffinityQO filtered by the p_q_organization_id column
- * @method PUAffinityQO findOneByCreatedAt(string $created_at) Return the first PUAffinityQO filtered by the created_at column
- * @method PUAffinityQO findOneByUpdatedAt(string $updated_at) Return the first PUAffinityQO filtered by the updated_at column
+ * @method PUCurrentQO findOneByPUserId(int $p_user_id) Return the first PUCurrentQO filtered by the p_user_id column
+ * @method PUCurrentQO findOneByPQOrganizationId(int $p_q_organization_id) Return the first PUCurrentQO filtered by the p_q_organization_id column
+ * @method PUCurrentQO findOneByCreatedAt(string $created_at) Return the first PUCurrentQO filtered by the created_at column
+ * @method PUCurrentQO findOneByUpdatedAt(string $updated_at) Return the first PUCurrentQO filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUAffinityQO objects filtered by the id column
- * @method array findByPUserId(int $p_user_id) Return PUAffinityQO objects filtered by the p_user_id column
- * @method array findByPQOrganizationId(int $p_q_organization_id) Return PUAffinityQO objects filtered by the p_q_organization_id column
- * @method array findByCreatedAt(string $created_at) Return PUAffinityQO objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PUAffinityQO objects filtered by the updated_at column
+ * @method array findById(int $id) Return PUCurrentQO objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PUCurrentQO objects filtered by the p_user_id column
+ * @method array findByPQOrganizationId(int $p_q_organization_id) Return PUCurrentQO objects filtered by the p_q_organization_id column
+ * @method array findByCreatedAt(string $created_at) Return PUCurrentQO objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PUCurrentQO objects filtered by the updated_at column
  */
-abstract class BasePUAffinityQOQuery extends ModelCriteria
+abstract class BasePUCurrentQOQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePUAffinityQOQuery object.
+     * Initializes internal state of BasePUCurrentQOQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -76,25 +76,25 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PUAffinityQO';
+            $modelName = 'Politizr\\Model\\PUCurrentQO';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PUAffinityQOQuery object.
+     * Returns a new PUCurrentQOQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PUAffinityQOQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PUCurrentQOQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PUAffinityQOQuery
+     * @return PUCurrentQOQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PUAffinityQOQuery) {
+        if ($criteria instanceof PUCurrentQOQuery) {
             return $criteria;
         }
-        $query = new PUAffinityQOQuery(null, null, $modelAlias);
+        $query = new PUCurrentQOQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -115,19 +115,19 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PUAffinityQO|PUAffinityQO[]|mixed the result, formatted by the current formatter
+     * @return   PUCurrentQO|PUCurrentQO[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUAffinityQOPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUCurrentQOPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PUAffinityQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUCurrentQOPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -145,7 +145,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUAffinityQO A model object, or null if the key is not found
+     * @return                 PUCurrentQO A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -160,12 +160,12 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUAffinityQO A model object, or null if the key is not found
+     * @return                 PUCurrentQO A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_q_organization_id`, `created_at`, `updated_at` FROM `p_u_affinity_q_o` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_q_organization_id`, `created_at`, `updated_at` FROM `p_u_current_q_o` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -176,9 +176,9 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PUAffinityQO();
+            $obj = new PUCurrentQO();
             $obj->hydrate($row);
-            PUAffinityQOPeer::addInstanceToPool($obj, (string) $key);
+            PUCurrentQOPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -191,7 +191,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PUAffinityQO|PUAffinityQO[]|mixed the result, formatted by the current formatter
+     * @return PUCurrentQO|PUCurrentQO[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,7 +212,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PUAffinityQO[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PUCurrentQO[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -233,12 +233,12 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PUAffinityQOPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PUCurrentQOPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -246,12 +246,12 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PUAffinityQOPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PUCurrentQOPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,18 +271,18 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -293,7 +293,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUAffinityQOPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PUCurrentQOPeer::ID, $id, $comparison);
     }
 
     /**
@@ -307,7 +307,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
      * </code>
      *
-     * @see       filterByPUAffinityQOPUser()
+     * @see       filterByPUCurrentQOPUser()
      *
      * @param     mixed $pUserId The value to use as filter.
      *              Use scalar values for equality.
@@ -315,18 +315,18 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByPUserId($pUserId = null, $comparison = null)
     {
         if (is_array($pUserId)) {
             $useMinMax = false;
             if (isset($pUserId['min'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pUserId['max'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -337,7 +337,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUAffinityQOPeer::P_USER_ID, $pUserId, $comparison);
+        return $this->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
@@ -351,7 +351,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * $query->filterByPQOrganizationId(array('max' => 12)); // WHERE p_q_organization_id <= 12
      * </code>
      *
-     * @see       filterByPUAffinityQOPQOrganization()
+     * @see       filterByPUCurrentQOPQOrganization()
      *
      * @param     mixed $pQOrganizationId The value to use as filter.
      *              Use scalar values for equality.
@@ -359,18 +359,18 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByPQOrganizationId($pQOrganizationId = null, $comparison = null)
     {
         if (is_array($pQOrganizationId)) {
             $useMinMax = false;
             if (isset($pQOrganizationId['min'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pQOrganizationId['max'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -381,7 +381,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId, $comparison);
+        return $this->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $pQOrganizationId, $comparison);
     }
 
     /**
@@ -402,18 +402,18 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -424,7 +424,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUAffinityQOPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PUCurrentQOPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -445,18 +445,18 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PUAffinityQOPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUCurrentQOPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -467,7 +467,7 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUAffinityQOPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PUCurrentQOPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -476,38 +476,38 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUAffinityQOQuery The current query, for fluid interface
+     * @return                 PUCurrentQOQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUAffinityQOPUser($pUser, $comparison = null)
+    public function filterByPUCurrentQOPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
-                ->addUsingAlias(PUAffinityQOPeer::P_USER_ID, $pUser->getId(), $comparison);
+                ->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $pUser->getId(), $comparison);
         } elseif ($pUser instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUAffinityQOPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPUAffinityQOPUser() only accepts arguments of type PUser or PropelCollection');
+            throw new PropelException('filterByPUCurrentQOPUser() only accepts arguments of type PUser or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUAffinityQOPUser relation
+     * Adds a JOIN clause to the query using the PUCurrentQOPUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
-    public function joinPUAffinityQOPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUCurrentQOPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUAffinityQOPUser');
+        $relationMap = $tableMap->getRelation('PUCurrentQOPUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -522,14 +522,14 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUAffinityQOPUser');
+            $this->addJoinObject($join, 'PUCurrentQOPUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUAffinityQOPUser relation PUser object
+     * Use the PUCurrentQOPUser relation PUser object
      *
      * @see       useQuery()
      *
@@ -539,11 +539,11 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
      */
-    public function usePUAffinityQOPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUCurrentQOPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUAffinityQOPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQOPUser', '\Politizr\Model\PUserQuery');
+            ->joinPUCurrentQOPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUCurrentQOPUser', '\Politizr\Model\PUserQuery');
     }
 
     /**
@@ -552,38 +552,38 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      * @param   PQOrganization|PropelObjectCollection $pQOrganization The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUAffinityQOQuery The current query, for fluid interface
+     * @return                 PUCurrentQOQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUAffinityQOPQOrganization($pQOrganization, $comparison = null)
+    public function filterByPUCurrentQOPQOrganization($pQOrganization, $comparison = null)
     {
         if ($pQOrganization instanceof PQOrganization) {
             return $this
-                ->addUsingAlias(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $pQOrganization->getId(), $comparison);
+                ->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $pQOrganization->getId(), $comparison);
         } elseif ($pQOrganization instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUAffinityQOPeer::P_Q_ORGANIZATION_ID, $pQOrganization->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $pQOrganization->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByPUAffinityQOPQOrganization() only accepts arguments of type PQOrganization or PropelCollection');
+            throw new PropelException('filterByPUCurrentQOPQOrganization() only accepts arguments of type PQOrganization or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUAffinityQOPQOrganization relation
+     * Adds a JOIN clause to the query using the PUCurrentQOPQOrganization relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
-    public function joinPUAffinityQOPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUCurrentQOPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUAffinityQOPQOrganization');
+        $relationMap = $tableMap->getRelation('PUCurrentQOPQOrganization');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -598,14 +598,14 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUAffinityQOPQOrganization');
+            $this->addJoinObject($join, 'PUCurrentQOPQOrganization');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUAffinityQOPQOrganization relation PQOrganization object
+     * Use the PUCurrentQOPQOrganization relation PQOrganization object
      *
      * @see       useQuery()
      *
@@ -615,24 +615,24 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQOrganizationQuery A secondary query class using the current class as primary query
      */
-    public function usePUAffinityQOPQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUCurrentQOPQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUAffinityQOPQOrganization($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQOPQOrganization', '\Politizr\Model\PQOrganizationQuery');
+            ->joinPUCurrentQOPQOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUCurrentQOPQOrganization', '\Politizr\Model\PQOrganizationQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   PUAffinityQO $pUAffinityQO Object to remove from the list of results
+     * @param   PUCurrentQO $pUCurrentQO Object to remove from the list of results
      *
-     * @return PUAffinityQOQuery The current query, for fluid interface
+     * @return PUCurrentQOQuery The current query, for fluid interface
      */
-    public function prune($pUAffinityQO = null)
+    public function prune($pUCurrentQO = null)
     {
-        if ($pUAffinityQO) {
-            $this->addUsingAlias(PUAffinityQOPeer::ID, $pUAffinityQO->getId(), Criteria::NOT_EQUAL);
+        if ($pUCurrentQO) {
+            $this->addUsingAlias(PUCurrentQOPeer::ID, $pUCurrentQO->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -645,31 +645,31 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUAffinityQOPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUCurrentQOPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUAffinityQOPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PUCurrentQOPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUAffinityQOPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PUCurrentQOPeer::UPDATED_AT);
     }
 
     /**
@@ -677,31 +677,31 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUAffinityQOPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUCurrentQOPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUAffinityQOPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PUCurrentQOPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PUAffinityQOQuery The current query, for fluid interface
+     * @return     PUCurrentQOQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUAffinityQOPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PUCurrentQOPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -742,8 +742,8 @@ abstract class BasePUAffinityQOQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PUAffinityQOPeer::DATABASE_NAME);
-        $db = Propel::getDB(PUAffinityQOPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PUCurrentQOPeer::DATABASE_NAME);
+        $db = Propel::getDB(PUCurrentQOPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

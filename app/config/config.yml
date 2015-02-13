@@ -254,6 +254,10 @@ liip_imagine:
             filters:
                 thumbnail:         { size: [640, 200], mode: outbound }
 
+        user_bio_back:
+            quality:              100
+            filters:
+                thumbnail:         { size: [640, 480], mode: inbound }
         user_bio:
             quality:              100
             filters:
@@ -295,6 +299,7 @@ bazinga_faker:
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 
+                Subtitle:               { method: realText, parameters: [ 300 ] }
                 Biography:              { method: paragraphs, parameters: [ 4, true ] }
 
                 Website:                { method: url }

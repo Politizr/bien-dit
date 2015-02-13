@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_u_mandate' table.
+ * This class defines the structure of the 'p_u_current_q_o' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PUMandateTableMap extends TableMap
+class PUCurrentQOTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PUMandateTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PUCurrentQOTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,20 +36,16 @@ class PUMandateTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_u_mandate');
-        $this->setPhpName('PUMandate');
-        $this->setClassname('Politizr\\Model\\PUMandate');
+        $this->setName('p_u_current_q_o');
+        $this->setPhpName('PUCurrentQO');
+        $this->setClassname('Politizr\\Model\\PUCurrentQO');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
+        $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addForeignKey('p_q_type_id', 'PQTypeId', 'INTEGER', 'p_q_type', 'id', true, null, null);
-        $this->addForeignKey('p_q_mandate_id', 'PQMandateId', 'INTEGER', 'p_q_mandate', 'id', true, null, null);
-        $this->addForeignKey('p_q_organization_id', 'PQOrganizationId', 'INTEGER', 'p_q_organization', 'id', false, null, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('begin_at', 'BeginAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('end_at', 'EndAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('p_q_organization_id', 'PQOrganizationId', 'INTEGER', 'p_q_organization', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -60,10 +56,8 @@ class PUMandateTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PQType', 'Politizr\\Model\\PQType', RelationMap::MANY_TO_ONE, array('p_q_type_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PQMandate', 'Politizr\\Model\\PQMandate', RelationMap::MANY_TO_ONE, array('p_q_mandate_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_ONE, array('p_q_organization_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PUCurrentQOPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUCurrentQOPQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_ONE, array('p_q_organization_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -84,17 +78,7 @@ class PUMandateTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
-            'archivable' =>  array (
-  'archive_table' => '',
-  'archive_phpname' => NULL,
-  'archive_class' => '',
-  'log_archived_at' => 'true',
-  'archived_at_column' => 'archived_at',
-  'archive_on_insert' => 'false',
-  'archive_on_update' => 'false',
-  'archive_on_delete' => 'true',
-),
         );
     } // getBehaviors()
 
-} // PUMandateTableMap
+} // PUCurrentQOTableMap

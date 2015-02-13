@@ -46,4 +46,8 @@
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+
+	<script>
+		$('#header').css('background-image', 'url({{ user | photoBack("user_bio_back") }})');
+	</script>
 {% endblock javascriptFooter %}

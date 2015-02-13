@@ -538,10 +538,12 @@ CREATE TABLE `p_user`
     `roles` TEXT,
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
+    `back_file_name` VARCHAR(150),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
     `birthday` DATE,
+    `subtitle` VARCHAR(500),
     `biography` TEXT,
     `website` VARCHAR(150),
     `twitter` VARCHAR(150),
@@ -790,7 +792,7 @@ CREATE TABLE `p_u_mandate`
     `p_user_id` INTEGER NOT NULL,
     `p_q_type_id` INTEGER NOT NULL,
     `p_q_mandate_id` INTEGER NOT NULL,
-    `p_q_organization_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER,
     `description` TEXT,
     `begin_at` DATETIME,
     `end_at` DATETIME,
@@ -820,7 +822,7 @@ CREATE TABLE `p_u_mandate`
         FOREIGN KEY (`p_q_organization_id`)
         REFERENCES `p_q_organization` (`id`)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -845,6 +847,34 @@ CREATE TABLE `p_u_affinity_q_o`
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `p_u_affinity_q_o_FK_2`
+        FOREIGN KEY (`p_q_organization_id`)
+        REFERENCES `p_q_organization` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_u_current_q_o
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_u_current_q_o`;
+
+CREATE TABLE `p_u_current_q_o`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_current_q_o_FI_1` (`p_user_id`),
+    INDEX `p_u_current_q_o_FI_2` (`p_q_organization_id`),
+    CONSTRAINT `p_u_current_q_o_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_current_q_o_FK_2`
         FOREIGN KEY (`p_q_organization_id`)
         REFERENCES `p_q_organization` (`id`)
         ON UPDATE CASCADE
@@ -1241,10 +1271,12 @@ CREATE TABLE `p_user_archive`
     `roles` TEXT,
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
+    `back_file_name` VARCHAR(150),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
     `birthday` DATE,
+    `subtitle` VARCHAR(500),
     `biography` TEXT,
     `website` VARCHAR(150),
     `twitter` VARCHAR(150),
@@ -1280,7 +1312,7 @@ CREATE TABLE `p_u_mandate_archive`
     `p_user_id` INTEGER NOT NULL,
     `p_q_type_id` INTEGER NOT NULL,
     `p_q_mandate_id` INTEGER NOT NULL,
-    `p_q_organization_id` INTEGER NOT NULL,
+    `p_q_organization_id` INTEGER,
     `description` TEXT,
     `begin_at` DATETIME,
     `end_at` DATETIME,

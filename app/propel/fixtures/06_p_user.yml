@@ -20,12 +20,14 @@ Politizr\Model\PUser:
     usertest1:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Lorem
         name:                   Ipsum
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -46,12 +48,14 @@ Politizr\Model\PUser:
     depute1:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Damien
         name:                   Abad
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -70,12 +74,14 @@ Politizr\Model\PUser:
     depute2:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Laurence
         name:                   Abeille
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -94,12 +100,14 @@ Politizr\Model\PUser:
     depute3:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Ibrahim
         name:                   Aboucar
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -118,12 +126,14 @@ Politizr\Model\PUser:
     depute4:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Elie
         name:                   Aboud
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -142,12 +152,14 @@ Politizr\Model\PUser:
     depute5:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Bernard
         name:                   Accoyer
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -166,12 +178,14 @@ Politizr\Model\PUser:
     depute6:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Patricia
         name:                   Adam
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -194,6 +208,7 @@ Politizr\Model\PUser:
         firstname:              Sylvian
         name:                   Alaux
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -212,12 +227,14 @@ Politizr\Model\PUser:
     depute8:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Eric
         name:                   Alauzet
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -236,12 +253,14 @@ Politizr\Model\PUser:
     depute9:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Yves
         name:                   Albarello
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -260,12 +279,14 @@ Politizr\Model\PUser:
     depute10:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Brigitte
         name:                   Allain
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -283,12 +304,14 @@ Politizr\Model\PUser:
     depute11:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Jean-Pierre
         name:                   Allossery
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -306,12 +329,14 @@ Politizr\Model\PUser:
     depute12:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Nicole
         name:                   Ameline
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -329,12 +354,14 @@ Politizr\Model\PUser:
     depute13:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Pouria
         name:                   Amirshahi
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -352,12 +379,14 @@ Politizr\Model\PUser:
     depute14:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              François
         name:                   André
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -375,12 +404,14 @@ Politizr\Model\PUser:
     depute15:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Sylvie
         name:                   Andrieux
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -398,12 +429,14 @@ Politizr\Model\PUser:
     depute16:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Benoist
         name:                   Apparu
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -421,12 +454,14 @@ Politizr\Model\PUser:
     depute17:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Nathalie
         name:                   Appéré
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -444,12 +479,14 @@ Politizr\Model\PUser:
     depute18:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Laurence
         name:                   Arribagé
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -467,12 +504,14 @@ Politizr\Model\PUser:
     depute19:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              François
         name:                   Asensi
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -490,12 +529,14 @@ Politizr\Model\PUser:
     depute20:
         p_u_status_id:          activ
 
+        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
         file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Christian
         name:                   Assaf
 
+        subtitle:               Député
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>

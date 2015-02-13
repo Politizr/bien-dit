@@ -5,6 +5,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Exception\InconsistentDataException;
+use Politizr\Exception\FormValidationException;
+
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 use Politizr\Model\PUser;
@@ -189,15 +192,13 @@ class UserManager
     /*                                       EDITIONS INFO PERSO (FONCTIONS AJAX)                               */
     /* ######################################################################################################## */
 
-
-
     /**
-     *  Mise à jour des informations personnelles du user
+     *  Mise à jour des informations du profil du user
      *
      */
-    public function userPersoUpdate() {
+    public function userProfileUpdate() {
         $logger = $this->sc->get('logger');
-        $logger->info('*** userPersoUpdate');
+        $logger->info('*** userProfileUpdate');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -205,60 +206,18 @@ class UserManager
         // Récupération args
         $request = $this->sc->get('request');
 
-        $formTypeId = $request->get('user')['form_type_id'];
-        $logger->info('$formTypeId = '.print_r($formTypeId, true));
-
-        // Création du formulaire soumis
-        if ($formTypeId == 1) {
-            $form = $this->sc->get('form.factory')->create(new PUserIdentityType($user), $user);
-        } elseif($formTypeId == 2) {
-            $form = $this->sc->get('form.factory')->create(new PUserEmailType(), $user);
-        } elseif($formTypeId == 3) {
-            $form = $this->sc->get('form.factory')->create(new PUserBiographyType(), $user);
-        } elseif($formTypeId == 4) {
-            $form = $this->sc->get('form.factory')->create(new PUserConnectionType(), $user);
-        }
+        $form = $this->sc->get('form.factory')->create(new PUserBiographyType($user), $user);
 
         // *********************************** //
         //      Traitement du POST
         // *********************************** //
         $form->bind($request);
         if ($form->isValid()) {
-            $userPerso = $form->getData();
-            $logger->info('userPerso = '.print_r($userPerso, true));
+            $userProfile = $form->getData();
+            $logger->info('userProfile = '.print_r($userProfile, true));
 
             // enregistrement object user
-            $userPerso->save();
-
-            if ($formTypeId == 1) {
-                // Nickname & realname
-                $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
-                $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
-                $user->save();
-            } elseif($formTypeId == 2) {
-                // Canonicalization
-                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-                $user->setEmailCanonical($canonicalizeEmail->canonicalize($userPerso->getEmail()));
-                $user->save();
-            } elseif($formTypeId == 3) {
-            } elseif($formTypeId == 4) {
-                $password = $userPerso->getPassword();
-                $logger->info('password = '.print_r($password, true));
-                if ($password) {
-                    // Encodage MDP
-                    $encoderFactory = $this->sc->get('security.encoder_factory');
-
-                    $encoder = $encoderFactory->getEncoder($user);
-                    $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                    // $user->eraseCredentials();
-
-                    $user->setPlainPassword($password);
-                    $user->save();
-
-                    // Envoi email
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('upd_password_email', new GenericEvent($user));
-                }
-            }
+            $userProfile->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
@@ -268,6 +227,7 @@ class UserManager
     }
 
 
+
     /**
      *  Upload de la photo de profil du user
      *
@@ -275,72 +235,33 @@ class UserManager
     public function userPhotoUpload() {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPhotoUpload');
-        
+
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
 
         // Chemin des images
         $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
-        // Taille max 5Mo
-        $sizeLimit = 5 * 1024 * 1024;
-
-        $myRequestedFile = $request->files->get('file-name');
-        // $logger->info(print_r($myRequestedFile, true));
-
-        if ($myRequestedFile == null) {
-            throw new FormValidationException('Fichier non existant.');
-        } else if ($myRequestedFile->getError() > 0) {
-            throw new FormValidationException('Erreur upload n°'.$myRequestedFile->getError(), 1);
-        } else {
-            // Contrôle extension
-            $allowedExtensions = array('jpg', 'jpeg', 'png');
-            $ext = $myRequestedFile->guessExtension();
-            if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
-                throw new FormValidationException('Type de fichier non autorisé.');
-            }
-
-            // Construction du nom du fichier
-            $destName = md5(uniqid()) . '.' . $ext;
-
-            //move the uploaded file to uploads folder;
-            // $move = move_uploaded_file($pathNameTmp, $path . $destName);
-            $movedFile = $myRequestedFile->move($path, $destName);
-            $logger->info('$movedFile = '.print_r($movedFile, true));
-        }
+        // Appel du service d'upload ajax
+        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
+            'file-name',
+            $path,
+            150, 150
+            );
 
         // Suppression photo déjà uploadée
-        $filename = $user->getFilename();
-        if ($filename && $fileExists = file_exists($path . $filename)) {
-            unlink($path . $filename);
-        }
-
-        // Resize de la photo 640*640px max
-        $resized = false;                
-        $image = new SimpleImage();
-        $image->load($path . $destName);
-        if ($width = $image->getWidth() > 150) {
-            $image->resizeToWidth(150);
-            $resized = true;
-        }
-        if ($height = $image->getHeight() > 150) {
-            $image->resizeToHeight(150);
-            $resized = true;
-        }
-        if ($resized) {
-            $image->save($path . $destName);
+        $oldFilename = $user->getFilename();
+        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
+            unlink($path . $oldFilename);
         }
 
         // MAJ du modèle
-        $user->setFilename($destName);
+        $user->setFilename($fileName);
         $user->save();
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
-            'filename' => $destName,
+            'filename' => $fileName,
             );
     }
 
@@ -373,6 +294,151 @@ class UserManager
 
         return true;
     }
+
+    /**
+     *  Upload de la photo de fond du profil du user
+     *
+     */
+    public function userBackPhotoUpload() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** userBackPhotoUpload');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Chemin des images
+        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+
+        // Appel du service d'upload ajax
+        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
+            'back-file-name',
+            $path,
+            1280, 600
+            );
+
+        // Suppression photo déjà uploadée
+        $oldFilename = $user->getBackFilename();
+        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
+            unlink($path . $oldFilename);
+        }
+
+        // MAJ du modèle
+        $user->setBackFilename($fileName);
+        $user->save();
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'filename' => $fileName,
+            );
+    }
+
+    /**
+     *  Suppression de la photo de fond du profil du user
+     *
+     */
+    public function userBackPhotoDelete() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** userBackPhotoDelete');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Chemin des images
+        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+
+        // Suppression photo déjà uploadée
+        $filename = $user->getBackFilename();
+        if ($filename && $fileExists = file_exists($path . $filename)) {
+            unlink($path . $filename);
+        }
+
+        // MAJ du modèle
+        $user->setBackFilename(null);
+        $user->save();
+
+        return true;
+    }
+
+
+
+    /**
+     *  Mise à jour des informations personnelles du user
+     *
+     */
+    public function userPersoUpdate() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** userPersoUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $formTypeId = $request->get('user')['form_type_id'];
+        $logger->info('$formTypeId = '.print_r($formTypeId, true));
+
+        // Création du formulaire soumis
+        if ($formTypeId == 1) {
+            $form = $this->sc->get('form.factory')->create(new PUserIdentityType($user), $user);
+        } elseif($formTypeId == 2) {
+            $form = $this->sc->get('form.factory')->create(new PUserEmailType(), $user);
+        } elseif($formTypeId == 3) {
+            $form = $this->sc->get('form.factory')->create(new PUserConnectionType(), $user);
+        } else {
+            throw new InconsistentDataException('Form invalid.');
+        }
+
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $form->bind($request);
+        if ($form->isValid()) {
+            $userPerso = $form->getData();
+            $logger->info('userPerso = '.print_r($userPerso, true));
+
+            // enregistrement object user
+            $userPerso->save();
+
+            if ($formTypeId == 1) {
+                // Nickname & realname
+                $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
+                $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
+                $user->save();
+            } elseif($formTypeId == 2) {
+                // Canonicalization
+                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
+                $user->setEmailCanonical($canonicalizeEmail->canonicalize($userPerso->getEmail()));
+                $user->save();
+            } elseif($formTypeId == 3) {
+                $password = $userPerso->getPassword();
+                $logger->info('password = '.print_r($password, true));
+                if ($password) {
+                    // Encodage MDP
+                    $encoderFactory = $this->sc->get('security.encoder_factory');
+
+                    $encoder = $encoderFactory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+                    // $user->eraseCredentials();
+
+                    $user->setPlainPassword($password);
+                    $user->save();
+
+                    // Envoi email
+                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('upd_password_email', new GenericEvent($user));
+                }
+            }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+
 
     /* ######################################################################################################## */
     /*                                            NOTIFICATIONS (FONCTIONS AJAX)                                */

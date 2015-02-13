@@ -18,6 +18,7 @@ use Politizr\Model\PQOrganizationPeer;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PQType;
 use Politizr\Model\PUAffinityQO;
+use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUser;
 
@@ -58,9 +59,13 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery rightJoinPUMandate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUMandate relation
  * @method PQOrganizationQuery innerJoinPUMandate($relationAlias = null) Adds a INNER JOIN clause to the query using the PUMandate relation
  *
- * @method PQOrganizationQuery leftJoinPUAffinityQO($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQO relation
- * @method PQOrganizationQuery rightJoinPUAffinityQO($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQO relation
- * @method PQOrganizationQuery innerJoinPUAffinityQO($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQO relation
+ * @method PQOrganizationQuery leftJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQOPQOrganization relation
+ * @method PQOrganizationQuery rightJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQOPQOrganization relation
+ * @method PQOrganizationQuery innerJoinPUAffinityQOPQOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQOPQOrganization relation
+ *
+ * @method PQOrganizationQuery leftJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUCurrentQOPQOrganization relation
+ * @method PQOrganizationQuery rightJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUCurrentQOPQOrganization relation
+ * @method PQOrganizationQuery innerJoinPUCurrentQOPQOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PUCurrentQOPQOrganization relation
  *
  * @method PQOrganization findOne(PropelPDO $con = null) Return the first PQOrganization matching the query
  * @method PQOrganization findOneOrCreate(PropelPDO $con = null) Return the first PQOrganization matching the query, or a new PQOrganization object populated from the query conditions when no match is found
@@ -778,7 +783,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return PQOrganizationQuery The current query, for fluid interface
      */
-    public function joinPUMandate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUMandate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PUMandate');
@@ -813,7 +818,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUMandateQuery A secondary query class using the current class as primary query
      */
-    public function usePUMandateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUMandateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPUMandate($relationAlias, $joinType)
@@ -829,33 +834,33 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      * @return                 PQOrganizationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUAffinityQO($pUAffinityQO, $comparison = null)
+    public function filterByPUAffinityQOPQOrganization($pUAffinityQO, $comparison = null)
     {
         if ($pUAffinityQO instanceof PUAffinityQO) {
             return $this
                 ->addUsingAlias(PQOrganizationPeer::ID, $pUAffinityQO->getPQOrganizationId(), $comparison);
         } elseif ($pUAffinityQO instanceof PropelObjectCollection) {
             return $this
-                ->usePUAffinityQOQuery()
+                ->usePUAffinityQOPQOrganizationQuery()
                 ->filterByPrimaryKeys($pUAffinityQO->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPUAffinityQO() only accepts arguments of type PUAffinityQO or PropelCollection');
+            throw new PropelException('filterByPUAffinityQOPQOrganization() only accepts arguments of type PUAffinityQO or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUAffinityQO relation
+     * Adds a JOIN clause to the query using the PUAffinityQOPQOrganization relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PQOrganizationQuery The current query, for fluid interface
      */
-    public function joinPUAffinityQO($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUAffinityQOPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUAffinityQO');
+        $relationMap = $tableMap->getRelation('PUAffinityQOPQOrganization');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -870,14 +875,14 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUAffinityQO');
+            $this->addJoinObject($join, 'PUAffinityQOPQOrganization');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUAffinityQO relation PUAffinityQO object
+     * Use the PUAffinityQOPQOrganization relation PUAffinityQO object
      *
      * @see       useQuery()
      *
@@ -887,11 +892,85 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUAffinityQOQuery A secondary query class using the current class as primary query
      */
-    public function usePUAffinityQOQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUAffinityQOPQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUAffinityQO($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQO', '\Politizr\Model\PUAffinityQOQuery');
+            ->joinPUAffinityQOPQOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQOPQOrganization', '\Politizr\Model\PUAffinityQOQuery');
+    }
+
+    /**
+     * Filter the query by a related PUCurrentQO object
+     *
+     * @param   PUCurrentQO|PropelObjectCollection $pUCurrentQO  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PQOrganizationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUCurrentQOPQOrganization($pUCurrentQO, $comparison = null)
+    {
+        if ($pUCurrentQO instanceof PUCurrentQO) {
+            return $this
+                ->addUsingAlias(PQOrganizationPeer::ID, $pUCurrentQO->getPQOrganizationId(), $comparison);
+        } elseif ($pUCurrentQO instanceof PropelObjectCollection) {
+            return $this
+                ->usePUCurrentQOPQOrganizationQuery()
+                ->filterByPrimaryKeys($pUCurrentQO->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUCurrentQOPQOrganization() only accepts arguments of type PUCurrentQO or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUCurrentQOPQOrganization relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PQOrganizationQuery The current query, for fluid interface
+     */
+    public function joinPUCurrentQOPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUCurrentQOPQOrganization');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUCurrentQOPQOrganization');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUCurrentQOPQOrganization relation PUCurrentQO object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUCurrentQOQuery A secondary query class using the current class as primary query
+     */
+    public function usePUCurrentQOPQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUCurrentQOPQOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUCurrentQOPQOrganization', '\Politizr\Model\PUCurrentQOQuery');
     }
 
     /**
@@ -903,11 +982,28 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return   PQOrganizationQuery The current query, for fluid interface
      */
-    public function filterByPUser($pUser, $comparison = Criteria::EQUAL)
+    public function filterByPUAffinityQOPUser($pUser, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePUAffinityQOQuery()
-            ->filterByPUser($pUser, $comparison)
+            ->usePUAffinityQOPQOrganizationQuery()
+            ->filterByPUAffinityQOPUser($pUser, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_current_q_o table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PQOrganizationQuery The current query, for fluid interface
+     */
+    public function filterByPUCurrentQOPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUCurrentQOPQOrganizationQuery()
+            ->filterByPUCurrentQOPUser($pUser, $comparison)
             ->endUse();
     }
 

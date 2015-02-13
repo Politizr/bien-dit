@@ -2,7 +2,7 @@
 
 {% block main %}
 	<div id="main" class="container">
-		<h1>Mon profil</h1>
+		<h1>Mes informations personnelles</h1>
 		<p>
 			Vous disposez actuellement d'un compte citoyen.
 		</p>
@@ -23,24 +23,14 @@
 			</p>
 		{% endif %}
 
-		<h1>Mes informations personnelles</h1>
-
-		<h3>Votre photo</h3>
-		<div class="row text-center">
-			<div id="current-photo">
-				{% if (fileName) %}
-		            <img class="img-rounded" src="{{ asset('uploads/users/'~fileName) }}">
-		        {% else %}
-		            <img  class="img-rounded" src="{{ asset('bundles/politizrfront/images/default_user.png') }}">
-	        	{% endif %}
-			</div>
-		    <form id="form-user-photo" action="{{ path('UserPhotoUpload') }}" method="post" enctype="multipart/form-data">
-		    	<div id="upload-file-container">
-		        	<input type="file" name="file-name" id="file-name">
-		        	<button id="file-select">Choisir la photo</button>
-		        	<button id="file-delete">Supprimer la photo</button>
-		        </div>
-		    </form>
+		<h3>Mes centres d'intérêts</h3>
+		<div id="box-tags">
+			<p class="bg-info">Ajoutez un maximum de tags que vous désirez suivre.</p>
+		    <p class="text-muted">Tags géographiques</p>
+			{{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, false) }}
+			<hr>
+		    <p class="text-muted">Tags thématiques</p>
+			{{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 3, true) }}
 		</div>
 		
 		<hr>
@@ -58,7 +48,11 @@
 				{% if app.user.validated %}
 			    	<p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
 			    {% else %}
-				    {{ form_row(formPerso1.actions) }}
+			    	<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<button type="button" id="user_actions_save" name="user[actions][save]" class="btn-success btn btn-default" action="btn-submit-perso" form-id-name="form-perso1">Mettre à jour</button>
+						</div>
+					</div>
 			    {% endif %}
 			{{ form_end(formPerso1) }}
 		</div>
@@ -79,36 +73,19 @@
 		
 		<hr>
 
-		<h3>Vos informations personnelles</h3>
-		<div id="box-perso3">
+		<h3>Vos identifiant et mot de passe de connexion</h3>
+		<div id="box-perso4">
 			{{ form_start(formPerso3, {'style': 'horizontal', 'attr': {'id': 'form-perso3'} }) }}
 			    {{ form_errors(formPerso3) }}
 
-			    {{ form_row(formPerso3.biography) }}
-			    {{ form_row(formPerso3.website) }}
-			    {{ form_row(formPerso3.twitter) }}
-			    {{ form_row(formPerso3.facebook) }}
-			    {{ form_row(formPerso3.phone) }}
-
-			    {{ form_row(formPerso3.actions) }}
-			{{ form_end(formPerso3) }}
-		</div>
-		
-		<hr>
-
-		<h3>Vos identifiant et mot de passe de connexion</h3>
-		<div id="box-perso4">
-			{{ form_start(formPerso4, {'style': 'horizontal', 'attr': {'id': 'form-perso4'} }) }}
-			    {{ form_errors(formPerso4) }}
-
-			    {{ form_row(formPerso4.username) }}
-			    {{ form_row(formPerso4.password) }}
+			    {{ form_row(formPerso3.username) }}
+			    {{ form_row(formPerso3.password) }}
 
 			    <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
 			    <hr>
 
-			    {{ form_row(formPerso4.actions) }}
-			{{ form_end(formPerso4) }}
+			    {{ form_row(formPerso3.actions) }}
+			{{ form_end(formPerso3) }}
 		</div>
 
 	</div>
@@ -120,5 +97,8 @@
     {# Upload ajax #}
 	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
 	
-    {% include 'PolitizrFrontBundle:JS:profileUpdate.js.twig' %}
+	{# Tags #}
+	{% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 2 } %}
+	
+    {% include 'PolitizrFrontBundle:JS:persoUpdate.js.twig' %}
 {% endblock javascriptFooter %}

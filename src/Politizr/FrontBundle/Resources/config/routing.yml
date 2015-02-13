@@ -192,6 +192,10 @@ MyReputationC:
     pattern:  /citoyen/mon-compte/ma-reputation
     defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputation }
 
+MyProfileC:
+    pattern:  /citoyen/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myProfile }
+
 MyPersoC:
     pattern:  /citoyen/mon-compte/mes-informations-personnelles
     defaults: { _controller: PolitizrFrontBundle:ProfileC:myPerso }
@@ -248,6 +252,10 @@ MyTagsE:
 MyReputationE:
     pattern:  /elu/mon-compte/ma-reputation
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myReputation }
+
+MyProfileE:
+    pattern:  /elu/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myProfile }
 
 MyPersoE:
     pattern:  /elu/mon-compte/mes-informations-personnelles
@@ -368,11 +376,21 @@ UserTaggedDeleteTag:
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
-# GESTION INFOS PERSOS
+# GESTION INFOS MON PROFIL
 ################################################################################
-PersoCheck:
-    pattern:  /profil/perso.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
+UserProfileUpdate:
+    pattern:  /profil/profile.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userProfileUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserBackPhotoUpload:
+    pattern:  /profil/upload-back-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserBackPhotoDelete:
+    pattern:  /profil/delete-back-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 UserPhotoUpload:
@@ -383,6 +401,15 @@ UserPhotoUpload:
 UserPhotoDelete:
     pattern:  /profil/delete-photo.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+
+################################################################################
+# GESTION INFOS PERSOS
+################################################################################
+UserPersoUpdate:
+    pattern:  /profil/perso.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################

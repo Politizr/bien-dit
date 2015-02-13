@@ -56,8 +56,8 @@ class PUAffinityQOTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_ONE, array('p_q_organization_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUAffinityQOPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUAffinityQOPQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_ONE, array('p_q_organization_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**

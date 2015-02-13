@@ -74,12 +74,6 @@ class PUserIdentityType extends AbstractType
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
             )
         );
-
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso1' ] ]],
-                ]
-            ]);
     }
 
     /**

@@ -27,7 +27,7 @@ class PUserConnectionType extends AbstractType
         $builder->add('p_u_status_id', 'hidden');
         $builder->add('form_type_id', 'hidden', array(
             'mapped' => false,
-            'data' => 4,
+            'data' => 3,
             ));
 
         // Username / Password
@@ -55,7 +55,7 @@ class PUserConnectionType extends AbstractType
 
         $builder->add('actions', 'form_actions', [
             'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso4' ] ]],
+                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso3' ] ]],
                 ]
             ]);
     }

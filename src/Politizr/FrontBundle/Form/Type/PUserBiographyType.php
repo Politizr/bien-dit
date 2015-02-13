@@ -27,20 +27,30 @@ class PUserBiographyType extends AbstractType
         $builder->add('id', 'hidden');
         $builder->add('qualified', 'hidden');
         $builder->add('p_u_status_id', 'hidden');
-        $builder->add('form_type_id', 'hidden', array(
-            'mapped' => false,
-            'data' => 3,
-            ));
 
-        $builder->add('biography', 'textarea', array(  
+        $builder->add('subtitle', 'text', array(  
             'required' => false,
-            'label' => 'Biographie',
+            'label' => 'Résumé',
+            'attr' =>   array(
+                'size' => 80,
+                'placeholder' => 'Résumé en 1 phrase',
+                ),
             )
         );
 
+        $builder->add('biography', 'hidden', array(
+            'required' => false,
+            'label' => 'Biographie', 
+            )
+        );
+        
         $builder->add('website', 'text', array(  
             'required' => false,
             'label' => 'Site internet', 
+            'attr' =>   array(
+                'size' => 25,
+                'placeholder' => 'Site web',
+                ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
             )
         );
@@ -48,6 +58,10 @@ class PUserBiographyType extends AbstractType
         $builder->add('twitter', 'text', array(  
             'required' => false,
             'label' => 'Twitter', 
+            'attr' =>   array(
+                'size' => 25,
+                'placeholder' => 'Twitter',
+                ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
             )
         );
@@ -55,23 +69,19 @@ class PUserBiographyType extends AbstractType
         $builder->add('facebook', 'text', array(  
             'required' => false,
             'label' => 'Facebook', 
+            'attr' =>   array(
+                'size' => 25,
+                'placeholder' => 'Facebook',
+                ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
             )
         );
 
-        $builder->add('phone', 'text', array(  
-            'required' => false,
-            'label' => 'Téléphone',
-            )
-        );
-
-
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso3' ] ]],
-                ]
-            ]);
-
+        // $builder->add('phone', 'text', array(  
+        //     'required' => false,
+        //     'label' => 'Téléphone',
+        //     )
+        // );
     }
 
     /**

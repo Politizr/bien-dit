@@ -70,6 +70,10 @@ class PolitizrUserExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            new \Twig_SimpleFilter('photoBack', array($this, 'photoBack'), array(
+                    'is_safe' => array('html')
+                    )
+            ),
             new \Twig_SimpleFilter('followTags', array($this, 'followTags'), array(
                     'is_safe' => array('html')
                     )
@@ -143,6 +147,26 @@ class PolitizrUserExtension extends \Twig_Extension
                     );
 
         return $html;
+    }
+
+    /**
+     *  Photo de profil d'un user
+     *
+     *  @param $user         PUser       PUser
+     *
+     *  @return html
+     */
+    public function photoBack($user, $filterName = 'user_bio_back')
+    {
+        // $this->logger->info('*** photoBack');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $path = '/bundles/politizrfront/images/default_user_back.jpg';
+        if ($user && $fileName = $user->getBackFileName()) {
+            $path = '/uploads/users/'.$fileName;
+        }
+
+        return $path;
     }
 
 

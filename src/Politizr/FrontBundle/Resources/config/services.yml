@@ -14,6 +14,12 @@ services:
         arguments: 							[ @service_container ]
 
 
+    # SERVICES UTILITAIRES
+    politizr.utils:
+        class:                              Politizr\FrontBundle\Lib\Utils\UtilsManager
+        arguments:                          [ @service_container ]
+
+
     # SERVICES ROUTING
     politizr.routing.ajax:
         class:                              Politizr\FrontBundle\Lib\Routing\AjaxCreateResponse
