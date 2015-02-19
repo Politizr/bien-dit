@@ -505,34 +505,36 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     *  Renvoie le mandat courant
+     *  Renvoie les mandats courants
      *
-     * @return PUMandate
+     * @return array    PQMandate
      */
-    public function getCurrentMandate() {
-        $puMandate = PUMandateQuery::create()
-            ->filterByPUserId($this->getId())
-            ->filterByEndAt(array('min' => time()))
-                ->_or()
-            ->filterByEndAt(null)
-            ->findOne();
+    public function getCurrentMandates() {
+        $pqMandate = PQMandateQuery::create()
+            ->usePUMandateQuery()
+                ->filterByPUserId($this->getId())
+                ->filterByEndAt(array('min' => time()))
+                    ->_or()
+                ->filterByEndAt(null)
+            ->endUse()
+            ->find();
 
-        return $puMandate;
+        return $pqMandate;
     }
 
     // *****************************    AFFINITÉS POLITIQUES    ************************* //
 
     /**
-     *  Renvoie les affinités d'organisation
+     *  Renvoie les organisation courantes
      *
      * @return array    PQOrganization
      */
-    public function getOrganizations($online = true) {
-        $query = PQOrganizationPartyQuery::create()
+    public function getCurrentOrganizations($online = true) {
+        $query = PQOrganizationQuery::create()
                     ->filterByOnline($online)
                     ->setDistinct();
 
-        return parent::getPQOrganizations($query);
+        return parent::getPUCurrentQOPQOrganizations($query);
     }
 
 

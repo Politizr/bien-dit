@@ -13,16 +13,22 @@ use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\Model\PUser;
 use Politizr\Model\PDocument;
 use Politizr\Model\PUFollowU;
+use Politizr\Model\PQType;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUMandate;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUNotificationsQuery;
+use Politizr\Model\PUCurrentQOQuery;
+use Politizr\Model\PUMandateQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
-
+use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * Services métiers associés aux utilisateurs. 
@@ -362,7 +368,192 @@ class UserManager
         return true;
     }
 
+    /**
+     *  Mise à jour des informations "organisation en cours" du user
+     *
+     */
+    public function orgaProfileUpdate() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** orgaProfileUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
 
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Récupération orga courante
+        $puCurrentQo = PUCurrentQOQuery::create()
+            ->filterByPUserId($user->getId())
+            ->usePUCurrentQOPQOrganizationQuery()
+                ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->endUse()
+            ->findOne();
+
+        if (!$puCurrentQo) {
+            $puCurrentQo = new PUCurrentQO();
+        }
+
+        $form = $this->sc->get('form.factory')->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
+
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $form->bind($request);
+        if ($form->isValid()) {
+            $puCurrentQo = $form->getData();
+            $logger->info('puCurrentQo = '.print_r($puCurrentQo, true));
+
+            $puCurrentQo->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+
+    /**
+     *  Création d'un mandat pour un user
+     *
+     */
+    public function mandateProfileCreate() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** mandateProfileCreate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Mandat
+        $mandate = new PUMandate();
+        $mandate->setPUserId($user->getId());
+        $mandate->setPQTypeId(PQType::ID_ELECTIF);
+
+        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
+
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $form->bind($request);
+        if ($form->isValid()) {
+            $mandate = $form->getData();
+            $logger->info('mandate = '.print_r($mandate, true));
+
+            $mandate->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Création d'un nouveau formulaire vierge
+        $mandate = new PUMandate();
+        $mandate->setPUserId($user->getId());
+        $mandate->setPQTypeId(PQType::ID_ELECTIF);
+
+        $formMandateViews = $this->getFormMandateViews($user->getId());
+        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+                            'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig', array(
+                                'formMandate' => $form->createView(),
+                                'formMandateViews' => $formMandateViews
+                                )
+                    );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     *  MAJ d'un mandat pour un user
+     *
+     */
+    public function mandateProfileUpdate() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** mandateProfileUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Mandat
+        $mandate = PUMandateQuery::create()->findPk($request->get('mandate')['id']);
+
+        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $form->bind($request);
+        if ($form->isValid()) {
+            $mandate = $form->getData();
+            $logger->info('mandate = '.print_r($mandate, true));
+
+            $mandate->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+
+    /**
+     *  MAJ d'un mandat pour un user
+     *
+     */
+    public function mandateProfileDelete() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** mandateProfileUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $id = $request->get('id');
+
+        $mandate = PUMandateQuery::create()->findPk($id);
+        $mandate->delete();
+
+        return true;
+    }
+
+    /**
+     *  Construction des vues des formulaires associés à chaque mandat du user
+     *  Code sous forme de fonction car utilisé à plusieurs endroits.
+     *
+     *  @param  integer     $userId     ID PUser
+     *
+     *  @return     array Form views PUMandateType
+     */
+    public function getFormMandateViews($userId) {
+        // Mandats
+        $mandates = PUMandateQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->orderByEndAt('desc')
+            ->find();
+
+        // Création des form + vues associées pour MAJ des mandats
+        $formMandateViews = array();
+        foreach($mandates as $mandate) {
+            $formMandate = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+            $formMandateViews[] = $formMandate->createView();
+        }
+
+        return $formMandateViews;
+    }
 
     /**
      *  Mise à jour des informations personnelles du user

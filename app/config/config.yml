@@ -340,12 +340,6 @@ bazinga_faker:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
-        Politizr\Model\PUAffinityQO:
-            number:                     150
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PQOrganizationId:       { method: numberBetween, parameters: [ 1, 16 ] }
-
 
         #################################################################################################################
         #                                   REPUTATION

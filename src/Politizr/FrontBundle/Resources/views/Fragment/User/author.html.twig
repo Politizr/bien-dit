@@ -30,14 +30,20 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
 		{% endblock authorReputation %}
 
 		{% block authorQualification %}
-			{# Mandat en cours #}
-			{% if user.currentMandate %}
-				{% set mandate = user.currentMandate %}
-				{% if (mandate) %}
-			        <img src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
-				{% endif %}	
-			{% endif %}
+			{# Mandats en cours #}
+			{% set mandates = user.currentMandates %}
+			{% for mandate in mandates %}
+				{{ mandate.title }}&nbsp;
+			{% endfor %}
 		{% endblock authorQualification %}
+
+		{% block authorOrganization %}
+			{# Organisations en cours #}
+			{% set organizations = user.currentOrganizations %}
+			{% for organization in organizations %}
+				<img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+			{% endfor %}
+		{% endblock authorOrganization %}
 	{% else %}
 		<span class="label label-default">Utilisateur supprimé</span>
 	{% endif %}

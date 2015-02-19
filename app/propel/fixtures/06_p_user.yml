@@ -27,7 +27,7 @@ Politizr\Model\PUser:
         firstname:              Lorem
         name:                   Ipsum
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -55,7 +55,7 @@ Politizr\Model\PUser:
         firstname:              Damien
         name:                   Abad
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -81,7 +81,7 @@ Politizr\Model\PUser:
         firstname:              Laurence
         name:                   Abeille
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -107,7 +107,7 @@ Politizr\Model\PUser:
         firstname:              Ibrahim
         name:                   Aboucar
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -133,7 +133,7 @@ Politizr\Model\PUser:
         firstname:              Elie
         name:                   Aboud
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -159,7 +159,7 @@ Politizr\Model\PUser:
         firstname:              Bernard
         name:                   Accoyer
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -185,7 +185,7 @@ Politizr\Model\PUser:
         firstname:              Patricia
         name:                   Adam
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -208,7 +208,7 @@ Politizr\Model\PUser:
         firstname:              Sylvian
         name:                   Alaux
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -234,7 +234,7 @@ Politizr\Model\PUser:
         firstname:              Eric
         name:                   Alauzet
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -260,7 +260,7 @@ Politizr\Model\PUser:
         firstname:              Yves
         name:                   Albarello
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -286,7 +286,7 @@ Politizr\Model\PUser:
         firstname:              Brigitte
         name:                   Allain
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -311,7 +311,7 @@ Politizr\Model\PUser:
         firstname:              Jean-Pierre
         name:                   Allossery
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -336,7 +336,7 @@ Politizr\Model\PUser:
         firstname:              Nicole
         name:                   Ameline
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -361,7 +361,7 @@ Politizr\Model\PUser:
         firstname:              Pouria
         name:                   Amirshahi
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -386,7 +386,7 @@ Politizr\Model\PUser:
         firstname:              François
         name:                   André
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -411,7 +411,7 @@ Politizr\Model\PUser:
         firstname:              Sylvie
         name:                   Andrieux
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -436,7 +436,7 @@ Politizr\Model\PUser:
         firstname:              Benoist
         name:                   Apparu
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -461,7 +461,7 @@ Politizr\Model\PUser:
         firstname:              Nathalie
         name:                   Appéré
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -486,7 +486,7 @@ Politizr\Model\PUser:
         firstname:              Laurence
         name:                   Arribagé
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -511,7 +511,7 @@ Politizr\Model\PUser:
         firstname:              François
         name:                   Asensi
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -536,7 +536,7 @@ Politizr\Model\PUser:
         firstname:              Christian
         name:                   Assaf
 
-        subtitle:               Député
+        subtitle:               Député de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>

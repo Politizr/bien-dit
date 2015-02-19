@@ -558,8 +558,8 @@
 
         <column name="description" type="longvarchar" />
 
-        <column name="begin_at" type="timestamp" />
-        <column name="end_at" type="timestamp" />
+        <column name="begin_at" type="date" />
+        <column name="end_at" type="date" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

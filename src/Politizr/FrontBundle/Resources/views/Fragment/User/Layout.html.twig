@@ -36,6 +36,12 @@ LAYOUT USER
 										<i class="fa fa-check-square-o" title="Profil validé"></i>
 									{% endif %}
 								</span>
+								&nbsp;&nbsp;
+								{# Organisations en cours #}
+								{% set organizations = user.currentOrganizations %}
+								{% for organization in organizations %}
+									<img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+								{% endfor %}
 							</h3>
 						</div>
 					{% endblock %}

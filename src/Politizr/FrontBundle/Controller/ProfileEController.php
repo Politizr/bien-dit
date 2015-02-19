@@ -27,6 +27,8 @@ use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgesQuery;
 use Politizr\Model\PUReputationQuery;
+use Politizr\Model\PUCurrentQOQuery;
+use Politizr\Model\PUMandateQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
@@ -36,12 +38,17 @@ use Politizr\Model\PTTagType;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUFollowT;
 use Politizr\Model\PRBadgeMetal;
+use Politizr\Model\PQType;
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUMandate;
 
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
+use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * Gestion profil débatteur
@@ -303,26 +310,52 @@ class ProfileEController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** myProfileAction');
 
-        // Récupération user courant
+        // User courant
         $user = $this->getUser();
 
-        // Récupération photos profil
+        // Photos profil
         $backFileName = $user->getBackFileName();
         $fileName = $user->getFileName();
+
+        // Organisation courante
+        $puCurrentQo = PUCurrentQOQuery::create()
+            ->filterByPUserId($user->getId())
+            ->usePUCurrentQOPQOrganizationQuery()
+                ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->endUse()
+            ->findOne();
+
+        if (!$puCurrentQo) {
+            $puCurrentQo = new PUCurrentQO();
+            $puCurrentQo->setPUserId($user->getId());
+        }
+
+        // Mandats
+        $formMandateViews = $this->get('politizr.service.user')->getFormMandateViews($user->getId());
+
+        // Form vierge pour création mandat
+        $mandate = new PUMandate();
+        $mandate->setPUserId($user->getId());
+        $mandate->setPQTypeId(PQType::ID_ELECTIF);
 
         // *********************************** //
         //      Formulaires
         // *********************************** //
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
+        $formOrga = $this->createForm(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
+        $formMandate = $this->createForm(new PUMandateType(PQType::ID_ELECTIF), $mandate);
 
         // *********************************** //
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myProfile.html.twig', array(
                         'user' => $user,
-                        'form' => $formBio->createView(),
                         'backFileName' => $backFileName,
                         'fileName' => $fileName,
+                        'formBio' => $formBio->createView(),
+                        'formOrga' => $formOrga->createView(),
+                        'formMandate' => $formMandate->createView(),
+                        'formMandateViews' => $formMandateViews,
             ));
     }
 

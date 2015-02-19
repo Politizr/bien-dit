@@ -1,0 +1,115 @@
+<script>
+
+    $("body").on("click", "a[action='show-mandate-create']", function(e) {
+        $('#mandate-create').slideDown("slow");
+    });
+
+    $("body").on("click", "a[action='hide-mandate-create']", function(e) {
+        $('#mandate-create').slideUp("slow");
+    });
+
+    // **************************** //
+    //      POST
+    // **************************** //
+    // MAJ du parti politique en cours
+    $("body").on("change", "select[action='orga-save']", function(e) {
+        console.log('*** change select');
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : "{{ path('OrgaProfileUpdate') }}",
+            data: $("#form-orga-update").serialize(),
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('.alert-success-msg').html('Organisation bien enregistrée.');
+                    $('.alert.alert-success').show();
+                }
+            }
+        });
+    });
+
+    // Création d'un mandat
+    $("body").on("click", "a[action='mandate-add']", function(e) {
+        console.log('*** click mandate-add');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('MandateProfileCreate') }}",
+            data: $("#form-mandate-create").serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('.alert-success-msg').html('Mandat bien enregistré.');
+                    $('.alert.alert-success').show();
+
+                    $('#mandates').html(data['html']);
+                }
+            }
+        });
+    });
+
+    // MAJ d'un mandat
+    $("body").on("click", "a[action='mandate-update']", function(e) {
+        console.log('*** click mandate-update');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('MandateProfileUpdate') }}",
+            data: $(this).parent().prev('.form-mandate-update').serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('.alert-success-msg').html('Mandat mis à jour.');
+                    $('.alert.alert-success').show();
+                }
+            }
+        });
+    });
+
+    // Suppression d'un mandat
+    $("body").on("click", "a[action='mandate-delete']", function(e) {
+        console.log('*** click mandate-delete');
+
+        bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('MandateProfileDelete') }}",
+                    data: { 'id': $(this).attr('subject-id') },
+                    context: $(this),
+                    dataType: 'json',
+                    {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                    success: function(data) {
+                        $('#ajax-loader').hide();
+                        if (data['error']) {
+                            $('.alert-danger-msg').html(data['error']);
+                            $('.alert.alert-danger').show();
+                        } else {
+                            $('.alert-success-msg').html('Mandat supprimé.');
+                            $('.alert.alert-success').show();
+
+                            $(this).closest('.mandate').slideUp();
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+</script>

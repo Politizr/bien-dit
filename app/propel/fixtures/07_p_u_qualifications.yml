@@ -185,3 +185,85 @@ Politizr\Model\PUMandate:
         begin_at:                2012-06-20 00:00:00
         description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
+# LISTE DES USERS / PARTIS EN COURS
+Politizr\Model\PUCurrentQO:
+    depute1Current:
+        p_user_id:               depute1
+        p_q_organization_id:     parti10
+
+    depute2Current:
+        p_user_id:               depute2
+        p_q_organization_id:     parti6
+
+    depute3Current:
+        p_user_id:               depute3
+        p_q_organization_id:     parti4
+
+    depute4Current:
+        p_user_id:               depute4
+        p_q_organization_id:     parti10
+
+    depute5Current:
+        p_user_id:               depute5
+        p_q_organization_id:     parti10
+
+    depute6Current:
+        p_user_id:               depute6
+        p_q_organization_id:     parti4
+
+    depute7Current:
+        p_user_id:               depute7
+        p_q_organization_id:     parti4
+
+    depute8Current:
+        p_user_id:               depute8
+        p_q_organization_id:     parti6
+
+    depute9Current:
+        p_user_id:               depute9
+        p_q_organization_id:     parti10
+
+    depute10Current:
+        p_user_id:               depute10
+        p_q_organization_id:     parti6
+
+    depute11Current:
+        p_user_id:               depute11
+        p_q_organization_id:     parti10
+
+    depute12Current:
+        p_user_id:               depute12
+        p_q_organization_id:     parti4
+
+    depute13Current:
+        p_user_id:               depute13
+        p_q_organization_id:     parti4
+
+    depute14Current:
+        p_user_id:               depute14
+        p_q_organization_id:     parti4
+
+    depute15Current:
+        p_user_id:               depute15
+        p_q_organization_id:     parti0
+
+    depute16Current:
+        p_user_id:               depute16
+        p_q_organization_id:     parti10
+
+    depute17Current:
+        p_user_id:               depute17
+        p_q_organization_id:     parti4
+
+    depute18Current:
+        p_user_id:               depute18
+        p_q_organization_id:     parti10
+
+    depute19Current:
+        p_user_id:               depute19
+        p_q_organization_id:     parti2
+
+    depute20Current:
+        p_user_id:               depute20
+        p_q_organization_id:     parti4
+

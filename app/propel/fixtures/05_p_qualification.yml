@@ -22,6 +22,7 @@ Politizr\Model\PQualification:
             Vous êtes membre d'un syndicat
 
 # TYPE DE QUALIFICATION
+# constantes de classe à MAJ en parallèle
 Politizr\Model\PQType:
     electif:
         title:              Mandat électif
@@ -221,10 +222,6 @@ Politizr\Model\PQMandate:
         online:             true
         p_q_type_id:        electif
         title:              Président du Conseil Communautaire
-    conseiller_municipal:
-        online:             true
-        p_q_type_id:        electif
-        title:              Conseiller Municipal
     maire:
         online:             true
         p_q_type_id:        electif
@@ -233,5 +230,7 @@ Politizr\Model\PQMandate:
         online:             true
         p_q_type_id:        electif
         title:              Adjoint au Maire
-
-
+    conseiller_municipal:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Municipal

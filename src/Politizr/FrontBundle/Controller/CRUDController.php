@@ -501,6 +501,66 @@ class CRUDController extends Controller {
         return $jsonResponse;
     }
 
+    /**
+     *  Mise à jour des informations "organisation en cours" du user
+     */
+    public function orgaProfileUpdateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** orgaProfileUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'orgaProfileUpdate'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Création d'un mandat pour un user
+     */
+    public function mandateProfileCreateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** mandateProfileCreateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'mandateProfileCreate'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  MAJ d'un mandat pour un user
+     */
+    public function mandateProfileUpdateAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** mandateProfileUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'mandateProfileUpdate'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Suppression d'un mandat pour un user
+     */
+    public function mandateProfileDeleteAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** mandateProfileDeleteAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'mandateProfileDelete'
+        );
+
+        return $jsonResponse;
+    }
+
 
 
     /**

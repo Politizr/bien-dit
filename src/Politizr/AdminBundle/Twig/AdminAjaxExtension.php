@@ -399,7 +399,7 @@ class AdminAjaxExtension extends \Twig_Extension
         $html = $this->templating->render(
                             'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig', array(
                                 'pUser' => $pUser,
-                                'organizations' => $pUser->getOrganizations(),
+                                'organizations' => $pUser->getCurrentOrganizations(),
                                 )
                     );
 

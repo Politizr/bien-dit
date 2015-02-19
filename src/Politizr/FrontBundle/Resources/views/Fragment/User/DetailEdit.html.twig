@@ -61,7 +61,7 @@
 	<hr>
 	<div class="row text-center">
 		<div class="col-sm-12">
-			<span class="bg-info">Choisissez des tags reflétant votre situation géographique.</span>
+			<span class="bg-info">Choisissez les tags géographiques publiques caractérisant votre situation</span>
 			{{ userTaggedTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
 		</div>
 	</div>
@@ -90,5 +90,4 @@
 {% endblock %}
 
 {% block detailQualifications %}
-	{{ parent() }}
 {% endblock %}
