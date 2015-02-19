@@ -518,7 +518,7 @@ class DocumentManager
     public function documentPhotoUpload() {
         $logger = $this->sc->get('logger');
         $logger->info('*** documentPhotoUpload');
-        
+
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
 
@@ -536,58 +536,22 @@ class DocumentManager
         // Chemin des images
         $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
 
-        // Taille max 5Mo
-        $sizeLimit = 5 * 1024 * 1024;
-
-        $myRequestedFile = $request->files->get('file-name');
-        // $logger->info(print_r($myRequestedFile, true));
-
-        if ($myRequestedFile == null) {
-            throw new FormValidationException('Fichier non existant.');
-        } else if ($myRequestedFile->getError() > 0) {
-            throw new FormValidationException('Erreur upload n°'.$myRequestedFile->getError(), 1);
-        } else {
-            // Contrôle extension
-            $allowedExtensions = array('jpg', 'jpeg', 'png');
-            $ext = $myRequestedFile->guessExtension();
-            if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
-                throw new FormValidationException('Type de fichier non autorisé.');
-            }
-
-            // Construction du nom du fichier
-            $destName = md5(uniqid()) . '.' . $ext;
-
-            //move the uploaded file to uploads folder;
-            // $move = move_uploaded_file($pathNameTmp, $path . $destName);
-            $movedFile = $myRequestedFile->move($path, $destName);
-            $logger->info('$movedFile = '.print_r($movedFile, true));
-        }
+        // Appel du service d'upload ajax
+        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
+            'file-name',
+            $path,
+            1024, 1024
+            );
 
         // Suppression photo déjà uploadée
-        $filename = $docChild->getFilename();
-        if ($filename && $fileExists = file_exists($path . $filename)) {
-            unlink($path . $filename);
+        $oldFilename = $docChild->getFilename();
+        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
+            unlink($path . $oldFilename);
         }
 
-        // TODO > ajout d'une contrainte sur une taille minimum
-        // Resize de la photo 1024*1024px max
-        $resized = false;                
-        $image = new SimpleImage();
-        $image->load($path . $destName);
-        if ($width = $image->getWidth() > 1024) {
-            $image->resizeToWidth(1024);
-            $resized = true;
-        }
-        if ($height = $image->getHeight() > 1024) {
-            $image->resizeToHeight(1024);
-            $resized = true;
-        }
-        if ($resized) {
-            $image->save($path . $destName);
-        }
 
         // MAJ du modèle
-        $docChild->setFilename($destName);
+        $docChild->setFilename($fileName);
         $docChild->save();
 
         // Construction rendu
@@ -595,7 +559,7 @@ class DocumentManager
         $html = $templating->render(
                             'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
                                 'document' => $document,
-                                'path' => 'uploads/documents/'.$destName,
+                                'path' => 'uploads/documents/'.$fileName,
                                 'filterName' => 'debate_header',
                                 )
                     );

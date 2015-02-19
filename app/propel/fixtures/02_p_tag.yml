@@ -12,20 +12,123 @@ Politizr\Model\PTTagType:
 
 Politizr\Model\PTag:
 
-    # LISTE DE TOUS LES ZONAGES: TODO: script pour insertion régions / départements / villes
+    # LISTE DE TOUS LES ZONAGES: TODO: script pour insertion villes
     monde:
         online:             true
         p_t_tag_type_id:    geo
         title:              Monde
-    europe:
+
+    # Continents
+    Afrique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Afrique
+    Europe:
         online:             true
         p_t_tag_type_id:    geo
         title:              Europe
-    france:
+    Amerique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Amérique
+    Asie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Asie
+    Oceanie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Océanie
+    Antarctique:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Antarctique
+
+    # Pays
+    # http://fr.wikipedia.org/wiki/Liste_des_pays_du_monde 
+    # http://fr.wikipedia.org/wiki/Liste_des_%C3%89tats_membres_de_l%27Organisation_des_Nations_unies
+    Afghanistan:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Afghanistan
+    Afrique-du-Sud:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Afrique du Sud
+    Albanie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Albanie
+    Algérie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Algérie
+    Allemagne:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Allemagne
+    Andorre:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Andorre
+    Angola:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Angola
+    Antigua-et-Barbuda:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Antigua-et-Barbuda
+    Arabie-saoudite:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Arabie saoudite
+    Argentine:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Argentine
+    Arménie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Arménie
+    Australie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Australie
+    Autriche:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Autriche
+    Azerbaïdjan:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Azerbaïdjan
+    Bahamas:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bahamas
+    Bahrein:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bahreïn
+    Bangladesh:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Bangladesh
+    Barbade:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Barbade
+    Biélorussie:
+        online:             true
+        p_t_tag_type_id:    geo
+        title:              Biélorussie
+    France:
         online:             true
         p_t_tag_type_id:    geo
         title:              France
 
+    # Régions
     alsace:
         online:             true
         p_t_tag_type_id:    geo
@@ -135,6 +238,7 @@ Politizr\Model\PTag:
         p_t_tag_type_id:    geo
         title:              Rhône-Alpes
 
+    # Départements
     Ain:
         online:             true
         p_t_tag_type_id:    geo

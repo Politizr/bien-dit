@@ -27,6 +27,7 @@ bazinga_faker:
     entities:
         Politizr\Model\PUser:
             custom_formatters:
+                BackFileName:           { method: image, parameters: [ '/var/www/politizr.v2.letitbug.com/web/uploads/users', '1280', '600', 'city', false ] }
                 FileName:               { method: image, parameters: [ '/var/www/politizr.v2.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
         Politizr\Model\PDDebate:
             custom_formatters:

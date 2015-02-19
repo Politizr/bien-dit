@@ -299,7 +299,7 @@ bazinga_faker:
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 
-                Subtitle:               { method: realText, parameters: [ 300 ] }
+                Subtitle:               { method: realText, parameters: [ 75 ] }
                 Biography:              { method: paragraphs, parameters: [ 4, true ] }
 
                 Website:                { method: url }
