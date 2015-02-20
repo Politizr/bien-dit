@@ -146,6 +146,8 @@
 
         "liip/imagine-bundle": "0.11.*",
 
+        "friendsofsymfony/elastica-bundle": "~3.0",
+
         "robloach/component-installer": "dev-master",
         "components/bootstrap": "v3.3.0",
         "fortawesome/font-awesome": "dev-master",

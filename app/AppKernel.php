@@ -53,6 +53,9 @@ class AppKernel extends Kernel
             // Twitter Bootstrap
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
 
+            // FOSElastica
+            new FOS\ElasticaBundle\FOSElasticaBundle(),
+
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),

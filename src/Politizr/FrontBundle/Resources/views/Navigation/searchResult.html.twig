@@ -1,0 +1,37 @@
+{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
+{% if (isGrantedE()) %}
+	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% elseif (isGrantedC()) %}
+	{% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% endif %}
+{% extends layout %}
+
+{% block connexionBox %}
+	{% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<div id="main" class="container">
+		<h1>Résultats</h1>
+		{% for document in results %}
+			{% if document.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': document.debate } %}
+			{% elseif document.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+				{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': document.reaction } %}
+			{% endif %}
+			<hr>
+		{% else %}
+			<div class="no-result">
+				Aucun résultat
+			</div>
+		{% endfor %}
+	</div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+	{{ parent() }}
+    
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

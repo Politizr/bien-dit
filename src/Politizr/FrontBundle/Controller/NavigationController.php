@@ -14,12 +14,60 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 use Politizr\Model\PUser;
 
+use Politizr\FrontBundle\Form\Type\SearchType;
+
 
 class NavigationController extends Controller
 {
     /* ######################################################################################################## */
     /*                                                  ROUTING CLASSIQUE                                       */
     /* ######################################################################################################## */
+
+    /**
+     *  Init Recherche
+     */
+    public function searchInitAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** searchInitAction');
+
+        $form = $this->createForm(
+            new SearchType()
+        );
+
+        return $this->render('PolitizrFrontBundle:Navigation:searchForm.html.twig', array(
+                    'form' => $form->createView(),
+            ));
+    }
+
+
+    /**
+     *  Recherche
+     */
+    public function searchAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** searchAction');
+
+        $form = $this->createForm(
+            new SearchType()
+        );
+
+        $results = array();
+        $query = $request->query->get('search_type')['query'];
+        if ($query) {
+            $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
+
+            $results = $finder->find($query);
+            $logger->info('$results = '.print_r($results, true));
+            // var_dump($results);
+            // exit();
+        }
+
+        return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
+                    'results' => $results,
+            ));
+    }
 
 
     /**

@@ -21,6 +21,11 @@ Presentation:
     pattern:  /presentation
     defaults: { _controller: PolitizrFrontBundle:Public:presentation }
 
+Search:
+    pattern:  /recherche
+    defaults: { _controller: PolitizrFrontBundle:Navigation:search }
+
+
 ################################################################################
 #               ROUTING CONNEXION
 ################################################################################
