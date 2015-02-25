@@ -487,12 +487,56 @@ fos_elastica:
         politizr:
             index_name: politizr_%kernel.environment%
             finder:                     ~
+            # http://obtao.com/blog/2013/10/configuration-elasticsearch-de-maniere-optimale/
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            custom_analyzer:
+                                type:           custom
+                                tokenizer:      nGram
+                                filter:         [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
+                            custom_search_analyzer:
+                                type:           custom
+                                tokenizer:      standard
+                                filter:         [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
+                        tokenizer:
+                            nGram:
+                                type:           nGram
+                                min_gram:       2
+                                max_gram:       20
+                        filter:
+                            snowball:
+                                type:           snowball
+                                language:       French
+                            elision:
+                                type:           elision
+                                articles:       [l, m, t, qu, n, s, j, d]
+                            stopwords:
+                                type:           stop
+                                stopwords:      [_french_]
+                                ignore_case:    true
+                            worddelimiter:
+                                type:           word_delimiter
             types:
                 p_document:
                     mappings:
-                        title:          ~
-                        summary:        ~
-                        description:    ~
+                        flatTags:
+                            boost:              6
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        title:
+                            boost:              3
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        summary:
+                            boost:              2
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        description:
+                            boost:              1
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -511,9 +555,22 @@ fos_elastica:
                         # indexable_callback: ~
                 p_user:
                     mappings:
-                        fullName:       ~
-                        subtitle:       ~
-                        biography:      ~
+                        flatTags:
+                            boost:              6
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        fullName:
+                            boost:              3
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        subtitle:
+                            boost:              2
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        biography:
+                            boost:              1
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
                     persistence:
                         driver:         propel
                         model:          Politizr\Model\PUser

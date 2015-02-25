@@ -22,7 +22,7 @@ Presentation:
     defaults: { _controller: PolitizrFrontBundle:Public:presentation }
 
 Search:
-    pattern:  /recherche
+    pattern:  /s
     defaults: { _controller: PolitizrFrontBundle:Navigation:search }
 
 

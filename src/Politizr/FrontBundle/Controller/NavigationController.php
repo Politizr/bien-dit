@@ -31,8 +31,11 @@ class NavigationController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** searchInitAction');
 
+        $query = $request->query->get('recherche')['query'];
+        $logger->info('query = '.print_r($query, true));
+
         $form = $this->createForm(
-            new SearchType()
+            new SearchType($query)
         );
 
         return $this->render('PolitizrFrontBundle:Navigation:searchForm.html.twig', array(
@@ -66,6 +69,7 @@ class NavigationController extends Controller
         }
 
         return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
+                    'query' => $query,
                     'results' => $results,
             ));
     }

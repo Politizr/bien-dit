@@ -25,14 +25,6 @@ class PUser extends BasePUser implements UserInterface
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
 
-    /**
-     *
-     */
-    public function getClassName() {
-        return PDocument::TYPE_USER;
-    }
-
-
 
     // *****************************  OBJET / STRING  ****************** //
 
@@ -43,12 +35,44 @@ class PUser extends BasePUser implements UserInterface
       return $this->getFullName();
     }
 
+
+    // *****************************  ELASTIC SEARCH  ****************** //
+
     /**
      *
      */
     public function getFullName() {
       return trim($this->getFirstname().' '.$this->getName());
     }
+
+    /**
+     *
+     */
+    public function getClassName() {
+        return PDocument::TYPE_USER;
+    }
+
+
+    /**
+     *  Renvoit la liste des tags qualifiant le user au format chaine
+     *
+     *  @return string
+     */
+    public function getFlatTags() {
+        $tags = $this->getPuTaggedTPTags(
+            PTagQuery::create()->filterByOnline(true)
+            );
+
+        $flatTags = '';
+        foreach($tags as $tag) {
+            $flatTags .= $tag . ' ';
+        }
+
+        return trim($flatTags);
+    }
+
+
+    // *****************************  FIN ES  ****************** //
 
     /**
      *

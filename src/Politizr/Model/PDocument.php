@@ -32,14 +32,6 @@ class PDocument extends BasePDocument
 	const TYPE_COMMENT = 'Politizr\Model\PDComment';
 	const TYPE_USER = 'Politizr\Model\PUser';
 
-  	/**
-  	 *
-  	 */
-	public function getClassName() {
-		return PDocument::TYPE_DOCUMENT;
-	}
-
-
 	// *****************************  OBJET / STRING  ****************** //
 
 	/**
@@ -48,6 +40,37 @@ class PDocument extends BasePDocument
 	public function __toString()
 	{
 		return $this->getTitle();
+	}
+
+
+	// *****************************  ELASTIC SEARCH  ****************** //
+
+  	/**
+  	 *
+  	 */
+	public function getClassName() {
+		return PDocument::TYPE_DOCUMENT;
+	}
+
+	/**
+	 * 	Renvoit la liste des tags associés au débat au format chaine
+	 *
+	 *	@return string
+	 */
+	public function getFlatTags() {
+		$tags = array();
+		if ($type = $this->getType() == PDocument::TYPE_DEBATE) {
+			$tags = $this->getDebate()->getPTags(
+				PTagQuery::create()->filterByOnline(true)
+				);
+		}
+
+		$flatTags = '';
+		foreach($tags as $tag) {
+			$flatTags .= $tag . ' ';
+		}
+
+		return trim($flatTags);
 	}
 
 
