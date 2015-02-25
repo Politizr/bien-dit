@@ -479,23 +479,45 @@ hwi_oauth:
 # FOSElastica
 fos_elastica:
     clients:
-        default: { host: localhost, port: 9200 }
+        # Sécurisation? https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/cookbook/elastica-client-http-headers.md#setting-http-headers-on-the-elastica-client
+        default: 
+            host: localhost
+            port: 9200
     indexes:
         politizr:
             index_name: politizr_%kernel.environment%
+            finder:                     ~
             types:
                 p_document:
                     mappings:
-                        title: ~
-                        summary: ~
-                        description: ~
+                        title:          ~
+                        summary:        ~
+                        description:    ~
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
                         # propel and should be removed
-                        driver: propel
-                        model:  Politizr\Model\PDocument
-                        provider: ~
+                        driver:         propel
+                        model:          Politizr\Model\PDocument
+                        provider:       ~
                         # listener:
                         #     immediate: ~
-                        finder: ~
+                        # ok avec propel:
+                        finder:         ~
+                        # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#handling-missing-results-with-foselasticabundle
+                        # elastica_to_model_transformer:
+                        #     ignore_missing: true
+                        # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
+                        # indexable_callback: ~
+                p_user:
+                    mappings:
+                        fullName:       ~
+                        subtitle:       ~
+                        biography:      ~
+                    persistence:
+                        driver:         propel
+                        model:          Politizr\Model\PUser
+                        provider:       ~
+                        finder:         ~
+                        # elastica_to_model_transformer:
+                        #     ignore_missing: true

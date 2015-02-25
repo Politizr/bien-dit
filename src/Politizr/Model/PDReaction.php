@@ -20,6 +20,15 @@ class PDReaction extends BasePDReaction
   	const UPLOAD_PATH = '/../../../web/uploads/documents/';
   	const UPLOAD_WEB_PATH = '/uploads/documents/';
 
+
+  	/**
+  	 *
+  	 */
+	public function getClassName() {
+		return PDocument::TYPE_REACTION;
+	}
+
+
 	// *****************************  OBJET / STRING  ****************** //
 
 	/**

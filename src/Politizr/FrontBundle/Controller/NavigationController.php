@@ -54,9 +54,10 @@ class NavigationController extends Controller
         );
 
         $results = array();
-        $query = $request->query->get('search_type')['query'];
+        $query = $request->query->get('recherche')['query'];
         if ($query) {
-            $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
+            // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
+            $finder = $this->container->get('fos_elastica.finder.politizr');
 
             $results = $finder->find($query);
             $logger->info('$results = '.print_r($results, true));

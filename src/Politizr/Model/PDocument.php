@@ -26,10 +26,19 @@ class PDocument extends BasePDocument
   	const UPLOAD_WEB_PATH = '/uploads/documents/';
 
 	// TODO > migrer le stockage des types sur un objet dédié
+	const TYPE_DOCUMENT = 'Politizr\Model\PDocument';
 	const TYPE_DEBATE = 'Politizr\Model\PDDebate';
 	const TYPE_REACTION = 'Politizr\Model\PDReaction';
 	const TYPE_COMMENT = 'Politizr\Model\PDComment';
 	const TYPE_USER = 'Politizr\Model\PUser';
+
+  	/**
+  	 *
+  	 */
+	public function getClassName() {
+		return PDocument::TYPE_DOCUMENT;
+	}
+
 
 	// *****************************  OBJET / STRING  ****************** //
 

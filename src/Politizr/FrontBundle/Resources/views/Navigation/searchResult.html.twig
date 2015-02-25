@@ -15,11 +15,15 @@
 {% block main %}
 	<div id="main" class="container">
 		<h1>Résultats</h1>
-		{% for document in results %}
-			{% if document.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': document.debate } %}
-			{% elseif document.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-				{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': document.reaction } %}
+		{% for result in results %}
+			{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DOCUMENT') %}
+				{% if result.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result.debate } %}
+				{% elseif result.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+					{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result.reaction } %}
+				{% endif %}
+			{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
+				{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': result } %}
 			{% endif %}
 			<hr>
 		{% else %}

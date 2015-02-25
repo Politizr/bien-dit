@@ -19,6 +19,13 @@ class PDDebate extends BasePDDebate
   	const UPLOAD_PATH = '/../../../web/uploads/documents/';
   	const UPLOAD_WEB_PATH = '/uploads/documents/';
 
+  	/**
+  	 *
+  	 */
+	public function getClassName() {
+		return PDocument::TYPE_DEBATE;
+	}
+
 	// *****************************  OBJET / STRING  ****************** //
 
 	/**

@@ -25,6 +25,13 @@ class PUser extends BasePUser implements UserInterface
   	const UPLOAD_PATH = '/../../../web/uploads/users/';
   	const UPLOAD_WEB_PATH = '/uploads/users/';
 
+    /**
+     *
+     */
+    public function getClassName() {
+        return PDocument::TYPE_USER;
+    }
+
 
 
     // *****************************  OBJET / STRING  ****************** //
@@ -33,6 +40,13 @@ class PUser extends BasePUser implements UserInterface
      *
      */
     public function __toString() {
+      return $this->getFullName();
+    }
+
+    /**
+     *
+     */
+    public function getFullName() {
       return trim($this->getFirstname().' '.$this->getName());
     }
 

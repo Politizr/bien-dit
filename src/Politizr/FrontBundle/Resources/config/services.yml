@@ -1,5 +1,6 @@
 parameters:
     politizr.oauth_user_provider.class:   	Politizr\Security\User\Provider\OAuthUserProvider
+    fos_elastica.elastica_to_model_transformer.collection.class:  Politizr\FrontBundle\Lib\ElasticSearch\ElasticaToModelTransformerPropelCollection
 
 services:
     # CONNEXION

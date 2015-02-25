@@ -655,7 +655,7 @@
                     ]
                 }
             },
-            "time": "2015-02-19 16:27:31"
+            "time": "2015-02-20 16:27:48"
         },
         {
             "name": "doctrine/annotations",
@@ -1135,7 +1135,7 @@
                     ]
                 }
             },
-            "time": "2015-02-19 16:27:31"
+            "time": "2015-02-20 16:27:48"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "9494fd1eb1f2861c656556e217479c47c17c05b7"
+                "reference": "3864c9b44d4073965ef568cb1417ae9c3ee047c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/9494fd1eb1f2861c656556e217479c47c17c05b7",
-                "reference": "9494fd1eb1f2861c656556e217479c47c17c05b7",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/3864c9b44d4073965ef568cb1417ae9c3ee047c7",
+                "reference": "3864c9b44d4073965ef568cb1417ae9c3ee047c7",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-02-19 22:36:06"
+            "time": "2015-02-23 19:12:53"
         },
         {
             "name": "fortawesome/font-awesome",
