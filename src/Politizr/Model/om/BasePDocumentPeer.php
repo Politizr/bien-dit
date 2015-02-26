@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDCommentPeer;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
@@ -530,7 +533,7 @@ abstract class BasePDocumentPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDocumentPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDocumentPeer::OM_CLASS;
+            $cls = PDocumentPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDocumentPeer::addInstanceToPool($obj, $key);
@@ -808,6 +811,13 @@ abstract class BasePDocumentPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PDocumentPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PDocumentPeer::OM_CLASS;
     }
 
@@ -1080,3 +1090,4 @@ abstract class BasePDocumentPeer
 //
 BasePDocumentPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDocumentPeer'));

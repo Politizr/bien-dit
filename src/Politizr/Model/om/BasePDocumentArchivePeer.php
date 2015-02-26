@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDocumentArchive;
 use Politizr\Model\PDocumentArchivePeer;
 use Politizr\Model\map\PDocumentArchiveTableMap;
@@ -517,7 +520,7 @@ abstract class BasePDocumentArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDocumentArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDocumentArchivePeer::OM_CLASS;
+            $cls = PDocumentArchivePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDocumentArchivePeer::addInstanceToPool($obj, $key);
@@ -557,6 +560,13 @@ abstract class BasePDocumentArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PDocumentArchivePeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PDocumentArchivePeer::OM_CLASS;
     }
 
@@ -825,3 +835,4 @@ abstract class BasePDocumentArchivePeer
 //
 BasePDocumentArchivePeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDocumentArchivePeer'));

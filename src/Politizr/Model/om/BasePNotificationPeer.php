@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PUNotificationsPeer;
@@ -484,7 +487,7 @@ abstract class BasePNotificationPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PNotificationPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PNotificationPeer::OM_CLASS;
+            $cls = PNotificationPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PNotificationPeer::addInstanceToPool($obj, $key);
@@ -524,6 +527,13 @@ abstract class BasePNotificationPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PNotificationPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PNotificationPeer::OM_CLASS;
     }
 
@@ -796,3 +806,4 @@ abstract class BasePNotificationPeer
 //
 BasePNotificationPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePNotificationPeer'));

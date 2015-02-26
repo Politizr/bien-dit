@@ -2,8 +2,10 @@
 
 namespace Politizr\Model;
 
-use Politizr\Model\om\BasePDDebate;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Politizr\Model\om\BasePDDebate;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
@@ -11,7 +13,7 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
 
-class PDDebate extends BasePDDebate
+class PDDebate extends BasePDDebate implements ContainerAwareInterface
 {
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -25,6 +27,87 @@ class PDDebate extends BasePDDebate
 	public function getClassName() {
 		return PDocument::TYPE_DEBATE;
 	}
+
+	// *****************************  ELASTIC SEARCH  ****************** //
+   	private $elasticaPersister;
+
+   	/**
+   	 *
+   	 */
+	public function setContainer(ContainerInterface $container = null) {
+		if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postInsert(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			if ($this->isIndexable()) {
+				$this->elasticaPersister->insertOne($this);
+			}
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postUpdate(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			if ($this->isIndexable()) {
+                $this->elasticaPersister->insertOne($this);
+			}
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postDelete(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			$this->elasticaPersister->deleteOne($this);
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+
+		// + gestion de l'upload
+		$this->removeUpload();
+	}
+
+	/**
+	 * 	Renvoit la liste des tags associés au débat au format chaine
+	 *
+	 *	@return string
+	 */
+	public function getFlatTags() {
+		$tags = $this->getPTags(
+			PTagQuery::create()->filterByOnline(true)
+			);
+
+		$flatTags = '';
+		foreach($tags as $tag) {
+			$flatTags .= $tag . ' ';
+		}
+
+		return trim($flatTags);
+	}
+
+    /**
+     *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
+     *
+     *  @return boolean
+     */
+	public function isIndexable() {
+		return $this->getOnline() && $this->getPublished();
+	}
+
 
 	// *****************************  OBJET / STRING  ****************** //
 
@@ -156,14 +239,6 @@ class PDDebate extends BasePDDebate
 			$this->removeUpload();
 		}
 		parent::setFileName($v);
-	}
-
-	/**
-	 *  Surcharge pour gérer la suppression physique.
-	 */
-	public function postDelete(\PropelPDO $con = null)
-	{
-		$this->removeUpload();
 	}
 
 	/**

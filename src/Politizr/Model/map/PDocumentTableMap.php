@@ -94,6 +94,10 @@ class PDocumentTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
             'concrete_inheritance_parent' =>  array (
   'descendant_column' => 'descendant_class',
 ),

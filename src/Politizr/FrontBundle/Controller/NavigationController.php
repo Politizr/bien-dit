@@ -62,6 +62,19 @@ class NavigationController extends Controller
             // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
             $finder = $this->container->get('fos_elastica.finder.politizr');
 
+
+            // $query = new \Elastica\Query\Bool();
+            // $fieldQuery = new \Elastica\Query\Text();
+            // $fieldQuery->setFieldQuery('name', $querystring);
+            // $query->addShould($fieldQuery);
+            // 
+            // $elasticaQuery = new \Elastica\Query();
+            // $elasticaQuery->setQuery($query);
+            // 
+            // $elasticaResultSet = $finder->search($elasticaQuery);
+            // $fruits = $elasticaResultSet->getResults();
+
+
             $results = $finder->find($query);
             $logger->info('$results = '.print_r($results, true));
             // var_dump($results);

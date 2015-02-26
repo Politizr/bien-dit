@@ -95,6 +95,10 @@ class PQMandateTableMap extends TableMap
   'use_scope' => 'true',
   'scope_column' => 'p_q_type_id',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
         );
     } // getBehaviors()
 

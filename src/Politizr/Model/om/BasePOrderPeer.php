@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\POEmailPeer;
 use Politizr\Model\POOrderStatePeer;
 use Politizr\Model\POPaymentStatePeer;
@@ -638,7 +641,7 @@ abstract class BasePOrderPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + POrderPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = POrderPeer::OM_CLASS;
+            $cls = POrderPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             POrderPeer::addInstanceToPool($obj, $key);
@@ -2514,6 +2517,13 @@ abstract class BasePOrderPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(POrderPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return POrderPeer::OM_CLASS;
     }
 
@@ -2786,3 +2796,4 @@ abstract class BasePOrderPeer
 //
 BasePOrderPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePOrderPeer'));

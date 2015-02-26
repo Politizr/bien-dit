@@ -66,9 +66,6 @@ class PublicController extends Controller
  
         // $homeGeoDebates = PDDebateQuery::create()->geolocalized($result, 10)->find();
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
                 'debates' => $debates,

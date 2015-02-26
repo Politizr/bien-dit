@@ -13,6 +13,8 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PTTagType;
@@ -110,6 +112,7 @@ abstract class BasePTagQuery extends ModelCriteria
             $modelName = 'Politizr\\Model\\PTag';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
+        EventDispatcherProxy::trigger(array('construct','query.construct'), new QueryEvent($this));
     }
 
     /**
@@ -125,7 +128,7 @@ abstract class BasePTagQuery extends ModelCriteria
         if ($criteria instanceof PTagQuery) {
             return $criteria;
         }
-        $query = new PTagQuery(null, null, $modelAlias);
+        $query = new static(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -207,7 +210,8 @@ abstract class BasePTagQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PTag();
+            $cls = PTagPeer::getOMClass();
+            $obj = new $cls;
             $obj->hydrate($row);
             PTagPeer::addInstanceToPool($obj, (string) $key);
         }
@@ -1028,12 +1032,26 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
+     * Code to execute before every SELECT statement
+     *
+     * @param     PropelPDO $con The connection object used by the query
+     */
+    protected function basePreSelect(PropelPDO $con)
+    {
+        // event behavior
+        EventDispatcherProxy::trigger('query.select.pre', new QueryEvent($this));
+
+        return $this->preSelect($con);
+    }
+
+    /**
      * Code to execute before every DELETE statement
      *
      * @param     PropelPDO $con The connection object used by the query
      */
     protected function basePreDelete(PropelPDO $con)
     {
+        EventDispatcherProxy::trigger(array('delete.pre','query.delete.pre'), new QueryEvent($this));
         // archivable behavior
 
         if ($this->archiveOnDelete) {
@@ -1042,8 +1060,53 @@ abstract class BasePTagQuery extends ModelCriteria
             $this->archiveOnDelete = true;
         }
 
+        // event behavior
+        // placeholder, issue #5
 
         return $this->preDelete($con);
+    }
+
+    /**
+     * Code to execute after every DELETE statement
+     *
+     * @param     int $affectedRows the number of deleted rows
+     * @param     PropelPDO $con The connection object used by the query
+     */
+    protected function basePostDelete($affectedRows, PropelPDO $con)
+    {
+        // event behavior
+        EventDispatcherProxy::trigger(array('delete.post','query.delete.post'), new QueryEvent($this));
+
+        return $this->postDelete($affectedRows, $con);
+    }
+
+    /**
+     * Code to execute before every UPDATE statement
+     *
+     * @param     array $values The associative array of columns and values for the update
+     * @param     PropelPDO $con The connection object used by the query
+     * @param     boolean $forceIndividualSaves If false (default), the resulting call is a BasePeer::doUpdate(), otherwise it is a series of save() calls on all the found objects
+     */
+    protected function basePreUpdate(&$values, PropelPDO $con, $forceIndividualSaves = false)
+    {
+        // event behavior
+        EventDispatcherProxy::trigger(array('update.pre', 'query.update.pre'), new QueryEvent($this));
+
+        return $this->preUpdate($values, $con, $forceIndividualSaves);
+    }
+
+    /**
+     * Code to execute after every UPDATE statement
+     *
+     * @param     int $affectedRows the number of updated rows
+     * @param     PropelPDO $con The connection object used by the query
+     */
+    protected function basePostUpdate($affectedRows, PropelPDO $con)
+    {
+        // event behavior
+        EventDispatcherProxy::trigger(array('update.post', 'query.update.post'), new QueryEvent($this));
+
+        return $this->postUpdate($affectedRows, $con);
     }
 
     // timestampable behavior
@@ -1316,4 +1379,13 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this->deleteAll($con);
     }
 
+    // extend behavior
+    public function setFormatter($formatter)
+    {
+        if (is_string($formatter) && $formatter === \ModelCriteria::FORMAT_ON_DEMAND) {
+            $formatter = '\Glorpen\Propel\PropelBundle\Formatter\PropelOnDemandFormatter';
+        }
+
+        return parent::setFormatter($formatter);
+    }
 }

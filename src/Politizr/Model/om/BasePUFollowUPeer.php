@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUFollowUQuery;
@@ -464,7 +467,7 @@ abstract class BasePUFollowUPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUFollowUPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUFollowUPeer::OM_CLASS;
+            $cls = PUFollowUPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUFollowUPeer::addInstanceToPool($obj, $key);
@@ -1083,6 +1086,13 @@ abstract class BasePUFollowUPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PUFollowUPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PUFollowUPeer::OM_CLASS;
     }
 
@@ -1397,3 +1407,4 @@ abstract class BasePUFollowUPeer
 //
 BasePUFollowUPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUFollowUPeer'));

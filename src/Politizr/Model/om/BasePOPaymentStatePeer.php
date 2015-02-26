@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\POEmailPeer;
 use Politizr\Model\POPaymentState;
 use Politizr\Model\POPaymentStatePeer;
@@ -475,7 +478,7 @@ abstract class BasePOPaymentStatePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + POPaymentStatePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = POPaymentStatePeer::OM_CLASS;
+            $cls = POPaymentStatePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             POPaymentStatePeer::addInstanceToPool($obj, $key);
@@ -515,6 +518,13 @@ abstract class BasePOPaymentStatePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(POPaymentStatePeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return POPaymentStatePeer::OM_CLASS;
     }
 
@@ -783,3 +793,4 @@ abstract class BasePOPaymentStatePeer
 //
 BasePOPaymentStatePeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePOPaymentStatePeer'));

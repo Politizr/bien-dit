@@ -23,12 +23,10 @@
 		</p>
 		<hr>
 		{% for result in results %}
-			{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DOCUMENT') %}
-				{% if result.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result.debate } %}
-				{% elseif result.descendantClass == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-					{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result.reaction } %}
-				{% endif %}
+			{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result } %}
+			{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+				{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result } %}
 			{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
 				{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': result } %}
 			{% endif %}

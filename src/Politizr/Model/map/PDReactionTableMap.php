@@ -120,6 +120,10 @@ class PDReactionTableMap extends TableMap
   'schema' => '',
   'excluded_parent_behavior' => 'nested_set',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
             'archivable' =>  array (
   'archive_table' => '',
   'archive_phpname' => NULL,

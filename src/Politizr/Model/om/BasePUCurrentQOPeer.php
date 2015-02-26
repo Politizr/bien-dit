@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PQOrganizationPeer;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUCurrentQOPeer;
@@ -469,7 +472,7 @@ abstract class BasePUCurrentQOPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUCurrentQOPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUCurrentQOPeer::OM_CLASS;
+            $cls = PUCurrentQOPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUCurrentQOPeer::addInstanceToPool($obj, $key);
@@ -1140,6 +1143,13 @@ abstract class BasePUCurrentQOPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PUCurrentQOPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PUCurrentQOPeer::OM_CLASS;
     }
 
@@ -1412,3 +1422,4 @@ abstract class BasePUCurrentQOPeer
 //
 BasePUCurrentQOPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUCurrentQOPeer'));

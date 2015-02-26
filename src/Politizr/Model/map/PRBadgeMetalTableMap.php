@@ -82,6 +82,10 @@ class PRBadgeMetalTableMap extends TableMap
   'use_scope' => 'false',
   'scope_column' => '',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
         );
     } // getBehaviors()
 

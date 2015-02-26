@@ -43,39 +43,6 @@ class PDocument extends BasePDocument
 	}
 
 
-	// *****************************  ELASTIC SEARCH  ****************** //
-
-  	/**
-  	 *
-  	 */
-	public function getClassName() {
-		return PDocument::TYPE_DOCUMENT;
-	}
-
-	/**
-	 * 	Renvoit la liste des tags associés au débat au format chaine
-	 *
-	 *	@return string
-	 */
-	public function getFlatTags() {
-		$tags = array();
-		if ($type = $this->getType() == PDocument::TYPE_DEBATE) {
-			$tags = $this->getDebate()->getPTags(
-				PTagQuery::create()->filterByOnline(true)
-				);
-		}
-
-		$flatTags = '';
-		foreach($tags as $tag) {
-			$flatTags .= $tag . ' ';
-		}
-
-		return trim($flatTags);
-	}
-
-
-	// *****************************  USER  ****************** //
-
 	/**
 	 *	Vérifie que le document courant a été rédigé par le user dont l'ID est passé en argument.
 	 *

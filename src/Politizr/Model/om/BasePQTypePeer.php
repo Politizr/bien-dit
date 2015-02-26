@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PQMandatePeer;
 use Politizr\Model\PQOrganizationPeer;
 use Politizr\Model\PQType;
@@ -502,7 +505,7 @@ abstract class BasePQTypePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PQTypePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PQTypePeer::OM_CLASS;
+            $cls = PQTypePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PQTypePeer::addInstanceToPool($obj, $key);
@@ -542,6 +545,13 @@ abstract class BasePQTypePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PQTypePeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PQTypePeer::OM_CLASS;
     }
 
@@ -954,3 +964,4 @@ abstract class BasePQTypePeer
 //
 BasePQTypePeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePQTypePeer'));

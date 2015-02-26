@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ac7060538b06c7d8fccce10bc1c4ce5",
+    "hash": "29cc6909597a8aec6f1bdcfc1df339c3",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -655,7 +655,7 @@
                     ]
                 }
             },
-            "time": "2015-02-20 16:27:48"
+            "time": "2015-02-25 17:34:54"
         },
         {
             "name": "doctrine/annotations",
@@ -1135,7 +1135,7 @@
                     ]
                 }
             },
-            "time": "2015-02-20 16:27:48"
+            "time": "2015-02-25 17:34:54"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "3864c9b44d4073965ef568cb1417ae9c3ee047c7"
+                "reference": "6b16ce9e0042ce08920edaa52260ae2edf44c788"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/3864c9b44d4073965ef568cb1417ae9c3ee047c7",
-                "reference": "3864c9b44d4073965ef568cb1417ae9c3ee047c7",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/6b16ce9e0042ce08920edaa52260ae2edf44c788",
+                "reference": "6b16ce9e0042ce08920edaa52260ae2edf44c788",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-02-23 19:12:53"
+            "time": "2015-02-25 00:33:26"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -1593,6 +1593,47 @@
                 "fixtures"
             ],
             "time": "2014-06-04 14:43:02"
+        },
+        {
+            "name": "glorpen/propel-bundle",
+            "version": "dev-default",
+            "target-dir": "Glorpen/Propel/PropelBundle",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/glorpen/glorpenpropelbundle",
+                "reference": "04c71ec7534dea488613c40fe16ee179d021dece"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/glorpen/glorpenpropelbundle/get/04c71ec7534dea488613c40fe16ee179d021dece.zip",
+                "reference": "04c71ec7534dea488613c40fe16ee179d021dece",
+                "shasum": ""
+            },
+            "require": {
+                "propel/propel-bundle": "1.*",
+                "symfony/symfony": "<3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "propel/propel-bundle": ">=1.4.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Glorpen\\Propel\\PropelBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Arkadiusz Dzięgiel"
+                }
+            ],
+            "description": "Propel events and model extending for Symfony2.",
+            "time": "2014-10-10 22:12:57"
         },
         {
             "name": "hwi/oauth-bundle",
@@ -4306,6 +4347,7 @@
         "facebook/php-sdk-v4": 20,
         "elao/web-profiler-extra-bundle": 20,
         "avocode/form-extensions-bundle": 20,
+        "glorpen/propel-bundle": 20,
         "robloach/component-installer": 20,
         "fortawesome/font-awesome": 20,
         "braincrafted/bootstrap-bundle": 20,

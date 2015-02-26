@@ -2,6 +2,9 @@
 
 namespace Politizr\Model;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Politizr\Model\om\BasePUser;
 
 use \PDO;
@@ -17,7 +20,7 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 
 
-class PUser extends BasePUser implements UserInterface
+class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
 {
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -37,6 +40,58 @@ class PUser extends BasePUser implements UserInterface
 
 
     // *****************************  ELASTIC SEARCH  ****************** //
+    private $elasticaPersister;
+
+    /**
+     *
+     */
+    public function setContainer(ContainerInterface $container = null) {
+        if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_user');
+    }
+
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postInsert(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            if ($this->isIndexable()) {
+                $this->elasticaPersister->insertOne($this);
+            }
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
+    }
+
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postUpdate(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            if ($this->isIndexable()) {
+                $this->elasticaPersister->insertOne($this);
+            }
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
+    }
+
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postDelete(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            $this->elasticaPersister->deleteOne($this);
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
+
+        // + gestion de l'upload
+        $this->removeUpload();
+    }
+
 
     /**
      *
@@ -69,6 +124,24 @@ class PUser extends BasePUser implements UserInterface
         }
 
         return trim($flatTags);
+    }
+
+
+    /**
+     *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
+     *
+     *  @return boolean
+     */
+    public function isIndexable() {
+        if (($this->getPUStatusId() == PUStatus::ACTIVED) || ($this->getPUStatusId() == PUStatus::VALIDATION_PROCESS)) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
+        return  $this->getOnline() 
+                && $status
+                ;
     }
 
 
@@ -178,14 +251,6 @@ class PUser extends BasePUser implements UserInterface
       		$this->removeUpload();
       	}
       	parent::setFileName($v);
-    }
-
-    /**
-     *  Surcharge pour gérer la suppression physique.
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-    	 $this->removeUpload();
     }
 
     /**

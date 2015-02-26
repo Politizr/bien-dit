@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\POEmailPeer;
 use Politizr\Model\POSubscription;
 use Politizr\Model\POSubscriptionPeer;
@@ -503,7 +506,7 @@ abstract class BasePOSubscriptionPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + POSubscriptionPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = POSubscriptionPeer::OM_CLASS;
+            $cls = POSubscriptionPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             POSubscriptionPeer::addInstanceToPool($obj, $key);
@@ -543,6 +546,13 @@ abstract class BasePOSubscriptionPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(POSubscriptionPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return POSubscriptionPeer::OM_CLASS;
     }
 
@@ -955,3 +965,4 @@ abstract class BasePOSubscriptionPeer
 //
 BasePOSubscriptionPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePOSubscriptionPeer'));

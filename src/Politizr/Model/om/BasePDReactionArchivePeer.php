@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDReactionArchive;
 use Politizr\Model\PDReactionArchivePeer;
 use Politizr\Model\map\PDReactionArchiveTableMap;
@@ -557,7 +560,7 @@ abstract class BasePDReactionArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDReactionArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDReactionArchivePeer::OM_CLASS;
+            $cls = PDReactionArchivePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDReactionArchivePeer::addInstanceToPool($obj, $key);
@@ -597,6 +600,13 @@ abstract class BasePDReactionArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PDReactionArchivePeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PDReactionArchivePeer::OM_CLASS;
     }
 
@@ -865,3 +875,4 @@ abstract class BasePDReactionArchivePeer
 //
 BasePDReactionArchivePeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDReactionArchivePeer'));

@@ -170,6 +170,10 @@ class PUserTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
             'equal_nest_parent' =>  array (
   'middle_table' => 'p_u_follow_u',
 ),

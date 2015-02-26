@@ -120,3 +120,23 @@ services:
         arguments:                          [ @service_container ]
         tags:
                                             - { name: twig.extension }
+
+    # FOS ELASTICA
+#     politzr.provider.p_document:
+#         class: Politizr\FrontBundle\Lib\ElasticSearch\Provider\PDocumentProvider
+#         arguments:
+#             - @fos_elastica.index.politizr.p_document
+#             - @logger
+#             - @fos_elastica.object_persister.politizr.p_document
+#         tags:
+#             - { name: fos_elastica.provider, index: politizr, type: p_document }
+
+#     politzr.provider.p_document:
+#         class: Politizr\FrontBundle\Lib\ElasticSearch\Provider\PDocumentPropelProvider
+#         arguments:
+#             - 
+#             - @fos_elastica.indexable
+#             - 
+#             - collection
+#         tags:
+#             - { name: fos_elastica.provider.prototype.propel }

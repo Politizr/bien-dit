@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @GlorpenPropelBundle/Resources/config/config.yml }
 
 parameters:
     session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
@@ -519,7 +520,9 @@ fos_elastica:
                             worddelimiter:
                                 type:           word_delimiter
             types:
-                p_document:
+                p_d_debate:
+                    # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
+                    indexable_callback:         'isIndexable'
                     mappings:
                         flatTags:
                             boost:              6
@@ -542,7 +545,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver:         propel
-                        model:          Politizr\Model\PDocument
+                        model:          Politizr\Model\PDDebate
                         provider:       ~
                         # listener:
                         #     immediate: ~
@@ -551,9 +554,28 @@ fos_elastica:
                         # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#handling-missing-results-with-foselasticabundle
                         # elastica_to_model_transformer:
                         #     ignore_missing: true
-                        # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
-                        # indexable_callback: ~
+                p_d_reaction:
+                    indexable_callback:         'isIndexable'
+                    mappings:
+                        title:
+                            boost:              3
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        summary:
+                            boost:              2
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                        description:
+                            boost:              1
+                            index_analyzer:     custom_analyzer
+                            search_analyzer:    custom_search_analyzer
+                    persistence:
+                        driver:         propel
+                        model:          Politizr\Model\PDReaction
+                        provider:       ~
+                        finder:         ~
                 p_user:
+                    indexable_callback:         'isIndexable'
                     mappings:
                         flatTags:
                             boost:              6

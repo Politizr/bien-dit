@@ -106,6 +106,10 @@ class PTagTableMap extends TableMap
   'permanent' => 'false',
   'scope_column' => '',
 ),
+            'event' =>  array (
+),
+            'extend' =>  array (
+),
         );
     } // getBehaviors()
 

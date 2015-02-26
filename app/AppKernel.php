@@ -43,6 +43,7 @@ class AppKernel extends Kernel
             // Propel
             new Propel\PropelBundle\PropelBundle(),
             new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
+            new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
             
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),

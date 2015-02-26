@@ -2,6 +2,9 @@
 
 namespace Politizr\Model;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\om\BasePDReaction;
@@ -12,7 +15,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PDRCommentQuery;
 
 
-class PDReaction extends BasePDReaction
+class PDReaction extends BasePDReaction implements ContainerAwareInterface
 {	
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -27,6 +30,70 @@ class PDReaction extends BasePDReaction
 	public function getClassName() {
 		return PDocument::TYPE_REACTION;
 	}
+
+	// *****************************  ELASTIC SEARCH  ****************** //
+   	private $elasticaPersister;
+
+   	/**
+   	 *
+   	 */
+	public function setContainer(ContainerInterface $container = null) {
+		if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_reaction');
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postInsert(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			if ($this->isIndexable()) {
+				$this->elasticaPersister->insertOne($this);
+			}
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postUpdate(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			if ($this->isIndexable()) {
+                $this->elasticaPersister->insertOne($this);
+			}
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+	}
+
+	/**
+	 * TODO: gestion d'une exception spécifique à ES
+	 *
+	 */
+	public function postDelete(\PropelPDO $con = null) {
+		if ($this->elasticaPersister) {
+			$this->elasticaPersister->deleteOne($this);
+		} else {
+			throw new \Exception('Service d\'indexation non dispo');
+		}
+
+		// + gestion de l'upload
+		$this->removeUpload();
+	}
+
+
+    /**
+     *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
+     *
+     *  @return boolean
+     */
+	public function isIndexable() {
+		return $this->getOnline() && $this->getPublished();
+	}
+
 
 
 	// *****************************  OBJET / STRING  ****************** //
@@ -158,14 +225,6 @@ class PDReaction extends BasePDReaction
 			$this->removeUpload();
 		}
 		parent::setFileName($v);
-	}
-
-	/**
-	 *  Surcharge pour gérer la suppression physique.
-	 */
-	public function postDelete(\PropelPDO $con = null)
-	{
-		$this->removeUpload();
 	}
 
 	/**

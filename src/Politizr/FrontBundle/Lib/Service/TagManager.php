@@ -264,7 +264,7 @@ class TagManager
         // Suppression du tag / profil
         $deleted = PUFollowTQuery::create()->deleteElement($objectId, $tagId);
 
-        return true;
+        return $deleted;
     }
 
 
@@ -306,7 +306,7 @@ class TagManager
                                 'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
                                     'objectId' => $objectId,
                                     'tag' => $tag,
-                                    'deleteUrl' => $this->sc->get('router')->generate('UserFollowDeleteTag')
+                                    'deleteUrl' => $this->sc->get('router')->generate('UserTaggedDeleteTag')
                                     )
                         );
         }
@@ -340,7 +340,7 @@ class TagManager
         // Suppression du tag / profil
         $deleted = PUTaggedTQuery::create()->deleteElement($objectId, $tagId);
 
-        return true;
+        return $deleted;
     }
 
 
