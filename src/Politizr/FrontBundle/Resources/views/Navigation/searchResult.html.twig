@@ -15,28 +15,22 @@
 {% block main %}
 	<div id="main" class="container">
 		<p class="bg-info">
-			{% if results | length > 0 %}
-				Il y a <b>{{ results | length }} résultat(s)</b> pour votre recherche "<i>{{ query }}</i>".
+			{% if pager.nbResults > 0 %}
+				Il y a <b>{{ pager.nbResults }} résultat(s)</b> pour votre recherche "<i>{{ query }}</i>".
 			{% else %}
 				Pas de résultats pour votre recherche "<i>{{ query }}</i>".
 			{% endif %}
 		</p>
 		<hr>
-		{% for result in results %}
-			{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-				{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result } %}
-			{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-				{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result } %}
-			{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
-				{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': result } %}
-			{% endif %}
-			<hr>
-		{% endfor %}
+		<div id="paginatedList">
+			{% include 'PolitizrFrontBundle:Navigation:searchResultPage.html.twig' with { 'pager': pager, 'routeName': 'SearchPage', 'query': query } only %}
+		</div>
 	</div>
 {% endblock main %}
 
 {% block javascriptFooter %}
 	{{ parent() }}
     
+    {% include 'PolitizrFrontBundle:JS:searchResult.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

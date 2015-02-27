@@ -5,6 +5,8 @@ namespace Politizr\Model;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
+
 use Politizr\Model\om\BasePUser;
 
 use \PDO;
@@ -19,8 +21,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 
-
-class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
+class PUser extends BasePUser implements UserInterface, ContainerAwareInterface, HighlightableModelInterface
 {
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -41,6 +42,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
 
     // *****************************  ELASTIC SEARCH  ****************** //
     private $elasticaPersister;
+    private $highlights;
 
     /**
      *
@@ -48,6 +50,23 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null) {
         if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_user');
     }
+
+    /**
+     *
+     */
+    public function getHighlights() {
+        return $this->highlights;
+    }
+
+    /**
+     * Set ElasticSearch highlight data.
+     *
+     * @param array $highlights array of highlight strings
+     */
+    public function setElasticHighlights(array $highlights) {
+        $this->highlights = $highlights;
+    }
+
 
     /**
      * TODO: gestion d'une exception spécifique à ES
@@ -107,25 +126,21 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
         return PDocument::TYPE_USER;
     }
 
-
     /**
-     *  Renvoit la liste des tags qualifiant le user au format chaine
+     *  Renvoit la liste des tags qualifiant le user sous forme de tableau de chaines.
      *
      *  @return string
      */
-    public function getFlatTags() {
-        $tags = $this->getPuTaggedTPTags(
-            PTagQuery::create()->filterByOnline(true)
-            );
+    public function getArrayTags($tagTypeId = null, $online = true) {
+        $query = PTagQuery::create()
+                    ->select('Title')
+                    ->filterByOnline(true)
+                    ->setDistinct()
+                    ;
 
-        $flatTags = '';
-        foreach($tags as $tag) {
-            $flatTags .= $tag . ' ';
-        }
-
-        return trim($flatTags);
+        $tags = parent::getPuTaggedTPTags($query)->toArray();
+        return $tags;
     }
-
 
     /**
      *  Appel au moment de l'indexation pour vérifier que l'objet est indexable

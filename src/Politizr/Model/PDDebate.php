@@ -13,7 +13,9 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
 
-class PDDebate extends BasePDDebate implements ContainerAwareInterface
+use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
+
+class PDDebate extends BasePDDebate implements ContainerAwareInterface, HighlightableModelInterface
 {
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -30,6 +32,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface
 
 	// *****************************  ELASTIC SEARCH  ****************** //
    	private $elasticaPersister;
+	private $highlights;
 
    	/**
    	 *
@@ -37,6 +40,23 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface
 	public function setContainer(ContainerInterface $container = null) {
 		if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
 	}
+
+	/**
+	 *
+ 	 */
+	public function getHighlights() {
+		return $this->highlights;
+	}
+
+	/**
+	 * Set ElasticSearch highlight data.
+	 *
+	 * @param array $highlights array of highlight strings
+	 */
+	public function setElasticHighlights(array $highlights) {
+		$this->highlights = $highlights;
+	}
+
 
 	/**
 	 * TODO: gestion d'une exception spécifique à ES
@@ -82,21 +102,19 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface
 	}
 
 	/**
-	 * 	Renvoit la liste des tags associés au débat au format chaine
+	 * 	Renvoit la liste des tags associés au débat sous forme de tableau de chaines.
 	 *
 	 *	@return string
 	 */
-	public function getFlatTags() {
-		$tags = $this->getPTags(
-			PTagQuery::create()->filterByOnline(true)
-			);
+	public function getArrayTags($tagTypeId = null, $online = true) {
+		$query = PTagQuery::create()
+					->select('Title')
+                    ->filterByOnline(true)
+                    ->setDistinct()
+                    ;
 
-		$flatTags = '';
-		foreach($tags as $tag) {
-			$flatTags .= $tag . ' ';
-		}
-
-		return trim($flatTags);
+		$tags = parent::getPTags($query)->toArray();
+		return $tags;
 	}
 
     /**

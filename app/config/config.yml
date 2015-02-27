@@ -524,7 +524,7 @@ fos_elastica:
                     # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
                     indexable_callback:         'isIndexable'
                     mappings:
-                        flatTags:
+                        arrayTags:
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
@@ -552,8 +552,8 @@ fos_elastica:
                         # ok avec propel:
                         finder:         ~
                         # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#handling-missing-results-with-foselasticabundle
-                        # elastica_to_model_transformer:
-                        #     ignore_missing: true
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                 p_d_reaction:
                     indexable_callback:         'isIndexable'
                     mappings:
@@ -574,10 +574,12 @@ fos_elastica:
                         model:          Politizr\Model\PDReaction
                         provider:       ~
                         finder:         ~
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                 p_user:
                     indexable_callback:         'isIndexable'
                     mappings:
-                        flatTags:
+                        arrayTags:
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
@@ -598,5 +600,5 @@ fos_elastica:
                         model:          Politizr\Model\PUser
                         provider:       ~
                         finder:         ~
-                        # elastica_to_model_transformer:
-                        #     ignore_missing: true
+                        elastica_to_model_transformer:
+                            ignore_missing: true

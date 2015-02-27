@@ -59,6 +59,9 @@ class NavigationController extends Controller
         $results = array();
         $query = $request->query->get('recherche')['query'];
         if ($query) {
+
+            // TODO > à sortir dans un service dédié
+
             // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
             $finder = $this->container->get('fos_elastica.finder.politizr');
 
@@ -75,17 +78,125 @@ class NavigationController extends Controller
             // $fruits = $elasticaResultSet->getResults();
 
 
-            $results = $finder->find($query);
-            $logger->info('$results = '.print_r($results, true));
-            // var_dump($results);
-            // exit();
+            // $matchQuery = new \Elastica\Query\Match();
+            // $matchQuery->setField('title', $query);
+            // 
+            // $searchQuery = new \Elastica\Query();
+            // $searchQuery->setQuery($matchQuery);
+            // 
+            // $searchQuery->setHighlight(array(
+            //     // 'pre_tags' => array('<p>'),
+            //     // 'post_tags' => array('<p>'),
+            //     'fields' => array('title' => new \stdClass())
+            // ));
+
+            // https://gist.github.com/tchapi/1ac99f757e0f336c1e1b
+            $boolQuery = new \Elastica\Query\Bool();
+            $queryString = new \Elastica\Query\QueryString();
+            $queryString->setDefaultField('_all');
+            $queryString->setQuery($query);
+            $boolQuery->addMust($queryString);
+            
+            $querySearch = new \Elastica\Query($boolQuery);
+            $querySearch->setHighlight(array(
+                "fields" => array("*" => new \stdClass)
+            ));
+
+            $pager = $finder->findPaginated($querySearch);
+
+            try {
+                $pager->setMaxPerPage(10)->setCurrentPage(1);
+            } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
+                throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
+            } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
+                throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
+            } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
+                throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
+            }
         }
 
         return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
                     'query' => $query,
-                    'results' => $results,
+                    'pager' => $pager,
             ));
     }
+
+    /**
+     *  Pagination ES  
+     *
+     */
+    public function searchPageAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** searchPageAction');
+
+        try {
+            if ($request->isXmlHttpRequest()) {
+                $query = $request->get('query');
+                $logger->info('$query = '.print_r($query, true));
+                $page = $request->get('page');
+                $logger->info('$page = '.print_r($page, true));
+
+
+                $finder = $this->container->get('fos_elastica.finder.politizr');
+
+
+                // https://gist.github.com/tchapi/1ac99f757e0f336c1e1b
+                $boolQuery = new \Elastica\Query\Bool();
+                $queryString = new \Elastica\Query\QueryString();
+                $queryString->setDefaultField('_all');
+                $queryString->setQuery($query);
+                $boolQuery->addMust($queryString);
+                
+                $querySearch = new \Elastica\Query($boolQuery);
+                $querySearch->setHighlight(array(
+                    "fields" => array("*" => new \stdClass)
+                ));
+
+                $pager = $finder->findPaginated($querySearch);
+                try {
+                    $pager->setMaxPerPage(10)->setCurrentPage($page);
+                } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
+                    throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
+                } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
+                    throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
+                } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
+                    throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
+                }
+
+                // Construction de la structure
+                $templating = $this->get('templating');
+                $html = $templating->render(
+                                    'PolitizrFrontBundle:Navigation:searchResultPage.html.twig',
+                                    array(
+                                        'pager' => $pager,
+                                        'query' => $query,
+                                        'routeName' => 'SearchPage',
+                                    )
+                            );
+
+                // Construction de la réponse
+                $jsonResponse = array (
+                    'success' => true,
+                    'html' => $html
+                );
+            } else {
+                throw $this->createNotFoundException('Not a XHR request');
+            }
+        } catch (NotFoundHttpException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
+
 
 
     /**

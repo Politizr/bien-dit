@@ -53,11 +53,13 @@ class ElasticaToModelTransformerPropelCollection implements ElasticaToModelTrans
 
         $transformed = array();
         foreach ($sorted as $type => $objects) {
-            $transformedObjects = $this->transformers[$type]->transform($objects);
-            $identifierGetter = 'get' . ucfirst($this->transformers[$type]->getIdentifierField());
+            if ($this->transformers[$type]) {
+                $transformedObjects = $this->transformers[$type]->transform($objects);
+                $identifierGetter = 'get' . ucfirst($this->transformers[$type]->getIdentifierField());
 
-            foreach($transformedObjects as $object) {
-                $transformed[$type][$object->$identifierGetter()] = $object;    
+                foreach($transformedObjects as $object) {
+                    $transformed[$type][$object->$identifierGetter()] = $object;    
+                }
             }
         }
 

@@ -5,17 +5,13 @@ namespace Politizr\Model;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\om\BasePDReaction;
 
-
-use Politizr\Model\PUser;
-
-use Politizr\Model\PDRCommentQuery;
-
-
-class PDReaction extends BasePDReaction implements ContainerAwareInterface
+class PDReaction extends BasePDReaction implements ContainerAwareInterface, HighlightableModelInterface
 {	
 	// ************************************************************************************ //
 	//										CONSTANTES
@@ -33,6 +29,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface
 
 	// *****************************  ELASTIC SEARCH  ****************** //
    	private $elasticaPersister;
+	private $highlights;
 
    	/**
    	 *
@@ -40,6 +37,23 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface
 	public function setContainer(ContainerInterface $container = null) {
 		if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_reaction');
 	}
+
+	/**
+	 *
+ 	 */
+	public function getHighlights() {
+		return $this->highlights;
+	}
+
+	/**
+	 * Set ElasticSearch highlight data.
+	 *
+	 * @param array $highlights array of highlight strings
+	 */
+	public function setElasticHighlights(array $highlights) {
+		$this->highlights = $highlights;
+	}
+
 
 	/**
 	 * TODO: gestion d'une exception spécifique à ES
