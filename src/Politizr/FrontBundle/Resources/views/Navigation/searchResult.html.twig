@@ -23,7 +23,7 @@
 		</p>
 		<hr>
 		<div id="paginatedList">
-			{% include 'PolitizrFrontBundle:Navigation:searchResultPage.html.twig' with { 'pager': pager, 'routeName': 'SearchPage', 'query': query } only %}
+			{% include 'PolitizrFrontBundle:Navigation:searchResultPage.html.twig' with { 'pager': pager, 'query': query } only %}
 		</div>
 	</div>
 {% endblock main %}

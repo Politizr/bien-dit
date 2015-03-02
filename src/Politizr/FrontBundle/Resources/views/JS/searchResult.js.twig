@@ -1,13 +1,14 @@
 <script type="text/javascript">
 	// clic précédent / suivant
-	$("body").on("click", "#boxPagination a", function(e) {
-		console.log('*** click boxPagination a');
-		console.log('href = ' + $(this).attr('href'));
+	$("body").on("click", "a[action='paginate-next']", function(e) {
+		console.log('*** click paginate-next');
+		console.log('next-page = ' + $(this).attr('next-page'));
 
 		e.preventDefault();
 		$.ajax({
-		  	type: 'GET',
-		  	url: $(this).attr('href'),
+		  	type: 'POST',
+		  	url: "{{ path('SearchPage') }}",
+		  	data: { 'query': $(this).attr('query'), 'next-page': $(this).attr('next-page') },
 		  	dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
@@ -16,7 +17,8 @@
                     $('.alert-danger-msg').html(data['error']);
                     $('.alert.alert-danger').show();
                 } else {
-                    $('#paginatedList').html(data['html']);
+                	$('#scroll-nav').remove();
+                    $('.boxResults').last().after(data['html']);
                     $('#ajax-loader').hide();
                 }
             }

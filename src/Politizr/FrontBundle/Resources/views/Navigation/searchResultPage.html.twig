@@ -1,23 +1,27 @@
 {% set results = pager.CurrentPageResults %}
 
-{% for result in results %}
-	<!-- TODO > gestion des highlights à debugguer > http://stackoverflow.com/questions/28768323/elasticsearch-highlights-results-repeats-snippets
-	{# for highlight in result.highlights #}
-		<p>{# dump(highlight) #}</p>
-	{# endfor #}
-	-->
-	{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
-		{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result } %}
-	{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
-		{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result } %}
-	{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
-		{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': result } %}
-	{% endif %}
-	<hr>
-{% endfor %}
+<div class="boxResults">
+	{% for result in results %}
+		<!-- TODO > gestion des highlights à debugguer > http://stackoverflow.com/questions/28768323/elasticsearch-highlights-results-repeats-snippets
+		{# for highlight in result.highlights #}
+			<p>{# dump(highlight) #}</p>
+		{# endfor #}
+		-->
+		{% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': result } %}
+		{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+			{% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRow.html.twig' with { 'reaction': result } %}
+		{% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
+			{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': result } %}
+		{% endif %}
+		<hr>
+	{% endfor %}	
+</div>
 
-{% if pager.haveToPaginate %}
-    <div id="boxPagination">
-        {{ pagerfanta(pager, 'default_translated', { 'routeName': routeName, 'routeParams': { 'query': query } }) }}
-    </div>
+{% if pager.hasNextPage %}
+	<div id="scroll-nav" class="row">
+		<div class="col-sm-12 text-center">
+			<a class="btn btn-primary" action="paginate-next" query="{{ query }}" next-page="{{ pager.nextPage }}">suite</a>
+		</div>
+	</div>
 {% endif %}

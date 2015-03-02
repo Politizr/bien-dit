@@ -309,11 +309,11 @@ DebateDraftEdit:
 # RECHERCHE PAGINATION
 ################################################################################
 SearchPage:
-    pattern:  /search-{page}-{query}.{_format}
+    pattern:  /search-page.{_format}
     defaults: { _controller: PolitizrFrontBundle:Navigation:searchPage, page: 1, _format: json }
     requirements:
         _format:        (xml|json)
-        _method:        GET
+        _method:        POST
 
 ################################################################################
 # LOGIN
