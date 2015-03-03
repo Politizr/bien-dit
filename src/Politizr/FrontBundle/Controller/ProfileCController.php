@@ -26,6 +26,8 @@ use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgesQuery;
 use Politizr\Model\PUReputationQuery;
+use Politizr\Model\PNotificationQuery;
+use Politizr\Model\PUSubscribeEmailQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
@@ -348,6 +350,38 @@ class ProfileCController extends Controller {
                         'formPerso2' => $formPerso2->createView(),
                         'formPerso3' => $formPerso3->createView()
             ));
+    }
+
+    public function myNotificationsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myNotificationsAction');
+
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        // Récupération liste des notifications
+        $notifications = PNotificationQuery::create()
+                        ->filterByOnline(true)
+                        ->orderById()
+                        ->find();
+
+        // ids des notifs email du user
+        $emailNotifIds = array();
+        $emailNotifIds = PUSubscribeEmailQuery::create()
+                        ->select('PNotificationId')
+                        ->filterByPUserId($user->getId())
+                        ->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileC:myNotifications.html.twig', array(
+                        'notifications' => $notifications,
+                        'emailNotifIds' => $emailNotifIds,
+            ));
+
     }
 
 

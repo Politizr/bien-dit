@@ -205,6 +205,10 @@ MyPersoC:
     pattern:  /citoyen/mon-compte/mes-informations-personnelles
     defaults: { _controller: PolitizrFrontBundle:ProfileC:myPerso }
 
+MyNotificationsC:
+    pattern:  /citoyen/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myNotifications }
+
 ################################################################################
 #               ROUTING ELU
 ################################################################################
@@ -445,6 +449,21 @@ UserPersoUpdate:
     pattern:  /profil/perso.{_format}
     defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+
+################################################################################
+# GESTION INFOS SOUSCRIPTION NOTIFICATIONS
+################################################################################
+NotificationEmailSubscribe:
+    pattern:  /profil/email-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationEmailUnsubscribe:
+    pattern:  /profil/email-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 
 ################################################################################
 # CONSULTATION DOCUMENT

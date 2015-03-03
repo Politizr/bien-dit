@@ -16,12 +16,13 @@ use Politizr\Model\PUFollowU;
 use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
+use Politizr\Model\PUSubscribeEmail;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUNotificationsQuery;
 use Politizr\Model\PUCurrentQOQuery;
-use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PUSubscribeEmailQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -731,4 +732,69 @@ class UserManager
 
         return true;
     }
+
+
+    /* ######################################################################################################## */
+    /*                              SOUSCRIPTIONS NOTIFICATIONS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
+
+
+    /**
+     *  Souscription notif email
+     *
+     */
+    public function notifEmailSubscribe() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifEmailSubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        // MAJ checked
+        $puSubscribeEmail = new PUSubscribeEmail();
+        $puSubscribeEmail->setPNotificationId($subjectId);
+        $puSubscribeEmail->setPUserId($user->getId());
+        $puSubscribeEmail->save();
+
+        return true;
+    }
+
+
+    /**
+     *  Désouscription notif email
+     *
+     */
+    public function notifEmailUnsubscribe() {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifEmailUnsubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        // MAJ checked
+        try {
+            $puSubscribeEmail = PUSubscribeEmailQuery::create()
+                                    ->filterByPNotificationId($subjectId)
+                                    ->filterByPUserId($user->getId())
+                                    ->findOne();
+            $puSubscribeEmail->delete();
+        } catch (\Exception $e) {
+            throw new InconsistentDataException($user.' non inscrit à cette notification.');
+        }
+
+        return true;
+    }
+
 }

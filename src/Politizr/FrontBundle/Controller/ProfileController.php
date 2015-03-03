@@ -71,5 +71,36 @@ class ProfileController extends Controller {
         return $jsonResponse;
     }
 
+
+    /**
+     *  Souscrit une notification par email
+     */
+    public function notifEmailSubscribeAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** notifEmailSubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifEmailSubscribe'
+        );
+
+        return $jsonResponse;
+    }
+   
+
+    /**
+     *  Désouscrit une notification par email
+     */
+    public function notifEmailUnsubscribeAction(Request $request) {
+        $logger = $this->get('logger');
+        $logger->info('*** notifEmailUnsubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifEmailUnsubscribe'
+        );
+
+        return $jsonResponse;
+    }
    
 }
