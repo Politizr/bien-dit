@@ -48,30 +48,6 @@ class SearchManager
             // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
             $finder = $this->sc->get('fos_elastica.finder.politizr');
 
-            // $query = new \Elastica\Query\Bool();
-            // $fieldQuery = new \Elastica\Query\Text();
-            // $fieldQuery->setFieldQuery('name', $querystring);
-            // $query->addShould($fieldQuery);
-            // 
-            // $elasticaQuery = new \Elastica\Query();
-            // $elasticaQuery->setQuery($query);
-            // 
-            // $elasticaResultSet = $finder->search($elasticaQuery);
-            // $fruits = $elasticaResultSet->getResults();
-
-
-            // $matchQuery = new \Elastica\Query\Match();
-            // $matchQuery->setField('title', $query);
-            // 
-            // $searchQuery = new \Elastica\Query();
-            // $searchQuery->setQuery($matchQuery);
-            // 
-            // $searchQuery->setHighlight(array(
-            //     // 'pre_tags' => array('<p>'),
-            //     // 'post_tags' => array('<p>'),
-            //     'fields' => array('title' => new \stdClass())
-            // ));
-
             // https://gist.github.com/tchapi/1ac99f757e0f336c1e1b
             $boolQuery = new \Elastica\Query\Bool();
             $queryString = new \Elastica\Query\QueryString();
@@ -81,7 +57,9 @@ class SearchManager
             
             $querySearch = new \Elastica\Query($boolQuery);
             $querySearch->setHighlight(array(
-                "fields" => array("*" => new \stdClass)
+                'fields' => array("*" => new \stdClass),
+                'pre_tags' => array('<b>'),
+                'post_tags' => array('</b>'),
             ));
 
             $pager = $finder->findPaginated($querySearch);
@@ -90,7 +68,6 @@ class SearchManager
         }
 
     }
-
 
 
     /* ######################################################################################################## */

@@ -7,12 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Politizr\Model\om\BasePDDebate;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
-
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PDReactionQuery;
-
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
 class PDDebate extends BasePDDebate implements ContainerAwareInterface, HighlightableModelInterface

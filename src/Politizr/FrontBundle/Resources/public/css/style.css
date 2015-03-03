@@ -40,6 +40,11 @@ h6,
     overflow-y:scroll;
 }
 
+/* elastic search */
+.snippet {
+  clear: both;
+}
+
  /* styles génériques */
 .alert {
     position: fixed;

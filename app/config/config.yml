@@ -492,20 +492,20 @@ fos_elastica:
             settings:
                 index:
                     analysis:
-                        analyzer:
-                            custom_analyzer:
-                                type:           custom
-                                tokenizer:      nGram
-                                filter:         [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
-                            custom_search_analyzer:
-                                type:           custom
-                                tokenizer:      standard
-                                filter:         [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
                         tokenizer:
                             nGram:
                                 type:           nGram
                                 min_gram:       2
                                 max_gram:       20
+                        analyzer:
+                            custom_analyzer:
+                                type:           custom
+                                tokenizer:      nGram
+                                filter:         [stopwords, asciifolding, lowercase, snowball, elision, worddelimiter]
+                            custom_search_analyzer:
+                                type:           custom
+                                tokenizer:      standard
+                                filter:         [stopwords, asciifolding, lowercase, snowball, elision, worddelimiter]
                         filter:
                             snowball:
                                 type:           snowball
