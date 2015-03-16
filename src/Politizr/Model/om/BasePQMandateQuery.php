@@ -1072,7 +1072,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @param int $scope Scope to determine which objects node to return
 
-     * @param      PropelPDO $con	Connection to use.
+     * @param      PropelPDO $con    Connection to use.
      *
      * @return     mixed the list of results, formatted by the current formatter
      */
@@ -1112,7 +1112,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
     /**
      * Get the highest rank by a scope with a array format.
      *
-     * @param     int $scope		The scope value as scalar type or array($value1, ...).
+     * @param     int $scope        The scope value as scalar type or array($value1, ...).
 
      * @param     PropelPDO optional connection
      *

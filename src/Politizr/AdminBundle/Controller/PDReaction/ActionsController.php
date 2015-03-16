@@ -22,7 +22,7 @@ class ActionsController extends BaseActionsController
 
         $filterObject = array();
         $filterObject['p_d_reaction_id'] = $pk;
-		$this->get('session')->set('Politizr\AdminBundle\PDRCommentList\Filters', $filterObject);
+        $this->get('session')->set('Politizr\AdminBundle\PDRCommentList\Filters', $filterObject);
 
 
         return new RedirectResponse($this->generateUrl("Politizr_AdminBundle_PDRComment_list"));

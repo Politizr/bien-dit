@@ -13,12 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ListController extends BaseListController
 {
-	/**
-	 *	Redirection vers le show de l'objet PDDebate associé
-	 */
+    /**
+     *    Redirection vers le show de l'objet PDDebate associé
+     */
     public function indexAction()
     {
-    	// Récupération de l'ID de débat en cours
+        // Récupération de l'ID de débat en cours
         $session = $this->get('session');
         $pk = $session->get('PDDebate/id');
         $action = $session->get('PDDebate/action');

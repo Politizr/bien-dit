@@ -592,187 +592,187 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puFollowDdPDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pRBadgesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pRActionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puTaggedTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puFollowTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pQualificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUAffinityQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUCurrentQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUNotificationsPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUSubscribeEmailPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUSubscribeScreenPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pOrdersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puFollowDdPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUBadgessScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUReputationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puTaggedTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $puFollowTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pURoleQsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUMandatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUAffinityQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUCurrentQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUNotificationsPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUSubscribeEmailPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUSubscribeScreenPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pDocumentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pDCommentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUFollowUsRelatedByPUserIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pDReactionsScheduledForDeletion = null;
 
@@ -940,7 +940,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1002,7 +1002,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1053,7 +1053,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1104,7 +1104,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1247,7 +1247,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1364,7 +1364,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1459,7 +1459,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1499,7 +1499,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -5416,7 +5416,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PTag $pTag The pTag object to add.
+     * @param    PTag $pTag The pTag object to add.
      */
     protected function doAddPTag($pTag)
     {
@@ -5425,7 +5425,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PTag $pTag The pTag object to remove.
+     * @param    PTag $pTag The pTag object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePTag($pTag)
@@ -5666,7 +5666,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	POrder $pOrder The pOrder object to add.
+     * @param    POrder $pOrder The pOrder object to add.
      */
     protected function doAddPOrder($pOrder)
     {
@@ -5675,7 +5675,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	POrder $pOrder The pOrder object to remove.
+     * @param    POrder $pOrder The pOrder object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePOrder($pOrder)
@@ -5991,7 +5991,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
+     * @param    PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
      */
     protected function doAddPuFollowDdPUser($puFollowDdPUser)
     {
@@ -6000,7 +6000,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to remove.
+     * @param    PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuFollowDdPUser($puFollowDdPUser)
@@ -6241,7 +6241,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to add.
+     * @param    PUBadges $pUBadges The pUBadges object to add.
      */
     protected function doAddPUBadges($pUBadges)
     {
@@ -6250,7 +6250,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to remove.
+     * @param    PUBadges $pUBadges The pUBadges object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUBadges($pUBadges)
@@ -6491,7 +6491,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUReputation $pUReputation The pUReputation object to add.
+     * @param    PUReputation $pUReputation The pUReputation object to add.
      */
     protected function doAddPUReputation($pUReputation)
     {
@@ -6500,7 +6500,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUReputation $pUReputation The pUReputation object to remove.
+     * @param    PUReputation $pUReputation The pUReputation object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUReputation($pUReputation)
@@ -6741,7 +6741,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
+     * @param    PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
      */
     protected function doAddPuTaggedTPUser($puTaggedTPUser)
     {
@@ -6750,7 +6750,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to remove.
+     * @param    PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuTaggedTPUser($puTaggedTPUser)
@@ -6991,7 +6991,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
+     * @param    PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
      */
     protected function doAddPuFollowTPUser($puFollowTPUser)
     {
@@ -7000,7 +7000,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to remove.
+     * @param    PuFollowTPUser $puFollowTPUser The puFollowTPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuFollowTPUser($puFollowTPUser)
@@ -7241,7 +7241,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PURoleQ $pURoleQ The pURoleQ object to add.
+     * @param    PURoleQ $pURoleQ The pURoleQ object to add.
      */
     protected function doAddPURoleQ($pURoleQ)
     {
@@ -7250,7 +7250,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PURoleQ $pURoleQ The pURoleQ object to remove.
+     * @param    PURoleQ $pURoleQ The pURoleQ object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePURoleQ($pURoleQ)
@@ -7491,7 +7491,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUMandate $pUMandate The pUMandate object to add.
+     * @param    PUMandate $pUMandate The pUMandate object to add.
      */
     protected function doAddPUMandate($pUMandate)
     {
@@ -7500,7 +7500,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUMandate $pUMandate The pUMandate object to remove.
+     * @param    PUMandate $pUMandate The pUMandate object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUMandate($pUMandate)
@@ -7791,7 +7791,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
+     * @param    PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
      */
     protected function doAddPUAffinityQOPUser($pUAffinityQOPUser)
     {
@@ -7800,7 +7800,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to remove.
+     * @param    PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUAffinityQOPUser($pUAffinityQOPUser)
@@ -8041,7 +8041,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
+     * @param    PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
      */
     protected function doAddPUCurrentQOPUser($pUCurrentQOPUser)
     {
@@ -8050,7 +8050,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to remove.
+     * @param    PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUCurrentQOPUser($pUCurrentQOPUser)
@@ -8291,7 +8291,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
+     * @param    PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
      */
     protected function doAddPUNotificationsPUser($pUNotificationsPUser)
     {
@@ -8300,7 +8300,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to remove.
+     * @param    PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUNotificationsPUser($pUNotificationsPUser)
@@ -8541,7 +8541,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
+     * @param    PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
      */
     protected function doAddPUSubscribeEmailPUser($pUSubscribeEmailPUser)
     {
@@ -8550,7 +8550,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to remove.
+     * @param    PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUSubscribeEmailPUser($pUSubscribeEmailPUser)
@@ -8791,7 +8791,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
+     * @param    PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
      */
     protected function doAddPUSubscribeScreenPUser($pUSubscribeScreenPUser)
     {
@@ -8800,7 +8800,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to remove.
+     * @param    PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUSubscribeScreenPUser($pUSubscribeScreenPUser)
@@ -9041,7 +9041,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDocument $pDocument The pDocument object to add.
+     * @param    PDocument $pDocument The pDocument object to add.
      */
     protected function doAddPDocument($pDocument)
     {
@@ -9050,7 +9050,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDocument $pDocument The pDocument object to remove.
+     * @param    PDocument $pDocument The pDocument object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDocument($pDocument)
@@ -9266,7 +9266,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDComment $pDComment The pDComment object to add.
+     * @param    PDComment $pDComment The pDComment object to add.
      */
     protected function doAddPDComment($pDComment)
     {
@@ -9275,7 +9275,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDComment $pDComment The pDComment object to remove.
+     * @param    PDComment $pDComment The pDComment object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDComment($pDComment)
@@ -9519,7 +9519,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to add.
+     * @param    PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to add.
      */
     protected function doAddPUFollowURelatedByPUserId($pUFollowURelatedByPUserId)
     {
@@ -9528,7 +9528,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to remove.
+     * @param    PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUFollowURelatedByPUserId($pUFollowURelatedByPUserId)
@@ -9747,7 +9747,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to add.
+     * @param    PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to add.
      */
     protected function doAddPUFollowURelatedByPUserFollowerId($pUFollowURelatedByPUserFollowerId)
     {
@@ -9756,7 +9756,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to remove.
+     * @param    PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUFollowURelatedByPUserFollowerId($pUFollowURelatedByPUserFollowerId)
@@ -9972,7 +9972,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDDebate $pDDebate The pDDebate object to add.
+     * @param    PDDebate $pDDebate The pDDebate object to add.
      */
     protected function doAddPDDebate($pDDebate)
     {
@@ -9981,7 +9981,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDDebate $pDDebate The pDDebate object to remove.
+     * @param    PDDebate $pDDebate The pDDebate object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDDebate($pDDebate)
@@ -10222,7 +10222,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDReaction $pDReaction The pDReaction object to add.
+     * @param    PDReaction $pDReaction The pDReaction object to add.
      */
     protected function doAddPDReaction($pDReaction)
     {
@@ -10231,7 +10231,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PDReaction $pDReaction The pDReaction object to remove.
+     * @param    PDReaction $pDReaction The pDReaction object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDReaction($pDReaction)
@@ -10450,7 +10450,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
+     * @param    PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
      */
     protected function doAddPuFollowDdPDDebate(PDDebate $puFollowDdPDDebate)
     {
@@ -10637,7 +10637,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PRBadge $pRBadge The pRBadge object to add.
+     * @param    PRBadge $pRBadge The pRBadge object to add.
      */
     protected function doAddPRBadge(PRBadge $pRBadge)
     {
@@ -10824,7 +10824,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PRAction $pRAction The pRAction object to add.
+     * @param    PRAction $pRAction The pRAction object to add.
      */
     protected function doAddPRAction(PRAction $pRAction)
     {
@@ -11011,7 +11011,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
+     * @param    PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
      */
     protected function doAddPuTaggedTPTag(PTag $puTaggedTPTag)
     {
@@ -11198,7 +11198,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
+     * @param    PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
      */
     protected function doAddPuFollowTPTag(PTag $puFollowTPTag)
     {
@@ -11385,7 +11385,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQualification $pQualification The pQualification object to add.
+     * @param    PQualification $pQualification The pQualification object to add.
      */
     protected function doAddPQualification(PQualification $pQualification)
     {
@@ -11572,7 +11572,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
+     * @param    PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
      */
     protected function doAddPUAffinityQOPQOrganization(PQOrganization $pUAffinityQOPQOrganization)
     {
@@ -11759,7 +11759,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
+     * @param    PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
      */
     protected function doAddPUCurrentQOPQOrganization(PQOrganization $pUCurrentQOPQOrganization)
     {
@@ -11946,7 +11946,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
+     * @param    PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
      */
     protected function doAddPUNotificationsPNotification(PNotification $pUNotificationsPNotification)
     {
@@ -12133,7 +12133,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
+     * @param    PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
      */
     protected function doAddPUSubscribeEmailPNotification(PNotification $pUSubscribeEmailPNotification)
     {
@@ -12320,7 +12320,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
+     * @param    PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
      */
     protected function doAddPUSubscribeScreenPNotification(PNotification $pUSubscribeScreenPNotification)
     {

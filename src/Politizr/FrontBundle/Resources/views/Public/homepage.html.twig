@@ -5,51 +5,51 @@
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		<div id="debates">
-			<h2>Les derniers débats publiés...</h2>
-			<div>
-				{% for debate in debates %}
-					{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
-					<hr>
-				{% endfor %}
-			</div>
-		</div>
-		<div class="border-row">&nbsp;</div>
-		<div id="users">
-			<h2>Les profils les plus populaires...</h2>
-			<div>
-				{% for user in users %}
-					{% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } %}
-					<hr>
-				{% endfor %}
-			</div>
-		</div>
-		<div class="border-row">&nbsp;</div>
-		<div id="comments">
-			<h2>Les derniers commentaires...</h2>
-			<div>
-				{% for comment in comments %}
-					{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
-					<hr>
-				{% endfor %}
-			</div>
-		</div>
+    <div id="main" class="container">
+        <div id="debates">
+            <h2>Les derniers débats publiés...</h2>
+            <div>
+                {% for debate in debates %}
+                    {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="border-row">&nbsp;</div>
+        <div id="users">
+            <h2>Les profils les plus populaires...</h2>
+            <div>
+                {% for user in users %}
+                    {% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } %}
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="border-row">&nbsp;</div>
+        <div id="comments">
+            <h2>Les derniers commentaires...</h2>
+            <div>
+                {% for comment in comments %}
+                    {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
 
-		<!--
-		<div id="homeLocalDebates">
-			<h2>Les débats de votre région</h2>
-			<div>
-			</div>
-		</div>
-		-->
+        <!--
+        <div id="homeLocalDebates">
+            <h2>Les débats de votre région</h2>
+            <div>
+            </div>
+        </div>
+        -->
 
-	</div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
-	{% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    {{ parent() }}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
     
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

@@ -1,68 +1,68 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
-	<div id="main" class="container">
-		<h1>Mes informations personnelles</h1>
-		<p>
-			Vous disposez actuellement d'un compte débatteur.
-		</p>
+    <div id="main" class="container">
+        <h1>Mes informations personnelles</h1>
+        <p>
+            Vous disposez actuellement d'un compte débatteur.
+        </p>
 
-		<h3>Votre identité</h3>
-		<div id="box-perso1">
-			{{ form_start(formPerso1, {'style': 'horizontal', 'attr': {'id': 'form-perso1'} }) }}
-			    {{ form_errors(formPerso1) }}
+        <h3>Votre identité</h3>
+        <div id="box-perso1">
+            {{ form_start(formPerso1, {'style': 'horizontal', 'attr': {'id': 'form-perso1'} }) }}
+                {{ form_errors(formPerso1) }}
 
-			    {{ form_row(formPerso1.gender) }}
-			    {{ form_row(formPerso1.name) }}
-			    {{ form_row(formPerso1.firstname) }}
-			    {{ form_row(formPerso1.birthday) }}
+                {{ form_row(formPerso1.gender) }}
+                {{ form_row(formPerso1.name) }}
+                {{ form_row(formPerso1.firstname) }}
+                {{ form_row(formPerso1.birthday) }}
 
-				{% if app.user.validated %}
-			    	<p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
-			    {% else %}
-					<div class="col-lg-offset-2 col-lg-10">
-						<button type="button" id="user_actions_save" name="user[actions][save]" class="btn-success btn btn-default" action="btn-submit-perso" form-id-name="form-perso1">Mettre à jour</button>
-					</div>				    
-			    {% endif %}
-			{{ form_end(formPerso1) }}
-		</div>
-		
-		<hr>
+                {% if app.user.validated %}
+                    <p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
+                {% else %}
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <button type="button" id="user_actions_save" name="user[actions][save]" class="btn-success btn btn-default" action="btn-submit-perso" form-id-name="form-perso1">Mettre à jour</button>
+                    </div>                    
+                {% endif %}
+            {{ form_end(formPerso1) }}
+        </div>
+        
+        <hr>
 
-		<h3>Votre email et votre abonnement newsletter</h3>
-		<div id="box-perso2">
-			{{ form_start(formPerso2, {'style': 'horizontal', 'attr': {'id': 'form-perso2'} }) }}
-			    {{ form_errors(formPerso2) }}
+        <h3>Votre email et votre abonnement newsletter</h3>
+        <div id="box-perso2">
+            {{ form_start(formPerso2, {'style': 'horizontal', 'attr': {'id': 'form-perso2'} }) }}
+                {{ form_errors(formPerso2) }}
 
-			    {{ form_row(formPerso2.email) }}
-			    {{ form_row(formPerso2.newsletter) }}
+                {{ form_row(formPerso2.email) }}
+                {{ form_row(formPerso2.newsletter) }}
 
-			    {{ form_row(formPerso2.actions) }}
-			{{ form_end(formPerso2) }}
-		</div>
-		
-		<hr>
+                {{ form_row(formPerso2.actions) }}
+            {{ form_end(formPerso2) }}
+        </div>
+        
+        <hr>
 
-		<h3>Vos identifiant et mot de passe de connexion</h3>
-		<div id="box-perso3">
-			{{ form_start(formPerso3, {'style': 'horizontal', 'attr': {'id': 'form-perso3'} }) }}
-			    {{ form_errors(formPerso3) }}
+        <h3>Vos identifiant et mot de passe de connexion</h3>
+        <div id="box-perso3">
+            {{ form_start(formPerso3, {'style': 'horizontal', 'attr': {'id': 'form-perso3'} }) }}
+                {{ form_errors(formPerso3) }}
 
-			    {{ form_row(formPerso3.username) }}
-			    {{ form_row(formPerso3.password) }}
+                {{ form_row(formPerso3.username) }}
+                {{ form_row(formPerso3.password) }}
 
-			    <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
-			    <hr>
+                <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
+                <hr>
 
-			    {{ form_row(formPerso3.actions) }}
-			{{ form_end(formPerso3) }}
-		</div>
+                {{ form_row(formPerso3.actions) }}
+            {{ form_end(formPerso3) }}
+        </div>
 
-	</div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
 
     {% include 'PolitizrFrontBundle:JS:persoUpdate.js.twig' %}
 {% endblock javascriptFooter %}

@@ -1,7 +1,7 @@
 <div class="container">
-	{% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
-		{% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
-	{% else %}
-		{% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
-	{% endif %}
+    {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
+        {% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
+    {% else %}
+        {% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
+    {% endif %}
 </div>

@@ -1,11 +1,11 @@
 <div id="displayDebatesZone">
-	{% if pdDebates | length > 0 %}
-		<b>{{ pdDebates | length }} débats ont été rédigés par {{ pUser }}</b>
-	{% else %}
-		<b>Aucun débat rédigé par {{ pUser }}</b>
-	{% endif %}
-	<hr>
-	{% for pdDebate in pdDebates %}
-		{% include 'PolitizrAdminBundle:Fragment:UserDebate.html.twig' with { 'pdDebate': pdDebate } %}
-	{% endfor %}
+    {% if pdDebates | length > 0 %}
+        <b>{{ pdDebates | length }} débats ont été rédigés par {{ pUser }}</b>
+    {% else %}
+        <b>Aucun débat rédigé par {{ pUser }}</b>
+    {% endif %}
+    <hr>
+    {% for pdDebate in pdDebates %}
+        {% include 'PolitizrAdminBundle:Fragment:UserDebate.html.twig' with { 'pdDebate': pdDebate } %}
+    {% endfor %}
 </div>

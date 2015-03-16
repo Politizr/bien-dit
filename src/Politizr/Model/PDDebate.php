@@ -11,162 +11,162 @@ use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
 class PDDebate extends BasePDDebate implements ContainerAwareInterface, HighlightableModelInterface
 {
-	// ************************************************************************************ //
-	//										CONSTANTES
-	// ************************************************************************************ //
-  	const UPLOAD_PATH = '/../../../web/uploads/documents/';
-  	const UPLOAD_WEB_PATH = '/uploads/documents/';
+    // ************************************************************************************ //
+    //                                        CONSTANTES
+    // ************************************************************************************ //
+      const UPLOAD_PATH = '/../../../web/uploads/documents/';
+      const UPLOAD_WEB_PATH = '/uploads/documents/';
 
-  	/**
-  	 *
-  	 */
-	public function getClassName() {
-		return PDocument::TYPE_DEBATE;
-	}
+      /**
+       *
+       */
+    public function getClassName() {
+        return PDocument::TYPE_DEBATE;
+    }
 
-	// *****************************  ELASTIC SEARCH  ****************** //
-   	private $elasticaPersister;
-	private $highlights;
+    // *****************************  ELASTIC SEARCH  ****************** //
+       private $elasticaPersister;
+    private $highlights;
 
-   	/**
-   	 *
-   	 */
-	public function setContainer(ContainerInterface $container = null) {
-		if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
-	}
+       /**
+        *
+        */
+    public function setContainer(ContainerInterface $container = null) {
+        if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
+    }
 
-	/**
-	 *
- 	 */
-	public function getHighlights() {
-		return $this->highlights;
-	}
+    /**
+     *
+      */
+    public function getHighlights() {
+        return $this->highlights;
+    }
 
-	/**
-	 * Set ElasticSearch highlight data.
-	 *
-	 * @param array $highlights array of highlight strings
-	 */
-	public function setElasticHighlights(array $highlights) {
-		$this->highlights = $highlights;
-	}
+    /**
+     * Set ElasticSearch highlight data.
+     *
+     * @param array $highlights array of highlight strings
+     */
+    public function setElasticHighlights(array $highlights) {
+        $this->highlights = $highlights;
+    }
 
 
-	/**
-	 * TODO: gestion d'une exception spécifique à ES
-	 *
-	 */
-	public function postInsert(\PropelPDO $con = null) {
-		if ($this->elasticaPersister) {
-			if ($this->isIndexable()) {
-				$this->elasticaPersister->insertOne($this);
-			}
-		} else {
-			throw new \Exception('Service d\'indexation non dispo');
-		}
-	}
-
-	/**
-	 * TODO: gestion d'une exception spécifique à ES
-	 *
-	 */
-	public function postUpdate(\PropelPDO $con = null) {
-		if ($this->elasticaPersister) {
-			if ($this->isIndexable()) {
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postInsert(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
-			}
-		} else {
-			throw new \Exception('Service d\'indexation non dispo');
-		}
-	}
+            }
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
+    }
 
-	/**
-	 * TODO: gestion d'une exception spécifique à ES
-	 *
-	 */
-	public function postDelete(\PropelPDO $con = null) {
-		if ($this->elasticaPersister) {
-			$this->elasticaPersister->deleteOne($this);
-		} else {
-			throw new \Exception('Service d\'indexation non dispo');
-		}
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postUpdate(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            if ($this->isIndexable()) {
+                $this->elasticaPersister->insertOne($this);
+            }
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
+    }
 
-		// + gestion de l'upload
-		$this->removeUpload();
-	}
+    /**
+     * TODO: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postDelete(\PropelPDO $con = null) {
+        if ($this->elasticaPersister) {
+            $this->elasticaPersister->deleteOne($this);
+        } else {
+            throw new \Exception('Service d\'indexation non dispo');
+        }
 
-	/**
-	 * 	Renvoit la liste des tags associés au débat sous forme de tableau de chaines.
-	 *
-	 *	@return string
-	 */
-	public function getArrayTags($tagTypeId = null, $online = true) {
-		$query = PTagQuery::create()
-					->select('Title')
+        // + gestion de l'upload
+        $this->removeUpload();
+    }
+
+    /**
+     *     Renvoit la liste des tags associés au débat sous forme de tableau de chaines.
+     *
+     *    @return string
+     */
+    public function getArrayTags($tagTypeId = null, $online = true) {
+        $query = PTagQuery::create()
+                    ->select('Title')
                     ->filterByOnline(true)
                     ->setDistinct()
                     ;
 
-		$tags = parent::getPTags($query)->toArray();
-		return $tags;
-	}
+        $tags = parent::getPTags($query)->toArray();
+        return $tags;
+    }
 
     /**
      *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
      *
      *  @return boolean
      */
-	public function isIndexable() {
-		return $this->getOnline() && $this->getPublished();
-	}
+    public function isIndexable() {
+        return $this->getOnline() && $this->getPublished();
+    }
 
 
-	// *****************************  OBJET / STRING  ****************** //
+    // *****************************  OBJET / STRING  ****************** //
 
-	/**
-	 *
-	 */
-	public function __toString()
-	{
-		return $this->getTitle();
-	}
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 
- 	/**
-	 * Override to manage accented characters
-	 * @return string
-	 */
-	protected function createRawSlug()
-	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
-		$slug = $this->cleanupSlugPart($toSlug);
-		return $slug;
-	}
+     /**
+     * Override to manage accented characters
+     * @return string
+     */
+    protected function createRawSlug()
+    {
+        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $slug = $this->cleanupSlugPart($toSlug);
+        return $slug;
+    }
 
-	/**
-	 *	Surcharge pour gérer la date et l'auteur de la publication.
-	 *
-	 *
-	 */
+    /**
+     *    Surcharge pour gérer la date et l'auteur de la publication.
+     *
+     *
+     */
     public function preSave(\PropelPDO $con = null)
     {
-    	// TODO > en commentaire pour avoir des fixtures variées (à supprimer)
-    	// if ($this->published && ($this->isNew() || in_array(PDDebatePeer::PUBLISHED, $this->modifiedColumns))) {
-    	// 	$this->setPublishedAt(time());
-    	// } else {
-    	// 	$this->setPublishedAt(null);
-    	// }
+        // TODO > en commentaire pour avoir des fixtures variées (à supprimer)
+        // if ($this->published && ($this->isNew() || in_array(PDDebatePeer::PUBLISHED, $this->modifiedColumns))) {
+        //     $this->setPublishedAt(time());
+        // } else {
+        //     $this->setPublishedAt(null);
+        // }
 
-    	// User associé
-    	// TODO > chaine en dur
-		$publisher = $this->getPUser();
-		if ($publisher) {
-			$this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
-		} else {
-			$this->setPublishedBy('Auteur inconnu');
-		}
+        // User associé
+        // TODO > chaine en dur
+        $publisher = $this->getPUser();
+        if ($publisher) {
+            $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
+        } else {
+            $this->setPublishedBy('Auteur inconnu');
+        }
 
-    	return parent::preSave($con);
-	}
+        return parent::preSave($con);
+    }
 
     /**
      * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
@@ -186,10 +186,10 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
 
 
-	// ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
+    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
+    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
-	// Colonnes virtuelles / fichiers
+    // Colonnes virtuelles / fichiers
     public $uploadedFileName;
     public function setUploadedFileName($uploadedFileName) {
         $this->uploadedFileName = $uploadedFileName;
@@ -203,9 +203,9 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
         return PDDebate::UPLOAD_WEB_PATH . $this->file_name;
     }
     
-	/**
-	 * 
-	 */
+    /**
+     * 
+     */
     public function getUploadedFileName()
     {
         // inject file into property (if uploaded)
@@ -222,61 +222,61 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     /**
      *  Gestion physique de l'upload
      */
-	public function upload($file = null)
-	{
-		if (null === $file) {
-		  	return;
-		}
+    public function upload($file = null)
+    {
+        if (null === $file) {
+              return;
+        }
 
-		// Extension et nom de fichier
-		$extension = $file->guessExtension();
-		if (!$extension) {
-			  $extension = 'bin';
-		}
-		$fileName = 'p-d-d-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        // Extension et nom de fichier
+        $extension = $file->guessExtension();
+        if (!$extension) {
+              $extension = 'bin';
+        }
+        $fileName = 'p-d-d-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
 
-		// move takes the target directory and then the target filename to move to
-		$fileUploaded = $file->move(__DIR__ . PDDebate::UPLOAD_PATH, $fileName);
+        // move takes the target directory and then the target filename to move to
+        $fileUploaded = $file->move(__DIR__ . PDDebate::UPLOAD_PATH, $fileName);
 
-		// file_name
-		return $fileName;
-	}    
+        // file_name
+        return $fileName;
+    }    
 
-	/**
-	 *	Surcharge pour gérer la suppression physique.
-	 */
-	public function setFileName($v)
-	{
-		if (!$v) {
-			$this->removeUpload();
-		}
-		parent::setFileName($v);
-	}
+    /**
+     *    Surcharge pour gérer la suppression physique.
+     */
+    public function setFileName($v)
+    {
+        if (!$v) {
+            $this->removeUpload();
+        }
+        parent::setFileName($v);
+    }
 
-	/**
-	 * 	Suppression physique des fichiers.
-	 */
-	public function removeUpload($uploadedFileName = true)
-	{
-		if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PDDebate::UPLOAD_PATH . $this->file_name)) {
-		  	unlink(__DIR__ . PDDebate::UPLOAD_PATH . $this->file_name);
-		}
-	}
-	
+    /**
+     *     Suppression physique des fichiers.
+     */
+    public function removeUpload($uploadedFileName = true)
+    {
+        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PDDebate::UPLOAD_PATH . $this->file_name)) {
+              unlink(__DIR__ . PDDebate::UPLOAD_PATH . $this->file_name);
+        }
+    }
+    
 
-	// ************************************************************************************ //
-	//										METHODES
-	// ************************************************************************************ //
+    // ************************************************************************************ //
+    //                                        METHODES
+    // ************************************************************************************ //
 
     // *****************************    TAGS   ************************* //
 
-	/**
-	 * Renvoit les tags associés au débat
-	 *
-	 * @return PropelCollection d'objets PTag
-	 */
-	public function getTags($tagTypeId = null, $online = true) {
-		$query = PTagQuery::create()
+    /**
+     * Renvoit les tags associés au débat
+     *
+     * @return PropelCollection d'objets PTag
+     */
+    public function getTags($tagTypeId = null, $online = true) {
+        $query = PTagQuery::create()
                     ->_if($tagTypeId)
                         ->filterByPTTagTypeId($tagTypeId)
                     ->_endif()
@@ -284,129 +284,129 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
                     ->setDistinct()
                     ;
 
-		return parent::getPTags($query);
-	}
+        return parent::getPTags($query);
+    }
 
 
     // *****************************    DOCUMENTS   ************************* //
 
-	/**
-	 * Renvoit le document associé à la réaction
-	 *
-	 * @return 	PDDebate 	Objet débat
-	 */
-	public function getDocument() {
-		return parent::getPDocument();
-	}
+    /**
+     * Renvoit le document associé à la réaction
+     *
+     * @return     PDDebate     Objet débat
+     */
+    public function getDocument() {
+        return parent::getPDocument();
+    }
 
-	/**
-	 *	Renvoit les réactions associées en mode arbre / nested set
-	 *
-	 * @return PropelCollection d'objets PDReaction
-	 */
-	public function getTreeReactions($online = false, $published = false) {
-		$treeReactions = PDReactionQuery::create()
-					->filterByTreeLevel(0, \Criteria::NOT_EQUAL)	// Exclusion du root node
-					->_if($online)
-						->filterByOnline(true)
-					->_endif()
-					->_if($published)
-						->filterByPublished(true)
-					->_endif()
-					->filterByPDDebateId($this->getId())
-					->findTree($this->getId())
-					;
+    /**
+     *    Renvoit les réactions associées en mode arbre / nested set
+     *
+     * @return PropelCollection d'objets PDReaction
+     */
+    public function getTreeReactions($online = false, $published = false) {
+        $treeReactions = PDReactionQuery::create()
+                    ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+                    ->_if($online)
+                        ->filterByOnline(true)
+                    ->_endif()
+                    ->_if($published)
+                        ->filterByPublished(true)
+                    ->_endif()
+                    ->filterByPDDebateId($this->getId())
+                    ->findTree($this->getId())
+                    ;
 
-		return $treeReactions;
-	}
+        return $treeReactions;
+    }
 
-	/**
-	 *	Renvoit le nombre de réactions associées au débat
-	 *
-	 */
-	public function countReactions($online = false, $published = false) {
-		$query = PDReactionQuery::create()
-					->filterByTreeLevel(0, \Criteria::NOT_EQUAL)	// Exclusion du root node
-					->_if($online)
-						->filterByOnline(true)
-					->_endif()
-					->_if($published)
-						->filterByPublished(true)
-					->_endif()
-					;
+    /**
+     *    Renvoit le nombre de réactions associées au débat
+     *
+     */
+    public function countReactions($online = false, $published = false) {
+        $query = PDReactionQuery::create()
+                    ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+                    ->_if($online)
+                        ->filterByOnline(true)
+                    ->_endif()
+                    ->_if($published)
+                        ->filterByPublished(true)
+                    ->_endif()
+                    ;
 
-		return parent::countPDReactions($query);
-	}
+        return parent::countPDReactions($query);
+    }
 
-	/**
-	 *	Renvoit la dernière réaction associée au débat
-	 *
-	 * 	@return 	PDReaction
-	 */
-	public function getLastReaction($treeLevel = false, $online = false, $published = false) {
-		return PDReactionQuery::create()
-					->_if($treeLevel)
-						->filterByTreeLevel($treeLevel)
-					->_endif()
-					->_if($online)
-						->filterByOnline(true)
-					->_endif()
-					->_if($published)
-						->filterByPublished(true)
-					->_endif()
-					->filterByPDDebateId($this->getId())
-					->orderByCreatedAt(\Criteria::DESC)
-					->findOne();
-	}
+    /**
+     *    Renvoit la dernière réaction associée au débat
+     *
+     *     @return     PDReaction
+     */
+    public function getLastReaction($treeLevel = false, $online = false, $published = false) {
+        return PDReactionQuery::create()
+                    ->_if($treeLevel)
+                        ->filterByTreeLevel($treeLevel)
+                    ->_endif()
+                    ->_if($online)
+                        ->filterByOnline(true)
+                    ->_endif()
+                    ->_if($published)
+                        ->filterByPublished(true)
+                    ->_endif()
+                    ->filterByPDDebateId($this->getId())
+                    ->orderByCreatedAt(\Criteria::DESC)
+                    ->findOne();
+    }
 
 
     // *****************************    FOLLOWERS   ************************* //
 
 
-	/**
-	 *	Renvoit le nombre de followers du débat.
-	 *
-	 * @param 	$puStatusId 	integer 	Filtrage par rapport au status
-	 * @param 	$qualified 		boolean 	Filtrage par rapport à la qualification
-	 *
-	 * @return 	integer 	Nombre de followers
-	 */
-	public function getFollowers($qualified = false) {
-		$query = PUserQuery::create()
-					->filterByQualified($qualified)
-					->filterByOnline(true)
-					->setDistinct();
-		
-		return parent::getPuFollowDdPUsers($query);
-	}
+    /**
+     *    Renvoit le nombre de followers du débat.
+     *
+     * @param     $puStatusId     integer     Filtrage par rapport au status
+     * @param     $qualified         boolean     Filtrage par rapport à la qualification
+     *
+     * @return     integer     Nombre de followers
+     */
+    public function getFollowers($qualified = false) {
+        $query = PUserQuery::create()
+                    ->filterByQualified($qualified)
+                    ->filterByOnline(true)
+                    ->setDistinct();
+        
+        return parent::getPuFollowDdPUsers($query);
+    }
 
-	/**
-	 *	Renvoit le nombre de followers du débat.
-	 *
-	 * @param 	$puStatusId 	integer 	Filtrage par rapport au status
-	 * @param 	$qualified 		boolean 	Filtrage par rapport à la qualification
-	 *
-	 * @return 	integer 	Nombre de followers
-	 */
-	public function countFollowers($qualified = false) {
-		$query = PUserQuery::create()
-					->filterByQualified($qualified)
-					->filterByOnline(true)
-					->setDistinct();
-		
-		return parent::countPuFollowDdPUsers($query);
-	}
+    /**
+     *    Renvoit le nombre de followers du débat.
+     *
+     * @param     $puStatusId     integer     Filtrage par rapport au status
+     * @param     $qualified         boolean     Filtrage par rapport à la qualification
+     *
+     * @return     integer     Nombre de followers
+     */
+    public function countFollowers($qualified = false) {
+        $query = PUserQuery::create()
+                    ->filterByQualified($qualified)
+                    ->filterByOnline(true)
+                    ->setDistinct();
+        
+        return parent::countPuFollowDdPUsers($query);
+    }
 
-	/**
+    /**
      * Renvoie les followers qualifiés (élus)
      *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getFollowersQ() {
-		$pUsers = $this->getFollowers(true);
+     */
+    public function getFollowersQ() {
+        $pUsers = $this->getFollowers(true);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre de followers qualifiés (élus)
@@ -417,16 +417,16 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
         return $this->countFollowers(true);
     }
 
-	/**
-	 * Renvoie les followers citoyens
-	 *
+    /**
+     * Renvoie les followers citoyens
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getFollowersC() {
-		$pUsers = $this->getFollowers(false);
+     */
+    public function getFollowersC() {
+        $pUsers = $this->getFollowers(false);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre de followers citoyens
@@ -440,10 +440,10 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
     // *****************************    USERS   ************************* //
     
-	/**
-	 *
-	 */
+    /**
+     *
+     */
     public function getUser() {
-    	return $this->getPUser();
+        return $this->getPUser();
     }
 }

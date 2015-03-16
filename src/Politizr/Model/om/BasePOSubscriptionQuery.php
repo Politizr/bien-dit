@@ -1080,7 +1080,7 @@ abstract class BasePOSubscriptionQuery extends ModelCriteria
     /**
      * Returns the list of objects
      *
-     * @param      PropelPDO $con	Connection to use.
+     * @param      PropelPDO $con    Connection to use.
      *
      * @return     mixed the list of results, formatted by the current formatter
      */

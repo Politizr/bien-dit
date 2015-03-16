@@ -2058,8 +2058,8 @@ abstract class BasePOrderQuery extends ModelCriteria
      * is updated and not duplicated.
      * Warning: This termination methods issues 2n+1 queries.
      *
-     * @param      PropelPDO $con	Connection to use.
-     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     * @param      PropelPDO $con    Connection to use.
+     * @param      Boolean $useLittleMemory    Whether or not to use PropelOnDemandFormatter to retrieve objects.
      *               Set to false if the identity map matters.
      *               Set to true (default) to use less memory.
      *
@@ -2107,7 +2107,7 @@ abstract class BasePOrderQuery extends ModelCriteria
     /**
      * Delete records matching the current query without archiving them.
      *
-     * @param      PropelPDO $con	Connection to use.
+     * @param      PropelPDO $con    Connection to use.
      *
      * @return integer the number of deleted rows
      */
@@ -2121,7 +2121,7 @@ abstract class BasePOrderQuery extends ModelCriteria
     /**
      * Delete all records without archiving them.
      *
-     * @param      PropelPDO $con	Connection to use.
+     * @param      PropelPDO $con    Connection to use.
      *
      * @return integer the number of deleted rows
      */

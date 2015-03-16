@@ -11,6 +11,7 @@ parameters:
     mailer_host:       localhost
     mailer_user:       postmaster@studio-echo.fr
     mailer_password:   post09MASTER
+    mailer_encryption: ssl
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
 

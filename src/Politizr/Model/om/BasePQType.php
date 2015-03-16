@@ -144,19 +144,19 @@ abstract class BasePQType extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pQMandatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * @var        PropelObjectCollection
      */
     protected $pUMandatesScheduledForDeletion = null;
 
@@ -214,7 +214,7 @@ abstract class BasePQType extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -254,7 +254,7 @@ abstract class BasePQType extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
+     *                 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1625,7 +1625,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQMandate $pQMandate The pQMandate object to add.
+     * @param    PQMandate $pQMandate The pQMandate object to add.
      */
     protected function doAddPQMandate($pQMandate)
     {
@@ -1634,7 +1634,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQMandate $pQMandate The pQMandate object to remove.
+     * @param    PQMandate $pQMandate The pQMandate object to remove.
      * @return PQType The current object (for fluent API support)
      */
     public function removePQMandate($pQMandate)
@@ -1850,7 +1850,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQOrganization $pQOrganization The pQOrganization object to add.
+     * @param    PQOrganization $pQOrganization The pQOrganization object to add.
      */
     protected function doAddPQOrganization($pQOrganization)
     {
@@ -1859,7 +1859,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PQOrganization $pQOrganization The pQOrganization object to remove.
+     * @param    PQOrganization $pQOrganization The pQOrganization object to remove.
      * @return PQType The current object (for fluent API support)
      */
     public function removePQOrganization($pQOrganization)
@@ -2075,7 +2075,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUMandate $pUMandate The pUMandate object to add.
+     * @param    PUMandate $pUMandate The pUMandate object to add.
      */
     protected function doAddPUMandate($pUMandate)
     {
@@ -2084,7 +2084,7 @@ abstract class BasePQType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUMandate $pUMandate The pUMandate object to remove.
+     * @param    PUMandate $pUMandate The pUMandate object to remove.
      * @return PQType The current object (for fluent API support)
      */
     public function removePUMandate($pUMandate)

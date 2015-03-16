@@ -1,14 +1,14 @@
 {% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
 {% block main %}
-	<div id="main" class="container">
-		<div id="timeline">
-		</div>
-	</div>
+    <div id="main" class="container">
+        <div id="timeline">
+        </div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
     
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
 {% endblock javascriptFooter %}

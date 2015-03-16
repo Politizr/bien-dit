@@ -9,13 +9,13 @@ use Politizr\Model\PUNotifications;
 
 use Politizr\Model\PRBadgeQuery;
 
-
 /**
- * 	Gestion des actions mettant à jour la réputation
+ *  Gestion des actions mettant à jour la réputation
  *
  *  @author Lionel Bouzonville
  */
-class NotificationListener {
+class NotificationListener
+{
 
     protected $logger;
     protected $eventDispatcher;
@@ -23,9 +23,10 @@ class NotificationListener {
     /**
      *
      */
-    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher) {
+    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher)
+    {
         $this->logger = $logger;
-    	$this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -34,7 +35,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNCommentPublish(GenericEvent $event) {
+    public function onNCommentPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onNCommentPublish');
 
         $subject = $event->getSubject();
@@ -47,7 +49,11 @@ class NotificationListener {
         $document = $subject->getPDocument();
         $targetUserId = $document->getPUserId();
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
@@ -56,7 +62,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNNotePos(GenericEvent $event) {
+    public function onNNotePos(GenericEvent $event)
+    {
         $this->logger->info('*** onNNotePos');
 
         $subject = $event->getSubject();
@@ -78,7 +85,11 @@ class NotificationListener {
                 break;
         }
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);        
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -86,7 +97,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNNoteNeg(GenericEvent $event) {
+    public function onNNoteNeg(GenericEvent $event)
+    {
         $this->logger->info('*** onNNoteNeg');
 
         $subject = $event->getSubject();
@@ -108,7 +120,11 @@ class NotificationListener {
                 break;
         }
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);        
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -116,7 +132,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNReactionPublish(GenericEvent $event) {
+    public function onNReactionPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onNDebateReactionPublish');
 
         $subject = $event->getSubject();
@@ -129,7 +146,11 @@ class NotificationListener {
         $debateUserId = $debate->getPUserId();
         $pNotificationId = PNotification::ID_D_D_REACTION_PUBLISH;
 
-        $this->insertPUNotifications($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotifications = $this->insertPUNotifications($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
 
         // Réaction associée à la réaction
         if ($subject->getTreeLevel() > 1) {
@@ -138,7 +159,11 @@ class NotificationListener {
             $targetUserId = $parent->getPUserId();
             $pNotificationId = PNotification::ID_D_R_REACTION_PUBLISH;
 
-            $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+            // Alerte email
+            $event = new GenericEvent($puNotifications);
+            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
         }
     }
 
@@ -148,7 +173,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNDebateFollow(GenericEvent $event) {
+    public function onNDebateFollow(GenericEvent $event)
+    {
         $this->logger->info('*** onNDebateFollow');
 
         $subject = $event->getSubject();
@@ -161,8 +187,11 @@ class NotificationListener {
         // Auteur du débat
         $targetUserId = $subject->getPUserId();
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
@@ -171,7 +200,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNUserFollow(GenericEvent $event) {
+    public function onNUserFollow(GenericEvent $event)
+    {
         $this->logger->info('*** onNUserFollow');
 
         $subject = $event->getSubject();
@@ -184,7 +214,11 @@ class NotificationListener {
         // User suivi
         $targetUserId = $subject->getId();
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
@@ -194,7 +228,8 @@ class NotificationListener {
      *
      * @param GenericEvent
      */
-    public function onNBadgeWin(GenericEvent $event) {
+    public function onNBadgeWin(GenericEvent $event)
+    {
         $this->logger->info('*** onNBadgeWin');
 
         $subject = $event->getSubject();
@@ -209,7 +244,11 @@ class NotificationListener {
         $objectName = get_class($badge);
         $objectId = $badge->getId();
 
-        $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotifications);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
@@ -220,9 +259,16 @@ class NotificationListener {
     /**
      * Insertion en BDD
      *
-     * @param
+     * @param $userId
+     * @param $authorUserId
+     * @param $notificationId
+     * @param $objectName
+     * @param $objectId
+     *
+     * @return PUNotifications  Objet inséré
      */
-    private function insertPUNotifications($userId, $authorUserId, $notificationId, $objectName, $objectId) {
+    private function insertPUNotifications($userId, $authorUserId, $notificationId, $objectName, $objectId)
+    {
         $this->logger->info('*** insertPUNotifications');
         $this->logger->info('userId = '.print_r($userId, true));
         $this->logger->info('authorUserId = '.print_r($authorUserId, true));
@@ -240,5 +286,7 @@ class NotificationListener {
         $notif->setChecked(false);
         
         $notif->save();
+
+        return $notif;
     }
 }

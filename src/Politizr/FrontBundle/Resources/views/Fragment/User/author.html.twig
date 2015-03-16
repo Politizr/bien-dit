@@ -3,48 +3,48 @@ Fragment non (html-)structuré exploité partout
 Normalisation: nom de fichier sans majuscule ni d'héritage twig
  #}
 {% spaceless %}
-	{% if user %}
-		{% block authorPhoto %}
-			{# TODO / TwigExtension Photo #}
-			<a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
-				{{ user | photo('user_mini') }}
-			</a>
-			&nbsp;
-		{% endblock authorPhoto %}
+    {% if user %}
+        {% block authorPhoto %}
+            {# TODO / TwigExtension Photo #}
+            <a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
+                {{ user | photo('user_mini') }}
+            </a>
+            &nbsp;
+        {% endblock authorPhoto %}
 
-		{% block authorName %}
-			{# Nom & Type #}
-			<a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
-				{{ user }}
-				{% if user.validated %}
-					<span class="fa fa-check-square-o" title="Profil validé"></span>
-				{% endif %}
-			</a>
-			&nbsp;
-		{% endblock authorName %}
+        {% block authorName %}
+            {# Nom & Type #}
+            <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
+                {{ user }}
+                {% if user.validated %}
+                    <span class="fa fa-check-square-o" title="Profil validé"></span>
+                {% endif %}
+            </a>
+            &nbsp;
+        {% endblock authorName %}
 
-		{% block authorReputation %}	
-			{# Score réputation #}
-			<span class="badge alert-success">{{ user.reputationScore }}</span>
-			&nbsp;
-		{% endblock authorReputation %}
+        {% block authorReputation %}    
+            {# Score réputation #}
+            <span class="badge alert-success">{{ user.reputationScore }}</span>
+            &nbsp;
+        {% endblock authorReputation %}
 
-		{% block authorQualification %}
-			{# Mandats en cours #}
-			{% set mandates = user.currentMandates %}
-			{% for mandate in mandates %}
-				{{ mandate.title }}&nbsp;
-			{% endfor %}
-		{% endblock authorQualification %}
+        {% block authorQualification %}
+            {# Mandats en cours #}
+            {% set mandates = user.currentMandates %}
+            {% for mandate in mandates %}
+                {{ mandate.title }}&nbsp;
+            {% endfor %}
+        {% endblock authorQualification %}
 
-		{% block authorOrganization %}
-			{# Organisations en cours #}
-			{% set organizations = user.currentOrganizations %}
-			{% for organization in organizations %}
-				<img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
-			{% endfor %}
-		{% endblock authorOrganization %}
-	{% else %}
-		<span class="label label-default">Utilisateur supprimé</span>
-	{% endif %}
+        {% block authorOrganization %}
+            {# Organisations en cours #}
+            {% set organizations = user.currentOrganizations %}
+            {% for organization in organizations %}
+                <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+            {% endfor %}
+        {% endblock authorOrganization %}
+    {% else %}
+        <span class="label label-default">Utilisateur supprimé</span>
+    {% endif %}
 {% endspaceless %}

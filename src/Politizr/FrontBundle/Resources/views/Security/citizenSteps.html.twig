@@ -1,29 +1,29 @@
 <div class="container">
-	{% if step > 1 and step < 3 %}
-		<div class="row">
-			<div class="col-sm-12">
-				<p class="bg-info">Inscription <b>citoyen</b>: vous pourrez migrer à tout moment vers une offre <b>débatteur</b> si vous disposez ou avez disposé d'un mandat d'élu.</p>
-			</div>
-		</div>
-		<hr>
-	{% endif %}
-	<div class="row text-center">
-		<div class="col-sm-6">
-			<div class="label label-success">1 - Identification</div>
-		</div>
-		<div class="col-sm-6">
-			<div class="label label-success">2 - Coordonnées</div>
-		</div>
-	</div>	
-	<hr>	
-	<div class="progress">
-		{% set progressbar = 50 %}
-		{% if step == 2 %}
-			{% set progressbar = 100 %}
-		{% endif %}
+    {% if step > 1 and step < 3 %}
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="bg-info">Inscription <b>citoyen</b>: vous pourrez migrer à tout moment vers une offre <b>débatteur</b> si vous disposez ou avez disposé d'un mandat d'élu.</p>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <div class="label label-success">1 - Identification</div>
+        </div>
+        <div class="col-sm-6">
+            <div class="label label-success">2 - Coordonnées</div>
+        </div>
+    </div>    
+    <hr>    
+    <div class="progress">
+        {% set progressbar = 50 %}
+        {% if step == 2 %}
+            {% set progressbar = 100 %}
+        {% endif %}
 
-		<div class="progress-bar" role="progressbar" aria-valuenow="{{ progressbar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressbar }}%;">
-		    {{ progressbar }}%
-		</div>
-	</div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{ progressbar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressbar }}%;">
+            {{ progressbar }}%
+        </div>
+    </div>
 </div>

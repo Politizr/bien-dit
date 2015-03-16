@@ -1,69 +1,69 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block stylesheets %}
-	{{ parent() }}
+    {{ parent() }}
 
-	{# medium clone editor #}
-	<link rel="stylesheet" href="{{ asset('components/medium-editor/dist/css/themes/bootstrap.min.css') }}"> {# theme #}
+    {# medium clone editor #}
+    <link rel="stylesheet" href="{{ asset('components/medium-editor/dist/css/themes/bootstrap.min.css') }}"> {# theme #}
 {% endblock %}
 {% block main %}
-	<div id="main" class="container">
-		<h3>Mon profil public</h3>
-		{% include 'PolitizrFrontBundle:Fragment\\User:DetailEdit.html.twig' with { 'user': user, 'form': formBio } %}
-		
-		<hr>
+    <div id="main" class="container">
+        <h3>Mon profil public</h3>
+        {% include 'PolitizrFrontBundle:Fragment\\User:DetailEdit.html.twig' with { 'user': user, 'form': formBio } %}
+        
+        <hr>
 
-		<h3>Mes thématiques privés</h3>
-		<div id="box-tags">
-			<p class="bg-info">Ajoutez un maximum de tags que vous désirez suivre.</p>
-		    <p class="text-muted">Tags géographiques</p>
-			{{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, false) }}
-			<hr>
-		    <p class="text-muted">Tags thématiques</p>
-			{{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 3, true) }}
-		</div>
-		
-		<hr>
+        <h3>Mes thématiques privés</h3>
+        <div id="box-tags">
+            <p class="bg-info">Ajoutez un maximum de tags que vous désirez suivre.</p>
+            <p class="text-muted">Tags géographiques</p>
+            {{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, false) }}
+            <hr>
+            <p class="text-muted">Tags thématiques</p>
+            {{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 3, true) }}
+        </div>
+        
+        <hr>
 
-		<h3>Mon affiliation politique</h3>
-		{{ form_start(formOrga, {'style': 'horizontal', 'attr': {'id': 'form-orga-update'}}) }}
-		    {{ form_errors(formOrga) }}
+        <h3>Mon affiliation politique</h3>
+        {{ form_start(formOrga, {'style': 'horizontal', 'attr': {'id': 'form-orga-update'}}) }}
+            {{ form_errors(formOrga) }}
 
-		    {{ form_row(formOrga.PUCurrentQOPQOrganization) }}
-		{{ form_end(formOrga) }}
-		
-		<hr>
+            {{ form_row(formOrga.PUCurrentQOPQOrganization) }}
+        {{ form_end(formOrga) }}
+        
+        <hr>
 
-		<h3>Mes mandats</h3>
-		<div id="mandates">		
-			{% include 'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig' with { 'formMandateViews': formMandateViews, 'form': formMandate } %}
-		</div>
-		
-		<hr>
+        <h3>Mes mandats</h3>
+        <div id="mandates">        
+            {% include 'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig' with { 'formMandateViews': formMandateViews, 'form': formMandate } %}
+        </div>
+        
+        <hr>
 
-	</div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
 
-	{# Tags #}
-	{% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 3 } %}
+    {# Tags #}
+    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 3 } %}
 
     {# medium clone editor #}
     <script src="{{ asset('components/medium-editor/dist/js/medium-editor.min.js') }}"></script>
     <script src="{{ asset('components/classList.js/classList.min.js') }}"></script> <!-- IE9 compatibility -->
     
     {# Upload ajax #}
-	<script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
 
     {% include 'PolitizrFrontBundle:JS:userEdit.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:userUploadPhoto.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:profileEdit.js.twig' %}
 
-	<script>
-		$('#header').css('background-image', 'url({{ user | photoBack("user_bio_back") }})');
-	</script>
+    <script>
+        $('#header').css('background-image', 'url({{ user | photoBack("user_bio_back") }})');
+    </script>
 
 {% endblock javascriptFooter %}

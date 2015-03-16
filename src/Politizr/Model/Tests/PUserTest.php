@@ -9,7 +9,7 @@ use Politizr\Model\PUStatus;
 
 
 /**
- * 	Classe de test de PUser
+ *     Classe de test de PUser
  *  DOC:
  *       http://symfony.com/fr/doc/2.3/book/testing.html
  *       http://propelorm.org/Propel/cookbook/symfony2/testing.html
@@ -19,10 +19,10 @@ use Politizr\Model\PUStatus;
  *       + mockery
  *
  *  TODO:
- *		- test de l'upload
- *		- init / purge de la bdd?
+ *        - test de l'upload
+ *        - init / purge de la bdd?
  *
- *	@author 	Lionel Bouzonville / Studio Echo
+ *    @author     Lionel Bouzonville / Studio Echo
  */
 class PUserTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,12 +44,12 @@ class PUserTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-	/**
-	 *	
-	 */
+    /**
+     *    
+     */
     public function test__toString()
     {
-    	$pUser = new PUser();
+        $pUser = new PUser();
 
         $pUser->setFirstname('François');
         $pUser->setName('Hollande');
@@ -72,63 +72,63 @@ class PUserTest extends \PHPUnit_Framework_TestCase
      *
      */
     public function testGetBirthdayText() {
-    	$pUser = new PUser();
+        $pUser = new PUser();
 
-    	$pUser->setBirthday(new \DateTime('1976-12-04'));
+        $pUser->setBirthday(new \DateTime('1976-12-04'));
 
-    	$this->assertEquals('04/12/1976', $pUser->getBirthdayText(), 'PUser->getBirthdayText() doit renvoyer au format "dd/mm/YYYY".');
+        $this->assertEquals('04/12/1976', $pUser->getBirthdayText(), 'PUser->getBirthdayText() doit renvoyer au format "dd/mm/YYYY".');
     }
 
     /**
      *
      */
     public function testCreateRawSlug() {
-    	$pUser = new PUser();
+        $pUser = new PUser();
 
-    	$pUser->setFirstname('Frédéric');
-    	$pUser->setName('Aàèéùçi');
+        $pUser->setFirstname('Frédéric');
+        $pUser->setName('Aàèéùçi');
 
-    	$this->assertEquals('frederic-aaeeuci', $pUser->createRawSlug(), 'PUser->createRawSlug() doit remplacer les accents par leur caractère non accentué équivalent.');
+        $this->assertEquals('frederic-aaeeuci', $pUser->createRawSlug(), 'PUser->createRawSlug() doit remplacer les accents par leur caractère non accentué équivalent.');
     }
 
     /**
      *
      */
     public function testSerializeUnserialize() {
-    	$pUser = new PUser();
+        $pUser = new PUser();
 
-		$pUser->setId(1);
-		$pUser->setPUStatusId(PUStatus::ACTIVED);
-		$pUser->setUsername("françoish");
-		$pUser->setName("Hollande");
-		$pUser->setFirstname("François");
-		$pUser->setBirthday(new \DateTime('1976-12-04'));
-		$pUser->setSalt("s@lt");
-		$pUser->setPassword("p@ssword");
-		$pUser->setExpired(false);
-		$pUser->setLocked(false);
-		$pUser->setCredentialsExpired(false);
+        $pUser->setId(1);
+        $pUser->setPUStatusId(PUStatus::ACTIVED);
+        $pUser->setUsername("françoish");
+        $pUser->setName("Hollande");
+        $pUser->setFirstname("François");
+        $pUser->setBirthday(new \DateTime('1976-12-04'));
+        $pUser->setSalt("s@lt");
+        $pUser->setPassword("p@ssword");
+        $pUser->setExpired(false);
+        $pUser->setLocked(false);
+        $pUser->setCredentialsExpired(false);
         $pUser->setQualified(false);
-		$pUser->setEnabled(true);
+        $pUser->setEnabled(true);
 
-		$serialized = $pUser->serialize();
+        $serialized = $pUser->serialize();
 
-		$pUser = new PUser();
-		$pUser->unserialize($serialized);
+        $pUser = new PUser();
+        $pUser->unserialize($serialized);
 
-		$this->assertEquals(1, $pUser->getId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(false, $pUser->getQualified(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(PUStatus::ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals("françoish", $pUser->getUsername(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals("Hollande", $pUser->getName(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals("François", $pUser->getFirstname(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(new \DateTime('1976-12-04'), $pUser->getBirthday(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals("s@lt", $pUser->getSalt(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals("p@ssword", $pUser->getPassword(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(false, $pUser->getExpired(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(false, $pUser->getLocked(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(false, $pUser->getCredentialsExpired(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-		$this->assertEquals(true, $pUser->getEnabled(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(1, $pUser->getId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(false, $pUser->getQualified(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(PUStatus::ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals("françoish", $pUser->getUsername(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals("Hollande", $pUser->getName(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals("François", $pUser->getFirstname(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(new \DateTime('1976-12-04'), $pUser->getBirthday(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals("s@lt", $pUser->getSalt(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals("p@ssword", $pUser->getPassword(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(false, $pUser->getExpired(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(false, $pUser->getLocked(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(false, $pUser->getCredentialsExpired(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(true, $pUser->getEnabled(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
     }
 
 }

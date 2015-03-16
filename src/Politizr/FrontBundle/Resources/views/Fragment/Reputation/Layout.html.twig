@@ -8,47 +8,47 @@ LAYOUT REPUTATION
 
 {# Bloc ligne de tableau de badges #}
 {% block badgeTableRow %}
-	{% set prevTypeId = null %}
-	{% for badge in badges %}
-		{% if badge.PRBadgeTypeId != prevTypeId %}
-			<tr>
-			    <td colspan="2">{{ badge.PRBadgeType }}</td>
-			</tr>
-		{% endif %}
-		<tr>
-			<td>
-				<span class="label {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
-			</td>
-			<td>
-				{% if badge.id in badgeIds %}
-					<!-- <span class="glyphicon glyphicon-ok"></span> -->
-					<span class="fa fa-check-square-o"></span>
-				{% else %}
-					<!-- <span class="glyphicon glyphicon-remove"></span> -->
-					<span class="fa fa-square-o"></span>
-				{% endif %}
-			</td>
-		</tr>
-		{% set prevTypeId = badge.PRBadgeTypeId %}
-	{% endfor %}
+    {% set prevTypeId = null %}
+    {% for badge in badges %}
+        {% if badge.PRBadgeTypeId != prevTypeId %}
+            <tr>
+                <td colspan="2">{{ badge.PRBadgeType }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>
+                <span class="label {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
+            </td>
+            <td>
+                {% if badge.id in badgeIds %}
+                    <!-- <span class="glyphicon glyphicon-ok"></span> -->
+                    <span class="fa fa-check-square-o"></span>
+                {% else %}
+                    <!-- <span class="glyphicon glyphicon-remove"></span> -->
+                    <span class="fa fa-square-o"></span>
+                {% endif %}
+            </td>
+        </tr>
+        {% set prevTypeId = badge.PRBadgeTypeId %}
+    {% endfor %}
 {% endblock badgeTableRow %}
 
 {# Bloc notation #}
 {% block notation %}
-	{% if app.user %}
-		{% if not pos %}
-			<a class="badge alert-success" action="note" object-id="{{ object.id }}" type="{{ type }}" way="up">{{ object.notePos }} +</a>
-		{% else %}
-			<span class="badge alert-success">{{ object.notePos }} +</span>
-		{% endif %}
-		{% if not neg %}
-			<a class="badge alert-danger" action="note" object-id="{{ object.id }}" type="{{ type }}" way="down">{{ object.noteNeg }} -</a>
-		{% else %}
-			<span class="badge alert-danger">{{ object.noteNeg }} -</span>
-		{% endif %}
-	{% else %}
-		<span class="badge alert-success">{{ object.notePos }} +</span>
-		<span class="badge alert-danger">{{ object.noteNeg }} -</span>
-		<a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">M'inscrire pour noter</a>
-	{% endif %}
+    {% if app.user %}
+        {% if not pos %}
+            <a class="badge alert-success" action="note" object-id="{{ object.id }}" type="{{ type }}" way="up">{{ object.notePos }} +</a>
+        {% else %}
+            <span class="badge alert-success">{{ object.notePos }} +</span>
+        {% endif %}
+        {% if not neg %}
+            <a class="badge alert-danger" action="note" object-id="{{ object.id }}" type="{{ type }}" way="down">{{ object.noteNeg }} -</a>
+        {% else %}
+            <span class="badge alert-danger">{{ object.noteNeg }} -</span>
+        {% endif %}
+    {% else %}
+        <span class="badge alert-success">{{ object.notePos }} +</span>
+        <span class="badge alert-danger">{{ object.noteNeg }} -</span>
+        <a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">M'inscrire pour noter</a>
+    {% endif %}
 {% endblock notation %}

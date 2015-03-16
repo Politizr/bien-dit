@@ -5,52 +5,52 @@
 {% endblock %}
 
 {% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 1 } only %}
+    {% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 1 } only %}
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		<h1>Inscription Élu</h1>
-		<p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les débatteurs sur Politizr.</p>
-		<hr>
-		<div id="box-inscription-elected-register">
-			{{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
-			    {{ form_errors(form) }}
+    <div id="main" class="container">
+        <h1>Inscription Élu</h1>
+        <p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les débatteurs sur Politizr.</p>
+        <hr>
+        <div id="box-inscription-elected-register">
+            {{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'enctype': 'multipart/form-data', 'style': 'horizontal'}) }}
+                {{ form_errors(form) }}
 
-				<h3>Civilité</h3>
-			    {{ form_row(form.gender) }}
-			    {{ form_row(form.name) }}
-			    {{ form_row(form.firstname) }}
-			    {{ form_row(form.birthday) }}
+                <h3>Civilité</h3>
+                {{ form_row(form.gender) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.birthday) }}
 
-			    <hr>
+                <hr>
 
-			    {{ form_row(form.email) }}
-			    {{ form_row(form.newsletter) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.newsletter) }}
 
-				<h3>Mandats et justificatif</h3>
-			    {{ form_row(form.uploaded_supporting_document) }}
+                <h3>Mandats et justificatif</h3>
+                {{ form_row(form.uploaded_supporting_document) }}
 
-			    <p class="bg-info">Attention, votre pièce justificative doit correspondre aux nom / prénom / date de naissance renseignés.</p>
+                <p class="bg-info">Attention, votre pièce justificative doit correspondre aux nom / prénom / date de naissance renseignés.</p>
 
 
-			    {{ form_row(form.elective_mandates) }}
+                {{ form_row(form.elective_mandates) }}
 
-				<h3>Identifiants Politizr</h3>
-			    {{ form_row(form.username) }}
-			    {{ form_row(form.plainPassword) }}
+                <h3>Identifiants Politizr</h3>
+                {{ form_row(form.username) }}
+                {{ form_row(form.plainPassword) }}
 
-			    {{ form_row(form.actions) }}
-			{{ form_end(form) }}
-		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
-		</div>
-		<hr>
-		<a class="btn btn-primary" href="{{ path('Inscription') }}">Retour à l'inscription citoyen</a>
-		<hr>
-	</div>
+                {{ form_row(form.actions) }}
+            {{ form_end(form) }}
+            <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+        </div>
+        <hr>
+        <a class="btn btn-primary" href="{{ path('Inscription') }}">Retour à l'inscription citoyen</a>
+        <hr>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

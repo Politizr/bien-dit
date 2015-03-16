@@ -1,14 +1,14 @@
 <div class="pdReaction">
-	<div class="pdReaction-description">{{ pdReaction.summary | raw }}</div>
-	<hr>
-	<div class="pdReaction-online">{% if pdReaction.online %}En ligne{% else %}Hors ligne{% endif %}</div>
-	<div class="pdReaction-published">Publié le {{ pdReaction.publishedAt | date('d/m/Y H:i') }}</div>
-	<hr>
-	{% set user = pdReaction.pUser %}
-	{% include 'PolitizrAdminBundle:Fragment:author.html.twig' with { 'user': user } %}
-	<div class="pdReaction-note"><b>{{ pdReaction.notePos }} +</b> &nbsp; <b>{{ pdReaction.noteNeg }} -</b></div>
-	<hr>
-	<a href="{{ path('Politizr_AdminBundle_PDReaction_edit', { 'pk': pdReaction.id }) }}">Editer</a>&nbsp;-&nbsp; 
-	<a href="{{ path('Politizr_AdminBundle_PDReaction_show', { 'pk': pdReaction.id }) }}">Consulter</a>
-	<hr>
+    <div class="pdReaction-description">{{ pdReaction.summary | raw }}</div>
+    <hr>
+    <div class="pdReaction-online">{% if pdReaction.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="pdReaction-published">Publié le {{ pdReaction.publishedAt | date('d/m/Y H:i') }}</div>
+    <hr>
+    {% set user = pdReaction.pUser %}
+    {% include 'PolitizrAdminBundle:Fragment:author.html.twig' with { 'user': user } %}
+    <div class="pdReaction-note"><b>{{ pdReaction.notePos }} +</b> &nbsp; <b>{{ pdReaction.noteNeg }} -</b></div>
+    <hr>
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_edit', { 'pk': pdReaction.id }) }}">Editer</a>&nbsp;-&nbsp; 
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_show', { 'pk': pdReaction.id }) }}">Consulter</a>
+    <hr>
 </div>

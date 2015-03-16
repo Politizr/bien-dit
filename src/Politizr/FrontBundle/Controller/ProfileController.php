@@ -13,13 +13,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Model\PUserQuery;
 
-
 /**
  * Gestion profil fonctions communes citoyens / débatteurs
  *
  * @author Lionel Bouzonville
  */
-class ProfileController extends Controller {
+class ProfileController extends Controller
+{
 
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */
@@ -29,7 +29,8 @@ class ProfileController extends Controller {
     /**
      *  Liste des notifications
      */
-    public function notificationsLoadAction(Request $request) {
+    public function notificationsLoadAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** notificationsLoadAction');
 
@@ -44,7 +45,8 @@ class ProfileController extends Controller {
     /**
      *  Notification checkée
      */
-    public function notificationCheckAction(Request $request) {
+    public function notificationCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** notificationCheckAction');
 
@@ -59,7 +61,8 @@ class ProfileController extends Controller {
     /**
      *  Check/Uncheck de toutes les notifications
      */
-    public function notificationsCheckAllAction(Request $request) {
+    public function notificationsCheckAllAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** notificationsCheckAllAction');
 
@@ -75,7 +78,8 @@ class ProfileController extends Controller {
     /**
      *  Souscrit une notification par email
      */
-    public function notifEmailSubscribeAction(Request $request) {
+    public function notifEmailSubscribeAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** notifEmailSubscribeAction');
 
@@ -91,7 +95,8 @@ class ProfileController extends Controller {
     /**
      *  Désouscrit une notification par email
      */
-    public function notifEmailUnsubscribeAction(Request $request) {
+    public function notifEmailUnsubscribeAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** notifEmailUnsubscribeAction');
 
@@ -102,5 +107,4 @@ class ProfileController extends Controller {
 
         return $jsonResponse;
     }
-   
 }

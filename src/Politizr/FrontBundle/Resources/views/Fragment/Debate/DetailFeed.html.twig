@@ -2,16 +2,16 @@
 
 {# Bloc en-tête d'un débat dans le fil du débat #}
 {% block detailLink %}
-	{# Lien détail #}
-	<div class="row text-center">
-		<div class="col-sm-12">
-			<a class="btn btn-primary" href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">Détail</a>
-		</div>
-	</div>		
+    {# Lien détail #}
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">Détail</a>
+        </div>
+    </div>        
 {% endblock detailLink %}
 
 {% block detailDescription %}
 {% endblock detailDescription %}
 
-{% block detailGlobalComments %}		
+{% block detailGlobalComments %}        
 {% endblock detailGlobalComments %}

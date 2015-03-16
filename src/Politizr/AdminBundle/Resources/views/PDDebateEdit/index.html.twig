@@ -9,11 +9,11 @@
 
 {# Autocomplete CSS #}
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
 
-	<!-- nested set jquery plugin style -->
-	<link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/nested.css') }}">
+    <!-- nested set jquery plugin style -->
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/nested.css') }}">
 {% endblock %}
 
 
@@ -21,18 +21,18 @@
     {{ parent() }}
 
     {# TODO > gestion JS du nested set des réactions #}
-	<script src="{{ asset("bundles/politizradmin/js/jquery-sortable.js") }}"></script>
+    <script src="{{ asset("bundles/politizradmin/js/jquery-sortable.js") }}"></script>
 
-	<script>
-		$(function () {
-			$('.table-sortable').sortable({
-			  containerSelector: 'table',
-			  itemPath: '> tbody',
-			  itemSelector: 'tr',
-			  placeholder: '<tr class="placeholder"/>'
-			})
-		})
-	</script>
+    <script>
+        $(function () {
+            $('.table-sortable').sortable({
+              containerSelector: 'table',
+              itemPath: '> tbody',
+              itemSelector: 'tr',
+              placeholder: '<tr class="placeholder"/>'
+            })
+        })
+    </script>
 
 {% endblock %}
   

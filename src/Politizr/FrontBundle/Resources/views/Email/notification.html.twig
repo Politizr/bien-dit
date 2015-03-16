@@ -1,0 +1,10 @@
+<p>
+    Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}.
+</p>
+<p>
+    <strong>{{ notif | linkedNotification(true) }}</strong>
+</p>
+<p>
+    <i>Réglez vos paramètres de notifications depuis le menu <a href="{% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}">"mes notifications"</a> de votre compte.</i>
+</p>
+{% include 'PolitizrFrontBundle:Email:signature.html.twig' %}

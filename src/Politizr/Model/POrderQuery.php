@@ -33,36 +33,36 @@ class POrderQuery extends BasePOrderQuery
      * @return  POrder     newly created object
      */
     public static function createOrder($user, $subscription, $paymentTypeId, $supportingDocument, $electiveMandates) {
-    	// Création objet POrder & MAJ des attributs
-    	$order = new POrder();
+        // Création objet POrder & MAJ des attributs
+        $order = new POrder();
 
-    	$order->setPUserId($user->getId());
-    	$order->setPOSubscriptionId($subscription->getId());
-    	$order->setPOPaymentTypeId($paymentTypeId);
+        $order->setPUserId($user->getId());
+        $order->setPOSubscriptionId($subscription->getId());
+        $order->setPOPaymentTypeId($paymentTypeId);
 
-    	$order->setPOOrderStateId(POOrderState::CREATED);
-    	$order->setPOOrderStateId(POPaymentState::PROCESSING);
+        $order->setPOOrderStateId(POOrderState::CREATED);
+        $order->setPOOrderStateId(POPaymentState::PROCESSING);
 
-    	$order->setSubscriptionTitle($subscription->getTitle());
-    	$order->setSubscriptionDescription($subscription->getDescription());
+        $order->setSubscriptionTitle($subscription->getTitle());
+        $order->setSubscriptionDescription($subscription->getDescription());
 
-    	$order->setGender($user->getGender());
-    	$order->setFirstname($user->getFirstname());
-    	$order->setName($user->getName());
-    	$order->setPhone($user->getPhone());
-    	$order->setEmail($user->getEmail());
+        $order->setGender($user->getGender());
+        $order->setFirstname($user->getFirstname());
+        $order->setName($user->getName());
+        $order->setPhone($user->getPhone());
+        $order->setEmail($user->getEmail());
 
         $order->setElectiveMandates($electiveMandates);
-    	$order->setSupportingDocument($supportingDocument);
+        $order->setSupportingDocument($supportingDocument);
 
         // TODO > gestion prix & promo
         $order->setPrice($subscription->getPrice());
         $order->setPromotion(0);
         $order->setTotal($subscription->getPrice());
 
-    	$order->save();
+        $order->save();
 
-    	return $order;
+        return $order;
     }
 
 }

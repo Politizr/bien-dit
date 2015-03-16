@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/braincrafted/bootstrap-bundle.git",
-                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1"
+                "reference": "121961d7b31f4de7a7100e0c84e283c249246885"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/2dc17466f95a035869b51c845024f6a92bc1d6d1",
-                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1",
+                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/121961d7b31f4de7a7100e0c84e283c249246885",
+                "reference": "121961d7b31f4de7a7100e0c84e283c249246885",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +153,7 @@
             "keywords": [
                 "bootstrap"
             ],
-            "time": "2015-01-31 10:32:31"
+            "time": "2015-03-06 12:28:53"
         },
         {
             "name": "cedriclombardot/admingenerator-generator-bundle",
@@ -655,7 +655,7 @@
                     ]
                 }
             },
-            "time": "2015-02-26 17:16:03"
+            "time": "2015-03-03 17:24:24"
         },
         {
             "name": "doctrine/annotations",
@@ -1135,7 +1135,7 @@
                     ]
                 }
             },
-            "time": "2015-02-26 17:16:03"
+            "time": "2015-03-03 17:24:24"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "6b16ce9e0042ce08920edaa52260ae2edf44c788"
+                "reference": "97e3953165f091afee360b4bbf66e1f71ec3e104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/6b16ce9e0042ce08920edaa52260ae2edf44c788",
-                "reference": "6b16ce9e0042ce08920edaa52260ae2edf44c788",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/97e3953165f091afee360b4bbf66e1f71ec3e104",
+                "reference": "97e3953165f091afee360b4bbf66e1f71ec3e104",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-02-25 00:33:26"
+            "time": "2015-03-10 23:56:45"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -1348,12 +1348,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "c79474df99e572e230a7e16f06a6a4605c00b18f"
+                "reference": "c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/c79474df99e572e230a7e16f06a6a4605c00b18f",
-                "reference": "c79474df99e572e230a7e16f06a6a4605c00b18f",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6",
+                "reference": "c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6",
                 "shasum": ""
             },
             "require-dev": {
@@ -1388,20 +1388,20 @@
                 "font",
                 "icon"
             ],
-            "time": "2015-02-13 23:15:18"
+            "time": "2015-03-11 20:22:48"
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "v3.0.8",
+            "version": "v3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "2401b1083c2113a52f9846488f7bca264da23f4f"
+                "reference": "b6c252aac3f68324a980bbcf14b75de544a59997"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/2401b1083c2113a52f9846488f7bca264da23f4f",
-                "reference": "2401b1083c2113a52f9846488f7bca264da23f4f",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/b6c252aac3f68324a980bbcf14b75de544a59997",
+                "reference": "b6c252aac3f68324a980bbcf14b75de544a59997",
                 "shasum": ""
             },
             "require": {
@@ -1477,7 +1477,7 @@
                 "propel",
                 "search"
             ],
-            "time": "2015-01-31 07:33:07"
+            "time": "2015-03-12 16:54:08"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -2572,16 +2572,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.12.0",
+            "version": "1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f"
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
-                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
                 "shasum": ""
             },
             "require": {
@@ -2598,6 +2598,7 @@
                 "phpunit/phpunit": "~4.0",
                 "raven/raven": "~0.5",
                 "ruflin/elastica": "0.90.*",
+                "swiftmailer/swiftmailer": "~5.3",
                 "videlalvaro/php-amqplib": "~2.4"
             },
             "suggest": {
@@ -2614,7 +2615,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12.x-dev"
+                    "dev-master": "1.13.x-dev"
                 }
             },
             "autoload": {
@@ -2640,7 +2641,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-12-29 21:29:35"
+            "time": "2015-03-09 09:58:04"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -3123,17 +3124,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.9",
+            "version": "v2.3.11",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "ac4893621b30faf8f970758afea7640122767817"
+                "reference": "374bbea795fa69a85b1623048798a89aebffe62b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ac4893621b30faf8f970758afea7640122767817",
-                "reference": "ac4893621b30faf8f970758afea7640122767817",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/374bbea795fa69a85b1623048798a89aebffe62b",
+                "reference": "374bbea795fa69a85b1623048798a89aebffe62b",
                 "shasum": ""
             },
             "require": {
@@ -3165,7 +3166,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-02-01 05:39:51"
+            "time": "2015-02-27 12:58:18"
         },
         {
             "name": "sensio/framework-extra-bundle",

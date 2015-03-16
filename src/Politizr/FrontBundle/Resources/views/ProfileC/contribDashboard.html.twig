@@ -1,53 +1,53 @@
 {% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
 {% block main %}
-	<div id="main" class="container">
-		<h1>Mes brouillons</h1>
+    <div id="main" class="container">
+        <h1>Mes brouillons</h1>
         {% if drafts | length > 0 %}
-			<div class="table-responsive">
-				<table class="table table-hover">
-					<thead>
-				        <tr>
-				            <th>Bandeau</th>
-				            <th>Titre</th>
-				            <th>Résumé</th>
-				            <th>Date de création</th>
-				            <th>&nbsp;</th>
-				        </tr>
-			      	</thead>				
-			        {% for draft in drafts %}
-						{% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
-					{% endfor %}
-				</table>
-			</div>
-			<a class="btn btn-primary" href="{{ path('DebateDraftNew') }}">Nouveau</a>
-		{% else %}
-			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
-			</div>
-		{% endif %}
-		<h1>Mes débats publiés</h1>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Bandeau</th>
+                            <th>Titre</th>
+                            <th>Résumé</th>
+                            <th>Date de création</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                      </thead>                
+                    {% for draft in drafts %}
+                        {% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
+                    {% endfor %}
+                </table>
+            </div>
+            <a class="btn btn-primary" href="{{ path('DebateDraftNew') }}">Nouveau</a>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez rédigé aucun brouillon de débat pour le moment</a>
+            </div>
+        {% endif %}
+        <h1>Mes débats publiés</h1>
         {% for debate in debates %}
-			{% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
-			<hr>
-		{% else %}
-			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez débat en ligne pour le moment</a>
-			<hr>
-			</div>
-		{% endfor %}
-		<h1>Mes commentaires</h1>
+            {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
+            <hr>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('MyDraftsC') }}">Vous n'avez débat en ligne pour le moment</a>
+            <hr>
+            </div>
+        {% endfor %}
+        <h1>Mes commentaires</h1>
         {% for comment in comments %}
-			{% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
-			<hr>
-		{% else %}
-			<div class="no-results">
-				<a class="btn btn-primary" href="{{ path('TimelineC') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
-			</div>
-		{% endfor %}
-	</div>
+            {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
+            <hr>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('TimelineC') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock javascriptFooter %}

@@ -8,11 +8,12 @@ use Politizr\Model\POOrderState;
 use Politizr\Model\POEmail;
 
 /**
- * 	Envoi des emails
+ *     Envoi des emails
  *
  *  @author Lionel Bouzonville
  */
-class EmailListener {
+class EmailListener
+{
 
     protected $mailer;
     protected $templating;
@@ -25,23 +26,26 @@ class EmailListener {
     /**
      *
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail) {
-    	$this->mailer = $mailer;
-    	$this->templating = $templating;
-    	$this->logger = $logger;
+    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail)
+    {
+        $this->mailer = $mailer;
+        $this->templating = $templating;
+        $this->logger = $logger;
 
-    	$this->contactEmail = $contactEmail;
+        $this->contactEmail = $contactEmail;
         $this->noreplyEmail = $noreplyEmail;
     }
 
     /**
-     * 
+     * Email associé à la commande
+     *
      * @param GenericEvent
      */
-    public function onOrderEmail(GenericEvent $event) {
-    	$this->logger->info('*** onOrderEmail');
+    public function onOrderEmail(GenericEvent $event)
+    {
+        $this->logger->info('*** onOrderEmail');
 
-    	$order = $event->getSubject();
+        $order = $event->getSubject();
         $subject = 'Politizr - ';
         switch ($order->getPOOrderStateId()) {
             case POOrderState::CREATED:
@@ -77,11 +81,13 @@ class EmailListener {
             $user = $order->getPUser();
 
             $htmlBody = $this->templating->render(
-                                'PolitizrAdminBundle:Email:'.$template.'.html.twig', array('order' => $order, 'user' => $user)
-                        );
+                'PolitizrAdminBundle:Email:'.$template.'.html.twig',
+                array('order' => $order, 'user' => $user)
+            );
             $txtBody = $this->templating->render(
-                                'PolitizrAdminBundle:Email:'.$template.'.txt.twig', array('order' => $order, 'user' => $user)
-                        );
+                'PolitizrAdminBundle:Email:'.$template.'.txt.twig',
+                array('order' => $order, 'user' => $user)
+            );
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
@@ -94,7 +100,7 @@ class EmailListener {
 
             // Facture en PJ
             if ($pj) {
-            	$invoiceDir = '/uploads/invoices/';
+                $invoiceDir = '/uploads/invoices/';
                 $message->attach(\Swift_Attachment::fromPath($invoiceDir . $pj));
             }
 
@@ -126,5 +132,4 @@ class EmailListener {
             throw $e;
         }
     }
-
 }

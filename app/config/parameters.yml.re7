@@ -5,12 +5,13 @@ parameters:
     database_name: politizr_v2
     database_user: politizr2
     database_password: vSttHajC77QLSJFK
-    mailer_auth_mode: login
-    mailer_port:     25
+    mailer_auth_mode:  login
+    mailer_port:       25
     mailer_transport:  mail
     mailer_host:       localhost
     mailer_user:       postmaster@studio-echo.fr
     mailer_password:   post09MASTER
+    mailer_encryption: null
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
 

@@ -8,210 +8,210 @@ LAYOUT USER
 
 {# Bloc détail d'un user #}
 {% block detail %}
-	<div class="user-detail">
-		{% if not user %}
-			<div class="author-infos">
-				<span class="label label-danger">Auteur supprimé</span>
-			</div>
-		{% else %}
-			<div id="header">
-				<div class="row text-center">
-					{% block detailPhotoBack %}
-					{% endblock %}
+    <div class="user-detail">
+        {% if not user %}
+            <div class="author-infos">
+                <span class="label label-danger">Auteur supprimé</span>
+            </div>
+        {% else %}
+            <div id="header">
+                <div class="row text-center">
+                    {% block detailPhotoBack %}
+                    {% endblock %}
 
-					{% block detailPhoto %}
-						{# Photo #}
-						<div class="col-sm-4">
-							{{ user | photo('user_bio') }}
-						</div>
-					{% endblock %}
+                    {% block detailPhoto %}
+                        {# Photo #}
+                        <div class="col-sm-4">
+                            {{ user | photo('user_bio') }}
+                        </div>
+                    {% endblock %}
 
-					{% block detailIdentity %}
-						{# Identité #}
-						<div class="col-sm-4">
-							<h3>
-								<span class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
-									{{ user }}
-									{% if user.validated %}
-										<i class="fa fa-check-square-o" title="Profil validé"></i>
-									{% endif %}
-								</span>
-								&nbsp;&nbsp;
-								{# Organisations en cours #}
-								{% set organizations = user.currentOrganizations %}
-								{% for organization in organizations %}
-									<img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
-								{% endfor %}
-							</h3>
-						</div>
-					{% endblock %}
+                    {% block detailIdentity %}
+                        {# Identité #}
+                        <div class="col-sm-4">
+                            <h3>
+                                <span class="label {% if user.qualified %}label-danger{% else %}label-info{% endif %}">
+                                    {{ user }}
+                                    {% if user.validated %}
+                                        <i class="fa fa-check-square-o" title="Profil validé"></i>
+                                    {% endif %}
+                                </span>
+                                &nbsp;&nbsp;
+                                {# Organisations en cours #}
+                                {% set organizations = user.currentOrganizations %}
+                                {% for organization in organizations %}
+                                    <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                                {% endfor %}
+                            </h3>
+                        </div>
+                    {% endblock %}
 
-					{% block detailType %}
-						{# Type #}
-						<div class="col-sm-4">
-							<h3>
-								<span class="badge alert-success">{{ user.reputationScore }}</span>
-							</h3>
-						</div>
-					{% endblock %}
-				</div>
+                    {% block detailType %}
+                        {# Type #}
+                        <div class="col-sm-4">
+                            <h3>
+                                <span class="badge alert-success">{{ user.reputationScore }}</span>
+                            </h3>
+                        </div>
+                    {% endblock %}
+                </div>
 
-				<div class="row text-center">
-					{% block detailSubtitle %}
-						{# Sous-titre #}
-						<div class="col-sm-12">
-							<h3><span class="label label-default">{{ user.subtitle }}</span></h3>
-						</div>
-					{% endblock %}
-				</div>
+                <div class="row text-center">
+                    {% block detailSubtitle %}
+                        {# Sous-titre #}
+                        <div class="col-sm-12">
+                            <h3><span class="label label-default">{{ user.subtitle }}</span></h3>
+                        </div>
+                    {% endblock %}
+                </div>
 
-				<div class="row text-center">
-					<hr>
-					{% block detailWebsite %}
-						{# Site web #}
-						<div class="col-sm-4">
-							<a class="label label-default" href="{{ user.website }}" target="_blank">{{ user.website }}</a>
-						</div>
-					{% endblock %}
-					{% block detailTwitter %}
-						{# Twitter #}
-						<div class="col-sm-4">
-							<a class="label label-default" href="{{ user.twitter }}" target="_blank">{{ user.twitter }}</a>
-						</div>
-					{% endblock %}
-					{% block detailFacebook %}
-						{# Facebook #}
-						<div class="col-sm-4">
-							<a class="label label-default" href="{{ user.facebook }}" target="_blank">{{ user.facebook }}</a>
-						</div>
-					{% endblock %}
-				</div>
-
-
-				{% block detailBadges %}
-					{# Badges #}
-					<hr>
-					<div class="row text-center">
-						<div id="badges">
-							{% for badge in user.badges %}
-								<span class="label  {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
-							{% else %}
-								<span class="label label-default">Aucun badge</span>
-							{% endfor %}
-						</div>
-					</div>
-				{% endblock %}
-
-				{% block detailTags %}
-					{# Tags #}
-					<hr>
-					<div class="row text-center">
-						<div class="col-sm-12">
-							{{ user | tags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
-						</div>
-					</div>
-					<hr>
-				{% endblock %}
-			</div>
+                <div class="row text-center">
+                    <hr>
+                    {% block detailWebsite %}
+                        {# Site web #}
+                        <div class="col-sm-4">
+                            <a class="label label-default" href="{{ user.website }}" target="_blank">{{ user.website }}</a>
+                        </div>
+                    {% endblock %}
+                    {% block detailTwitter %}
+                        {# Twitter #}
+                        <div class="col-sm-4">
+                            <a class="label label-default" href="{{ user.twitter }}" target="_blank">{{ user.twitter }}</a>
+                        </div>
+                    {% endblock %}
+                    {% block detailFacebook %}
+                        {# Facebook #}
+                        <div class="col-sm-4">
+                            <a class="label label-default" href="{{ user.facebook }}" target="_blank">{{ user.facebook }}</a>
+                        </div>
+                    {% endblock %}
+                </div>
 
 
-			{% block detailFollowers %}
-				<hr>
-				<div class="following row text-center">
-					{# Followers #}
-					<div class="col-sm-8">
-						<div id="followers">
-							{{ user | followersUser }}
-						</div>
-					</div>
-					{# Subscribe #}
-					<div class="col-sm-4 text-center">
-						<div id="subscribe">
-							{{ user | linkSubscribeUser }}
-						</div>
-					</div>
-				</div>
-			{% endblock %}
+                {% block detailBadges %}
+                    {# Badges #}
+                    <hr>
+                    <div class="row text-center">
+                        <div id="badges">
+                            {% for badge in user.badges %}
+                                <span class="label  {{ badgeMetalTwBootClass(badge.PRBadgeMetalId) }}">{{ badge.title }}</span>
+                            {% else %}
+                                <span class="label label-default">Aucun badge</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endblock %}
 
-			{% block detailBio %}
-				{# Bio #}
-				<hr>
-				<div class="row jumbotron">
-					<div class="col-sm-12">
-						<p>{{ user.biography | raw  }}</p>
-					</div>
-				</div>
-				<hr>
-			{% endblock %}
+                {% block detailTags %}
+                    {# Tags #}
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-sm-12">
+                            {{ user | tags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+                        </div>
+                    </div>
+                    <hr>
+                {% endblock %}
+            </div>
 
-			{% block detailQualifications %}
-				{# Qualifications #}
-				{% if user.qualified %}
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-						        <tr>
-						            <th>Date</th>
-						            <th>Mandat</th>
-						            <th>Organisation</th>
-						            <th>Description</th>
-						        </tr>
-					      	</thead>				
-							{% set mandates = user.mandates %}
-							{% for mandate in mandates %}
-								<tr>
-									<td>
-								    	{% if (mandate.isCurrent) %}
-								    		<span class="label label-info">Depuis le {{ mandate.beginAt | date('d/m/Y') }}</span>
-								    	{% else %}
-								    		<span class="label label-info">Du {{ mandate.beginAt | date('d/m/Y') }} au {{ mandate.endAt | date('d/m/Y') }}</span>
-								    	{% endif %}
-									</td>
-									<td><span class="label label-danger">{{ mandate.mandateTypeTitle }}</span></td>
-									<td>
-										{% if (mandate.organizationLogo) %}
-								            <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
-								        {% else %}
-								            <span class="label label-info">{{ mandate.organizationInitials }}</span>
-								    	{% endif %}
-									</td>
-									<td>{{ mandate.description | raw  }}</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="4">
-										Aucun mandat rédigé pour le moment
-									</td>
-								</tr>
-							{% endfor %}
-						</table>
-					</div>
-				{% endif %}
-			{% endblock %}
 
-		{% endif %}
-	</div>
+            {% block detailFollowers %}
+                <hr>
+                <div class="following row text-center">
+                    {# Followers #}
+                    <div class="col-sm-8">
+                        <div id="followers">
+                            {{ user | followersUser }}
+                        </div>
+                    </div>
+                    {# Subscribe #}
+                    <div class="col-sm-4 text-center">
+                        <div id="subscribe">
+                            {{ user | linkSubscribeUser }}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+
+            {% block detailBio %}
+                {# Bio #}
+                <hr>
+                <div class="row jumbotron">
+                    <div class="col-sm-12">
+                        <p>{{ user.biography | raw  }}</p>
+                    </div>
+                </div>
+                <hr>
+            {% endblock %}
+
+            {% block detailQualifications %}
+                {# Qualifications #}
+                {% if user.qualified %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Mandat</th>
+                                    <th>Organisation</th>
+                                    <th>Description</th>
+                                </tr>
+                              </thead>                
+                            {% set mandates = user.mandates %}
+                            {% for mandate in mandates %}
+                                <tr>
+                                    <td>
+                                        {% if (mandate.isCurrent) %}
+                                            <span class="label label-info">Depuis le {{ mandate.beginAt | date('d/m/Y') }}</span>
+                                        {% else %}
+                                            <span class="label label-info">Du {{ mandate.beginAt | date('d/m/Y') }} au {{ mandate.endAt | date('d/m/Y') }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td><span class="label label-danger">{{ mandate.mandateTypeTitle }}</span></td>
+                                    <td>
+                                        {% if (mandate.organizationLogo) %}
+                                            <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
+                                        {% else %}
+                                            <span class="label label-info">{{ mandate.organizationInitials }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ mandate.description | raw  }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">
+                                        Aucun mandat rédigé pour le moment
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+        {% endif %}
+    </div>
 {% endblock detail %}
 
 {# Bloc ligne de listing de users #}
 {% block listRow %}
-	<div class="user-list-row">
-		<div class="row">
-			<div class="col-sm-6">
-				{% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
-			</div>
-			<div class="col-sm-2 text-center">
-				<span class="badge alert-info">{{ user.countDebates }} débats</span>
-			</div>
-			<div class="col-sm-2 text-center">
-				<span class="badge alert-danger">{{ user.countReactions }} réactions</span>
-			</div>
-			<div class="col-sm-2 text-center">
-				<span class="badge alert-warning">{{ user.countComments }} commentaires</span>
-			</div>
-		</div>
-		
-		{% block listSearchHighlights %}
-		{% endblock listSearchHighlights %}
-	</div>
+    <div class="user-list-row">
+        <div class="row">
+            <div class="col-sm-6">
+                {% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
+            </div>
+            <div class="col-sm-2 text-center">
+                <span class="badge alert-info">{{ user.countDebates }} débats</span>
+            </div>
+            <div class="col-sm-2 text-center">
+                <span class="badge alert-danger">{{ user.countReactions }} réactions</span>
+            </div>
+            <div class="col-sm-2 text-center">
+                <span class="badge alert-warning">{{ user.countComments }} commentaires</span>
+            </div>
+        </div>
+        
+        {% block listSearchHighlights %}
+        {% endblock listSearchHighlights %}
+    </div>
 {% endblock listRow %}

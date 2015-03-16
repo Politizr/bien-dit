@@ -1,0 +1,7 @@
+Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
+
+{{ notif | linkedNotification(true) }}
+
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}.
+
+{% include 'PolitizrFrontBundle:Email:signature.txt.twig' %}

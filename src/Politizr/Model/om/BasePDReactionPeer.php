@@ -217,8 +217,8 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
      * <code>
-     *		$c->addAlias("alias1", TablePeer::TABLE_NAME);
-     *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
+     *        $c->addAlias("alias1", TablePeer::TABLE_NAME);
+     *        $c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
      * @param      string $column The column name for current table. (i.e. PDReactionPeer::COLUMN_NAME).
@@ -239,7 +239,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      Criteria $criteria object containing the columns to add.
      * @param      string   $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -343,7 +343,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      PropelPDO $con
      * @return PDReaction
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectOne(Criteria $criteria, PropelPDO $con = null)
     {
@@ -363,7 +363,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      PropelPDO $con
      * @return array           Array of selected Objects
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
@@ -378,7 +378,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
      * @param      PropelPDO $con The connection to use
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      * @return PDOStatement The executed PDOStatement object.
      * @see        BasePeer::doSelect()
      */
@@ -535,7 +535,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * objects that inherit from the default.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function populateObjects(PDOStatement $stmt)
     {
@@ -568,7 +568,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      * @return array (PDReaction object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
@@ -750,7 +750,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -817,7 +817,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPDocument(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -885,7 +885,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1007,7 +1007,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1282,7 +1282,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1380,7 +1380,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPDocument(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1478,7 +1478,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDReaction objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1572,7 +1572,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -1615,7 +1615,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doInsert($values, PropelPDO $con = null)
     {
@@ -1654,7 +1654,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function doUpdate($values, PropelPDO $con = null)
     {
@@ -1725,9 +1725,9 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *				if supported by native driver or if emulated using Propel.
+     *                if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, PropelPDO $con = null)
      {
@@ -1847,7 +1847,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * @param      PropelPDO $con the connection to use
      * @return PDReaction[]
      * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
@@ -1872,8 +1872,8 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Returns the root nodes for the tree
      *
-     * @param      PropelPDO $con	Connection to use.
-     * @return     PDReaction			Propel object for root node
+     * @param      PropelPDO $con    Connection to use.
+     * @return     PDReaction            Propel object for root node
      */
     public static function retrieveRoots(Criteria $criteria = null, PropelPDO $con = null)
     {
@@ -1888,9 +1888,9 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Returns the root node for a given scope
      *
-     * @param      int $scope		Scope to determine which root node to return
-     * @param      PropelPDO $con	Connection to use.
-     * @return     PDReaction			Propel object for root node
+     * @param      int $scope        Scope to determine which root node to return
+     * @param      PropelPDO $con    Connection to use.
+     * @return     PDReaction            Propel object for root node
      */
     public static function retrieveRoot($scope = null, PropelPDO $con = null)
     {
@@ -1904,10 +1904,10 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Returns the whole tree node for a given scope
      *
-     * @param      int $scope		Scope to determine which root node to return
-     * @param      Criteria $criteria	Optional Criteria to filter the query
-     * @param      PropelPDO $con	Connection to use.
-     * @return     PDReaction			Propel object for root node
+     * @param      int $scope        Scope to determine which root node to return
+     * @param      Criteria $criteria    Optional Criteria to filter the query
+     * @param      PropelPDO $con    Connection to use.
+     * @return     PDReaction            Propel object for root node
      */
     public static function retrieveTree($scope = null, Criteria $criteria = null, PropelPDO $con = null)
     {
@@ -1923,7 +1923,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Tests if node is valid
      *
-     * @param      PDReaction $node	Propel object for src node
+     * @param      PDReaction $node    Propel object for src node
      * @return     bool
      */
     public static function isValid(PDReaction $node = null)
@@ -1938,8 +1938,8 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Delete an entire tree
      *
-     * @param      int $scope		Scope to determine which tree to delete
-     * @param      PropelPDO $con	Connection to use.
+     * @param      int $scope        Scope to determine which tree to delete
+     * @param      PropelPDO $con    Connection to use.
      *
      * @return     int  The number of deleted nodes
      */
@@ -1955,11 +1955,11 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * Adds $delta to all L and R values that are >= $first and <= $last.
      * '$delta' can also be negative.
      *
-     * @param      int $delta		Value to be shifted by, can be negative
-     * @param      int $first		First node to be shifted
-     * @param      int $last			Last node to be shifted (optional)
-     * @param      int $scope		Scope to use for the shift
-     * @param      PropelPDO $con		Connection to use.
+     * @param      int $delta        Value to be shifted by, can be negative
+     * @param      int $first        First node to be shifted
+     * @param      int $last            Last node to be shifted (optional)
+     * @param      int $scope        Scope to use for the shift
+     * @param      PropelPDO $con        Connection to use.
      */
     public static function shiftRLValues($delta, $first, $last = null, $scope = null, PropelPDO $con = null)
     {
@@ -2000,11 +2000,11 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * Adds $delta to level for nodes having left value >= $first and right value <= $last.
      * '$delta' can also be negative.
      *
-     * @param      int $delta		Value to be shifted by, can be negative
-     * @param      int $first		First node to be shifted
-     * @param      int $last			Last node to be shifted
-     * @param      int $scope		Scope to use for the shift
-     * @param      PropelPDO $con		Connection to use.
+     * @param      int $delta        Value to be shifted by, can be negative
+     * @param      int $first        First node to be shifted
+     * @param      int $last            Last node to be shifted
+     * @param      int $scope        Scope to use for the shift
+     * @param      PropelPDO $con        Connection to use.
      */
     public static function shiftLevel($delta, $first, $last, $scope = null, PropelPDO $con = null)
     {
@@ -2026,8 +2026,8 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Reload all already loaded nodes to sync them with updated db
      *
-     * @param      PDReaction $prune		Object to prune from the update
-     * @param      PropelPDO $con		Connection to use.
+     * @param      PDReaction $prune        Object to prune from the update
+     * @param      PropelPDO $con        Connection to use.
      */
     public static function updateLoadedNodes($prune = null, PropelPDO $con = null)
     {
@@ -2063,10 +2063,10 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Update the tree to allow insertion of a leaf at the specified position
      *
-     * @param      int $left	left column value
-     * @param      integer $scope	scope column value
-     * @param      mixed $prune	Object to prune from the shift
-     * @param      PropelPDO $con	Connection to use.
+     * @param      int $left    left column value
+     * @param      integer $scope    scope column value
+     * @param      mixed $prune    Object to prune from the shift
+     * @param      PropelPDO $con    Connection to use.
      */
     public static function makeRoomForLeaf($left, $scope, $prune = null, PropelPDO $con = null)
     {
@@ -2080,8 +2080,8 @@ abstract class BasePDReactionPeer extends PDocumentPeer
     /**
      * Update the tree to allow insertion of a leaf at the specified position
      *
-     * @param      integer $scope	scope column value
-     * @param      PropelPDO $con	Connection to use.
+     * @param      integer $scope    scope column value
+     * @param      PropelPDO $con    Connection to use.
      */
     public static function fixLevels($scope, PropelPDO $con = null)
     {
@@ -2132,7 +2132,7 @@ abstract class BasePDReactionPeer extends PDocumentPeer
      * Updates all scope values for items that has negative left (<=0) values.
      *
      * @param      mixed     $scope
-     * @param      PropelPDO $con	Connection to use.
+     * @param      PropelPDO $con    Connection to use.
      */
     public static function setNegativeScope($scope, PropelPDO $con = null)
     {

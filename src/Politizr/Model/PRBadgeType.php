@@ -7,38 +7,38 @@ use Politizr\Model\om\BasePRBadgeType;
 class PRBadgeType extends BasePRBadgeType
 {
 
-	// ************************************************************************************ //
-	//										CONSTANTES
-	// ************************************************************************************ //
-	const TYPE_DEBATE = 1;
-	const TYPE_COMMENT = 2;
-	const TYPE_PARTICIPATION = 3;
-	const TYPE_MODERATION = 4;
-	const TYPE_OTHER = 5;
+    // ************************************************************************************ //
+    //                                        CONSTANTES
+    // ************************************************************************************ //
+    const TYPE_DEBATE = 1;
+    const TYPE_COMMENT = 2;
+    const TYPE_PARTICIPATION = 3;
+    const TYPE_MODERATION = 4;
+    const TYPE_OTHER = 5;
 
 
-	// *****************************  OBJET / STRING  ****************** //
+    // *****************************  OBJET / STRING  ****************** //
 
-	/**
-	 *
-	 */
-	public function __toString() {
-		return $this->getTitle();
-	}
+    /**
+     *
+     */
+    public function __toString() {
+        return $this->getTitle();
+    }
 
 
-	// *****************************  BADGES  ****************** //
+    // *****************************  BADGES  ****************** //
 
-	/**
-	 *
-	 */
-	public function getBadges($online = true) {
-		$query = PRBadgeQuery::create()
-				->_if($online)
-					->filterByOnline($online)
-				->_endif()
-				->orderByTitle();
+    /**
+     *
+     */
+    public function getBadges($online = true) {
+        $query = PRBadgeQuery::create()
+                ->_if($online)
+                    ->filterByOnline($online)
+                ->_endif()
+                ->orderByTitle();
 
-		return parent::getPRBadges($query);
-	}
+        return parent::getPRBadges($query);
+    }
 }

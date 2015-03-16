@@ -270,6 +270,10 @@ MyPersoE:
     pattern:  /elu/mon-compte/mes-informations-personnelles
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
 
+MyNotificationsE:
+    pattern:  /elu/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myNotifications }
+
 
 ReactionDraftNew:
     pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle

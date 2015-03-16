@@ -1,7 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:POrderShow:index.html.twig" %}
 
 {% block show_column_supporting_document %}
-	{% if POrder.supportingDocument %}
-		<a href="{{ constant('Politizr\\Model\\POrder::UPLOAD_WEB_PATH') ~ POrder.supportingDocument }}">{{ POrder.supportingDocument }}</a>
-	{% endif %}
+    {% if POrder.supportingDocument %}
+        <a href="{{ constant('Politizr\\Model\\POrder::UPLOAD_WEB_PATH') ~ POrder.supportingDocument }}">{{ POrder.supportingDocument }}</a>
+    {% endif %}
 {% endblock show_column_supporting_document %}

@@ -31,7 +31,7 @@ class SearchManager
     }
 
     /* ######################################################################################################## */
-    /*                            					REQUÊTE DE RECHERCHE                                  		*/
+    /*                                                REQUÊTE DE RECHERCHE                                          */
     /* ######################################################################################################## */
 
     /**
@@ -43,7 +43,7 @@ class SearchManager
         $logger->info('*** pagerQuery');
 
         if (!$query) {
-        	throw new InconsistentDataException('Requête vide.');
+            throw new InconsistentDataException('Requête vide.');
         } else {
             // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
             $finder = $this->sc->get('fos_elastica.finder.politizr');
@@ -64,14 +64,14 @@ class SearchManager
 
             $pager = $finder->findPaginated($querySearch);
 
-        	return $pager;
+            return $pager;
         }
 
     }
 
 
     /* ######################################################################################################## */
-    /*                            					FONCTIONS AJAX                               				*/
+    /*                                                FONCTIONS AJAX                                               */
     /* ######################################################################################################## */
 
     /**
@@ -108,8 +108,8 @@ class SearchManager
         $templating = $this->sc->get('templating');
         $html = $templating->render(
                             'PolitizrFrontBundle:Navigation:searchResultPage.html.twig', array(
-				                    'query' => $query,
-				                    'pager' => $pager,
+                                    'query' => $query,
+                                    'pager' => $pager,
                                 )
                     );
 

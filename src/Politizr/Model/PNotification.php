@@ -7,30 +7,30 @@ use Politizr\Model\om\BasePNotification;
 class PNotification extends BasePNotification
 {
 
-	// ******************************************************** //
-	//			Constantes des notifications / BDD				//
-	// ******************************************************** //
+    // ******************************************************** //
+    //            Constantes des notifications / BDD                //
+    // ******************************************************** //
 
 
-	// ************ DOCUMENTS ******* //
+    // ************ DOCUMENTS ******* //
     const ID_D_COMMENT_PUBLISH = 1;
     const ID_D_NOTE_POS = 2;
     const ID_D_NOTE_NEG = 3;
 
-	// ************ DÉBATS ******* //
+    // ************ DÉBATS ******* //
     const ID_D_D_REACTION_PUBLISH = 4;
     const ID_D_D_FOLLOWED = 5;
 
 
-	// ************ RÉACTIONS ******* //
-   	const ID_D_R_REACTION_PUBLISH = 6;
+    // ************ RÉACTIONS ******* //
+       const ID_D_R_REACTION_PUBLISH = 6;
 
-	// ************ COMMENTAIRES ******* //
+    // ************ COMMENTAIRES ******* //
     const ID_D_C_NOTE_POS = 7;
     const ID_D_C_NOTE_NEG = 8;
 
 
-	// ************ USER ******* //
+    // ************ USER ******* //
     const ID_U_FOLLOWED = 9;
     const ID_U_BADGE = 10;
 

@@ -60,6 +60,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }
+            - { name: kernel.event_listener, event: notification_email }
 
     politzr.listener.notification:
         class:      Politizr\FrontBundle\Listener\NotificationListener
@@ -72,6 +73,12 @@ services:
             - { name: kernel.event_listener, event: n_debate_follow }
             - { name: kernel.event_listener, event: n_user_follow }
             - { name: kernel.event_listener, event: n_badge_win }
+
+    politzr.listener.notification_email:
+        class:      Politizr\FrontBundle\Listener\NotificationEmailListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: n_e_check }
 
     politzr.listener.reputation:
         class:      Politizr\FrontBundle\Listener\ReputationListener

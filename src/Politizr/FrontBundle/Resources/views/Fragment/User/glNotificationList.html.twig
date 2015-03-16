@@ -1,25 +1,25 @@
 <table id="notifTable" class="table table-hover">
-	<thead>
-		<tr>
-			<td colspan="2">
-				Notifications - Tout marquer <a action="notification-check-all">lu</a>
-			</td>
-		</tr>
-	</thead>
-	{% for notif in notifs %}
-		<tr {% if not notif.checked %}class="success"{% endif %} subject-id="{{ notif.id }}">
-			<td width="95%">
-		    	{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}</span>, {{ notif | linkedNotification }}
-		    </td>
-			<td width="5%">
-				<i class="fa fa-bullseye" {% if not notif.checked %}action="notification-check" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
-			</td>
-		</tr>
-	{% else %}
-		<tr>
-			<td colspan="2">
-				<p class="bg-info">Vous n'avez aucune notification.</p>
-			</td>
-		</tr>
-	{% endfor %}
+    <thead>
+        <tr>
+            <td colspan="2">
+                Notifications - Tout marquer <a action="notification-check-all">lu</a>
+            </td>
+        </tr>
+    </thead>
+    {% for notif in notifs %}
+        <tr {% if not notif.checked %}class="success"{% endif %} subject-id="{{ notif.id }}">
+            <td width="95%">
+                <span>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}</span>, {{ notif | linkedNotification }}
+            </td>
+            <td width="5%">
+                <i class="fa fa-bullseye" {% if not notif.checked %}action="notification-check" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">
+                <p class="bg-info">Vous n'avez aucune notification.</p>
+            </td>
+        </tr>
+    {% endfor %}
 </table>

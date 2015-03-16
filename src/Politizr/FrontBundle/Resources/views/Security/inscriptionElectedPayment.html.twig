@@ -1,15 +1,15 @@
 {% extends layout %}
 
 {% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
+    {% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		<h1>Mode de paiement</h1>
-		<p class="bg-info">Choisissez le mode de paiement.</p>
-		<div id="box-inscription-elected-payment">
-	        {% for payment in payments %}
+    <div id="main" class="container">
+        <h1>Mode de paiement</h1>
+        <p class="bg-info">Choisissez le mode de paiement.</p>
+        <div id="box-inscription-elected-payment">
+            {% for payment in payments %}
                 <div class="payment-choice">
                     <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
                     <div class="payment-detail">
@@ -18,14 +18,14 @@
                         <a action="payment-process" class="btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
                     </div>
                 </div>
-	        {% endfor %}
-		</div>
-		<hr>
-	</div>
+            {% endfor %}
+        </div>
+        <hr>
+    </div>
 {% endblock main %}
 
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:paymentProcess.js.twig' %}
 {% endblock javascriptFooter %}

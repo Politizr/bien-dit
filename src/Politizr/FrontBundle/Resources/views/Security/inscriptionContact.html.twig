@@ -1,37 +1,37 @@
 {% extends 'PolitizrFrontBundle::layout.html.twig' %}
 
 {% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 2 } only %}
+    {% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 2 } only %}
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		{% if form.vars.errors|length %}
-			<div class="box-error">
-		    	{{ form_errors(form) }}
-		    </div>
-		{% endif %}
+    <div id="main" class="container">
+        {% if form.vars.errors|length %}
+            <div class="box-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
 
-		<div id="box-inscription-contact">
-			{{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-			    {{ form_row(form.gender) }}
-			    {{ form_row(form.name) }}
-			    {{ form_row(form.firstname) }}
-			    {{ form_row(form.birthday) }}
+        <div id="box-inscription-contact">
+            {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+                {{ form_row(form.gender) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.birthday) }}
 
-			    <hr>
+                <hr>
 
-			    {{ form_row(form.email) }}
-			    {{ form_row(form.newsletter) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.newsletter) }}
 
-			    {{ form_row(form.actions) }}
-			{{ form_end(form) }}
-		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
-		</div>
+                {{ form_row(form.actions) }}
+            {{ form_end(form) }}
+            <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+        </div>
 
-	</div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock javascriptFooter %}

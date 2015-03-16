@@ -29,6 +29,8 @@ use Politizr\Model\PUBadgesQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PNotificationQuery;
+use Politizr\Model\PUSubscribeEmailQuery;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PTag;
@@ -54,13 +56,14 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
  * Gestion profil débatteur
  *
  * TODO:
- *	- gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
+ *  - gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
  *  - refactorisation pour réduire les doublons de code entre les tables PUTaggedT et PUFollowT
  *  - refactoring gestion des tags > gestion des doublons / admin + externalisation logique métier dans les *Query class
  *
  * @author Lionel Bouzonville
  */
-class ProfileEController extends Controller {
+class ProfileEController extends Controller
+{
 
 
     /* ######################################################################################################## */
@@ -388,6 +391,41 @@ class ProfileEController extends Controller {
             ));
     }
 
+    /**
+     *  Gestion des notifications par email
+     */
+    public function myNotificationsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myNotificationsAction');
+
+
+        // Récupération user courant
+        $user = $this->getUser();
+
+        // Récupération liste des notifications
+        $notifications = PNotificationQuery::create()
+                        ->filterByOnline(true)
+                        ->orderById()
+                        ->find();
+
+        // ids des notifs email du user
+        $emailNotifIds = array();
+        $emailNotifIds = PUSubscribeEmailQuery::create()
+                        ->select('PNotificationId')
+                        ->filterByPUserId($user->getId())
+                        ->find();
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileE:myNotifications.html.twig', array(
+                        'notifications' => $notifications,
+                        'emailNotifIds' => $emailNotifIds,
+            ));
+
+    }
+
 
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */
@@ -401,12 +439,14 @@ class ProfileEController extends Controller {
 
 
     /**
-     * 
+     * Gestion de la pagination
+     *
      * @param type $query
      * @return \Pagerfanta\Pagerfanta
      * @throws type
      */
-    private function preparePagination($query, $maxPerPage = 5) {
+    private function preparePagination($query, $maxPerPage = 5)
+    {
         $adapter = new PropelAdapter($query);
         $pagerfanta = new Pagerfanta($adapter);
 

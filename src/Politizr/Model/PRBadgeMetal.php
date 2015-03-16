@@ -7,35 +7,35 @@ use Politizr\Model\om\BasePRBadgeMetal;
 class PRBadgeMetal extends BasePRBadgeMetal
 {
 
-	// ************************************************************************************ //
-	//										CONSTANTES
-	// ************************************************************************************ //
-	const GOLD = 1;
-	const SILVER = 2;
-	const BRONZE = 3;
+    // ************************************************************************************ //
+    //                                        CONSTANTES
+    // ************************************************************************************ //
+    const GOLD = 1;
+    const SILVER = 2;
+    const BRONZE = 3;
 
-	// *****************************  OBJET / STRING  ****************** //
+    // *****************************  OBJET / STRING  ****************** //
 
-	/**
-	 *
-	 */
-	public function __toString() {
-		return $this->getTitle();
-	}
+    /**
+     *
+     */
+    public function __toString() {
+        return $this->getTitle();
+    }
 
 
-	// *****************************  BADGES  ****************** //
+    // *****************************  BADGES  ****************** //
 
-	/**
-	 *
-	 */
-	public function getBadges($online = true) {
-		$query = PRBadgeQuery::create()
-				->_if($online)
-					->filterByOnline($online)
-				->_endif()
-				->orderByTitle();
+    /**
+     *
+     */
+    public function getBadges($online = true) {
+        $query = PRBadgeQuery::create()
+                ->_if($online)
+                    ->filterByOnline($online)
+                ->_endif()
+                ->orderByTitle();
 
-		return parent::getPRBadges($query);
-	}
+        return parent::getPRBadges($query);
+    }
 }

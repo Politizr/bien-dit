@@ -8,12 +8,12 @@ class PRBadge extends BasePRBadge
 {
 
 
-	// ******************************************************** //
-	//				  Constantes des badges / BDD				//
-	// ******************************************************** //
+    // ******************************************************** //
+    //                  Constantes des badges / BDD                //
+    // ******************************************************** //
 
 
-	// ************ DEBATS ******* //
+    // ************ DEBATS ******* //
     const ID_QUERELLE = 1;
     const ID_CONTROVERSE = 2;
     const ID_POLEMIQUE = 3;
@@ -51,9 +51,9 @@ class PRBadge extends BasePRBadge
     const ID_FAN = 35;
     const ID_AMBASSADEUR = 36;
 
-	// ******************************************************** //
-	//			Constantes fonctionnelles / badges				//
-	// ******************************************************** //
+    // ******************************************************** //
+    //            Constantes fonctionnelles / badges                //
+    // ******************************************************** //
     const QUERELLE_NB_REACTIONS = 3;
     const CONTROVERSE_NB_REACTIONS = 5;
     const POLEMIQUE_NB_REACTIONS = 10;
@@ -104,26 +104,26 @@ class PRBadge extends BasePRBadge
     const FAN_NB_SHARE = 20;
     const AMBASSADEUR_NB_SHARE = 50;
 
-	// ******************************************************** //
+    // ******************************************************** //
 
 
-	/**
-	 *
-	 */
-	public function __toString() {
-		return $this->getTitle();
-	}
+    /**
+     *
+     */
+    public function __toString() {
+        return $this->getTitle();
+    }
 
- 	/**
-	 * Override to manage accented characters
-	 * @return string
-	 */
-	protected function createRawSlug()
-	{
-		$toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
-		$slug = $this->cleanupSlugPart($toSlug);
-		return $slug;
-	}
-	
+     /**
+     * Override to manage accented characters
+     * @return string
+     */
+    protected function createRawSlug()
+    {
+        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $slug = $this->cleanupSlugPart($toSlug);
+        return $slug;
+    }
+    
 
 }

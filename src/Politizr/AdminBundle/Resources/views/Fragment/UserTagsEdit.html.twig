@@ -1,16 +1,16 @@
 <div id="tagsZone-{{ zoneId }}">
-	{# Variables #}
-	<div class="tagsAttr" ptTagTypeId="{{ ptTagTypeId }}" objectId="{{ pUser.id }}" addUrl="{{ path('AdminAddPUTaggedTPTag') }}"></div>
-	
-	{# Sélection #}
-	<input type="text" class="selectedTag" />
-	<input type="hidden" class="selectedTagID" />
-	<a class="addUserTag">Ajouter</a>
+    {# Variables #}
+    <div class="tagsAttr" ptTagTypeId="{{ ptTagTypeId }}" objectId="{{ pUser.id }}" addUrl="{{ path('AdminAddPUTaggedTPTag') }}"></div>
+    
+    {# Sélection #}
+    <input type="text" class="selectedTag" />
+    <input type="hidden" class="selectedTagID" />
+    <a class="addUserTag">Ajouter</a>
 
-	{# Affichage #}
-	<div class="displayTagsZone">
-		{% for pTag in pTags %}
-			{% include 'PolitizrAdminBundle:Fragment:Tag.html.twig' with { 'objectId': pUser.id, 'pTagId': pTag.id, 'pTagTitle': pTag.title, 'deleteUrl': path('AdminDeletePUTaggedTPTag') } %}
-		{% endfor %}
-	</div>
+    {# Affichage #}
+    <div class="displayTagsZone">
+        {% for pTag in pTags %}
+            {% include 'PolitizrAdminBundle:Fragment:Tag.html.twig' with { 'objectId': pUser.id, 'pTagId': pTag.id, 'pTagTitle': pTag.title, 'deleteUrl': path('AdminDeletePUTaggedTPTag') } %}
+        {% endfor %}
+    </div>
 </div>

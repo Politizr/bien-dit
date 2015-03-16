@@ -15,19 +15,16 @@ Politizr\Model\PUStatus:
 
 
 Politizr\Model\PUser:
-
-    # LISTE USER TEST
-    usertest1:
+    # USERS DEBATTEURS DE TEST
+    fhollande:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 1280, 600, 'city', false) ?>
-        file_name:              <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/users', 150, 150, 'people', false) ?>
-
         gender:                 Monsieur
-        firstname:              Lorem
-        name:                   Ipsum
+        firstname:              François
+        name:                   Hollande
+        birthday:               1954-08-12
 
-        subtitle:               Député de la République Française
+        subtitle:               Président de la République Française
         biography:              <?php $faker('paragraphs', 4, true); ?>
 
         website:                <?php $faker('url'); ?>
@@ -35,13 +32,57 @@ Politizr\Model\PUser:
         facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
         phone:                  <?php $faker('phoneNumber'); ?>
 
-        email:                  <?php $faker('email'); ?>
+        nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
+
+        qualified:              1
+        validated:              1
+        online:                 1
+
+        username:               fhollande
+        username_canonical:     fhollande
+        email:                  f.hollande@elysee.fr
+        email_canonical:        f.hollande@elysee.fr
+        enabled:                1
+        # salt:                   
+        password:               stHGdg4MhYOm/OVTWjpMJievIvJqafsQQ3WpWlUNDT6WfHupVWjBQaxdppMQkdCmYSXl6QQQXVYLGL/MDZi5Zw==
+        locked:                 '0'
+        expired:                '0'
+        credentials_expired:    '0'
+        roles:                  [ROLE_ELECTED, ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]
+
+    sarko:
+        p_u_status_id:          activ
+
+        gender:                 Monsieur
+        firstname:              Nicolas
+        name:                   Sarkozy
+        birthday:               1955-01-28
+
+        subtitle:               Ex-Président de la République Française
+        biography:              <?php $faker('paragraphs', 4, true); ?>
+
+        website:                <?php $faker('url'); ?>
+        twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
+        facebook:               <?php $faker('lexify', 'https://facebook.com/??????'); ?>
+        phone:                  <?php $faker('phoneNumber'); ?>
 
         nb_views:               <?php $faker('numberBetween', 150, 1500) ?>
 
         qualified:              1
         validated:              1
         online:                 1
+
+        username:               sarko
+        username_canonical:     sarko
+        email:                  sarko@ump.fr
+        email_canonical:        sarko@ump.fr
+        enabled:                1
+        # salt:                   
+        password:               stHGdg4MhYOm/OVTWjpMJievIvJqafsQQ3WpWlUNDT6WfHupVWjBQaxdppMQkdCmYSXl6QQQXVYLGL/MDZi5Zw==
+        locked:                 '0'
+        expired:                '0'
+        credentials_expired:    '0'
+        roles:                  [ROLE_ELECTED, ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]
 
 
     # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14

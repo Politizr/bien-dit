@@ -1,36 +1,36 @@
 {% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
 {% if (isGrantedE()) %}
-	{% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
 {% elseif (isGrantedC()) %}
-	{% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
 {% endif %}
 {% extends layout %}
 
 {% block connexionBox %}
-	{% if not is_granted('ROLE_PROFILE_COMPLETED') %}
-	    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-	{% endif %}
+    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+    {% endif %}
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		{% include 'PolitizrFrontBundle:Fragment\\Debate:DetailFeed.html.twig' with { 'debate': debate } only %}
-		<div class="border-row">&nbsp;</div>
-		<div class="debate-reactions-feed">
-			{% for reaction in debate.treeReactions(true, true) %}
-				{% include 'PolitizrFrontBundle:Fragment\\Reaction:DetailFeed.html.twig' with {'reaction': reaction } only %}
-				<div class="border-row">&nbsp;</div>
-			{% else %}
-				<div class="no-result">
-					Aucune réaction pour le moment
-				</div>
-			{% endfor %}
-		</div>
-	</div>
+    <div id="main" class="container">
+        {% include 'PolitizrFrontBundle:Fragment\\Debate:DetailFeed.html.twig' with { 'debate': debate } only %}
+        <div class="border-row">&nbsp;</div>
+        <div class="debate-reactions-feed">
+            {% for reaction in debate.treeReactions(true, true) %}
+                {% include 'PolitizrFrontBundle:Fragment\\Reaction:DetailFeed.html.twig' with {'reaction': reaction } only %}
+                <div class="border-row">&nbsp;</div>
+            {% else %}
+                <div class="no-result">
+                    Aucune réaction pour le moment
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
     
     {% include 'PolitizrFrontBundle:JS:follow.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}

@@ -1,13 +1,13 @@
 <div class="pdrComment">
-	<div class="pdrComment-description">{{ pdrComment.description | striptags | slice(0, 250) | raw }}...</div>
-	<hr>
-	<div class="pdrComment-online">{% if pdrComment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
-	<div class="pdrComment-published">Publié le {{ pdrComment.publishedAt | date('d/m/Y H:i') }}</div>
-	<hr>
-	{% include 'PolitizrAdminBundle:Fragment:author.html.twig' with { 'user': pdrComment.PUser } %}	
-	<div class="pdrComment-note"><b>{{ pdrComment.notePos }} +</b> &nbsp; <b>{{ pdrComment.noteNeg }} -</b></div>
-	<hr>
-	<a href="{{ path('Politizr_AdminBundle_PDDComment_edit', { 'pk': pdrComment.id }) }}">Editer</a>&nbsp;-&nbsp; 
-	<a href="{{ path('Politizr_AdminBundle_PDDComment_show', { 'pk': pdrComment.id }) }}">Consulter</a>
-	<hr>
+    <div class="pdrComment-description">{{ pdrComment.description | striptags | slice(0, 250) | raw }}...</div>
+    <hr>
+    <div class="pdrComment-online">{% if pdrComment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="pdrComment-published">Publié le {{ pdrComment.publishedAt | date('d/m/Y H:i') }}</div>
+    <hr>
+    {% include 'PolitizrAdminBundle:Fragment:author.html.twig' with { 'user': pdrComment.PUser } %}    
+    <div class="pdrComment-note"><b>{{ pdrComment.notePos }} +</b> &nbsp; <b>{{ pdrComment.noteNeg }} -</b></div>
+    <hr>
+    <a href="{{ path('Politizr_AdminBundle_PDDComment_edit', { 'pk': pdrComment.id }) }}">Editer</a>&nbsp;-&nbsp; 
+    <a href="{{ path('Politizr_AdminBundle_PDDComment_show', { 'pk': pdrComment.id }) }}">Consulter</a>
+    <hr>
 </div>

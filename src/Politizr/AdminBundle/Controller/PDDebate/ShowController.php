@@ -9,9 +9,9 @@ use Admingenerated\PolitizrAdminBundle\BasePDDebateController\ShowController as 
  */
 class ShowController extends BaseShowController
 {
-	/**
-	 *	Surcharge pour mise en session de l'id de l'objet courant, utilisé pour les actions sur les réactions
-	 */
+    /**
+     *    Surcharge pour mise en session de l'id de l'objet courant, utilisé pour les actions sur les réactions
+     */
     public function indexAction($pk)
     {
         // Mise en session de l'ID de l'objet

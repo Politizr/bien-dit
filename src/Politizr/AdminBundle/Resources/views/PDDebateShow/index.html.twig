@@ -2,52 +2,52 @@
 
 {# Autocomplete CSS #}
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
 {% endblock %}
 
 
 {# Contenus #}
 {% block show_column_summary %}
-	{{ PDDebate.getSummary | raw }}
+    {{ PDDebate.getSummary | raw }}
 {% endblock %}
 
 {% block show_column_description %}
-	{{ PDDebate.getDescription | raw }}
+    {{ PDDebate.getDescription | raw }}
 {% endblock %}
 
 
 {# Image #}
 {% block show_column_file_name %}
-	<img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDDebate.fileName }}" />
+    <img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDDebate.fileName }}" />
 {% endblock %}
 
 {# Bloc réactions #}
 {% block show_column_block_reactions %}
-	{{ adminDebateReactions(PDDebate, 'show') }}
+    {{ adminDebateReactions(PDDebate, 'show') }}
 {% endblock show_column_block_reactions %}
 
 {# Bloc commentaires #}
 {% block show_column_block_comments %}
-	{{ adminDebateComments(PDDebate) }}
+    {{ adminDebateComments(PDDebate) }}
 {% endblock %}
 
 
 {# Blocs tags #}
 {% block show_column_block_tags_geo %}
-	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'show') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'show') }}
 {% endblock %}
 
 {% block show_column_block_tags_theme %}
-	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'show') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'show') }}
 {% endblock %}
 
 {# Bloc followers qualifiés #}
 {% block show_column_block_followers_q %}
-	{{ adminDebateFollowersQ(PDDebate) }}
+    {{ adminDebateFollowersQ(PDDebate) }}
 {% endblock %}
 
 {# Bloc followers citoyens #}
 {% block show_column_block_followers_c %}
-	{{ adminDebateFollowersC(PDDebate) }}
+    {{ adminDebateFollowersC(PDDebate) }}
 {% endblock %}

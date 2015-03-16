@@ -1,28 +1,28 @@
 {% extends layout %}
 
 {% block inscriptionSteps %}
-	{% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 2 } only %}
+    {% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 2 } only %}
 {% endblock %}
 
 {% block main %}
-	<div id="main" class="container">
-		<h1>Choix de la formule</h1>
-		<p class="bg-info">Choisissez la formule la plus adaptée à vos besoins.</p>
-		<div id="box-inscription-elected-order">
-			{{ form_start(form, {'action': path('InscriptionElectedOrderCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-			    {{ form_errors(form) }}
+    <div id="main" class="container">
+        <h1>Choix de la formule</h1>
+        <p class="bg-info">Choisissez la formule la plus adaptée à vos besoins.</p>
+        <div id="box-inscription-elected-order">
+            {{ form_start(form, {'action': path('InscriptionElectedOrderCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+                {{ form_errors(form) }}
 
-			    {{ form_row(form.p_o_subscription) }}
+                {{ form_row(form.p_o_subscription) }}
 
-			    {{ form_row(form.actions) }}
-			{{ form_end(form) }}
-		    <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
-		</div>
-		<hr>
-	</div>
+                {{ form_row(form.actions) }}
+            {{ form_end(form) }}
+            <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+        </div>
+        <hr>
+    </div>
 {% endblock main %}
 
 
 {% block javascriptFooter %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock javascriptFooter %}

@@ -3,11 +3,11 @@
 
 {# Bloc Media Bundle #}
 {% block form_block_tags_geo %}
-	{{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2) }}
+    {{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2) }}
 {% endblock %}
 
 
 {% block generic_actions_script %}
-	{% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
+    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
 {% endblock %}
 

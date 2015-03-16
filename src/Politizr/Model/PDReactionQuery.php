@@ -8,28 +8,28 @@ class PDReactionQuery extends BasePDReactionQuery
 {
 
 
-	/**
-	 *	Renvoit le noeud root, ou le créé au préalable s'il n'existe pas.
-	 *
-	 * 	@return PDReaction
-	 */
-	public function findOrCreateRoot($debateId) {
-		$rootNode = $this->findRoot($debateId);
+    /**
+     *    Renvoit le noeud root, ou le créé au préalable s'il n'existe pas.
+     *
+     *     @return PDReaction
+     */
+    public function findOrCreateRoot($debateId) {
+        $rootNode = $this->findRoot($debateId);
 
-		if (!$rootNode) {
-	        $rootNode = new PDReaction();
+        if (!$rootNode) {
+            $rootNode = new PDReaction();
 
-	        $rootNode->setPDDebateId($debateId);
-	        $rootNode->setTitle('ROOT NODE');
-	        $rootNode->setOnline(false);
-	        $rootNode->setPublished(false);
+            $rootNode->setPDDebateId($debateId);
+            $rootNode->setTitle('ROOT NODE');
+            $rootNode->setOnline(false);
+            $rootNode->setPublished(false);
 
-	        $rootNode->makeRoot();
-	        $rootNode->save();
-		}
+            $rootNode->makeRoot();
+            $rootNode->save();
+        }
 
-		return $rootNode;
-	}
+        return $rootNode;
+    }
 
 
    // *****************************    AGGREGATIONS / UTILES    ************************* //
@@ -38,7 +38,7 @@ class PDReactionQuery extends BasePDReactionQuery
      * Cumule les contraintes associés à un objet en ligne
      */
     public function online() {
-    	return $this->filterByOnline(true)->filterByPublished(true);
+        return $this->filterByOnline(true)->filterByPublished(true);
     }
 
 }

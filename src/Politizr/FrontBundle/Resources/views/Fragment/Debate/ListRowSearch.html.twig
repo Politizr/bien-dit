@@ -1,14 +1,14 @@
 {% extends 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' %}
 
 {% block listSearchHighlights %}
-	<!-- TODO > gestion des highlights à debugguer > http://stackoverflow.com/questions/28768323/elasticsearch-highlights-results-repeats-snippets -->
-	<div class="row">
-		<div class="col-sm-12">
-			{% for highlights in result.highlights %}
-				{% for highlight in highlights %}
-					<div class="snippet"><i class="fa fa-quote-left pull-left fa-border"></i>&nbsp;...{{ highlight | raw }}...</div>
-				{% endfor %}
-			{% endfor %}
-		</div>
-	</div>
+    <!-- TODO > gestion des highlights à debugguer > http://stackoverflow.com/questions/28768323/elasticsearch-highlights-results-repeats-snippets -->
+    <div class="row">
+        <div class="col-sm-12">
+            {% for highlights in result.highlights %}
+                {% for highlight in highlights %}
+                    <div class="snippet"><i class="fa fa-quote-left pull-left fa-border"></i>&nbsp;...{{ highlight | raw }}...</div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock listSearchHighlights %}

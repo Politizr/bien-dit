@@ -20,12 +20,12 @@ use Politizr\Model\PQMandateQuery;
  */
 class PUMandateType extends AbstractType
 {
-	// Permet de filtrer sur le type d'organisation
-	private $pqTypeId;
+    // Permet de filtrer sur le type d'organisation
+    private $pqTypeId;
 
-	public function __construct($pqTypeId = PQType::ID_ELECTIF) {
-		$this->pqTypeId = $pqTypeId;
-	}
+    public function __construct($pqTypeId = PQType::ID_ELECTIF) {
+        $this->pqTypeId = $pqTypeId;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -1,7 +1,7 @@
 {# TODO largeur du tableau à maj 100% #}
 {# branchement d'un JS nested set http://johnny.github.io/jquery-sortable/ #}
 <table id="table-list-PDReaction" class="table table-sortable table-striped table-hover table-condensed object-actions-PDReaction">
-	<thead>
+    <thead>
         <tr class="list_thead">
             <th class="list_thead_column">ID</th>
             <th class="list_thead_column">Niveau</th>
@@ -16,7 +16,7 @@
             <th class="list_thead_column">Publié le</th>
             <th class="list_thead_column">Actions</th>
         </tr>
-	</thead>
+    </thead>
     <tbody>
         {% if PDReactions|length > 0 %}
             {% for PDReaction in PDReactions %}

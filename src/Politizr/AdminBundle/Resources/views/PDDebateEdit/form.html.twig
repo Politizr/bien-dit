@@ -2,18 +2,18 @@
 
 {# Blocs tags #}
 {% block form_block_tags_geo %}
-	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'edit') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'edit') }}
 {% endblock %}
 
 {% block form_block_tags_theme %}
-	{{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'edit') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'edit') }}
 {% endblock %}
 
 {# Bloc réactions #}
 {% block form_block_reactions %}
-	{{ adminDebateReactions(PDDebate, 'edit') }}
+    {{ adminDebateReactions(PDDebate, 'edit') }}
 {% endblock %}
 
 {% block generic_actions_script %}
-	{% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
+    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
 {% endblock %}

@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Constructions et contrôles associés aux différents types de réponses de type AJAX.
  *
  * TODO:
- *	- actions différenciées suivant le type d'exception remonté
+ *    - actions différenciées suivant le type d'exception remonté
  *
  * @author Lionel Bouzonville
  */
@@ -29,7 +29,7 @@ class AjaxCreateResponse
 
 
     /**
-     *	Construction d'une réponse Ajax effectuant des rendu de blocs HTML.
+     *    Construction d'une réponse Ajax effectuant des rendu de blocs HTML.
      *
      */
     public function createJsonHtmlResponse($serviceName, $methodCallback) {
@@ -65,7 +65,7 @@ class AjaxCreateResponse
 
 
     /**
-     *	Construction d'une réponse Ajax effectuant un retour success simple.
+     *    Construction d'une réponse Ajax effectuant un retour success simple.
      *
      */
     public function createJsonResponse($serviceName, $methodCallback) {
@@ -99,7 +99,7 @@ class AjaxCreateResponse
 
 
     /**
-     *	Construction d'une réponse Ajax effectuant un retour possédant une URL de redirection.
+     *    Construction d'une réponse Ajax effectuant un retour possédant une URL de redirection.
      *
      */
     public function createJsonRedirectResponse($serviceName, $methodCallback) {

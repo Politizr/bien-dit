@@ -6,33 +6,33 @@
         Stylages spécifiques backoffice.
 */
 
-body, input, select, button {	font-family: 'Titillium Web', sans-serif;}
+body, input, select, button {    font-family: 'Titillium Web', sans-serif;}
 
 /*a { color: #82a141}
 a:hover { color: #94b254}
 
 ul#main_navigation.sf-menu a, ul#main_navigation.sf-menu span  {
-	border-top : none;
-	border-left : solid 1px #000;
-	cursor: pointer;
+    border-top : none;
+    border-left : solid 1px #000;
+    cursor: pointer;
 }
 
 ul#main_navigation li a, ul#main_navigation li span {
-	background: #94b254;
-	color: #fff;
+    background: #94b254;
+    color: #fff;
 }
 
 ul#main_navigation li a:hover, ul#main_navigation li span:hover {
-	background: #82a141;
+    background: #82a141;
 }
 
 .form-actions  {
-	background: #000;
+    background: #000;
 }
 
-.btn-primary {	background: #94b254;}
+.btn-primary {    background: #94b254;}
 
-.btn-primary:hover {	background: #82a141;}
+.btn-primary:hover {    background: #82a141;}
 
 .btn-primary:active, .btn-primary.active {background-color: #82a141;}*/
 

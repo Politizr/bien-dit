@@ -5,17 +5,17 @@ namespace Politizr\Model;
 use Politizr\Model\om\BasePRAction;
 
 /**
- *	Gestion de la réputation.
+ *    Gestion de la réputation.
  *
- * 	@author 	Lionel Bouzonville
+ *     @author     Lionel Bouzonville
  */
 class PRAction extends BasePRAction
 {
-	// ******************************************************** //
-	//					 Constantes des actions 				//
-	// ******************************************************** //
+    // ******************************************************** //
+    //                     Constantes des actions                 //
+    // ******************************************************** //
 
-	// ************ PUBLICATIONS ******* //
+    // ************ PUBLICATIONS ******* //
     const ID_D_DEBATE_PUBLISH = 1;
     const ID_D_REACTION_PUBLISH = 2;
     const ID_D_COMMENT_PUBLISH = 3;
@@ -27,7 +27,7 @@ class PRAction extends BasePRAction
     CONST ID_D_TARGET_REACTION_COMMENT_PUBLISH = 7;
 
 
-	// ************ NOTATIONS ******* //
+    // ************ NOTATIONS ******* //
     const ID_D_AUTHOR_DEBATE_NOTE_POS = 8;
     const ID_D_AUTHOR_DEBATE_NOTE_NEG = 9;
 
@@ -47,7 +47,7 @@ class PRAction extends BasePRAction
     const ID_D_TARGET_COMMENT_NOTE_NEG = 19;
 
 
-	// ************ FOLLOWING ******* //
+    // ************ FOLLOWING ******* //
     const ID_D_AUTHOR_DEBATE_FOLLOW = 20;
     const ID_D_AUTHOR_DEBATE_UNFOLLOW = 21;
 
@@ -64,11 +64,11 @@ class PRAction extends BasePRAction
     // ************ RESEAUX SOCIAUX ******* //
     const ID_D_SHARE= 28;
 
-	/**
-	 *
-	 */
-	public function __toString() {
-		return $this->getTitle();
-	}
+    /**
+     *
+     */
+    public function __toString() {
+        return $this->getTitle();
+    }
 
 }

@@ -42,18 +42,18 @@ use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
-
 /**
  * Gestion profil citoyen
  *
  * TODO:
- *	- gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
+ *  - gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
  *  - refactorisation pour réduire les doublons de code entre les tables PUTaggedT et PUFollowT
  *  - refactoring gestion des tags > gestion des doublons / admin + externalisation logique métier dans les *Query class
  *
  * @author Lionel Bouzonville
  */
-class ProfileCController extends Controller {
+class ProfileCController extends Controller
+{
 
     /* ######################################################################################################## */
     /*                                                 ROUTING CLASSIQUE                                        */
@@ -70,7 +70,7 @@ class ProfileCController extends Controller {
     {
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
-
+        
         return $this->redirect($this->generateUrl('TimelineC'));
     }
 
@@ -352,6 +352,9 @@ class ProfileCController extends Controller {
             ));
     }
 
+    /**
+     *  Gestion des notifications par email
+     */
     public function myNotificationsAction()
     {
         $logger = $this->get('logger');
@@ -397,12 +400,14 @@ class ProfileCController extends Controller {
 
 
     /**
-     * 
+     * Gestion de la pagination
+     *
      * @param type $query
      * @return \Pagerfanta\Pagerfanta
      * @throws type
      */
-    private function preparePagination($query, $maxPerPage = 5) {
+    private function preparePagination($query, $maxPerPage = 5)
+    {
         $adapter = new PropelAdapter($query);
         $pagerfanta = new Pagerfanta($adapter);
 
@@ -418,5 +423,4 @@ class ProfileCController extends Controller {
         
         return $pagerfanta;
     }
-    
 }

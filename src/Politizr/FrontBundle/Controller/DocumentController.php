@@ -30,16 +30,15 @@ use Politizr\Model\PUFollowU;
 
 use Politizr\FrontBundle\Form\Type\PDCommentType;
 
-
 /**
  * Gestion des documents: débats, réactions, commentaires.
  *
  * TODO:
- *  - 
  *
  * @author Lionel Bouzonville
  */
-class DocumentController extends Controller {
+class DocumentController extends Controller
+{
 
     /* ######################################################################################################## */
     /*                                                 ROUTING CLASSIQUE                                        */
@@ -108,7 +107,7 @@ class DocumentController extends Controller {
         //      Affichage de la vue
         // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
-        			'debate' => $debate,
+                    'debate' => $debate,
                     'paragraphs' => $paragraphs,
         ));
     }
@@ -210,7 +209,8 @@ class DocumentController extends Controller {
     /**
      *  Suivre / Ne plus suivre debat / user
      */
-    public function followAction(Request $request) {
+    public function followAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** followAction');
 
@@ -240,7 +240,8 @@ class DocumentController extends Controller {
     /**
      *  Note débat / réaction / commentaire
      */
-    public function noteAction(Request $request) {
+    public function noteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** noteAction');
 
@@ -255,7 +256,8 @@ class DocumentController extends Controller {
     /**
      *  Commentaires d'un document
      */
-    public function commentsAction(Request $request) {
+    public function commentsAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** commentsAction');
 

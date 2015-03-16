@@ -25,7 +25,7 @@ class NewController extends BaseNewController
      */
     public function preBindRequest(\Politizr\Model\PDReaction $PDReaction)
     {
-    	// Récupération de l'ID de débat en cours
+        // Récupération de l'ID de débat en cours
         $session = $this->get('session');
         $pk = $session->get('PDDebate/id');
 
@@ -33,7 +33,7 @@ class NewController extends BaseNewController
             throw new NotFoundHttpException("The pk of Politizr\Model\PDDebate can't be retrieve from session: reload reaction page from debate page.");
         }
 
-    	$PDReaction->setPDDebateId($pk);
+        $PDReaction->setPDDebateId($pk);
     }
 
 

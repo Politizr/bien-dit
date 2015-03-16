@@ -20,14 +20,13 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
-
 class PUser extends BasePUser implements UserInterface, ContainerAwareInterface, HighlightableModelInterface
 {
-	// ************************************************************************************ //
-	//										CONSTANTES
-	// ************************************************************************************ //
-  	const UPLOAD_PATH = '/../../../web/uploads/users/';
-  	const UPLOAD_WEB_PATH = '/uploads/users/';
+    // ************************************************************************************ //
+    //                                        CONSTANTES
+    // ************************************************************************************ //
+      const UPLOAD_PATH = '/../../../web/uploads/users/';
+      const UPLOAD_WEB_PATH = '/uploads/users/';
 
 
     // *****************************  OBJET / STRING  ****************** //
@@ -35,8 +34,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      *
      */
-    public function __toString() {
-      return $this->getFullName();
+    public function __toString()
+    {
+        return $this->getFullName();
     }
 
 
@@ -47,14 +47,18 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      *
      */
-    public function setContainer(ContainerInterface $container = null) {
-        if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_user');
+    public function setContainer(ContainerInterface $container = null)
+    {
+        if ($container) {
+            $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_user');
+        }
     }
 
     /**
      *
      */
-    public function getHighlights() {
+    public function getHighlights()
+    {
         return $this->highlights;
     }
 
@@ -63,7 +67,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @param array $highlights array of highlight strings
      */
-    public function setElasticHighlights(array $highlights) {
+    public function setElasticHighlights(array $highlights)
+    {
         $this->highlights = $highlights;
     }
 
@@ -72,7 +77,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postInsert(\PropelPDO $con = null) {
+    public function postInsert(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -86,7 +92,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postUpdate(\PropelPDO $con = null) {
+    public function postUpdate(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -100,7 +107,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postDelete(\PropelPDO $con = null) {
+    public function postDelete(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             $this->elasticaPersister->deleteOne($this);
         } else {
@@ -115,14 +123,16 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      *
      */
-    public function getFullName() {
-      return trim($this->getFirstname().' '.$this->getName());
+    public function getFullName()
+    {
+        return trim($this->getFirstname().' '.$this->getName());
     }
 
     /**
      *
      */
-    public function getClassName() {
+    public function getClassName()
+    {
         return PDocument::TYPE_USER;
     }
 
@@ -131,7 +141,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      *  @return string
      */
-    public function getArrayTags($tagTypeId = null, $online = true) {
+    public function getArrayTags($tagTypeId = null, $online = true)
+    {
         $query = PTagQuery::create()
                     ->select('Title')
                     ->filterByOnline(true)
@@ -147,14 +158,16 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      *  @return boolean
      */
-    public function isIndexable() {
-        if (($this->getPUStatusId() == PUStatus::ACTIVED) || ($this->getPUStatusId() == PUStatus::VALIDATION_PROCESS)) {
+    public function isIndexable()
+    {
+        $statusId = $this->getPUStatusId();
+        if ($statusId == PUStatus::ACTIVED or $statusId == PUStatus::VALIDATION_PROCESS) {
             $status = true;
         } else {
             $status = false;
         }
 
-        return  $this->getOnline() 
+        return  $this->getOnline()
                 && $status
                 ;
     }
@@ -165,7 +178,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      *
      */
-    public function getBirthdayText() {
+    public function getBirthdayText()
+    {
         return $this->getBirthday('d/m/Y');
     }
 
@@ -183,8 +197,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         if ($this->getFirstname() && $this->getName()) {
             $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getFirstname() . '-' . $this->getName());
 
-        	$slug = $this->cleanupSlugPart($toSlug);
-        } elseif($realname = $this->getRealname()) {
+            $slug = $this->cleanupSlugPart($toSlug);
+        } elseif ($realname = $this->getRealname()) {
             $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($realname);
 
             $slug = $this->cleanupSlugPart($toSlug);
@@ -196,18 +210,19 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
 
-	// ************************************************************************************ //
-	//										METHODES ADMIN GENERATOR
-	// ************************************************************************************ //
+    // ************************************************************************************ //
+    //                                        METHODES ADMIN GENERATOR
+    // ************************************************************************************ //
 
 
 
-	// ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-	// https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
+    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
+    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
-	// Colonnes virtuelles / fichiers
+    // Colonnes virtuelles / fichiers
     public $uploadedFileName;
-    public function setUploadedFileName($uploadedFileName) {
+    public function setUploadedFileName($uploadedFileName)
+    {
         $this->uploadedFileName = $uploadedFileName;
     }
 
@@ -219,9 +234,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return PUser::UPLOAD_WEB_PATH . $this->file_name;
     }
     
-	/**
-	 * 
-	 */
+    /**
+     *
+     */
     public function getUploadedFileName()
     {
         // inject file into property (if uploaded)
@@ -239,43 +254,43 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public function upload($file = null)
     {
-  		  if (null === $file) {
-  		    	return;
-  		  }
-  
-		    // Extension et nom de fichier
-		    $extension = $file->guessExtension();
-		    if (!$extension) {
-		    	  $extension = 'bin';
-		    }
-		    $fileName = 'p-u-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
-    
-		    // move takes the target directory and then the target filename to move to
-		    $fileUploaded = $file->move(__DIR__ . PUser::UPLOAD_PATH, $fileName);
-    
-		    // file_name
-		    return $fileName;
-    }    
+        if (null === $file) {
+              return;
+        }
 
-    /**
-     *	Surcharge pour gérer la suppression physique.
-     */
-    public function setFileName($v)
-    {
-      	if (!$v) {
-      		$this->removeUpload();
-      	}
-      	parent::setFileName($v);
+        // Extension et nom de fichier
+        $extension = $file->guessExtension();
+        if (!$extension) {
+              $extension = 'bin';
+        }
+        $fileName = 'p-u-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+
+        // move takes the target directory and then the target filename to move to
+        $fileUploaded = $file->move(__DIR__ . PUser::UPLOAD_PATH, $fileName);
+
+        // file_name
+        return $fileName;
     }
 
     /**
-     * 	Suppression physique des fichiers.
+     *    Surcharge pour gérer la suppression physique.
+     */
+    public function setFileName($v)
+    {
+        if (!$v) {
+            $this->removeUpload();
+        }
+        parent::setFileName($v);
+    }
+
+    /**
+     *     Suppression physique des fichiers.
      */
     public function removeUpload($uploadedFileName = true)
     {
-      	if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
-      	  	unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
-      	}
+        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
+            unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
+        }
     }
 
 
@@ -424,7 +439,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
             'fields'  => 'username',
             'message' => 'Cet identifiant est déjà pris.',
         )));
-    }    
+    }
 
 
     // ************************************************************************************ //
@@ -436,12 +451,13 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     // *****************************    FOLLOWERS / SUBSCRIBERS    ************************* //
 
 
-	/**
-	 * Renvoie les followers
-	 *
+    /**
+     * Renvoie les followers
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserFollowers(Criteria $query = null, PropelPDO $con = null) {
+     */
+    public function getPUserFollowers(Criteria $query = null, PropelPDO $con = null)
+    {
         if ($con === null) {
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
@@ -469,52 +485,56 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         $pUsers = PUserQuery::create(null, $query)
             ->addUsingAlias(PUserPeer::ID, $listPKs, Criteria::IN)
-            ->find($con);        
+            ->find($con);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
-	/**
+    /**
      * Renvoie les followers qualifiés (élus)
      *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserFollowersQ() {
-		$query = PUserQuery::create()->filterByQualified(true);
-		$pUsers = $this->getPUserFollowers($query);
+     */
+    public function getPUserFollowersQ()
+    {
+        $query = PUserQuery::create()->filterByQualified(true);
+        $pUsers = $this->getPUserFollowers($query);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre de followers qualifiés (élus)
      *
      * @return     integer
      */
-    public function countPUserFollowersQ() {
+    public function countPUserFollowersQ()
+    {
         $pUsers = $this->getPUserFollowersQ();
 
         return count($pUsers);
     }
 
-	/**
-	 * Renvoie les followers citoyens
-	 *
+    /**
+     * Renvoie les followers citoyens
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserFollowersC() {
-		$query = PUserQuery::create()->filterByQualified(false);
-		$pUsers = $this->getPUserFollowers($query);
+     */
+    public function getPUserFollowersC()
+    {
+        $query = PUserQuery::create()->filterByQualified(false);
+        $pUsers = $this->getPUserFollowers($query);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre de followers citoyens
      *
      * @return     integer
      */
-    public function countPUserFollowersC() {
+    public function countPUserFollowersC()
+    {
         $pUsers = $this->getPUserFollowersC();
 
         return count($pUsers);
@@ -522,12 +542,13 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
 
 
-	/**
-	 * Renvoie les abonnements
-	 *
+    /**
+     * Renvoie les abonnements
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserSubscribers(Criteria $query = null, PropelPDO $con = null) {
+     */
+    public function getPUserSubscribers(Criteria $query = null, PropelPDO $con = null)
+    {
         if ($con === null) {
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
@@ -555,54 +576,58 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         $pUsers = PUserQuery::create(null, $query)
             ->addUsingAlias(PUserPeer::ID, $listPKs, Criteria::IN)
-            ->find($con);        
+            ->find($con);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
 
-	/**
-	 * Renvoie les abonnements qualifiés (élus)
-	 *
+    /**
+     * Renvoie les abonnements qualifiés (élus)
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserSubscribersQ() {
-		$query = PUserQuery::create()->filterByQualified(true);
-		$pUsers = $this->getPUserSubscribers($query);
+     */
+    public function getPUserSubscribersQ()
+    {
+        $query = PUserQuery::create()->filterByQualified(true);
+        $pUsers = $this->getPUserSubscribers($query);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre d'abonnements qualifiés (élus)
      *
      * @return     integer
      */
-    public function countPUserSubscribersQ() {
+    public function countPUserSubscribersQ()
+    {
         $pUsers = $this->getPUserSubscribersQ();
 
         return count($pUsers);
     }
 
 
-	/**
-	 * Renvoie les abonnements citoyens
-	 *
+    /**
+     * Renvoie les abonnements citoyens
+     *
      * @return     PropelObjectCollection PUser[] List
-	 */
-	public function getPUserSubscribersC() {
-		$query = PUserQuery::create()->filterByQualified(false);
-		$pUsers = $this->getPUserSubscribers($query);
+     */
+    public function getPUserSubscribersC()
+    {
+        $query = PUserQuery::create()->filterByQualified(false);
+        $pUsers = $this->getPUserSubscribers($query);
 
-		return $pUsers;
-	}
+        return $pUsers;
+    }
 
     /**
      * Nombre d'abonnements citoyens
      *
      * @return     integer
      */
-    public function countPUserSubscribersC() {
+    public function countPUserSubscribersC()
+    {
         $pUsers = $this->getPUserSubscribersC();
 
         return count($pUsers);
@@ -615,7 +640,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return array PUMandate
      */
-    public function getMandates() {
+    public function getMandates()
+    {
         $query = PUMandateQuery::create()
                     ->orderByBeginAt(\Criteria::DESC);
 
@@ -627,7 +653,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return array    PQMandate
      */
-    public function getCurrentMandates() {
+    public function getCurrentMandates()
+    {
         $pqMandate = PQMandateQuery::create()
             ->usePUMandateQuery()
                 ->filterByPUserId($this->getId())
@@ -647,7 +674,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return array    PQOrganization
      */
-    public function getCurrentOrganizations($online = true) {
+    public function getCurrentOrganizations($online = true)
+    {
         $query = PQOrganizationQuery::create()
                     ->filterByOnline($online)
                     ->setDistinct();
@@ -664,7 +692,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PTag (collection)
      */
-    public function getTaggedTags($ptTagTypeId = null, $online = true) {
+    public function getTaggedTags($ptTagTypeId = null, $online = true)
+    {
         $query = PTagQuery::create()
                     ->_if($ptTagTypeId)
                         ->filterByPTTagTypeId($ptTagTypeId)
@@ -682,7 +711,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PTag (collection)
      */
-    public function getFollowTags($ptTagTypeId = null, $online = true) {
+    public function getFollowTags($ptTagTypeId = null, $online = true)
+    {
         $query = PTagQuery::create()
                     ->_if($ptTagTypeId)
                         ->filterByPTTagTypeId($ptTagTypeId)
@@ -701,7 +731,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PDDebate (collection)
      */
-    public function getDocuments($online = true, $published = true) {
+    public function getDocuments($online = true, $published = true)
+    {
         $query = PDocumentQuery::create()
                     ->filterByPUserId($this->getId())
                     ->filterByOnline($online)
@@ -716,7 +747,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PDDebate (collection)
      */
-    public function getDebates($online = true, $published = true) {
+    public function getDebates($online = true, $published = true)
+    {
         $query = PDDebateQuery::create()
                     ->filterByPUserId($this->getId())
                     ->filterByOnline($online)
@@ -731,7 +763,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     integer
      */
-    public function countDebates($online = true, $published = true) {
+    public function countDebates($online = true, $published = true)
+    {
         $debates = $this->getDebates($online, $published);
 
         return count($debates);
@@ -743,7 +776,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PDDebate (collection)
      */
-    public function getReactions($online = true, $published = true) {
+    public function getReactions($online = true, $published = true)
+    {
         $query = PDReactionQuery::create()
                     ->filterByPUserId($this->getId())
                     ->filterByOnline($online)
@@ -758,7 +792,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     integer
      */
-    public function countReactions($online = true, $published = true) {
+    public function countReactions($online = true, $published = true)
+    {
         $reactions = $this->getReactions($online, $published);
 
         return count($reactions);
@@ -775,7 +810,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return array    Liste d'objets PDDComment
      */
-    public function getComments($online = true) {
+    public function getComments($online = true)
+    {
         $query = PDCommentQuery::create()
                     ->filterByOnline($online);
 
@@ -787,7 +823,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     integer
      */
-    public function countComments($online = true) {
+    public function countComments($online = true)
+    {
         $comments = $this->getComments($online);
 
         return count($comments);
@@ -804,7 +841,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PRBadge (collection)
      */
-    public function getBadges($prBadgeTypeId = null, $online = true) {
+    public function getBadges($prBadgeTypeId = null, $online = true)
+    {
         $query = PRBadgeQuery::create()
             ->filterByOnline($online)
             ->_if($prBadgeTypeId)
@@ -820,14 +858,16 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * @see addPuReputationRbPRBadge
      */
-    public function addBadge(PRBadge $prBadge) {
+    public function addBadge(PRBadge $prBadge)
+    {
         return parent::addPRBadge($prBadge);
     }
 
     /**
      * @see removePuReputationRbPRBadge
      */
-    public function removeBadge(PRBadge $prBadge) {
+    public function removeBadge(PRBadge $prBadge)
+    {
         return parent::removePRBadge($prBadge);
     }
 
@@ -837,7 +877,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return integer
      */
-    public function getReputationScore(PropelPDO $con = null) {
+    public function getReputationScore(PropelPDO $con = null)
+    {
         if ($con === null) {
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
@@ -876,7 +917,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PDDebate (collection)
      */
-    public function getTaggedDebates($typeId = null, $notFollowed = true) {
+    public function getTaggedDebates($typeId = null, $notFollowed = true)
+    {
         // Récupère la liste des IDs des tags suivis
         $followedIds = PTagQuery::create()
                         ->select('Id')
@@ -912,7 +954,8 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PUser (collection)
      */
-    public function getTaggedPUsers($typeId = null, $qualified = null, $notFollowed = true) {
+    public function getTaggedPUsers($typeId = null, $qualified = null, $notFollowed = true)
+    {
         $followedTagsId = PTagQuery::create()
                         ->select('Id')
                         ->_if($typeId)
@@ -940,7 +983,4 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         return $users;
     }
-    
-
-
 }

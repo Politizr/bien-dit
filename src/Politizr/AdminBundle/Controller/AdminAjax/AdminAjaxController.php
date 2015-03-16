@@ -51,12 +51,12 @@ class AdminAjaxController extends Controller {
                 // Récupération des tags
                 // require_once dirname(__FILE__) . '/../../../../vendor/propel/propel1/runtime/lib/parser/PropelJSONParser.php';
                 $pTags = PTagQuery::create()
-                	->select(array('id', 'title'))
-                	->filterByOnline(true)
-                	->filterByPTTagTypeId($ptTagTypeId)
-                	->orderByTitle()
-                	->find()
-                	->toArray();
+                    ->select(array('id', 'title'))
+                    ->filterByOnline(true)
+                    ->filterByPTTagTypeId($ptTagTypeId)
+                    ->orderByTitle()
+                    ->find()
+                    ->toArray();
                 // $logger->info('$pTags = ' . print_r($pTags, true));
 
                 // Construction de la réponse
