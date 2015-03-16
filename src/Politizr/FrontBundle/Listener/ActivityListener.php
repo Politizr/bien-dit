@@ -1,0 +1,52 @@
+<?php
+
+namespace Politizr\FrontBundle\Listener;
+ 
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\HttpKernel;
+
+use Politizr\Model\PUser;
+
+/**
+ * http://www.symfony-grenoble.fr/en/238/list-online-users/
+ *
+ * @author Lionel Bouzonville
+ */
+class ActivityListener
+{
+    protected $context;
+ 
+    public function __construct(SecurityContext $context)
+    {
+        $this->context = $context;
+    }
+ 
+    /**
+     * Update the user "lastActivity" on each request
+     *
+     * @param FilterControllerEvent $event
+     */
+    public function onCoreController(FilterControllerEvent $event)
+    {
+        // Here we are checking that the current request is a "MASTER_REQUEST", and ignore any subrequest in the process (for example when doing a render() in a twig template)
+        if ($event->getRequestType() !== HttpKernel::MASTER_REQUEST) {
+            return;
+        }
+ 
+        // We are checking a token authentification is available before using the User
+        if ($this->context->getToken()) {
+            $user = $this->context->getToken()->getUser();
+ 
+            // We are using a delay during wich the user will be considered as still active, in order to avoid too much UPDATE in the database
+            $delay = new \DateTime();
+            $delay->setTimestamp(strtotime('2 minutes ago'));
+ 
+            // We are checking the User class in order to be certain we can call "getLastActivity".
+            if ($user instanceof PUser && $user->getLastActivity() < $delay) {
+                $user->setLastActivity(new \DateTime());
+                $user->save();
+            }
+        }
+    }
+}

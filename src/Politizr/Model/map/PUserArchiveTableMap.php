@@ -63,6 +63,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('credentials_expired', 'CredentialsExpired', 'BOOLEAN', false, 1, false);
         $this->addColumn('credentials_expire_at', 'CredentialsExpireAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('roles', 'Roles', 'ARRAY', false, null, null);
+        $this->addColumn('last_activity', 'LastActivity', 'TIMESTAMP', false, null, null);
         $this->addColumn('p_u_status_id', 'PUStatusId', 'INTEGER', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('back_file_name', 'BackFileName', 'VARCHAR', false, 150, null);

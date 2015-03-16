@@ -11,9 +11,9 @@
 {% elseif id == constant('Politizr\\Model\\PNotification::ID_D_R_REACTION_PUBLISH') %}
     <a action="notification-check" href="{{ authorUrl }}">{{ author }}</a> a publié une réaction sur <a action="notification-check" href="{{ url }}">{{ title }}</a>.
 {% elseif id == constant('Politizr\\Model\\PNotification::ID_D_C_NOTE_POS') %}
-    <a action="notification-check" href="{{ authorUrl }}">{{ author }}</a> a donné une note positive sur <a action="notification-check" href="{{ url }}">{{ title }}</a>.
+    Vous avez reçu une note positive sur <a action="notification-check" href="{{ url }}">{{ title }}</a>.
 {% elseif id == constant('Politizr\\Model\\PNotification::ID_D_C_NOTE_NEG') %}
-    <a action="notification-check" href="{{ authorUrl }}">{{ author }}</a> a donné une note négative sur <a action="notification-check" href="{{ url }}">{{ title }}</a>.
+    Vous avez reçu une note négative sur <a action="notification-check" href="{{ url }}">{{ title }}</a>.
 {% elseif id == constant('Politizr\\Model\\PNotification::ID_U_FOLLOWED') %}
     <a action="notification-check" href="{{ authorUrl }}">{{ author }}</a> s'est abonné à votre profil.
 {% elseif id == constant('Politizr\\Model\\PNotification::ID_U_BADGE') %}

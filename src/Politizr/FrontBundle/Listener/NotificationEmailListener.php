@@ -49,7 +49,7 @@ class NotificationEmailListener
         $user = $this->getDestPUser($puNotifications);
 
         // Contrôle user courant en ligne
-        $isOnline = $this->isOnline();
+        $isOnline = $this->isOnline($user);
 
         // Contrôle user courant abonné à cette notification
         $isSubscriber = $this->isSubscriber($puNotifications, $user);
@@ -89,11 +89,9 @@ class NotificationEmailListener
      *
      * @return boolean
      */
-    private function isOnline()
+    private function isOnline($user)
     {
-        $isOnline = false;
-
-        return $isOnline;
+        return $user->isActiveNow();
     }
 
     /**

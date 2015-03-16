@@ -233,6 +233,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $roles_unserialized;
 
     /**
+     * The value for the last_activity field.
+     * @var        string
+     */
+    protected $last_activity;
+
+    /**
      * The value for the p_u_status_id field.
      * @var        int
      */
@@ -592,187 +598,187 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowDdPDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pRBadgesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pRActionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puTaggedTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pQualificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUAffinityQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUCurrentQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUNotificationsPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeEmailPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeScreenPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pOrdersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowDdPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUBadgessScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUReputationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puTaggedTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pURoleQsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUMandatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUAffinityQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUCurrentQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUNotificationsPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeEmailPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeScreenPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDocumentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDCommentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUFollowUsRelatedByPUserIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDReactionsScheduledForDeletion = null;
 
@@ -940,7 +946,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1002,7 +1008,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1053,7 +1059,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1104,7 +1110,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1167,6 +1173,46 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         return in_array($value, $this->getRoles());
     } // hasRole()
+
+    /**
+     * Get the [optionally formatted] temporal [last_activity] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getLastActivity($format = null)
+    {
+        if ($this->last_activity === null) {
+            return null;
+        }
+
+        if ($this->last_activity === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->last_activity);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->last_activity, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
 
     /**
      * Get the [p_u_status_id] column value.
@@ -1247,7 +1293,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1364,7 +1410,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1459,7 +1505,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1499,7 +1545,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -2056,6 +2102,29 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         return $this;
     } // removeRole()
+
+    /**
+     * Sets the value of [last_activity] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setLastActivity($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->last_activity !== null || $dt !== null) {
+            $currentDateAsString = ($this->last_activity !== null && $tmpDt = new DateTime($this->last_activity)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->last_activity = $newDateAsString;
+                $this->modifiedColumns[] = PUserPeer::LAST_ACTIVITY;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setLastActivity()
 
     /**
      * Set the value of [p_u_status_id] column.
@@ -2667,29 +2736,30 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->credentials_expire_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->roles = $row[$startcol + 20];
             $this->roles_unserialized = null;
-            $this->p_u_status_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
-            $this->file_name = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->back_file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->gender = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
-            $this->firstname = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->name = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->birthday = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->subtitle = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->biography = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->website = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->twitter = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->facebook = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
-            $this->phone = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
-            $this->newsletter = ($row[$startcol + 34] !== null) ? (boolean) $row[$startcol + 34] : null;
-            $this->last_connect = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
-            $this->nb_connected_days = ($row[$startcol + 36] !== null) ? (int) $row[$startcol + 36] : null;
-            $this->nb_views = ($row[$startcol + 37] !== null) ? (int) $row[$startcol + 37] : null;
-            $this->qualified = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
-            $this->validated = ($row[$startcol + 39] !== null) ? (boolean) $row[$startcol + 39] : null;
-            $this->online = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
-            $this->created_at = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
-            $this->updated_at = ($row[$startcol + 42] !== null) ? (string) $row[$startcol + 42] : null;
-            $this->slug = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
+            $this->last_activity = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->p_u_status_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->back_file_name = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->gender = ($row[$startcol + 25] !== null) ? (int) $row[$startcol + 25] : null;
+            $this->firstname = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->name = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->birthday = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->subtitle = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->biography = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->website = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->twitter = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->facebook = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->phone = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
+            $this->newsletter = ($row[$startcol + 35] !== null) ? (boolean) $row[$startcol + 35] : null;
+            $this->last_connect = ($row[$startcol + 36] !== null) ? (string) $row[$startcol + 36] : null;
+            $this->nb_connected_days = ($row[$startcol + 37] !== null) ? (int) $row[$startcol + 37] : null;
+            $this->nb_views = ($row[$startcol + 38] !== null) ? (int) $row[$startcol + 38] : null;
+            $this->qualified = ($row[$startcol + 39] !== null) ? (boolean) $row[$startcol + 39] : null;
+            $this->validated = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
+            $this->online = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
+            $this->created_at = ($row[$startcol + 42] !== null) ? (string) $row[$startcol + 42] : null;
+            $this->updated_at = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
+            $this->slug = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2699,7 +2769,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 44; // 44 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 45; // 45 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -3719,6 +3789,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::ROLES)) {
             $modifiedColumns[':p' . $index++]  = '`roles`';
         }
+        if ($this->isColumnModified(PUserPeer::LAST_ACTIVITY)) {
+            $modifiedColumns[':p' . $index++]  = '`last_activity`';
+        }
         if ($this->isColumnModified(PUserPeer::P_U_STATUS_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_u_status_id`';
         }
@@ -3861,6 +3934,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`roles`':
                         $stmt->bindValue($identifier, $this->roles, PDO::PARAM_STR);
+                        break;
+                    case '`last_activity`':
+                        $stmt->bindValue($identifier, $this->last_activity, PDO::PARAM_STR);
                         break;
                     case '`p_u_status_id`':
                         $stmt->bindValue($identifier, $this->p_u_status_id, PDO::PARAM_INT);
@@ -4301,72 +4377,75 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getRoles();
                 break;
             case 21:
-                return $this->getPUStatusId();
+                return $this->getLastActivity();
                 break;
             case 22:
-                return $this->getFileName();
+                return $this->getPUStatusId();
                 break;
             case 23:
-                return $this->getBackFileName();
+                return $this->getFileName();
                 break;
             case 24:
-                return $this->getGender();
+                return $this->getBackFileName();
                 break;
             case 25:
-                return $this->getFirstname();
+                return $this->getGender();
                 break;
             case 26:
-                return $this->getName();
+                return $this->getFirstname();
                 break;
             case 27:
-                return $this->getBirthday();
+                return $this->getName();
                 break;
             case 28:
-                return $this->getSubtitle();
+                return $this->getBirthday();
                 break;
             case 29:
-                return $this->getBiography();
+                return $this->getSubtitle();
                 break;
             case 30:
-                return $this->getWebsite();
+                return $this->getBiography();
                 break;
             case 31:
-                return $this->getTwitter();
+                return $this->getWebsite();
                 break;
             case 32:
-                return $this->getFacebook();
+                return $this->getTwitter();
                 break;
             case 33:
-                return $this->getPhone();
+                return $this->getFacebook();
                 break;
             case 34:
-                return $this->getNewsletter();
+                return $this->getPhone();
                 break;
             case 35:
-                return $this->getLastConnect();
+                return $this->getNewsletter();
                 break;
             case 36:
-                return $this->getNbConnectedDays();
+                return $this->getLastConnect();
                 break;
             case 37:
-                return $this->getNbViews();
+                return $this->getNbConnectedDays();
                 break;
             case 38:
-                return $this->getQualified();
+                return $this->getNbViews();
                 break;
             case 39:
-                return $this->getValidated();
+                return $this->getQualified();
                 break;
             case 40:
-                return $this->getOnline();
+                return $this->getValidated();
                 break;
             case 41:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 42:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 43:
+                return $this->getUpdatedAt();
+                break;
+            case 44:
                 return $this->getSlug();
                 break;
             default:
@@ -4419,29 +4498,30 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[18] => $this->getCredentialsExpired(),
             $keys[19] => $this->getCredentialsExpireAt(),
             $keys[20] => $this->getRoles(),
-            $keys[21] => $this->getPUStatusId(),
-            $keys[22] => $this->getFileName(),
-            $keys[23] => $this->getBackFileName(),
-            $keys[24] => $this->getGender(),
-            $keys[25] => $this->getFirstname(),
-            $keys[26] => $this->getName(),
-            $keys[27] => $this->getBirthday(),
-            $keys[28] => $this->getSubtitle(),
-            $keys[29] => $this->getBiography(),
-            $keys[30] => $this->getWebsite(),
-            $keys[31] => $this->getTwitter(),
-            $keys[32] => $this->getFacebook(),
-            $keys[33] => $this->getPhone(),
-            $keys[34] => $this->getNewsletter(),
-            $keys[35] => $this->getLastConnect(),
-            $keys[36] => $this->getNbConnectedDays(),
-            $keys[37] => $this->getNbViews(),
-            $keys[38] => $this->getQualified(),
-            $keys[39] => $this->getValidated(),
-            $keys[40] => $this->getOnline(),
-            $keys[41] => $this->getCreatedAt(),
-            $keys[42] => $this->getUpdatedAt(),
-            $keys[43] => $this->getSlug(),
+            $keys[21] => $this->getLastActivity(),
+            $keys[22] => $this->getPUStatusId(),
+            $keys[23] => $this->getFileName(),
+            $keys[24] => $this->getBackFileName(),
+            $keys[25] => $this->getGender(),
+            $keys[26] => $this->getFirstname(),
+            $keys[27] => $this->getName(),
+            $keys[28] => $this->getBirthday(),
+            $keys[29] => $this->getSubtitle(),
+            $keys[30] => $this->getBiography(),
+            $keys[31] => $this->getWebsite(),
+            $keys[32] => $this->getTwitter(),
+            $keys[33] => $this->getFacebook(),
+            $keys[34] => $this->getPhone(),
+            $keys[35] => $this->getNewsletter(),
+            $keys[36] => $this->getLastConnect(),
+            $keys[37] => $this->getNbConnectedDays(),
+            $keys[38] => $this->getNbViews(),
+            $keys[39] => $this->getQualified(),
+            $keys[40] => $this->getValidated(),
+            $keys[41] => $this->getOnline(),
+            $keys[42] => $this->getCreatedAt(),
+            $keys[43] => $this->getUpdatedAt(),
+            $keys[44] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -4614,76 +4694,79 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setRoles($value);
                 break;
             case 21:
-                $this->setPUStatusId($value);
+                $this->setLastActivity($value);
                 break;
             case 22:
-                $this->setFileName($value);
+                $this->setPUStatusId($value);
                 break;
             case 23:
-                $this->setBackFileName($value);
+                $this->setFileName($value);
                 break;
             case 24:
+                $this->setBackFileName($value);
+                break;
+            case 25:
                 $valueSet = PUserPeer::getValueSet(PUserPeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 25:
+            case 26:
                 $this->setFirstname($value);
                 break;
-            case 26:
+            case 27:
                 $this->setName($value);
                 break;
-            case 27:
+            case 28:
                 $this->setBirthday($value);
                 break;
-            case 28:
+            case 29:
                 $this->setSubtitle($value);
                 break;
-            case 29:
+            case 30:
                 $this->setBiography($value);
                 break;
-            case 30:
+            case 31:
                 $this->setWebsite($value);
                 break;
-            case 31:
+            case 32:
                 $this->setTwitter($value);
                 break;
-            case 32:
+            case 33:
                 $this->setFacebook($value);
                 break;
-            case 33:
+            case 34:
                 $this->setPhone($value);
                 break;
-            case 34:
+            case 35:
                 $this->setNewsletter($value);
                 break;
-            case 35:
+            case 36:
                 $this->setLastConnect($value);
                 break;
-            case 36:
+            case 37:
                 $this->setNbConnectedDays($value);
                 break;
-            case 37:
+            case 38:
                 $this->setNbViews($value);
                 break;
-            case 38:
+            case 39:
                 $this->setQualified($value);
                 break;
-            case 39:
+            case 40:
                 $this->setValidated($value);
                 break;
-            case 40:
+            case 41:
                 $this->setOnline($value);
                 break;
-            case 41:
+            case 42:
                 $this->setCreatedAt($value);
                 break;
-            case 42:
+            case 43:
                 $this->setUpdatedAt($value);
                 break;
-            case 43:
+            case 44:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -4731,29 +4814,30 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[18], $arr)) $this->setCredentialsExpired($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setCredentialsExpireAt($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setRoles($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setPUStatusId($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setFileName($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setBackFileName($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setGender($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setFirstname($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setName($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setBirthday($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setSubtitle($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setBiography($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setWebsite($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setTwitter($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setFacebook($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setNewsletter($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setLastConnect($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setNbConnectedDays($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setNbViews($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setQualified($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setValidated($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setOnline($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setCreatedAt($arr[$keys[41]]);
-        if (array_key_exists($keys[42], $arr)) $this->setUpdatedAt($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setSlug($arr[$keys[43]]);
+        if (array_key_exists($keys[21], $arr)) $this->setLastActivity($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setPUStatusId($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setFileName($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setBackFileName($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setGender($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setFirstname($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setName($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setBirthday($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setSubtitle($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setBiography($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setWebsite($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setTwitter($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setFacebook($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setPhone($arr[$keys[34]]);
+        if (array_key_exists($keys[35], $arr)) $this->setNewsletter($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setLastConnect($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setNbConnectedDays($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setNbViews($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setQualified($arr[$keys[39]]);
+        if (array_key_exists($keys[40], $arr)) $this->setValidated($arr[$keys[40]]);
+        if (array_key_exists($keys[41], $arr)) $this->setOnline($arr[$keys[41]]);
+        if (array_key_exists($keys[42], $arr)) $this->setCreatedAt($arr[$keys[42]]);
+        if (array_key_exists($keys[43], $arr)) $this->setUpdatedAt($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setSlug($arr[$keys[44]]);
     }
 
     /**
@@ -4786,6 +4870,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::CREDENTIALS_EXPIRED)) $criteria->add(PUserPeer::CREDENTIALS_EXPIRED, $this->credentials_expired);
         if ($this->isColumnModified(PUserPeer::CREDENTIALS_EXPIRE_AT)) $criteria->add(PUserPeer::CREDENTIALS_EXPIRE_AT, $this->credentials_expire_at);
         if ($this->isColumnModified(PUserPeer::ROLES)) $criteria->add(PUserPeer::ROLES, $this->roles);
+        if ($this->isColumnModified(PUserPeer::LAST_ACTIVITY)) $criteria->add(PUserPeer::LAST_ACTIVITY, $this->last_activity);
         if ($this->isColumnModified(PUserPeer::P_U_STATUS_ID)) $criteria->add(PUserPeer::P_U_STATUS_ID, $this->p_u_status_id);
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) $criteria->add(PUserPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PUserPeer::BACK_FILE_NAME)) $criteria->add(PUserPeer::BACK_FILE_NAME, $this->back_file_name);
@@ -4892,6 +4977,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setCredentialsExpired($this->getCredentialsExpired());
         $copyObj->setCredentialsExpireAt($this->getCredentialsExpireAt());
         $copyObj->setRoles($this->getRoles());
+        $copyObj->setLastActivity($this->getLastActivity());
         $copyObj->setPUStatusId($this->getPUStatusId());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setBackFileName($this->getBackFileName());
@@ -5416,7 +5502,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PTag $pTag The pTag object to add.
+     * @param	PTag $pTag The pTag object to add.
      */
     protected function doAddPTag($pTag)
     {
@@ -5425,7 +5511,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PTag $pTag The pTag object to remove.
+     * @param	PTag $pTag The pTag object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePTag($pTag)
@@ -5666,7 +5752,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POrder $pOrder The pOrder object to add.
+     * @param	POrder $pOrder The pOrder object to add.
      */
     protected function doAddPOrder($pOrder)
     {
@@ -5675,7 +5761,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POrder $pOrder The pOrder object to remove.
+     * @param	POrder $pOrder The pOrder object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePOrder($pOrder)
@@ -5991,7 +6077,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
+     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
      */
     protected function doAddPuFollowDdPUser($puFollowDdPUser)
     {
@@ -6000,7 +6086,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to remove.
+     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuFollowDdPUser($puFollowDdPUser)
@@ -6241,7 +6327,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUBadges $pUBadges The pUBadges object to add.
+     * @param	PUBadges $pUBadges The pUBadges object to add.
      */
     protected function doAddPUBadges($pUBadges)
     {
@@ -6250,7 +6336,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUBadges $pUBadges The pUBadges object to remove.
+     * @param	PUBadges $pUBadges The pUBadges object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUBadges($pUBadges)
@@ -6491,7 +6577,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUReputation $pUReputation The pUReputation object to add.
+     * @param	PUReputation $pUReputation The pUReputation object to add.
      */
     protected function doAddPUReputation($pUReputation)
     {
@@ -6500,7 +6586,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUReputation $pUReputation The pUReputation object to remove.
+     * @param	PUReputation $pUReputation The pUReputation object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUReputation($pUReputation)
@@ -6741,7 +6827,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
+     * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
      */
     protected function doAddPuTaggedTPUser($puTaggedTPUser)
     {
@@ -6750,7 +6836,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to remove.
+     * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuTaggedTPUser($puTaggedTPUser)
@@ -6991,7 +7077,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
+     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
      */
     protected function doAddPuFollowTPUser($puFollowTPUser)
     {
@@ -7000,7 +7086,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPUser $puFollowTPUser The puFollowTPUser object to remove.
+     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePuFollowTPUser($puFollowTPUser)
@@ -7241,7 +7327,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PURoleQ $pURoleQ The pURoleQ object to add.
+     * @param	PURoleQ $pURoleQ The pURoleQ object to add.
      */
     protected function doAddPURoleQ($pURoleQ)
     {
@@ -7250,7 +7336,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PURoleQ $pURoleQ The pURoleQ object to remove.
+     * @param	PURoleQ $pURoleQ The pURoleQ object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePURoleQ($pURoleQ)
@@ -7491,7 +7577,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUMandate $pUMandate The pUMandate object to add.
+     * @param	PUMandate $pUMandate The pUMandate object to add.
      */
     protected function doAddPUMandate($pUMandate)
     {
@@ -7500,7 +7586,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUMandate $pUMandate The pUMandate object to remove.
+     * @param	PUMandate $pUMandate The pUMandate object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUMandate($pUMandate)
@@ -7791,7 +7877,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
+     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
      */
     protected function doAddPUAffinityQOPUser($pUAffinityQOPUser)
     {
@@ -7800,7 +7886,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to remove.
+     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUAffinityQOPUser($pUAffinityQOPUser)
@@ -8041,7 +8127,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
+     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
      */
     protected function doAddPUCurrentQOPUser($pUCurrentQOPUser)
     {
@@ -8050,7 +8136,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to remove.
+     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUCurrentQOPUser($pUCurrentQOPUser)
@@ -8291,7 +8377,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
+     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
      */
     protected function doAddPUNotificationsPUser($pUNotificationsPUser)
     {
@@ -8300,7 +8386,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to remove.
+     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUNotificationsPUser($pUNotificationsPUser)
@@ -8541,7 +8627,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
+     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
      */
     protected function doAddPUSubscribeEmailPUser($pUSubscribeEmailPUser)
     {
@@ -8550,7 +8636,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to remove.
+     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUSubscribeEmailPUser($pUSubscribeEmailPUser)
@@ -8791,7 +8877,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
+     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
      */
     protected function doAddPUSubscribeScreenPUser($pUSubscribeScreenPUser)
     {
@@ -8800,7 +8886,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to remove.
+     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUSubscribeScreenPUser($pUSubscribeScreenPUser)
@@ -9041,7 +9127,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDocument $pDocument The pDocument object to add.
+     * @param	PDocument $pDocument The pDocument object to add.
      */
     protected function doAddPDocument($pDocument)
     {
@@ -9050,7 +9136,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDocument $pDocument The pDocument object to remove.
+     * @param	PDocument $pDocument The pDocument object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDocument($pDocument)
@@ -9266,7 +9352,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDComment $pDComment The pDComment object to add.
+     * @param	PDComment $pDComment The pDComment object to add.
      */
     protected function doAddPDComment($pDComment)
     {
@@ -9275,7 +9361,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDComment $pDComment The pDComment object to remove.
+     * @param	PDComment $pDComment The pDComment object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDComment($pDComment)
@@ -9519,7 +9605,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to add.
+     * @param	PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to add.
      */
     protected function doAddPUFollowURelatedByPUserId($pUFollowURelatedByPUserId)
     {
@@ -9528,7 +9614,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to remove.
+     * @param	PUFollowURelatedByPUserId $pUFollowURelatedByPUserId The pUFollowURelatedByPUserId object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUFollowURelatedByPUserId($pUFollowURelatedByPUserId)
@@ -9747,7 +9833,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to add.
+     * @param	PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to add.
      */
     protected function doAddPUFollowURelatedByPUserFollowerId($pUFollowURelatedByPUserFollowerId)
     {
@@ -9756,7 +9842,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to remove.
+     * @param	PUFollowURelatedByPUserFollowerId $pUFollowURelatedByPUserFollowerId The pUFollowURelatedByPUserFollowerId object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePUFollowURelatedByPUserFollowerId($pUFollowURelatedByPUserFollowerId)
@@ -9972,7 +10058,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDDebate $pDDebate The pDDebate object to add.
+     * @param	PDDebate $pDDebate The pDDebate object to add.
      */
     protected function doAddPDDebate($pDDebate)
     {
@@ -9981,7 +10067,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDDebate $pDDebate The pDDebate object to remove.
+     * @param	PDDebate $pDDebate The pDDebate object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDDebate($pDDebate)
@@ -10222,7 +10308,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDReaction $pDReaction The pDReaction object to add.
+     * @param	PDReaction $pDReaction The pDReaction object to add.
      */
     protected function doAddPDReaction($pDReaction)
     {
@@ -10231,7 +10317,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDReaction $pDReaction The pDReaction object to remove.
+     * @param	PDReaction $pDReaction The pDReaction object to remove.
      * @return PUser The current object (for fluent API support)
      */
     public function removePDReaction($pDReaction)
@@ -10450,7 +10536,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
+     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
      */
     protected function doAddPuFollowDdPDDebate(PDDebate $puFollowDdPDDebate)
     {
@@ -10637,7 +10723,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PRBadge $pRBadge The pRBadge object to add.
+     * @param	PRBadge $pRBadge The pRBadge object to add.
      */
     protected function doAddPRBadge(PRBadge $pRBadge)
     {
@@ -10824,7 +10910,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PRAction $pRAction The pRAction object to add.
+     * @param	PRAction $pRAction The pRAction object to add.
      */
     protected function doAddPRAction(PRAction $pRAction)
     {
@@ -11011,7 +11097,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
+     * @param	PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
      */
     protected function doAddPuTaggedTPTag(PTag $puTaggedTPTag)
     {
@@ -11198,7 +11284,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
+     * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
      */
     protected function doAddPuFollowTPTag(PTag $puFollowTPTag)
     {
@@ -11385,7 +11471,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PQualification $pQualification The pQualification object to add.
+     * @param	PQualification $pQualification The pQualification object to add.
      */
     protected function doAddPQualification(PQualification $pQualification)
     {
@@ -11572,7 +11658,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
+     * @param	PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
      */
     protected function doAddPUAffinityQOPQOrganization(PQOrganization $pUAffinityQOPQOrganization)
     {
@@ -11759,7 +11845,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
+     * @param	PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
      */
     protected function doAddPUCurrentQOPQOrganization(PQOrganization $pUCurrentQOPQOrganization)
     {
@@ -11946,7 +12032,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
+     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
      */
     protected function doAddPUNotificationsPNotification(PNotification $pUNotificationsPNotification)
     {
@@ -12133,7 +12219,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
+     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
      */
     protected function doAddPUSubscribeEmailPNotification(PNotification $pUSubscribeEmailPNotification)
     {
@@ -12320,7 +12406,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
+     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
      */
     protected function doAddPUSubscribeScreenPNotification(PNotification $pUSubscribeScreenPNotification)
     {
@@ -12383,6 +12469,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->credentials_expire_at = null;
         $this->roles = null;
         $this->roles_unserialized = null;
+        $this->last_activity = null;
         $this->p_u_status_id = null;
         $this->file_name = null;
         $this->back_file_name = null;
@@ -13008,6 +13095,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setCredentialsExpired($archive->getCredentialsExpired());
         $this->setCredentialsExpireAt($archive->getCredentialsExpireAt());
         $this->setRoles($archive->getRoles());
+        $this->setLastActivity($archive->getLastActivity());
         $this->setPUStatusId($archive->getPUStatusId());
         $this->setFileName($archive->getFileName());
         $this->setBackFileName($archive->getBackFileName());

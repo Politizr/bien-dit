@@ -292,7 +292,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -332,7 +332,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -526,7 +526,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -2847,7 +2847,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The result is cached so further calls to the same method don't issue any queries
      *
      * @param      PropelPDO $con Connection to use.
-     * @return     mixed         Propel object if exists else false
+     * @return     mixed 		Propel object if exists else false
      */
     public function getParent(PropelPDO $con = null)
     {
@@ -2883,7 +2883,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Gets previous sibling for the given node if it exists
      *
      * @param      PropelPDO $con Connection to use.
-     * @return     mixed         Propel object if exists else false
+     * @return     mixed 		Propel object if exists else false
      */
     public function getPrevSibling(PropelPDO $con = null)
     {
@@ -2915,7 +2915,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Gets next sibling for the given node if it exists
      *
      * @param      PropelPDO $con Connection to use.
-     * @return     mixed         Propel object if exists else false
+     * @return     mixed 		Propel object if exists else false
      */
     public function getNextSibling(PropelPDO $con = null)
     {
@@ -3034,7 +3034,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getFirstChild($query = null, PropelPDO $con = null)
     {
@@ -3053,7 +3053,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getLastChild($query = null, PropelPDO $con = null)
     {
@@ -3070,11 +3070,11 @@ abstract class BasePDReaction extends PDocument implements Persistent
     /**
      * Gets the siblings of the given node
      *
-     * @param      bool            $includeNode Whether to include the current node or not
+     * @param      bool			$includeNode Whether to include the current node or not
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
      *
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getSiblings($includeNode = false, $query = null, PropelPDO $con = null)
     {
@@ -3097,7 +3097,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getDescendants($query = null, PropelPDO $con = null)
     {
@@ -3116,7 +3116,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     int         Number of descendants
+     * @return     int 		Number of descendants
      */
     public function countDescendants($query = null, PropelPDO $con = null)
     {
@@ -3135,7 +3135,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getBranch($query = null, PropelPDO $con = null)
     {
@@ -3151,7 +3151,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      Criteria $query Criteria to filter results.
      * @param      PropelPDO $con Connection to use.
-     * @return     array         List of PDReaction objects
+     * @return     array 		List of PDReaction objects
      */
     public function getAncestors($query = null, PropelPDO $con = null)
     {
@@ -3171,7 +3171,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The modifications in the current object and the tree
      * are not persisted until the child object is saved.
      *
-     * @param      PDReaction $child    Propel object for child node
+     * @param      PDReaction $child	Propel object for child node
      *
      * @return     PDReaction The current Propel object
      */
@@ -3190,7 +3190,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The modifications in the current object and the tree
      * are not persisted until the current object is saved.
      *
-     * @param      PDReaction $parent    Propel object for parent node
+     * @param      PDReaction $parent	Propel object for parent node
      *
      * @return     PDReaction The current Propel object
      */
@@ -3223,7 +3223,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The modifications in the current object and the tree
      * are not persisted until the current object is saved.
      *
-     * @param      PDReaction $parent    Propel object for parent node
+     * @param      PDReaction $parent	Propel object for parent node
      *
      * @return     PDReaction The current Propel object
      */
@@ -3256,7 +3256,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The modifications in the current object and the tree
      * are not persisted until the current object is saved.
      *
-     * @param      PDReaction $sibling    Propel object for parent node
+     * @param      PDReaction $sibling	Propel object for parent node
      *
      * @return     PDReaction The current Propel object
      */
@@ -3286,7 +3286,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * The modifications in the current object and the tree
      * are not persisted until the current object is saved.
      *
-     * @param      PDReaction $sibling    Propel object for parent node
+     * @param      PDReaction $sibling	Propel object for parent node
      *
      * @return     PDReaction The current Propel object
      */
@@ -3315,8 +3315,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Moves current node and its subtree to be the first child of $parent
      * The modifications in the current object and the tree are immediate
      *
-     * @param      PDReaction $parent    Propel object for parent node
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PDReaction $parent	Propel object for parent node
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     PDReaction The current Propel object
      */
@@ -3338,8 +3338,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Moves current node and its subtree to be the last child of $parent
      * The modifications in the current object and the tree are immediate
      *
-     * @param      PDReaction $parent    Propel object for parent node
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PDReaction $parent	Propel object for parent node
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     PDReaction The current Propel object
      */
@@ -3361,8 +3361,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Moves current node and its subtree to be the previous sibling of $sibling
      * The modifications in the current object and the tree are immediate
      *
-     * @param      PDReaction $sibling    Propel object for sibling node
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PDReaction $sibling	Propel object for sibling node
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     PDReaction The current Propel object
      */
@@ -3387,8 +3387,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
      * Moves current node and its subtree to be the next sibling of $sibling
      * The modifications in the current object and the tree are immediate
      *
-     * @param      PDReaction $sibling    Propel object for sibling node
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PDReaction $sibling	Propel object for sibling node
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     PDReaction The current Propel object
      */
@@ -3412,9 +3412,9 @@ abstract class BasePDReaction extends PDocument implements Persistent
     /**
      * Move current node and its children to location $destLeft and updates rest of tree
      *
-     * @param      int    $destLeft Destination left value
-     * @param      int    $levelDelta Delta to add to the levels
-     * @param      PropelPDO $con        Connection to use.
+     * @param      int	$destLeft Destination left value
+     * @param      int	$levelDelta Delta to add to the levels
+     * @param      PropelPDO $con		Connection to use.
      */
     protected function moveSubtreeTo($destLeft, $levelDelta, $targetScope = null, PropelPDO $con = null)
     {
@@ -3498,7 +3498,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
      *
      * @param      PropelPDO $con Connection to use.
      *
-     * @return     int         number of deleted nodes
+     * @return     int 		number of deleted nodes
      */
     public function deleteDescendants(PropelPDO $con = null)
     {

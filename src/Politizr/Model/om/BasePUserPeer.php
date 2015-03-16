@@ -52,13 +52,13 @@ abstract class BasePUserPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 44;
+    const NUM_COLUMNS = 45;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 44;
+    const NUM_HYDRATE_COLUMNS = 45;
 
     /** the column name for the id field */
     const ID = 'p_user.id';
@@ -122,6 +122,9 @@ abstract class BasePUserPeer
 
     /** the column name for the roles field */
     const ROLES = 'p_user.roles';
+
+    /** the column name for the last_activity field */
+    const LAST_ACTIVITY = 'p_user.last_activity';
 
     /** the column name for the p_u_status_id field */
     const P_U_STATUS_ID = 'p_user.p_u_status_id';
@@ -215,12 +218,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[PUserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'PUStatusId', 'FileName', 'BackFileName', 'Gender', 'Firstname', 'Name', 'Birthday', 'Subtitle', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbConnectedDays', 'NbViews', 'Qualified', 'Validated', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'pUStatusId', 'fileName', 'backFileName', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbConnectedDays', 'nbViews', 'qualified', 'validated', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::P_U_STATUS_ID, PUserPeer::FILE_NAME, PUserPeer::BACK_FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::SUBTITLE, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_CONNECTED_DAYS, PUserPeer::NB_VIEWS, PUserPeer::QUALIFIED, PUserPeer::VALIDATED, PUserPeer::ONLINE, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'P_U_STATUS_ID', 'FILE_NAME', 'BACK_FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'SUBTITLE', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_CONNECTED_DAYS', 'NB_VIEWS', 'QUALIFIED', 'VALIDATED', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'p_u_status_id', 'file_name', 'back_file_name', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_connected_days', 'nb_views', 'qualified', 'validated', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'LastActivity', 'PUStatusId', 'FileName', 'BackFileName', 'Gender', 'Firstname', 'Name', 'Birthday', 'Subtitle', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbConnectedDays', 'NbViews', 'Qualified', 'Validated', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'lastActivity', 'pUStatusId', 'fileName', 'backFileName', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbConnectedDays', 'nbViews', 'qualified', 'validated', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::LAST_ACTIVITY, PUserPeer::P_U_STATUS_ID, PUserPeer::FILE_NAME, PUserPeer::BACK_FILE_NAME, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::SUBTITLE, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_CONNECTED_DAYS, PUserPeer::NB_VIEWS, PUserPeer::QUALIFIED, PUserPeer::VALIDATED, PUserPeer::ONLINE, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'LAST_ACTIVITY', 'P_U_STATUS_ID', 'FILE_NAME', 'BACK_FILE_NAME', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'SUBTITLE', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_CONNECTED_DAYS', 'NB_VIEWS', 'QUALIFIED', 'VALIDATED', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'last_activity', 'p_u_status_id', 'file_name', 'back_file_name', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_connected_days', 'nb_views', 'qualified', 'validated', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, )
     );
 
     /**
@@ -230,12 +233,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Provider' => 1, 'ProviderId' => 2, 'Nickname' => 3, 'Realname' => 4, 'Username' => 5, 'UsernameCanonical' => 6, 'Email' => 7, 'EmailCanonical' => 8, 'Enabled' => 9, 'Salt' => 10, 'Password' => 11, 'LastLogin' => 12, 'Locked' => 13, 'Expired' => 14, 'ExpiresAt' => 15, 'ConfirmationToken' => 16, 'PasswordRequestedAt' => 17, 'CredentialsExpired' => 18, 'CredentialsExpireAt' => 19, 'Roles' => 20, 'PUStatusId' => 21, 'FileName' => 22, 'BackFileName' => 23, 'Gender' => 24, 'Firstname' => 25, 'Name' => 26, 'Birthday' => 27, 'Subtitle' => 28, 'Biography' => 29, 'Website' => 30, 'Twitter' => 31, 'Facebook' => 32, 'Phone' => 33, 'Newsletter' => 34, 'LastConnect' => 35, 'NbConnectedDays' => 36, 'NbViews' => 37, 'Qualified' => 38, 'Validated' => 39, 'Online' => 40, 'CreatedAt' => 41, 'UpdatedAt' => 42, 'Slug' => 43, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'provider' => 1, 'providerId' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'usernameCanonical' => 6, 'email' => 7, 'emailCanonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'lastLogin' => 12, 'locked' => 13, 'expired' => 14, 'expiresAt' => 15, 'confirmationToken' => 16, 'passwordRequestedAt' => 17, 'credentialsExpired' => 18, 'credentialsExpireAt' => 19, 'roles' => 20, 'pUStatusId' => 21, 'fileName' => 22, 'backFileName' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'subtitle' => 28, 'biography' => 29, 'website' => 30, 'twitter' => 31, 'facebook' => 32, 'phone' => 33, 'newsletter' => 34, 'lastConnect' => 35, 'nbConnectedDays' => 36, 'nbViews' => 37, 'qualified' => 38, 'validated' => 39, 'online' => 40, 'createdAt' => 41, 'updatedAt' => 42, 'slug' => 43, ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::PROVIDER => 1, PUserPeer::PROVIDER_ID => 2, PUserPeer::NICKNAME => 3, PUserPeer::REALNAME => 4, PUserPeer::USERNAME => 5, PUserPeer::USERNAME_CANONICAL => 6, PUserPeer::EMAIL => 7, PUserPeer::EMAIL_CANONICAL => 8, PUserPeer::ENABLED => 9, PUserPeer::SALT => 10, PUserPeer::PASSWORD => 11, PUserPeer::LAST_LOGIN => 12, PUserPeer::LOCKED => 13, PUserPeer::EXPIRED => 14, PUserPeer::EXPIRES_AT => 15, PUserPeer::CONFIRMATION_TOKEN => 16, PUserPeer::PASSWORD_REQUESTED_AT => 17, PUserPeer::CREDENTIALS_EXPIRED => 18, PUserPeer::CREDENTIALS_EXPIRE_AT => 19, PUserPeer::ROLES => 20, PUserPeer::P_U_STATUS_ID => 21, PUserPeer::FILE_NAME => 22, PUserPeer::BACK_FILE_NAME => 23, PUserPeer::GENDER => 24, PUserPeer::FIRSTNAME => 25, PUserPeer::NAME => 26, PUserPeer::BIRTHDAY => 27, PUserPeer::SUBTITLE => 28, PUserPeer::BIOGRAPHY => 29, PUserPeer::WEBSITE => 30, PUserPeer::TWITTER => 31, PUserPeer::FACEBOOK => 32, PUserPeer::PHONE => 33, PUserPeer::NEWSLETTER => 34, PUserPeer::LAST_CONNECT => 35, PUserPeer::NB_CONNECTED_DAYS => 36, PUserPeer::NB_VIEWS => 37, PUserPeer::QUALIFIED => 38, PUserPeer::VALIDATED => 39, PUserPeer::ONLINE => 40, PUserPeer::CREATED_AT => 41, PUserPeer::UPDATED_AT => 42, PUserPeer::SLUG => 43, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROVIDER' => 1, 'PROVIDER_ID' => 2, 'NICKNAME' => 3, 'REALNAME' => 4, 'USERNAME' => 5, 'USERNAME_CANONICAL' => 6, 'EMAIL' => 7, 'EMAIL_CANONICAL' => 8, 'ENABLED' => 9, 'SALT' => 10, 'PASSWORD' => 11, 'LAST_LOGIN' => 12, 'LOCKED' => 13, 'EXPIRED' => 14, 'EXPIRES_AT' => 15, 'CONFIRMATION_TOKEN' => 16, 'PASSWORD_REQUESTED_AT' => 17, 'CREDENTIALS_EXPIRED' => 18, 'CREDENTIALS_EXPIRE_AT' => 19, 'ROLES' => 20, 'P_U_STATUS_ID' => 21, 'FILE_NAME' => 22, 'BACK_FILE_NAME' => 23, 'GENDER' => 24, 'FIRSTNAME' => 25, 'NAME' => 26, 'BIRTHDAY' => 27, 'SUBTITLE' => 28, 'BIOGRAPHY' => 29, 'WEBSITE' => 30, 'TWITTER' => 31, 'FACEBOOK' => 32, 'PHONE' => 33, 'NEWSLETTER' => 34, 'LAST_CONNECT' => 35, 'NB_CONNECTED_DAYS' => 36, 'NB_VIEWS' => 37, 'QUALIFIED' => 38, 'VALIDATED' => 39, 'ONLINE' => 40, 'CREATED_AT' => 41, 'UPDATED_AT' => 42, 'SLUG' => 43, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'provider' => 1, 'provider_id' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'username_canonical' => 6, 'email' => 7, 'email_canonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'last_login' => 12, 'locked' => 13, 'expired' => 14, 'expires_at' => 15, 'confirmation_token' => 16, 'password_requested_at' => 17, 'credentials_expired' => 18, 'credentials_expire_at' => 19, 'roles' => 20, 'p_u_status_id' => 21, 'file_name' => 22, 'back_file_name' => 23, 'gender' => 24, 'firstname' => 25, 'name' => 26, 'birthday' => 27, 'subtitle' => 28, 'biography' => 29, 'website' => 30, 'twitter' => 31, 'facebook' => 32, 'phone' => 33, 'newsletter' => 34, 'last_connect' => 35, 'nb_connected_days' => 36, 'nb_views' => 37, 'qualified' => 38, 'validated' => 39, 'online' => 40, 'created_at' => 41, 'updated_at' => 42, 'slug' => 43, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Provider' => 1, 'ProviderId' => 2, 'Nickname' => 3, 'Realname' => 4, 'Username' => 5, 'UsernameCanonical' => 6, 'Email' => 7, 'EmailCanonical' => 8, 'Enabled' => 9, 'Salt' => 10, 'Password' => 11, 'LastLogin' => 12, 'Locked' => 13, 'Expired' => 14, 'ExpiresAt' => 15, 'ConfirmationToken' => 16, 'PasswordRequestedAt' => 17, 'CredentialsExpired' => 18, 'CredentialsExpireAt' => 19, 'Roles' => 20, 'LastActivity' => 21, 'PUStatusId' => 22, 'FileName' => 23, 'BackFileName' => 24, 'Gender' => 25, 'Firstname' => 26, 'Name' => 27, 'Birthday' => 28, 'Subtitle' => 29, 'Biography' => 30, 'Website' => 31, 'Twitter' => 32, 'Facebook' => 33, 'Phone' => 34, 'Newsletter' => 35, 'LastConnect' => 36, 'NbConnectedDays' => 37, 'NbViews' => 38, 'Qualified' => 39, 'Validated' => 40, 'Online' => 41, 'CreatedAt' => 42, 'UpdatedAt' => 43, 'Slug' => 44, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'provider' => 1, 'providerId' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'usernameCanonical' => 6, 'email' => 7, 'emailCanonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'lastLogin' => 12, 'locked' => 13, 'expired' => 14, 'expiresAt' => 15, 'confirmationToken' => 16, 'passwordRequestedAt' => 17, 'credentialsExpired' => 18, 'credentialsExpireAt' => 19, 'roles' => 20, 'lastActivity' => 21, 'pUStatusId' => 22, 'fileName' => 23, 'backFileName' => 24, 'gender' => 25, 'firstname' => 26, 'name' => 27, 'birthday' => 28, 'subtitle' => 29, 'biography' => 30, 'website' => 31, 'twitter' => 32, 'facebook' => 33, 'phone' => 34, 'newsletter' => 35, 'lastConnect' => 36, 'nbConnectedDays' => 37, 'nbViews' => 38, 'qualified' => 39, 'validated' => 40, 'online' => 41, 'createdAt' => 42, 'updatedAt' => 43, 'slug' => 44, ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::PROVIDER => 1, PUserPeer::PROVIDER_ID => 2, PUserPeer::NICKNAME => 3, PUserPeer::REALNAME => 4, PUserPeer::USERNAME => 5, PUserPeer::USERNAME_CANONICAL => 6, PUserPeer::EMAIL => 7, PUserPeer::EMAIL_CANONICAL => 8, PUserPeer::ENABLED => 9, PUserPeer::SALT => 10, PUserPeer::PASSWORD => 11, PUserPeer::LAST_LOGIN => 12, PUserPeer::LOCKED => 13, PUserPeer::EXPIRED => 14, PUserPeer::EXPIRES_AT => 15, PUserPeer::CONFIRMATION_TOKEN => 16, PUserPeer::PASSWORD_REQUESTED_AT => 17, PUserPeer::CREDENTIALS_EXPIRED => 18, PUserPeer::CREDENTIALS_EXPIRE_AT => 19, PUserPeer::ROLES => 20, PUserPeer::LAST_ACTIVITY => 21, PUserPeer::P_U_STATUS_ID => 22, PUserPeer::FILE_NAME => 23, PUserPeer::BACK_FILE_NAME => 24, PUserPeer::GENDER => 25, PUserPeer::FIRSTNAME => 26, PUserPeer::NAME => 27, PUserPeer::BIRTHDAY => 28, PUserPeer::SUBTITLE => 29, PUserPeer::BIOGRAPHY => 30, PUserPeer::WEBSITE => 31, PUserPeer::TWITTER => 32, PUserPeer::FACEBOOK => 33, PUserPeer::PHONE => 34, PUserPeer::NEWSLETTER => 35, PUserPeer::LAST_CONNECT => 36, PUserPeer::NB_CONNECTED_DAYS => 37, PUserPeer::NB_VIEWS => 38, PUserPeer::QUALIFIED => 39, PUserPeer::VALIDATED => 40, PUserPeer::ONLINE => 41, PUserPeer::CREATED_AT => 42, PUserPeer::UPDATED_AT => 43, PUserPeer::SLUG => 44, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROVIDER' => 1, 'PROVIDER_ID' => 2, 'NICKNAME' => 3, 'REALNAME' => 4, 'USERNAME' => 5, 'USERNAME_CANONICAL' => 6, 'EMAIL' => 7, 'EMAIL_CANONICAL' => 8, 'ENABLED' => 9, 'SALT' => 10, 'PASSWORD' => 11, 'LAST_LOGIN' => 12, 'LOCKED' => 13, 'EXPIRED' => 14, 'EXPIRES_AT' => 15, 'CONFIRMATION_TOKEN' => 16, 'PASSWORD_REQUESTED_AT' => 17, 'CREDENTIALS_EXPIRED' => 18, 'CREDENTIALS_EXPIRE_AT' => 19, 'ROLES' => 20, 'LAST_ACTIVITY' => 21, 'P_U_STATUS_ID' => 22, 'FILE_NAME' => 23, 'BACK_FILE_NAME' => 24, 'GENDER' => 25, 'FIRSTNAME' => 26, 'NAME' => 27, 'BIRTHDAY' => 28, 'SUBTITLE' => 29, 'BIOGRAPHY' => 30, 'WEBSITE' => 31, 'TWITTER' => 32, 'FACEBOOK' => 33, 'PHONE' => 34, 'NEWSLETTER' => 35, 'LAST_CONNECT' => 36, 'NB_CONNECTED_DAYS' => 37, 'NB_VIEWS' => 38, 'QUALIFIED' => 39, 'VALIDATED' => 40, 'ONLINE' => 41, 'CREATED_AT' => 42, 'UPDATED_AT' => 43, 'SLUG' => 44, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'provider' => 1, 'provider_id' => 2, 'nickname' => 3, 'realname' => 4, 'username' => 5, 'username_canonical' => 6, 'email' => 7, 'email_canonical' => 8, 'enabled' => 9, 'salt' => 10, 'password' => 11, 'last_login' => 12, 'locked' => 13, 'expired' => 14, 'expires_at' => 15, 'confirmation_token' => 16, 'password_requested_at' => 17, 'credentials_expired' => 18, 'credentials_expire_at' => 19, 'roles' => 20, 'last_activity' => 21, 'p_u_status_id' => 22, 'file_name' => 23, 'back_file_name' => 24, 'gender' => 25, 'firstname' => 26, 'name' => 27, 'birthday' => 28, 'subtitle' => 29, 'biography' => 30, 'website' => 31, 'twitter' => 32, 'facebook' => 33, 'phone' => 34, 'newsletter' => 35, 'last_connect' => 36, 'nb_connected_days' => 37, 'nb_views' => 38, 'qualified' => 39, 'validated' => 40, 'online' => 41, 'created_at' => 42, 'updated_at' => 43, 'slug' => 44, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, )
     );
 
     /** The enumerated values for this table */
@@ -335,8 +338,8 @@ abstract class BasePUserPeer
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
      * <code>
-     *        $c->addAlias("alias1", TablePeer::TABLE_NAME);
-     *        $c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
+     *		$c->addAlias("alias1", TablePeer::TABLE_NAME);
+     *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
      * @param      string $column The column name for current table. (i.e. PUserPeer::COLUMN_NAME).
@@ -357,7 +360,7 @@ abstract class BasePUserPeer
      * @param      Criteria $criteria object containing the columns to add.
      * @param      string   $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -383,6 +386,7 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRED);
             $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRE_AT);
             $criteria->addSelectColumn(PUserPeer::ROLES);
+            $criteria->addSelectColumn(PUserPeer::LAST_ACTIVITY);
             $criteria->addSelectColumn(PUserPeer::P_U_STATUS_ID);
             $criteria->addSelectColumn(PUserPeer::FILE_NAME);
             $criteria->addSelectColumn(PUserPeer::BACK_FILE_NAME);
@@ -428,6 +432,7 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn($alias . '.credentials_expired');
             $criteria->addSelectColumn($alias . '.credentials_expire_at');
             $criteria->addSelectColumn($alias . '.roles');
+            $criteria->addSelectColumn($alias . '.last_activity');
             $criteria->addSelectColumn($alias . '.p_u_status_id');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.back_file_name');
@@ -505,7 +510,7 @@ abstract class BasePUserPeer
      * @param      PropelPDO $con
      * @return PUser
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectOne(Criteria $criteria, PropelPDO $con = null)
     {
@@ -525,7 +530,7 @@ abstract class BasePUserPeer
      * @param      PropelPDO $con
      * @return array           Array of selected Objects
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
@@ -540,7 +545,7 @@ abstract class BasePUserPeer
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
      * @param      PropelPDO $con The connection to use
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return PDOStatement The executed PDOStatement object.
      * @see        BasePeer::doSelect()
      */
@@ -757,7 +762,7 @@ abstract class BasePUserPeer
      * objects that inherit from the default.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function populateObjects(PDOStatement $stmt)
     {
@@ -790,7 +795,7 @@ abstract class BasePUserPeer
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return array (PUser object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
@@ -881,7 +886,7 @@ abstract class BasePUserPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PUser objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPUStatus(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -999,7 +1004,7 @@ abstract class BasePUserPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PUser objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1065,7 +1070,7 @@ abstract class BasePUserPeer
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -1108,7 +1113,7 @@ abstract class BasePUserPeer
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doInsert($values, PropelPDO $con = null)
     {
@@ -1151,7 +1156,7 @@ abstract class BasePUserPeer
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doUpdate($values, PropelPDO $con = null)
     {
@@ -1222,9 +1227,9 @@ abstract class BasePUserPeer
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                if supported by native driver or if emulated using Propel.
+     *				if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, PropelPDO $con = null)
      {
@@ -1344,7 +1349,7 @@ abstract class BasePUserPeer
      * @param      PropelPDO $con the connection to use
      * @return PUser[]
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {

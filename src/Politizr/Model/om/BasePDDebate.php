@@ -222,31 +222,31 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowDdPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowDdPDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDReactionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDDTaggedTsScheduledForDeletion = null;
 
@@ -278,7 +278,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -318,7 +318,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -479,7 +479,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -2440,7 +2440,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
+     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to add.
      */
     protected function doAddPuFollowDdPDDebate($puFollowDdPDDebate)
     {
@@ -2449,7 +2449,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to remove.
+     * @param	PuFollowDdPDDebate $puFollowDdPDDebate The puFollowDdPDDebate object to remove.
      * @return PDDebate The current object (for fluent API support)
      */
     public function removePuFollowDdPDDebate($puFollowDdPDDebate)
@@ -2690,7 +2690,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PDReaction $pDReaction The pDReaction object to add.
+     * @param	PDReaction $pDReaction The pDReaction object to add.
      */
     protected function doAddPDReaction($pDReaction)
     {
@@ -2699,7 +2699,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PDReaction $pDReaction The pDReaction object to remove.
+     * @param	PDReaction $pDReaction The pDReaction object to remove.
      * @return PDDebate The current object (for fluent API support)
      */
     public function removePDReaction($pDReaction)
@@ -2965,7 +2965,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PDDTaggedT $pDDTaggedT The pDDTaggedT object to add.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to add.
      */
     protected function doAddPDDTaggedT($pDDTaggedT)
     {
@@ -2974,7 +2974,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PDDTaggedT $pDDTaggedT The pDDTaggedT object to remove.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to remove.
      * @return PDDebate The current object (for fluent API support)
      */
     public function removePDDTaggedT($pDDTaggedT)
@@ -3168,7 +3168,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
+     * @param	PuFollowDdPUser $puFollowDdPUser The puFollowDdPUser object to add.
      */
     protected function doAddPuFollowDdPUser(PUser $puFollowDdPUser)
     {
@@ -3355,7 +3355,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * @param    PTag $pTag The pTag object to add.
+     * @param	PTag $pTag The pTag object to add.
      */
     protected function doAddPTag(PTag $pTag)
     {

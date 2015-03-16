@@ -209,6 +209,23 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $slug;
     }
 
+    /**
+     * Utilisateur en ligne si dernière activité enregistré il y a moins de 10 minutes.
+     *
+     * @return boolean
+     */
+    public function isActiveNow()
+    {
+        $delay = new \DateTime();
+        $delay->modify('-10 minute');
+
+        if ($this->getLastActivity() >= $delay) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     // ************************************************************************************ //
     //                                        METHODES ADMIN GENERATOR

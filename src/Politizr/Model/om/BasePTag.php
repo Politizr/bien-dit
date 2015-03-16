@@ -172,37 +172,37 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puTaggedTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDDebatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puTaggedTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $puFollowTPTagsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pDDTaggedTsScheduledForDeletion = null;
 
@@ -271,7 +271,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -311,7 +311,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1913,7 +1913,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
+     * @param	PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to add.
      */
     protected function doAddPuTaggedTPTag($puTaggedTPTag)
     {
@@ -1922,7 +1922,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to remove.
+     * @param	PuTaggedTPTag $puTaggedTPTag The puTaggedTPTag object to remove.
      * @return PTag The current object (for fluent API support)
      */
     public function removePuTaggedTPTag($puTaggedTPTag)
@@ -2163,7 +2163,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
+     * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
      */
     protected function doAddPuFollowTPTag($puFollowTPTag)
     {
@@ -2172,7 +2172,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPTag $puFollowTPTag The puFollowTPTag object to remove.
+     * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to remove.
      * @return PTag The current object (for fluent API support)
      */
     public function removePuFollowTPTag($puFollowTPTag)
@@ -2413,7 +2413,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDDTaggedT $pDDTaggedT The pDDTaggedT object to add.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to add.
      */
     protected function doAddPDDTaggedT($pDDTaggedT)
     {
@@ -2422,7 +2422,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDDTaggedT $pDDTaggedT The pDDTaggedT object to remove.
+     * @param	PDDTaggedT $pDDTaggedT The pDDTaggedT object to remove.
      * @return PTag The current object (for fluent API support)
      */
     public function removePDDTaggedT($pDDTaggedT)
@@ -2616,7 +2616,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
+     * @param	PuTaggedTPUser $puTaggedTPUser The puTaggedTPUser object to add.
      */
     protected function doAddPuTaggedTPUser(PUser $puTaggedTPUser)
     {
@@ -2803,7 +2803,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
+     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
      */
     protected function doAddPuFollowTPUser(PUser $puFollowTPUser)
     {
@@ -2990,7 +2990,7 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PDDebate $pDDebate The pDDebate object to add.
+     * @param	PDDebate $pDDebate The pDDebate object to add.
      */
     protected function doAddPDDebate(PDDebate $pDDebate)
     {

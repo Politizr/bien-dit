@@ -84,7 +84,6 @@ Politizr\Model\PUser:
         credentials_expired:    '0'
         roles:                  [ROLE_ELECTED, ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]
 
-
     # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
     depute1:
         p_u_status_id:          activ
@@ -592,5 +591,90 @@ Politizr\Model\PUser:
         qualified:              1
         validated:              1
         online:                 1
+
+
+# Abonnements aux notifications
+Politizr\Model\PUSubscribeEmail:
+    u1s1:
+        p_notification_id:  d_comment_publish
+        p_user_id:          fhollande
+
+    u1s2:
+        p_notification_id:  d_note_pos
+        p_user_id:          fhollande
+
+    u1s3:
+        p_notification_id:  d_note_neg
+        p_user_id:          fhollande
+
+    u1s4:
+        p_notification_id:  d_d_reaction_publish
+        p_user_id:          fhollande
+
+    u1s5:
+        p_notification_id:  d_d_followed
+        p_user_id:          fhollande
+
+    u1s6:
+        p_notification_id:  d_r_reaction_publish
+        p_user_id:          fhollande
+
+    u1s7:
+        p_notification_id:  d_c_note_pos
+        p_user_id:          fhollande
+
+    u1s8:
+        p_notification_id:  d_c_note_neg
+        p_user_id:          fhollande
+
+    u1s9:
+        p_notification_id:  u_followed
+        p_user_id:          fhollande
+
+    u1s10:
+        p_notification_id:  u_badge
+        p_user_id:          fhollande
+
+    u2s1:
+        p_notification_id:  d_comment_publish
+        p_user_id:          sarko
+
+    u2s2:
+        p_notification_id:  d_note_pos
+        p_user_id:          sarko
+
+    u2s3:
+        p_notification_id:  d_note_neg
+        p_user_id:          sarko
+
+    u2s4:
+        p_notification_id:  d_d_reaction_publish
+        p_user_id:          sarko
+
+    u2s5:
+        p_notification_id:  d_d_followed
+        p_user_id:          sarko
+
+    u2s6:
+        p_notification_id:  d_r_reaction_publish
+        p_user_id:          sarko
+
+    u2s7:
+        p_notification_id:  d_c_note_pos
+        p_user_id:          sarko
+
+    u2s8:
+        p_notification_id:  d_c_note_neg
+        p_user_id:          sarko
+
+    u2s9:
+        p_notification_id:  u_followed
+        p_user_id:          sarko
+
+    u2s10:
+        p_notification_id:  u_badge
+        p_user_id:          sarko
+
+
 
 

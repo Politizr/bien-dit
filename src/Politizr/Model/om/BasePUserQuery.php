@@ -66,6 +66,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByCredentialsExpired($order = Criteria::ASC) Order by the credentials_expired column
  * @method PUserQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
+ * @method PUserQuery orderByLastActivity($order = Criteria::ASC) Order by the last_activity column
  * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
@@ -111,6 +112,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByCredentialsExpired() Group by the credentials_expired column
  * @method PUserQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserQuery groupByRoles() Group by the roles column
+ * @method PUserQuery groupByLastActivity() Group by the last_activity column
  * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByBackFileName() Group by the back_file_name column
@@ -246,6 +248,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByCredentialsExpired(boolean $credentials_expired) Return the first PUser filtered by the credentials_expired column
  * @method PUser findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUser filtered by the credentials_expire_at column
  * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
+ * @method PUser findOneByLastActivity(string $last_activity) Return the first PUser filtered by the last_activity column
  * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
@@ -291,6 +294,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByCredentialsExpired(boolean $credentials_expired) Return PUser objects filtered by the credentials_expired column
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUser objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
+ * @method array findByLastActivity(string $last_activity) Return PUser objects filtered by the last_activity column
  * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
@@ -426,7 +430,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1236,6 +1240,49 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ROLES, $roles, $comparison);
+    }
+
+    /**
+     * Filter the query on the last_activity column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastActivity('2011-03-14'); // WHERE last_activity = '2011-03-14'
+     * $query->filterByLastActivity('now'); // WHERE last_activity = '2011-03-14'
+     * $query->filterByLastActivity(array('max' => 'yesterday')); // WHERE last_activity < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastActivity The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByLastActivity($lastActivity = null, $comparison = null)
+    {
+        if (is_array($lastActivity)) {
+            $useMinMax = false;
+            if (isset($lastActivity['min'])) {
+                $this->addUsingAlias(PUserPeer::LAST_ACTIVITY, $lastActivity['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastActivity['max'])) {
+                $this->addUsingAlias(PUserPeer::LAST_ACTIVITY, $lastActivity['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::LAST_ACTIVITY, $lastActivity, $comparison);
     }
 
     /**
@@ -4025,8 +4072,8 @@ abstract class BasePUserQuery extends ModelCriteria
      * is updated and not duplicated.
      * Warning: This termination methods issues 2n+1 queries.
      *
-     * @param      PropelPDO $con    Connection to use.
-     * @param      Boolean $useLittleMemory    Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
      *               Set to false if the identity map matters.
      *               Set to true (default) to use less memory.
      *
@@ -4074,7 +4121,7 @@ abstract class BasePUserQuery extends ModelCriteria
     /**
      * Delete records matching the current query without archiving them.
      *
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return integer the number of deleted rows
      */
@@ -4088,7 +4135,7 @@ abstract class BasePUserQuery extends ModelCriteria
     /**
      * Delete all records without archiving them.
      *
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return integer the number of deleted rows
      */

@@ -141,37 +141,37 @@ abstract class BasePNotification extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUNotificationsPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeEmailPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeScreenPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUNotificationsPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeEmailPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUSubscribeScreenPNotificationsScheduledForDeletion = null;
 
@@ -229,7 +229,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -269,7 +269,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1602,7 +1602,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
+     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
      */
     protected function doAddPUNotificationsPNotification($pUNotificationsPNotification)
     {
@@ -1611,7 +1611,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to remove.
+     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to remove.
      * @return PNotification The current object (for fluent API support)
      */
     public function removePUNotificationsPNotification($pUNotificationsPNotification)
@@ -1852,7 +1852,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
+     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to add.
      */
     protected function doAddPUSubscribeEmailPNotification($pUSubscribeEmailPNotification)
     {
@@ -1861,7 +1861,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to remove.
+     * @param	PUSubscribeEmailPNotification $pUSubscribeEmailPNotification The pUSubscribeEmailPNotification object to remove.
      * @return PNotification The current object (for fluent API support)
      */
     public function removePUSubscribeEmailPNotification($pUSubscribeEmailPNotification)
@@ -2102,7 +2102,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
+     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to add.
      */
     protected function doAddPUSubscribeScreenPNotification($pUSubscribeScreenPNotification)
     {
@@ -2111,7 +2111,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to remove.
+     * @param	PUSubscribeScreenPNotification $pUSubscribeScreenPNotification The pUSubscribeScreenPNotification object to remove.
      * @return PNotification The current object (for fluent API support)
      */
     public function removePUSubscribeScreenPNotification($pUSubscribeScreenPNotification)
@@ -2305,7 +2305,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
+     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
      */
     protected function doAddPUNotificationsPUser(PUser $pUNotificationsPUser)
     {
@@ -2492,7 +2492,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
+     * @param	PUSubscribeEmailPUser $pUSubscribeEmailPUser The pUSubscribeEmailPUser object to add.
      */
     protected function doAddPUSubscribeEmailPUser(PUser $pUSubscribeEmailPUser)
     {
@@ -2679,7 +2679,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
+     * @param	PUSubscribeScreenPUser $pUSubscribeScreenPUser The pUSubscribeScreenPUser object to add.
      */
     protected function doAddPUSubscribeScreenPUser(PUser $pUSubscribeScreenPUser)
     {

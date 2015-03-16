@@ -388,6 +388,8 @@
         <column name="credentials_expired" type="boolean" defaultValue="false" />
         <column name="credentials_expire_at" type="timestamp" />
         <column name="roles" type="array" />
+
+        <column name="last_activity" type="timestamp" />
         
         <column name="p_u_status_id" type="integer" required="true" />
 

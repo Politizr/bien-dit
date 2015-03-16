@@ -187,31 +187,31 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUAffinityQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUCurrentQOPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUMandatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUAffinityQOPQOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pUCurrentQOPQOrganizationsScheduledForDeletion = null;
 
@@ -291,7 +291,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -331,7 +331,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1979,7 +1979,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUMandate $pUMandate The pUMandate object to add.
+     * @param	PUMandate $pUMandate The pUMandate object to add.
      */
     protected function doAddPUMandate($pUMandate)
     {
@@ -1988,7 +1988,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUMandate $pUMandate The pUMandate object to remove.
+     * @param	PUMandate $pUMandate The pUMandate object to remove.
      * @return PQOrganization The current object (for fluent API support)
      */
     public function removePUMandate($pUMandate)
@@ -2279,7 +2279,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
+     * @param	PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to add.
      */
     protected function doAddPUAffinityQOPQOrganization($pUAffinityQOPQOrganization)
     {
@@ -2288,7 +2288,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to remove.
+     * @param	PUAffinityQOPQOrganization $pUAffinityQOPQOrganization The pUAffinityQOPQOrganization object to remove.
      * @return PQOrganization The current object (for fluent API support)
      */
     public function removePUAffinityQOPQOrganization($pUAffinityQOPQOrganization)
@@ -2529,7 +2529,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
+     * @param	PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to add.
      */
     protected function doAddPUCurrentQOPQOrganization($pUCurrentQOPQOrganization)
     {
@@ -2538,7 +2538,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to remove.
+     * @param	PUCurrentQOPQOrganization $pUCurrentQOPQOrganization The pUCurrentQOPQOrganization object to remove.
      * @return PQOrganization The current object (for fluent API support)
      */
     public function removePUCurrentQOPQOrganization($pUCurrentQOPQOrganization)
@@ -2732,7 +2732,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
+     * @param	PUAffinityQOPUser $pUAffinityQOPUser The pUAffinityQOPUser object to add.
      */
     protected function doAddPUAffinityQOPUser(PUser $pUAffinityQOPUser)
     {
@@ -2919,7 +2919,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * @param    PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
+     * @param	PUCurrentQOPUser $pUCurrentQOPUser The pUCurrentQOPUser object to add.
      */
     protected function doAddPUCurrentQOPUser(PUser $pUCurrentQOPUser)
     {

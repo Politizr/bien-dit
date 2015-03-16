@@ -1669,7 +1669,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Returns the objects in a certain tree, from the tree scope
      *
-     * @param     int $scope        Scope to determine which objects node to return
+     * @param     int $scope		Scope to determine which objects node to return
      *
      * @return    PDReactionQuery The current query, for fluid interface
      */
@@ -1814,8 +1814,8 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Returns a root node for the tree
      *
-     * @param      int $scope        Scope to determine which root node to return
-     * @param      PropelPDO $con    Connection to use.
+     * @param      int $scope		Scope to determine which root node to return
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     PDReaction The tree root object
      */
@@ -1830,7 +1830,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Returns the root objects for all trees.
      *
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return    mixed the list of results, formatted by the current formatter
      */
@@ -1844,8 +1844,8 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Returns a tree of objects
      *
-     * @param      int $scope        Scope to determine which tree node to return
-     * @param      PropelPDO $con    Connection to use.
+     * @param      int $scope		Scope to determine which tree node to return
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return     mixed the list of results, formatted by the current formatter
      */
@@ -1875,8 +1875,8 @@ abstract class BasePDReactionQuery extends PDocumentQuery
      * is updated and not duplicated.
      * Warning: This termination methods issues 2n+1 queries.
      *
-     * @param      PropelPDO $con    Connection to use.
-     * @param      Boolean $useLittleMemory    Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
      *               Set to false if the identity map matters.
      *               Set to true (default) to use less memory.
      *
@@ -1924,7 +1924,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Delete records matching the current query without archiving them.
      *
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return integer the number of deleted rows
      */
@@ -1938,7 +1938,7 @@ abstract class BasePDReactionQuery extends PDocumentQuery
     /**
      * Delete all records without archiving them.
      *
-     * @param      PropelPDO $con    Connection to use.
+     * @param      PropelPDO $con	Connection to use.
      *
      * @return integer the number of deleted rows
      */

@@ -110,13 +110,13 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pOrdersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var        PropelObjectCollection
+     * @var		PropelObjectCollection
      */
     protected $pOEmailsScheduledForDeletion = null;
 
@@ -163,7 +163,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -203,7 +203,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -1361,7 +1361,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POrder $pOrder The pOrder object to add.
+     * @param	POrder $pOrder The pOrder object to add.
      */
     protected function doAddPOrder($pOrder)
     {
@@ -1370,7 +1370,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POrder $pOrder The pOrder object to remove.
+     * @param	POrder $pOrder The pOrder object to remove.
      * @return POOrderState The current object (for fluent API support)
      */
     public function removePOrder($pOrder)
@@ -1686,7 +1686,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POEmail $pOEmail The pOEmail object to add.
+     * @param	POEmail $pOEmail The pOEmail object to add.
      */
     protected function doAddPOEmail($pOEmail)
     {
@@ -1695,7 +1695,7 @@ abstract class BasePOOrderState extends BaseObject implements Persistent
     }
 
     /**
-     * @param    POEmail $pOEmail The pOEmail object to remove.
+     * @param	POEmail $pOEmail The pOEmail object to remove.
      * @return POOrderState The current object (for fluent API support)
      */
     public function removePOEmail($pOEmail)
