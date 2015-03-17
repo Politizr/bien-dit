@@ -24,7 +24,7 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
@@ -274,7 +274,7 @@ class ProfileCController extends Controller
 
         // ids des badges du user
         $badgeIds = array();
-        $badgeIds = PUBadgesQuery::create()
+        $badgeIds = PUBadgeQuery::create()
                         ->filterByPUserId($user->getId())
                         ->find()
                         ->toKeyValue('PRBadgeId', 'PRBadgeId');

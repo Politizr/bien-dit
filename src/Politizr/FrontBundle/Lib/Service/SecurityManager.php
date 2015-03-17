@@ -34,9 +34,8 @@ use Politizr\FrontBundle\Form\Type\PUserElectedRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserElectedMigrationType;
 use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
 
-
 /**
- * Services métiers associés aux process d'inscription et de connexion. 
+ * Services métiers associés aux process d'inscription et de connexion.
  *
  * @author Lionel Bouzonville
  */
@@ -47,7 +46,8 @@ class SecurityManager
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -60,7 +60,8 @@ class SecurityManager
      *
      * @param $user    PUser object
      */
-    private function doPublicConnection($user) {
+    private function doPublicConnection($user)
+    {
         $providerKey = 'public';
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
@@ -71,10 +72,12 @@ class SecurityManager
     /**
      *  Renvoie la liste des URLs de connexion oAuth disponibles
      */
-    private function getOauthUrls() {
+    private function getOauthUrls()
+    {
         $ret = array();
-        foreach($this->sc->get('hwi_oauth.security.oauth_utils')->getResourceOwners() as $name)
+        foreach ($this->sc->get('hwi_oauth.security.oauth_utils')->getResourceOwners() as $name) {
             $ret[$name] = $this->sc->get('router')->generate('hwi_oauth_service_redirect', array('service'=>$name));
+        }
         return $ret;
     }
 
@@ -84,13 +87,14 @@ class SecurityManager
      * @param $user    PUser object
      * @return string   Redirect URL
      */
-    private function computeRedirectUrl($user) {
+    private function computeRedirectUrl($user)
+    {
         $redirectUrl = null;
         if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
             $user->setLastLogin(new \DateTime());
             $user->save();
 
-            if($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
+            if ($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
                 $redirectUrl = $this->sc->get('router')->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
                 $redirectUrl = $this->sc->get('router')->generate('HomepageC');
@@ -120,7 +124,8 @@ class SecurityManager
      *
      *  @param  PUser $user
      */
-    public function inscriptionStart(PUser $user) {
+    public function inscriptionStart(PUser $user)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionStart');
         
@@ -151,7 +156,8 @@ class SecurityManager
      *
      *  @param PUser $user
      */
-    public function inscriptionFinish(PUser $user) {
+    public function inscriptionFinish(PUser $user)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionFinish');
         
@@ -179,7 +185,8 @@ class SecurityManager
      *
      *  @param  PUser $user
      */
-    public function inscriptionElectedStart(PUser $user) {
+    public function inscriptionElectedStart(PUser $user)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionElectedStart');
         
@@ -215,7 +222,8 @@ class SecurityManager
      *
      *  @param  PUser $user
      */
-    public function migrationElectedStart(PUser $user) {
+    public function migrationElectedStart(PUser $user)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** migrationElectedStart');
 
@@ -232,7 +240,8 @@ class SecurityManager
      *  Page d'inscription débatteur / Etape 3 / Paiement terminé
      *
      */
-    public function updateOrderPaymentFinished() {
+    public function updateOrderPaymentFinished()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** updateOrderPaymentFinished');
         
@@ -274,7 +283,8 @@ class SecurityManager
      *  Page d'inscription débatteur / Etape 3 / Annulation paiement
      *
      */
-    public function updateOrderPaymentCanceled() {
+    public function updateOrderPaymentCanceled()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** updateOrderPaymentCanceled');
         
@@ -297,7 +307,8 @@ class SecurityManager
      *  Finalisation du process d'inscription débatteur
      *
      */
-    public function inscriptionFinishElected(PUser $user) {
+    public function inscriptionFinishElected(PUser $user)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionFinishElected');
         
@@ -336,7 +347,8 @@ class SecurityManager
      *  Check l'état d'un utilisateur suite à une connexion oAuth
      *
      */
-    public function oauthRegister() {
+    public function oauthRegister()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** oauthRegister');
         
@@ -387,7 +399,7 @@ class SecurityManager
                 // username = email
                 $user->setUsername($user->getEmail());
                 $user->setUsernameCanonical($user->getEmailCanonical());
-            } elseif($nickname = $user->getNickname()) {
+            } elseif ($nickname = $user->getNickname()) {
                 // username = nickname
                 $user->setUsername($user->getNickname());
                 $user->setUsernameCanonical($user->getNickname());
@@ -416,7 +428,8 @@ class SecurityManager
      *  Validation de la connexion
      *
      */
-    public function loginCheck() {
+    public function loginCheck()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** loginCheck');
         
@@ -460,7 +473,7 @@ class SecurityManager
                     // Connexion
                     $redirectUrl = $this->doPublicConnection($user);
 
-                    // Check rôles / activ > redirection 
+                    // Check rôles / activ > redirection
                     $redirectUrl = $this->computeRedirectUrl($user);
 
                     // Construction de la réponse
@@ -486,7 +499,8 @@ class SecurityManager
      *  Validation de la connexion
      *
      */
-    public function lostPasswordCheck() {
+    public function lostPasswordCheck()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** lostPasswordCheck');
         
@@ -559,7 +573,8 @@ class SecurityManager
      *      TODO / + de contrôles exceptions
      *
      */
-    public function paymentProcess() {
+    public function paymentProcess()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** paymentProcess');
         
@@ -578,12 +593,12 @@ class SecurityManager
 
         // Création de la commande & mise en session de son ID
         $order = POrderQuery::create()->createOrder(
-                                $user, 
-                                $subscription, 
-                                $paymentTypeId, 
-                                $this->sc->get('session')->get('p_o_supporting_document'), 
-                                $this->sc->get('session')->get('p_o_elective_mandates')
-                                );
+            $user,
+            $subscription,
+            $paymentTypeId,
+            $this->sc->get('session')->get('p_o_supporting_document'),
+            $this->sc->get('session')->get('p_o_elective_mandates')
+        );
         $this->sc->get('session')->set('p_order_id', $order->getId());
 
         // Construction de la structure
@@ -635,7 +650,4 @@ class SecurityManager
             'redirect' => $redirect,
             );
     }
-
-
-
 }

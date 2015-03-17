@@ -347,7 +347,7 @@ bazinga_faker:
         #################################################################################################################
         #                                   REPUTATION
         #################################################################################################################
-        Politizr\Model\PUBadges:
+        Politizr\Model\PUBadge:
             number:                     50
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }

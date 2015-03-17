@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PNotification;
-use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotification;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
@@ -43,20 +43,20 @@ class NotificationEmailListener
     {
         $this->logger->info('*** onNECheck');
 
-        $puNotifications = $event->getSubject();
+        $puNotification = $event->getSubject();
 
         // Récupération du user destinataire de l'email
-        $user = $this->getDestPUser($puNotifications);
+        $user = $this->getDestPUser($puNotification);
 
         // Contrôle user courant en ligne
         $isOnline = $this->isOnline($user);
 
         // Contrôle user courant abonné à cette notification
-        $isSubscriber = $this->isSubscriber($puNotifications, $user);
+        $isSubscriber = $this->isSubscriber($puNotification, $user);
 
         // Envoi de l'email
         if (!$isOnline && $isSubscriber) {
-            $event = new GenericEvent($puNotifications, array('user_email' => $user->getEmail(),));
+            $event = new GenericEvent($puNotification, array('user_email' => $user->getEmail(),));
             $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
         }
     }
@@ -69,16 +69,16 @@ class NotificationEmailListener
     /**
      * Renvoit le PUser destinataire de l'email de notification.
      *
-     * @param  PUNotifications  $puNotifications
+     * @param  PUNotification  $puNotification
      *
      * @return PUser
      */
-    private function getDestPUser($puNotifications)
+    private function getDestPUser($puNotification)
     {
         // Récupération du user destinataire de l'email
-        $user = PUserQuery::create()->findPk($puNotifications->getPUserId());
+        $user = PUserQuery::create()->findPk($puNotification->getPUserId());
         if (null === $user) {
-            throw new InconsistentDataException('L\'utilisateur associé à la notification '.$puNotifications->getId().'n\'existe pas.');
+            throw new InconsistentDataException('L\'utilisateur associé à la notification '.$puNotification->getId().'n\'existe pas.');
         }
 
         return $user;
@@ -97,15 +97,15 @@ class NotificationEmailListener
     /**
      * Renvoit si l'utilisateur courant est abonné à cette notification.
      *
-     * @param  PUNotifications      $puNotifications
+     * @param  PUNotification      $puNotifications
      * @param  PUser                $user
      *
      * @return boolean
      */
-    private function isSubscriber($puNotifications, $user)
+    private function isSubscriber($puNotification, $user)
     {
         $isSubscriber = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($puNotifications->getPNotificationId())
+            ->filterByPNotificationId($puNotification->getPNotificationId())
             ->filterByPUserId($user->getId())
             ->findOne();
 

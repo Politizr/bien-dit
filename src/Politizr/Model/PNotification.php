@@ -34,4 +34,11 @@ class PNotification extends BasePNotification
     const ID_U_FOLLOWED = 9;
     const ID_U_BADGE = 10;
 
+
+    // ************ SUBSCRIBE ******* //
+    const ID_S_U_DEBATE_PUBLISH = 11;
+    const ID_S_U_REACTION_PUBLISH = 12;
+    const ID_S_U_COMMENT_PUBLISH = 13;
+
+    const ID_S_D_REACTION_PUBLISH = 14;
 }

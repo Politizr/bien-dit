@@ -14,7 +14,7 @@ use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
-use Politizr\Model\PUNotificationsPeer;
+use Politizr\Model\PUNotificationPeer;
 use Politizr\Model\PUSubscribeEmailPeer;
 use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\map\PNotificationTableMap;
@@ -391,9 +391,9 @@ abstract class BasePNotificationPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUNotificationsPeer instance pool,
+        // Invalidate objects in PUNotificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUNotificationsPeer::clearInstancePool();
+        PUNotificationPeer::clearInstancePool();
         // Invalidate objects in PUSubscribeEmailPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUSubscribeEmailPeer::clearInstancePool();

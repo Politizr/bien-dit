@@ -9,6 +9,11 @@ use Politizr\Model\om\BasePDDebate;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
+/**
+ * Débat
+ *
+ * @author Lionel Bouzonville
+ */
 class PDDebate extends BasePDDebate implements ContainerAwareInterface, HighlightableModelInterface
 {
     // ************************************************************************************ //
@@ -20,7 +25,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
       /**
        *
        */
-    public function getClassName() {
+    public function getClassName()
+    {
         return PDocument::TYPE_DEBATE;
     }
 
@@ -31,14 +37,18 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
        /**
         *
         */
-    public function setContainer(ContainerInterface $container = null) {
-        if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
+    public function setContainer(ContainerInterface $container = null)
+    {
+        if ($container) {
+            $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_debate');
+        }
     }
 
     /**
      *
       */
-    public function getHighlights() {
+    public function getHighlights()
+    {
         return $this->highlights;
     }
 
@@ -47,7 +57,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @param array $highlights array of highlight strings
      */
-    public function setElasticHighlights(array $highlights) {
+    public function setElasticHighlights(array $highlights)
+    {
         $this->highlights = $highlights;
     }
 
@@ -56,7 +67,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postInsert(\PropelPDO $con = null) {
+    public function postInsert(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -70,7 +82,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postUpdate(\PropelPDO $con = null) {
+    public function postUpdate(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -84,7 +97,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postDelete(\PropelPDO $con = null) {
+    public function postDelete(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             $this->elasticaPersister->deleteOne($this);
         } else {
@@ -100,7 +114,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      *    @return string
      */
-    public function getArrayTags($tagTypeId = null, $online = true) {
+    public function getArrayTags($tagTypeId = null, $online = true)
+    {
         $query = PTagQuery::create()
                     ->select('Title')
                     ->filterByOnline(true)
@@ -116,7 +131,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      *  @return boolean
      */
-    public function isIndexable() {
+    public function isIndexable()
+    {
         return $this->getOnline() && $this->getPublished();
     }
 
@@ -191,7 +207,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
     // Colonnes virtuelles / fichiers
     public $uploadedFileName;
-    public function setUploadedFileName($uploadedFileName) {
+    public function setUploadedFileName($uploadedFileName)
+    {
         $this->uploadedFileName = $uploadedFileName;
     }
 
@@ -204,7 +221,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
     
     /**
-     * 
+     *
      */
     public function getUploadedFileName()
     {
@@ -240,7 +257,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
         // file_name
         return $fileName;
-    }    
+    }
 
     /**
      *    Surcharge pour gérer la suppression physique.
@@ -275,7 +292,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return PropelCollection d'objets PTag
      */
-    public function getTags($tagTypeId = null, $online = true) {
+    public function getTags($tagTypeId = null, $online = true)
+    {
         $query = PTagQuery::create()
                     ->_if($tagTypeId)
                         ->filterByPTTagTypeId($tagTypeId)
@@ -295,7 +313,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     PDDebate     Objet débat
      */
-    public function getDocument() {
+    public function getDocument()
+    {
         return parent::getPDocument();
     }
 
@@ -304,7 +323,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function getTreeReactions($online = false, $published = false) {
+    public function getTreeReactions($online = false, $published = false)
+    {
         $treeReactions = PDReactionQuery::create()
                     ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
                     ->_if($online)
@@ -324,7 +344,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *    Renvoit le nombre de réactions associées au débat
      *
      */
-    public function countReactions($online = false, $published = false) {
+    public function countReactions($online = false, $published = false)
+    {
         $query = PDReactionQuery::create()
                     ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
                     ->_if($online)
@@ -343,7 +364,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      *     @return     PDReaction
      */
-    public function getLastReaction($treeLevel = false, $online = false, $published = false) {
+    public function getLastReaction($treeLevel = false, $online = false, $published = false)
+    {
         return PDReactionQuery::create()
                     ->_if($treeLevel)
                         ->filterByTreeLevel($treeLevel)
@@ -364,20 +386,38 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
 
     /**
-     *    Renvoit le nombre de followers du débat.
+     * Renvoit les followers du débat.
      *
-     * @param     $puStatusId     integer     Filtrage par rapport au status
-     * @param     $qualified         boolean     Filtrage par rapport à la qualification
+     * @param     $qualified        boolean     Filtrage par rapport à la qualification
+     * @param     $notifReaction    boolean     Filtrage par rapport à la souscription à la notif des réactions
      *
-     * @return     integer     Nombre de followers
+     * @return    PropelCollection  Liste des followers
      */
-    public function getFollowers($qualified = false) {
+    public function getFollowers($qualified = null, $notifReaction = null)
+    {
         $query = PUserQuery::create()
-                    ->filterByQualified($qualified)
+                    ->_if(null !== $qualified)
+                        ->filterByQualified($qualified)
+                    ->_endif()
+                    ->_if($notifReaction)
+                        ->usePuFollowDdPUserQuery()
+                            ->filterByNotifReaction(true)
+                        ->endUse()
+                    ->_endif()
                     ->filterByOnline(true)
                     ->setDistinct();
         
         return parent::getPuFollowDdPUsers($query);
+    }
+
+    /**
+     * Renvoit les followers filtrés par souscription à la notif des réactions.
+     *
+     * @return    PropelCollection  Liste des followers
+     */
+    public function getNotifReactionFollowers()
+    {
+        return $this->getFollowers(null, true);
     }
 
     /**
@@ -388,7 +428,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     integer     Nombre de followers
      */
-    public function countFollowers($qualified = false) {
+    public function countFollowers($qualified = false)
+    {
         $query = PUserQuery::create()
                     ->filterByQualified($qualified)
                     ->filterByOnline(true)
@@ -402,7 +443,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getFollowersQ() {
+    public function getFollowersQ()
+    {
         $pUsers = $this->getFollowers(true);
 
         return $pUsers;
@@ -413,7 +455,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     integer
      */
-    public function countFollowersQ() {
+    public function countFollowersQ()
+    {
         return $this->countFollowers(true);
     }
 
@@ -422,7 +465,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getFollowersC() {
+    public function getFollowersC()
+    {
         $pUsers = $this->getFollowers(false);
 
         return $pUsers;
@@ -433,7 +477,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      *
      * @return     integer
      */
-    public function countFollowersC() {
+    public function countFollowersC()
+    {
         return $this->countFollowers(false);
     }
 
@@ -443,7 +488,8 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     /**
      *
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->getPUser();
     }
 }

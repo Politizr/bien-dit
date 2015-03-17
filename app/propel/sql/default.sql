@@ -595,6 +595,9 @@ DROP TABLE IF EXISTS `p_u_follow_u`;
 
 CREATE TABLE `p_u_follow_u`
 (
+    `notif_debate` TINYINT(1) DEFAULT 1,
+    `notif_reaction` TINYINT(1) DEFAULT 1,
+    `notif_comment` TINYINT(1) DEFAULT 1,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `p_user_id` INTEGER NOT NULL,
@@ -622,6 +625,7 @@ CREATE TABLE `p_u_follow_d_d`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
     `p_d_debate_id` INTEGER NOT NULL,
+    `notif_reaction` TINYINT(1) DEFAULT 1,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -640,12 +644,12 @@ CREATE TABLE `p_u_follow_d_d`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_badges
+-- p_u_badge
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_badges`;
+DROP TABLE IF EXISTS `p_u_badge`;
 
-CREATE TABLE `p_u_badges`
+CREATE TABLE `p_u_badge`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
@@ -653,14 +657,14 @@ CREATE TABLE `p_u_badges`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_badges_FI_1` (`p_user_id`),
-    INDEX `p_u_badges_FI_2` (`p_r_badge_id`),
-    CONSTRAINT `p_u_badges_FK_1`
+    INDEX `p_u_badge_FI_1` (`p_user_id`),
+    INDEX `p_u_badge_FI_2` (`p_r_badge_id`),
+    CONSTRAINT `p_u_badge_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_badges_FK_2`
+    CONSTRAINT `p_u_badge_FK_2`
         FOREIGN KEY (`p_r_badge_id`)
         REFERENCES `p_r_badge` (`id`)
         ON UPDATE CASCADE
@@ -883,12 +887,12 @@ CREATE TABLE `p_u_current_q_o`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_u_notifications
+-- p_u_notification
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_u_notifications`;
+DROP TABLE IF EXISTS `p_u_notification`;
 
-CREATE TABLE `p_u_notifications`
+CREATE TABLE `p_u_notification`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER NOT NULL,
@@ -901,14 +905,14 @@ CREATE TABLE `p_u_notifications`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_u_notifications_FI_1` (`p_user_id`),
-    INDEX `p_u_notifications_FI_2` (`p_notification_id`),
-    CONSTRAINT `p_u_notifications_FK_1`
+    INDEX `p_u_notification_FI_1` (`p_user_id`),
+    INDEX `p_u_notification_FI_2` (`p_notification_id`),
+    CONSTRAINT `p_u_notification_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_u_notifications_FK_2`
+    CONSTRAINT `p_u_notification_FK_2`
         FOREIGN KEY (`p_notification_id`)
         REFERENCES `p_notification` (`id`)
         ON UPDATE CASCADE

@@ -471,13 +471,14 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Renvoie les followers
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @param       Criteria                $query
+     * @param       $andWhere               string
+     *
+     * @return      PropelObjectCollection  PUser[]
      */
-    public function getPUserFollowers(Criteria $query = null, PropelPDO $con = null)
+    public function getFollowers(Criteria $query = null, $andWhere = '')
     {
-        if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
+        $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 
         $sql = "
     SELECT DISTINCT p_user.id
@@ -491,7 +492,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         SELECT p_u_follow_u.p_user_follower_id
         FROM p_u_follow_u
         WHERE p_u_follow_u.p_user_id = ?
+        %s
     )";
+        $sql = sprintf($sql, $andWhere);
 
         $stmt = $con->prepare($sql);
         $stmt->bindValue(1, $this->getPrimaryKey(), PDO::PARAM_INT);
@@ -500,11 +503,41 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         $listPKs = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        $pUsers = PUserQuery::create(null, $query)
+        $users = PUserQuery::create(null, $query)
             ->addUsingAlias(PUserPeer::ID, $listPKs, Criteria::IN)
             ->find($con);
 
-        return $pUsers;
+        return $users;
+    }
+
+    /**
+     * Renvoie les followers du user abonné aux notifications "publication d'un débat"
+     *
+     * @return     PropelObjectCollection PUser[] List
+     */
+    public function getNotifDebateFollowers()
+    {
+        return $this->getFollowers(null, 'AND p_u_follow_u.notif_debate = true');
+    }
+
+    /**
+     * Renvoie les followers du user abonné aux notifications "publication d'une réaction"
+     *
+     * @return     PropelObjectCollection PUser[] List
+     */
+    public function getNotifReactionFollowers()
+    {
+        return $this->getFollowers(null, 'AND p_u_follow_u.notif_reaction= true');
+    }
+
+    /**
+     * Renvoie les followers du user abonné aux notifications "publication d'un commentaire"
+     *
+     * @return     PropelObjectCollection PUser[] List
+     */
+    public function getNotifCommentFollowers()
+    {
+        return $this->getFollowers(null, 'AND p_u_follow_u.notif_comment = true');
     }
 
     /**
@@ -512,10 +545,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserFollowersQ()
+    public function getFollowersQ()
     {
         $query = PUserQuery::create()->filterByQualified(true);
-        $pUsers = $this->getPUserFollowers($query);
+        $pUsers = $this->getFollowers($query);
 
         return $pUsers;
     }
@@ -525,9 +558,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     integer
      */
-    public function countPUserFollowersQ()
+    public function countFollowersQ()
     {
-        $pUsers = $this->getPUserFollowersQ();
+        $pUsers = $this->getFollowersQ();
 
         return count($pUsers);
     }
@@ -537,10 +570,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserFollowersC()
+    public function getFollowersC()
     {
         $query = PUserQuery::create()->filterByQualified(false);
-        $pUsers = $this->getPUserFollowers($query);
+        $pUsers = $this->getFollowers($query);
 
         return $pUsers;
     }
@@ -550,9 +583,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     integer
      */
-    public function countPUserFollowersC()
+    public function countFollowersC()
     {
-        $pUsers = $this->getPUserFollowersC();
+        $pUsers = $this->getFollowersC();
 
         return count($pUsers);
     }

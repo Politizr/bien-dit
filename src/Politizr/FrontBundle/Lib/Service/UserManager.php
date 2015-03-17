@@ -20,7 +20,7 @@ use Politizr\Model\PUSubscribeEmail;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowUQuery;
-use Politizr\Model\PUNotificationsQuery;
+use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 
@@ -32,7 +32,7 @@ use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
- * Services métiers associés aux utilisateurs. 
+ * Services métiers associés aux utilisateurs.
  *
  * @author Lionel Bouzonville
  */
@@ -43,7 +43,8 @@ class UserManager
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -56,7 +57,8 @@ class UserManager
      *
      *
      */
-    public function follow() {
+    public function follow()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** follow');
         
@@ -112,17 +114,19 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
-                                'object' => $object,
-                                'type' => PDocument::TYPE_USER
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig',
+            array(
+                'object' => $object,
+                'type' => PDocument::TYPE_USER
+            )
+        );
         $followers = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
-                                'object' => $object,
-                                'type' => PDocument::TYPE_USER
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig',
+            array(
+                'object' => $object,
+                'type' => PDocument::TYPE_USER
+            )
+        );
 
 
 
@@ -143,7 +147,8 @@ class UserManager
      *  Listing de users ordonnancés suivant l'argument récupéré
      *
      */
-    public function userList() {
+    public function userList()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userList');
         
@@ -162,7 +167,7 @@ class UserManager
 
         // -24h tant qu'il n'y a pas de résultats significatifs
         $nb = 0;
-        while($nb < 10) {
+        while ($nb < 10) {
             $nb = PUserQuery::create()->online()->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))->count();
             $logger->info('$nb = ' . print_r($nb, true));
             $nowMin24->modify('-1 day');
@@ -183,10 +188,11 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\User:glSuggestionList.html.twig', array(
-                                'users' => $users
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\User:glSuggestionList.html.twig',
+            array(
+                'users' => $users
+                )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -203,7 +209,8 @@ class UserManager
      *  Mise à jour des informations du profil du user
      *
      */
-    public function userProfileUpdate() {
+    public function userProfileUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userProfileUpdate');
         
@@ -239,7 +246,8 @@ class UserManager
      *  Upload de la photo de profil du user
      *
      */
-    public function userPhotoUpload() {
+    public function userPhotoUpload()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPhotoUpload');
 
@@ -253,8 +261,9 @@ class UserManager
         $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
             'file-name',
             $path,
-            150, 150
-            );
+            150,
+            150
+        );
 
         // Suppression photo déjà uploadée
         $oldFilename = $user->getFilename();
@@ -276,7 +285,8 @@ class UserManager
      *  Suppression de la photo de profil du user
      *
      */
-    public function userPhotoDelete() {
+    public function userPhotoDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPhotoDelete');
         
@@ -306,7 +316,8 @@ class UserManager
      *  Upload de la photo de fond du profil du user
      *
      */
-    public function userBackPhotoUpload() {
+    public function userBackPhotoUpload()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userBackPhotoUpload');
         
@@ -320,8 +331,9 @@ class UserManager
         $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
             'back-file-name',
             $path,
-            1280, 600
-            );
+            1280,
+            600
+        );
 
         // Suppression photo déjà uploadée
         $oldFilename = $user->getBackFilename();
@@ -343,7 +355,8 @@ class UserManager
      *  Suppression de la photo de fond du profil du user
      *
      */
-    public function userBackPhotoDelete() {
+    public function userBackPhotoDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userBackPhotoDelete');
         
@@ -373,7 +386,8 @@ class UserManager
      *  Mise à jour des informations "organisation en cours" du user
      *
      */
-    public function orgaProfileUpdate() {
+    public function orgaProfileUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** orgaProfileUpdate');
         
@@ -418,7 +432,8 @@ class UserManager
      *  Création d'un mandat pour un user
      *
      */
-    public function mandateProfileCreate() {
+    public function mandateProfileCreate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** mandateProfileCreate');
         
@@ -460,11 +475,12 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig', array(
-                                'formMandate' => $form->createView(),
-                                'formMandateViews' => $formMandateViews
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig',
+            array(
+                'formMandate' => $form->createView(),
+                'formMandateViews' => $formMandateViews
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -476,7 +492,8 @@ class UserManager
      *  MAJ d'un mandat pour un user
      *
      */
-    public function mandateProfileUpdate() {
+    public function mandateProfileUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** mandateProfileUpdate');
         
@@ -512,7 +529,8 @@ class UserManager
      *  MAJ d'un mandat pour un user
      *
      */
-    public function mandateProfileDelete() {
+    public function mandateProfileDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** mandateProfileUpdate');
         
@@ -538,7 +556,8 @@ class UserManager
      *
      *  @return     array Form views PUMandateType
      */
-    public function getFormMandateViews($userId) {
+    public function getFormMandateViews($userId)
+    {
         // Mandats
         $mandates = PUMandateQuery::create()
             ->filterByPUserId($userId)
@@ -548,7 +567,7 @@ class UserManager
 
         // Création des form + vues associées pour MAJ des mandats
         $formMandateViews = array();
-        foreach($mandates as $mandate) {
+        foreach ($mandates as $mandate) {
             $formMandate = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
             $formMandateViews[] = $formMandate->createView();
         }
@@ -560,7 +579,8 @@ class UserManager
      *  Mise à jour des informations personnelles du user
      *
      */
-    public function userPersoUpdate() {
+    public function userPersoUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPersoUpdate');
         
@@ -576,9 +596,9 @@ class UserManager
         // Création du formulaire soumis
         if ($formTypeId == 1) {
             $form = $this->sc->get('form.factory')->create(new PUserIdentityType($user), $user);
-        } elseif($formTypeId == 2) {
+        } elseif ($formTypeId == 2) {
             $form = $this->sc->get('form.factory')->create(new PUserEmailType(), $user);
-        } elseif($formTypeId == 3) {
+        } elseif ($formTypeId == 3) {
             $form = $this->sc->get('form.factory')->create(new PUserConnectionType(), $user);
         } else {
             throw new InconsistentDataException('Form invalid.');
@@ -600,12 +620,12 @@ class UserManager
                 $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
                 $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
                 $user->save();
-            } elseif($formTypeId == 2) {
+            } elseif ($formTypeId == 2) {
                 // Canonicalization
                 $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
                 $user->setEmailCanonical($canonicalizeEmail->canonicalize($userPerso->getEmail()));
                 $user->save();
-            } elseif($formTypeId == 3) {
+            } elseif ($formTypeId == 3) {
                 $password = $userPerso->getPassword();
                 $logger->info('password = '.print_r($password, true));
                 if ($password) {
@@ -641,7 +661,8 @@ class UserManager
      *  Notifications
      *
      */
-    public function notificationsLoad() {
+    public function notificationsLoad()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationsLoad');
 
@@ -654,7 +675,7 @@ class UserManager
         $logger->info('lastWeek = '.print_r($lastWeek, true));
 
         // Notifications de moins d'une semaine ou non checkées
-        $notifs = PUNotificationsQuery::create()
+        $notifs = PUNotificationQuery::create()
                             ->filterByPUserId($user->getId())
                             ->filterByCreatedAt(array('min' => $lastWeek))
                             ->_or()
@@ -662,7 +683,7 @@ class UserManager
                             ->orderByCreatedAt('desc')
                             ->find();
 
-        $nbNotifs = PUNotificationsQuery::create()
+        $nbNotifs = PUNotificationQuery::create()
                             ->filterByPUserId($user->getId())
                             ->filterByChecked(false)
                             ->count();
@@ -670,10 +691,11 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\User:glNotificationList.html.twig', array(
-                                'notifs' => $notifs,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\User:glNotificationList.html.twig',
+            array(
+                'notifs' => $notifs,
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -686,7 +708,8 @@ class UserManager
      *  Notification checkée
      *
      */
-    public function notificationCheck() {
+    public function notificationCheck()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationChek');
 
@@ -700,7 +723,7 @@ class UserManager
         $logger->info('$subjectId = ' . print_r($subjectId, true));
 
         // MAJ checked
-        $puNotif = PUNotificationsQuery::create()->findPk($subjectId);
+        $puNotif = PUNotificationQuery::create()->findPk($subjectId);
         $puNotif->setChecked(true);
         $puNotif->setCheckedAt(new \DateTime());
         $puNotif->save();
@@ -712,7 +735,8 @@ class UserManager
      *  Notifications
      *
      */
-    public function notificationsCheckAll() {
+    public function notificationsCheckAll()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationsLoad');
         
@@ -720,7 +744,7 @@ class UserManager
         $user = $this->sc->get('security.context')->getToken()->getUser();
 
         // Check / Uncheck all
-        $notifs = PUNotificationsQuery::create()
+        $notifs = PUNotificationQuery::create()
                             ->filterByPUserId($user->getId())
                             ->find();
 
@@ -743,7 +767,8 @@ class UserManager
      *  Souscription notif email
      *
      */
-    public function notifEmailSubscribe() {
+    public function notifEmailSubscribe()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifEmailSubscribe');
 
@@ -770,7 +795,8 @@ class UserManager
      *  Désouscription notif email
      *
      */
-    public function notifEmailUnsubscribe() {
+    public function notifEmailUnsubscribe()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifEmailUnsubscribe');
 
@@ -796,5 +822,4 @@ class UserManager
 
         return true;
     }
-
 }

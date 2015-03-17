@@ -18,7 +18,7 @@ use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PNotificationQuery;
-use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotification;
 use Politizr\Model\PUSubscribeEmail;
 use Politizr\Model\PUSubscribeScreen;
 use Politizr\Model\PUser;
@@ -42,9 +42,9 @@ use Politizr\Model\PUser;
  * @method PNotificationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PNotificationQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PNotificationQuery leftJoinPUNotificationsPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationsPNotification relation
- * @method PNotificationQuery rightJoinPUNotificationsPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationsPNotification relation
- * @method PNotificationQuery innerJoinPUNotificationsPNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUNotificationsPNotification relation
+ * @method PNotificationQuery leftJoinPUNotificationPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationPNotification relation
+ * @method PNotificationQuery rightJoinPUNotificationPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationPNotification relation
+ * @method PNotificationQuery innerJoinPUNotificationPNotification($relationAlias = null) Adds a INNER JOIN clause to the query using the PUNotificationPNotification relation
  *
  * @method PNotificationQuery leftJoinPUSubscribeEmailPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUSubscribeEmailPNotification relation
  * @method PNotificationQuery rightJoinPUSubscribeEmailPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribeEmailPNotification relation
@@ -482,41 +482,41 @@ abstract class BasePNotificationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUNotifications object
+     * Filter the query by a related PUNotification object
      *
-     * @param   PUNotifications|PropelObjectCollection $pUNotifications  the related object to use as filter
+     * @param   PUNotification|PropelObjectCollection $pUNotification  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PNotificationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPUNotificationsPNotification($pUNotifications, $comparison = null)
+    public function filterByPUNotificationPNotification($pUNotification, $comparison = null)
     {
-        if ($pUNotifications instanceof PUNotifications) {
+        if ($pUNotification instanceof PUNotification) {
             return $this
-                ->addUsingAlias(PNotificationPeer::ID, $pUNotifications->getPNotificationId(), $comparison);
-        } elseif ($pUNotifications instanceof PropelObjectCollection) {
+                ->addUsingAlias(PNotificationPeer::ID, $pUNotification->getPNotificationId(), $comparison);
+        } elseif ($pUNotification instanceof PropelObjectCollection) {
             return $this
-                ->usePUNotificationsPNotificationQuery()
-                ->filterByPrimaryKeys($pUNotifications->getPrimaryKeys())
+                ->usePUNotificationPNotificationQuery()
+                ->filterByPrimaryKeys($pUNotification->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPUNotificationsPNotification() only accepts arguments of type PUNotifications or PropelCollection');
+            throw new PropelException('filterByPUNotificationPNotification() only accepts arguments of type PUNotification or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PUNotificationsPNotification relation
+     * Adds a JOIN clause to the query using the PUNotificationPNotification relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PNotificationQuery The current query, for fluid interface
      */
-    public function joinPUNotificationsPNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUNotificationPNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUNotificationsPNotification');
+        $relationMap = $tableMap->getRelation('PUNotificationPNotification');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -531,14 +531,14 @@ abstract class BasePNotificationQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PUNotificationsPNotification');
+            $this->addJoinObject($join, 'PUNotificationPNotification');
         }
 
         return $this;
     }
 
     /**
-     * Use the PUNotificationsPNotification relation PUNotifications object
+     * Use the PUNotificationPNotification relation PUNotification object
      *
      * @see       useQuery()
      *
@@ -546,13 +546,13 @@ abstract class BasePNotificationQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PUNotificationsQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PUNotificationQuery A secondary query class using the current class as primary query
      */
-    public function usePUNotificationsPNotificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUNotificationPNotificationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPUNotificationsPNotification($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUNotificationsPNotification', '\Politizr\Model\PUNotificationsQuery');
+            ->joinPUNotificationPNotification($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUNotificationPNotification', '\Politizr\Model\PUNotificationQuery');
     }
 
     /**
@@ -705,18 +705,18 @@ abstract class BasePNotificationQuery extends ModelCriteria
 
     /**
      * Filter the query by a related PUser object
-     * using the p_u_notifications table as cross reference
+     * using the p_u_notification table as cross reference
      *
      * @param   PUser $pUser the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   PNotificationQuery The current query, for fluid interface
      */
-    public function filterByPUNotificationsPUser($pUser, $comparison = Criteria::EQUAL)
+    public function filterByPUNotificationPUser($pUser, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePUNotificationsPNotificationQuery()
-            ->filterByPUNotificationsPUser($pUser, $comparison)
+            ->usePUNotificationPNotificationQuery()
+            ->filterByPUNotificationPUser($pUser, $comparison)
             ->endUse();
     }
 

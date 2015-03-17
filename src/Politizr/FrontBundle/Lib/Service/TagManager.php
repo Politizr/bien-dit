@@ -17,9 +17,8 @@ use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
-
 /**
- * Services métiers associés aux tags 
+ * Services métiers associés aux tags
  *
  * @author Lionel Bouzonville
  */
@@ -30,7 +29,8 @@ class TagManager
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -48,7 +48,8 @@ class TagManager
      *
      *  @return integer     id du tag sélectionné / retrouvé / créé
      */
-    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag = false) {
+    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag = false)
+    {
         if (!$tagId) {
             // Récupération via slug
             $slug = StudioEchoUtils::generateSlug($tagTitle);
@@ -56,7 +57,7 @@ class TagManager
 
             if ($tag) {
                 $tagId = $tag->getId();
-            } elseif($newTag) {
+            } elseif ($newTag) {
                 // Récupération user
                 $user = $this->sc->get('security.context')->getToken()->getUser();
 
@@ -78,7 +79,8 @@ class TagManager
      *  Renseigne et retourne un tableau contenant les tags
      *
      */
-    public function getTags() {
+    public function getTags()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** getTags');
         
@@ -118,7 +120,8 @@ class TagManager
      *  Association d'un tag à un débat
      *
      */
-    public function debateAddTag() {
+    public function debateAddTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateAddTag');
         
@@ -143,17 +146,18 @@ class TagManager
 
         if (!$created) {
             $htmlTag = null;
-        } else  {
+        } else {
             // Construction du rendu du tag
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
-                                    'objectId' => $objectId,
-                                    'tag' => $tag,
-                                    'deleteUrl' => $this->sc->get('router')->generate('DebateDeleteTag')
-                                    )
-                        );
+                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                array(
+                    'objectId' => $objectId,
+                    'tag' => $tag,
+                    'deleteUrl' => $this->sc->get('router')->generate('DebateDeleteTag')
+                )
+            );
         }
 
         // Renvoi de l'ensemble des blocs HTML maj
@@ -168,7 +172,8 @@ class TagManager
      *  Suppression de l'association d'un tag à un débat
      *
      */
-    public function debateDeleteTag() {
+    public function debateDeleteTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateDeleteTag');
         
@@ -197,7 +202,8 @@ class TagManager
      *  Association d'un tag suivi d'un user
      *
      */
-    public function userFollowAddTag() {
+    public function userFollowAddTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userFollowAddTag');
         
@@ -222,17 +228,18 @@ class TagManager
 
         if (!$created) {
             $htmlTag = null;
-        } else  {
+        } else {
             // Construction du rendu du tag
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
-                                    'objectId' => $objectId,
-                                    'tag' => $tag,
-                                    'deleteUrl' => $this->sc->get('router')->generate('UserFollowDeleteTag')
-                                    )
-                        );
+                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                array(
+                    'objectId' => $objectId,
+                    'tag' => $tag,
+                    'deleteUrl' => $this->sc->get('router')->generate('UserFollowDeleteTag')
+                )
+            );
         }
 
         // Renvoi de l'ensemble des blocs HTML maj
@@ -247,7 +254,8 @@ class TagManager
      *  Suppression de l'association d'un tag suivi d'un user
      *
      */
-    public function userFollowDeleteTag() {
+    public function userFollowDeleteTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userFollowDeleteTag');
         
@@ -272,7 +280,8 @@ class TagManager
      *  Association d'un tag caractérisant un user
      *
      */
-    public function userTaggedAddTag() {
+    public function userTaggedAddTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userTaggedAddTag');
         
@@ -298,17 +307,18 @@ class TagManager
 
         if (!$created) {
             $htmlTag = null;
-        } else  {
+        } else {
             // Construction du rendu du tag
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig', array(
-                                    'objectId' => $objectId,
-                                    'tag' => $tag,
-                                    'deleteUrl' => $this->sc->get('router')->generate('UserTaggedDeleteTag')
-                                    )
-                        );
+                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                array(
+                    'objectId' => $objectId,
+                    'tag' => $tag,
+                    'deleteUrl' => $this->sc->get('router')->generate('UserTaggedDeleteTag')
+                )
+            );
         }
 
         // Renvoi de l'ensemble des blocs HTML maj
@@ -323,7 +333,8 @@ class TagManager
      *  Suppression de l'association d'un tag suivi d'un user
      *
      */
-    public function userTaggedDeleteTag() {
+    public function userTaggedDeleteTag()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** userTaggedDeleteTag');
         
@@ -342,7 +353,4 @@ class TagManager
 
         return $deleted;
     }
-
-
-
 }

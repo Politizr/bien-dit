@@ -26,8 +26,8 @@ use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PRBadgeType;
 use Politizr\Model\PRBadgeTypeQuery;
-use Politizr\Model\PUBadges;
-use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUBadge;
+use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -117,10 +117,10 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     protected $aPRBadgeMetal;
 
     /**
-     * @var        PropelObjectCollection|PUBadges[] Collection to store aggregation of PUBadges objects.
+     * @var        PropelObjectCollection|PUBadge[] Collection to store aggregation of PUBadge objects.
      */
-    protected $collPUBadgess;
-    protected $collPUBadgessPartial;
+    protected $collPUBadges;
+    protected $collPUBadgesPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
@@ -160,7 +160,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUBadgessScheduledForDeletion = null;
+    protected $pUBadgesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -653,7 +653,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
             $this->aPRBadgeType = null;
             $this->aPRBadgeMetal = null;
-            $this->collPUBadgess = null;
+            $this->collPUBadges = null;
 
             $this->collPUsers = null;
         } // if (deep)
@@ -851,7 +851,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                     foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PUBadgesQuery::create()
+                    PUBadgeQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pUsersScheduledForDeletion = null;
@@ -870,17 +870,17 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUBadgessScheduledForDeletion !== null) {
-                if (!$this->pUBadgessScheduledForDeletion->isEmpty()) {
-                    PUBadgesQuery::create()
-                        ->filterByPrimaryKeys($this->pUBadgessScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pUBadgesScheduledForDeletion !== null) {
+                if (!$this->pUBadgesScheduledForDeletion->isEmpty()) {
+                    PUBadgeQuery::create()
+                        ->filterByPrimaryKeys($this->pUBadgesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pUBadgessScheduledForDeletion = null;
+                    $this->pUBadgesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPUBadgess !== null) {
-                foreach ($this->collPUBadgess as $referrerFK) {
+            if ($this->collPUBadges !== null) {
+                foreach ($this->collPUBadges as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1095,8 +1095,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPUBadgess !== null) {
-                    foreach ($this->collPUBadgess as $referrerFK) {
+                if ($this->collPUBadges !== null) {
+                    foreach ($this->collPUBadges as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1216,8 +1216,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             if (null !== $this->aPRBadgeMetal) {
                 $result['PRBadgeMetal'] = $this->aPRBadgeMetal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collPUBadgess) {
-                $result['PUBadgess'] = $this->collPUBadgess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUBadges) {
+                $result['PUBadges'] = $this->collPUBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1412,9 +1412,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPUBadgess() as $relObj) {
+            foreach ($this->getPUBadges() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUBadges($relObj->copy($deepCopy));
+                    $copyObj->addPUBadge($relObj->copy($deepCopy));
                 }
             }
 
@@ -1583,42 +1583,42 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PUBadges' == $relationName) {
-            $this->initPUBadgess();
+        if ('PUBadge' == $relationName) {
+            $this->initPUBadges();
         }
     }
 
     /**
-     * Clears out the collPUBadgess collection
+     * Clears out the collPUBadges collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PRBadge The current object (for fluent API support)
-     * @see        addPUBadgess()
+     * @see        addPUBadges()
      */
-    public function clearPUBadgess()
+    public function clearPUBadges()
     {
-        $this->collPUBadgess = null; // important to set this to null since that means it is uninitialized
-        $this->collPUBadgessPartial = null;
+        $this->collPUBadges = null; // important to set this to null since that means it is uninitialized
+        $this->collPUBadgesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUBadgess collection loaded partially
+     * reset is the collPUBadges collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUBadgess($v = true)
+    public function resetPartialPUBadges($v = true)
     {
-        $this->collPUBadgessPartial = $v;
+        $this->collPUBadgesPartial = $v;
     }
 
     /**
-     * Initializes the collPUBadgess collection.
+     * Initializes the collPUBadges collection.
      *
-     * By default this just sets the collPUBadgess collection to an empty array (like clearcollPUBadgess());
+     * By default this just sets the collPUBadges collection to an empty array (like clearcollPUBadges());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1627,17 +1627,17 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUBadgess($overrideExisting = true)
+    public function initPUBadges($overrideExisting = true)
     {
-        if (null !== $this->collPUBadgess && !$overrideExisting) {
+        if (null !== $this->collPUBadges && !$overrideExisting) {
             return;
         }
-        $this->collPUBadgess = new PropelObjectCollection();
-        $this->collPUBadgess->setModel('PUBadges');
+        $this->collPUBadges = new PropelObjectCollection();
+        $this->collPUBadges->setModel('PUBadge');
     }
 
     /**
-     * Gets an array of PUBadges objects which contain a foreign key that references this object.
+     * Gets an array of PUBadge objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1647,107 +1647,107 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUBadges[] List of PUBadges objects
+     * @return PropelObjectCollection|PUBadge[] List of PUBadge objects
      * @throws PropelException
      */
-    public function getPUBadgess($criteria = null, PropelPDO $con = null)
+    public function getPUBadges($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUBadgessPartial && !$this->isNew();
-        if (null === $this->collPUBadgess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUBadgess) {
+        $partial = $this->collPUBadgesPartial && !$this->isNew();
+        if (null === $this->collPUBadges || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUBadges) {
                 // return empty collection
-                $this->initPUBadgess();
+                $this->initPUBadges();
             } else {
-                $collPUBadgess = PUBadgesQuery::create(null, $criteria)
+                $collPUBadges = PUBadgeQuery::create(null, $criteria)
                     ->filterByPRBadge($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUBadgessPartial && count($collPUBadgess)) {
-                      $this->initPUBadgess(false);
+                    if (false !== $this->collPUBadgesPartial && count($collPUBadges)) {
+                      $this->initPUBadges(false);
 
-                      foreach ($collPUBadgess as $obj) {
-                        if (false == $this->collPUBadgess->contains($obj)) {
-                          $this->collPUBadgess->append($obj);
+                      foreach ($collPUBadges as $obj) {
+                        if (false == $this->collPUBadges->contains($obj)) {
+                          $this->collPUBadges->append($obj);
                         }
                       }
 
-                      $this->collPUBadgessPartial = true;
+                      $this->collPUBadgesPartial = true;
                     }
 
-                    $collPUBadgess->getInternalIterator()->rewind();
+                    $collPUBadges->getInternalIterator()->rewind();
 
-                    return $collPUBadgess;
+                    return $collPUBadges;
                 }
 
-                if ($partial && $this->collPUBadgess) {
-                    foreach ($this->collPUBadgess as $obj) {
+                if ($partial && $this->collPUBadges) {
+                    foreach ($this->collPUBadges as $obj) {
                         if ($obj->isNew()) {
-                            $collPUBadgess[] = $obj;
+                            $collPUBadges[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUBadgess = $collPUBadgess;
-                $this->collPUBadgessPartial = false;
+                $this->collPUBadges = $collPUBadges;
+                $this->collPUBadgesPartial = false;
             }
         }
 
-        return $this->collPUBadgess;
+        return $this->collPUBadges;
     }
 
     /**
-     * Sets a collection of PUBadges objects related by a one-to-many relationship
+     * Sets a collection of PUBadge objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUBadgess A Propel collection.
+     * @param PropelCollection $pUBadges A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PRBadge The current object (for fluent API support)
      */
-    public function setPUBadgess(PropelCollection $pUBadgess, PropelPDO $con = null)
+    public function setPUBadges(PropelCollection $pUBadges, PropelPDO $con = null)
     {
-        $pUBadgessToDelete = $this->getPUBadgess(new Criteria(), $con)->diff($pUBadgess);
+        $pUBadgesToDelete = $this->getPUBadges(new Criteria(), $con)->diff($pUBadges);
 
 
-        $this->pUBadgessScheduledForDeletion = $pUBadgessToDelete;
+        $this->pUBadgesScheduledForDeletion = $pUBadgesToDelete;
 
-        foreach ($pUBadgessToDelete as $pUBadgesRemoved) {
-            $pUBadgesRemoved->setPRBadge(null);
+        foreach ($pUBadgesToDelete as $pUBadgeRemoved) {
+            $pUBadgeRemoved->setPRBadge(null);
         }
 
-        $this->collPUBadgess = null;
-        foreach ($pUBadgess as $pUBadges) {
-            $this->addPUBadges($pUBadges);
+        $this->collPUBadges = null;
+        foreach ($pUBadges as $pUBadge) {
+            $this->addPUBadge($pUBadge);
         }
 
-        $this->collPUBadgess = $pUBadgess;
-        $this->collPUBadgessPartial = false;
+        $this->collPUBadges = $pUBadges;
+        $this->collPUBadgesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PUBadges objects.
+     * Returns the number of related PUBadge objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PUBadges objects.
+     * @return int             Count of related PUBadge objects.
      * @throws PropelException
      */
-    public function countPUBadgess(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUBadges(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUBadgessPartial && !$this->isNew();
-        if (null === $this->collPUBadgess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUBadgess) {
+        $partial = $this->collPUBadgesPartial && !$this->isNew();
+        if (null === $this->collPUBadges || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUBadges) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUBadgess());
+                return count($this->getPUBadges());
             }
-            $query = PUBadgesQuery::create(null, $criteria);
+            $query = PUBadgeQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1757,28 +1757,28 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPUBadgess);
+        return count($this->collPUBadges);
     }
 
     /**
-     * Method called to associate a PUBadges object to this object
-     * through the PUBadges foreign key attribute.
+     * Method called to associate a PUBadge object to this object
+     * through the PUBadge foreign key attribute.
      *
-     * @param    PUBadges $l PUBadges
+     * @param    PUBadge $l PUBadge
      * @return PRBadge The current object (for fluent API support)
      */
-    public function addPUBadges(PUBadges $l)
+    public function addPUBadge(PUBadge $l)
     {
-        if ($this->collPUBadgess === null) {
-            $this->initPUBadgess();
-            $this->collPUBadgessPartial = true;
+        if ($this->collPUBadges === null) {
+            $this->initPUBadges();
+            $this->collPUBadgesPartial = true;
         }
 
-        if (!in_array($l, $this->collPUBadgess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUBadges($l);
+        if (!in_array($l, $this->collPUBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUBadge($l);
 
-            if ($this->pUBadgessScheduledForDeletion and $this->pUBadgessScheduledForDeletion->contains($l)) {
-                $this->pUBadgessScheduledForDeletion->remove($this->pUBadgessScheduledForDeletion->search($l));
+            if ($this->pUBadgesScheduledForDeletion and $this->pUBadgesScheduledForDeletion->contains($l)) {
+                $this->pUBadgesScheduledForDeletion->remove($this->pUBadgesScheduledForDeletion->search($l));
             }
         }
 
@@ -1786,28 +1786,28 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to add.
+     * @param	PUBadge $pUBadge The pUBadge object to add.
      */
-    protected function doAddPUBadges($pUBadges)
+    protected function doAddPUBadge($pUBadge)
     {
-        $this->collPUBadgess[]= $pUBadges;
-        $pUBadges->setPRBadge($this);
+        $this->collPUBadges[]= $pUBadge;
+        $pUBadge->setPRBadge($this);
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to remove.
+     * @param	PUBadge $pUBadge The pUBadge object to remove.
      * @return PRBadge The current object (for fluent API support)
      */
-    public function removePUBadges($pUBadges)
+    public function removePUBadge($pUBadge)
     {
-        if ($this->getPUBadgess()->contains($pUBadges)) {
-            $this->collPUBadgess->remove($this->collPUBadgess->search($pUBadges));
-            if (null === $this->pUBadgessScheduledForDeletion) {
-                $this->pUBadgessScheduledForDeletion = clone $this->collPUBadgess;
-                $this->pUBadgessScheduledForDeletion->clear();
+        if ($this->getPUBadges()->contains($pUBadge)) {
+            $this->collPUBadges->remove($this->collPUBadges->search($pUBadge));
+            if (null === $this->pUBadgesScheduledForDeletion) {
+                $this->pUBadgesScheduledForDeletion = clone $this->collPUBadges;
+                $this->pUBadgesScheduledForDeletion->clear();
             }
-            $this->pUBadgessScheduledForDeletion[]= clone $pUBadges;
-            $pUBadges->setPRBadge(null);
+            $this->pUBadgesScheduledForDeletion[]= clone $pUBadge;
+            $pUBadge->setPRBadge(null);
         }
 
         return $this;
@@ -1819,7 +1819,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PRBadge is new, it will return
      * an empty collection; or if this PRBadge has previously
-     * been saved, it will retrieve related PUBadgess from storage.
+     * been saved, it will retrieve related PUBadges from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1828,14 +1828,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUBadges[] List of PUBadges objects
+     * @return PropelObjectCollection|PUBadge[] List of PUBadge objects
      */
-    public function getPUBadgessJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUBadgesJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PUBadgesQuery::create(null, $criteria);
+        $query = PUBadgeQuery::create(null, $criteria);
         $query->joinWith('PUser', $join_behavior);
 
-        return $this->getPUBadgess($query, $con);
+        return $this->getPUBadges($query, $con);
     }
 
     /**
@@ -1872,7 +1872,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
     /**
      * Gets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1907,7 +1907,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
     /**
      * Sets a collection of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
@@ -1935,7 +1935,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
     /**
      * Gets the number of PUser objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -1965,9 +1965,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
     /**
      * Associate a PUser object to this object
-     * through the p_u_badges cross reference table.
+     * through the p_u_badge cross reference table.
      *
-     * @param  PUser $pUser The PUBadges object to relate
+     * @param  PUser $pUser The PUBadge object to relate
      * @return PRBadge The current object (for fluent API support)
      */
     public function addPUser(PUser $pUser)
@@ -1995,9 +1995,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pUser->getPRBadges()->contains($this)) { $pUBadges = new PUBadges();
-            $pUBadges->setPUser($pUser);
-            $this->addPUBadges($pUBadges);
+        if (!$pUser->getPRBadges()->contains($this)) { $pUBadge = new PUBadge();
+            $pUBadge->setPUser($pUser);
+            $this->addPUBadge($pUBadge);
 
             $foreignCollection = $pUser->getPRBadges();
             $foreignCollection[] = $this;
@@ -2006,9 +2006,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
     /**
      * Remove a PUser object to this object
-     * through the p_u_badges cross reference table.
+     * through the p_u_badge cross reference table.
      *
-     * @param PUser $pUser The PUBadges object to relate
+     * @param PUser $pUser The PUBadge object to relate
      * @return PRBadge The current object (for fluent API support)
      */
     public function removePUser(PUser $pUser)
@@ -2061,8 +2061,8 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPUBadgess) {
-                foreach ($this->collPUBadgess as $o) {
+            if ($this->collPUBadges) {
+                foreach ($this->collPUBadges as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2081,10 +2081,10 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPUBadgess instanceof PropelCollection) {
-            $this->collPUBadgess->clearIterator();
+        if ($this->collPUBadges instanceof PropelCollection) {
+            $this->collPUBadges->clearIterator();
         }
-        $this->collPUBadgess = null;
+        $this->collPUBadges = null;
         if ($this->collPUsers instanceof PropelCollection) {
             $this->collPUsers->clearIterator();
         }

@@ -15,7 +15,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
- * Services métiers associés à la recherche. 
+ * Services métiers associés à la recherche.
  *
  * @author Lionel Bouzonville
  */
@@ -26,7 +26,8 @@ class SearchManager
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -38,7 +39,8 @@ class SearchManager
      *  Exécution de la requête de recherche paginée
      *
      */
-    public function pagerQuery($query) {
+    public function pagerQuery($query)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** pagerQuery');
 
@@ -78,7 +80,8 @@ class SearchManager
      *  Recherche
      *
      */
-    public function search() {
+    public function search()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** search');
 
@@ -107,15 +110,15 @@ class SearchManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Navigation:searchResultPage.html.twig', array(
-                                    'query' => $query,
-                                    'pager' => $pager,
-                                )
-                    );
+            'PolitizrFrontBundle:Navigation:searchResultPage.html.twig',
+            array(
+                    'query' => $query,
+                    'pager' => $pager,
+                )
+        );
 
         return array(
             'html' => $html,
             );
     }
-
 }

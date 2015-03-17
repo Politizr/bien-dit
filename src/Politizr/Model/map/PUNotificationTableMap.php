@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_u_badges' table.
+ * This class defines the structure of the 'p_u_notification' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PUBadgesTableMap extends TableMap
+class PUNotificationTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PUBadgesTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PUNotificationTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,16 +36,21 @@ class PUBadgesTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_u_badges');
-        $this->setPhpName('PUBadges');
-        $this->setClassname('Politizr\\Model\\PUBadges');
+        $this->setName('p_u_notification');
+        $this->setPhpName('PUNotification');
+        $this->setClassname('Politizr\\Model\\PUNotification');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addForeignKey('p_r_badge_id', 'PRBadgeId', 'INTEGER', 'p_r_badge', 'id', true, null, null);
+        $this->addForeignKey('p_notification_id', 'PNotificationId', 'INTEGER', 'p_notification', 'id', true, null, null);
+        $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
+        $this->addColumn('p_object_id', 'PObjectId', 'INTEGER', false, null, null);
+        $this->addColumn('p_author_user_id', 'PAuthorUserId', 'INTEGER', false, null, null);
+        $this->addColumn('checked', 'Checked', 'BOOLEAN', false, 1, null);
+        $this->addColumn('checked_at', 'CheckedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -56,8 +61,8 @@ class PUBadgesTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_ONE, array('p_r_badge_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUNotificationPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PUNotificationPNotification', 'Politizr\\Model\\PNotification', RelationMap::MANY_TO_ONE, array('p_notification_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -85,4 +90,4 @@ class PUBadgesTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PUBadgesTableMap
+} // PUNotificationTableMap

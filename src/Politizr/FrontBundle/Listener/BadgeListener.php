@@ -7,30 +7,31 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PRBadge;
 use Politizr\Model\PRAction;
-use Politizr\Model\PUBadges;
+use Politizr\Model\PUBadge;
 
-use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUFollowUQuery;
 
-
 /**
- * 	Gestion des badges
+ *  Gestion des badges
  *
  *  @author Lionel Bouzonville
  */
-class BadgeListener {
+class BadgeListener
+{
 
     protected $logger;
 
     /**
      *
      */
-    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher) {
-    	$this->logger = $logger;
+    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher)
+    {
+        $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -40,7 +41,8 @@ class BadgeListener {
      *
      *  @param  GenericEvent
      */
-    public function onBReactionPublish(GenericEvent $event) {
+    public function onBReactionPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onBReactionPublish');
 
         $subject = $event->getSubject();
@@ -64,7 +66,8 @@ class BadgeListener {
      *
      * @param GenericEvent
      */
-    public function onBDocumentNotePos(GenericEvent $event) {
+    public function onBDocumentNotePos(GenericEvent $event)
+    {
         $this->logger->info('*** onBDocumentNotePos');
 
         $subject = $event->getSubject();
@@ -87,7 +90,8 @@ class BadgeListener {
      *
      * @param GenericEvent
      */
-    public function onBDocumentNoteNeg(GenericEvent $event) {
+    public function onBDocumentNoteNeg(GenericEvent $event)
+    {
         $this->logger->info('*** onBDocumentNoteNeg');
 
         $subject = $event->getSubject();
@@ -105,7 +109,8 @@ class BadgeListener {
      *
      * @param GenericEvent
      */
-    public function onBCommentPublish(GenericEvent $event) {
+    public function onBCommentPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onBCommentPublish');
 
         $subject = $event->getSubject();
@@ -123,7 +128,8 @@ class BadgeListener {
      *
      * @param GenericEvent
      */
-    public function onBCommentNotePos(GenericEvent $event) {
+    public function onBCommentNotePos(GenericEvent $event)
+    {
         $this->logger->info('*** onBCommentNotePos');
 
         $subject = $event->getSubject();
@@ -146,7 +152,8 @@ class BadgeListener {
      *
      * @param GenericEvent
      */
-    public function onBCommentNoteNeg(GenericEvent $event) {
+    public function onBCommentNoteNeg(GenericEvent $event)
+    {
         $this->logger->info('*** onBCommentNoteNeg');
 
         $subject = $event->getSubject();
@@ -165,7 +172,8 @@ class BadgeListener {
      *
      *  @param  GenericEvent
      */
-    public function onBUserFollow(GenericEvent $event) {
+    public function onBUserFollow(GenericEvent $event)
+    {
         $this->logger->info('*** onBUserFollow');
 
         $subject = $event->getSubject();
@@ -193,13 +201,14 @@ class BadgeListener {
      *
      *
      */
-    private function hasBadge($userId, $badgeId) {
-        $nbBadges = PUBadgesQuery::create()
+    private function hasBadge($userId, $badgeId)
+    {
+        $nbBadges = PUBadgeQuery::create()
                     ->filterByPUserId($userId)
                     ->filterByPRBadgeId($badgeId)
                     ->count();
 
-        if ($nbBadges > 0) { 
+        if ($nbBadges > 0) {
             return true;
         }
 
@@ -212,8 +221,9 @@ class BadgeListener {
      *
      *
      */
-    private function addUserBadge($userId, $badgeId) {
-        $userBadge = new PUBadges();
+    private function addUserBadge($userId, $badgeId)
+    {
+        $userBadge = new PUBadge();
         $userBadge->setPUserId($userId);
         $userBadge->setPRBadgeId($badgeId);
         $userBadge->save();
@@ -234,10 +244,10 @@ class BadgeListener {
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbReactions  integer   Nombre de réactions
      */
-    private function checkQuerelle($userId, $badgeId, $nbReactions) {
+    private function checkQuerelle($userId, $badgeId, $nbReactions)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
-        $sql = "
+            $sql = "
 SELECT COUNT(*) as nb
 FROM
 (
@@ -286,9 +296,9 @@ GROUP BY child.p_d_debate_id
      *  @param  $nbDocuments  integer     Nombre de documents
      *  @param  $nbNotePos  integer     Note positive atteinte
      */
-    private function checkRedacteur($userId, $badgeId, $nbDocuments, $nbNotePos) {
+    private function checkRedacteur($userId, $badgeId, $nbDocuments, $nbNotePos)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PDocumentQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByNotePos(array('min' => $nbNotePos))
@@ -304,14 +314,14 @@ GROUP BY child.p_d_debate_id
      *  Badges Eclaireur / Avant Garde / Guide
      *  Être l’auteur de la 1ère réaction sur X débats
      *
-     *  @param  $reaction   PDReaction  
+     *  @param  $reaction   PDReaction
      *  @param  $userId     integer     ID user
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbDebates  integer     Nombre de débats
      */
-    private function checkEclaireur($reaction, $userId, $badgeId, $nbDebates) {
+    private function checkEclaireur($reaction, $userId, $badgeId, $nbDebates)
+    {
         if ($reaction->getTreeLevel() === 1 && $reaction->getTreeLeft() === 2 && !$this->hasBadge($userId, $badgeId)) {
-
             $sql = "
 SELECT id
 FROM p_d_reaction 
@@ -343,9 +353,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbComments  integer     Nombre de commentaires
      */
-    private function checkAnnotateur($userId, $badgeId, $nbComments) {
+    private function checkAnnotateur($userId, $badgeId, $nbComments)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PDCommentQuery::create()
                         ->filterByPUserId($userId)
                         ->count();
@@ -364,9 +374,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbNotePos  integer     Note positive atteinte
      */
-    private function checkEffronte($userId, $badgeId, $nbNotePos) {
+    private function checkEffronte($userId, $badgeId, $nbNotePos)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PDCommentQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByNotePos(array('min' => $nbNotePos))
@@ -387,9 +397,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbNotePos  integer     Nombre de notes positives
      */
-    private function checkFougueux($userId, $badgeId, $nbNotePos) {
+    private function checkFougueux($userId, $badgeId, $nbNotePos)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS, PRAction::ID_D_AUTHOR_REACTION_NOTE_POS, PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS))
@@ -409,9 +419,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbNoteNeg  integer     Nombre de notes négatives
      */
-    private function checkPersifleur($userId, $badgeId, $nbNoteNeg) {
+    private function checkPersifleur($userId, $badgeId, $nbNoteNeg)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG, PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG, PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG))
@@ -433,9 +443,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbNoteNeg  integer     Nombre de notes négatives
      */
-    private function checkSuiveur($userId, $badgeId, $nbFollow) {
+    private function checkSuiveur($userId, $badgeId, $nbFollow)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PUFollowUQuery::create()
                             ->filterByPUserFollowerId($userId)
                             ->count();
@@ -454,9 +464,9 @@ GROUP BY p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbNoteNeg  integer     Nombre de notes négatives
      */
-    private function checkImportant($userId, $badgeId, $nbFollowers) {
+    private function checkImportant($userId, $badgeId, $nbFollowers)
+    {
         if (!$this->hasBadge($userId, $badgeId)) {
-
             $nb = PUFollowUQuery::create()
                             ->filterByPUserId($userId)
                             ->count();
@@ -466,9 +476,4 @@ GROUP BY p_d_debate_id
             }
         }
     }
-
-
-
-
-
 }

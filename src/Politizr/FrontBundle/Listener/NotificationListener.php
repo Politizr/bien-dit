@@ -5,8 +5,9 @@ namespace Politizr\FrontBundle\Listener;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PNotification;
-use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotification;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 
 /**
@@ -31,34 +32,10 @@ class NotificationListener
 
 
     /**
-     * Un commentaire a été publié sur un de vos documents
+     * Attribution d'une note positive sur un document ou un commentaire.
      *
-     * @param GenericEvent
-     */
-    public function onNCommentPublish(GenericEvent $event)
-    {
-        $this->logger->info('*** onNCommentPublish');
-
-        $subject = $event->getSubject();
-        $authorUserId = $event->getArgument('author_user_id');
-        $pNotificationId = PNotification::ID_D_COMMENT_PUBLISH;
-        $objectName = get_class($subject);
-        $objectId = $subject->getId();
-
-        // Document associé
-        $document = $subject->getPDocument();
-        $targetUserId = $document->getPUserId();
-
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotifications);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
-    }
-
-
-    /**
-     * Note positive sur un document ou commentaire
+     * Notifications associées à gérer:
+     * - Note positive sur un de vos documents ou commentaires
      *
      * @param GenericEvent
      */
@@ -85,15 +62,18 @@ class NotificationListener
                 break;
         }
 
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
-     * Note négative sur un document ou commentaire
+     * Attribution d'une note négative sur un document ou un commentaire.
+     *
+     * Notifications associées à gérer:
+     * - Note négative sur un de vos documents ou commentaires
      *
      * @param GenericEvent
      */
@@ -120,15 +100,52 @@ class NotificationListener
                 break;
         }
 
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
-     * Une réaction a été publiée sur un de vos débats / une de vos réactions
+     * Publication d'un débat.
+     *
+     * Notifications associées à gérer:
+     * - Un débat ou une réaction a été publié par un utilisateur suivi
+     *
+     * @param GenericEvent
+     */
+    public function onNDebatePublish(GenericEvent $event)
+    {
+        $this->logger->info('*** onNDebatePublish');
+
+        $subject = $event->getSubject();
+        $authorUserId = $event->getArgument('author_user_id');
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        // Récupération de l'auteur du débat
+        $authorUser = PUserQuery::create()->findPk($authorUserId);
+
+        // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
+        $users = $authorUser->getNotifDebateFollowers();
+        foreach ($users as $user) {
+            $pNotificationId = PNotification::ID_S_U_DEBATE_PUBLISH;
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+            // Alerte email
+            $event = new GenericEvent($puNotification);
+            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+    }
+
+    /**
+     * Publication d'une réaction.
+     *
+     * Notifications associées à gérer:
+     * - Une réaction a été publiée sur un de vos débats / une de vos réactions
+     * - Une réaction a été publié sur un débat suivi
      *
      * @param GenericEvent
      */
@@ -146,10 +163,10 @@ class NotificationListener
         $debateUserId = $debate->getPUserId();
         $pNotificationId = PNotification::ID_D_D_REACTION_PUBLISH;
 
-        $puNotifications = $this->insertPUNotifications($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
 
         // Réaction associée à la réaction
@@ -159,17 +176,90 @@ class NotificationListener
             $targetUserId = $parent->getPUserId();
             $pNotificationId = PNotification::ID_D_R_REACTION_PUBLISH;
 
-            $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // Alerte email
-            $event = new GenericEvent($puNotifications);
+            $event = new GenericEvent($puNotification);
+            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+        // Liste des users suivant le débat et souhaitant être notifiés des réactions
+        $users = $debate->getNotifReactionFollowers();
+        foreach ($users as $user) {
+            $pNotificationId = PNotification::ID_S_D_REACTION_PUBLISH;
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+            // Alerte email
+            $event = new GenericEvent($puNotification);
+            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+        // Récupération de l'auteur du débat
+        $authorUser = PUserQuery::create()->findPk($authorUserId);
+
+        // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
+        $users = $authorUser->getNotifReactionFollowers();
+        foreach ($users as $user) {
+            $pNotificationId = PNotification::ID_S_U_REACTION_PUBLISH;
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+            // Alerte email
+            $event = new GenericEvent($puNotification);
+            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+    }
+
+    /**
+     * Publication d'un commentaire.
+     *
+     * Notifications associées à gérer:
+     * - Un commentaire a été publié sur un de vos documents
+     * - Un commentaire a été publié par un utilisateur suivi
+     *
+     * @param GenericEvent
+     */
+    public function onNCommentPublish(GenericEvent $event)
+    {
+        $this->logger->info('*** onNCommentPublish');
+
+        $subject = $event->getSubject();
+        $authorUserId = $event->getArgument('author_user_id');
+        $pNotificationId = PNotification::ID_D_COMMENT_PUBLISH;
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        // Document associé
+        $document = $subject->getPDocument();
+        $targetUserId = $document->getPUserId();
+
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+
+        // Alerte email
+        $event = new GenericEvent($puNotification);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+        // Récupération de l'auteur du débat
+        $authorUser = PUserQuery::create()->findPk($authorUserId);
+
+        // Liste des users suivant l'auteur du commentaire et souhaitant être notifié de ses publications
+        $users = $authorUser->getNotifCommentFollowers();
+        foreach ($users as $user) {
+            $pNotificationId = PNotification::ID_S_U_COMMENT_PUBLISH;
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+            // Alerte email
+            $event = new GenericEvent($puNotification);
             $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
         }
     }
 
 
     /**
-     * Un utilisateur suit un de vos débats
+     * Suivi d'un débat.
+     *
+     * Notifications associées à gérer:
+     * - Un utilisateur suit un de vos débats
      *
      * @param GenericEvent
      */
@@ -187,16 +277,19 @@ class NotificationListener
         // Auteur du débat
         $targetUserId = $subject->getPUserId();
 
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
     /**
-     * Un utilisateur suit votre profil
+     * Suivi d'un profil.
+     *
+     * Notifications associées à gérer:
+     * - Un utilisateur suit votre profil
      *
      * @param GenericEvent
      */
@@ -214,17 +307,20 @@ class NotificationListener
         // User suivi
         $targetUserId = $subject->getId();
 
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
 
 
     /**
-     * Vous avez obtenu un badge
+     * Gain d'un débat.
+     *
+     * Notifications associées à gérer:
+     * - Vous avez obtenu un badge
      *
      * @param GenericEvent
      */
@@ -244,10 +340,10 @@ class NotificationListener
         $objectName = get_class($badge);
         $objectId = $badge->getId();
 
-        $puNotifications = $this->insertPUNotifications($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
         // Alerte email
-        $event = new GenericEvent($puNotifications);
+        $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
@@ -265,18 +361,18 @@ class NotificationListener
      * @param $objectName
      * @param $objectId
      *
-     * @return PUNotifications  Objet inséré
+     * @return PUNotification  Objet inséré
      */
-    private function insertPUNotifications($userId, $authorUserId, $notificationId, $objectName, $objectId)
+    private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId)
     {
-        $this->logger->info('*** insertPUNotifications');
+        $this->logger->info('*** insertPUNotification');
         $this->logger->info('userId = '.print_r($userId, true));
         $this->logger->info('authorUserId = '.print_r($authorUserId, true));
         $this->logger->info('notificationId = '.print_r($notificationId, true));
         $this->logger->info('objectName = '.print_r($objectName, true));
         $this->logger->info('objectId = '.print_r($objectId, true));
 
-        $notif = new PUNotifications();
+        $notif = new PUNotification();
 
         $notif->setPUserId($userId);
         $notif->setPNotificationId($notificationId);

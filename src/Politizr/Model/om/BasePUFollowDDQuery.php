@@ -25,12 +25,14 @@ use Politizr\Model\PUser;
  * @method PUFollowDDQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUFollowDDQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUFollowDDQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
+ * @method PUFollowDDQuery orderByNotifReaction($order = Criteria::ASC) Order by the notif_reaction column
  * @method PUFollowDDQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUFollowDDQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PUFollowDDQuery groupById() Group by the id column
  * @method PUFollowDDQuery groupByPUserId() Group by the p_user_id column
  * @method PUFollowDDQuery groupByPDDebateId() Group by the p_d_debate_id column
+ * @method PUFollowDDQuery groupByNotifReaction() Group by the notif_reaction column
  * @method PUFollowDDQuery groupByCreatedAt() Group by the created_at column
  * @method PUFollowDDQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -51,12 +53,14 @@ use Politizr\Model\PUser;
  *
  * @method PUFollowDD findOneByPUserId(int $p_user_id) Return the first PUFollowDD filtered by the p_user_id column
  * @method PUFollowDD findOneByPDDebateId(int $p_d_debate_id) Return the first PUFollowDD filtered by the p_d_debate_id column
+ * @method PUFollowDD findOneByNotifReaction(boolean $notif_reaction) Return the first PUFollowDD filtered by the notif_reaction column
  * @method PUFollowDD findOneByCreatedAt(string $created_at) Return the first PUFollowDD filtered by the created_at column
  * @method PUFollowDD findOneByUpdatedAt(string $updated_at) Return the first PUFollowDD filtered by the updated_at column
  *
  * @method array findById(int $id) Return PUFollowDD objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUFollowDD objects filtered by the p_user_id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PUFollowDD objects filtered by the p_d_debate_id column
+ * @method array findByNotifReaction(boolean $notif_reaction) Return PUFollowDD objects filtered by the notif_reaction column
  * @method array findByCreatedAt(string $created_at) Return PUFollowDD objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUFollowDD objects filtered by the updated_at column
  */
@@ -168,7 +172,7 @@ abstract class BasePUFollowDDQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `created_at`, `updated_at` FROM `p_u_follow_d_d` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `notif_reaction`, `created_at`, `updated_at` FROM `p_u_follow_d_d` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -386,6 +390,33 @@ abstract class BasePUFollowDDQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUFollowDDPeer::P_D_DEBATE_ID, $pDDebateId, $comparison);
+    }
+
+    /**
+     * Filter the query on the notif_reaction column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNotifReaction(true); // WHERE notif_reaction = true
+     * $query->filterByNotifReaction('yes'); // WHERE notif_reaction = true
+     * </code>
+     *
+     * @param     boolean|string $notifReaction The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUFollowDDQuery The current query, for fluid interface
+     */
+    public function filterByNotifReaction($notifReaction = null, $comparison = null)
+    {
+        if (is_string($notifReaction)) {
+            $notifReaction = in_array(strtolower($notifReaction), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUFollowDDPeer::NOTIF_REACTION, $notifReaction, $comparison);
     }
 
     /**

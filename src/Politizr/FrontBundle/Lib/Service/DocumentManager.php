@@ -26,9 +26,8 @@ use Politizr\FrontBundle\Form\Type\PDCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 
-
 /**
- * Services métiers associés aux documents (débats / réactions / commentaires). 
+ * Services métiers associés aux documents (débats / réactions / commentaires).
  *
  * @author Lionel Bouzonville
  */
@@ -39,7 +38,8 @@ class DocumentManager
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -54,7 +54,8 @@ class DocumentManager
      *
      *  @return PDDebate  Objet débat créé
      */
-    public function debateNew() {
+    public function debateNew()
+    {
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
 
@@ -80,12 +81,13 @@ class DocumentManager
     /**
      *  Création d'une nouvelle réaction
      *
-     *  @param  integer     $debateId       Débat associé  
-     *  @param  integer     $parentId       Réaction parente associée  
+     *  @param  integer     $debateId       Débat associé
+     *  @param  integer     $parentId       Réaction parente associée
      *
      *  @return PDReaction  Objet réaction créé
      */
-    public function reactionNew($debateId, $parentId) {
+    public function reactionNew($debateId, $parentId)
+    {
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
 
@@ -140,7 +142,8 @@ class DocumentManager
      *  Gestion du suivre / ne plus suivre un débat par le user courant
      *
      */
-    public function follow() {
+    public function follow()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** follow');
         
@@ -192,18 +195,19 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig', array(
-                                'object' => $object,
-                                'type' => PDocument::TYPE_DEBATE
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig',
+            array(
+                'object' => $object,
+                'type' => PDocument::TYPE_DEBATE
+            )
+        );
         $followers = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig', array(
-                                'object' => $object,
-                                'type' => PDocument::TYPE_DEBATE
-                                )
-                    );
-
+            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig',
+            array(
+                'object' => $object,
+                'type' => PDocument::TYPE_DEBATE
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -217,7 +221,8 @@ class DocumentManager
      *  Gestion note +/- d'un débat / réaction / commentaire par le user courant
      *
      */
-    public function note() {
+    public function note()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** note');
         
@@ -302,11 +307,12 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig', array(
-                                'object' => $object,
-                                'type' => $type,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig',
+            array(
+                'object' => $object,
+                'type' => $type,
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -318,7 +324,8 @@ class DocumentManager
      *  Affichage des commentaires d'un paragraphe (ou globaux) d'un document (débat / réaction).
      *
      */
-    public function comments() {
+    public function comments()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** comments');
         
@@ -342,7 +349,7 @@ class DocumentManager
 
         // Form saisie commentaire
         $comment = new PDComment();
-        if ($this->sc->get('security.context')->isGranted('ROLE_PROFILE_COMPLETED')){
+        if ($this->sc->get('security.context')->isGranted('ROLE_PROFILE_COMPLETED')) {
             $comment->setPUserId($user->getId());
             $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
@@ -352,18 +359,20 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig', array(
-                                'document' => $document,
-                                'comments' => $comments,
-                                'formComment' => $formComment->createView(),
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig',
+            array(
+                'document' => $document,
+                'comments' => $comments,
+                'formComment' => $formComment->createView(),
+            )
+        );
         $counter = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig', array(
-                                'document' => $document,
-                                'paragraphNo' => $noParagraph,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig',
+            array(
+                'document' => $document,
+                'paragraphNo' => $noParagraph,
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -381,7 +390,8 @@ class DocumentManager
      *  Enregistre le débat
      *
      */
-    public function debateUpdate() {
+    public function debateUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateUpdate');
         
@@ -424,7 +434,8 @@ class DocumentManager
      *  Publication du débat
      *
      */
-    public function debatePublish() {
+    public function debatePublish()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debatePublish');
         
@@ -462,6 +473,10 @@ class DocumentManager
         $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
         $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_publish', $event);
 
+        // Notification
+        $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_debate_publish', $event);
+
         // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
@@ -472,7 +487,8 @@ class DocumentManager
      *  Suppression du débat
      *
      */
-    public function debateDelete() {
+    public function debateDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateDelete');
         
@@ -515,7 +531,8 @@ class DocumentManager
      *  Upload du bandeau photo du document (débat ou réaction)
      *
      */
-    public function documentPhotoUpload() {
+    public function documentPhotoUpload()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** documentPhotoUpload');
 
@@ -540,8 +557,9 @@ class DocumentManager
         $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
             'file-name',
             $path,
-            1024, 1024
-            );
+            1024,
+            1024
+        );
 
         // Suppression photo déjà uploadée
         $oldFilename = $docChild->getFilename();
@@ -557,12 +575,13 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
-                                'document' => $document,
-                                'path' => 'uploads/documents/'.$fileName,
-                                'filterName' => 'debate_header',
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            array(
+                'document' => $document,
+                'path' => 'uploads/documents/'.$fileName,
+                'filterName' => 'debate_header',
+            )
+        );
 
         return array(
             'html' => $html,
@@ -574,7 +593,8 @@ class DocumentManager
      *  Upload du bandeau photo du débat
      *
      */
-    public function documentPhotoDelete() {
+    public function documentPhotoDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** documentPhotoDelete');
         
@@ -608,12 +628,13 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
-                                'document' => $document,
-                                'path' => 'bundles/politizrfront/images/default_debate.jpg',
-                                'filterName' => 'debate_header',
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            array(
+                'document' => $document,
+                'path' => 'bundles/politizrfront/images/default_debate.jpg',
+                'filterName' => 'debate_header',
+            )
+        );
 
         return array(
             'html' => $html,
@@ -628,7 +649,8 @@ class DocumentManager
      *  Enregistre la réaction
      *
      */
-    public function reactionUpdate() {
+    public function reactionUpdate()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionUpdate');
         
@@ -670,7 +692,8 @@ class DocumentManager
      *  Publication de la réaction
      *
      */
-    public function reactionPublish() {
+    public function reactionPublish()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionPublish');
         
@@ -744,9 +767,9 @@ class DocumentManager
             $parentUserId = $reaction->getParent()->getPUserId();
         } else {
             $parentUserId = $reaction->getDebate()->getPUserId();
-        }       
+        }
         $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_reaction_publish', $event);        
+        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_reaction_publish', $event);
 
         // Renvoi de l'url de redirection
         return array(
@@ -759,7 +782,8 @@ class DocumentManager
      *  Suppression du brouillon de la réaction
      *
      */
-    public function reactionDelete() {
+    public function reactionDelete()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionDelete');
         
@@ -786,7 +810,7 @@ class DocumentManager
         $redirectUrl = $request->get('url');
 
         // // MAJ de l'objet
-        $reaction = PDReactionQuery::create()->findPk($id);                
+        $reaction = PDReactionQuery::create()->findPk($id);
         $reaction->deleteWithoutArchive(); // pas d'archive sur les brouillons
 
         $this->sc->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
@@ -806,7 +830,8 @@ class DocumentManager
      *  Enregistre un nouveau commentaire
      *
      */
-    public function commentNew() {
+    public function commentNew()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** commentNew');
         
@@ -858,18 +883,20 @@ class DocumentManager
             // Construction rendu
             $templating = $this->sc->get('templating');
             $html = $templating->render(
-                                'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig', array(
-                                    'document' => $document,
-                                    'comments' => $comments,
-                                    'formComment' => $form->createView(),
-                                    )
-                        );
+                'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig',
+                array(
+                    'document' => $document,
+                    'comments' => $comments,
+                    'formComment' => $form->createView(),
+                )
+            );
             $counter = $templating->render(
-                                'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig', array(
-                                    'document' => $document,
-                                    'paragraphNo' => $noParagraph,
-                                    )
-                        );
+                'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig',
+                array(
+                    'document' => $document,
+                    'paragraphNo' => $noParagraph,
+                )
+            );
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
@@ -892,7 +919,8 @@ class DocumentManager
      *  Listing de débats ordonnancés suivant l'argument récupéré
      *
      */
-    public function debateList() {
+    public function debateList()
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateList');
         
@@ -912,7 +940,7 @@ class DocumentManager
 
         // -24h tant qu'il n'y a pas de résultats significatifs
         $nb = 0;
-        while($nb < 10) {
+        while ($nb < 10) {
             $nb = PDDebateQuery::create()->online()->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))->count();
             $logger->info('$nb = ' . print_r($nb, true));
             $nowMin24->modify('-1 day');
@@ -934,15 +962,15 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-                            'PolitizrFrontBundle:Fragment\\Debate:glSuggestionList.html.twig', array(
-                                'debates' => $debates
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Debate:glSuggestionList.html.twig',
+            array(
+                'debates' => $debates
+            )
+        );
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
-
 }

@@ -16,57 +16,57 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PRBadge;
-use Politizr\Model\PUBadges;
-use Politizr\Model\PUBadgesPeer;
-use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUBadge;
+use Politizr\Model\PUBadgePeer;
+use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUBadgesQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PUBadgesQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
- * @method PUBadgesQuery orderByPRBadgeId($order = Criteria::ASC) Order by the p_r_badge_id column
- * @method PUBadgesQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PUBadgesQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PUBadgeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUBadgeQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUBadgeQuery orderByPRBadgeId($order = Criteria::ASC) Order by the p_r_badge_id column
+ * @method PUBadgeQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PUBadgeQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUBadgesQuery groupById() Group by the id column
- * @method PUBadgesQuery groupByPUserId() Group by the p_user_id column
- * @method PUBadgesQuery groupByPRBadgeId() Group by the p_r_badge_id column
- * @method PUBadgesQuery groupByCreatedAt() Group by the created_at column
- * @method PUBadgesQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PUBadgeQuery groupById() Group by the id column
+ * @method PUBadgeQuery groupByPUserId() Group by the p_user_id column
+ * @method PUBadgeQuery groupByPRBadgeId() Group by the p_r_badge_id column
+ * @method PUBadgeQuery groupByCreatedAt() Group by the created_at column
+ * @method PUBadgeQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PUBadgesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PUBadgesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PUBadgesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PUBadgeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PUBadgeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PUBadgeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PUBadgesQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
- * @method PUBadgesQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
- * @method PUBadgesQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ * @method PUBadgeQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PUBadgeQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PUBadgeQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
- * @method PUBadgesQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
- * @method PUBadgesQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
- * @method PUBadgesQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
+ * @method PUBadgeQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
+ * @method PUBadgeQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
+ * @method PUBadgeQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
  *
- * @method PUBadges findOne(PropelPDO $con = null) Return the first PUBadges matching the query
- * @method PUBadges findOneOrCreate(PropelPDO $con = null) Return the first PUBadges matching the query, or a new PUBadges object populated from the query conditions when no match is found
+ * @method PUBadge findOne(PropelPDO $con = null) Return the first PUBadge matching the query
+ * @method PUBadge findOneOrCreate(PropelPDO $con = null) Return the first PUBadge matching the query, or a new PUBadge object populated from the query conditions when no match is found
  *
- * @method PUBadges findOneByPUserId(int $p_user_id) Return the first PUBadges filtered by the p_user_id column
- * @method PUBadges findOneByPRBadgeId(int $p_r_badge_id) Return the first PUBadges filtered by the p_r_badge_id column
- * @method PUBadges findOneByCreatedAt(string $created_at) Return the first PUBadges filtered by the created_at column
- * @method PUBadges findOneByUpdatedAt(string $updated_at) Return the first PUBadges filtered by the updated_at column
+ * @method PUBadge findOneByPUserId(int $p_user_id) Return the first PUBadge filtered by the p_user_id column
+ * @method PUBadge findOneByPRBadgeId(int $p_r_badge_id) Return the first PUBadge filtered by the p_r_badge_id column
+ * @method PUBadge findOneByCreatedAt(string $created_at) Return the first PUBadge filtered by the created_at column
+ * @method PUBadge findOneByUpdatedAt(string $updated_at) Return the first PUBadge filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUBadges objects filtered by the id column
- * @method array findByPUserId(int $p_user_id) Return PUBadges objects filtered by the p_user_id column
- * @method array findByPRBadgeId(int $p_r_badge_id) Return PUBadges objects filtered by the p_r_badge_id column
- * @method array findByCreatedAt(string $created_at) Return PUBadges objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PUBadges objects filtered by the updated_at column
+ * @method array findById(int $id) Return PUBadge objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PUBadge objects filtered by the p_user_id column
+ * @method array findByPRBadgeId(int $p_r_badge_id) Return PUBadge objects filtered by the p_r_badge_id column
+ * @method array findByCreatedAt(string $created_at) Return PUBadge objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PUBadge objects filtered by the updated_at column
  */
-abstract class BasePUBadgesQuery extends ModelCriteria
+abstract class BasePUBadgeQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePUBadgesQuery object.
+     * Initializes internal state of BasePUBadgeQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -78,23 +78,23 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PUBadges';
+            $modelName = 'Politizr\\Model\\PUBadge';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
         EventDispatcherProxy::trigger(array('construct','query.construct'), new QueryEvent($this));
     }
 
     /**
-     * Returns a new PUBadgesQuery object.
+     * Returns a new PUBadgeQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PUBadgesQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PUBadgeQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PUBadgesQuery
+     * @return PUBadgeQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PUBadgesQuery) {
+        if ($criteria instanceof PUBadgeQuery) {
             return $criteria;
         }
         $query = new static(null, null, $modelAlias);
@@ -118,19 +118,19 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PUBadges|PUBadges[]|mixed the result, formatted by the current formatter
+     * @return   PUBadge|PUBadge[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUBadgesPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUBadgePeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PUBadgesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUBadgePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -148,7 +148,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUBadges A model object, or null if the key is not found
+     * @return                 PUBadge A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -163,12 +163,12 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PUBadges A model object, or null if the key is not found
+     * @return                 PUBadge A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_r_badge_id`, `created_at`, `updated_at` FROM `p_u_badges` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_r_badge_id`, `created_at`, `updated_at` FROM `p_u_badge` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -179,10 +179,10 @@ abstract class BasePUBadgesQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $cls = PUBadgesPeer::getOMClass();
+            $cls = PUBadgePeer::getOMClass();
             $obj = new $cls;
             $obj->hydrate($row);
-            PUBadgesPeer::addInstanceToPool($obj, (string) $key);
+            PUBadgePeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -195,7 +195,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PUBadges|PUBadges[]|mixed the result, formatted by the current formatter
+     * @return PUBadge|PUBadge[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -216,7 +216,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PUBadges[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PUBadge[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -237,12 +237,12 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PUBadgesPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PUBadgePeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -250,12 +250,12 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PUBadgesPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PUBadgePeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -275,18 +275,18 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PUBadgesPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PUBadgesPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -297,7 +297,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUBadgesPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PUBadgePeer::ID, $id, $comparison);
     }
 
     /**
@@ -319,18 +319,18 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByPUserId($pUserId = null, $comparison = null)
     {
         if (is_array($pUserId)) {
             $useMinMax = false;
             if (isset($pUserId['min'])) {
-                $this->addUsingAlias(PUBadgesPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pUserId['max'])) {
-                $this->addUsingAlias(PUBadgesPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -341,7 +341,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUBadgesPeer::P_USER_ID, $pUserId, $comparison);
+        return $this->addUsingAlias(PUBadgePeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
@@ -363,18 +363,18 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByPRBadgeId($pRBadgeId = null, $comparison = null)
     {
         if (is_array($pRBadgeId)) {
             $useMinMax = false;
             if (isset($pRBadgeId['min'])) {
-                $this->addUsingAlias(PUBadgesPeer::P_R_BADGE_ID, $pRBadgeId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::P_R_BADGE_ID, $pRBadgeId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pRBadgeId['max'])) {
-                $this->addUsingAlias(PUBadgesPeer::P_R_BADGE_ID, $pRBadgeId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::P_R_BADGE_ID, $pRBadgeId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -385,7 +385,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUBadgesPeer::P_R_BADGE_ID, $pRBadgeId, $comparison);
+        return $this->addUsingAlias(PUBadgePeer::P_R_BADGE_ID, $pRBadgeId, $comparison);
     }
 
     /**
@@ -406,18 +406,18 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PUBadgesPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PUBadgesPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -428,7 +428,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUBadgesPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PUBadgePeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -449,18 +449,18 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PUBadgesPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PUBadgesPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PUBadgePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -471,7 +471,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUBadgesPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PUBadgePeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -480,21 +480,21 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUBadgesQuery The current query, for fluid interface
+     * @return                 PUBadgeQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPUser($pUser, $comparison = null)
     {
         if ($pUser instanceof PUser) {
             return $this
-                ->addUsingAlias(PUBadgesPeer::P_USER_ID, $pUser->getId(), $comparison);
+                ->addUsingAlias(PUBadgePeer::P_USER_ID, $pUser->getId(), $comparison);
         } elseif ($pUser instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUBadgesPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUBadgePeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
         }
@@ -506,7 +506,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -556,21 +556,21 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param   PRBadge|PropelObjectCollection $pRBadge The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PUBadgesQuery The current query, for fluid interface
+     * @return                 PUBadgeQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPRBadge($pRBadge, $comparison = null)
     {
         if ($pRBadge instanceof PRBadge) {
             return $this
-                ->addUsingAlias(PUBadgesPeer::P_R_BADGE_ID, $pRBadge->getId(), $comparison);
+                ->addUsingAlias(PUBadgePeer::P_R_BADGE_ID, $pRBadge->getId(), $comparison);
         } elseif ($pRBadge instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PUBadgesPeer::P_R_BADGE_ID, $pRBadge->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PUBadgePeer::P_R_BADGE_ID, $pRBadge->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPRBadge() only accepts arguments of type PRBadge or PropelCollection');
         }
@@ -582,7 +582,7 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
     public function joinPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -629,14 +629,14 @@ abstract class BasePUBadgesQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   PUBadges $pUBadges Object to remove from the list of results
+     * @param   PUBadge $pUBadge Object to remove from the list of results
      *
-     * @return PUBadgesQuery The current query, for fluid interface
+     * @return PUBadgeQuery The current query, for fluid interface
      */
-    public function prune($pUBadges = null)
+    public function prune($pUBadge = null)
     {
-        if ($pUBadges) {
-            $this->addUsingAlias(PUBadgesPeer::ID, $pUBadges->getId(), Criteria::NOT_EQUAL);
+        if ($pUBadge) {
+            $this->addUsingAlias(PUBadgePeer::ID, $pUBadge->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -719,31 +719,31 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUBadgesPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUBadgePeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUBadgesPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PUBadgePeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUBadgesPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PUBadgePeer::UPDATED_AT);
     }
 
     /**
@@ -751,31 +751,31 @@ abstract class BasePUBadgesQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PUBadgesPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PUBadgePeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PUBadgesPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PUBadgePeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PUBadgesQuery The current query, for fluid interface
+     * @return     PUBadgeQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PUBadgesPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PUBadgePeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -816,8 +816,8 @@ abstract class BasePUBadgesQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PUBadgesPeer::DATABASE_NAME);
-        $db = Propel::getDB(PUBadgesPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PUBadgePeer::DATABASE_NAME);
+        $db = Propel::getDB(PUBadgePeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

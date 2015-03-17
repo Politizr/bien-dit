@@ -5,7 +5,6 @@ use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PUFollowDDQuery;
 
-
 /**
  * Gestion des liens proposés à l'utilisateur en fonction de:
  *  - ses droits (citoyen / élu)
@@ -23,7 +22,8 @@ class AdminAjaxExtension extends \Twig_Extension
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->logger = $serviceContainer->get('logger');
 
         $this->router = $serviceContainer->get('router');
@@ -52,67 +52,115 @@ class AdminAjaxExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'adminUserTags'  => new \Twig_Function_Method($this, 'adminUserTags', array(
+            'adminUserTags'  => new \Twig_Function_Method(
+                $this,
+                'adminUserTags',
+                array(
+                    'is_safe' => array('html')
+                )
+            ),
+            'adminUserDebates'  => new \Twig_Function_Method(
+                $this,
+                'adminUserDebates',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserDebates'  => new \Twig_Function_Method($this, 'adminUserDebates', array(
+            'adminUserReactions'  => new \Twig_Function_Method(
+                $this,
+                'adminUserReactions',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserReactions'  => new \Twig_Function_Method($this, 'adminUserReactions', array(
+            'adminUserComments'  => new \Twig_Function_Method(
+                $this,
+                'adminUserComments',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserComments'  => new \Twig_Function_Method($this, 'adminUserComments', array(
+            'adminUserFollowersQ'  => new \Twig_Function_Method(
+                $this,
+                'adminUserFollowersQ',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserFollowersQ'  => new \Twig_Function_Method($this, 'adminUserFollowersQ', array(
+            'adminUserFollowersC'  => new \Twig_Function_Method(
+                $this,
+                'adminUserFollowersC',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserFollowersC'  => new \Twig_Function_Method($this, 'adminUserFollowersC', array(
+            'adminUserSubscribersQ'  => new \Twig_Function_Method(
+                $this,
+                'adminUserSubscribersQ',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserSubscribersQ'  => new \Twig_Function_Method($this, 'adminUserSubscribersQ', array(
+            'adminUserSubscribersC'  => new \Twig_Function_Method(
+                $this,
+                'adminUserSubscribersC',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserSubscribersC'  => new \Twig_Function_Method($this, 'adminUserSubscribersC', array(
+            'adminUserBadges'  => new \Twig_Function_Method(
+                $this,
+                'adminUserBadges',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserBadges'  => new \Twig_Function_Method($this, 'adminUserBadges', array(
+            'adminUserAffinities'  => new \Twig_Function_Method(
+                $this,
+                'adminUserAffinities',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserAffinities'  => new \Twig_Function_Method($this, 'adminUserAffinities', array(
+            'adminDebateReactions'  => new \Twig_Function_Method(
+                $this,
+                'adminDebateReactions',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateReactions'  => new \Twig_Function_Method($this, 'adminDebateReactions', array(
+            'adminDebateComments'  => new \Twig_Function_Method(
+                $this,
+                'adminDebateComments',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateComments'  => new \Twig_Function_Method($this, 'adminDebateComments', array(
+            'adminDebateTags'  => new \Twig_Function_Method(
+                $this,
+                'adminDebateTags',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateTags'  => new \Twig_Function_Method($this, 'adminDebateTags', array(
+            'adminDebateFollowersQ'  => new \Twig_Function_Method(
+                $this,
+                'adminDebateFollowersQ',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateFollowersQ'  => new \Twig_Function_Method($this, 'adminDebateFollowersQ', array(
+            'adminDebateFollowersC'  => new \Twig_Function_Method(
+                $this,
+                'adminDebateFollowersC',
+                array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateFollowersC'  => new \Twig_Function_Method($this, 'adminDebateFollowersC', array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'adminReactionComments'  => new \Twig_Function_Method($this, 'adminReactionComments', array(
+            'adminReactionComments'  => new \Twig_Function_Method(
+                $this,
+                'adminReactionComments',
+                array(
                     'is_safe' => array('html')
                     )
             ),
@@ -149,13 +197,14 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:'.$template, array(
-                                'pUser' => $pUser,
-                                'ptTagTypeId' => $ptTagTypeId,
-                                'zoneId' => $zoneId,
-                                'pTags' => $pUser->getTaggedTags($ptTagTypeId)
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:'.$template,
+            array(
+                'pUser' => $pUser,
+                'ptTagTypeId' => $ptTagTypeId,
+                'zoneId' => $zoneId,
+                'pTags' => $pUser->getTaggedTags($ptTagTypeId)
+            )
+        );
 
         return $html;
 
@@ -175,11 +224,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserDebates.html.twig', array(
-                                'pUser' => $pUser,
-                                'pdDebates' => $pUser->getDebates(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserDebates.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pdDebates' => $pUser->getDebates(),
+            )
+        );
 
         return $html;
 
@@ -200,11 +250,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserReactions.html.twig', array(
-                                'pUser' => $pUser,
-                                'pdReactions' => $pUser->getReactions(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserReactions.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pdReactions' => $pUser->getReactions(),
+            )
+        );
 
         return $html;
 
@@ -225,11 +276,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserComments.html.twig', array(
-                                'pUser' => $pUser,
-                                'pdComments' => $pUser->getComments(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserComments.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pdComments' => $pUser->getComments(),
+            )
+        );
 
         return $html;
 
@@ -250,11 +302,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserCommentsR.html.twig', array(
-                                'pUser' => $pUser,
-                                'pdrComments' => $pUser->getCommentsR(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserCommentsR.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pdrComments' => $pUser->getCommentsR(),
+            )
+        );
 
         return $html;
 
@@ -274,11 +327,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
-                                'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserFollowersQ(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pUsers' => $pUser->getFollowersQ(),
+            )
+        );
 
         return $html;
     }
@@ -298,11 +352,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
-                                'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserFollowersC(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pUsers' => $pUser->getFollowersC(),
+            )
+        );
 
         return $html;
     }
@@ -322,11 +377,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
-                                'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserSubscribersQ(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pUsers' => $pUser->getPUserSubscribersQ(),
+            )
+        );
 
         return $html;
     }
@@ -346,11 +402,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig', array(
-                                'pUser' => $pUser,
-                                'pUsers' => $pUser->getPUserSubscribersC(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            array(
+                'pUser' => $pUser,
+                'pUsers' => $pUser->getPUserSubscribersC(),
+            )
+        );
 
         return $html;
     }
@@ -372,12 +429,13 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserBadges.html.twig', array(
-                                'pUser' => $pUser,
-                                'badges' => $pUser->getBadges($prBadgeType),
-                                'zoneId' => $zoneId,
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserBadges.html.twig',
+            array(
+                'pUser' => $pUser,
+                'badges' => $pUser->getBadges($prBadgeType),
+                'zoneId' => $zoneId,
+            )
+        );
 
         return $html;
 
@@ -397,11 +455,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig', array(
-                                'pUser' => $pUser,
-                                'organizations' => $pUser->getCurrentOrganizations(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig',
+            array(
+                'pUser' => $pUser,
+                'organizations' => $pUser->getCurrentOrganizations(),
+            )
+        );
 
         return $html;
     }
@@ -433,11 +492,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:'.$template, array(
-                                'pdDebate' => $pdDebate,
-                                'PDReactions' => $pdDebate->getTreeReactions(false, false),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:'.$template,
+            array(
+                'pdDebate' => $pdDebate,
+                'PDReactions' => $pdDebate->getTreeReactions(false, false),
+            )
+        );
 
         return $html;
     }
@@ -457,11 +517,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:DebateComments.html.twig', array(
-                                'pdDebate' => $pdDebate,
-                                'pdComments' => $pdDebate->getComments(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:DebateComments.html.twig',
+            array(
+                'pdDebate' => $pdDebate,
+                'pdComments' => $pdDebate->getComments(),
+            )
+        );
 
         return $html;
     }
@@ -494,13 +555,14 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:'.$template, array(
-                                'pdDebate' => $pdDebate,
-                                'ptTagTypeId' => $ptTagTypeId,
-                                'zoneId' => $zoneId,
-                                'pTags' => $pdDebate->getTags($ptTagTypeId)
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:'.$template,
+            array(
+                'pdDebate' => $pdDebate,
+                'ptTagTypeId' => $ptTagTypeId,
+                'zoneId' => $zoneId,
+                'pTags' => $pdDebate->getTags($ptTagTypeId)
+            )
+        );
 
         return $html;
 
@@ -520,11 +582,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig', array(
-                                'pdDebate' => $pdDebate,
-                                'pUsers' => $pdDebate->getFollowersQ(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig',
+            array(
+                'pdDebate' => $pdDebate,
+                'pUsers' => $pdDebate->getFollowersQ(),
+            )
+        );
 
         return $html;
     }
@@ -544,11 +607,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig', array(
-                                'pdDebate' => $pdDebate,
-                                'pUsers' => $pdDebate->getFollowersC(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig',
+            array(
+                'pdDebate' => $pdDebate,
+                'pUsers' => $pdDebate->getFollowersC(),
+            )
+        );
 
         return $html;
     }
@@ -571,11 +635,12 @@ class AdminAjaxExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrAdminBundle:Fragment:ReactionComments.html.twig', array(
-                                'pdReaction' => $pdReaction,
-                                'pdrComments' => $pdReaction->getComments(),
-                                )
-                    );
+            'PolitizrAdminBundle:Fragment:ReactionComments.html.twig',
+            array(
+                'pdReaction' => $pdReaction,
+                'pdrComments' => $pdReaction->getComments(),
+            )
+        );
 
         return $html;
     }
@@ -592,6 +657,4 @@ class AdminAjaxExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                                 FONCTIONS PRIVÉES                                        */
     /* ######################################################################################################## */
-
-
 }

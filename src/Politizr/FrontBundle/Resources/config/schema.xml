@@ -443,6 +443,10 @@
             <parameter name="reference_column_1" value="p_user_id" />
             <parameter name="reference_column_2" value="p_user_follower_id" />
         </behavior>
+
+        <column name="notif_debate" type="boolean" defaultValue="true" />
+        <column name="notif_reaction" type="boolean" defaultValue="true" />
+        <column name="notif_comment" type="boolean" defaultValue="true" />
     </table>    
 
     <table name="p_u_follow_d_d" isCrossRef="true">
@@ -453,6 +457,8 @@
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_d_debate_id" type="integer" required="true" />
 
+        <column name="notif_reaction" type="boolean" defaultValue="true" />
+
         <foreign-key foreignTable="p_user" phpName="PuFollowDdPUser" refPhpName="PuFollowDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
@@ -461,7 +467,7 @@
         </foreign-key>
     </table>
 
-    <table name="p_u_badges" isCrossRef="true">
+    <table name="p_u_badge" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
@@ -613,7 +619,7 @@
 
 
 
-    <table name="p_u_notifications" isCrossRef="true">
+    <table name="p_u_notification" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
@@ -628,11 +634,11 @@
         <column name="checked" type="boolean" />
         <column name="checked_at" type="timestamp" />
 
-        <foreign-key foreignTable="p_user" phpName="PUNotificationsPUser" refPhpName="PUNotificationsPUser" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" phpName="PUNotificationPUser" refPhpName="PUNotificationPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="p_notification" phpName="PUNotificationsPNotification" refPhpName="PUNotificationsPNotification" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_notification" phpName="PUNotificationPNotification" refPhpName="PUNotificationPNotification" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_notification_id" foreign="id" />
         </foreign-key>
     </table>

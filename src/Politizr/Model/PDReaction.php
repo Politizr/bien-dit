@@ -12,7 +12,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Model\om\BasePDReaction;
 
 class PDReaction extends BasePDReaction implements ContainerAwareInterface, HighlightableModelInterface
-{    
+{
     // ************************************************************************************ //
     //                                        CONSTANTES
     // ************************************************************************************ //
@@ -23,7 +23,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
       /**
        *
        */
-    public function getClassName() {
+    public function getClassName()
+    {
         return PDocument::TYPE_REACTION;
     }
 
@@ -34,14 +35,18 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
        /**
         *
         */
-    public function setContainer(ContainerInterface $container = null) {
-        if($container) $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_reaction');
+    public function setContainer(ContainerInterface $container = null)
+    {
+        if ($container) {
+            $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_reaction');
+        }
     }
 
     /**
      *
       */
-    public function getHighlights() {
+    public function getHighlights()
+    {
         return $this->highlights;
     }
 
@@ -50,7 +55,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @param array $highlights array of highlight strings
      */
-    public function setElasticHighlights(array $highlights) {
+    public function setElasticHighlights(array $highlights)
+    {
         $this->highlights = $highlights;
     }
 
@@ -59,7 +65,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postInsert(\PropelPDO $con = null) {
+    public function postInsert(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -73,7 +80,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postUpdate(\PropelPDO $con = null) {
+    public function postUpdate(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
                 $this->elasticaPersister->insertOne($this);
@@ -87,7 +95,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      * TODO: gestion d'une exception spécifique à ES
      *
      */
-    public function postDelete(\PropelPDO $con = null) {
+    public function postDelete(\PropelPDO $con = null)
+    {
         if ($this->elasticaPersister) {
             $this->elasticaPersister->deleteOne($this);
         } else {
@@ -104,7 +113,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      *  @return boolean
      */
-    public function isIndexable() {
+    public function isIndexable()
+    {
         return $this->getOnline() && $this->getPublished();
     }
 
@@ -179,7 +189,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
     // Colonnes virtuelles / fichiers
     public $uploadedFileName;
-    public function setUploadedFileName($uploadedFileName) {
+    public function setUploadedFileName($uploadedFileName)
+    {
         $this->uploadedFileName = $uploadedFileName;
     }
 
@@ -192,7 +203,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     }
     
     /**
-     * 
+     *
      */
     public function getUploadedFileName()
     {
@@ -228,7 +239,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
         // file_name
         return $fileName;
-    }    
+    }
 
     /**
      *    Surcharge pour gérer la suppression physique.
@@ -260,7 +271,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return     PDDebate     Objet débat
      */
-    public function getDocument() {
+    public function getDocument()
+    {
         return parent::getPDocument();
     }
 
@@ -269,7 +281,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return     PDDebate     Objet débat
      */
-    public function getDebate() {
+    public function getDebate()
+    {
         return parent::getPDDebate();
     }
 
@@ -280,12 +293,13 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserFollowersQ() {
+    public function getFollowersQ()
+    {
         $pdDebate = parent::getPDDebate();
 
         $pUsers = null;
         if ($pdDebate) {
-            $pUsers = $this->getPDDebate()->getPUserFollowersQ();
+            $pUsers = $this->getPDDebate()->getFollowersQ();
         }
 
         return $pUsers;
@@ -296,12 +310,13 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserFollowersC() {
+    public function getFollowersC()
+    {
         $pdDebate = parent::getPDDebate();
 
         $pUsers = null;
         if ($pdDebate) {
-            $pUsers = $this->getPDDebate()->getPUserFollowersC();
+            $pUsers = $this->getPDDebate()->getFollowersC();
         }
 
         return $pUsers;
@@ -317,7 +332,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function getChildrenReactions($online = true, $published = true) {
+    public function getChildrenReactions($online = true, $published = true)
+    {
         $query = PDReactionQuery::create()
                     ->filterByOnline($online)
                     ->filterByPublished($published);
@@ -331,7 +347,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function getDescendantsReactions($online = true, $published = true) {
+    public function getDescendantsReactions($online = true, $published = true)
+    {
         $query = PDReactionQuery::create()
                     ->filterByOnline($online)
                     ->filterByPublished($published);
@@ -347,7 +364,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function countChildrenReactions($online = true, $published = true) {
+    public function countChildrenReactions($online = true, $published = true)
+    {
         $query = PDReactionQuery::create()
                     ->filterByOnline($online)
                     ->filterByPublished($published)
@@ -359,7 +377,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     /**
      *     @see countChildrenReactions
      */
-    public function countReactions() {
+    public function countReactions()
+    {
         return $this->countChildrenReactions(true, true);
     }
 
@@ -370,7 +389,8 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     /**
      *
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->getPUser();
     }
 }

@@ -4,7 +4,7 @@ namespace Politizr\Frontbundle\Twig;
 use Politizr\Model\PDocument;
 use Politizr\Model\PUStatus;
 use Politizr\Model\PNotification;
-use Politizr\Model\PUNotifications;
+use Politizr\Model\PUNotification;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PRBadgeQuery;
@@ -282,10 +282,10 @@ class PolitizrUserExtension extends \Twig_Extension
         $followersC = array();
         $followersQ = array();
 
-        $nbC = $user->countPUserFollowersC();
-        $nbQ = $user->countPUserFollowersQ();
-        $followersC = $user->getPUserFollowersC();
-        $followersQ = $user->getPUserFollowersQ();
+        $nbC = $user->countFollowersC();
+        $nbQ = $user->countFollowersQ();
+        $followersC = $user->getFollowersC();
+        $followersQ = $user->getFollowersQ();
 
         // Construction du rendu du tag
         $html = $this->templating->render(
@@ -306,18 +306,20 @@ class PolitizrUserExtension extends \Twig_Extension
     /**
      * Construit la structure texte + liens associé à une notification.
      *
-     * @param $notification         PUNotifications
+     * @param $notification         PUNotification
      * @param $absolute             boolean                 URL absolu pour les liens
      *
      * @return html
      */
-    public function linkedNotification(PUNotifications $notification, $absolute = false)
+    public function linkedNotification(PUNotification $notification, $absolute = false)
     {
         // $this->logger->info('*** linkedNotification');
         // $this->logger->info('$notification = '.print_r($notification, true));
 
         // Récupération de l'objet d'interaction
         $commentDoc = '';
+        $reactionParentTitle = null;
+        $reactionParentUrl = null;
         switch ($notification->getPObjectName()) {
             case PDocument::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
@@ -328,6 +330,20 @@ class PolitizrUserExtension extends \Twig_Extension
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
+                
+                // Document parent associée à la réaction
+                if ($subject->getTreeLevel() > 1) {
+                    // Réaction parente
+                    $parent = $subject->getParent();
+                    $reactionParentTitle = $parent->getTitle();
+                    $reactionParentUrl = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()), $absolute);
+                } else {
+                    // Débat
+                    $debate = $subject->getDebate();
+                    $reactionParentTitle = $debate->getTitle();
+                    $reactionParentUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()), $absolute);
+                }
+
                 break;
             case PDocument::TYPE_COMMENT:
                 $subject = PDCommentQuery::create()->findPk($notification->getPObjectId());
@@ -372,6 +388,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 'title' => $title,
                 'url' => $url,
                 'commentDoc' => $commentDoc,
+                'reactionParentTitle' => $reactionParentTitle,
+                'reactionParentUrl' => $reactionParentUrl,
             )
         );
 

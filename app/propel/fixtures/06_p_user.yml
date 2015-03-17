@@ -635,6 +635,23 @@ Politizr\Model\PUSubscribeEmail:
         p_notification_id:  u_badge
         p_user_id:          fhollande
 
+    u1s11:
+        p_notification_id:  s_u_debate_publish
+        p_user_id:          fhollande
+
+    u1s12:
+        p_notification_id:  s_u_reaction_publish
+        p_user_id:          fhollande
+
+    u1s13:
+        p_notification_id:  s_u_comment_publish
+        p_user_id:          fhollande
+
+    u1s14:
+        p_notification_id:  s_d_reaction_publish
+        p_user_id:          fhollande
+
+
     u2s1:
         p_notification_id:  d_comment_publish
         p_user_id:          sarko
@@ -675,6 +692,19 @@ Politizr\Model\PUSubscribeEmail:
         p_notification_id:  u_badge
         p_user_id:          sarko
 
+    u2s11:
+        p_notification_id:  s_u_debate_publish
+        p_user_id:          sarko
 
+    u2s12:
+        p_notification_id:  s_u_reaction_publish
+        p_user_id:          sarko
 
+    u2s13:
+        p_notification_id:  s_u_comment_publish
+        p_user_id:          sarko
+
+    u2s14:
+        p_notification_id:  s_d_reaction_publish
+        p_user_id:          sarko
 

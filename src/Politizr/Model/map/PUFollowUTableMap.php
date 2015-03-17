@@ -42,6 +42,9 @@ class PUFollowUTableMap extends TableMap
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(false);
         // columns
+        $this->addColumn('notif_debate', 'NotifDebate', 'BOOLEAN', false, 1, true);
+        $this->addColumn('notif_reaction', 'NotifReaction', 'BOOLEAN', false, 1, true);
+        $this->addColumn('notif_comment', 'NotifComment', 'BOOLEAN', false, 1, true);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);

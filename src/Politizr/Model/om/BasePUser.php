@@ -41,8 +41,8 @@ use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUAffinityQOQuery;
-use Politizr\Model\PUBadges;
-use Politizr\Model\PUBadgesQuery;
+use Politizr\Model\PUBadge;
+use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUFollowDD;
@@ -54,8 +54,8 @@ use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUMandateQuery;
-use Politizr\Model\PUNotifications;
-use Politizr\Model\PUNotificationsQuery;
+use Politizr\Model\PUNotification;
+use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PURoleQ;
@@ -402,10 +402,10 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuFollowDdPUsersPartial;
 
     /**
-     * @var        PropelObjectCollection|PUBadges[] Collection to store aggregation of PUBadges objects.
+     * @var        PropelObjectCollection|PUBadge[] Collection to store aggregation of PUBadge objects.
      */
-    protected $collPUBadgess;
-    protected $collPUBadgessPartial;
+    protected $collPUBadges;
+    protected $collPUBadgesPartial;
 
     /**
      * @var        PropelObjectCollection|PUReputation[] Collection to store aggregation of PUReputation objects.
@@ -450,10 +450,10 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPUCurrentQOPUsersPartial;
 
     /**
-     * @var        PropelObjectCollection|PUNotifications[] Collection to store aggregation of PUNotifications objects.
+     * @var        PropelObjectCollection|PUNotification[] Collection to store aggregation of PUNotification objects.
      */
-    protected $collPUNotificationsPUsers;
-    protected $collPUNotificationsPUsersPartial;
+    protected $collPUNotificationPUsers;
+    protected $collPUNotificationPUsersPartial;
 
     /**
      * @var        PropelObjectCollection|PUSubscribeEmail[] Collection to store aggregation of PUSubscribeEmail objects.
@@ -546,7 +546,7 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PNotification[] Collection to store aggregation of PNotification objects.
      */
-    protected $collPUNotificationsPNotifications;
+    protected $collPUNotificationPNotifications;
 
     /**
      * @var        PropelObjectCollection|PNotification[] Collection to store aggregation of PNotification objects.
@@ -648,7 +648,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUNotificationsPNotificationsScheduledForDeletion = null;
+    protected $pUNotificationPNotificationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -684,7 +684,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUBadgessScheduledForDeletion = null;
+    protected $pUBadgesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -732,7 +732,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pUNotificationsPUsersScheduledForDeletion = null;
+    protected $pUNotificationPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2841,7 +2841,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPuFollowDdPUsers = null;
 
-            $this->collPUBadgess = null;
+            $this->collPUBadges = null;
 
             $this->collPUReputations = null;
 
@@ -2857,7 +2857,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPUCurrentQOPUsers = null;
 
-            $this->collPUNotificationsPUsers = null;
+            $this->collPUNotificationPUsers = null;
 
             $this->collPUSubscribeEmailPUsers = null;
 
@@ -2883,7 +2883,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPQualifications = null;
             $this->collPUAffinityQOPQOrganizations = null;
             $this->collPUCurrentQOPQOrganizations = null;
-            $this->collPUNotificationsPNotifications = null;
+            $this->collPUNotificationPNotifications = null;
             $this->collPUSubscribeEmailPNotifications = null;
             $this->collPUSubscribeScreenPNotifications = null;
         } // if (deep)
@@ -3101,7 +3101,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                     foreach ($this->pRBadgesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PUBadgesQuery::create()
+                    PUBadgeQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pRBadgesScheduledForDeletion = null;
@@ -3276,28 +3276,28 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUNotificationsPNotificationsScheduledForDeletion !== null) {
-                if (!$this->pUNotificationsPNotificationsScheduledForDeletion->isEmpty()) {
+            if ($this->pUNotificationPNotificationsScheduledForDeletion !== null) {
+                if (!$this->pUNotificationPNotificationsScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->pUNotificationsPNotificationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                    foreach ($this->pUNotificationPNotificationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($pk, $remotePk);
                     }
-                    PUNotificationsQuery::create()
+                    PUNotificationQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->pUNotificationsPNotificationsScheduledForDeletion = null;
+                    $this->pUNotificationPNotificationsScheduledForDeletion = null;
                 }
 
-                foreach ($this->getPUNotificationsPNotifications() as $pUNotificationsPNotification) {
-                    if ($pUNotificationsPNotification->isModified()) {
-                        $pUNotificationsPNotification->save($con);
+                foreach ($this->getPUNotificationPNotifications() as $pUNotificationPNotification) {
+                    if ($pUNotificationPNotification->isModified()) {
+                        $pUNotificationPNotification->save($con);
                     }
                 }
-            } elseif ($this->collPUNotificationsPNotifications) {
-                foreach ($this->collPUNotificationsPNotifications as $pUNotificationsPNotification) {
-                    if ($pUNotificationsPNotification->isModified()) {
-                        $pUNotificationsPNotification->save($con);
+            } elseif ($this->collPUNotificationPNotifications) {
+                foreach ($this->collPUNotificationPNotifications as $pUNotificationPNotification) {
+                    if ($pUNotificationPNotification->isModified()) {
+                        $pUNotificationPNotification->save($con);
                     }
                 }
             }
@@ -3407,17 +3407,17 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUBadgessScheduledForDeletion !== null) {
-                if (!$this->pUBadgessScheduledForDeletion->isEmpty()) {
-                    PUBadgesQuery::create()
-                        ->filterByPrimaryKeys($this->pUBadgessScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pUBadgesScheduledForDeletion !== null) {
+                if (!$this->pUBadgesScheduledForDeletion->isEmpty()) {
+                    PUBadgeQuery::create()
+                        ->filterByPrimaryKeys($this->pUBadgesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pUBadgessScheduledForDeletion = null;
+                    $this->pUBadgesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPUBadgess !== null) {
-                foreach ($this->collPUBadgess as $referrerFK) {
+            if ($this->collPUBadges !== null) {
+                foreach ($this->collPUBadges as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3543,17 +3543,17 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pUNotificationsPUsersScheduledForDeletion !== null) {
-                if (!$this->pUNotificationsPUsersScheduledForDeletion->isEmpty()) {
-                    PUNotificationsQuery::create()
-                        ->filterByPrimaryKeys($this->pUNotificationsPUsersScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pUNotificationPUsersScheduledForDeletion !== null) {
+                if (!$this->pUNotificationPUsersScheduledForDeletion->isEmpty()) {
+                    PUNotificationQuery::create()
+                        ->filterByPrimaryKeys($this->pUNotificationPUsersScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pUNotificationsPUsersScheduledForDeletion = null;
+                    $this->pUNotificationPUsersScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPUNotificationsPUsers !== null) {
-                foreach ($this->collPUNotificationsPUsers as $referrerFK) {
+            if ($this->collPUNotificationPUsers !== null) {
+                foreach ($this->collPUNotificationPUsers as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -4142,8 +4142,8 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPUBadgess !== null) {
-                    foreach ($this->collPUBadgess as $referrerFK) {
+                if ($this->collPUBadges !== null) {
+                    foreach ($this->collPUBadges as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -4206,8 +4206,8 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPUNotificationsPUsers !== null) {
-                    foreach ($this->collPUNotificationsPUsers as $referrerFK) {
+                if ($this->collPUNotificationPUsers !== null) {
+                    foreach ($this->collPUNotificationPUsers as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -4541,8 +4541,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPuFollowDdPUsers) {
                 $result['PuFollowDdPUsers'] = $this->collPuFollowDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPUBadgess) {
-                $result['PUBadgess'] = $this->collPUBadgess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUBadges) {
+                $result['PUBadges'] = $this->collPUBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPUReputations) {
                 $result['PUReputations'] = $this->collPUReputations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -4565,8 +4565,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPUCurrentQOPUsers) {
                 $result['PUCurrentQOPUsers'] = $this->collPUCurrentQOPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPUNotificationsPUsers) {
-                $result['PUNotificationsPUsers'] = $this->collPUNotificationsPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUNotificationPUsers) {
+                $result['PUNotificationPUsers'] = $this->collPUNotificationPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPUSubscribeEmailPUsers) {
                 $result['PUSubscribeEmailPUsers'] = $this->collPUSubscribeEmailPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5027,9 +5027,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPUBadgess() as $relObj) {
+            foreach ($this->getPUBadges() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUBadges($relObj->copy($deepCopy));
+                    $copyObj->addPUBadge($relObj->copy($deepCopy));
                 }
             }
 
@@ -5075,9 +5075,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPUNotificationsPUsers() as $relObj) {
+            foreach ($this->getPUNotificationPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPUNotificationsPUser($relObj->copy($deepCopy));
+                    $copyObj->addPUNotificationPUser($relObj->copy($deepCopy));
                 }
             }
 
@@ -5251,8 +5251,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ('PuFollowDdPUser' == $relationName) {
             $this->initPuFollowDdPUsers();
         }
-        if ('PUBadges' == $relationName) {
-            $this->initPUBadgess();
+        if ('PUBadge' == $relationName) {
+            $this->initPUBadges();
         }
         if ('PUReputation' == $relationName) {
             $this->initPUReputations();
@@ -5275,8 +5275,8 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ('PUCurrentQOPUser' == $relationName) {
             $this->initPUCurrentQOPUsers();
         }
-        if ('PUNotificationsPUser' == $relationName) {
-            $this->initPUNotificationsPUsers();
+        if ('PUNotificationPUser' == $relationName) {
+            $this->initPUNotificationPUsers();
         }
         if ('PUSubscribeEmailPUser' == $relationName) {
             $this->initPUSubscribeEmailPUsers();
@@ -6130,36 +6130,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPUBadgess collection
+     * Clears out the collPUBadges collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPUBadgess()
+     * @see        addPUBadges()
      */
-    public function clearPUBadgess()
+    public function clearPUBadges()
     {
-        $this->collPUBadgess = null; // important to set this to null since that means it is uninitialized
-        $this->collPUBadgessPartial = null;
+        $this->collPUBadges = null; // important to set this to null since that means it is uninitialized
+        $this->collPUBadgesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUBadgess collection loaded partially
+     * reset is the collPUBadges collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUBadgess($v = true)
+    public function resetPartialPUBadges($v = true)
     {
-        $this->collPUBadgessPartial = $v;
+        $this->collPUBadgesPartial = $v;
     }
 
     /**
-     * Initializes the collPUBadgess collection.
+     * Initializes the collPUBadges collection.
      *
-     * By default this just sets the collPUBadgess collection to an empty array (like clearcollPUBadgess());
+     * By default this just sets the collPUBadges collection to an empty array (like clearcollPUBadges());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -6168,17 +6168,17 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUBadgess($overrideExisting = true)
+    public function initPUBadges($overrideExisting = true)
     {
-        if (null !== $this->collPUBadgess && !$overrideExisting) {
+        if (null !== $this->collPUBadges && !$overrideExisting) {
             return;
         }
-        $this->collPUBadgess = new PropelObjectCollection();
-        $this->collPUBadgess->setModel('PUBadges');
+        $this->collPUBadges = new PropelObjectCollection();
+        $this->collPUBadges->setModel('PUBadge');
     }
 
     /**
-     * Gets an array of PUBadges objects which contain a foreign key that references this object.
+     * Gets an array of PUBadge objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -6188,107 +6188,107 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUBadges[] List of PUBadges objects
+     * @return PropelObjectCollection|PUBadge[] List of PUBadge objects
      * @throws PropelException
      */
-    public function getPUBadgess($criteria = null, PropelPDO $con = null)
+    public function getPUBadges($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUBadgessPartial && !$this->isNew();
-        if (null === $this->collPUBadgess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUBadgess) {
+        $partial = $this->collPUBadgesPartial && !$this->isNew();
+        if (null === $this->collPUBadges || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUBadges) {
                 // return empty collection
-                $this->initPUBadgess();
+                $this->initPUBadges();
             } else {
-                $collPUBadgess = PUBadgesQuery::create(null, $criteria)
+                $collPUBadges = PUBadgeQuery::create(null, $criteria)
                     ->filterByPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUBadgessPartial && count($collPUBadgess)) {
-                      $this->initPUBadgess(false);
+                    if (false !== $this->collPUBadgesPartial && count($collPUBadges)) {
+                      $this->initPUBadges(false);
 
-                      foreach ($collPUBadgess as $obj) {
-                        if (false == $this->collPUBadgess->contains($obj)) {
-                          $this->collPUBadgess->append($obj);
+                      foreach ($collPUBadges as $obj) {
+                        if (false == $this->collPUBadges->contains($obj)) {
+                          $this->collPUBadges->append($obj);
                         }
                       }
 
-                      $this->collPUBadgessPartial = true;
+                      $this->collPUBadgesPartial = true;
                     }
 
-                    $collPUBadgess->getInternalIterator()->rewind();
+                    $collPUBadges->getInternalIterator()->rewind();
 
-                    return $collPUBadgess;
+                    return $collPUBadges;
                 }
 
-                if ($partial && $this->collPUBadgess) {
-                    foreach ($this->collPUBadgess as $obj) {
+                if ($partial && $this->collPUBadges) {
+                    foreach ($this->collPUBadges as $obj) {
                         if ($obj->isNew()) {
-                            $collPUBadgess[] = $obj;
+                            $collPUBadges[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUBadgess = $collPUBadgess;
-                $this->collPUBadgessPartial = false;
+                $this->collPUBadges = $collPUBadges;
+                $this->collPUBadgesPartial = false;
             }
         }
 
-        return $this->collPUBadgess;
+        return $this->collPUBadges;
     }
 
     /**
-     * Sets a collection of PUBadges objects related by a one-to-many relationship
+     * Sets a collection of PUBadge objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUBadgess A Propel collection.
+     * @param PropelCollection $pUBadges A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPUBadgess(PropelCollection $pUBadgess, PropelPDO $con = null)
+    public function setPUBadges(PropelCollection $pUBadges, PropelPDO $con = null)
     {
-        $pUBadgessToDelete = $this->getPUBadgess(new Criteria(), $con)->diff($pUBadgess);
+        $pUBadgesToDelete = $this->getPUBadges(new Criteria(), $con)->diff($pUBadges);
 
 
-        $this->pUBadgessScheduledForDeletion = $pUBadgessToDelete;
+        $this->pUBadgesScheduledForDeletion = $pUBadgesToDelete;
 
-        foreach ($pUBadgessToDelete as $pUBadgesRemoved) {
-            $pUBadgesRemoved->setPUser(null);
+        foreach ($pUBadgesToDelete as $pUBadgeRemoved) {
+            $pUBadgeRemoved->setPUser(null);
         }
 
-        $this->collPUBadgess = null;
-        foreach ($pUBadgess as $pUBadges) {
-            $this->addPUBadges($pUBadges);
+        $this->collPUBadges = null;
+        foreach ($pUBadges as $pUBadge) {
+            $this->addPUBadge($pUBadge);
         }
 
-        $this->collPUBadgess = $pUBadgess;
-        $this->collPUBadgessPartial = false;
+        $this->collPUBadges = $pUBadges;
+        $this->collPUBadgesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PUBadges objects.
+     * Returns the number of related PUBadge objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PUBadges objects.
+     * @return int             Count of related PUBadge objects.
      * @throws PropelException
      */
-    public function countPUBadgess(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUBadges(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUBadgessPartial && !$this->isNew();
-        if (null === $this->collPUBadgess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUBadgess) {
+        $partial = $this->collPUBadgesPartial && !$this->isNew();
+        if (null === $this->collPUBadges || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUBadges) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUBadgess());
+                return count($this->getPUBadges());
             }
-            $query = PUBadgesQuery::create(null, $criteria);
+            $query = PUBadgeQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -6298,28 +6298,28 @@ abstract class BasePUser extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPUBadgess);
+        return count($this->collPUBadges);
     }
 
     /**
-     * Method called to associate a PUBadges object to this object
-     * through the PUBadges foreign key attribute.
+     * Method called to associate a PUBadge object to this object
+     * through the PUBadge foreign key attribute.
      *
-     * @param    PUBadges $l PUBadges
+     * @param    PUBadge $l PUBadge
      * @return PUser The current object (for fluent API support)
      */
-    public function addPUBadges(PUBadges $l)
+    public function addPUBadge(PUBadge $l)
     {
-        if ($this->collPUBadgess === null) {
-            $this->initPUBadgess();
-            $this->collPUBadgessPartial = true;
+        if ($this->collPUBadges === null) {
+            $this->initPUBadges();
+            $this->collPUBadgesPartial = true;
         }
 
-        if (!in_array($l, $this->collPUBadgess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUBadges($l);
+        if (!in_array($l, $this->collPUBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUBadge($l);
 
-            if ($this->pUBadgessScheduledForDeletion and $this->pUBadgessScheduledForDeletion->contains($l)) {
-                $this->pUBadgessScheduledForDeletion->remove($this->pUBadgessScheduledForDeletion->search($l));
+            if ($this->pUBadgesScheduledForDeletion and $this->pUBadgesScheduledForDeletion->contains($l)) {
+                $this->pUBadgesScheduledForDeletion->remove($this->pUBadgesScheduledForDeletion->search($l));
             }
         }
 
@@ -6327,28 +6327,28 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to add.
+     * @param	PUBadge $pUBadge The pUBadge object to add.
      */
-    protected function doAddPUBadges($pUBadges)
+    protected function doAddPUBadge($pUBadge)
     {
-        $this->collPUBadgess[]= $pUBadges;
-        $pUBadges->setPUser($this);
+        $this->collPUBadges[]= $pUBadge;
+        $pUBadge->setPUser($this);
     }
 
     /**
-     * @param	PUBadges $pUBadges The pUBadges object to remove.
+     * @param	PUBadge $pUBadge The pUBadge object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePUBadges($pUBadges)
+    public function removePUBadge($pUBadge)
     {
-        if ($this->getPUBadgess()->contains($pUBadges)) {
-            $this->collPUBadgess->remove($this->collPUBadgess->search($pUBadges));
-            if (null === $this->pUBadgessScheduledForDeletion) {
-                $this->pUBadgessScheduledForDeletion = clone $this->collPUBadgess;
-                $this->pUBadgessScheduledForDeletion->clear();
+        if ($this->getPUBadges()->contains($pUBadge)) {
+            $this->collPUBadges->remove($this->collPUBadges->search($pUBadge));
+            if (null === $this->pUBadgesScheduledForDeletion) {
+                $this->pUBadgesScheduledForDeletion = clone $this->collPUBadges;
+                $this->pUBadgesScheduledForDeletion->clear();
             }
-            $this->pUBadgessScheduledForDeletion[]= clone $pUBadges;
-            $pUBadges->setPUser(null);
+            $this->pUBadgesScheduledForDeletion[]= clone $pUBadge;
+            $pUBadge->setPUser(null);
         }
 
         return $this;
@@ -6360,7 +6360,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PUBadgess from storage.
+     * been saved, it will retrieve related PUBadges from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -6369,14 +6369,14 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUBadges[] List of PUBadges objects
+     * @return PropelObjectCollection|PUBadge[] List of PUBadge objects
      */
-    public function getPUBadgessJoinPRBadge($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUBadgesJoinPRBadge($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PUBadgesQuery::create(null, $criteria);
+        $query = PUBadgeQuery::create(null, $criteria);
         $query->joinWith('PRBadge', $join_behavior);
 
-        return $this->getPUBadgess($query, $con);
+        return $this->getPUBadges($query, $con);
     }
 
     /**
@@ -8180,36 +8180,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPUNotificationsPUsers collection
+     * Clears out the collPUNotificationPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPUNotificationsPUsers()
+     * @see        addPUNotificationPUsers()
      */
-    public function clearPUNotificationsPUsers()
+    public function clearPUNotificationPUsers()
     {
-        $this->collPUNotificationsPUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collPUNotificationsPUsersPartial = null;
+        $this->collPUNotificationPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUNotificationPUsersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPUNotificationsPUsers collection loaded partially
+     * reset is the collPUNotificationPUsers collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPUNotificationsPUsers($v = true)
+    public function resetPartialPUNotificationPUsers($v = true)
     {
-        $this->collPUNotificationsPUsersPartial = $v;
+        $this->collPUNotificationPUsersPartial = $v;
     }
 
     /**
-     * Initializes the collPUNotificationsPUsers collection.
+     * Initializes the collPUNotificationPUsers collection.
      *
-     * By default this just sets the collPUNotificationsPUsers collection to an empty array (like clearcollPUNotificationsPUsers());
+     * By default this just sets the collPUNotificationPUsers collection to an empty array (like clearcollPUNotificationPUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -8218,17 +8218,17 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPUNotificationsPUsers($overrideExisting = true)
+    public function initPUNotificationPUsers($overrideExisting = true)
     {
-        if (null !== $this->collPUNotificationsPUsers && !$overrideExisting) {
+        if (null !== $this->collPUNotificationPUsers && !$overrideExisting) {
             return;
         }
-        $this->collPUNotificationsPUsers = new PropelObjectCollection();
-        $this->collPUNotificationsPUsers->setModel('PUNotifications');
+        $this->collPUNotificationPUsers = new PropelObjectCollection();
+        $this->collPUNotificationPUsers->setModel('PUNotification');
     }
 
     /**
-     * Gets an array of PUNotifications objects which contain a foreign key that references this object.
+     * Gets an array of PUNotification objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -8238,138 +8238,138 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUNotifications[] List of PUNotifications objects
+     * @return PropelObjectCollection|PUNotification[] List of PUNotification objects
      * @throws PropelException
      */
-    public function getPUNotificationsPUsers($criteria = null, PropelPDO $con = null)
+    public function getPUNotificationPUsers($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPUNotificationsPUsersPartial && !$this->isNew();
-        if (null === $this->collPUNotificationsPUsers || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPUNotificationsPUsers) {
+        $partial = $this->collPUNotificationPUsersPartial && !$this->isNew();
+        if (null === $this->collPUNotificationPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUNotificationPUsers) {
                 // return empty collection
-                $this->initPUNotificationsPUsers();
+                $this->initPUNotificationPUsers();
             } else {
-                $collPUNotificationsPUsers = PUNotificationsQuery::create(null, $criteria)
-                    ->filterByPUNotificationsPUser($this)
+                $collPUNotificationPUsers = PUNotificationQuery::create(null, $criteria)
+                    ->filterByPUNotificationPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPUNotificationsPUsersPartial && count($collPUNotificationsPUsers)) {
-                      $this->initPUNotificationsPUsers(false);
+                    if (false !== $this->collPUNotificationPUsersPartial && count($collPUNotificationPUsers)) {
+                      $this->initPUNotificationPUsers(false);
 
-                      foreach ($collPUNotificationsPUsers as $obj) {
-                        if (false == $this->collPUNotificationsPUsers->contains($obj)) {
-                          $this->collPUNotificationsPUsers->append($obj);
+                      foreach ($collPUNotificationPUsers as $obj) {
+                        if (false == $this->collPUNotificationPUsers->contains($obj)) {
+                          $this->collPUNotificationPUsers->append($obj);
                         }
                       }
 
-                      $this->collPUNotificationsPUsersPartial = true;
+                      $this->collPUNotificationPUsersPartial = true;
                     }
 
-                    $collPUNotificationsPUsers->getInternalIterator()->rewind();
+                    $collPUNotificationPUsers->getInternalIterator()->rewind();
 
-                    return $collPUNotificationsPUsers;
+                    return $collPUNotificationPUsers;
                 }
 
-                if ($partial && $this->collPUNotificationsPUsers) {
-                    foreach ($this->collPUNotificationsPUsers as $obj) {
+                if ($partial && $this->collPUNotificationPUsers) {
+                    foreach ($this->collPUNotificationPUsers as $obj) {
                         if ($obj->isNew()) {
-                            $collPUNotificationsPUsers[] = $obj;
+                            $collPUNotificationPUsers[] = $obj;
                         }
                     }
                 }
 
-                $this->collPUNotificationsPUsers = $collPUNotificationsPUsers;
-                $this->collPUNotificationsPUsersPartial = false;
+                $this->collPUNotificationPUsers = $collPUNotificationPUsers;
+                $this->collPUNotificationPUsersPartial = false;
             }
         }
 
-        return $this->collPUNotificationsPUsers;
+        return $this->collPUNotificationPUsers;
     }
 
     /**
-     * Sets a collection of PUNotificationsPUser objects related by a one-to-many relationship
+     * Sets a collection of PUNotificationPUser objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUNotificationsPUsers A Propel collection.
+     * @param PropelCollection $pUNotificationPUsers A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPUNotificationsPUsers(PropelCollection $pUNotificationsPUsers, PropelPDO $con = null)
+    public function setPUNotificationPUsers(PropelCollection $pUNotificationPUsers, PropelPDO $con = null)
     {
-        $pUNotificationsPUsersToDelete = $this->getPUNotificationsPUsers(new Criteria(), $con)->diff($pUNotificationsPUsers);
+        $pUNotificationPUsersToDelete = $this->getPUNotificationPUsers(new Criteria(), $con)->diff($pUNotificationPUsers);
 
 
-        $this->pUNotificationsPUsersScheduledForDeletion = $pUNotificationsPUsersToDelete;
+        $this->pUNotificationPUsersScheduledForDeletion = $pUNotificationPUsersToDelete;
 
-        foreach ($pUNotificationsPUsersToDelete as $pUNotificationsPUserRemoved) {
-            $pUNotificationsPUserRemoved->setPUNotificationsPUser(null);
+        foreach ($pUNotificationPUsersToDelete as $pUNotificationPUserRemoved) {
+            $pUNotificationPUserRemoved->setPUNotificationPUser(null);
         }
 
-        $this->collPUNotificationsPUsers = null;
-        foreach ($pUNotificationsPUsers as $pUNotificationsPUser) {
-            $this->addPUNotificationsPUser($pUNotificationsPUser);
+        $this->collPUNotificationPUsers = null;
+        foreach ($pUNotificationPUsers as $pUNotificationPUser) {
+            $this->addPUNotificationPUser($pUNotificationPUser);
         }
 
-        $this->collPUNotificationsPUsers = $pUNotificationsPUsers;
-        $this->collPUNotificationsPUsersPartial = false;
+        $this->collPUNotificationPUsers = $pUNotificationPUsers;
+        $this->collPUNotificationPUsersPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PUNotifications objects.
+     * Returns the number of related PUNotification objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PUNotifications objects.
+     * @return int             Count of related PUNotification objects.
      * @throws PropelException
      */
-    public function countPUNotificationsPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUNotificationPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPUNotificationsPUsersPartial && !$this->isNew();
-        if (null === $this->collPUNotificationsPUsers || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPUNotificationsPUsers) {
+        $partial = $this->collPUNotificationPUsersPartial && !$this->isNew();
+        if (null === $this->collPUNotificationPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUNotificationPUsers) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPUNotificationsPUsers());
+                return count($this->getPUNotificationPUsers());
             }
-            $query = PUNotificationsQuery::create(null, $criteria);
+            $query = PUNotificationQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByPUNotificationsPUser($this)
+                ->filterByPUNotificationPUser($this)
                 ->count($con);
         }
 
-        return count($this->collPUNotificationsPUsers);
+        return count($this->collPUNotificationPUsers);
     }
 
     /**
-     * Method called to associate a PUNotifications object to this object
-     * through the PUNotifications foreign key attribute.
+     * Method called to associate a PUNotification object to this object
+     * through the PUNotification foreign key attribute.
      *
-     * @param    PUNotifications $l PUNotifications
+     * @param    PUNotification $l PUNotification
      * @return PUser The current object (for fluent API support)
      */
-    public function addPUNotificationsPUser(PUNotifications $l)
+    public function addPUNotificationPUser(PUNotification $l)
     {
-        if ($this->collPUNotificationsPUsers === null) {
-            $this->initPUNotificationsPUsers();
-            $this->collPUNotificationsPUsersPartial = true;
+        if ($this->collPUNotificationPUsers === null) {
+            $this->initPUNotificationPUsers();
+            $this->collPUNotificationPUsersPartial = true;
         }
 
-        if (!in_array($l, $this->collPUNotificationsPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPUNotificationsPUser($l);
+        if (!in_array($l, $this->collPUNotificationPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUNotificationPUser($l);
 
-            if ($this->pUNotificationsPUsersScheduledForDeletion and $this->pUNotificationsPUsersScheduledForDeletion->contains($l)) {
-                $this->pUNotificationsPUsersScheduledForDeletion->remove($this->pUNotificationsPUsersScheduledForDeletion->search($l));
+            if ($this->pUNotificationPUsersScheduledForDeletion and $this->pUNotificationPUsersScheduledForDeletion->contains($l)) {
+                $this->pUNotificationPUsersScheduledForDeletion->remove($this->pUNotificationPUsersScheduledForDeletion->search($l));
             }
         }
 
@@ -8377,28 +8377,28 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to add.
+     * @param	PUNotificationPUser $pUNotificationPUser The pUNotificationPUser object to add.
      */
-    protected function doAddPUNotificationsPUser($pUNotificationsPUser)
+    protected function doAddPUNotificationPUser($pUNotificationPUser)
     {
-        $this->collPUNotificationsPUsers[]= $pUNotificationsPUser;
-        $pUNotificationsPUser->setPUNotificationsPUser($this);
+        $this->collPUNotificationPUsers[]= $pUNotificationPUser;
+        $pUNotificationPUser->setPUNotificationPUser($this);
     }
 
     /**
-     * @param	PUNotificationsPUser $pUNotificationsPUser The pUNotificationsPUser object to remove.
+     * @param	PUNotificationPUser $pUNotificationPUser The pUNotificationPUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePUNotificationsPUser($pUNotificationsPUser)
+    public function removePUNotificationPUser($pUNotificationPUser)
     {
-        if ($this->getPUNotificationsPUsers()->contains($pUNotificationsPUser)) {
-            $this->collPUNotificationsPUsers->remove($this->collPUNotificationsPUsers->search($pUNotificationsPUser));
-            if (null === $this->pUNotificationsPUsersScheduledForDeletion) {
-                $this->pUNotificationsPUsersScheduledForDeletion = clone $this->collPUNotificationsPUsers;
-                $this->pUNotificationsPUsersScheduledForDeletion->clear();
+        if ($this->getPUNotificationPUsers()->contains($pUNotificationPUser)) {
+            $this->collPUNotificationPUsers->remove($this->collPUNotificationPUsers->search($pUNotificationPUser));
+            if (null === $this->pUNotificationPUsersScheduledForDeletion) {
+                $this->pUNotificationPUsersScheduledForDeletion = clone $this->collPUNotificationPUsers;
+                $this->pUNotificationPUsersScheduledForDeletion->clear();
             }
-            $this->pUNotificationsPUsersScheduledForDeletion[]= clone $pUNotificationsPUser;
-            $pUNotificationsPUser->setPUNotificationsPUser(null);
+            $this->pUNotificationPUsersScheduledForDeletion[]= clone $pUNotificationPUser;
+            $pUNotificationPUser->setPUNotificationPUser(null);
         }
 
         return $this;
@@ -8410,7 +8410,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PUNotificationsPUsers from storage.
+     * been saved, it will retrieve related PUNotificationPUsers from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -8419,14 +8419,14 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUNotifications[] List of PUNotifications objects
+     * @return PropelObjectCollection|PUNotification[] List of PUNotification objects
      */
-    public function getPUNotificationsPUsersJoinPUNotificationsPNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUNotificationPUsersJoinPUNotificationPNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PUNotificationsQuery::create(null, $criteria);
-        $query->joinWith('PUNotificationsPNotification', $join_behavior);
+        $query = PUNotificationQuery::create(null, $criteria);
+        $query->joinWith('PUNotificationPNotification', $join_behavior);
 
-        return $this->getPUNotificationsPUsers($query, $con);
+        return $this->getPUNotificationPUsers($query, $con);
     }
 
     /**
@@ -10606,7 +10606,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * Gets a collection of PRBadge objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -10641,7 +10641,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * Sets a collection of PRBadge objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
@@ -10669,7 +10669,7 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * Gets the number of PRBadge objects related by a many-to-many relationship
-     * to the current object by way of the p_u_badges cross-reference table.
+     * to the current object by way of the p_u_badge cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -10699,9 +10699,9 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * Associate a PRBadge object to this object
-     * through the p_u_badges cross reference table.
+     * through the p_u_badge cross reference table.
      *
-     * @param  PRBadge $pRBadge The PUBadges object to relate
+     * @param  PRBadge $pRBadge The PUBadge object to relate
      * @return PUser The current object (for fluent API support)
      */
     public function addPRBadge(PRBadge $pRBadge)
@@ -10729,9 +10729,9 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pRBadge->getPUsers()->contains($this)) { $pUBadges = new PUBadges();
-            $pUBadges->setPRBadge($pRBadge);
-            $this->addPUBadges($pUBadges);
+        if (!$pRBadge->getPUsers()->contains($this)) { $pUBadge = new PUBadge();
+            $pUBadge->setPRBadge($pRBadge);
+            $this->addPUBadge($pUBadge);
 
             $foreignCollection = $pRBadge->getPUsers();
             $foreignCollection[] = $this;
@@ -10740,9 +10740,9 @@ abstract class BasePUser extends BaseObject implements Persistent
 
     /**
      * Remove a PRBadge object to this object
-     * through the p_u_badges cross reference table.
+     * through the p_u_badge cross reference table.
      *
-     * @param PRBadge $pRBadge The PUBadges object to relate
+     * @param PRBadge $pRBadge The PUBadge object to relate
      * @return PUser The current object (for fluent API support)
      */
     public function removePRBadge(PRBadge $pRBadge)
@@ -11882,40 +11882,40 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPUNotificationsPNotifications collection
+     * Clears out the collPUNotificationPNotifications collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPUNotificationsPNotifications()
+     * @see        addPUNotificationPNotifications()
      */
-    public function clearPUNotificationsPNotifications()
+    public function clearPUNotificationPNotifications()
     {
-        $this->collPUNotificationsPNotifications = null; // important to set this to null since that means it is uninitialized
-        $this->collPUNotificationsPNotificationsPartial = null;
+        $this->collPUNotificationPNotifications = null; // important to set this to null since that means it is uninitialized
+        $this->collPUNotificationPNotificationsPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collPUNotificationsPNotifications collection.
+     * Initializes the collPUNotificationPNotifications collection.
      *
-     * By default this just sets the collPUNotificationsPNotifications collection to an empty collection (like clearPUNotificationsPNotifications());
+     * By default this just sets the collPUNotificationPNotifications collection to an empty collection (like clearPUNotificationPNotifications());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initPUNotificationsPNotifications()
+    public function initPUNotificationPNotifications()
     {
-        $this->collPUNotificationsPNotifications = new PropelObjectCollection();
-        $this->collPUNotificationsPNotifications->setModel('PNotification');
+        $this->collPUNotificationPNotifications = new PropelObjectCollection();
+        $this->collPUNotificationPNotifications->setModel('PNotification');
     }
 
     /**
      * Gets a collection of PNotification objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notifications cross-reference table.
+     * to the current object by way of the p_u_notification cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -11928,57 +11928,57 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return PropelObjectCollection|PNotification[] List of PNotification objects
      */
-    public function getPUNotificationsPNotifications($criteria = null, PropelPDO $con = null)
+    public function getPUNotificationPNotifications($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collPUNotificationsPNotifications || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUNotificationsPNotifications) {
+        if (null === $this->collPUNotificationPNotifications || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUNotificationPNotifications) {
                 // return empty collection
-                $this->initPUNotificationsPNotifications();
+                $this->initPUNotificationPNotifications();
             } else {
-                $collPUNotificationsPNotifications = PNotificationQuery::create(null, $criteria)
-                    ->filterByPUNotificationsPUser($this)
+                $collPUNotificationPNotifications = PNotificationQuery::create(null, $criteria)
+                    ->filterByPUNotificationPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collPUNotificationsPNotifications;
+                    return $collPUNotificationPNotifications;
                 }
-                $this->collPUNotificationsPNotifications = $collPUNotificationsPNotifications;
+                $this->collPUNotificationPNotifications = $collPUNotificationPNotifications;
             }
         }
 
-        return $this->collPUNotificationsPNotifications;
+        return $this->collPUNotificationPNotifications;
     }
 
     /**
      * Sets a collection of PNotification objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notifications cross-reference table.
+     * to the current object by way of the p_u_notification cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pUNotificationsPNotifications A Propel collection.
+     * @param PropelCollection $pUNotificationPNotifications A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPUNotificationsPNotifications(PropelCollection $pUNotificationsPNotifications, PropelPDO $con = null)
+    public function setPUNotificationPNotifications(PropelCollection $pUNotificationPNotifications, PropelPDO $con = null)
     {
-        $this->clearPUNotificationsPNotifications();
-        $currentPUNotificationsPNotifications = $this->getPUNotificationsPNotifications(null, $con);
+        $this->clearPUNotificationPNotifications();
+        $currentPUNotificationPNotifications = $this->getPUNotificationPNotifications(null, $con);
 
-        $this->pUNotificationsPNotificationsScheduledForDeletion = $currentPUNotificationsPNotifications->diff($pUNotificationsPNotifications);
+        $this->pUNotificationPNotificationsScheduledForDeletion = $currentPUNotificationPNotifications->diff($pUNotificationPNotifications);
 
-        foreach ($pUNotificationsPNotifications as $pUNotificationsPNotification) {
-            if (!$currentPUNotificationsPNotifications->contains($pUNotificationsPNotification)) {
-                $this->doAddPUNotificationsPNotification($pUNotificationsPNotification);
+        foreach ($pUNotificationPNotifications as $pUNotificationPNotification) {
+            if (!$currentPUNotificationPNotifications->contains($pUNotificationPNotification)) {
+                $this->doAddPUNotificationPNotification($pUNotificationPNotification);
             }
         }
 
-        $this->collPUNotificationsPNotifications = $pUNotificationsPNotifications;
+        $this->collPUNotificationPNotifications = $pUNotificationPNotifications;
 
         return $this;
     }
 
     /**
      * Gets the number of PNotification objects related by a many-to-many relationship
-     * to the current object by way of the p_u_notifications cross-reference table.
+     * to the current object by way of the p_u_notification cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -11986,10 +11986,10 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return int the number of related PNotification objects
      */
-    public function countPUNotificationsPNotifications($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUNotificationPNotifications($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collPUNotificationsPNotifications || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPUNotificationsPNotifications) {
+        if (null === $this->collPUNotificationPNotifications || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUNotificationPNotifications) {
                 return 0;
             } else {
                 $query = PNotificationQuery::create(null, $criteria);
@@ -11998,33 +11998,33 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
 
                 return $query
-                    ->filterByPUNotificationsPUser($this)
+                    ->filterByPUNotificationPUser($this)
                     ->count($con);
             }
         } else {
-            return count($this->collPUNotificationsPNotifications);
+            return count($this->collPUNotificationPNotifications);
         }
     }
 
     /**
      * Associate a PNotification object to this object
-     * through the p_u_notifications cross reference table.
+     * through the p_u_notification cross reference table.
      *
-     * @param  PNotification $pNotification The PUNotifications object to relate
+     * @param  PNotification $pNotification The PUNotification object to relate
      * @return PUser The current object (for fluent API support)
      */
-    public function addPUNotificationsPNotification(PNotification $pNotification)
+    public function addPUNotificationPNotification(PNotification $pNotification)
     {
-        if ($this->collPUNotificationsPNotifications === null) {
-            $this->initPUNotificationsPNotifications();
+        if ($this->collPUNotificationPNotifications === null) {
+            $this->initPUNotificationPNotifications();
         }
 
-        if (!$this->collPUNotificationsPNotifications->contains($pNotification)) { // only add it if the **same** object is not already associated
-            $this->doAddPUNotificationsPNotification($pNotification);
-            $this->collPUNotificationsPNotifications[] = $pNotification;
+        if (!$this->collPUNotificationPNotifications->contains($pNotification)) { // only add it if the **same** object is not already associated
+            $this->doAddPUNotificationPNotification($pNotification);
+            $this->collPUNotificationPNotifications[] = $pNotification;
 
-            if ($this->pUNotificationsPNotificationsScheduledForDeletion and $this->pUNotificationsPNotificationsScheduledForDeletion->contains($pNotification)) {
-                $this->pUNotificationsPNotificationsScheduledForDeletion->remove($this->pUNotificationsPNotificationsScheduledForDeletion->search($pNotification));
+            if ($this->pUNotificationPNotificationsScheduledForDeletion and $this->pUNotificationPNotificationsScheduledForDeletion->contains($pNotification)) {
+                $this->pUNotificationPNotificationsScheduledForDeletion->remove($this->pUNotificationPNotificationsScheduledForDeletion->search($pNotification));
             }
         }
 
@@ -12032,37 +12032,37 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PUNotificationsPNotification $pUNotificationsPNotification The pUNotificationsPNotification object to add.
+     * @param	PUNotificationPNotification $pUNotificationPNotification The pUNotificationPNotification object to add.
      */
-    protected function doAddPUNotificationsPNotification(PNotification $pUNotificationsPNotification)
+    protected function doAddPUNotificationPNotification(PNotification $pUNotificationPNotification)
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pUNotificationsPNotification->getPUNotificationsPUsers()->contains($this)) { $pUNotifications = new PUNotifications();
-            $pUNotifications->setPUNotificationsPNotification($pUNotificationsPNotification);
-            $this->addPUNotificationsPUser($pUNotifications);
+        if (!$pUNotificationPNotification->getPUNotificationPUsers()->contains($this)) { $pUNotification = new PUNotification();
+            $pUNotification->setPUNotificationPNotification($pUNotificationPNotification);
+            $this->addPUNotificationPUser($pUNotification);
 
-            $foreignCollection = $pUNotificationsPNotification->getPUNotificationsPUsers();
+            $foreignCollection = $pUNotificationPNotification->getPUNotificationPUsers();
             $foreignCollection[] = $this;
         }
     }
 
     /**
      * Remove a PNotification object to this object
-     * through the p_u_notifications cross reference table.
+     * through the p_u_notification cross reference table.
      *
-     * @param PNotification $pNotification The PUNotifications object to relate
+     * @param PNotification $pNotification The PUNotification object to relate
      * @return PUser The current object (for fluent API support)
      */
-    public function removePUNotificationsPNotification(PNotification $pNotification)
+    public function removePUNotificationPNotification(PNotification $pNotification)
     {
-        if ($this->getPUNotificationsPNotifications()->contains($pNotification)) {
-            $this->collPUNotificationsPNotifications->remove($this->collPUNotificationsPNotifications->search($pNotification));
-            if (null === $this->pUNotificationsPNotificationsScheduledForDeletion) {
-                $this->pUNotificationsPNotificationsScheduledForDeletion = clone $this->collPUNotificationsPNotifications;
-                $this->pUNotificationsPNotificationsScheduledForDeletion->clear();
+        if ($this->getPUNotificationPNotifications()->contains($pNotification)) {
+            $this->collPUNotificationPNotifications->remove($this->collPUNotificationPNotifications->search($pNotification));
+            if (null === $this->pUNotificationPNotificationsScheduledForDeletion) {
+                $this->pUNotificationPNotificationsScheduledForDeletion = clone $this->collPUNotificationPNotifications;
+                $this->pUNotificationPNotificationsScheduledForDeletion->clear();
             }
-            $this->pUNotificationsPNotificationsScheduledForDeletion[]= $pNotification;
+            $this->pUNotificationPNotificationsScheduledForDeletion[]= $pNotification;
         }
 
         return $this;
@@ -12531,8 +12531,8 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPUBadgess) {
-                foreach ($this->collPUBadgess as $o) {
+            if ($this->collPUBadges) {
+                foreach ($this->collPUBadges as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -12571,8 +12571,8 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPUNotificationsPUsers) {
-                foreach ($this->collPUNotificationsPUsers as $o) {
+            if ($this->collPUNotificationPUsers) {
+                foreach ($this->collPUNotificationPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -12656,8 +12656,8 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPUNotificationsPNotifications) {
-                foreach ($this->collPUNotificationsPNotifications as $o) {
+            if ($this->collPUNotificationPNotifications) {
+                foreach ($this->collPUNotificationPNotifications as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -12703,10 +12703,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowDdPUsers->clearIterator();
         }
         $this->collPuFollowDdPUsers = null;
-        if ($this->collPUBadgess instanceof PropelCollection) {
-            $this->collPUBadgess->clearIterator();
+        if ($this->collPUBadges instanceof PropelCollection) {
+            $this->collPUBadges->clearIterator();
         }
-        $this->collPUBadgess = null;
+        $this->collPUBadges = null;
         if ($this->collPUReputations instanceof PropelCollection) {
             $this->collPUReputations->clearIterator();
         }
@@ -12735,10 +12735,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUCurrentQOPUsers->clearIterator();
         }
         $this->collPUCurrentQOPUsers = null;
-        if ($this->collPUNotificationsPUsers instanceof PropelCollection) {
-            $this->collPUNotificationsPUsers->clearIterator();
+        if ($this->collPUNotificationPUsers instanceof PropelCollection) {
+            $this->collPUNotificationPUsers->clearIterator();
         }
-        $this->collPUNotificationsPUsers = null;
+        $this->collPUNotificationPUsers = null;
         if ($this->collPUSubscribeEmailPUsers instanceof PropelCollection) {
             $this->collPUSubscribeEmailPUsers->clearIterator();
         }
@@ -12803,10 +12803,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUCurrentQOPQOrganizations->clearIterator();
         }
         $this->collPUCurrentQOPQOrganizations = null;
-        if ($this->collPUNotificationsPNotifications instanceof PropelCollection) {
-            $this->collPUNotificationsPNotifications->clearIterator();
+        if ($this->collPUNotificationPNotifications instanceof PropelCollection) {
+            $this->collPUNotificationPNotifications->clearIterator();
         }
-        $this->collPUNotificationsPNotifications = null;
+        $this->collPUNotificationPNotifications = null;
         if ($this->collPUSubscribeEmailPNotifications instanceof PropelCollection) {
             $this->collPUSubscribeEmailPNotifications->clearIterator();
         }

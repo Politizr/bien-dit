@@ -61,7 +61,7 @@ class PRBadgeTableMap extends TableMap
     {
         $this->addRelation('PRBadgeType', 'Politizr\\Model\\PRBadgeType', RelationMap::MANY_TO_ONE, array('p_r_badge_type_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PRBadgeMetal', 'Politizr\\Model\\PRBadgeMetal', RelationMap::MANY_TO_ONE, array('p_r_badge_metal_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PUBadges', 'Politizr\\Model\\PUBadges', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_id', ), 'CASCADE', 'CASCADE', 'PUBadgess');
+        $this->addRelation('PUBadge', 'Politizr\\Model\\PUBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_id', ), 'CASCADE', 'CASCADE', 'PUBadges');
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
     } // buildRelations()
 

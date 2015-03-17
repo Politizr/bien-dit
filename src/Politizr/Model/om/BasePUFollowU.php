@@ -43,6 +43,27 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
+     * The value for the notif_debate field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $notif_debate;
+
+    /**
+     * The value for the notif_reaction field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $notif_reaction;
+
+    /**
+     * The value for the notif_comment field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $notif_comment;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -97,6 +118,63 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->notif_debate = true;
+        $this->notif_reaction = true;
+        $this->notif_comment = true;
+    }
+
+    /**
+     * Initializes internal state of BasePUFollowU object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [notif_debate] column value.
+     *
+     * @return boolean
+     */
+    public function getNotifDebate()
+    {
+
+        return $this->notif_debate;
+    }
+
+    /**
+     * Get the [notif_reaction] column value.
+     *
+     * @return boolean
+     */
+    public function getNotifReaction()
+    {
+
+        return $this->notif_reaction;
+    }
+
+    /**
+     * Get the [notif_comment] column value.
+     *
+     * @return boolean
+     */
+    public function getNotifComment()
+    {
+
+        return $this->notif_comment;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -134,11 +212,6 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    public function __construct(){
-        parent::__construct();
-        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
     }
 
     /**
@@ -202,6 +275,93 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
 
         return $this->p_user_follower_id;
     }
+
+    /**
+     * Sets the value of the [notif_debate] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUFollowU The current object (for fluent API support)
+     */
+    public function setNotifDebate($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->notif_debate !== $v) {
+            $this->notif_debate = $v;
+            $this->modifiedColumns[] = PUFollowUPeer::NOTIF_DEBATE;
+        }
+
+
+        return $this;
+    } // setNotifDebate()
+
+    /**
+     * Sets the value of the [notif_reaction] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUFollowU The current object (for fluent API support)
+     */
+    public function setNotifReaction($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->notif_reaction !== $v) {
+            $this->notif_reaction = $v;
+            $this->modifiedColumns[] = PUFollowUPeer::NOTIF_REACTION;
+        }
+
+
+        return $this;
+    } // setNotifReaction()
+
+    /**
+     * Sets the value of the [notif_comment] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUFollowU The current object (for fluent API support)
+     */
+    public function setNotifComment($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->notif_comment !== $v) {
+            $this->notif_comment = $v;
+            $this->modifiedColumns[] = PUFollowUPeer::NOTIF_COMMENT;
+        }
+
+
+        return $this;
+    } // setNotifComment()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -309,6 +469,18 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->notif_debate !== true) {
+                return false;
+            }
+
+            if ($this->notif_reaction !== true) {
+                return false;
+            }
+
+            if ($this->notif_comment !== true) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -331,10 +503,13 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     {
         try {
 
-            $this->created_at = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-            $this->updated_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_user_follower_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->notif_debate = ($row[$startcol + 0] !== null) ? (boolean) $row[$startcol + 0] : null;
+            $this->notif_reaction = ($row[$startcol + 1] !== null) ? (boolean) $row[$startcol + 1] : null;
+            $this->notif_comment = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->p_user_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->p_user_follower_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -344,7 +519,7 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = PUFollowUPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PUFollowUPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUFollowU object", $e);
@@ -605,6 +780,15 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
 
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_DEBATE)) {
+            $modifiedColumns[':p' . $index++]  = '`notif_debate`';
+        }
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_REACTION)) {
+            $modifiedColumns[':p' . $index++]  = '`notif_reaction`';
+        }
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_COMMENT)) {
+            $modifiedColumns[':p' . $index++]  = '`notif_comment`';
+        }
         if ($this->isColumnModified(PUFollowUPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -628,6 +812,15 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case '`notif_debate`':
+                        $stmt->bindValue($identifier, (int) $this->notif_debate, PDO::PARAM_INT);
+                        break;
+                    case '`notif_reaction`':
+                        $stmt->bindValue($identifier, (int) $this->notif_reaction, PDO::PARAM_INT);
+                        break;
+                    case '`notif_comment`':
+                        $stmt->bindValue($identifier, (int) $this->notif_comment, PDO::PARAM_INT);
+                        break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
@@ -786,15 +979,24 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getCreatedAt();
+                return $this->getNotifDebate();
                 break;
             case 1:
-                return $this->getUpdatedAt();
+                return $this->getNotifReaction();
                 break;
             case 2:
-                return $this->getPUserId();
+                return $this->getNotifComment();
                 break;
             case 3:
+                return $this->getCreatedAt();
+                break;
+            case 4:
+                return $this->getUpdatedAt();
+                break;
+            case 5:
+                return $this->getPUserId();
+                break;
+            case 6:
                 return $this->getPUserFollowerId();
                 break;
             default:
@@ -826,10 +1028,13 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
         $alreadyDumpedObjects['PUFollowU'][serialize($this->getPrimaryKey())] = true;
         $keys = PUFollowUPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getCreatedAt(),
-            $keys[1] => $this->getUpdatedAt(),
-            $keys[2] => $this->getPUserId(),
-            $keys[3] => $this->getPUserFollowerId(),
+            $keys[0] => $this->getNotifDebate(),
+            $keys[1] => $this->getNotifReaction(),
+            $keys[2] => $this->getNotifComment(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
+            $keys[5] => $this->getPUserId(),
+            $keys[6] => $this->getPUserFollowerId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -878,15 +1083,24 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setCreatedAt($value);
+                $this->setNotifDebate($value);
                 break;
             case 1:
-                $this->setUpdatedAt($value);
+                $this->setNotifReaction($value);
                 break;
             case 2:
-                $this->setPUserId($value);
+                $this->setNotifComment($value);
                 break;
             case 3:
+                $this->setCreatedAt($value);
+                break;
+            case 4:
+                $this->setUpdatedAt($value);
+                break;
+            case 5:
+                $this->setPUserId($value);
+                break;
+            case 6:
                 $this->setPUserFollowerId($value);
                 break;
         } // switch()
@@ -913,10 +1127,13 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     {
         $keys = PUFollowUPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setCreatedAt($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUpdatedAt($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPUserFollowerId($arr[$keys[3]]);
+        if (array_key_exists($keys[0], $arr)) $this->setNotifDebate($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setNotifReaction($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setNotifComment($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPUserId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPUserFollowerId($arr[$keys[6]]);
     }
 
     /**
@@ -928,6 +1145,9 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
     {
         $criteria = new Criteria(PUFollowUPeer::DATABASE_NAME);
 
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_DEBATE)) $criteria->add(PUFollowUPeer::NOTIF_DEBATE, $this->notif_debate);
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_REACTION)) $criteria->add(PUFollowUPeer::NOTIF_REACTION, $this->notif_reaction);
+        if ($this->isColumnModified(PUFollowUPeer::NOTIF_COMMENT)) $criteria->add(PUFollowUPeer::NOTIF_COMMENT, $this->notif_comment);
         if ($this->isColumnModified(PUFollowUPeer::CREATED_AT)) $criteria->add(PUFollowUPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUFollowUPeer::UPDATED_AT)) $criteria->add(PUFollowUPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUFollowUPeer::P_USER_ID)) $criteria->add(PUFollowUPeer::P_USER_ID, $this->p_user_id);
@@ -1002,6 +1222,9 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setNotifDebate($this->getNotifDebate());
+        $copyObj->setNotifReaction($this->getNotifReaction());
+        $copyObj->setNotifComment($this->getNotifComment());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setPUserId($this->getPUserId());
@@ -1172,6 +1395,9 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
      */
     public function clear()
     {
+        $this->notif_debate = null;
+        $this->notif_reaction = null;
+        $this->notif_comment = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->p_user_id = null;
@@ -1180,6 +1406,7 @@ abstract class BasePUFollowU extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

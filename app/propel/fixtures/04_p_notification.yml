@@ -52,3 +52,23 @@ Politizr\Model\PNotification:
         title:              Vous avez obtenu un badge
         description:        |
             Vous avez obtenu un badge
+    s_u_debate_publish:
+        online:             true
+        title:              Un débat a été publié par un utilisateur suivi
+        description:        |
+            Un débat a été publié par un utilisateur suivi
+    s_u_reaction_publish:
+        online:             true
+        title:              Une réaction a été publiée par un utilisateur suivi
+        description:        |
+            Une réaction a été publiée par un utilisateur suivi
+    s_u_comment_publish:
+        online:             true
+        title:              Un commentaire a été publié par un utilisateur suivi
+        description:        |
+            Un commentaire a été publié par un utilisateur suivi
+    s_d_reaction_publish:
+        online:             true
+        title:              Une réaction a été publié sur un débat suivi
+        description:        |
+            Une réaction a été publiée sur un débat suivi

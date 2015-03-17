@@ -19,13 +19,13 @@ use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\PTagPeer;
 use Politizr\Model\PUAffinityQOPeer;
-use Politizr\Model\PUBadgesPeer;
+use Politizr\Model\PUBadgePeer;
 use Politizr\Model\PUCurrentQOPeer;
 use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowTPeer;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUMandatePeer;
-use Politizr\Model\PUNotificationsPeer;
+use Politizr\Model\PUNotificationPeer;
 use Politizr\Model\PUReputationPeer;
 use Politizr\Model\PURoleQPeer;
 use Politizr\Model\PUStatusPeer;
@@ -669,9 +669,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowDDPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowDDPeer::clearInstancePool();
-        // Invalidate objects in PUBadgesPeer instance pool,
+        // Invalidate objects in PUBadgePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUBadgesPeer::clearInstancePool();
+        PUBadgePeer::clearInstancePool();
         // Invalidate objects in PUReputationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUReputationPeer::clearInstancePool();
@@ -693,9 +693,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PUCurrentQOPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUCurrentQOPeer::clearInstancePool();
-        // Invalidate objects in PUNotificationsPeer instance pool,
+        // Invalidate objects in PUNotificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUNotificationsPeer::clearInstancePool();
+        PUNotificationPeer::clearInstancePool();
         // Invalidate objects in PUSubscribeEmailPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUSubscribeEmailPeer::clearInstancePool();
