@@ -197,24 +197,30 @@ LAYOUT USER
 {% block listRow %}
     <div class="user-list-row">
         <div class="row">
-            <div class="col-sm-4">
-                {% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
-            </div>
-            <div class="col-sm-2 text-center">
-                <span class="badge alert-info">{{ user.countDebates }} débats</span>
-            </div>
-            <div class="col-sm-2 text-center">
-                <span class="badge alert-danger">{{ user.countReactions }} réactions</span>
-            </div>
-            <div class="col-sm-2 text-center">
-                <span class="badge alert-warning">{{ user.countComments }} commentaires</span>
-            </div>
-            {# Subscribe #}
-            <div class="following col-sm-2 text-center">
-                <div class="subscribe">
-                    {{ user | linkSubscribeUser }}
+            {% block listName %}
+                <div class="col-sm-4">
+                    {% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
                 </div>
-            </div>
+            {% endblock listName %}
+            {% block listStat %}
+                <div class="col-sm-2 text-center">
+                    <span class="badge alert-info">{{ user.countDebates }} débats</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <span class="badge alert-danger">{{ user.countReactions }} réactions</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <span class="badge alert-warning">{{ user.countComments }} commentaires</span>
+                </div>
+            {% endblock listStat %}
+            {% block listSubscribe %}
+                {# Subscribe #}
+                <div class="following col-sm-2 text-center">
+                    <div class="subscribe">
+                        {{ user | linkSubscribeUser }}
+                    </div>
+                </div>
+            {% endblock listSubscribe %}
         </div>
         
         {% block listSearchHighlights %}

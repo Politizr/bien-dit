@@ -282,6 +282,14 @@ MyNotificationsE:
     pattern:  /elu/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:ProfileE:myNotifications }
 
+MyFollowedDebatesE:
+    pattern:  /elu/mon-compte/mes-debats-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedDebates }
+
+MyFollowedUsersE:
+    pattern:  /elu/mon-compte/mes-profils-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedUsers }
+
 
 ReactionDraftNew:
     pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
@@ -479,6 +487,26 @@ NotificationEmailSubscribe:
 NotificationEmailUnsubscribe:
     pattern:  /profil/email-unsubscribe.{_format}
     defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationUserContextSubscribe:
+    pattern:  /profil/user/context-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationUserContextUnsubscribe:
+    pattern:  /profil/user/context-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationDebateContextSubscribe:
+    pattern:  /profil/debate/context-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationDebateContextUnsubscribe:
+    pattern:  /profil/debate/context-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextUnsubscribe, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################

@@ -20,6 +20,7 @@ use Politizr\Model\PUSubscribeEmail;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
@@ -226,7 +227,7 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
+            'PolitizrFrontBundle:Fragment\\User:glListNotifSettings.html.twig',
             array(
                 'users' => $users
                 )
@@ -857,6 +858,150 @@ class UserManager
             $puSubscribeEmail->delete();
         } catch (\Exception $e) {
             throw new InconsistentDataException($user.' non inscrit à cette notification.');
+        }
+
+        return true;
+    }
+
+    /**
+     *  Souscrit une notification contextuelle à un profil
+     *
+     */
+    public function notifUserContextSubscribe()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifUserContextSubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        $context = $request->get('context');
+        $logger->info('$context = ' . print_r($context, true));
+
+        $puFollowU = PUFollowUQuery::create()
+            ->filterByPUserId($subjectId)
+            ->filterByPUserFollowerId($user->getId())
+            ->findOne();
+
+        if ($puFollowU && $context == 'debate') {
+            $puFollowU->setNotifDebate(true);
+            $puFollowU->save();
+        } elseif ($puFollowU && $context == 'reaction') {
+            $puFollowU->setNotifReaction(true);
+            $puFollowU->save();
+        } elseif ($puFollowU && $context == 'comment') {
+            $puFollowU->setNotifComment(true);
+            $puFollowU->save();
+        }
+
+        return true;
+    }
+
+    /**
+     *  Désouscrit une notification contextuelle à un profil
+     *
+     */
+    public function notifUserContextUnsubscribe()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifUserContextUnsubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        $context = $request->get('context');
+        $logger->info('$context = ' . print_r($context, true));
+
+        $puFollowU = PUFollowUQuery::create()
+            ->filterByPUserId($subjectId)
+            ->filterByPUserFollowerId($user->getId())
+            ->findOne();
+
+        if ($puFollowU && $context == 'debate') {
+            $puFollowU->setNotifDebate(false);
+            $puFollowU->save();
+        } elseif ($puFollowU && $context == 'reaction') {
+            $puFollowU->setNotifReaction(false);
+            $puFollowU->save();
+        } elseif ($puFollowU && $context == 'comment') {
+            $puFollowU->setNotifComment(false);
+            $puFollowU->save();
+        }
+
+        return true;
+    }
+
+    /**
+     *  Souscrit une notification contextuelle à un débat
+     *
+     */
+    public function notifDebateContextSubscribe()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifDebateContextSubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        $context = $request->get('context');
+        $logger->info('$context = ' . print_r($context, true));
+
+        $puFollowDD = PUFollowDDQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPDDebateId($subjectId)
+            ->findOne();
+
+        if ($puFollowDD && $context == 'reaction') {
+            $puFollowDD->setNotifReaction(true);
+            $puFollowDD->save();
+        }
+
+        return true;
+    }
+
+    /**
+     *  Désouscrit une notification contextuelle à un débat
+     *
+     */
+    public function notifDebateContextUnsubscribe()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** notifDebateContextUnsubscribe');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        $context = $request->get('context');
+        $logger->info('$context = ' . print_r($context, true));
+
+        $puFollowDD = PUFollowDDQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPDDebateId($subjectId)
+            ->findOne();
+
+        if ($puFollowDD && $context == 'reaction') {
+            $puFollowDD->setNotifReaction(false);
+            $puFollowDD->save();
         }
 
         return true;

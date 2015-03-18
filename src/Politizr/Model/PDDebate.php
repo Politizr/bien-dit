@@ -492,4 +492,29 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     {
         return $this->getPUser();
     }
+
+    // *****************************    NOTIFICATIONS    ************************* //
+
+    /**
+     * Renvoit vrai / faux si le follower en argument veut être notifié des MAJ du débat courant
+     * suivant le contexte entré en argument.
+     *
+     * @param $userFollowerId   integer
+     * @param $context          string
+     *
+     * @return boolean
+     */
+    public function isNotified($userId, $context = 'reaction')
+    {
+        $puFollowU = PUFollowDDQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPDDebateId($this->getId())
+            ->findOne();
+
+        if ($context == 'reaction' && $puFollowU && $puFollowU->getNotifReaction()) {
+            return true;
+        }
+
+        return false;
+    }
 }

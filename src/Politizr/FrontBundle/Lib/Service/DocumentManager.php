@@ -1002,7 +1002,7 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Debate:glList.html.twig',
+            'PolitizrFrontBundle:Fragment\\Debate:glListNotifSettings.html.twig',
             array(
                 'debates' => $debates
             )

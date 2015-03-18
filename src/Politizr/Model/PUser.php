@@ -1051,4 +1051,34 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         return $users;
     }
+
+
+    // *****************************    NOTIFICATIONS    ************************* //
+
+    /**
+     * Renvoit vrai / faux si le follower en argument veut être notifié des MAJ du user courant
+     * suivant le contexte entré en argument.
+     *
+     * @param $userFollowerId   integer
+     * @param $context          string
+     *
+     * @return boolean
+     */
+    public function isNotified($userFollowerId, $context = 'debate')
+    {
+        $puFollowU = PUFollowUQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterByPUserFollowerId($userFollowerId)
+            ->findOne();
+
+        if ($context == 'debate' && $puFollowU && $puFollowU->getNotifDebate()) {
+            return true;
+        } elseif ($context == 'reaction' && $puFollowU && $puFollowU->getNotifReaction()) {
+            return true;
+        } elseif ($context == 'comment' && $puFollowU && $puFollowU->getNotifComment()) {
+            return true;
+        }
+
+        return false;
+    }
 }

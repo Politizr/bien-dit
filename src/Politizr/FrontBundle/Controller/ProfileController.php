@@ -107,4 +107,70 @@ class ProfileController extends Controller
 
         return $jsonResponse;
     }
+
+    /**
+     *  Souscrit une notification contextuelle à un profil
+     */
+    public function notifUserContextSubscribeAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** notifUserContextSubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifUserContextSubscribe'
+        );
+
+        return $jsonResponse;
+    }
+   
+
+    /**
+     *  Désouscrit une notification contextuelle à un profil
+     */
+    public function notifUserContextUnsubscribeAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** notifUserContextUnsubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifUserContextUnsubscribe'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Souscrit une notification contextuelle à un débat
+     */
+    public function notifDebateContextSubscribeAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** notifDebateContextSubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifDebateContextSubscribe'
+        );
+
+        return $jsonResponse;
+    }
+   
+
+    /**
+     *  Désouscrit une notification contextuelle à un débat
+     */
+    public function notifDebateContextUnsubscribeAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** notifDebateContextUnsubscribeAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'notifDebateContextUnsubscribe'
+        );
+
+        return $jsonResponse;
+    }
 }

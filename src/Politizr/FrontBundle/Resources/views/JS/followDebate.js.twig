@@ -1,0 +1,39 @@
+<script>
+    // **************************** //
+    //      AJAX
+    // **************************** //
+
+    // suivre / ne plus suivre
+    $("body").on("click", "a[action='follow']", function(e) {
+        console.log('*** click follow');
+        
+        var context = $(this).closest('.following');
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('FollowDebate') }}",
+            context: context,
+            data: { 'objectId': $(this).attr('object-id'), 'way': $(this).attr('way') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    // MAJ du bouton suivre / ne plus suivre
+                    $(this).find('.subscribe').html(data['html']);
+
+                    // Bloc followers existant à rafraichir?
+                    if ($(this).find('#followers').length) {
+                        $(this).find('#followers').html(data['followers']);
+                        $(this).find("div[action='followers-c-list']").hide();
+                        $(this).find("div[action='followers-q-list']").hide();           
+                    }
+                }
+            }
+        });
+
+    });
+
+</script>

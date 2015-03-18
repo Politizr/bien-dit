@@ -426,6 +426,38 @@ class ProfileEController extends Controller
 
     }
 
+    /**
+     *  Gestion des débats suivis
+     */
+    public function myFollowedDebatesAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myFollowedDebatesAction');
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileE:myFollowedDebates.html.twig', array(
+            ));
+
+    }
+
+    /**
+     *  Gestion des profils suivis
+     */
+    public function myFollowedUsersAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myFollowedUsersAction');
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileE:myFollowedUsers.html.twig', array(
+            ));
+
+    }
+
 
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */

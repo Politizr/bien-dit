@@ -4,13 +4,12 @@
 {% block main %}
     <div id="main" class="container">
         <ul class="nav nav-tabs">
-            <li role="list" class="active"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
+            <li role="list" class="active"><a action="last" order="last">Derniers</a></li>
             <li role="list"><a action="best-note" order="bestNote">Mieux notés</a></li>
-            <li role="list"><a action="last" order="last">Derniers</a></li>
+            <li role="list"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
         </ul>
         <div id="debate-tab-content">
         </div>
-
     </div>
 {% endblock main %}
 
@@ -19,6 +18,7 @@
     {{ parent() }}
 
     {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:listingDebates.js.twig' with { 'RouteName': 'FollowedDebateList' } %}
 
-    {% include 'PolitizrFrontBundle:JS:listingDebates.js.twig' with { 'RouteName': 'DailyDebateList' } %}
+    {% include 'PolitizrFrontBundle:JS:notifDebateContextSubscribe.js.twig' %}
 {% endblock javascriptFooter %}
