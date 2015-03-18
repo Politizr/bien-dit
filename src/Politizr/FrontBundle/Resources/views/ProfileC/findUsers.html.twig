@@ -4,8 +4,8 @@
 {% block main %}
     <div id="main" class="container">
         <ul class="nav nav-tabs">
-            <li role="list" class="active"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
-            <li role="list"><a action="last" order="last">Derniers</a></li>
+            <li role="list" class="active"><a action="last" order="last">Derniers</a></li>
+            <li role="list"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
         </ul>
         <div id="user-tab-content">
         </div>
@@ -17,5 +17,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:JS:findUsers.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:listingUsers.js.twig' with { 'RouteName': 'DailyUserList' } %}
 {% endblock javascriptFooter %}

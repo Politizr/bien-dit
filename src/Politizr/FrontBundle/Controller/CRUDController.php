@@ -46,10 +46,11 @@ use Politizr\FrontBundle\Form\Type\PDCommentType;
 /**
  *  Gestion des CRUD lié aux objets Politizr: débat, réaction, ...
  *  Fonctions communes aux profils citoyens / débatteurs > TODO: à renommer en ProfileController?
- *  
+ *
  *  @author Lionel Bouzonville
  */
-class CRUDController extends Controller {
+class CRUDController extends Controller
+{
 
     /* ######################################################################################################## */
     /*                                                 ROUTING CLASSIQUE                                        */
@@ -180,7 +181,8 @@ class CRUDController extends Controller {
     /**
      *  Upload d'une photo
      */
-    public function documentPhotoUploadAction(Request $request) {
+    public function documentPhotoUploadAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** documentPhotoUploadAction');
 
@@ -195,7 +197,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression d'une photo
      */
-    public function documentPhotoDeleteAction(Request $request) {
+    public function documentPhotoDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** documentPhotoDeleteAction');
 
@@ -215,7 +218,8 @@ class CRUDController extends Controller {
     /**
      *  Enregistre le débat
      */
-    public function debateUpdateAction(Request $request) {
+    public function debateUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** debateUpdateAction');
 
@@ -230,7 +234,8 @@ class CRUDController extends Controller {
     /**
      *  Publication du débat
      */
-    public function debatePublishAction(Request $request) {
+    public function debatePublishAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** debatePublishAction');
 
@@ -245,7 +250,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression du débat
      */
-    public function debateDeleteAction(Request $request) {
+    public function debateDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** debateDeleteAction');
 
@@ -264,7 +270,8 @@ class CRUDController extends Controller {
     /**
      *  Enregistre le débat
      */
-    public function reactionUpdateAction(Request $request) {
+    public function reactionUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** reactionUpdateAction');
 
@@ -279,7 +286,8 @@ class CRUDController extends Controller {
     /**
      *  Publication de la réaction
      */
-    public function reactionPublishAction(Request $request) {
+    public function reactionPublishAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** reactionPublishAction');
 
@@ -295,7 +303,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de la réaction
      */
-    public function reactionDeleteAction(Request $request) {
+    public function reactionDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** reactionDeleteAction');
 
@@ -314,7 +323,8 @@ class CRUDController extends Controller {
     /**
      *  Enregistre un nouveau commentaire
      */
-    public function commentNewAction(Request $request) {
+    public function commentNewAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** commentNewAction');
 
@@ -334,7 +344,8 @@ class CRUDController extends Controller {
     /**
      *  Association d'un tag à un débat
      */
-    public function debateAddTagAction(Request $request) {
+    public function debateAddTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** debateAddTagAction');
 
@@ -349,7 +360,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de l'association d'un tag à un débat
      */
-    public function debateDeleteTagAction(Request $request) {
+    public function debateDeleteTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** debateDeleteTagAction');
 
@@ -364,7 +376,8 @@ class CRUDController extends Controller {
     /**
      *  Association d'un tag suivi d'un user
      */
-    public function userFollowAddTagAction(Request $request) {
+    public function userFollowAddTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userFollowAddTagAction');
 
@@ -379,7 +392,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de l'association d'un tag suivi d'un user
      */
-    public function userFollowDeleteTagAction(Request $request) {
+    public function userFollowDeleteTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userFollowDeleteTagAction');
 
@@ -394,7 +408,8 @@ class CRUDController extends Controller {
     /**
      *  Association d'un tag caractérisant un user
      */
-    public function userTaggedAddTagAction(Request $request) {
+    public function userTaggedAddTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userTaggedAddTagAction');
 
@@ -409,7 +424,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de l'association d'un tag caractérisant un user
      */
-    public function userTaggedDeleteTagAction(Request $request) {
+    public function userTaggedDeleteTagAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userTaggedDeleteTagAction');
 
@@ -428,7 +444,8 @@ class CRUDController extends Controller {
     /**
      *  Mise à jour des informations personnelles du user
      */
-    public function userProfileUpdateAction(Request $request) {
+    public function userProfileUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userProfileUpdateAction');
 
@@ -444,7 +461,8 @@ class CRUDController extends Controller {
     /**
      *  Upload de la photo de profil du user
      */
-    public function userPhotoUploadAction(Request $request) {
+    public function userPhotoUploadAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userPhotoUploadAction');
 
@@ -459,7 +477,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de la photo de profil du user
      */
-    public function userPhotoDeleteAction(Request $request) {
+    public function userPhotoDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userPhotoDeleteAction');
 
@@ -474,7 +493,8 @@ class CRUDController extends Controller {
     /**
      *  Upload de la photo de fond du profil du user
      */
-    public function userBackPhotoUploadAction(Request $request) {
+    public function userBackPhotoUploadAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userBackPhotoUploadAction');
 
@@ -489,7 +509,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression de la photo de fond du profil du user
      */
-    public function userBackPhotoDeleteAction(Request $request) {
+    public function userBackPhotoDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userBackPhotoDeleteAction');
 
@@ -504,7 +525,8 @@ class CRUDController extends Controller {
     /**
      *  Mise à jour des informations "organisation en cours" du user
      */
-    public function orgaProfileUpdateAction(Request $request) {
+    public function orgaProfileUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** orgaProfileUpdateAction');
 
@@ -519,7 +541,8 @@ class CRUDController extends Controller {
     /**
      *  Création d'un mandat pour un user
      */
-    public function mandateProfileCreateAction(Request $request) {
+    public function mandateProfileCreateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileCreateAction');
 
@@ -534,7 +557,8 @@ class CRUDController extends Controller {
     /**
      *  MAJ d'un mandat pour un user
      */
-    public function mandateProfileUpdateAction(Request $request) {
+    public function mandateProfileUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileUpdateAction');
 
@@ -549,7 +573,8 @@ class CRUDController extends Controller {
     /**
      *  Suppression d'un mandat pour un user
      */
-    public function mandateProfileDeleteAction(Request $request) {
+    public function mandateProfileDeleteAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileDeleteAction');
 
@@ -566,13 +591,49 @@ class CRUDController extends Controller {
     /**
      *  Mise à jour des informations personnelles du user
      */
-    public function userPersoUpdateAction(Request $request) {
+    public function userPersoUpdateAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** userPersoUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.user',
             'userPersoUpdate'
+        );
+
+        return $jsonResponse;
+    }
+
+
+    /**
+     * Chargement d'une liste de debats suivis par le user
+     */
+    public function followedDebateListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** followedDebateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'followedDebateList'
+        );
+
+        return $jsonResponse;
+    }
+
+
+    /**
+     * Chargement d'une liste de users
+     * TODO > refactorisé / mise en commun avec userListAction
+     */
+    public function followedUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** followedUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'followedUserList'
         );
 
         return $jsonResponse;
@@ -586,7 +647,8 @@ class CRUDController extends Controller {
     /**
      *  Chargement d'une partie de la timeline
      */
-    public function timelinePaginatedAction(Request $request) {
+    public function timelinePaginatedAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** timelinePaginatedAction');
 
@@ -600,19 +662,20 @@ class CRUDController extends Controller {
 
 
     /* ######################################################################################################## */
-    /*                                          GESTION SUGGESTIONS                                             */
+    /*                                   GESTION SUGGESTIONS DU JOUR                                            */
     /* ######################################################################################################## */
 
     /**
-     *  Chargement d'une liste de debats
+     *  Chargement d'une liste de debats "actualité"
      */
-    public function debateListAction(Request $request) {
+    public function dailyDebateListAction(Request $request)
+    {
         $logger = $this->get('logger');
-        $logger->info('*** debateListAction');
+        $logger->info('*** dailyDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.document',
-            'debateList'
+            'dailyDebateList'
         );
 
         return $jsonResponse;
@@ -622,18 +685,16 @@ class CRUDController extends Controller {
     /**
      *  Chargement d'une liste de users
      */
-    public function userListAction(Request $request) {
+    public function dailyUserListAction(Request $request)
+    {
         $logger = $this->get('logger');
-        $logger->info('*** userListAction');
+        $logger->info('*** dailyUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.user',
-            'userList'
+            'dailyUserList'
         );
 
         return $jsonResponse;
     }
-
-
-
 }

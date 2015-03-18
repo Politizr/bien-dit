@@ -50,7 +50,7 @@ LAYOUT DEBATE
                 </div>
                 {# Subscribe #}
                 <div class="col-sm-4 text-center">
-                    <div id="subscribe">
+                    <div class="subscribe">
                         {{ debate | linkSubscribeDebate }}
                     </div>
                 </div>
@@ -155,7 +155,7 @@ LAYOUT DEBATE
             </div>
         {% endblock listHeader %}
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <h4><a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a></h4>
             </div>
             <div class="col-sm-2 text-center">
@@ -164,7 +164,11 @@ LAYOUT DEBATE
             <div class="col-sm-2 text-center">
                 {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
             </div>
-        </div>
+            <div class="following col-sm-2 text-center">
+                <div class="subscribe">
+                    {{ debate | linkSubscribeDebate }}
+                </div>
+            </div>        </div>
         {% block listAuthor %}
             <div class="row">
                 <div class="col-sm-12">

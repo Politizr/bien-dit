@@ -40,4 +40,18 @@ class PUserQuery extends BasePUserQuery
     {
         return $this->orderByCreatedAt(\Criteria::DESC);
     }
+
+    /**
+     * Ordonne suivant un mot clef défini sur la vue.
+     *
+     * @param $keyword      string      Mot clef pour l'ordonnancement issu du html
+     */
+    public function orderWithKeyword($keyword = 'last')
+    {
+        return $this->_if($keyword == 'mostFollowed')
+                        ->mostFollowed()
+                    ->_elseif($keyword == 'last')
+                        ->last()
+                    ->_endif();
+    }
 }

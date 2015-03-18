@@ -126,7 +126,7 @@ LAYOUT USER
                     </div>
                     {# Subscribe #}
                     <div class="col-sm-4 text-center">
-                        <div id="subscribe">
+                        <div class="subscribe">
                             {{ user | linkSubscribeUser }}
                         </div>
                     </div>
@@ -197,7 +197,7 @@ LAYOUT USER
 {% block listRow %}
     <div class="user-list-row">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 {% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
             </div>
             <div class="col-sm-2 text-center">
@@ -208,6 +208,12 @@ LAYOUT USER
             </div>
             <div class="col-sm-2 text-center">
                 <span class="badge alert-warning">{{ user.countComments }} commentaires</span>
+            </div>
+            {# Subscribe #}
+            <div class="following col-sm-2 text-center">
+                <div class="subscribe">
+                    {{ user | linkSubscribeUser }}
+                </div>
             </div>
         </div>
         

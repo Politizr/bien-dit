@@ -8,6 +8,15 @@ Politizr\Model\PUMandate:
         begin_at:                2012-05-07 00:00:00
         description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
 
+# PARTI COURANT USERS DEBATTEURS DE TEST
+Politizr\Model\PUCurrentQO:
+    u1q1:
+        p_user_id:              fhollande
+        p_q_organization_id:    parti4
+    u2q1:
+        p_user_id:              sarko
+        p_q_organization_id:    parti10
+
 
 # LISTE DE MANDATS ACTUELS DE DEPUTE
     qualification1:

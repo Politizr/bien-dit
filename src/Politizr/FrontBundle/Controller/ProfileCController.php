@@ -387,6 +387,38 @@ class ProfileCController extends Controller
 
     }
 
+    /**
+     *  Gestion des débats suivis
+     */
+    public function myFollowedDebatesAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myFollowedDebatesAction');
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileC:myFollowedDebates.html.twig', array(
+            ));
+
+    }
+
+    /**
+     *  Gestion des profils suivis
+     */
+    public function myFollowedUsersAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myFollowedUsersAction');
+
+        // *********************************** //
+        //      Affichage de la vue
+        // *********************************** //
+        return $this->render('PolitizrFrontBundle:ProfileC:myFollowedUsers.html.twig', array(
+            ));
+
+    }
+
 
     /* ######################################################################################################## */
     /*                                                  FONCTIONS AJAX                                          */

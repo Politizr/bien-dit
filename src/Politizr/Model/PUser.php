@@ -593,11 +593,11 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
 
     /**
-     * Renvoie les abonnements
+     * Renvoie les profils d'abonnements de l'utilisateur courant.
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return     PropelCollection PUser
      */
-    public function getPUserSubscribers(Criteria $query = null, PropelPDO $con = null)
+    public function getSubscribers(Criteria $query = null, PropelPDO $con = null)
     {
         if ($con === null) {
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -637,10 +637,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserSubscribersQ()
+    public function getSubscribersQ()
     {
         $query = PUserQuery::create()->filterByQualified(true);
-        $pUsers = $this->getPUserSubscribers($query);
+        $pUsers = $this->getSubscribers($query);
 
         return $pUsers;
     }
@@ -652,7 +652,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public function countPUserSubscribersQ()
     {
-        $pUsers = $this->getPUserSubscribersQ();
+        $pUsers = $this->getSubscribersQ();
 
         return count($pUsers);
     }
@@ -663,10 +663,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return     PropelObjectCollection PUser[] List
      */
-    public function getPUserSubscribersC()
+    public function getSubscribersC()
     {
         $query = PUserQuery::create()->filterByQualified(false);
-        $pUsers = $this->getPUserSubscribers($query);
+        $pUsers = $this->getSubscribers($query);
 
         return $pUsers;
     }
@@ -678,7 +678,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public function countPUserSubscribersC()
     {
-        $pUsers = $this->getPUserSubscribersC();
+        $pUsers = $this->getSubscribersC();
 
         return count($pUsers);
     }
@@ -740,7 +740,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * Renvoie les tags taggant l'utilisateur
      *
      *
-     * @return PTag (collection)
+     * @return PTag PropelCollection
      */
     public function getTaggedTags($ptTagTypeId = null, $online = true)
     {
@@ -759,7 +759,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * Renvoie les tags suivis par l'utilisateur
      *
      *
-     * @return PTag (collection)
+     * @return PTag PropelCollection
      */
     public function getFollowTags($ptTagTypeId = null, $online = true)
     {
@@ -779,7 +779,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Renvoie les documents associés à l'utilisateur
      *
-     * @return PDDebate (collection)
+     * @return PropelCollection PDDebate
      */
     public function getDocuments($online = true, $published = true)
     {
@@ -795,7 +795,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Renvoie les débats associés à l'utilisateur
      *
-     * @return PDDebate (collection)
+     * @return PropelCollection PDDebate
      */
     public function getDebates($online = true, $published = true)
     {
@@ -824,7 +824,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Renvoie les réactions associé à l'utilisateur
      *
-     * @return PDDebate (collection)
+     * @return PropelCollection PDDebate
      */
     public function getReactions($online = true, $published = true)
     {
@@ -847,6 +847,24 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         $reactions = $this->getReactions($online, $published);
 
         return count($reactions);
+    }
+
+    /**
+     * Renvoie les débats suivis par l'utilisateur
+     *
+     * @return PropelCollection PDDebate
+     */
+    public function getFollowedDebates($online = true, $published = true)
+    {
+        $query = PDDebateQuery::create()
+                    ->usePUFollowDDQuery()
+                        ->filterByPUserId($this->getId())
+                    ->endIf()
+                    ->filterByOnline($online)
+                    ->filterByPublished($published)
+                    ->orderByCreatedAt(\Criteria::DESC);
+
+        return $query->find();
     }
 
 
@@ -889,7 +907,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @param $pRBadgeTypeId    integer     ID type de badge
      *
-     * @return PRBadge (collection)
+     * @return PRBadge PropelCollection
      */
     public function getBadges($prBadgeTypeId = null, $online = true)
     {
@@ -965,7 +983,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * @param $typeId integer type de tag PTTagType id
      * @param $notFollowed boolean  renvoie uniquement les débats non suivis
      *
-     * @return PDDebate (collection)
+     * @return PropelCollection PDDebate
      */
     public function getTaggedDebates($typeId = null, $notFollowed = true)
     {
@@ -1002,7 +1020,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * Renvoie les users taggés avec (au moins) un tag suivi par le user courant
      *
      *
-     * @return PUser (collection)
+     * @return PUser PropelCollection
      */
     public function getTaggedPUsers($typeId = null, $qualified = null, $notFollowed = true)
     {

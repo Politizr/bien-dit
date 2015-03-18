@@ -207,32 +207,17 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Suivre / Ne plus suivre debat / user
+     *  Suivre / Ne plus suivre debat
      */
     public function followAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** followAction');
 
-        $type = $request->get('type');
-        $logger->info('$type = ' . print_r($type, true));
-
-        switch($type) {
-            case PDocument::TYPE_DEBATE:
-                $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-                    'politizr.service.document',
-                    'follow'
-                );
-
-                break;
-            case PDocument::TYPE_USER:
-                $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-                    'politizr.service.user',
-                    'follow'
-                );
-
-                break;
-        }
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'follow'
+        );
 
         return $jsonResponse;
     }

@@ -209,6 +209,14 @@ MyNotificationsC:
     pattern:  /citoyen/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:ProfileC:myNotifications }
 
+MyFollowedDebatesC:
+    pattern:  /citoyen/mon-compte/mes-debats-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedDebates }
+
+MyFollowedUsersC:
+    pattern:  /citoyen/mon-compte/mes-profils-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedUsers }
+
 ################################################################################
 #               ROUTING ELU
 ################################################################################
@@ -347,8 +355,13 @@ PaymentProcess:
 ################################################################################
 # SUIVI DEBAT / USER
 ################################################################################
-Follow:
-    pattern:  /follow.{_format}
+FollowUser:
+    pattern:  /profil/follow.{_format}
+    defaults: { _controller: PolitizrFrontBundle:User:follow, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+FollowDebate:
+    pattern:  /debat/follow.{_format}
     defaults: { _controller: PolitizrFrontBundle:Document:follow, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
@@ -468,6 +481,20 @@ NotificationEmailUnsubscribe:
     defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailUnsubscribe, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+# DEBATS SUIVIS / PROFILS SUIVIS
+################################################################################
+FollowedDebateList:
+    pattern:  /profil/debat/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:followedDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+FollowedUserList:
+    pattern:  /profil/user/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:followedUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+
 
 ################################################################################
 # CONSULTATION DOCUMENT
@@ -548,18 +575,18 @@ TimelinePaginated:
 ################################################################################
 # PLUS DE DEBATS / DE DEBATTEURS
 ################################################################################
-DebateList:
-    pattern:  /profil/debat/suggestions.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateList, _format: json }
+DailyDebateList:
+    pattern:  /profil/debat/evenements.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyDebateList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
-UserList:
-    pattern:  /profil/user/suggestions.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userList, _format: json }
+DailyUserList:
+    pattern:  /profil/user/evenements.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
-# TIMELINE
+# NOTIFICATIONS
 ################################################################################
 NotificationsLoad:
     pattern:  /profil/load-notif.{_format}

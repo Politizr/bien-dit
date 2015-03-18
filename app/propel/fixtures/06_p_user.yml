@@ -593,7 +593,7 @@ Politizr\Model\PUser:
         online:                 1
 
 
-# Abonnements aux notifications
+# NOTIFICATIONS USERS DEBATTEURS DE TEST
 Politizr\Model\PUSubscribeEmail:
     u1s1:
         p_notification_id:  d_comment_publish

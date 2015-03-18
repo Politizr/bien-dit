@@ -9,7 +9,6 @@ use Geocoder\Result\Geocoded;
 class PDDebateQuery extends BasePDDebateQuery
 {
 
-
     // *****************************    SURCHARGE / DOCUMENT    ************************* //
     
 
@@ -18,7 +17,8 @@ class PDDebateQuery extends BasePDDebateQuery
     /**
      * Cumule les contraintes associés à un objet en ligne
      */
-    public function online() {
+    public function online()
+    {
         return $this->filterByOnline(true)->filterByPublished(true);
     }
 
@@ -27,7 +27,8 @@ class PDDebateQuery extends BasePDDebateQuery
      *
      *     @return  Query
      */
-    public function bestNote() {
+    public function bestNote()
+    {
         return $this->orderByNotePos(\Criteria::DESC);
     }
 
@@ -36,7 +37,8 @@ class PDDebateQuery extends BasePDDebateQuery
      *
      *     @return  Query
      */
-    public function mostFollowed() {
+    public function mostFollowed()
+    {
         return $this->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
                 ->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
                 ->groupBy('Id')
@@ -49,7 +51,8 @@ class PDDebateQuery extends BasePDDebateQuery
      *    Derniers débats publiés
      *
      */
-    public function last() {
+    public function last()
+    {
         return $this->orderByPublishedAt(\Criteria::DESC);
     }
 
@@ -59,8 +62,23 @@ class PDDebateQuery extends BasePDDebateQuery
      *
      * @param     $geocoded     Geocoder\Result\Geocoded
      */
-    public function geolocalized(Geocoded $geocoded) {
+    public function geolocalized(Geocoded $geocoded)
+    {
     }
 
-
+    /**
+     * Ordonne suivant un mot clef défini sur la vue.
+     *
+     * @param $keyword      string      Mot clef pour l'ordonnancement issu du html
+     */
+    public function orderWithKeyword($keyword = 'last')
+    {
+        return $this->_if($keyword == 'mostFollowed')
+                        ->mostFollowed()
+                    ->_elseif($keyword == 'bestNote')
+                        ->bestNote()
+                    ->_elseif($keyword == 'last')
+                        ->last()
+                    ->_endif();
+    }
 }

@@ -128,8 +128,6 @@ class UserManager
             )
         );
 
-
-
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
@@ -144,13 +142,13 @@ class UserManager
 
 
     /**
-     *  Listing de users ordonnancés suivant l'argument récupéré
+     *  Listing de profils du jour ordonnancés suivant l'argument récupéré
      *
      */
-    public function userList()
+    public function dailyUserList()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** userList');
+        $logger->info('*** dailyUserList');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -178,17 +176,13 @@ class UserManager
                             // ->filterByQualified(true)
                             ->online()
                             ->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))
-                            ->_if($order == 'mostFollowed')
-                                ->mostFollowed()
-                            ->_elseif($order == 'last')
-                                ->last()
-                            ->_endif()
+                            ->orderWithKeyword($order)
                             ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glSuggestionList.html.twig',
+            'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
             array(
                 'users' => $users
                 )
@@ -199,6 +193,51 @@ class UserManager
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                           PROFILS SUIVIS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Listing de users ordonnancés suivant l'argument récupéré
+     */
+    public function followedUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** followedUserList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+
+        // Requête suivant order
+        $query = PUserQuery::create()
+                            ->online()
+                            ->orderWithKeyword($order);
+
+        $users = $user->getSubscribers($query);
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
+            array(
+                'users' => $users
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
 
 
     /* ######################################################################################################## */

@@ -380,7 +380,7 @@ class AdminAjaxExtension extends \Twig_Extension
             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
             array(
                 'pUser' => $pUser,
-                'pUsers' => $pUser->getPUserSubscribersQ(),
+                'pUsers' => $pUser->getSubscribersQ(),
             )
         );
 
@@ -405,7 +405,7 @@ class AdminAjaxExtension extends \Twig_Extension
             'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
             array(
                 'pUser' => $pUser,
-                'pUsers' => $pUser->getPUserSubscribersC(),
+                'pUsers' => $pUser->getSubscribersC(),
             )
         );
 

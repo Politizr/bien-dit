@@ -916,13 +916,13 @@ class DocumentManager
 
 
     /**
-     *  Listing de débats ordonnancés suivant l'argument récupéré
+     *  Listing de débats du jour ordonnancés suivant l'argument récupéré
      *
      */
-    public function debateList()
+    public function dailyDebateList()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** debateList');
+        $logger->info('*** dailyDebateList');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -949,20 +949,60 @@ class DocumentManager
         $debates = PDDebateQuery::create()
                         ->online()
                         ->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))
-                        ->_if($order == 'mostFollowed')
-                            ->mostFollowed()
-                        ->_elseif($order == 'bestNote')
-                            ->bestNote()
-                        ->_elseif($order == 'last')
-                            ->last()
-                        ->_endif()
-
+                        ->orderWithKeyword($order)
                         ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Debate:glSuggestionList.html.twig',
+            'PolitizrFrontBundle:Fragment\\Debate:glList.html.twig',
+            array(
+                'debates' => $debates
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                            DEBATS SUIVIS (FONCTIONS AJAX)                                */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Listing de débats ordonnancés suivant l'argument récupéré
+     *
+     */
+    public function followedDebateList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** followedDebateList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+
+        $debates = PDDebateQuery::create()
+                        ->online()
+                        ->usePuFollowDdPDDebateQuery()
+                            ->filterByPUserId($user->getId())
+                        ->endUse()
+                        ->orderWithKeyword($order)
+                        ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Fragment\\Debate:glList.html.twig',
             array(
                 'debates' => $debates
             )
