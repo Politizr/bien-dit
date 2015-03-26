@@ -3,28 +3,20 @@
 {% block main %}
     <div id="main" class="container">
         <h1>Ma réputation <span class="badge alert-success">{{ reputationScore }}</span></h1>
-        <div id="reputation-history" class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <td>Évolution</td>
-                    <td>Date</td>
-                    <td>Action</td>
-                    <td>Lien</td>
-                </thead>
-                {% for history in reputationHistory %}
-                    <tr>
-                        <td>{{ history.PRAction.scoreEvolution }}</td>
-                        <td><span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ history.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span></td>
-                        <td>{{ history.PRAction.title }}</td>
-                        <td>{{ history | linkedReputation }}</td>
-                    </tr>
-                {% else %}
-                    <td colspan="4">
-                        <p class="bg-info">Vous n'avez effectué aucune action ayant fait évoluer votre réputation.</p>
-                    </td>
-                {% endfor %}
-            </table>
+        <div id="paginated-list">
+            <form id="list-filter" class="text-center"></form>
+            <hr>
+            <div class="row text-center">
+                <div class="col-sm-1 text-center"><strong>Évolution</strong></div>
+                <div class="col-sm-2"><strong>Date</strong></div>
+                <div class="col-sm-4"><strong>Action</strong></div>
+                <div class="col-sm-5"><strong>Lien</strong></div>
+            </div>
+            <hr>
+            <div id="list-content">
+            </div>
         </div>
+        <hr>
         <h1>Mes badges</h1>
         <ul class="nav nav-tabs">
             <li role="list" class="active"><a action="bronze">Bronze</a></li>
@@ -53,5 +45,6 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'HistoryActionsList' } %}
     {% include 'PolitizrFrontBundle:JS:badges.js.twig' %}
 {% endblock javascriptFooter %}

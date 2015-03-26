@@ -59,6 +59,7 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
  *  - gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
  *  - refactorisation pour réduire les doublons de code entre les tables PUTaggedT et PUFollowT
  *  - refactoring gestion des tags > gestion des doublons / admin + externalisation logique métier dans les *Query class
+ *  - refactoring > à renommer en ElectedController > contient les fonctions spécifiques au profil débatteur, sinon utiliser ProfileController
  *
  * @author Lionel Bouzonville
  */
@@ -256,12 +257,6 @@ class ProfileEController extends Controller
         // score de réputation
         $reputationScore = $user->getReputationScore();
 
-        // historique de réputation
-        $reputationHistory = PUReputationQuery::create()
-                                ->filterByPUserId($user->getId())
-                                ->orderByCreatedAt(\Criteria::DESC)
-                                ->find();
-        
         // badges
         $badgesGold = PRBadgeQuery::create()
                         ->filterByPRBadgeMetalId(PRBadgeMetal::GOLD)
@@ -296,7 +291,6 @@ class ProfileEController extends Controller
         // Affichage de la vue
         return $this->render('PolitizrFrontBundle:ProfileE:myReputation.html.twig', array(
             'reputationScore' => $reputationScore,
-            'reputationHistory' => $reputationHistory,
             'badgesGold' => $badgesGold,
             'badgesSilver' => $badgesSilver,
             'badgesBronze' => $badgesBronze,

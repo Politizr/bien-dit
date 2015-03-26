@@ -630,3 +630,11 @@ NotificationsCheckAll:
     pattern:  /profil/check-all-notif.{_format}
     defaults: { _controller: PolitizrFrontBundle:Profile:notificationsCheckAll, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+# REPUTATION
+################################################################################
+HistoryActionsList:
+    pattern:  /profil/reputation/historique.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:historyActionsList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

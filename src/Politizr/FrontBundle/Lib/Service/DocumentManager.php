@@ -930,34 +930,31 @@ class DocumentManager
         // Récupération args
         $request = $this->sc->get('request');
 
+        // $params = $request->request->all();
+        // $logger->info('$params = ' . print_r($params, true));
+
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
-
-        // Dates début / fin
-        $now = new \DateTime();
-        $nowMin24 = new \DateTime();
-        $nowMin24->modify('-1 day');
-
-        // -24h tant qu'il n'y a pas de résultats significatifs
-        $nb = 0;
-        while ($nb < 10) {
-            $nb = PDDebateQuery::create()->online()->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))->count();
-            $logger->info('$nb = ' . print_r($nb, true));
-            $nowMin24->modify('-1 day');
-        }
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
 
         $debates = PDDebateQuery::create()
-                        ->online()
-                        ->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))
-                        ->orderWithKeyword($order)
-                        ->find();
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\Debate:glList.html.twig',
             array(
-                'debates' => $debates
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
             )
         );
 
@@ -990,21 +987,29 @@ class DocumentManager
 
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
 
         $debates = PDDebateQuery::create()
-                        ->online()
-                        ->usePuFollowDdPDDebateQuery()
-                            ->filterByPUserId($user->getId())
-                        ->endUse()
-                        ->orderWithKeyword($order)
-                        ->find();
+                    ->online()
+                    ->usePuFollowDdPDDebateQuery()
+                        ->filterByPUserId($user->getId())
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\Debate:glListNotifSettings.html.twig',
             array(
-                'debates' => $debates
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
             )
         );
 

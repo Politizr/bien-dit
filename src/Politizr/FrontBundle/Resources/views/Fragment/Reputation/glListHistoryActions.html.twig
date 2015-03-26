@@ -1,12 +1,12 @@
 <div class="scroll">
-    {% for user in users %}
-        {% include 'PolitizrFrontBundle:Fragment\\User:ListRowNotifSettings.html.twig' with { 'user': user } only %}
+    {% for history in historyActions %}
+        {% include 'PolitizrFrontBundle:Fragment\\Reputation:ListRowHistoryAction.html.twig' with { 'history': history } only %}
         <hr>
     {% endfor %}
 </div>
 <div id="scroll-nav" class="row">
     <div class="col-sm-12 text-center">
-        {% if users | length == 10 %}
+        {% if historyActions | length == 10 %}
             <a class="btn btn-primary" action="paginate-next" offset="{{ offset }}">suite</a>
         {% else %}
             <p class="bg-info">Il n'y a plus de résultats</p>

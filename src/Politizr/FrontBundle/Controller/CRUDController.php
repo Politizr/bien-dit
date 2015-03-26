@@ -45,7 +45,7 @@ use Politizr\FrontBundle\Form\Type\PDCommentType;
 
 /**
  *  Gestion des CRUD lié aux objets Politizr: débat, réaction, ...
- *  Fonctions communes aux profils citoyens / débatteurs > TODO: à renommer en ProfileController?
+ *  Fonctions communes aux profils citoyens / débatteurs > TODO: à fusionner avec ProfileController?
  *
  *  @author Lionel Bouzonville
  */

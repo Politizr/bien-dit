@@ -11,7 +11,6 @@ use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PDocument;
 
-
 /**
  * Extension Twig / Gestion réputation
  *
@@ -30,7 +29,8 @@ class PolitizrReputationExtension extends \Twig_Extension
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
         
         $this->logger = $serviceContainer->get('logger');
@@ -40,7 +40,6 @@ class PolitizrReputationExtension extends \Twig_Extension
         // Récupération du user en session
         $token = $serviceContainer->get('security.context')->getToken();
         if ($token && $user = $token->getUser()) {
-
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
                 $this->user = $user;
@@ -67,9 +66,15 @@ class PolitizrReputationExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('linkedReputation', array($this, 'linkedReputation'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'linkedReputation',
+                array($this, 'linkedReputation'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'scoreEvolution',
+                array($this, 'scoreEvolution'),
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -80,9 +85,10 @@ class PolitizrReputationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'badgeMetalTwBootClass'  => new \Twig_Function_Method($this, 'badgeMetalTwBootClass', array(
-                    'is_safe' => array('html')
-                    )
+            'badgeMetalTwBootClass'  => new \Twig_Function_Method(
+                $this,
+                'badgeMetalTwBootClass',
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -160,6 +166,36 @@ class PolitizrReputationExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     *  Renvoie l'évolution du score de réputation formatté.
+     *
+     *  @param $reputation          PUReputation
+     *
+     *  @return html
+     */
+    public function scoreEvolution(PUReputation $reputation)
+    {
+        // $this->logger->info('*** scoreEvolution');
+        // $this->logger->info('$reputation = '.print_r($reputation, true));
+
+        $action = $reputation->getPRAction();
+        if (null === $action) {
+            throw new \Politizr\Exception\InconsistentDataException(sprintf('PUReputation id-%s has no associated PRAction', $reputation->getId()));
+        } else {
+            $score = $action->getScoreEvolution();
+
+            // Construction du rendu du tag
+            if ($score > 0) {
+                $html = '<strong>+' . $score . '</strong>';
+            } else {
+                $html = '<strong>' . $score . '</strong>';
+            }
+        }
+
+        return $html;
+    }
+
+
 
 
     /* ######################################################################################################## */
@@ -183,22 +219,17 @@ class PolitizrReputationExtension extends \Twig_Extension
         $twClass = 'label-info';
         if ($badgeMetalId == PRBadgeMetal::GOLD) {
             $twClass = 'label-warning';
-        } elseif($badgeMetalId == PRBadgeMetal::SILVER) {
+        } elseif ($badgeMetalId == PRBadgeMetal::SILVER) {
             $twClass = 'label-default';
-        } elseif($badgeMetalId == PRBadgeMetal::BRONZE) {
+        } elseif ($badgeMetalId == PRBadgeMetal::BRONZE) {
             $twClass = 'label-danger';
         }
 
         return $twClass;
     }
 
-
-
     public function getName()
     {
         return 'p_e_reputation';
     }
-
-
-
 }

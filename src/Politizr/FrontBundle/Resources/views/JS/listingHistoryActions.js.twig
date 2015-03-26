@@ -3,17 +3,7 @@
     //      Initialisation
     // **************************** //
     $(document).ready(function () {
-        timelinePaginated();
-    });
-
-    // Ouverture box jumbotron
-    $("body").on("click", "a[action='more-info']", function() {
-        if ($(this).closest('.timeline-row').find('.jumbotron').is(':visible')) {
-            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
-        } else {
-            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
-            $(this).closest('.timeline-row').find('.jumbotron').slideDown();
-        }
+        historyActionsList();
     });
 
     // Page suivante
@@ -21,16 +11,15 @@
         console.log('*** click paginate-next');
 
         console.log($(this).attr('offset'));
-        timelinePaginated($(this).attr('offset'));
+        historyActionsList($(this).attr('offset'));
     });
 
-
-    // Chargement ajax du début de la timeline
-    function timelinePaginated (offset) {
+    // Chargement paginé de la liste
+    function historyActionsList (offset) {
         offset = (typeof offset === "undefined") ? 0 : offset;
         $.ajax({
             type: 'POST',
-            url: "{{ path('TimelinePaginated') }}",
+            url: "{{ path('HistoryActionsList') }}",
             data: { 'offset': offset },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
@@ -40,7 +29,8 @@
                     $('.alert.alert-danger').show();
                 } else {
                     $('#scroll-nav').remove();
-                    $('#timeline').append(data['html']);
+
+                    $('#history').append(data['html']);
                 }
                 $('#ajax-loader').hide();
             }

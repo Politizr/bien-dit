@@ -1,4 +1,15 @@
-{% for debate in debates %}
-    {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowNotifSettings.html.twig' with { 'debate': debate } only %}
-    <hr>
-{% endfor %}
+<div class="scroll">
+    {% for debate in debates %}
+        {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowNotifSettings.html.twig' with { 'debate': debate } only %}
+        <hr>
+    {% endfor %}
+</div>
+<div id="scroll-nav" class="row">
+    <div class="col-sm-12 text-center">
+        {% if debates | length == 10 %}
+            <a class="btn btn-primary" action="paginate-next" order="{{ order }}" offset="{{ offset }}">suite</a>
+        {% else %}
+            <p class="bg-info">Il n'y a plus de résultats</p>
+        {% endif %}
+    </div>
+</div>

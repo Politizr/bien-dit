@@ -24,6 +24,8 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUReputationQuery;
+use Politizr\Model\PUMandateQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -159,33 +161,27 @@ class UserManager
 
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
-
-        // Dates début / fin
-        $now = new \DateTime();
-        $nowMin24 = new \DateTime();
-
-        // -24h tant qu'il n'y a pas de résultats significatifs
-        $nb = 0;
-        while ($nb < 10) {
-            $nb = PUserQuery::create()->online()->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))->count();
-            $logger->info('$nb = ' . print_r($nb, true));
-            $nowMin24->modify('-1 day');
-        }
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
 
         // Requête suivant order
         $users = PUserQuery::create()
-                            // ->filterByQualified(true)
-                            ->online()
-                            ->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))
-                            ->orderWithKeyword($order)
-                            ->find();
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
             array(
-                'users' => $users
+                'users' => $users,
+                'offset' => intval($offset) + 10,
                 )
         );
 
@@ -216,11 +212,19 @@ class UserManager
 
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
 
         // Requête suivant order
         $query = PUserQuery::create()
-                            ->online()
-                            ->orderWithKeyword($order);
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ;
 
         $users = $user->getSubscribers($query);
 
@@ -229,7 +233,9 @@ class UserManager
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\User:glListNotifSettings.html.twig',
             array(
-                'users' => $users
+                'users' => $users,
+                'order' => $order,
+                'offset' => intval($offset) + 10,
                 )
         );
 
@@ -1005,5 +1011,57 @@ class UserManager
         }
 
         return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                          RÉPUTATION (FONCTIONS AJAX)                                     */
+    /* ######################################################################################################## */
+
+    /**
+     * Listing de l'historique des actions
+     */
+    public function historyActionsList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** historyActionsList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // Requête suivant order
+        $historyActions = PUReputationQuery::create()
+                            ->filterByPUserId($user->getId())
+                            ->orderByCreatedAt(\Criteria::DESC)
+                            ->limit(10)
+                            ->offset($offset)
+                            ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Fragment\\Reputation:glListHistoryActions.html.twig',
+            array(
+                'historyActions' => $historyActions,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
     }
 }

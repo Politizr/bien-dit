@@ -1,15 +1,21 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
-
 {% block main %}
     <div id="main" class="container">
-        <ul class="nav nav-tabs">
-            <li role="list" class="active"><a action="most-followed" order="mostFollowed">Plus suivis</a></li>
-            <li role="list"><a action="last" order="last">Derniers</a></li>
-        </ul>
-        <div id="user-tab-content">
+        <div id="paginated-list">
+            <ul class="nav nav-tabs">
+                <li role="list" class="active"><a class="order" order="last">Derniers</a></li>
+                <li role="list"><a class="order" order="mostFollowed">Plus suivis</a></li>
+            </ul>
+            <hr>
+            <form id="list-filter" class="text-center">
+                <input type="checkbox" class="filter" name="filters[]" value="newest"/>&nbsp;Les plus récents
+                <input type="checkbox" class="filter" name="filters[]" value="qualified" />&nbsp;Débatteurs uniquement
+            </form>
+            <hr>
+            <div id="list-content">
+            </div>
         </div>
-
     </div>
 {% endblock main %}
 
@@ -18,6 +24,5 @@
     {{ parent() }}
 
     {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:listingUsers.js.twig' with { 'RouteName': 'DailyUserList' } %}
+    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'DailyUserList' } %}
 {% endblock javascriptFooter %}

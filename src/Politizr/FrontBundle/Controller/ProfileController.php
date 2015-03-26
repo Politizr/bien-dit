@@ -26,6 +26,10 @@ class ProfileController extends Controller
     /* ######################################################################################################## */
 
 
+    /* ######################################################################################################## */
+    /*                                                  NOTIFICATIONS                                           */
+    /* ######################################################################################################## */
+
     /**
      *  Liste des notifications
      */
@@ -157,7 +161,6 @@ class ProfileController extends Controller
         return $jsonResponse;
     }
    
-
     /**
      *  Désouscrit une notification contextuelle à un débat
      */
@@ -169,6 +172,26 @@ class ProfileController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.user',
             'notifDebateContextUnsubscribe'
+        );
+
+        return $jsonResponse;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                     REPUTATION                                           */
+    /* ######################################################################################################## */
+
+    /**
+     *  Historique des actions
+     */
+    public function historyActionsListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** historyActionsList');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'historyActionsList'
         );
 
         return $jsonResponse;
