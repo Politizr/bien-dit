@@ -141,7 +141,7 @@
 
         "cedriclombardot/admingenerator-generator-bundle": "~1.1",
         "cedriclombardot/admingenerator-user-bundle": "~1.1",
-        "avocode/form-extensions-bundle": "dev-master",
+        "avocode/form-extensions-bundle": "0.1.5",
         "liuggio/ExcelBundle": "2.0.0",
 
         "liip/imagine-bundle": "0.11.*",

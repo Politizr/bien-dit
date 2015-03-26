@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "29cc6909597a8aec6f1bdcfc1df339c3",
+    "hash": "0b8f8ed89cd7a4acdeac9501ec27f4d4",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -42,17 +42,17 @@
         },
         {
             "name": "avocode/form-extensions-bundle",
-            "version": "dev-master",
+            "version": "v0.1.5",
             "target-dir": "Avocode/FormExtensionsBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony2admingenerator/AvocodeFormExtensionsBundle.git",
-                "reference": "d0d07ae48eb132552c1421d630776206cc649ec3"
+                "url": "https://github.com/symfony2admingenerator/FormExtensions.git",
+                "reference": "f2500ccbca1e3649c9c09dd6db0a7a58f9630ce1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/AvocodeFormExtensionsBundle/zipball/d0d07ae48eb132552c1421d630776206cc649ec3",
-                "reference": "d0d07ae48eb132552c1421d630776206cc649ec3",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensions/zipball/f2500ccbca1e3649c9c09dd6db0a7a58f9630ce1",
+                "reference": "f2500ccbca1e3649c9c09dd6db0a7a58f9630ce1",
                 "shasum": ""
             },
             "require": {
@@ -68,8 +68,7 @@
             },
             "suggest": {
                 "cedriclombardot/admingenerator-generator-bundle": "The missing symfony2 admin generator",
-                "liip/imagine-bundle": "Apply filters on preview images",
-                "vich/uploader-bundle": "(>= 0.10.0) Bundle to ease file uploads with ORM entities and ODM documents"
+                "liip/imagine-bundle": "Apply filters on preview images"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -93,7 +92,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2015-01-31 23:49:38"
+            "time": "2014-07-25 10:47:45"
         },
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -507,16 +506,16 @@
         },
         {
             "name": "components/jqueryui",
-            "version": "1.11.3",
+            "version": "1.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jqueryui.git",
-                "reference": "7e2d6bec1c729925d9ad7c0c9ab4b561174efa99"
+                "reference": "c34f8dbf3ba57b3784b93f26119f436c0e8288e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jqueryui/zipball/7e2d6bec1c729925d9ad7c0c9ab4b561174efa99",
-                "reference": "7e2d6bec1c729925d9ad7c0c9ab4b561174efa99",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/c34f8dbf3ba57b3784b93f26119f436c0e8288e1",
+                "reference": "c34f8dbf3ba57b3784b93f26119f436c0e8288e1",
                 "shasum": ""
             },
             "require": {
@@ -588,7 +587,7 @@
                 }
             ],
             "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
-            "time": "2015-02-13 15:14:58"
+            "time": "2015-03-13 14:48:12"
         },
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -655,7 +654,7 @@
                     ]
                 }
             },
-            "time": "2015-03-03 17:24:24"
+            "time": "2015-03-18 12:04:06"
         },
         {
             "name": "doctrine/annotations",
@@ -1135,7 +1134,7 @@
                     ]
                 }
             },
-            "time": "2015-03-03 17:24:24"
+            "time": "2015-03-18 12:04:06"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1348,12 +1347,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6"
+                "reference": "d5faa70f2bd74febf87c3aed8ee2777caca766fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6",
-                "reference": "c34eb8f82ca17c4e0b3337ce15aa042ba2f190f6",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/d5faa70f2bd74febf87c3aed8ee2777caca766fa",
+                "reference": "d5faa70f2bd74febf87c3aed8ee2777caca766fa",
                 "shasum": ""
             },
             "require-dev": {
@@ -1388,20 +1387,20 @@
                 "font",
                 "icon"
             ],
-            "time": "2015-03-11 20:22:48"
+            "time": "2015-03-24 14:58:59"
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "v3.0.9",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "b6c252aac3f68324a980bbcf14b75de544a59997"
+                "reference": "447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/b6c252aac3f68324a980bbcf14b75de544a59997",
-                "reference": "b6c252aac3f68324a980bbcf14b75de544a59997",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3",
+                "reference": "447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3",
                 "shasum": ""
             },
             "require": {
@@ -1415,7 +1414,7 @@
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.2@beta",
-                "doctrine/orm": "~2.2",
+                "doctrine/orm": "~2.4",
                 "jms/serializer-bundle": "@stable",
                 "knplabs/knp-components": "~1.2",
                 "knplabs/knp-paginator-bundle": "~2.4",
@@ -1428,7 +1427,7 @@
             },
             "suggest": {
                 "doctrine/mongodb-odm": "1.0.*@dev",
-                "doctrine/orm": "~2.2",
+                "doctrine/orm": "~2.4",
                 "knplabs/knp-components": "~1.2",
                 "pagerfanta/pagerfanta": "1.0.*@dev",
                 "propel/propel1": "1.6.*",
@@ -1477,7 +1476,7 @@
                 "propel",
                 "search"
             ],
-            "time": "2015-03-12 16:54:08"
+            "time": "2015-03-17 22:38:47"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -3124,17 +3123,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.11",
+            "version": "v2.3.12",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "374bbea795fa69a85b1623048798a89aebffe62b"
+                "reference": "29e81800012a6e827bdea8d9d1ab2bacd85d25fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/374bbea795fa69a85b1623048798a89aebffe62b",
-                "reference": "374bbea795fa69a85b1623048798a89aebffe62b",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/29e81800012a6e827bdea8d9d1ab2bacd85d25fa",
+                "reference": "29e81800012a6e827bdea8d9d1ab2bacd85d25fa",
                 "shasum": ""
             },
             "require": {
@@ -3166,7 +3165,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-02-27 12:58:18"
+            "time": "2015-03-25 08:57:52"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3267,16 +3266,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.3.1",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a"
+                "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
-                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/31454f258f10329ae7c48763eb898a75c39e0a9f",
+                "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f",
                 "shasum": ""
             },
             "require": {
@@ -3288,7 +3287,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.3-dev"
+                    "dev-master": "5.4-dev"
                 }
             },
             "autoload": {
@@ -3315,7 +3314,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-12-05 14:17:14"
+            "time": "2015-03-14 06:06:39"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -3497,16 +3496,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.25",
+            "version": "v2.3.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "959733dc4b1da99b9e93a1762f4217eee20fc933"
+                "reference": "dd70065d94468de18b722ec692fc3c34e87fd863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/959733dc4b1da99b9e93a1762f4217eee20fc933",
-                "reference": "959733dc4b1da99b9e93a1762f4217eee20fc933",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/dd70065d94468de18b722ec692fc3c34e87fd863",
+                "reference": "dd70065d94468de18b722ec692fc3c34e87fd863",
                 "shasum": ""
             },
             "require": {
@@ -3561,7 +3560,8 @@
                 "ircmaxell/password-compat": "~1.0",
                 "monolog/monolog": "~1.3",
                 "ocramius/proxy-manager": "~0.3.1",
-                "propel/propel1": "~1.6"
+                "propel/propel1": "~1.6",
+                "symfony/phpunit-bridge": "~2.7"
             },
             "type": "library",
             "extra": {
@@ -3600,7 +3600,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-01-30 13:55:40"
+            "time": "2015-03-17 14:18:00"
         },
         {
             "name": "twig/extensions",
@@ -4347,7 +4347,6 @@
         "hwi/oauth-bundle": 20,
         "facebook/php-sdk-v4": 20,
         "elao/web-profiler-extra-bundle": 20,
-        "avocode/form-extensions-bundle": 20,
         "glorpen/propel-bundle": 20,
         "robloach/component-installer": 20,
         "fortawesome/font-awesome": 20,
