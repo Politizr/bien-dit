@@ -1,5 +1,5 @@
 {% for tag in tags %}
     {% include 'PolitizrFrontBundle:Fragment\\Tag:ListRowRead.html.twig' with { 'tag': tag } %}&nbsp;
 {% else %}
-    <span class="label label-default"><i class="fa fa-tag"></i>&nbsp;Aucun tag {{ tagLabel }}</span>
+    <span class="label label-default"><i class="fa fa-tag"></i>&nbsp;Aucun tag</span>
 {% endfor %}
