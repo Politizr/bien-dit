@@ -14,7 +14,7 @@
 {% block main %}
     <div id="main" class="container">
         <p class="bg-info">Formulez le titre du débat sous forme de question.</p>
-        <p class="bg-info">Complétez les tags géographiques et thématiques associés au débat.</p>
+        <p class="bg-info">Complétez les tags associés au débat.</p>
         <p class="bg-info">Attention, une fois publié, vous ne pourrez plus modifier votre débat.</p>
         <hr>
         {% include 'PolitizrFrontBundle:Fragment\\Debate:DetailDraft.html.twig' with { 'debate': debate, 'form': form } %}
@@ -38,7 +38,7 @@
     {{ parent() }}
 
     {# Tags #}
-    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 2 } %}
+    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 1 } %}
 
     {# medium clone editor #}
     <script src="{{ asset('components/medium-editor/dist/js/medium-editor.min.js') }}"></script>

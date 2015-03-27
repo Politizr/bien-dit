@@ -10,7 +10,7 @@
     {# Affichage #}
     <div class="displayTagsZone">
         {% for tag in tags %}
-            {% include 'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig' with { 'objectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
+            {% include 'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig' with { 'objectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
         {% endfor %}
     </div>
 </div>

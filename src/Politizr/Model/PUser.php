@@ -749,6 +749,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                         ->filterByPTTagTypeId($ptTagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
+                    ->_if(null === $ptTagTypeId)
+                        ->orderByPTTagTypeId()
+                    ->_endif()
+                    ->orderByTitle()
                     ->setDistinct()
                     ;
 
@@ -768,6 +772,10 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                         ->filterByPTTagTypeId($ptTagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
+                    ->_if(null === $ptTagTypeId)
+                        ->orderByPTTagTypeId()
+                    ->_endif()
+                    ->orderByTitle()
                     ->setDistinct()
                     ;
 

@@ -48,12 +48,17 @@ class TagManager
      *
      *  @return integer     id du tag sélectionné / retrouvé / créé
      */
-    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag = false)
+    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId = null, $newTag = false)
     {
         if (!$tagId) {
             // Récupération via slug
             $slug = StudioEchoUtils::generateSlug($tagTitle);
-            $tag = PTagQuery::create()->filterByPTTagTypeId($tagTypeId)->filterBySlug($slug)->findOne();
+            $tag = PTagQuery::create()
+                        ->_if($tagTypeId)
+                            ->filterByPTTagTypeId($tagTypeId)
+                        ->_endif()
+                        ->filterBySlug($slug)
+                        ->findOne();
 
             if ($tag) {
                 $tagId = $tag->getId();
@@ -97,7 +102,9 @@ class TagManager
         $tags = PTagQuery::create()
             ->select(array('id', 'title'))
             ->filterByOnline(true)
-            ->filterByPTTagTypeId($tagTypeId)
+            ->_if($tagTypeId)
+                ->filterByPTTagTypeId($tagTypeId)
+            ->_endif()
             ->orderByTitle()
             ->find()
             ->toArray();
@@ -138,6 +145,10 @@ class TagManager
         $objectId = $request->get('objectId');
         $newTag = $request->get('newTag');
 
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
         // Gestion tag non existant
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
 
@@ -151,7 +162,7 @@ class TagManager
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
                 array(
                     'objectId' => $objectId,
                     'tag' => $tag,
@@ -220,6 +231,10 @@ class TagManager
         $objectId = $request->get('objectId');
         $newTag = $request->get('newTag');
 
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
         // Gestion tag non existant
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
 
@@ -233,7 +248,7 @@ class TagManager
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
                 array(
                     'objectId' => $objectId,
                     'tag' => $tag,
@@ -291,13 +306,16 @@ class TagManager
         // Récupération args
         $request = $this->sc->get('request');
 
-
         // Récupération args
         $tagTitle = $request->get('tagTitle');
         $tagId = $request->get('tagId');
         $tagTypeId = $request->get('tagTypeId');
         $objectId = $request->get('objectId');
         $newTag = $request->get('newTag');
+
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
 
         // Gestion tag non existant
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
@@ -312,7 +330,7 @@ class TagManager
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRow.html.twig',
+                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
                 array(
                     'objectId' => $objectId,
                     'tag' => $tag,

@@ -299,6 +299,10 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
                         ->filterByPTTagTypeId($tagTypeId)
                     ->_endif()
                     ->filterByOnline($online)
+                    ->_if(null === $tagTypeId)
+                        ->orderByPTTagTypeId()
+                    ->_endif()
+                    ->orderByTitle()
                     ->setDistinct()
                     ;
 

@@ -19,7 +19,8 @@ class PolitizrTagExtension extends \Twig_Extension
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
         
         $this->logger = $serviceContainer->get('logger');
@@ -29,7 +30,6 @@ class PolitizrTagExtension extends \Twig_Extension
         // Récupération du user en session
         $token = $serviceContainer->get('security.context')->getToken();
         if ($token && $user = $token->getUser()) {
-
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
                 $this->user = $user;
@@ -52,17 +52,20 @@ class PolitizrTagExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'debateTagsEdit'  => new \Twig_Function_Method($this, 'debateTagsEdit', array(
-                    'is_safe' => array('html')
-                    )
+            'debateTagsEdit'  => new \Twig_Function_Method(
+                $this,
+                'debateTagsEdit',
+                array('is_safe' => array('html'))
             ),
-            'userFollowTagsEdit'  => new \Twig_Function_Method($this, 'userFollowTagsEdit', array(
-                    'is_safe' => array('html')
-                    )
+            'userFollowTagsEdit'  => new \Twig_Function_Method(
+                $this,
+                'userFollowTagsEdit',
+                array('is_safe' => array('html'))
             ),
-            'userTaggedTagsEdit'  => new \Twig_Function_Method($this, 'userTaggedTagsEdit', array(
-                    'is_safe' => array('html')
-                    )
+            'userTaggedTagsEdit'  => new \Twig_Function_Method(
+                $this,
+                'userTaggedTagsEdit',
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -97,16 +100,17 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
-                                'object' => $debate,
-                                'tagTypeId' => $tagTypeId,
-                                'zoneId' => $zoneId,
-                                'newTag' => $newTag,
-                                'tags' => $debate->getTags($tagTypeId),
-                                'addPath' => 'DebateAddTag',
-                                'deletePath' => 'DebateDeleteTag',
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            array(
+                'object' => $debate,
+                'tagTypeId' => $tagTypeId,
+                'zoneId' => $zoneId,
+                'newTag' => $newTag,
+                'tags' => $debate->getTags($tagTypeId),
+                'addPath' => 'DebateAddTag',
+                'deletePath' => 'DebateDeleteTag',
+            )
+        );
 
         return $html;
     }
@@ -122,7 +126,7 @@ class PolitizrTagExtension extends \Twig_Extension
      *
      *  @return string
      */
-    public function userFollowTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
+    public function userFollowTagsEdit($user, $tagTypeId = null, $zoneId = 1, $newTag = false)
     {
         $this->logger->info('*** userFollowTagsEdit');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -131,16 +135,17 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
-                                'object' => $user,
-                                'tagTypeId' => $tagTypeId,
-                                'zoneId' => $zoneId,
-                                'newTag' => $newTag,
-                                'tags' => $user->getFollowTags($tagTypeId),
-                                'addPath' => 'UserFollowAddTag',
-                                'deletePath' => 'UserFollowDeleteTag',
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            array(
+                'object' => $user,
+                'tagTypeId' => $tagTypeId,
+                'zoneId' => $zoneId,
+                'newTag' => $newTag,
+                'tags' => $user->getFollowTags($tagTypeId),
+                'addPath' => 'UserFollowAddTag',
+                'deletePath' => 'UserFollowDeleteTag',
+                )
+        );
 
         return $html;
     }
@@ -165,16 +170,17 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\Tag:glAddList.html.twig', array(
-                                'object' => $user,
-                                'tagTypeId' => $tagTypeId,
-                                'zoneId' => $zoneId,
-                                'newTag' => $newTag,
-                                'tags' => $user->getTaggedTags($tagTypeId),
-                                'addPath' => 'UserTaggedAddTag',
-                                'deletePath' => 'UserTaggedDeleteTag',
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            array(
+                'object' => $user,
+                'tagTypeId' => $tagTypeId,
+                'zoneId' => $zoneId,
+                'newTag' => $newTag,
+                'tags' => $user->getTaggedTags($tagTypeId),
+                'addPath' => 'UserTaggedAddTag',
+                'deletePath' => 'UserTaggedDeleteTag',
+                )
+        );
 
         return $html;
     }
@@ -185,7 +191,4 @@ class PolitizrTagExtension extends \Twig_Extension
     {
         return 'p_e_tag';
     }
-
-
-
 }

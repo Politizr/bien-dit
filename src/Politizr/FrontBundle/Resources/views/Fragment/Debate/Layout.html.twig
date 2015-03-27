@@ -73,11 +73,8 @@ LAYOUT DEBATE
             <div class="jumbotron">
                 {# Tags #}
                 <div class="row text-center">
-                    <div class="col-sm-6">
-                        {{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
-                    </div>
-                    <div class="col-sm-6">
-                        {{ debate | docTags(constant('\\Politizr\\Model\\PTTagType::TYPE_THEME')) }}
+                    <div class="col-sm-12">
+                        {{ debate | docTags() }}
                     </div>
                 </div>
                 <hr>

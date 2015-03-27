@@ -181,7 +181,6 @@ class DocumentController extends Controller
         $user->setNbViews($user->getNbViews() + 1);
         $user->save();
 
-
         // *********************************** //
         //      Récupération des objets associés
         // *********************************** //

@@ -52,19 +52,12 @@
     <div class="jumbotron">
         {# Tags #}
         <div class="row text-center">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <span class="tag label label-success">
-                    <i class="fa fa-tag"></i>&nbsp;Tags géographiques
+                    <i class="fa fa-tag"></i>&nbsp;Tags
                 </span>
                 <hr>
-                {{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, false) }}
-            </div>
-            <div class="col-sm-6">
-                <span class="tag label label-primary">
-                    <i class="fa fa-tag"></i>&nbsp;Tags thématiques
-                </span>
-                <hr>
-                {{ debateTagsEdit(debate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, true) }}
+                {{ debateTagsEdit(debate, null, 1, true) }}
             </div>
         </div>
         <hr>

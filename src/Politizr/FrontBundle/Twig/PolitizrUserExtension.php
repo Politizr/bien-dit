@@ -188,10 +188,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig',
+            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
             array(
-                'tags' => $user->getFollowTags($tagTypeId),
-                'tagTypeId' => $tagTypeId
+                'tags' => $user->getFollowTags($tagTypeId)
             )
         );
 
@@ -215,10 +214,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig',
+            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
             array(
                 'tags' => $user->getTaggedTags($tagTypeId),
-                'tagTypeId' => $tagTypeId
             )
         );
 

@@ -34,7 +34,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
         
         $this->logger = $serviceContainer->get('logger');
@@ -44,7 +45,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // Récupération du user en session
         $token = $serviceContainer->get('security.context')->getToken();
         if ($token && $user = $token->getUser()) {
-
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
                 $this->user = $user;
@@ -68,41 +68,50 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('image', array($this, 'image'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'image',
+                array($this, 'image'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('nbReactions', array($this, 'nbReactions'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'nbReactions',
+                array($this, 'nbReactions'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('docTags', array($this, 'docTags'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'docTags',
+                array($this, 'docTags'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('nbViewsFormat', array($this, 'nbViewsFormat'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'nbViewsFormat',
+                array($this, 'nbViewsFormat'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('linkNoteDebate', array($this, 'linkNoteDebate'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'linkNoteDebate',
+                array($this, 'linkNoteDebate'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('linkNoteReaction', array($this, 'linkNoteReaction'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'linkNoteReaction',
+                array($this, 'linkNoteReaction'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('linkNoteComment', array($this, 'linkNoteComment'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'linkNoteComment',
+                array($this, 'linkNoteComment'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('linkSubscribeDebate', array($this, 'linkSubscribeDebate'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'linkSubscribeDebate',
+                array($this, 'linkSubscribeDebate'),
+                array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter('followersDebate', array($this, 'followersDebate'), array(
-                    'is_safe' => array('html')
-                    )
+            new \Twig_SimpleFilter(
+                'followersDebate',
+                array($this, 'followersDebate'),
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -113,13 +122,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'linkNote'  => new \Twig_Function_Method($this, 'linkNote', array(
-                    'is_safe' => array('html')
-                    )
+            'linkNote'  => new \Twig_Function_Method(
+                $this,
+                'linkNote',
+                array('is_safe' => array('html'))
             ),
-            'timelineRow'  => new \Twig_Function_Method($this, 'timelineRow', array(
-                    'is_safe' => array('html')
-                    )
+            'timelineRow'  => new \Twig_Function_Method(
+                $this,
+                'timelineRow',
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -148,12 +159,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig', array(
-                                'document' => $document,
-                                'path' => $path,
-                                'filterName' => $filterName,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            array(
+                'document' => $document,
+                'path' => $path,
+                'filterName' => $filterName,
+            )
+        );
 
         return $html;
     }
@@ -195,13 +207,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Global:NbReactions.html.twig', array(
-                                'document' => $document,
-                                'url' => $url,
-                                'nbReactions' => $nbReactions,
-                                'reactions' => $reactions,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Global:NbReactions.html.twig',
+            array(
+                'document' => $document,
+                'url' => $url,
+                'nbReactions' => $nbReactions,
+                'reactions' => $reactions,
+            )
+        );
 
         return $html;
 
@@ -209,14 +222,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /**
-     *  Tags d'un débat
+     * Tags d'un débat
      *
-     *  @param $debate          PDDebate
-     *  @param $tagTypeId       Type de tag
-     *
-     *  @return html
+     * @param \Politizr\Model\PDDebate $debate      Objet
+     * @param integer $tagTypeId                    Type de tag
+     * @return string                               Structure HTML
      */
-    public function docTags($debate, $tagTypeId)
+    public function docTags($debate, $tagTypeId = null)
     {
         // $this->logger->info('*** doctags');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -226,14 +238,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Tag:List.html.twig', array(
-                                'tags' => $tags,
-                                'tagTypeId' => $tagTypeId
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            array(
+                'tags' => $tags
+            )
+        );
 
         return $html;
-
     }
 
     /**
@@ -258,10 +269,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Global:NbViews.html.twig', array(
-                                'nbViews' => $nbViews,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Global:NbViews.html.twig',
+            array(
+                'nbViews' => $nbViews,
+            )
+        );
 
         return $html;
 
@@ -317,13 +329,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
-                                'object' => $debate,
-                                'type' => PDocument::TYPE_DEBATE,
-                                'pos' => $pos,
-                                'neg' => $neg,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            array(
+                'object' => $debate,
+                'type' => PDocument::TYPE_DEBATE,
+                'pos' => $pos,
+                'neg' => $neg,
+            )
+        );
 
         return $html;
 
@@ -379,13 +392,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
-                                'object' => $reaction,
-                                'type' => PDocument::TYPE_REACTION,
-                                'pos' => $pos,
-                                'neg' => $neg,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            array(
+                'object' => $reaction,
+                'type' => PDocument::TYPE_REACTION,
+                'pos' => $pos,
+                'neg' => $neg,
+            )
+        );
 
         return $html;
 
@@ -441,13 +455,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig', array(
-                                'object' => $comment,
-                                'type' => PDocument::TYPE_COMMENT,
-                                'pos' => $pos,
-                                'neg' => $neg,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            array(
+                'object' => $comment,
+                'type' => PDocument::TYPE_COMMENT,
+                'pos' => $pos,
+                'neg' => $neg,
+            )
+        );
 
         return $html;
 
@@ -479,12 +494,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig', array(
-                                'object' => $debate,
-                                'type' => PDocument::TYPE_DEBATE,
-                                'follower' => $follower
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig',
+            array(
+                'object' => $debate,
+                'type' => PDocument::TYPE_DEBATE,
+                'follower' => $follower
+            )
+        );
 
         return $html;
 
@@ -514,13 +530,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-                            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig', array(
-                                'nbC' => $nbC,
-                                'nbQ' => $nbQ,
-                                'followersC' => $followersC,
-                                'followersQ' => $followersQ,
-                                )
-                    );
+            'PolitizrFrontBundle:Fragment\\Follow:Followers.html.twig',
+            array(
+                'nbC' => $nbC,
+                'nbQ' => $nbQ,
+                'followersC' => $followersC,
+                'followersQ' => $followersQ,
+            )
+        );
 
         return $html;
 
@@ -549,10 +566,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             case PDocument::TYPE_DEBATE:
                 $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
                 $html = $this->templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Debate:TimelineRow.html.twig', array(
-                                        'debate' => $debate
-                                        )
-                            );
+                    'PolitizrFrontBundle:Fragment\\Debate:TimelineRow.html.twig',
+                    array(
+                        'debate' => $debate
+                    )
+                );
                 break;
             case PDocument::TYPE_REACTION:
                 $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
@@ -561,7 +579,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $parentReaction = null;
                 $isParentReactionMine = false;
                 $isParentDebateMine = false;
-                if ($reaction->getLevel() > 1);
+                if ($reaction->getLevel() > 1) {
                     $parentReaction = $reaction->getParent();
                     if ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
                         $isParentDebateMine = true;
@@ -569,18 +587,19 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     if ($this->user->getId() == $parentReaction->getPUserId()) {
                         $isParentReactionMine = true;
                     }
-                elseif ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
+                } elseif ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
                     $isParentDebateMine = true;
                 }
 
                 $html = $this->templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig', array(
-                                        'reaction' => $reaction,
-                                        'parentReaction' => $parentReaction,
-                                        'isParentReactionMine' => $isParentReactionMine,
-                                        'isParentDebateMine' => $isParentDebateMine,
-                                        )
-                            );
+                    'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig',
+                    array(
+                        'reaction' => $reaction,
+                        'parentReaction' => $parentReaction,
+                        'isParentReactionMine' => $isParentReactionMine,
+                        'isParentDebateMine' => $isParentDebateMine,
+                    )
+                );
                 break;
             case PDocument::TYPE_COMMENT:
                 $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
@@ -592,11 +611,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 }
 
                 $html = $this->templating->render(
-                                    'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig', array(
-                                        'comment' => $comment,
-                                        'isParentMine' => $isParentMine,
-                                        )
-                            );
+                    'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig',
+                    array(
+                        'comment' => $comment,
+                        'isParentMine' => $isParentMine,
+                    )
+                );
                 break;
         }
 
@@ -612,7 +632,4 @@ class PolitizrDocumentExtension extends \Twig_Extension
     {
         return 'p_e_document';
     }
-
-
-
 }
