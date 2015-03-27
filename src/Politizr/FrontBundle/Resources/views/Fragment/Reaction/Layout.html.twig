@@ -19,7 +19,7 @@ LAYOUT REACTION
                     {{ reaction.NbViews | nbViewsFormat }}
                 </div>
                 <div class="col-sm-2 text-center">
-                    {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
+                    {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': reaction.publishedAt, 'format': 'medium' } only %}
                 </div>
             </div>
         {% endblock detailHeader %}
@@ -154,7 +154,7 @@ LAYOUT REACTION
                 {{ reaction | nbReactions }}
             </div>
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': reaction.publishedAt, 'format': 'medium' } only %}
             </div>
         </div>
         
@@ -223,7 +223,7 @@ LAYOUT REACTION
                 <h4><i class="fa fa-bell"></i></h4>
             </div>
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': reaction, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': reaction.publishedAt, 'format': 'medium' } only %}
             </div>
             <div class="col-sm-7">
                 <h4{% if isParentReactionMine or isParentDebateMine %} class="bg-info"{% endif %}>

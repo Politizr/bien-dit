@@ -110,6 +110,8 @@ class PolitizrReputationExtension extends \Twig_Extension
         // $this->logger->info('*** linkedReputation');
         // $this->logger->info('$reputation = '.print_r($reputation, true));
 
+        $url = '#';
+        $title = 'Action inconnue';
 
         switch ($reputation->getPObjectName()) {
             case PDocument::TYPE_DEBATE:
@@ -158,7 +160,6 @@ class PolitizrReputationExtension extends \Twig_Extension
                 }
                 break;
         }
-
 
         // Construction du rendu du tag
         $html = '<a href="'.$url.'">'.$title.'</a>';

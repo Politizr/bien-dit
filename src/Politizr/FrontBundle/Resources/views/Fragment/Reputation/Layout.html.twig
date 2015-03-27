@@ -59,7 +59,7 @@ LAYOUT REPUTATION
         <div class="row">
             <div class="col-sm-1 text-center"><strong>{{ history | scoreEvolution }}</strong></div>
             <div class="col-sm-2">
-                <span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp;{{ history.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM HH'h'mm" ) | capitalize }}</span>
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': history.createdAt, 'format': 'medium' } only %}
             </div>
             <div class="col-sm-4">{{ history.PRAction.title }}</div>
             <div class="col-sm-5">{{ history | linkedReputation }}</div>

@@ -19,7 +19,7 @@ LAYOUT DEBATE
                     {{ debate.NbViews | nbViewsFormat }}
                 </div>
                 <div class="col-sm-2 text-center">
-                    {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
+                    {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': debate.publishedAt, 'format': 'medium' } only %}
                 </div>
             </div>
         {% endblock detailHeader %}
@@ -163,7 +163,7 @@ LAYOUT DEBATE
                     {{ debate | nbReactions }}
                 </div>
                 <div class="col-sm-2 text-center">
-                    {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
+                    {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': debate.publishedAt, 'format': 'medium' } only %}
                 </div>
                 <div class="following col-sm-2 text-center">
                     <div class="subscribe">
@@ -214,7 +214,7 @@ LAYOUT DEBATE
                 <h4><i class="fa fa-bullhorn"></i></h4>
             </div>
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': debate.publishedAt, 'format': 'medium' } only %}
             </div>
             <div class="col-sm-7">
                 <h4>

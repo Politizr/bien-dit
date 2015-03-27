@@ -2,7 +2,12 @@
 
 {% block main %}
     <div id="main" class="container">
-        <div id="timeline">
+        <div id="paginated-list">
+            <form id="list-filter" class="text-center">
+            </form>
+            <hr>
+            <div id="list-content">
+            </div>
         </div>
     </div>
 {% endblock main %}
@@ -11,4 +16,5 @@
     {{ parent() }}
     
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'TimelinePaginated' } %}
 {% endblock javascriptFooter %}

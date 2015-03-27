@@ -22,7 +22,7 @@ LAYOUT COMMENT
 
             {# Date #}
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': comment, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': comment.publishedAt, 'format': 'medium' } only %}
             </div>
         </div>
 
@@ -52,7 +52,7 @@ LAYOUT COMMENT
 
             {# Date #}
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': comment, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': comment.publishedAt, 'format': 'medium' } only %}
             </div>
         </div>
 
@@ -115,7 +115,7 @@ LAYOUT COMMENT
                 <h4><i class="fa fa-twitch"></i></h4>
             </div>
             <div class="col-sm-2 text-center">
-                {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': comment, 'format': 'medium' } only %}
+                {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': comment.publishedAt, 'format': 'medium' } only %}
             </div>
             <div class="col-sm-8">
                 <h4 {% if isParentMine %} class="bg-info"{% endif %}>

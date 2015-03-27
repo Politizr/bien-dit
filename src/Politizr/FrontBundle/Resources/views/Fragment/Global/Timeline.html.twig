@@ -4,15 +4,7 @@
         <hr>
     {% endfor %}
 </div>
-<div id="scroll-nav" class="row">
-    <div class="col-sm-12 text-center">
-        {% if timeline | length == 10 %}
-            <a class="btn btn-primary" action="paginate-next" offset="{{ offset }}">suite</a>
-        {% else %}
-            <p class="bg-info">Suivez plus de débats et d'utilisateurs!</p>
-        {% endif %}
-    </div>
-</div>
+{% include 'PolitizrFrontBundle:Fragment\\Global:ScrollNav.html.twig' with { 'results': timeline, 'offset': offset } %}
 
 <script>
     $(document).ready(function () {

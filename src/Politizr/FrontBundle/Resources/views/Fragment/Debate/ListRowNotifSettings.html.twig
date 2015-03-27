@@ -9,7 +9,7 @@
             {{ debate | nbReactions }}
         </div>
         <div class="col-sm-1 text-center">
-            {% include 'PolitizrFrontBundle:Fragment\\Global:PublishedAt.html.twig' with { 'object': debate, 'format': 'medium' } only %}
+            {% include 'PolitizrFrontBundle:Fragment\\Global:DateTimeAt.html.twig' with { 'dateTimeAt': debate.publishedAt, 'format': 'medium' } only %}
         </div>
         <div class="following col-sm-2 text-center">
             <div class="subscribe">

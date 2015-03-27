@@ -654,7 +654,7 @@
                     ]
                 }
             },
-            "time": "2015-03-18 12:04:06"
+            "time": "2015-03-26 16:27:13"
         },
         {
             "name": "doctrine/annotations",
@@ -1134,7 +1134,7 @@
                     ]
                 }
             },
-            "time": "2015-03-18 12:04:06"
+            "time": "2015-03-26 16:27:13"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "3.1.0",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3"
+                "reference": "69470d7e20181f016d5fb40ed139a12800f888c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3",
-                "reference": "447d29ab9c37c3ce913a0692fa0cd4c271aa5cd3",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/69470d7e20181f016d5fb40ed139a12800f888c1",
+                "reference": "69470d7e20181f016d5fb40ed139a12800f888c1",
                 "shasum": ""
             },
             "require": {
@@ -1476,7 +1476,7 @@
                 "propel",
                 "search"
             ],
-            "time": "2015-03-17 22:38:47"
+            "time": "2015-03-27 01:01:39"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -3123,17 +3123,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.12",
+            "version": "v2.3.13",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "29e81800012a6e827bdea8d9d1ab2bacd85d25fa"
+                "reference": "c344892aa9f09f0005b395d79ad2531a7deaedc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/29e81800012a6e827bdea8d9d1ab2bacd85d25fa",
-                "reference": "29e81800012a6e827bdea8d9d1ab2bacd85d25fa",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/c344892aa9f09f0005b395d79ad2531a7deaedc9",
+                "reference": "c344892aa9f09f0005b395d79ad2531a7deaedc9",
                 "shasum": ""
             },
             "require": {
@@ -3165,7 +3165,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-03-25 08:57:52"
+            "time": "2015-03-26 11:09:17"
         },
         {
             "name": "sensio/framework-extra-bundle",

@@ -4,12 +4,4 @@
         <hr>
     {% endfor %}
 </div>
-<div id="scroll-nav" class="row">
-    <div class="col-sm-12 text-center">
-        {% if debates | length == 10 %}
-            <a class="btn btn-primary" action="paginate-next" order="{{ order }}" offset="{{ offset }}">suite</a>
-        {% else %}
-            <p class="bg-info">Il n'y a plus de résultats</p>
-        {% endif %}
-    </div>
-</div>
+{% include 'PolitizrFrontBundle:Fragment\\Global:ScrollNav.html.twig' with { 'results': debates, 'offset': offset } %}
