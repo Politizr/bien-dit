@@ -158,10 +158,6 @@ TimelineC:
     pattern:  /citoyen/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
 
-SuggestionsC:
-    pattern:  /citoyen/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:suggestions }
-
 FindDebatesC:
     pattern:  /citoyen/debats-du-jour
     defaults: { _controller: PolitizrFrontBundle:ProfileC:findDebates }
@@ -227,10 +223,6 @@ HomepageE:
 TimelineE:
     pattern:  /elu/timeline
     defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
-
-SuggestionsE:
-    pattern:  /elu/suggestions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:suggestions }
 
 FindDebatesE:
     pattern:  /elu/debats-du-jour

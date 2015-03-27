@@ -169,7 +169,7 @@ class UserManager
         // Requête suivant order
         $users = PUserQuery::create()
                     ->online()
-                    ->filterByKeywords($filters)
+                    ->filterByKeywords($filters, $user)
                     ->orderWithKeyword($order)
                     ->limit(10)
                     ->offset($offset)

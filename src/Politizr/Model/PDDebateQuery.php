@@ -78,16 +78,20 @@ class PDDebateQuery extends BasePDDebateQuery
     /**
      * Filtre suivant le mot(s) clef(s) défini sur la vue
      *
-     * @param $keywords array of string
+     * @param array $keywords
+     * @param \Politizr\Model\PUser $user
      * @return Query
      */
-    public function filterByKeywords($keywords = null)
+    public function filterByKeywords($keywords = null, \Politizr\Model\PUser $user = null)
     {
         return $this->_if($keywords && in_array('newest', $keywords))
                         ->filterByNewest()
                     ->_endif()
                     ->_if($keywords && in_array('qualified', $keywords))
                         ->filterByQualified()
+                    ->_endif()
+                    ->_if($keywords && in_array('suggestion', $keywords))
+                        ->filterBySuggestion($user)
                     ->_endif()
                     ;
     }
@@ -130,6 +134,39 @@ class PDDebateQuery extends BasePDDebateQuery
                         ->filterByQualified(true)
                     ->endUse()
                     ;
+
+    }
+
+    /**
+     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
+     *
+     * @return  Query
+     */
+    public function filterBySuggestion(\Politizr\Model\PUser $user = null)
+    {
+        if (null === $user) {
+            return $this;
+        } else {
+            // Récupère la liste des IDs des tags suivis
+            $followedIds = PTagQuery::create()
+                            ->select('Id')
+                            ->usePuFollowTPTagQuery()
+                                ->filterByPUserId($user->getId())
+                            ->endUse()
+                            ->setDistinct()
+                            ->find();
+
+            // Récupère les débats
+            $query = $this->usePddTaggedTQuery()
+                            ->filterByPTagId($followedIds->getData())
+                        ->endUse()
+                        // débats non suivis uniquement
+                        ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $user->getId())
+                        ->setDistinct()
+                        ;
+        
+            return $query;
+        }
 
     }
 

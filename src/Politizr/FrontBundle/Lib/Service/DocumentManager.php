@@ -942,7 +942,7 @@ class DocumentManager
 
         $debates = PDDebateQuery::create()
                     ->online()
-                    ->filterByKeywords($filters)
+                    ->filterByKeywords($filters, $user)
                     ->orderWithKeyword($order)
                     ->limit(10)
                     ->offset($offset)

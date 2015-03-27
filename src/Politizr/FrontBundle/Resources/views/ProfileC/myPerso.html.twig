@@ -23,16 +23,6 @@
             </p>
         {% endif %}
 
-        <h3>Mes centres d'intérêts</h3>
-        <div id="box-tags">
-            <p class="bg-info">Ajoutez un maximum de tags que vous désirez suivre.</p>
-            <p class="text-muted">Tags géographiques</p>
-            {{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, false) }}
-            <hr>
-            <p class="text-muted">Tags thématiques</p>
-            {{ userFollowTagsEdit(user, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 3, true) }}
-        </div>
-        
         <hr>
 
         <h3>Votre identité</h3>
@@ -94,11 +84,5 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {# Upload ajax #}
-    <script type="text/javascript" src="{{ asset('components/form/jquery.form.js') }}"></script>
-    
-    {# Tags #}
-    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 2 } %}
-    
     {% include 'PolitizrFrontBundle:JS:persoUpdate.js.twig' %}
 {% endblock javascriptFooter %}

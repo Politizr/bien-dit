@@ -72,16 +72,20 @@ class PUserQuery extends BasePUserQuery
     /**
      * Filtre suivant le mot(s) clef(s) défini sur la vue
      *
-     * @param $keywords array of string
+     * @param array $keywords
+     * @param \Politizr\Model\PUser $user
      * @return Query
      */
-    public function filterByKeywords($keywords = null)
+    public function filterByKeywords($keywords = null, \Politizr\Model\PUser $user = null)
     {
         return $this->_if($keywords && in_array('newest', $keywords))
                         ->filterByNewest()
                     ->_endif()
                     ->_if($keywords && in_array('qualified', $keywords))
                         ->filterByQualified(true)
+                    ->_endif()
+                    ->_if($keywords && in_array('suggestion', $keywords))
+                        ->filterBySuggestion($user)
                     ->_endif()
                     ;
     }
@@ -105,6 +109,37 @@ class PUserQuery extends BasePUserQuery
         }
 
         return $this->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now));
+    }
+
+    /**
+     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
+     *
+     * @return  Query
+     */
+    public function filterBySuggestion(\Politizr\Model\PUser $user = null)
+    {
+        if (null === $user) {
+            return $this;
+        } else {
+            // Récupère la liste des IDs des tags suivis
+            $followedIds = PTagQuery::create()
+                            ->select('Id')
+                            ->filterByOnline(true)
+                            ->filterByPuFollowTPUser($user)
+                            ->find();
+
+            // Récupère les débats
+            $query = $this->usePuTaggedTPUserQuery()
+                            ->filterByPTagId($followedIds->getData())
+                        ->endUse()
+                        // débats non suivis uniquement
+                        ->where('p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ?)', $user->getId())
+                        ->filterById($user->getId(), \Criteria::NOT_EQUAL)
+                        ->setDistinct()
+                        ;
+        
+            return $query;
+        }
     }
 
     /**
