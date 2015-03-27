@@ -274,7 +274,6 @@ class UserManager
         $form->bind($request);
         if ($form->isValid()) {
             $userProfile = $form->getData();
-            $logger->info('userProfile = '.print_r($userProfile, true));
 
             // enregistrement object user
             $userProfile->save();
@@ -285,8 +284,6 @@ class UserManager
 
         return true;
     }
-
-
 
     /**
      *  Upload de la photo de profil du user
