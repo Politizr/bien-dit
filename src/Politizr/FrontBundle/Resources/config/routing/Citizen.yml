@@ -1,0 +1,66 @@
+################################################################################
+#               ROUTING CITOYEN
+################################################################################
+HomepageC:
+    pattern:  /citoyen
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:homepage }
+
+TimelineC:
+    pattern:  /citoyen/timeline
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
+
+FindDebatesC:
+    pattern:  /citoyen/debats-du-jour
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:findDebates }
+
+FindUsersC:
+    pattern:  /citoyen/debatteurs-du-jour
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:findUsers }
+
+
+ContribDashboardC:
+    pattern:  /citoyen/mes-contributions
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:contribDashboard }
+
+MyDraftsC:
+    pattern:  /citoyen/mes-contributions/brouillons
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDrafts }
+
+
+MyDebatesC:
+    pattern:  /citoyen/mes-contributions/debats
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDebates }
+
+MyCommentsC:
+    pattern:  /citoyen/mes-contributions/commentaires
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myComments }
+
+
+MyTagsC:
+    pattern:  /citoyen/mon-compte/mes-tags
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myTags }
+
+MyReputationC:
+    pattern:  /citoyen/mon-compte/ma-reputation
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputation }
+
+MyProfileC:
+    pattern:  /citoyen/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myProfile }
+
+MyPersoC:
+    pattern:  /citoyen/mon-compte/mes-informations-personnelles
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myPerso }
+
+MyNotificationsC:
+    pattern:  /citoyen/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myNotifications }
+
+MyFollowedDebatesC:
+    pattern:  /citoyen/mon-compte/mes-debats-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedDebates }
+
+MyFollowedUsersC:
+    pattern:  /citoyen/mon-compte/mes-profils-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedUsers }
+

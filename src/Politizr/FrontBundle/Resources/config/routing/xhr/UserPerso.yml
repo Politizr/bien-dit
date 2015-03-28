@@ -1,0 +1,8 @@
+################################################################################
+#               ROUTING XHR GESTION INFOS PERSOS
+################################################################################
+UserPersoUpdate:
+    pattern:  /profil/perso.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

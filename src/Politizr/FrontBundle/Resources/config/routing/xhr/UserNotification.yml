@@ -1,0 +1,50 @@
+################################################################################
+#           NOTIFICATIONS
+################################################################################
+NotificationsLoad:
+    pattern:  /profil/load-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsLoad, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationCheck:
+    pattern:  /profil/check-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationCheck, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationsCheckAll:
+    pattern:  /profil/check-all-notif.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsCheckAll, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#           GESTION INFOS SOUSCRIPTION NOTIFICATIONS
+################################################################################
+NotificationEmailSubscribe:
+    pattern:  /profil/email-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationEmailUnsubscribe:
+    pattern:  /profil/email-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationUserContextSubscribe:
+    pattern:  /profil/user/context-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationUserContextUnsubscribe:
+    pattern:  /profil/user/context-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationDebateContextSubscribe:
+    pattern:  /profil/debate/context-subscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextSubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+NotificationDebateContextUnsubscribe:
+    pattern:  /profil/debate/context-unsubscribe.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextUnsubscribe, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

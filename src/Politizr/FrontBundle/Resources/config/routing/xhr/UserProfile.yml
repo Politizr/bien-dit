@@ -1,0 +1,48 @@
+################################################################################
+#               ROUTING XHR GESTION INFOS MON PROFIL
+################################################################################
+UserProfileUpdate:
+    pattern:  /profil/profile.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userProfileUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserBackPhotoUpload:
+    pattern:  /profil/upload-back-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserBackPhotoDelete:
+    pattern:  /profil/delete-back-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserPhotoUpload:
+    pattern:  /profil/upload-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoUpload, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+UserPhotoDelete:
+    pattern:  /profil/delete-photo.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+OrgaProfileUpdate:
+    pattern:  /profil/orga.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:orgaProfileUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+MandateProfileCreate:
+    pattern:  /profil/create-mandate.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileCreate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+MandateProfileUpdate:
+    pattern:  /profil/update-mandate.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+MandateProfileDelete:
+    pattern:  /profil/delete-mandate.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileDelete, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

@@ -1,0 +1,13 @@
+################################################################################
+#               ROUTING XHR SUIVI DEBAT / USER
+################################################################################
+FollowUser:
+    pattern:  /profil/follow.{_format}
+    defaults: { _controller: PolitizrFrontBundle:User:follow, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+FollowDebate:
+    pattern:  /debat/follow.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Document:follow, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+

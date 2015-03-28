@@ -1,0 +1,27 @@
+################################################################################
+#               ROUTING DOCUMENT
+################################################################################
+DebateFeed:
+    pattern:  /fil-du-debat/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
+    requirements:
+        _method:        GET
+
+DebateDetail:
+    pattern:  /debat/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
+    requirements:
+        _method:        GET
+
+ReactionDetail:
+    pattern:  /reaction/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
+    requirements:
+        _method:        GET
+
+UserDetail:
+    pattern:  /auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:userDetail }
+    requirements:
+        _method:        GET
+

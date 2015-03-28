@@ -1,0 +1,85 @@
+################################################################################
+#               ROUTING ELU
+################################################################################
+HomepageE:
+    pattern:  /elu
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:homepage }
+
+TimelineE:
+    pattern:  /elu/timeline
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
+
+FindDebatesE:
+    pattern:  /elu/debats-du-jour
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:findDebates }
+
+FindUsersE:
+    pattern:  /elu/debatteurs-du-jour
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:findUsers }
+
+
+ContribDashboardE:
+    pattern:  /elu/mes-contributions
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:contribDashboard }
+
+MyDraftsE:
+    pattern:  /elu/mes-contributions/brouillons
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDrafts }
+
+MyDebatesE:
+    pattern:  /elu/mes-contributions/debats
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDebates }
+
+MyReactionsE:
+    pattern:  /elu/mes-contributions/reactions
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReactions }
+
+MyCommentsE:
+    pattern:  /elu/mes-contributions/commentaires
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myComments }
+
+
+MyTagsE:
+    pattern:  /elu/mon-compte/mes-tags
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myTags }
+
+MyReputationE:
+    pattern:  /elu/mon-compte/ma-reputation
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReputation }
+
+MyProfileE:
+    pattern:  /elu/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myProfile }
+
+MyPersoE:
+    pattern:  /elu/mon-compte/mes-informations-personnelles
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
+
+MyNotificationsE:
+    pattern:  /elu/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myNotifications }
+
+MyFollowedDebatesE:
+    pattern:  /elu/mon-compte/mes-debats-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedDebates }
+
+MyFollowedUsersE:
+    pattern:  /elu/mon-compte/mes-profils-suivis
+    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedUsers }
+
+
+ReactionDraftNew:
+    pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionNew }
+    requirements:
+        _method:        GET
+        debateId:       \d+
+        parentId:       \d*
+
+ReactionDraftEdit:
+    pattern:  /elu/mes-reactions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+

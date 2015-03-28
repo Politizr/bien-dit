@@ -1,0 +1,6 @@
+################################################################################
+#               ROUTING RECHERCHE
+################################################################################
+Search:
+    pattern:  /s
+    defaults: { _controller: PolitizrFrontBundle:Navigation:search }

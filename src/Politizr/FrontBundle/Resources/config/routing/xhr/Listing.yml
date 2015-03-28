@@ -1,0 +1,41 @@
+################################################################################
+#               TIMELINE
+################################################################################
+TimelinePaginated:
+    pattern:  /profil/timeline/paginated.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:timelinePaginated, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               PLUS DE DEBATS / DE DEBATTEURS
+################################################################################
+DailyDebateList:
+    pattern:  /profil/debat/evenements.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+DailyUserList:
+    pattern:  /profil/user/evenements.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               REPUTATION
+################################################################################
+HistoryActionsList:
+    pattern:  /profil/reputation/historique.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Profile:historyActionsList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               DEBATS SUIVIS / PROFILS SUIVIS
+################################################################################
+FollowedDebateList:
+    pattern:  /profil/debat/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:followedDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+FollowedUserList:
+    pattern:  /profil/user/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:CRUD:followedUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

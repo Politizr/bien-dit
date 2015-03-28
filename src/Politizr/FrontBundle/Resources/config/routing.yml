@@ -1,632 +1,76 @@
-################################################################################
-# 							HWIOAUTHBUNDLE
-################################################################################
-OAuthRegister:
-    pattern:  /oauthRegister
-    defaults: { _controller: PolitizrFrontBundle:Security:oauthRegister }
-
+# HWIOAUTHBUNDLE
 OAuth:
-    resource: "@PolitizrFrontBundle/Resources/config/routingSecurityOAuth.yml"
+    resource: "./routing/SecurityOAuth.yml"
     prefix:   /oauth/
 
+# PUBLIQUE
+Public:
+    resource: "./routing/Public.yml"
 
-################################################################################
-#				ROUTING PUBLIQUE
-################################################################################
-Homepage:
-    pattern:  /
-    defaults: { _controller: PolitizrFrontBundle:Public:homepage }
-
-Presentation:
-    pattern:  /presentation
-    defaults: { _controller: PolitizrFrontBundle:Public:presentation }
-
+# RECHERCHE
 Search:
-    pattern:  /s
-    defaults: { _controller: PolitizrFrontBundle:Navigation:search }
+    resource: "./routing/Search.yml"
 
+# LOGIN & INSCRIPTION & ACCOUNT
+User:
+    resource: "./routing/Inscription.yml"
 
-################################################################################
-#               ROUTING CONNEXION
-################################################################################
-Logout:
-    pattern:  /deconnexion
-    defaults: { _controller: PolitizrFrontBundle:Security:logout }
+# DOCUMENT
+Document:
+    resource: "./routing/Document.yml"
 
-CancelInscription:
-    pattern:  /annuler-inscription
-    defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
+# CITOYEN
+Citizen:
+    resource: "./routing/Citizen.yml"
 
-Login:
-    pattern:  /login
-    defaults: { _controller: PolitizrFrontBundle:Security:login }
+# ELU
+Elected:
+    resource: "./routing/Elected.yml"
 
-################################################################################
-#               ROUTING CREATION PROFIL CITOYEN
-################################################################################
-Inscription:
-    pattern:  /inscription
-    defaults: { _controller: PolitizrFrontBundle:Security:inscription }
-
-InscriptionCheck:
-    pattern:  /inscription/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
-    requirements:
-        _method:        POST
-
-InscriptionContact:
-    pattern:  /u/inscription-contact
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContact }
-
-InscriptionContactCheck:
-    pattern:  /u/inscription-contact/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
-    requirements:
-        _method:        POST
+# CITOYEN OU ELU
+LoggedCommon:
+    resource: "./routing/LoggedCommon.yml"
 
 ################################################################################
-#               ROUTING CREATION PROFIL ÉLU
-################################################################################
-InscriptionElected:
-    pattern:  /inscription-elu
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElected }
-
-InscriptionElectedCheck:
-    pattern:  /inscription-elu/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
-    requirements:
-        _method:        POST
-
-InscriptionElectedOrder:
-    pattern:  /v/inscription-elu-commande
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrder }
-
-InscriptionElectedOrderCheck:
-    pattern:  /v/inscription-elu-commande/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrderCheck }
-    requirements:
-        _method:        POST
-
-InscriptionElectedPayment:
-    pattern:  /v/inscription-elu-paiement
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPayment }
-
-InscriptionElectedPaymentCheck:
-    pattern:  /v/inscription-elu-paiement/check
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCheck }
-
-InscriptionElectedPaymentFinished:
-    pattern:  /v/inscription-elu-paiement-termine
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentFinished }
-
-InscriptionElectedPaymentCanceled:
-    pattern:  /v/inscription-elu-paiement-annule
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
-
-InscriptionElectedThanking:
-    pattern:  /v/inscription-elu-remerciement
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedThanking }
-
-MigrationElected:
-    pattern:  /citoyen/migration-elu
-    defaults: { _controller: PolitizrFrontBundle:Security:migrationElected }
-
-MigrationElectedCheck:
-    pattern:  /citoyen/check
-    defaults: { _controller: PolitizrFrontBundle:Security:migrationElectedCheck }
-    requirements:
-        _method:        POST
-
-
-
-################################################################################
-#				ROUTING DOCUMENT
-################################################################################
-DebateFeed:
-    pattern:  /fil-du-debat/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
-    requirements:
-        _method:        GET
-
-DebateDetail:
-    pattern:  /debat/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
-    requirements:
-        _method:        GET
-
-ReactionDetail:
-    pattern:  /reaction/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
-    requirements:
-        _method:        GET
-
-UserDetail:
-    pattern:  /auteur/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:userDetail }
-    requirements:
-        _method:        GET
-
-
-################################################################################
-#               ROUTING CITOYEN
-################################################################################
-HomepageC:
-    pattern:  /citoyen
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:homepage }
-
-TimelineC:
-    pattern:  /citoyen/timeline
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:timeline }
-
-FindDebatesC:
-    pattern:  /citoyen/debats-du-jour
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:findDebates }
-
-FindUsersC:
-    pattern:  /citoyen/debatteurs-du-jour
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:findUsers }
-
-
-ContribDashboardC:
-    pattern:  /citoyen/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:contribDashboard }
-
-MyDraftsC:
-    pattern:  /citoyen/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDrafts }
-
-
-MyDebatesC:
-    pattern:  /citoyen/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myDebates }
-
-MyCommentsC:
-    pattern:  /citoyen/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myComments }
-
-
-MyTagsC:
-    pattern:  /citoyen/mon-compte/mes-tags
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myTags }
-
-MyReputationC:
-    pattern:  /citoyen/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myReputation }
-
-MyProfileC:
-    pattern:  /citoyen/mon-compte/mon-profil
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myProfile }
-
-MyPersoC:
-    pattern:  /citoyen/mon-compte/mes-informations-personnelles
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myPerso }
-
-MyNotificationsC:
-    pattern:  /citoyen/mon-compte/mes-notifications
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myNotifications }
-
-MyFollowedDebatesC:
-    pattern:  /citoyen/mon-compte/mes-debats-suivis
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedDebates }
-
-MyFollowedUsersC:
-    pattern:  /citoyen/mon-compte/mes-profils-suivis
-    defaults: { _controller: PolitizrFrontBundle:ProfileC:myFollowedUsers }
-
-################################################################################
-#               ROUTING ELU
-################################################################################
-HomepageE:
-    pattern:  /elu
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:homepage }
-
-TimelineE:
-    pattern:  /elu/timeline
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:timeline }
-
-FindDebatesE:
-    pattern:  /elu/debats-du-jour
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:findDebates }
-
-FindUsersE:
-    pattern:  /elu/debatteurs-du-jour
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:findUsers }
-
-
-ContribDashboardE:
-    pattern:  /elu/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:contribDashboard }
-
-MyDraftsE:
-    pattern:  /elu/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDrafts }
-
-MyDebatesE:
-    pattern:  /elu/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myDebates }
-
-MyReactionsE:
-    pattern:  /elu/mes-contributions/reactions
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReactions }
-
-MyCommentsE:
-    pattern:  /elu/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myComments }
-
-
-MyTagsE:
-    pattern:  /elu/mon-compte/mes-tags
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myTags }
-
-MyReputationE:
-    pattern:  /elu/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myReputation }
-
-MyProfileE:
-    pattern:  /elu/mon-compte/mon-profil
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myProfile }
-
-MyPersoE:
-    pattern:  /elu/mon-compte/mes-informations-personnelles
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myPerso }
-
-MyNotificationsE:
-    pattern:  /elu/mon-compte/mes-notifications
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myNotifications }
-
-MyFollowedDebatesE:
-    pattern:  /elu/mon-compte/mes-debats-suivis
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedDebates }
-
-MyFollowedUsersE:
-    pattern:  /elu/mon-compte/mes-profils-suivis
-    defaults: { _controller: PolitizrFrontBundle:ProfileE:myFollowedUsers }
-
-
-ReactionDraftNew:
-    pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionNew }
-    requirements:
-        _method:        GET
-        debateId:       \d+
-        parentId:       \d*
-
-ReactionDraftEdit:
-    pattern:  /elu/mes-reactions/{id}/edition
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionEdit }
-    requirements:
-        _method:        GET
-        id:             \d+
-
-
-################################################################################
-#               ROUTING CITOYEN OU ELU
-################################################################################
-DebateDraftNew:
-    pattern:  /profil/mes-contributions/nouveau
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateNew }
-
-DebateDraftEdit:
-    pattern:  /profil/mes-contributions/{id}/edition
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateEdit }
-    requirements:
-        _method:        GET
-        id:             \d+
-
-
-################################################################################
-################################################################################
-#				ROUTING AJAX
-################################################################################
+#				ROUTING XHR 
 ################################################################################
 
+# RECHERCHE
+XhrSearch:
+    resource: "./routing/xhr/Search.yml"
 
-################################################################################
-# RECHERCHE PAGINATION
-################################################################################
-SearchPage:
-    pattern:  /search-page.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Navigation:searchPage, page: 1, _format: json }
-    requirements:
-        _format:        (xml|json)
-        _method:        POST
+# LOGIN & INSCRIPTION & ACCOUNT
+XhrInscription:
+    resource: "./routing/xhr/Inscription.yml"
 
-################################################################################
-# LOGIN
-################################################################################
-LoginCheck:
-    pattern:  /connexion/login.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:loginCheck, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-LostPasswordCheck:
-    pattern:  /connexion/mot-de-passe-perdu.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# INSCRIPTION ELU / PAIEMENT
-################################################################################
-PaymentProcess:
-    pattern:  /v/paymentProcess.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:paymentProcess, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 # SUIVI DEBAT / USER
-################################################################################
-FollowUser:
-    pattern:  /profil/follow.{_format}
-    defaults: { _controller: PolitizrFrontBundle:User:follow, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrFollow:
+    resource: "./routing/xhr/Follow.yml"
 
-FollowDebate:
-    pattern:  /debat/follow.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:follow, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 # NOTATION DEBAT / REACTION / COMMENTAIRE
-################################################################################
-Note:
-    pattern:  /note.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:note, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrNotation:
+    resource: "./routing/xhr/Notation.yml"
 
-################################################################################
 # GESTION TAGS
-################################################################################
-GetTags:
-    pattern:  /getTags.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Public:getTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrTag:
+    resource: "./routing/xhr/Tag.yml"
 
-DebateAddTag:
-    pattern:  /debat/addtag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateAddTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DebateDeleteTag:
-    pattern:  /debat/deletetag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateDeleteTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserFollowAddTag:
-    pattern:  /user/follow/addtag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userFollowAddTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserFollowDeleteTag:
-    pattern:  /user/follow/deletetag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userFollowDeleteTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserTaggedAddTag:
-    pattern:  /user/tagged/addtag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userTaggedAddTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserTaggedDeleteTag:
-    pattern:  /user/tagged/deletetag.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userTaggedDeleteTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 # GESTION INFOS MON PROFIL
-################################################################################
-UserProfileUpdate:
-    pattern:  /profil/profile.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userProfileUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrUserProfile:
+    resource: "./routing/xhr/UserProfile.yml"
 
-UserBackPhotoUpload:
-    pattern:  /profil/upload-back-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoUpload, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserBackPhotoDelete:
-    pattern:  /profil/delete-back-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userBackPhotoDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserPhotoUpload:
-    pattern:  /profil/upload-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoUpload, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-UserPhotoDelete:
-    pattern:  /profil/delete-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userPhotoDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-OrgaProfileUpdate:
-    pattern:  /profil/orga.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:orgaProfileUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-MandateProfileCreate:
-    pattern:  /profil/create-mandate.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileCreate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-MandateProfileUpdate:
-    pattern:  /profil/update-mandate.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-MandateProfileDelete:
-    pattern:  /profil/delete-mandate.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:mandateProfileDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 # GESTION INFOS PERSOS
-################################################################################
-UserPersoUpdate:
-    pattern:  /profil/perso.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:userPersoUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrUserPerso:
+    resource: "./routing/xhr/UserPerso.yml"
 
-
-################################################################################
 # GESTION INFOS SOUSCRIPTION NOTIFICATIONS
-################################################################################
-NotificationEmailSubscribe:
-    pattern:  /profil/email-subscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailSubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+XhrUserNotification:
+    resource: "./routing/xhr/UserNotification.yml"
 
-NotificationEmailUnsubscribe:
-    pattern:  /profil/email-unsubscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifEmailUnsubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+# GESTION LISTING
+XhrListing:
+    resource: "./routing/xhr/Listing.yml"
 
-NotificationUserContextSubscribe:
-    pattern:  /profil/user/context-subscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextSubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-NotificationUserContextUnsubscribe:
-    pattern:  /profil/user/context-unsubscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifUserContextUnsubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-NotificationDebateContextSubscribe:
-    pattern:  /profil/debate/context-subscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextSubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-NotificationDebateContextUnsubscribe:
-    pattern:  /profil/debate/context-unsubscribe.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notifDebateContextUnsubscribe, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# DEBATS SUIVIS / PROFILS SUIVIS
-################################################################################
-FollowedDebateList:
-    pattern:  /profil/debat/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:followedDebateList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-FollowedUserList:
-    pattern:  /profil/user/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:followedUserList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-
-
-################################################################################
-# CONSULTATION DOCUMENT
-################################################################################
-Comments:
-    pattern:  /comments.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:comments, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# EDITION DEBAT + REACTION
-################################################################################
-DocumentPhotoUpload:
-    pattern:  /profil/document/upload-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoUpload, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DocumentPhotoDelete:
-    pattern:  /profil/document/delete-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-
-################################################################################
-# EDITION DEBAT
-################################################################################
-DebateUpdate:
-    pattern:  /profil/debat/update.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DebatePublish:
-    pattern:  /profil/debat/publish.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePublish, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DebateDelete:
-    pattern:  /profil/debat/delete.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# EDITION REACTION
-################################################################################
-ReactionUpdate:
-    pattern:  /elu/reaction/update.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionUpdate, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-ReactionPublish:
-    pattern:  /elu/reaction/publish.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionPublish, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-ReactionDelete:
-    pattern:  /elu/reaction/delete.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionDelete, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-
-################################################################################
-# EDITION COMMENTAIRE
-################################################################################
-CommentNew:
-    pattern:  /profil/commentaire/new.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:commentNew, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# TIMELINE
-################################################################################
-TimelinePaginated:
-    pattern:  /profil/timeline/paginated.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:timelinePaginated, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-
-################################################################################
-# PLUS DE DEBATS / DE DEBATTEURS
-################################################################################
-DailyDebateList:
-    pattern:  /profil/debat/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyDebateList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DailyUserList:
-    pattern:  /profil/user/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyUserList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# NOTIFICATIONS
-################################################################################
-NotificationsLoad:
-    pattern:  /profil/load-notif.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsLoad, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-NotificationCheck:
-    pattern:  /profil/check-notif.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notificationCheck, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-NotificationsCheckAll:
-    pattern:  /profil/check-all-notif.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:notificationsCheckAll, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-# REPUTATION
-################################################################################
-HistoryActionsList:
-    pattern:  /profil/reputation/historique.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:historyActionsList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+# DOCUMENT
+XhrDocument:
+    resource: "./routing/xhr/Document.yml"
