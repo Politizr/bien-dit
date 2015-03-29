@@ -1,4 +1,8 @@
 # HWIOAUTHBUNDLE
+OAuthRegister:
+    pattern:  /oauthRegister
+    defaults: { _controller: PolitizrFrontBundle:Security:oauthRegister }
+
 OAuth:
     resource: "./routing/SecurityOAuth.yml"
     prefix:   /oauth/

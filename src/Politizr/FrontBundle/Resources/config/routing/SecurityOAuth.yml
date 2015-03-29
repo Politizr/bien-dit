@@ -1,10 +1,6 @@
 ################################################################################
 #                           HWIOAUTHBUNDLE
 ################################################################################
-OAuthRegister:
-    pattern:  /oauthRegister
-    defaults: { _controller: PolitizrFrontBundle:Security:oauthRegister }
-
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
