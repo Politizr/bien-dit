@@ -18,7 +18,7 @@
                 <li><a href="{{ path('Presentation') }}">Présentation</a></li>
                 <li><a href="{{ path('Inscription') }}">S'inscrire</a></li>
             </ul>
-              {{ render(controller('PolitizrFrontBundle:Navigation:searchInit', { 'request': app.request })) }}
+            {{ render(controller('PolitizrFrontBundle:Search:searchInit', { 'request': app.request })) }}
             <ul class="navbar-form navbar-right">
                 <button action="connect-me" class="btn btn-primary">Connexion</button>
             </ul>

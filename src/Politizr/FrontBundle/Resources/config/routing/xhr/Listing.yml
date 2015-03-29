@@ -3,7 +3,7 @@
 ################################################################################
 TimelinePaginated:
     pattern:  /profil/timeline/paginated.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:timelinePaginated, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:timelinePaginated, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -11,12 +11,12 @@ TimelinePaginated:
 ################################################################################
 DailyDebateList:
     pattern:  /profil/debat/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyDebateList, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:dailyDebateList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 DailyUserList:
     pattern:  /profil/user/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:dailyUserList, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:dailyUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -24,7 +24,7 @@ DailyUserList:
 ################################################################################
 HistoryActionsList:
     pattern:  /profil/reputation/historique.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Profile:historyActionsList, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:historyActionsList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -32,10 +32,10 @@ HistoryActionsList:
 ################################################################################
 FollowedDebateList:
     pattern:  /profil/debat/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:followedDebateList, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:followedDebateList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 FollowedUserList:
     pattern:  /profil/user/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:followedUserList, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:followedUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }

@@ -3,12 +3,12 @@
 ################################################################################
 LoginCheck:
     pattern:  /connexion/login.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:loginCheck, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrInscription:loginCheck, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 LostPasswordCheck:
     pattern:  /connexion/mot-de-passe-perdu.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:lostPasswordCheck, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrInscription:lostPasswordCheck, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -16,6 +16,6 @@ LostPasswordCheck:
 ################################################################################
 PaymentProcess:
     pattern:  /v/paymentProcess.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Security:paymentProcess, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrInscription:paymentProcess, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 

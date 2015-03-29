@@ -3,4 +3,4 @@
 ################################################################################
 Search:
     pattern:  /s
-    defaults: { _controller: PolitizrFrontBundle:Navigation:search }
+    defaults: { _controller: PolitizrFrontBundle:Search:search }

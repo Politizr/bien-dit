@@ -27,10 +27,6 @@ Citizen:
 Elected:
     resource: "./routing/Elected.yml"
 
-# CITOYEN OU ELU
-LoggedCommon:
-    resource: "./routing/LoggedCommon.yml"
-
 ################################################################################
 #				ROUTING XHR 
 ################################################################################

@@ -3,12 +3,12 @@
 ################################################################################
 DocumentPhotoUpload:
     pattern:  /profil/document/upload-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoUpload, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:documentPhotoUpload, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 DocumentPhotoDelete:
     pattern:  /profil/document/delete-photo.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:documentPhotoDelete, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:documentPhotoDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 
@@ -17,17 +17,17 @@ DocumentPhotoDelete:
 ################################################################################
 DebateUpdate:
     pattern:  /profil/debat/update.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateUpdate, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debateUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 DebatePublish:
     pattern:  /profil/debat/publish.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debatePublish, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debatePublish, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 DebateDelete:
     pattern:  /profil/debat/delete.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:debateDelete, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debateDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################
@@ -35,17 +35,17 @@ DebateDelete:
 ################################################################################
 ReactionUpdate:
     pattern:  /elu/reaction/update.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionUpdate, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ReactionPublish:
     pattern:  /elu/reaction/publish.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionPublish, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionPublish, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ReactionDelete:
     pattern:  /elu/reaction/delete.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:reactionDelete, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 
@@ -59,6 +59,6 @@ Comments:
 
 CommentNew:
     pattern:  /profil/commentaire/new.{_format}
-    defaults: { _controller: PolitizrFrontBundle:CRUD:commentNew, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:commentNew, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 

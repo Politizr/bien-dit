@@ -25,3 +25,29 @@ UserDetail:
     requirements:
         _method:        GET
 
+DebateDraftNew:
+    pattern:  /profil/mes-contributions/nouveau
+    defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
+
+DebateDraftEdit:
+    pattern:  /profil/mes-contributions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+ReactionDraftNew:
+    pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
+    requirements:
+        _method:        GET
+        debateId:       \d+
+        parentId:       \d*
+
+ReactionDraftEdit:
+    pattern:  /elu/mes-reactions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+

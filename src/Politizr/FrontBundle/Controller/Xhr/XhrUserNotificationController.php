@@ -1,35 +1,18 @@
 <?php
 
-namespace Politizr\FrontBundle\Controller;
+namespace Politizr\FrontBundle\Controller\Xhr;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Model\PUserQuery;
 
 /**
- * Gestion profil fonctions communes citoyens / débatteurs
+ *  Gestion des notifications d'un user / appels XHR
  *
- * @author Lionel Bouzonville
+ *  @author Lionel Bouzonville
  */
-class ProfileController extends Controller
+class XhrUserNotificationController extends Controller
 {
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-
-    /* ######################################################################################################## */
-    /*                                                  NOTIFICATIONS                                           */
-    /* ######################################################################################################## */
-
     /**
      *  Liste des notifications
      */
@@ -172,26 +155,6 @@ class ProfileController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.user',
             'notifDebateContextUnsubscribe'
-        );
-
-        return $jsonResponse;
-    }
-
-    /* ######################################################################################################## */
-    /*                                                     REPUTATION                                           */
-    /* ######################################################################################################## */
-
-    /**
-     *  Historique des actions
-     */
-    public function historyActionsListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** historyActionsList');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
-            'historyActionsList'
         );
 
         return $jsonResponse;

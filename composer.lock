@@ -654,7 +654,7 @@
                     ]
                 }
             },
-            "time": "2015-03-26 16:27:13"
+            "time": "2015-03-28 13:45:38"
         },
         {
             "name": "doctrine/annotations",
@@ -1134,7 +1134,7 @@
                     ]
                 }
             },
-            "time": "2015-03-26 16:27:13"
+            "time": "2015-03-28 13:45:38"
         },
         {
             "name": "ensepar/html2pdf",
@@ -1347,12 +1347,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "d5faa70f2bd74febf87c3aed8ee2777caca766fa"
+                "reference": "cf57b82bd994dfb20fc283ae35b8bf40d3cb133d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/d5faa70f2bd74febf87c3aed8ee2777caca766fa",
-                "reference": "d5faa70f2bd74febf87c3aed8ee2777caca766fa",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/cf57b82bd994dfb20fc283ae35b8bf40d3cb133d",
+                "reference": "cf57b82bd994dfb20fc283ae35b8bf40d3cb133d",
                 "shasum": ""
             },
             "require-dev": {
@@ -1387,7 +1387,7 @@
                 "font",
                 "icon"
             ],
-            "time": "2015-03-24 14:58:59"
+            "time": "2015-03-27 18:48:41"
         },
         {
             "name": "friendsofsymfony/elastica-bundle",

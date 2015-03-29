@@ -16,23 +16,8 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
-
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-use StudioEcho\Lib\StudioEchoUtils;
-
-use Politizr\Model\PUserQuery;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
-use Politizr\Model\POSubscriptionQuery;
-
-use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
-use Politizr\Model\POrder;
-use Politizr\Model\POOrderState;
-use Politizr\Model\POPaymentState;
-use Politizr\Model\POPaymentType;
 
 use Politizr\FrontBundle\Form\Type\PUserRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserContactType;
@@ -44,7 +29,6 @@ use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
 use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
-
 
 /**
  * Gestion des inscriptions / connexions
@@ -62,7 +46,8 @@ use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
  *
  * @author Lionel Bouzonville
  */
-class SecurityController extends Controller {
+class SecurityController extends Controller
+{
 
     /* ######################################################################################################## */
     /*                                                 CONNEXION                                                */
@@ -71,7 +56,8 @@ class SecurityController extends Controller {
     /**
      *  Déconnexion
      */
-    public function logoutAction() {
+    public function logoutAction()
+    {
         $this->get('session')->clear();
         $this->get('security.context')->setToken(null);
 
@@ -81,7 +67,8 @@ class SecurityController extends Controller {
     /**
      *  Annulation inscription
      */
-    public function cancelInscriptionAction() {
+    public function cancelInscriptionAction()
+    {
         // Récupération user
         $user = $this->get('security.context')->getToken()->getUser();
 
@@ -103,49 +90,14 @@ class SecurityController extends Controller {
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
 
-        // *********************************** //
-        //      Formulaires
-        // *********************************** //
+        // Formulaire
         $formLogin = $this->createForm(new LoginType());
         $formLostPassword = $this->createForm(new LostPasswordType());
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:Navigation:login.html.twig', array(
                         'formLogin' => $formLogin->createView(),
                         'formLostPassword' => $formLostPassword->createView()
             ));
-    }
-
-    /**
-     *  Validation de la connexion
-     */
-    public function loginCheckAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** loginCheckAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.security',
-            'loginCheck'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Validation mot de passe oublié
-     */
-    public function lostPasswordCheckAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** lostPasswordCheckAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.security',
-            'lostPasswordCheck'
-        );
-
-        return $jsonResponse;
     }
 
     /* ######################################################################################################## */
@@ -169,11 +121,11 @@ class SecurityController extends Controller {
                     ));
     }
 
-
     /**
      *  Validation inscription / Etape 1
      */
-    public function inscriptionCheckAction(Request $request) {
+    public function inscriptionCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionCheckAction');
 
@@ -196,7 +148,7 @@ class SecurityController extends Controller {
     }
 
     /**
-     *     Page d'inscription / Etape 2 / Contact
+     * Page d'inscription / Etape 2 / Contact
      */
     public function inscriptionContactAction()
     {
@@ -214,7 +166,8 @@ class SecurityController extends Controller {
     /**
      *  Validation inscription / Etape 2
      */
-    public function inscriptionContactCheckAction(Request $request) {
+    public function inscriptionContactCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionContactCheckAction');
 
@@ -247,7 +200,7 @@ class SecurityController extends Controller {
     /* ######################################################################################################## */
 
     /**
-     *     Page d'inscription débatteur  / Etape 1 / Inscription
+     * Page d'inscription débatteur  / Etape 1 / Inscription
      */
     public function inscriptionElectedAction()
     {
@@ -263,9 +216,10 @@ class SecurityController extends Controller {
     }
 
     /**
-     *  Page d'inscription débatteur  / Etape 1 / Validation inscription
+     * Page d'inscription débatteur  / Etape 1 / Validation inscription
      */
-    public function inscriptionElectedCheckAction(Request $request) {
+    public function inscriptionElectedCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedCheckAction');
 
@@ -300,7 +254,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *  Page d'inscription débatteur  / Etape 1 / Migration de compte
+     * Page d'inscription débatteur  / Etape 1 / Migration de compte
      */
     public function migrationElectedAction()
     {
@@ -328,9 +282,10 @@ class SecurityController extends Controller {
 
 
     /**
-     *  Page d'inscription débatteur  / Etape 1 / Validation migration de compte
+     * Page d'inscription débatteur  / Etape 1 / Validation migration de compte
      */
-    public function migrationElectedCheckAction(Request $request) {
+    public function migrationElectedCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** migrationElectedCheckAction');
 
@@ -365,7 +320,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription débatteur / Etape 2 / Choix de la formule
+     * Page d'inscription débatteur / Etape 2 / Choix de la formule
      */
     public function inscriptionElectedOrderAction(Request $request)
     {
@@ -389,9 +344,10 @@ class SecurityController extends Controller {
 
 
     /**
-     *  Page d'inscription débatteur / Etape 2 / Validation choix de la formule
+     * Page d'inscription débatteur / Etape 2 / Validation choix de la formule
      */
-    public function inscriptionElectedOrderCheckAction(Request $request) {
+    public function inscriptionElectedOrderCheckAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedOrderCheckAction');
 
@@ -423,7 +379,7 @@ class SecurityController extends Controller {
 
 
     /**
-     *     Page d'inscription débatteur / Etape 3 / Paiement
+     * Page d'inscription débatteur / Etape 3 / Paiement
      */
     public function inscriptionElectedPaymentAction()
     {
@@ -448,9 +404,10 @@ class SecurityController extends Controller {
     }
 
     /**
-     *  Page d'inscription débatteur / Etape 3 / Paiement terminé
+     * Page d'inscription débatteur / Etape 3 / Paiement terminé
      */
-    public function inscriptionElectedPaymentFinishedAction(Request $request) {
+    public function inscriptionElectedPaymentFinishedAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
@@ -461,9 +418,10 @@ class SecurityController extends Controller {
     }
 
     /**
-     *  Page d'inscription débatteur / Etape 3 / Annulation paiement
+     * Page d'inscription débatteur / Etape 3 / Annulation paiement
      */
-    public function inscriptionElectedPaymentCanceledAction(Request $request) {
+    public function inscriptionElectedPaymentCanceledAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentCanceledAction');
 
@@ -477,11 +435,11 @@ class SecurityController extends Controller {
         return $this->redirect($this->generateUrl('InscriptionElectedPayment'));
     }
 
-
     /**
-     *  Page d'inscription débatteur / Etape 4 / Remerciement
+     * Page d'inscription débatteur / Etape 4 / Remerciement
      */
-    public function inscriptionElectedThankingAction(Request $request) {
+    public function inscriptionElectedThankingAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedThankingAction');
 
@@ -514,17 +472,15 @@ class SecurityController extends Controller {
             ));
     }
 
-
     /* ######################################################################################################## */
     /*                                                 CONNEXION OAUTH                                          */
     /* ######################################################################################################## */
 
-
     /**
      *  Action suivant la connexion oAuth
-     *
      */
-    public function oauthTargetAction() {
+    public function oauthTargetAction()
+    {
         $logger = $this->get('logger');
         $logger->info('*** oauthTargetAction');
 
@@ -539,7 +495,8 @@ class SecurityController extends Controller {
     /**
      *  Check l'état d'un utilisateur suite à une connexion oAuth
      */
-    public function oauthRegisterAction(Request $request) {
+    public function oauthRegisterAction(Request $request)
+    {
         $logger = $this->get('logger');
         $logger->info('*** oauthRegisterAction');
 
@@ -549,30 +506,4 @@ class SecurityController extends Controller {
         // Redirection
         return $this->redirect($redirectUrl);
     }
-
-    
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-    /**
-     *      Action "Procéder au paiement":
-     *          1/  génération de la commande
-     *          2/  suivant le type de paiement > création des formulaires (ATOS. Paypal)
-     *          3/  construction de la réponse
-     *
-     *      TODO / + de contrôles exceptions
-     *
-     */
-    public function paymentProcessAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** paymentProcessAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.security',
-            'paymentProcess'
-        );
-
-        return $jsonResponse;
-    }    
 }

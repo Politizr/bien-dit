@@ -9,83 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-
-use Politizr\Model\PUser;
-
-use Politizr\FrontBundle\Form\Type\SearchType;
-
-
-class NavigationController extends Controller
+class SocialNetworksController extends Controller
 {
-    /* ######################################################################################################## */
-    /*                                                  ROUTING CLASSIQUE                                       */
-    /* ######################################################################################################## */
-
-    /**
-     *  Init Recherche
-     */
-    public function searchInitAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** searchInitAction');
-
-        $query = $request->query->get('recherche')['query'];
-        $logger->info('query = '.print_r($query, true));
-
-        $form = $this->createForm(
-            new SearchType($query)
-        );
-
-        return $this->render('PolitizrFrontBundle:Navigation:searchForm.html.twig', array(
-                    'form' => $form->createView(),
-            ));
-    }
-
-
-    /**
-     *  Recherche
-     */
-    public function searchAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** searchAction');
-
-        $form = $this->createForm(
-            new SearchType()
-        );
-
-        $query = $request->query->get('recherche')['query'];
-        $pager = $this->get('politizr.service.search')->pagerQuery($query);
-        
-        return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
-                    'query' => $query,
-                    'pager' => $pager,
-            ));
-
-    }
-
-    /**
-     *  Pagination ES  
-     *
-     */
-    public function searchPageAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** searchPageAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.search',
-            'search'
-        );
-
-        return $jsonResponse;
-    }
-
-
-
-
     /**
      *  Partage RS
      */
@@ -109,7 +34,7 @@ class NavigationController extends Controller
         // URLs photo Facebook
         $imageUrls = array();
         if ($fileNames && !empty($fileNames)) {
-            foreach($fileNames as $fileName) {
+            foreach ($fileNames as $fileName) {
                 if ($fileName) {
                     $imageUrls[] = $this->getFacebookImageUrl($fileName);
                 }
@@ -128,7 +53,8 @@ class NavigationController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                                                  FONCTIONS PRIVEES                                       */
+    /*          FONCTIONS PRIVEES
+    /*          TODO > services dédiés
     /* ######################################################################################################## */
 
     /**
@@ -137,7 +63,8 @@ class NavigationController extends Controller
      *  @param $url
      *  @return string url
      */
-    private function getTinyUrl($url) {
+    private function getTinyUrl($url)
+    {
         // with tinyurl
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "http://tinyurl.com/api-create.php?url=".$url);
@@ -155,21 +82,22 @@ class NavigationController extends Controller
      *  @param $fileName
      *  @return string url
      */
-    private function getFacebookImageUrl($fileName) {
+    private function getFacebookImageUrl($fileName)
+    {
         $logger = $this->get('logger');
         $logger->info('*** getFacebookImageUrl');
 
         // Resize de la photo pour partage FB
         $imagemanagerResponse = $this->container->get('liip_imagine.controller')->filterAction(
-                    $this->getRequest(),
-                    'uploads/'.$fileName,
-                    'facebook_share'
+            $this->getRequest(),
+            'uploads/'.$fileName,
+            'facebook_share'
         );
 
         // Récupération de la photo resizée pour FB
         $cacheManager = $this->container->get('liip_imagine.cache.manager');
         $resizeImg = $cacheManager->getBrowserPath('uploads/'.$fileName, 'facebook_share');
-        $resizeImg = str_replace ('app_'.$this->container->get( 'kernel' )->getEnvironment().'.php/', '', $resizeImg);
+        $resizeImg = str_replace('app_'.$this->container->get('kernel')->getEnvironment().'.php/', '', $resizeImg);
         $logger->info('$resizeImg = '.print_r($resizeImg, true));
 
         $baseUrl = $this->getRequest()->getSchemeAndHttpHost();
@@ -178,7 +106,6 @@ class NavigationController extends Controller
         $imageUrl = $baseUrl . $resizeImg;
         $logger->info('$imageUrl = '.print_r($imageUrl, true));
 
-        return $imageUrl;        
+        return $imageUrl;
     }
-
 }

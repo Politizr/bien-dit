@@ -4,7 +4,7 @@
 {% block description %}Politizr Espace Citoyen{% endblock description %}
 
 {% block metaopengraph %}
-    {% block ogImage %}{% render controller("PolitizrFrontBundle:Navigation:ogImage") %}{% endblock ogImage %}
+    {% block ogImage %}{% render controller("PolitizrFrontBundle:SocialNetworks:ogImage") %}{% endblock ogImage %}
     <meta property="og:site_name" content="Politizr" /> 
     <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
     <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 

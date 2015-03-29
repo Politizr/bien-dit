@@ -12,42 +12,23 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
-use Politizr\Model\PDocumentPeer;
-
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PTagQuery;
-use Politizr\Model\PUTaggedTQuery;
-use Politizr\Model\PUFollowTQuery;
-use Politizr\Model\PUFollowDDQuery;
-use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
-use Politizr\Model\PUReputationQuery;
-use Politizr\Model\PUCurrentQOQuery;
-use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUCurrentQOQuery;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PTag;
-use Politizr\Model\PDDebate;
-use Politizr\Model\PDReaction;
-use Politizr\Model\PTTagType;
-use Politizr\Model\PUTaggedT;
-use Politizr\Model\PUFollowT;
 use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 
-use Politizr\FrontBundle\Form\Type\PUserBiographyType;
-
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
+use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -63,14 +44,8 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
  *
  * @author Lionel Bouzonville
  */
-class ProfileEController extends Controller
+class ElectedController extends Controller
 {
-
-
-    /* ######################################################################################################## */
-    /*                                                 ROUTING CLASSIQUE                                        */
-    /* ######################################################################################################## */
-
     /* ######################################################################################################## */
     /*                                                    ACTUALITES                                            */
     /* ######################################################################################################## */
@@ -138,10 +113,6 @@ class ProfileEController extends Controller
         // Récupération user courant
         $pUser = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
         // Débats brouillons en attente de finalisation
         $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
@@ -156,10 +127,6 @@ class ProfileEController extends Controller
 
         // Commentaires rédigés
         $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileE:contribDashboard.html.twig', array(
             'debateDrafts' => $debateDrafts,
@@ -181,19 +148,11 @@ class ProfileEController extends Controller
         // Récupération user courant
         $pUser = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
         // Débats brouillons en attente de finalisation
         $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
         // Réactions brouillons en attente de finalisation
         $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileE:myDrafts.html.twig', array(
             'debateDrafts' => $debateDrafts,
@@ -315,16 +274,11 @@ class ProfileEController extends Controller
         $mandate->setPUserId($user->getId());
         $mandate->setPQTypeId(PQType::ID_ELECTIF);
 
-        // *********************************** //
-        //      Formulaires
-        // *********************************** //
+        // Formulaire
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
         $formOrga = $this->createForm(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
         $formMandate = $this->createForm(new PUMandateType(PQType::ID_ELECTIF), $mandate);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myProfile.html.twig', array(
                         'user' => $user,
                         'backFileName' => $backFileName,
@@ -347,16 +301,11 @@ class ProfileEController extends Controller
         // Récupération user courant
         $user = $this->getUser();
 
-        // *********************************** //
-        //      Formulaires
-        // *********************************** //
+        // Formulaire
         $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myPerso.html.twig', array(
                         'user' => $user,
                         'formPerso1' => $formPerso1->createView(),
@@ -390,9 +339,6 @@ class ProfileEController extends Controller
                         ->filterByPUserId($user->getId())
                         ->find();
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myNotifications.html.twig', array(
                         'notifications' => $notifications,
                         'emailNotifIds' => $emailNotifIds,
@@ -408,9 +354,6 @@ class ProfileEController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myFollowedDebatesAction');
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myFollowedDebates.html.twig', array(
             ));
 
@@ -424,48 +367,8 @@ class ProfileEController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myFollowedUsersAction');
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileE:myFollowedUsers.html.twig', array(
             ));
 
-    }
-
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS PRIVÉES                                             */
-    /* ######################################################################################################## */
-
-
-    /**
-     * Gestion de la pagination
-     *
-     * @param type $query
-     * @return \Pagerfanta\Pagerfanta
-     * @throws type
-     */
-    private function preparePagination($query, $maxPerPage = 5)
-    {
-        $adapter = new PropelAdapter($query);
-        $pagerfanta = new Pagerfanta($adapter);
-
-        try {
-            $pagerfanta->setMaxPerPage($maxPerPage)->setCurrentPage($this->getRequest()->get('page'));
-        } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
-        } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
-        } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
-        }
-        
-        return $pagerfanta;
     }
 }

@@ -10,30 +10,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocumentQuery;
-use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PUFollowDDQuery;
-use Politizr\Model\PUFollowUQuery;
 
-use Politizr\Model\PDDebate;
-use Politizr\Model\PDReaction;
-use Politizr\Model\PDocument;
-use Politizr\Model\PDComment;
-use Politizr\Model\PUser;
-use Politizr\Model\PUFollowDD;
-use Politizr\Model\PUFollowU;
-
-use Politizr\FrontBundle\Form\Type\PDCommentType;
+use Politizr\FrontBundle\Form\Type\PDDebateType;
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
- *
- * TODO:
  *
  * @author Lionel Bouzonville
  */
@@ -41,7 +26,7 @@ class DocumentController extends Controller
 {
 
     /* ######################################################################################################## */
-    /*                                                 ROUTING CLASSIQUE                                        */
+    /*                                        AFFICHAGE DÉBAT & RÉACTION                                        */
     /* ######################################################################################################## */
 
     /**
@@ -53,9 +38,6 @@ class DocumentController extends Controller
         $logger->info('*** debateFeedAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
             throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
@@ -64,9 +46,6 @@ class DocumentController extends Controller
             throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
         }
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateFeed.html.twig', array(
                     'debate' => $debate
         ));
@@ -81,9 +60,6 @@ class DocumentController extends Controller
         $logger->info('*** debateDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
             throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
@@ -103,9 +79,6 @@ class DocumentController extends Controller
         $paragraphs = explode('<p>', $description);
         array_shift($paragraphs);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
                     'debate' => $debate,
                     'paragraphs' => $paragraphs,
@@ -121,9 +94,6 @@ class DocumentController extends Controller
         $logger->info('*** reactionDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
         $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
         if (!$reaction) {
             throw new NotFoundHttpException('Reaction "'.$slug.'" not found.');
@@ -148,9 +118,6 @@ class DocumentController extends Controller
         $paragraphs = explode('<p>', $description);
         array_shift($paragraphs);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
                     'reaction' => $reaction,
                     'debate' => $debate,
@@ -167,9 +134,6 @@ class DocumentController extends Controller
         $logger->info('*** userDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        // *********************************** //
-        //      Récupération objet
-        // *********************************** //
         $user = PUserQuery::create()->filterBySlug($slug)->findOne();
         if (!$user) {
             throw new NotFoundHttpException('User "'.$slug.'" not found.');
@@ -181,19 +145,12 @@ class DocumentController extends Controller
         $user->setNbViews($user->getNbViews() + 1);
         $user->save();
 
-        // *********************************** //
-        //      Récupération des objets associés
-        // *********************************** //
-
         // PDDebate (collection)
         $debates = $user->getDebates();
 
         // PDReaction (collection)
         $reactions = $user->getReactions();
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:Document:userDetail.html.twig', array(
                     'user' => $user,
                     'debates' => $debates,
@@ -202,54 +159,105 @@ class DocumentController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
+    /*                                              ÉDITION DEBAT                                               */
     /* ######################################################################################################## */
 
     /**
-     *  Suivre / Ne plus suivre debat
+     *  Création d'un nouveau débat
      */
-    public function followAction(Request $request)
+    public function debateNewAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** followAction');
+        $logger->info('*** debateNewAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
-            'follow'
-        );
+        // Service associé a la création d'une réaction
+        $debate = $this->get('politizr.service.document')->debateNew();
 
-        return $jsonResponse;
+        return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
     }
 
     /**
-     *  Note débat / réaction / commentaire
+     *  Edition d'un débat
      */
-    public function noteAction(Request $request)
+    public function debateEditAction($id)
     {
         $logger = $this->get('logger');
-        $logger->info('*** noteAction');
+        $logger->info('*** debateEditAction');
+        $logger->info('$id = '.print_r($id, true));
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
-            'note'
-        );
+        // Récupération user courant
+        $user = $this->getUser();
 
-        return $jsonResponse;
+        // *********************************** //
+        //      Récupération objets vue
+        // *********************************** //
+        $document = PDocumentQuery::create()->findPk($id);
+        if (!$document) {
+            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        }
+
+        $debate = PDDebateQuery::create()->findPk($id);
+        $form = $this->createForm(new PDDebateType(), $debate);
+
+        return $this->render('PolitizrFrontBundle:CRUD:debateEdit.html.twig', array(
+            'debate' => $debate,
+            'form' => $form->createView(),
+            ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                           ÉDITION REACTION                                               */
+    /* ######################################################################################################## */
+
+    /**
+     *  Création d'une nouvelle réaction
+     */
+    public function reactionNewAction($debateId, $parentId)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionNewAction');
+
+        // Service associé a la création d'une réaction
+        $reaction = $this->get('politizr.service.document')->reactionNew($debateId, $parentId);
+
+        return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
     }
 
     /**
-     *  Commentaires d'un document
+     *  Edition d'une réaction
      */
-    public function commentsAction(Request $request)
+    public function reactionEditAction($id)
     {
         $logger = $this->get('logger');
-        $logger->info('*** commentsAction');
+        $logger->info('*** reactionEditAction');
+        $logger->info('$id = '.print_r($id, true));
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
-            'comments'
-        );
+        // Récupération user courant
+        $user = $this->getUser();
 
-        return $jsonResponse;
+        $document = PDocumentQuery::create()->findPk($id);
+        if (!$document) {
+            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        }
+
+        $reaction = PDReactionQuery::create()->findPk($id);
+        $form = $this->createForm(new PDReactionType(), $reaction);
+
+        return $this->render('PolitizrFrontBundle:CRUD:reactionEdit.html.twig', array(
+            'reaction' => $reaction,
+            'form' => $form->createView(),
+            ));
     }
 }

@@ -12,29 +12,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
-use Politizr\Model\PDocumentPeer;
-
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PTagQuery;
-use Politizr\Model\PUTaggedTQuery;
-use Politizr\Model\PUFollowTQuery;
-use Politizr\Model\PUFollowDDQuery;
-use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
-use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 
-use Politizr\Model\PUser;
-use Politizr\Model\PTag;
-use Politizr\Model\PDDebate;
-use Politizr\Model\PTTagType;
-use Politizr\Model\PUTaggedT;
-use Politizr\Model\PUFollowT;
 use Politizr\Model\PRBadgeMetal;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
@@ -53,12 +37,8 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
  *
  * @author Lionel Bouzonville
  */
-class ProfileCController extends Controller
+class CitizenController extends Controller
 {
-
-    /* ######################################################################################################## */
-    /*                                                 ROUTING CLASSIQUE                                        */
-    /* ######################################################################################################## */
 
     /* ######################################################################################################## */
     /*                                                    ACTUALITES                                            */
@@ -128,10 +108,6 @@ class ProfileCController extends Controller
         // Récupération user courant
         $user = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
         // Débats brouillons en attente de finalisation
         $drafts = PDDebateQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
@@ -140,10 +116,6 @@ class ProfileCController extends Controller
 
         // Commentaires rédigés
         $comments = PDCommentQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileC:contribDashboard.html.twig', array(
             'drafts' => $drafts,
@@ -163,22 +135,13 @@ class ProfileCController extends Controller
         // Récupération user courant
         $pUser = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
         // Débats brouillons en attente de finalisation
         $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileC:myDrafts.html.twig', array(
             'drafts' => $drafts,
             ));
     }
-
 
 
     /* ######################################################################################################## */
@@ -195,14 +158,6 @@ class ProfileCController extends Controller
 
         // Récupération user courant
         $pUser = $this->getUser();
-
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
 
         return $this->render('PolitizrFrontBundle:ProfileC:myTags.html.twig', array(
                 'pUser' => $pUser,
@@ -281,14 +236,9 @@ class ProfileCController extends Controller
         $backFileName = $user->getBackFileName();
         $fileName = $user->getFileName();
 
-        // *********************************** //
-        //      Formulaires
-        // *********************************** //
+        // Formulaire
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileC:myProfile.html.twig', array(
                         'user' => $user,
                         'form' => $formBio->createView(),
@@ -308,16 +258,11 @@ class ProfileCController extends Controller
         // Récupération user courant
         $user = $this->getUser();
 
-        // *********************************** //
-        //      Formulaires
-        // *********************************** //
+        // Formulaire
         $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileC:myPerso.html.twig', array(
                         'user' => $user,
                         'formPerso1' => $formPerso1->createView(),
@@ -351,9 +296,6 @@ class ProfileCController extends Controller
                         ->filterByPUserId($user->getId())
                         ->find();
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileC:myNotifications.html.twig', array(
                         'notifications' => $notifications,
                         'emailNotifIds' => $emailNotifIds,
@@ -369,9 +311,6 @@ class ProfileCController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myFollowedDebatesAction');
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileC:myFollowedDebates.html.twig', array(
             ));
 
@@ -385,48 +324,8 @@ class ProfileCController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myFollowedUsersAction');
 
-        // *********************************** //
-        //      Affichage de la vue
-        // *********************************** //
         return $this->render('PolitizrFrontBundle:ProfileC:myFollowedUsers.html.twig', array(
             ));
 
-    }
-
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS PRIVÉES                                             */
-    /* ######################################################################################################## */
-
-
-    /**
-     * Gestion de la pagination
-     *
-     * @param type $query
-     * @return \Pagerfanta\Pagerfanta
-     * @throws type
-     */
-    private function preparePagination($query, $maxPerPage = 5)
-    {
-        $adapter = new PropelAdapter($query);
-        $pagerfanta = new Pagerfanta($adapter);
-
-        try {
-            $pagerfanta->setMaxPerPage($maxPerPage)->setCurrentPage($this->getRequest()->get('page'));
-        } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
-        } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
-        } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
-        }
-        
-        return $pagerfanta;
     }
 }

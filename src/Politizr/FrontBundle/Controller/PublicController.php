@@ -9,15 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\PropelAdapter;
-
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDCommentQuery;
-use Politizr\Model\PTagQuery;
-
-use Politizr\Model\PUser;
 
 /**
  *  Gestion du routing tout public
@@ -29,12 +23,6 @@ use Politizr\Model\PUser;
  */
 class PublicController extends Controller
 {
-
-    /* ######################################################################################################## */
-    /*                                                  ROUTING CLASSIQUE                                       */
-    /* ######################################################################################################## */
-
-
     /**
      *  Accueil
      */
@@ -43,11 +31,7 @@ class PublicController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-
-        // deniers débats publiés
+        // derniers débats publiés
         $debates = PDDebateQuery::create()->online()->orderByLast()->setLimit(5)->find();
 
         // profils les plus populaires
@@ -66,13 +50,12 @@ class PublicController extends Controller
  
         // $homeGeoDebates = PDDebateQuery::create()->geolocalized($result, 10)->find();
 
-
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
-                'debates' => $debates,
-                'users' => $users,
-                'comments' => $comments,
-                // 'homeGeoDebates' => $homeGeoDebates
-            ));
+            'debates' => $debates,
+            'users' => $users,
+            'comments' => $comments,
+            // 'homeGeoDebates' => $homeGeoDebates
+        ));
     }
 
     /**
@@ -86,51 +69,4 @@ class PublicController extends Controller
         return $this->render('PolitizrFrontBundle:Public:presentation.html.twig', array(
             ));
     }
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS AJAX                                          */
-    /* ######################################################################################################## */
-
-    /**
-     *  Renseigne un tableau contenant les tags
-     */
-    public function getTagsAction(Request $request) {
-        $logger = $this->get('logger');
-        $logger->info('*** getTagsAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.tag',
-            'getTags'
-        );
-
-        return $jsonResponse;
-    }
-
-    /* ######################################################################################################## */
-    /*                                                  FONCTIONS PRIVEES                                       */
-    /* ######################################################################################################## */
-
-    /**
-     * 
-     * @param type $query
-     * @return \Pagerfanta\Pagerfanta
-     * @throws type
-     */
-    private function preparePagination($query, $maxPerPage = 5) {
-        $adapter = new PropelAdapter($query);
-        $pagerfanta = new Pagerfanta($adapter);
-
-        try {
-            $pagerfanta->setMaxPerPage($maxPerPage)->setCurrentPage($this->getRequest()->get('page'));
-        } catch (Pagerfanta\Exception\NotIntegerCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta NotIntegerCurrentPageException.');
-        } catch (Pagerfanta\Exception\LessThan1CurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFanta LessThan1CurrentPageException.');
-        } catch (Pagerfanta\Exception\OutOfRangeCurrentPageException $e) {
-            throw $this->createNotFoundException('PagerFantaOutOfRangeCurrentPageException.');
-        }
-        
-        return $pagerfanta;
-    }
-
 }
