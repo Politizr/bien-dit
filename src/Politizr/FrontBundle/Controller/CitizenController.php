@@ -18,12 +18,15 @@ use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUAffinityQOQuery;
 
 use Politizr\Model\PRBadgeMetal;
+use Politizr\Model\PQType;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
+use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 
 /**
@@ -239,9 +242,13 @@ class CitizenController extends Controller
         // Formulaire
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
 
+        // Affinités organisations
+        $formAffinities = $this->createForm(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
+
         return $this->render('PolitizrFrontBundle:ProfileC:myProfile.html.twig', array(
                         'user' => $user,
-                        'form' => $formBio->createView(),
+                        'formBio' => $formBio->createView(),
+                        'formAffinities' => $formAffinities->createView(),
                         'backFileName' => $backFileName,
                         'fileName' => $fileName,
             ));

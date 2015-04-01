@@ -111,6 +111,22 @@ class XhrUserProfileController extends Controller
     }
 
     /**
+     *  Mise à jour des informations "affinités politiques" du user
+     */
+    public function affinitiesProfileUpdateAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** affinitiesProfileUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
+            'politizr.service.user',
+            'affinitiesProfile'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
      *  Création d'un mandat pour un user
      */
     public function mandateProfileCreateAction(Request $request)

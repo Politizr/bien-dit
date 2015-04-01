@@ -9,7 +9,7 @@
 {% block main %}
     <div id="main" class="container">
         <h3>Mon profil public</h3>
-        {% include 'PolitizrFrontBundle:Fragment\\User:DetailEdit.html.twig' with { 'user': user, 'form': form } %}
+        {% include 'PolitizrFrontBundle:Fragment\\User:DetailEdit.html.twig' with { 'user': user, 'form': formBio } %}
         
         <hr>
 
@@ -22,7 +22,19 @@
         <hr>
 
         <h3>Mes affinités politiques</h3>
-        <p>TODO</p>
+        <div id="affinities">
+            {{ form_start(formAffinities, {'style': 'horizontal', 'attr': {'id': 'form-affinities-update'}}) }}
+                {{ form_errors(formAffinities) }}
+
+                {{ form_row(formAffinities.PUAffinityQOPQOrganizations) }}
+            {{ form_end(formAffinities) }}
+            {# Modifications des affinités #}
+            <div class="text-center">
+                <a action="affinities-update" class="btn btn-warning">Modifier</a>
+            </div>
+        </div>
+        
+        <hr>
 
     </div>
 {% endblock main %}
@@ -42,6 +54,8 @@
 
     {% include 'PolitizrFrontBundle:JS:userEdit.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:userUploadPhoto.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:profileEdit.js.twig' %}
 
     <script>
         $('#header').css('background-image', 'url({{ user | photoBack("user_bio_back") }})');

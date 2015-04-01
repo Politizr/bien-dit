@@ -33,6 +33,7 @@ use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
+use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 
 /**
  * Services métiers associés aux utilisateurs.
@@ -463,6 +464,41 @@ class UserManager
             $logger->info('puCurrentQo = '.print_r($puCurrentQo, true));
 
             $puCurrentQo->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+
+    /**
+     *  Mise à jour des informations "affinités politiques" du user
+     *
+     */
+    public function affinitiesProfile()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** orgaProfileUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Affinités organisations
+        $form = $this->sc->get('form.factory')->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
+
+        // *********************************** //
+        //      Traitement du POST
+        // *********************************** //
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+            // $logger->info('user = '.print_r($user, true));
+
+            $user->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);

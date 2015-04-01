@@ -34,6 +34,30 @@
         });
     });
 
+    // MAJ des affinités politiques
+    $("body").on("click", "a[action='affinities-update']", function(e) {
+        console.log('*** click affinities-update');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('AffinitiesProfileUpdate') }}",
+            data: $('#form-affinities-update').serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajax-loader').hide();
+                if (data['error']) {
+                    $('.alert-danger-msg').html(data['error']);
+                    $('.alert.alert-danger').show();
+                } else {
+                    $('.alert-success-msg').html('Affinités mises à jour.');
+                    $('.alert.alert-success').show();
+                }
+            }
+        });
+    });
+
+
     // Création d'un mandat
     $("body").on("click", "a[action='mandate-add']", function(e) {
         console.log('*** click mandate-add');

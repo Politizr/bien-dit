@@ -31,6 +31,11 @@ OrgaProfileUpdate:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:orgaProfileUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+AffinitiesProfileUpdate:
+    pattern:  /profil/affinites.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:affinitiesProfileUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 MandateProfileCreate:
     pattern:  /profil/create-mandate.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:mandateProfileCreate, _format: json }

@@ -13,11 +13,11 @@ use Politizr\Model\PQType;
 use Politizr\Model\PQOrganizationQuery;
 
 /**
- * Organisation courante
+ * Affinités d'organisation d'un profil
  *
  * @author Lionel Bouzonville
  */
-class PUCurrentQOType extends AbstractType
+class PUserAffinitiesType extends AbstractType
 {
     // Permet de filtrer sur le type d'organisation
     private $pqTypeId;
@@ -29,19 +29,18 @@ class PUCurrentQOType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('p_user_id', 'hidden');
+        $builder->add('id', 'hidden');
 
         // Liste des organisations politiques
-        $builder->add('PUCurrentQOPQOrganization', 'model', array(
-                'required' => true,
-                'label' => 'Parti Politique',
+        $builder->add('PUAffinityQOPQOrganizations', 'model', array(
+                'required' => false,
+                'label' => 'Partis Politiques',
                 'class' => 'Politizr\\Model\\PQOrganization',
                 'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
                 'property' => 'title',
-                'multiple' => false,
-                'expanded' => false,
+                'multiple' => true,
+                'expanded' => true,
                 // 'constraints' => new NotBlank(array('message' => 'Choix obligatoire.')),
-                'attr' => array('action' => 'orga-save')
             ));
 
     }
@@ -52,7 +51,7 @@ class PUCurrentQOType extends AbstractType
      */
     public function getName()
     {
-        return 'current_organization';
+        return 'user_affinities';
     }
     
     /**
@@ -61,7 +60,7 @@ class PUCurrentQOType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Politizr\Model\PUCurrentQO',
+            'data_class' => 'Politizr\Model\PUser',
         ));
     }
 }
