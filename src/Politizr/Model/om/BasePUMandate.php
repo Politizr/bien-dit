@@ -81,10 +81,10 @@ abstract class BasePUMandate extends BaseObject implements Persistent
     protected $p_q_organization_id;
 
     /**
-     * The value for the description field.
+     * The value for the localization field.
      * @var        string
      */
-    protected $description;
+    protected $localization;
 
     /**
      * The value for the begin_at field.
@@ -214,14 +214,14 @@ abstract class BasePUMandate extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [localization] column value.
      *
      * @return string
      */
-    public function getDescription()
+    public function getLocalization()
     {
 
-        return $this->description;
+        return $this->localization;
     }
 
     /**
@@ -506,25 +506,25 @@ abstract class BasePUMandate extends BaseObject implements Persistent
     } // setPQOrganizationId()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [localization] column.
      *
      * @param  string $v new value
      * @return PUMandate The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setLocalization($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[] = PUMandatePeer::DESCRIPTION;
+        if ($this->localization !== $v) {
+            $this->localization = $v;
+            $this->modifiedColumns[] = PUMandatePeer::LOCALIZATION;
         }
 
 
         return $this;
-    } // setDescription()
+    } // setLocalization()
 
     /**
      * Sets the value of [begin_at] column to a normalized version of the date/time value specified.
@@ -655,7 +655,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
             $this->p_q_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->p_q_mandate_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->p_q_organization_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->localization = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->begin_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->end_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
@@ -981,8 +981,8 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         if ($this->isColumnModified(PUMandatePeer::P_Q_ORGANIZATION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_q_organization_id`';
         }
-        if ($this->isColumnModified(PUMandatePeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`description`';
+        if ($this->isColumnModified(PUMandatePeer::LOCALIZATION)) {
+            $modifiedColumns[':p' . $index++]  = '`localization`';
         }
         if ($this->isColumnModified(PUMandatePeer::BEGIN_AT)) {
             $modifiedColumns[':p' . $index++]  = '`begin_at`';
@@ -1022,8 +1022,8 @@ abstract class BasePUMandate extends BaseObject implements Persistent
                     case '`p_q_organization_id`':
                         $stmt->bindValue($identifier, $this->p_q_organization_id, PDO::PARAM_INT);
                         break;
-                    case '`description`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case '`localization`':
+                        $stmt->bindValue($identifier, $this->localization, PDO::PARAM_STR);
                         break;
                     case '`begin_at`':
                         $stmt->bindValue($identifier, $this->begin_at, PDO::PARAM_STR);
@@ -1217,7 +1217,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
                 return $this->getPQOrganizationId();
                 break;
             case 5:
-                return $this->getDescription();
+                return $this->getLocalization();
                 break;
             case 6:
                 return $this->getBeginAt();
@@ -1265,7 +1265,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
             $keys[2] => $this->getPQTypeId(),
             $keys[3] => $this->getPQMandateId(),
             $keys[4] => $this->getPQOrganizationId(),
-            $keys[5] => $this->getDescription(),
+            $keys[5] => $this->getLocalization(),
             $keys[6] => $this->getBeginAt(),
             $keys[7] => $this->getEndAt(),
             $keys[8] => $this->getCreatedAt(),
@@ -1339,7 +1339,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
                 $this->setPQOrganizationId($value);
                 break;
             case 5:
-                $this->setDescription($value);
+                $this->setLocalization($value);
                 break;
             case 6:
                 $this->setBeginAt($value);
@@ -1382,7 +1382,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPQTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPQMandateId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPQOrganizationId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[5], $arr)) $this->setLocalization($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setBeginAt($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setEndAt($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
@@ -1403,7 +1403,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         if ($this->isColumnModified(PUMandatePeer::P_Q_TYPE_ID)) $criteria->add(PUMandatePeer::P_Q_TYPE_ID, $this->p_q_type_id);
         if ($this->isColumnModified(PUMandatePeer::P_Q_MANDATE_ID)) $criteria->add(PUMandatePeer::P_Q_MANDATE_ID, $this->p_q_mandate_id);
         if ($this->isColumnModified(PUMandatePeer::P_Q_ORGANIZATION_ID)) $criteria->add(PUMandatePeer::P_Q_ORGANIZATION_ID, $this->p_q_organization_id);
-        if ($this->isColumnModified(PUMandatePeer::DESCRIPTION)) $criteria->add(PUMandatePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PUMandatePeer::LOCALIZATION)) $criteria->add(PUMandatePeer::LOCALIZATION, $this->localization);
         if ($this->isColumnModified(PUMandatePeer::BEGIN_AT)) $criteria->add(PUMandatePeer::BEGIN_AT, $this->begin_at);
         if ($this->isColumnModified(PUMandatePeer::END_AT)) $criteria->add(PUMandatePeer::END_AT, $this->end_at);
         if ($this->isColumnModified(PUMandatePeer::CREATED_AT)) $criteria->add(PUMandatePeer::CREATED_AT, $this->created_at);
@@ -1475,7 +1475,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         $copyObj->setPQTypeId($this->getPQTypeId());
         $copyObj->setPQMandateId($this->getPQMandateId());
         $copyObj->setPQOrganizationId($this->getPQOrganizationId());
-        $copyObj->setDescription($this->getDescription());
+        $copyObj->setLocalization($this->getLocalization());
         $copyObj->setBeginAt($this->getBeginAt());
         $copyObj->setEndAt($this->getEndAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1756,7 +1756,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         $this->p_q_type_id = null;
         $this->p_q_mandate_id = null;
         $this->p_q_organization_id = null;
-        $this->description = null;
+        $this->localization = null;
         $this->begin_at = null;
         $this->end_at = null;
         $this->created_at = null;
@@ -1925,7 +1925,7 @@ abstract class BasePUMandate extends BaseObject implements Persistent
         $this->setPQTypeId($archive->getPQTypeId());
         $this->setPQMandateId($archive->getPQMandateId());
         $this->setPQOrganizationId($archive->getPQOrganizationId());
-        $this->setDescription($archive->getDescription());
+        $this->setLocalization($archive->getLocalization());
         $this->setBeginAt($archive->getBeginAt());
         $this->setEndAt($archive->getEndAt());
         $this->setCreatedAt($archive->getCreatedAt());

@@ -6,7 +6,7 @@ Politizr\Model\PUMandate:
         p_q_mandate_id:          president
         p_q_organization_id:     parti4
         begin_at:                2012-05-07 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
 # PARTI COURANT USERS DEBATTEURS DE TEST
 Politizr\Model\PUCurrentQO:
@@ -25,7 +25,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification2:
         p_user_id:               depute2
@@ -33,7 +33,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti6
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification3:
         p_user_id:               depute3
@@ -41,7 +41,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification4:
         p_user_id:               depute4
@@ -49,7 +49,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification5:
         p_user_id:               depute5
@@ -57,7 +57,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification6:
         p_user_id:               depute6
@@ -65,7 +65,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification7:
         p_user_id:               depute7
@@ -73,7 +73,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification8:
         p_user_id:               depute8
@@ -81,7 +81,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti6
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification9:
         p_user_id:               depute9
@@ -89,7 +89,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification10:
         p_user_id:               depute10
@@ -97,7 +97,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti6
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification11:
         p_user_id:               depute11
@@ -105,7 +105,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification12:
         p_user_id:               depute12
@@ -113,7 +113,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification13:
         p_user_id:               depute13
@@ -121,7 +121,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification14:
         p_user_id:               depute14
@@ -129,7 +129,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification15:
         p_user_id:               depute15
@@ -137,7 +137,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti0
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification16:
         p_user_id:               depute16
@@ -145,7 +145,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification17:
         p_user_id:               depute17
@@ -153,7 +153,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification18:
         p_user_id:               depute18
@@ -161,7 +161,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti10
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification19:
         p_user_id:               depute19
@@ -169,7 +169,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti2
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
     qualification20:
         p_user_id:               depute20
@@ -177,7 +177,7 @@ Politizr\Model\PUCurrentQO:
         p_q_mandate_id:          depute
         p_q_organization_id:     parti4
         begin_at:                2012-06-20 00:00:00
-        description:             <?php $faker('lorem', 2, 2, 0, 0, 0, 0, 0, 0, 0) ?>
+        localization:            <?php $faker('realText', 25) ?>
 
 # LISTE DES USERS / PARTIS EN COURS
 Politizr\Model\PUCurrentQO:

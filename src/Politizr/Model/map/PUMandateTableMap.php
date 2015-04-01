@@ -47,7 +47,7 @@ class PUMandateTableMap extends TableMap
         $this->addForeignKey('p_q_type_id', 'PQTypeId', 'INTEGER', 'p_q_type', 'id', true, null, null);
         $this->addForeignKey('p_q_mandate_id', 'PQMandateId', 'INTEGER', 'p_q_mandate', 'id', true, null, null);
         $this->addForeignKey('p_q_organization_id', 'PQOrganizationId', 'INTEGER', 'p_q_organization', 'id', false, null, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('localization', 'Localization', 'VARCHAR', false, 150, null);
         $this->addColumn('begin_at', 'BeginAt', 'DATE', false, null, null);
         $this->addColumn('end_at', 'EndAt', 'DATE', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);

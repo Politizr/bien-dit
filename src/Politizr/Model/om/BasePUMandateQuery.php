@@ -29,7 +29,7 @@ use Politizr\Model\PUser;
  * @method PUMandateQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PUMandateQuery orderByPQMandateId($order = Criteria::ASC) Order by the p_q_mandate_id column
  * @method PUMandateQuery orderByPQOrganizationId($order = Criteria::ASC) Order by the p_q_organization_id column
- * @method PUMandateQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PUMandateQuery orderByLocalization($order = Criteria::ASC) Order by the localization column
  * @method PUMandateQuery orderByBeginAt($order = Criteria::ASC) Order by the begin_at column
  * @method PUMandateQuery orderByEndAt($order = Criteria::ASC) Order by the end_at column
  * @method PUMandateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -40,7 +40,7 @@ use Politizr\Model\PUser;
  * @method PUMandateQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PUMandateQuery groupByPQMandateId() Group by the p_q_mandate_id column
  * @method PUMandateQuery groupByPQOrganizationId() Group by the p_q_organization_id column
- * @method PUMandateQuery groupByDescription() Group by the description column
+ * @method PUMandateQuery groupByLocalization() Group by the localization column
  * @method PUMandateQuery groupByBeginAt() Group by the begin_at column
  * @method PUMandateQuery groupByEndAt() Group by the end_at column
  * @method PUMandateQuery groupByCreatedAt() Group by the created_at column
@@ -73,7 +73,7 @@ use Politizr\Model\PUser;
  * @method PUMandate findOneByPQTypeId(int $p_q_type_id) Return the first PUMandate filtered by the p_q_type_id column
  * @method PUMandate findOneByPQMandateId(int $p_q_mandate_id) Return the first PUMandate filtered by the p_q_mandate_id column
  * @method PUMandate findOneByPQOrganizationId(int $p_q_organization_id) Return the first PUMandate filtered by the p_q_organization_id column
- * @method PUMandate findOneByDescription(string $description) Return the first PUMandate filtered by the description column
+ * @method PUMandate findOneByLocalization(string $localization) Return the first PUMandate filtered by the localization column
  * @method PUMandate findOneByBeginAt(string $begin_at) Return the first PUMandate filtered by the begin_at column
  * @method PUMandate findOneByEndAt(string $end_at) Return the first PUMandate filtered by the end_at column
  * @method PUMandate findOneByCreatedAt(string $created_at) Return the first PUMandate filtered by the created_at column
@@ -84,7 +84,7 @@ use Politizr\Model\PUser;
  * @method array findByPQTypeId(int $p_q_type_id) Return PUMandate objects filtered by the p_q_type_id column
  * @method array findByPQMandateId(int $p_q_mandate_id) Return PUMandate objects filtered by the p_q_mandate_id column
  * @method array findByPQOrganizationId(int $p_q_organization_id) Return PUMandate objects filtered by the p_q_organization_id column
- * @method array findByDescription(string $description) Return PUMandate objects filtered by the description column
+ * @method array findByLocalization(string $localization) Return PUMandate objects filtered by the localization column
  * @method array findByBeginAt(string $begin_at) Return PUMandate objects filtered by the begin_at column
  * @method array findByEndAt(string $end_at) Return PUMandate objects filtered by the end_at column
  * @method array findByCreatedAt(string $created_at) Return PUMandate objects filtered by the created_at column
@@ -201,7 +201,7 @@ abstract class BasePUMandateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `description`, `begin_at`, `end_at`, `created_at`, `updated_at` FROM `p_u_mandate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `localization`, `begin_at`, `end_at`, `created_at`, `updated_at` FROM `p_u_mandate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -510,32 +510,32 @@ abstract class BasePUMandateQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the description column
+     * Filter the query on the localization column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
-     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * $query->filterByLocalization('fooValue');   // WHERE localization = 'fooValue'
+     * $query->filterByLocalization('%fooValue%'); // WHERE localization LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $description The value to use as filter.
+     * @param     string $localization The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return PUMandateQuery The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByLocalization($localization = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($description)) {
+            if (is_array($localization)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $description)) {
-                $description = str_replace('*', '%', $description);
+            } elseif (preg_match('/[\%\*]/', $localization)) {
+                $localization = str_replace('*', '%', $localization);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(PUMandatePeer::DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(PUMandatePeer::LOCALIZATION, $localization, $comparison);
     }
 
     /**

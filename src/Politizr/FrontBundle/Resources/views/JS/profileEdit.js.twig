@@ -85,13 +85,13 @@
     // Suppression d'un mandat
     $("body").on("click", "a[action='mandate-delete']", function(e) {
         console.log('*** click mandate-delete');
-
+        var subjectId = $(this).attr('subject-id');
         bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {
             if (result) {
                 $.ajax({
                     type: 'POST',
                     url: "{{ path('MandateProfileDelete') }}",
-                    data: { 'id': $(this).attr('subject-id') },
+                    data: { 'id': subjectId },
                     context: $(this),
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}

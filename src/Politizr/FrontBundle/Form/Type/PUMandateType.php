@@ -46,10 +46,10 @@ class PUMandateType extends AbstractType
             ));
 
         // Date de début
-        $builder->add('description', 'textarea', array(
+        $builder->add('localization', 'text', array(
                 'required' => true,
-                'label' => 'Description',
-                'constraints' => new NotBlank(array('message' => 'Description obligatoire.')),
+                'label' => 'Localisation',
+                'constraints' => new NotBlank(array('message' => 'Localisation obligatoire.')),
                 'attr' => array('placeholder' => 'Ville, circonscriptrion, etc...')
             ));
         

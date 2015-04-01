@@ -564,7 +564,7 @@
         <column name="p_q_mandate_id" type="integer" required="true" />
         <column name="p_q_organization_id" type="integer" required="false" />
 
-        <column name="description" type="longvarchar" />
+        <column name="localization" type="varchar" size="150" />
 
         <column name="begin_at" type="date" />
         <column name="end_at" type="date" />

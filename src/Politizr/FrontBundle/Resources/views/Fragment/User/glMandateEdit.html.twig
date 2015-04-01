@@ -4,21 +4,21 @@
 </div>
 <hr>
 <div id="mandate-create" style="display: none">
-{{ form_start(formMandate, {'style': 'horizontal', 'attr': {'id': 'form-mandate-create'}}) }}
-    {{ form_errors(formMandate) }}
+    {{ form_start(formMandate, {'style': 'horizontal', 'attr': {'id': 'form-mandate-create'}}) }}
+        {{ form_errors(formMandate) }}
 
-    {{ form_row(formMandate.p_q_mandate) }}
-    {{ form_row(formMandate.description) }}
-    {{ form_row(formMandate.p_q_organization) }}
-    {{ form_row(formMandate.begin_at) }}
-    {{ form_row(formMandate.end_at) }}
-{{ form_end(formMandate) }}
-{# Enregistrement form mandat #}
-<div class="text-center">
-    <a action="hide-mandate-create" class="btn btn-danger">Annuler</a>
-    <a action="mandate-add" class="btn btn-success">Ajouter</a>
-</div>    
-<hr>
+        {{ form_row(formMandate.p_q_mandate) }}
+        {{ form_row(formMandate.localization) }}
+        {{ form_row(formMandate.p_q_organization) }}
+        {{ form_row(formMandate.begin_at) }}
+        {{ form_row(formMandate.end_at) }}
+    {{ form_end(formMandate) }}
+    {# Enregistrement form mandat #}
+    <div class="text-center">
+        <a action="hide-mandate-create" class="btn btn-danger">Annuler</a>
+        <a action="mandate-add" class="btn btn-success">Ajouter</a>
+    </div>    
+    <hr>
 </div>
 {% for formMandate in formMandateViews %}
     <div class="mandate">
@@ -26,7 +26,7 @@
             {{ form_errors(formMandate) }}
 
             {{ form_row(formMandate.p_q_mandate) }}
-            {{ form_row(formMandate.description) }}
+            {{ form_row(formMandate.localization) }}
             {{ form_row(formMandate.p_q_organization) }}
             {{ form_row(formMandate.begin_at) }}
             {{ form_row(formMandate.end_at) }}

@@ -513,7 +513,7 @@ class UserManager
         $mandate->setPQTypeId(PQType::ID_ELECTIF);
 
         $formMandateViews = $this->getFormMandateViews($user->getId());
-        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
+        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
 
         // Construction rendu
         $templating = $this->sc->get('templating');
@@ -575,7 +575,7 @@ class UserManager
     public function mandateProfileDelete()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** mandateProfileUpdate');
+        $logger->info('*** mandateProfileDelete');
         
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -583,9 +583,9 @@ class UserManager
         // Récupération args
         $request = $this->sc->get('request');
 
-        $id = $request->get('id');
-
         $mandate = PUMandateQuery::create()->findPk($id);
+
+        // TODO > contrôle objet récupéré avant suppression + exception adaptée
         $mandate->delete();
 
         return true;
@@ -605,7 +605,7 @@ class UserManager
         $mandates = PUMandateQuery::create()
             ->filterByPUserId($userId)
             ->filterByPQTypeId(PQType::ID_ELECTIF)
-            ->orderByEndAt('desc')
+            ->orderByBeginAt('desc')
             ->find();
 
         // Création des form + vues associées pour MAJ des mandats
