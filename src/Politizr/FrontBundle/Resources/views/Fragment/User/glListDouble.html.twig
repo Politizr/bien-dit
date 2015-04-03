@@ -1,0 +1,7 @@
+<div class="scroll">
+    {% for user in users %}
+        {% include 'PolitizrFrontBundle:Fragment\\User:ListRowDouble.html.twig' with { 'user': user } only %}
+        <hr>
+    {% endfor %}
+</div>
+{% include 'PolitizrFrontBundle:Fragment\\Global:ScrollNavDouble.html.twig' with { 'context': 'user', 'results': users, 'offset': offset } %}

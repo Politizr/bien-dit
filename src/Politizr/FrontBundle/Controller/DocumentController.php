@@ -15,6 +15,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 
@@ -285,6 +286,32 @@ class DocumentController extends Controller
 
         return $this->render('PolitizrFrontBundle:Document:organization.html.twig', array(
             'organization' => $organization,
+            ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                              PAGE TAG                                                    */
+    /* ######################################################################################################## */
+
+    /**
+     *  Détail d'un tag
+     */
+    public function tagAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $tag = PTagQuery::create()->filterBySlug($slug)->findOne();
+        if (!$tag) {
+            throw new NotFoundHttpException('Tag "'.$slug.'" not found.');
+        }
+        if (!$tag->getOnline()) {
+            throw new NotFoundHttpException('Tag "'.$slug.'" not online.');
+        }
+
+        return $this->render('PolitizrFrontBundle:Document:tag.html.twig', array(
+            'tag' => $tag,
             ));
     }
 }

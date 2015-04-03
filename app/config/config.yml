@@ -277,7 +277,7 @@ liip_imagine:
         organization_mini:
             quality:              100
             filters:
-                relative_resize:  { heighten: 50 }
+                relative_resize:  { heighten: 30 }
 
         organization_detail:
             quality:              100

@@ -8,13 +8,13 @@
     $("body").on("click", "a.order", function(e) {
         e.preventDefault();
         $(this).tab('show');
-        listing(true);
+        listing();
     });
 
     // Gestion des filtres
     $("body").on("change", ".filter", function(e) {
         e.preventDefault();
-        listing(true);
+        listing();
     });
 
     // Page suivante
@@ -24,7 +24,7 @@
 
     // Chargement paginé de la liste
     function listing(init, offset) {
-        init = (typeof init === "undefined") ? false : init;
+        init = (typeof init === "undefined") ? true : init;
         offset = (typeof offset === "undefined") ? 0 : offset;
 
         // Récupération de l'ordonnancement en cours

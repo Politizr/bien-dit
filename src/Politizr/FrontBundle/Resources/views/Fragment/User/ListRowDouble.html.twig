@@ -1,0 +1,13 @@
+{% extends 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' %}
+
+{% block listRowDiv %}
+    <div class="author">
+        {% include 'PolitizrFrontBundle:Fragment\\User:author.html.twig' with { 'user': user } only %}
+    </div>
+
+    <div class="following text-center">
+        <div class="subscribe pull-right">
+            {{ user | linkSubscribeUser }}
+        </div>
+    </div>
+{% endblock listRowDiv %}

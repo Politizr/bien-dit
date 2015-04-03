@@ -1,0 +1,7 @@
+<div class="scroll">
+    {% for debate in debates %}
+        {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowDouble.html.twig' with { 'debate': debate } only %}
+        <hr>
+    {% endfor %}
+</div>
+{% include 'PolitizrFrontBundle:Fragment\\Global:ScrollNavDouble.html.twig' with { 'context': 'debate', 'results': debates, 'offset': offset } %}

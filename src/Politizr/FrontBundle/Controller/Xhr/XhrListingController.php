@@ -124,4 +124,37 @@ class XhrListingController extends Controller
 
         return $jsonResponse;
     }
+
+    /**
+     *  Chargement d'une liste de debats par tag
+     */
+    public function tagDebateListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagDebateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'tagDebateList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Chargement d'une liste de users par tag
+     */
+    public function tagUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'tagUserList'
+        );
+
+        return $jsonResponse;
+    }
+
 }

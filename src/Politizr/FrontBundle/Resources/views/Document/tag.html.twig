@@ -14,23 +14,8 @@
 
 {% block main %}
     <div id="main" class="container">
-        <div class="row text-center">
-            <div class="img-responsive">
-                <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_detail') }}" alt="{{ organization.initials }}">
-            </div>
-        </div>
-        <div class="row text-center">
-            <div class="label label-default">{{ organization.initials }}</div>
-        </div>
-        <h3>{{ organization.title }}</h3>
-        <div id="organization-description">
-            {{ organization.description | raw }}
-            {% if organization.url %}
-                <a href="{{ organization.url }}">Plus d'informations</a>
-            {% endif %}
-        </div>
-        <hr>
-        <div id="paginated-list" data-subject-id="{{ organization.id }}">
+        <h3>{{ tag.title }}</h3>
+        <div id="paginated-double-list" data-subject-id="{{ tag.id }}">
             <ul class="nav nav-tabs">
                 <li role="list" class="active"><a class="order" order="last">Derniers</a></li>
                 <li role="list"><a class="order" order="mostFollowed">Plus suivis</a></li>
@@ -41,7 +26,11 @@
                 <input type="checkbox" class="filter" name="filters[]" value="qualified" />&nbsp;Débatteurs uniquement
             </form>
             <hr>
-            <div id="list-content">
+            <div id="list-content" class="row">
+                <div id="list-content-user" class="col-sm-4">
+                </div>
+                <div id="list-content-debate" class="col-sm-8">
+                </div>
             </div>
         </div>        
     </div>
@@ -52,5 +41,6 @@
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'OrganizationUserList' } %}
+    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:listingPaginatedDouble.js.twig' with { 'RouteUserName': 'TagUserList', 'RouteDebateName': 'TagDebateList' } %}
 {% endblock javascriptFooter %}
