@@ -41,7 +41,13 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
             {# Organisations en cours #}
             {% set organizations = user.currentOrganizations %}
             {% for organization in organizations %}
-                <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                {% if (organization.url) %}
+                    <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
+                {% endif %}
+                    <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                {% if (organization.url) %}
+                    </a>
+                {% endif %}
             {% endfor %}
         {% endblock authorOrganization %}
     {% else %}

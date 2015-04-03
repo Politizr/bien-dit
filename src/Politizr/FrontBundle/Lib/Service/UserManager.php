@@ -52,6 +52,71 @@ class UserManager
         $this->sc = $serviceContainer;
     }
 
+
+    /* ######################################################################################################## */
+    /*                                                  TOUT PUBLIC                                             */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Listing de users associé à l'organisation
+     */
+    public function organizationUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** organizationUserList');
+        
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        $all = $request->request->all();
+        $logger->info('$all = ' . print_r($all, true));
+
+        $organizationId = $request->get('subjectId');
+        $logger->info('$organizationId = ' . print_r($organizationId, true));
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+        $filters = $request->get('filters');
+        $logger->info('$filters = ' . print_r($filters, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // Requête suivant order
+        $users = PUserQuery::create()
+                    ->online()
+                    ->usePUCurrentQOPUserQuery(null, \Criteria::LEFT_JOIN)
+                        ->filterByPQOrganizationId($organizationId)
+                    ->endUse()
+                    ->_or()
+                    ->usePUAffinityQOPUserQuery(null, \Criteria::LEFT_JOIN)
+                        ->filterByPQOrganizationId($organizationId)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find()
+                    ;
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
+            array(
+                'users' => $users,
+                'order' => $order,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+
+
     /* ######################################################################################################## */
     /*                                            SUIVI (FONCTIONS AJAX)                                        */
     /* ######################################################################################################## */

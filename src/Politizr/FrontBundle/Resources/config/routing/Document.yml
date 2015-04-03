@@ -51,3 +51,9 @@ ReactionDraftEdit:
         _method:        GET
         id:             \d+
 
+Organization:
+    pattern:  /parti-politique/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Document:organization }
+    requirements:
+        _method:        GET
+

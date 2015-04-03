@@ -40,144 +40,114 @@ Politizr\Model\PQType:
         description:        |
             Mandat syndical
 
-# LISTE DE TOUS LES MANDATS ÉLECTIFS EXISTANTS
+# LISTE DES PRINCIPAUX PARTIS POLITIQUES
 # http://www.france-politique.fr/partis-politiques.htm
 Politizr\Model\PQOrganization:
     parti0:
-        online:              true
-        p_q_type_id:         electif
-        title:               Non Inscrit
-        initials:            Non Inscrit
-        description:        |
-            Indépendant, pas d'affiliation à un parti politique
+        online:             true
+        p_q_type_id:        electif
+        title:              Non Inscrit
+        initials:           Non Inscrit
+        file_name:          nologo.jpg
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                null
     parti1:
-        online:              true
-        p_q_type_id:         electif
-        title:               Parti Communiste Français
-        initials:            PCF
-        file_name:           pcf.gif
-        description:        |
-            Parti Communiste Français
+        online:             true
+        p_q_type_id:        electif
+        title:              Parti Communiste Français
+        initials:           PCF
+        file_name:          pcf.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Parti_communiste_fran%C3%A7ais
     parti2:
-        online:              true
-        p_q_type_id:         electif
-        title:               Parti de Gauche
-        initials:            PG
-        file_name:           pg.jpg
-        description:        |
-            Parti de Gauche
+        online:             true
+        p_q_type_id:        electif
+        title:              Parti de Gauche
+        initials:           PG
+        file_name:          pg.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Parti_de_gauche_%28France%29
     parti3:
-        online:              true
-        p_q_type_id:         electif
-        title:               Mouvement Républicain et Citoyen
-        initials:            MRC
-        file_name:           mrc.jpg
-        description:        |
-            Mouvement Républicain et Citoyen
+        online:             true
+        p_q_type_id:        electif
+        title:              Parti Socialiste
+        initials:           PS
+        file_name:          ps.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Parti_socialiste_%28France%29
     parti4:
-        online:              true
-        p_q_type_id:         electif
-        title:               Parti Socialiste
-        initials:            PS
-        file_name:           ps.gif
-        description:        |
-            Parti Socialiste
+        online:             true
+        p_q_type_id:        electif
+        title:              Parti Radical de Gauche
+        initials:           PRG
+        file_name:          prg.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Parti_radical_de_gauche
     parti5:
-        online:              true
-        p_q_type_id:         electif
-        title:               Parti Radical de Gauche
-        initials:            PRG
-        file_name:           prg.gif
-        description:        |
-            Parti Radical de Gauche
+        online:             true
+        p_q_type_id:        electif
+        title:              Europe écologie Les Verts
+        initials:           EELV
+        file_name:          eelv.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Europe_%C3%89cologie_Les_Verts
     parti6:
-        online:              true
-        p_q_type_id:         electif
-        title:               Europe écologie - Les Verts
-        initials:            EELV
-        file_name:           eelv.gif
-        description:        |
-            Europe écologie - Les Verts
+        online:             true
+        p_q_type_id:        electif
+        title:              Divers gauche
+        initials:           DVG
+        file_name:          dvg.jpg
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Divers_gauche
     parti7:
-        online:              true
-        p_q_type_id:         electif
-        title:               Citoyenneté Action Participation pour le 21e siècle
-        initials:            CAP21
-        file_name:           cap21.gif
-        description:        |
-            Citoyenneté Action Participation pour le 21e siècle
+        online:             true
+        p_q_type_id:        electif
+        title:              Mouvement Démocrate
+        initials:           MODEM
+        file_name:          modem.gif
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Mouvement_d%C3%A9mocrate_%28France%29
     parti8:
-        online:              true
-        p_q_type_id:         electif
-        title:               Mouvement Démocrate
-        initials:            MODEM
-        file_name:           modem.gif
-        description:        |
-            Mouvement Démocrate
+        online:             true
+        p_q_type_id:        electif
+        title:              Union des Démocrates et Indépendants
+        initials:           UDI
+        file_name:          udi.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Union_des_d%C3%A9mocrates_et_ind%C3%A9pendants
     parti9:
-        online:              true
-        p_q_type_id:         electif
-        title:               Union des Démocrates et Indépendants
-        initials:            UDI
-        file_name:           udi.gif
-        description:        |
-            Union des Démocrates et Indépendants
+        online:             true
+        p_q_type_id:        electif
+        title:              Divers droite
+        initials:           DVD
+        file_name:          dvd.jpg
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Divers_droite
     parti10:
-        online:              true
-        p_q_type_id:         electif
-        title:               Union pour un Mouvement Populaire
-        initials:            UMP
-        file_name:           ump.gif
-        description:        |
-            Union pour un Mouvement Populaire
+        online:             true
+        p_q_type_id:        electif
+        title:              Union pour un Mouvement Populaire
+        initials:           UMP
+        file_name:          ump.gif
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Union_pour_un_mouvement_populaire
     parti11:
-        online:              true
-        p_q_type_id:         electif
-        title:               Parti Chrétien-démocrate
-        initials:            PCD
-        file_name:           pcd.jpg
-        description:        |
-            Parti Chrétien-démocrate
+        online:             true
+        p_q_type_id:        electif
+        title:              Debout la France
+        initials:           DLF
+        file_name:          dlf.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Debout_la_France
     parti12:
-        online:              true
-        p_q_type_id:         electif
-        title:               Centre National des Indépendants et Paysans
-        initials:            CNIP
-        file_name:           cnip.jpg
-        description:        |
-            Centre National des Indépendants et Paysans
-    parti13:
-        online:              true
-        p_q_type_id:         electif
-        title:               Debout la République
-        initials:            DLR
-        file_name:           dlr.gif
-        description:        |
-            Debout la République
-    parti14:
-        online:              true
-        p_q_type_id:         electif
-        title:               Mouvement pour la France
-        initials:            MPF
-        file_name:           mpf.jpg
-        description:        |
-            Mouvement pour la France
-    parti15:
-        online:              true
-        p_q_type_id:         electif
-        p_q_type_id:         electif
-        title:               Front National
-        initials:            FN
-        file_name:           fn.gif
-        description:        |
-            Front National
-    parti16:
-        online:              true
-        p_q_type_id:         electif
-        title:               Autre parti
-        initials:            Autre parti
-        description:        |
-            Parti non référencé
+        online:             true
+        p_q_type_id:        electif
+        p_q_type_id:        electif
+        title:              Front National
+        initials:           FN
+        file_name:          fn.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                http://fr.wikipedia.org/wiki/Front_national_%28parti_fran%C3%A7ais%29
 
 
 # LISTE DE TOUS LES MANDATS EXISTANTS

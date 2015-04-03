@@ -30,6 +30,7 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery orderByInitials($order = Criteria::ASC) Order by the initials column
  * @method PQOrganizationQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PQOrganizationQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PQOrganizationQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PQOrganizationQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PQOrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PQOrganizationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -42,6 +43,7 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery groupByInitials() Group by the initials column
  * @method PQOrganizationQuery groupByFileName() Group by the file_name column
  * @method PQOrganizationQuery groupByDescription() Group by the description column
+ * @method PQOrganizationQuery groupByUrl() Group by the url column
  * @method PQOrganizationQuery groupByOnline() Group by the online column
  * @method PQOrganizationQuery groupByCreatedAt() Group by the created_at column
  * @method PQOrganizationQuery groupByUpdatedAt() Group by the updated_at column
@@ -76,6 +78,7 @@ use Politizr\Model\PUser;
  * @method PQOrganization findOneByInitials(string $initials) Return the first PQOrganization filtered by the initials column
  * @method PQOrganization findOneByFileName(string $file_name) Return the first PQOrganization filtered by the file_name column
  * @method PQOrganization findOneByDescription(string $description) Return the first PQOrganization filtered by the description column
+ * @method PQOrganization findOneByUrl(string $url) Return the first PQOrganization filtered by the url column
  * @method PQOrganization findOneByOnline(boolean $online) Return the first PQOrganization filtered by the online column
  * @method PQOrganization findOneByCreatedAt(string $created_at) Return the first PQOrganization filtered by the created_at column
  * @method PQOrganization findOneByUpdatedAt(string $updated_at) Return the first PQOrganization filtered by the updated_at column
@@ -88,6 +91,7 @@ use Politizr\Model\PUser;
  * @method array findByInitials(string $initials) Return PQOrganization objects filtered by the initials column
  * @method array findByFileName(string $file_name) Return PQOrganization objects filtered by the file_name column
  * @method array findByDescription(string $description) Return PQOrganization objects filtered by the description column
+ * @method array findByUrl(string $url) Return PQOrganization objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PQOrganization objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PQOrganization objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PQOrganization objects filtered by the updated_at column
@@ -203,7 +207,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `initials`, `file_name`, `description`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `initials`, `file_name`, `description`, `url`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -449,6 +453,35 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQOrganizationPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
+     * $query->filterByUrl('%fooValue%'); // WHERE url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $url The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQOrganizationQuery The current query, for fluid interface
+     */
+    public function filterByUrl($url = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($url)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $url)) {
+                $url = str_replace('*', '%', $url);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQOrganizationPeer::URL, $url, $comparison);
     }
 
     /**

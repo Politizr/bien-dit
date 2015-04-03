@@ -36,6 +36,12 @@
         datas.push({name: 'order', value: order});
         datas.push({name: 'offset', value: offset});
 
+        // Récupération d'arguments JS supplémentaires
+        var additionalDatas = $('#paginated-list').data();
+        $.each(additionalDatas, function(index, element) {
+            datas.push({name: index, value: element});
+        });
+
         $.ajax({
             type: 'POST',
             url: "{{ path(RouteName) }}",

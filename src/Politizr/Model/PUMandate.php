@@ -4,6 +4,11 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUMandate;
 
+/**
+ * Mandat d'un user
+ *
+ * @author Lionel Bouzonville
+ */
 class PUMandate extends BasePUMandate
 {
     /**
@@ -34,7 +39,8 @@ class PUMandate extends BasePUMandate
      *
      *    @return     boolean
      */
-    public function isCurrent() {
+    public function isCurrent()
+    {
         $now = new \DateTime('now');
 
         if ($this->getEndAt() == null || $this->getEndAt() > $now) {
@@ -51,7 +57,8 @@ class PUMandate extends BasePUMandate
      *
      *  @return     string
      */
-    public function getOrganizationInitials() {
+    public function getOrganizationInitials()
+    {
         $pqOrganization = $this->getPQOrganization();
 
         $initials = "Non défini";
@@ -67,7 +74,8 @@ class PUMandate extends BasePUMandate
      *
      *  @return     string
      */
-    public function getOrganizationTitle() {
+    public function getOrganizationTitle()
+    {
         $pqOrganization = $this->getPQOrganization();
 
         $title = "Non défini";
@@ -83,7 +91,8 @@ class PUMandate extends BasePUMandate
      *
      *  @return     string         Nom du fichier image
      */
-    public function getOrganizationLogo() {
+    public function getOrganizationLogo()
+    {
         $pqOrganization = $this->getPQOrganization();
 
         $fileName = null;
@@ -95,11 +104,48 @@ class PUMandate extends BasePUMandate
     }
 
     /**
+     * Renvoie l'url du parti associé à la qualification
+     *
+     * @return     string
+     */
+    public function getOrganizationUrl()
+    {
+        $pqOrganization = $this->getPQOrganization();
+
+        $url = null;
+        if ($pqOrganization) {
+            $url = $pqOrganization->getUrl();
+        }
+
+        return $url;
+    }
+
+    /**
+     * Renvoie le slug du parti associé à la qualification
+     *
+     * @return     string
+     */
+    public function getOrganizationSlug()
+    {
+        $pqOrganization = $this->getPQOrganization();
+
+        $slug = null;
+        if ($pqOrganization) {
+            $slug = $pqOrganization->getSlug();
+        }
+
+        return $slug;
+    }
+
+
+
+    /**
      *    Renvoie le nom du mandat associé à la qualification
      *
      *  @return     string
      */
-    public function getMandateTypeTitle() {
+    public function getMandateTypeTitle()
+    {
         $pqMandate = $this->getPQMandate();
 
         $title = "Non défini";
@@ -109,5 +155,4 @@ class PUMandate extends BasePUMandate
 
         return $title;
     }
-
 }

@@ -14,6 +14,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 
@@ -205,7 +206,7 @@ class DocumentController extends Controller
         $debate = PDDebateQuery::create()->findPk($id);
         $form = $this->createForm(new PDDebateType(), $debate);
 
-        return $this->render('PolitizrFrontBundle:CRUD:debateEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Document:debateEdit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
             ));
@@ -255,9 +256,35 @@ class DocumentController extends Controller
         $reaction = PDReactionQuery::create()->findPk($id);
         $form = $this->createForm(new PDReactionType(), $reaction);
 
-        return $this->render('PolitizrFrontBundle:CRUD:reactionEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Document:reactionEdit.html.twig', array(
             'reaction' => $reaction,
             'form' => $form->createView(),
+            ));
+    }
+
+    /* ######################################################################################################## */
+    /*                             PAGE ORGANISATION / PARTI POLITIQUE                                          */
+    /* ######################################################################################################## */
+
+    /**
+     *  Détail d'une organisation
+     */
+    public function organizationAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** organizationAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $organization = PQOrganizationQuery::create()->filterBySlug($slug)->findOne();
+        if (!$organization) {
+            throw new NotFoundHttpException('Organization "'.$slug.'" not found.');
+        }
+        if (!$organization->getOnline()) {
+            throw new NotFoundHttpException('Organization "'.$slug.'" not online.');
+        }
+
+        return $this->render('PolitizrFrontBundle:Document:organization.html.twig', array(
+            'organization' => $organization,
             ));
     }
 }

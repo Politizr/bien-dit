@@ -327,6 +327,7 @@
         <column name="file_name" type="varchar" size="150" />
 
         <column name="description" type="longvarchar" />
+        <column name="url" type="varchar" size="150" />
 
         <column name="online" type="boolean" />
 

@@ -4,7 +4,7 @@ Politizr\Model\PUMandate:
         p_user_id:               fhollande
         p_q_type_id:             electif
         p_q_mandate_id:          president
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-05-07 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -12,7 +12,7 @@ Politizr\Model\PUMandate:
 Politizr\Model\PUCurrentQO:
     u1q1:
         p_user_id:              fhollande
-        p_q_organization_id:    parti4
+        p_q_organization_id:    parti3
     u2q1:
         p_user_id:              sarko
         p_q_organization_id:    parti10
@@ -31,7 +31,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute2
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -39,7 +39,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute3
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -63,7 +63,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute6
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -71,7 +71,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute7
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -79,7 +79,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute8
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -95,7 +95,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute10
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -111,7 +111,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute12
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -119,7 +119,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute13
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -127,7 +127,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute14
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -151,7 +151,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute17
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -175,7 +175,7 @@ Politizr\Model\PUCurrentQO:
         p_user_id:               depute20
         p_q_type_id:             electif
         p_q_mandate_id:          depute
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
         begin_at:                2012-06-20 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
@@ -187,11 +187,11 @@ Politizr\Model\PUCurrentQO:
 
     depute2Current:
         p_user_id:               depute2
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
 
     depute3Current:
         p_user_id:               depute3
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute4Current:
         p_user_id:               depute4
@@ -203,15 +203,15 @@ Politizr\Model\PUCurrentQO:
 
     depute6Current:
         p_user_id:               depute6
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute7Current:
         p_user_id:               depute7
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute8Current:
         p_user_id:               depute8
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
 
     depute9Current:
         p_user_id:               depute9
@@ -219,7 +219,7 @@ Politizr\Model\PUCurrentQO:
 
     depute10Current:
         p_user_id:               depute10
-        p_q_organization_id:     parti6
+        p_q_organization_id:     parti5
 
     depute11Current:
         p_user_id:               depute11
@@ -227,15 +227,15 @@ Politizr\Model\PUCurrentQO:
 
     depute12Current:
         p_user_id:               depute12
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute13Current:
         p_user_id:               depute13
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute14Current:
         p_user_id:               depute14
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute15Current:
         p_user_id:               depute15
@@ -247,7 +247,7 @@ Politizr\Model\PUCurrentQO:
 
     depute17Current:
         p_user_id:               depute17
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 
     depute18Current:
         p_user_id:               depute18
@@ -259,5 +259,5 @@ Politizr\Model\PUCurrentQO:
 
     depute20Current:
         p_user_id:               depute20
-        p_q_organization_id:     parti4
+        p_q_organization_id:     parti3
 

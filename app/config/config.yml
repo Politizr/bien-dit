@@ -277,7 +277,12 @@ liip_imagine:
         organization_mini:
             quality:              100
             filters:
-                relative_resize:  { widen: 50 }
+                relative_resize:  { heighten: 50 }
+
+        organization_detail:
+            quality:              100
+            filters:
+                relative_resize: { heighten: 250 }
 
 
         # FRONT / ESPACE CITOYEN
@@ -342,6 +347,12 @@ bazinga_faker:
             custom_formatters:
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+
+        Politizr\Model\PUAffinityQO:
+            number:                     150
+            custom_formatters:
+                PUserId:                { method: numberBetween, parameters: [ 23, 70 ] }
+                PQOrganizationId:       { method: numberBetween, parameters: [ 1, 13 ] }
 
 
         #################################################################################################################

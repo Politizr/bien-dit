@@ -40,7 +40,7 @@ LAYOUT USER
                                 {# Organisations en cours #}
                                 {% set organizations = user.currentOrganizations %}
                                 {% for organization in organizations %}
-                                    <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                                    <a href="{{ path('Organization', { 'slug': organization.slug }) }}"><img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}"></a>
                                 {% endfor %}
                             </h3>
                         </div>
@@ -110,8 +110,23 @@ LAYOUT USER
                             {{ user | tags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
                         </div>
                     </div>
-                    <hr>
                 {% endblock %}
+
+                {% block detailAffinities %}
+                    {# Affinités politiques #}
+                    {% if not user.qualified %}
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-sm-12">
+                                {% for organization in user.affinityOrganizations %}
+                                    <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                <hr>
             </div>
 
 
@@ -153,8 +168,8 @@ LAYOUT USER
                                 <tr>
                                     <th>Date</th>
                                     <th>Mandat</th>
+                                    <th>Lieu</th>
                                     <th>Organisation</th>
-                                    <th>Description</th>
                                 </tr>
                               </thead>                
                             {% set mandates = user.mandates %}
@@ -168,14 +183,20 @@ LAYOUT USER
                                         {% endif %}
                                     </td>
                                     <td><span class="label label-danger">{{ mandate.mandateTypeTitle }}</span></td>
+                                    <td>{{ mandate.localization | raw  }}</td>
                                     <td>
-                                        {% if (mandate.organizationLogo) %}
-                                            <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
-                                        {% else %}
-                                            <span class="label label-info">{{ mandate.organizationInitials }}</span>
+                                        {% if (mandate.organizationUrl) %}
+                                            <a href="{{ path('Organization', { 'slug': mandate.organizationSlug }) }}">
+                                        {% endif %}
+                                            {% if (mandate.organizationLogo) %}
+                                                <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">
+                                            {% else %}
+                                                <span class="label label-info">{{ mandate.organizationInitials }}</span>
+                                            {% endif %}
+                                        {% if (mandate.organizationUrl) %}
+                                            </a>
                                         {% endif %}
                                     </td>
-                                    <td>{{ mandate.description | raw  }}</td>
                                 </tr>
                             {% else %}
                                 <tr>

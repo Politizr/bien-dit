@@ -39,3 +39,11 @@ FollowedUserList:
     pattern:  /profil/user/suivis.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:followedUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               DEBATS SUIVIS / PROFILS SUIVIS
+################################################################################
+OrganizationUserList:
+    pattern:  /organisation.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:organizationUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

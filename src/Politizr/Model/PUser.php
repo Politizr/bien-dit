@@ -720,19 +720,38 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     // *****************************    AFFINITÉS POLITIQUES    ************************* //
 
     /**
-     *  Renvoie les organisation courantes
+     * Renvoie les organisation courantes
      *
-     * @return array    PQOrganization
+     * @param int $typeId       Type d'organisation
+     * @param boolean $online   En ligne
+     * @return PropelCollection PQOrganization
      */
-    public function getCurrentOrganizations($online = true)
+    public function getCurrentOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
     {
         $query = PQOrganizationQuery::create()
+                    ->filterByPQTypeId($typeId)
                     ->filterByOnline($online)
                     ->setDistinct();
 
         return parent::getPUCurrentQOPQOrganizations($query);
     }
 
+    /**
+     * Renvoie les organisation courantes
+     *
+     * @param int $typeId       Type d'organisation
+     * @param boolean $online   En ligne
+     * @return PropelCollection PQOrganization
+     */
+    public function getAffinityOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
+    {
+        $query = PQOrganizationQuery::create()
+                    ->filterByPQTypeId($typeId)
+                    ->filterByOnline($online)
+                    ->setDistinct();
+
+        return parent::getPUAffinityQOPQOrganizations($query);
+    }
 
     // *****************************    TAGS   ************************* //
 

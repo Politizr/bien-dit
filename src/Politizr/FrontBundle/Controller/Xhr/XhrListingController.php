@@ -108,4 +108,20 @@ class XhrListingController extends Controller
 
         return $jsonResponse;
     }
+
+    /**
+     *  Chargement d'une liste de users d'une organisation
+     */
+    public function organizationUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** organizationUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.user',
+            'organizationUserList'
+        );
+
+        return $jsonResponse;
+    }
 }
