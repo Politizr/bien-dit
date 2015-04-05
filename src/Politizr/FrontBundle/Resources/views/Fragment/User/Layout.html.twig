@@ -119,7 +119,9 @@ LAYOUT USER
                         <div class="row text-center">
                             <div class="col-sm-12">
                                 {% for organization in user.affinityOrganizations %}
-                                    <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                                    <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
+                                        <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+                                    </a>
                                 {% endfor %}
                             </div>
                         </div>
