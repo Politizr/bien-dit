@@ -1,0 +1,55 @@
+@import "../_global/colors";
+
+#headerLogo a {	
+	color: $semiGrey;
+	float: right;
+	margin: 0 20px 0 0;
+}
+#headerLogo i.icon-pltzr-logo {	font-size: 24px;}
+#headerLogo i.icon-pltzr-logo:hover {	color: $highlight}
+
+#headerLogo {
+	float: left;
+	width: 200px;
+	margin-top: 22px;
+}
+
+#headerCenter {
+	float: left;
+	width: 618px;
+	margin: 18px 0 0 0;
+	padding: 12px 40px 0 40px;
+	border-left: solid 1px $semiGrey;
+	border-right: solid 1px $semiGrey;
+	height: 30px;
+	font-family: nerissemibold;
+	font-size: 10px;
+	text-transform: uppercase;
+	color: $semiGrey;
+}
+
+#showRanking, #showNotifications, #showSuggestions {
+	margin-right: 40px;
+	display: inline-block;
+	position: relative;
+	padding-left: 10px;
+	cursor: pointer;
+}
+
+#showRanking {
+	padding-left: 16px;
+}
+
+#headerCenter i {
+	font-size: 7px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#headerCenter i.icon-ranking {
+	font-size: 14px;
+	top:-1px;
+}
+
+.notifYes, #showRanking:hover, #showNotifications:hover, #showSuggestions:hover {	color: $highlight;}
