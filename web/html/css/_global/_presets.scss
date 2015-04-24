@@ -3,6 +3,21 @@
 a {text-decoration: none;}
 p {padding: 0; margin: 0;}
 img {border:none;}
+.withLoaderInside {position: relative;}
+.pad40 {padding: 40px;}
+
+a.parti {
+	font-family: nerisblack;
+	font-size: 9px;
+	color: #fff !important;
+	background-color: $anotherGrey;
+	text-transform: uppercase;
+	margin: 0 4px;
+	line-height: 100%;
+	padding: 0 4px 1px 4px;
+} 
+
+a.parti:hover {background-color: $darkGrey;}
 
 body {
 	margin: 0;
@@ -13,7 +28,7 @@ body {
     line-height: 100%;
 }
 
-#wrapper {
+.wrapper {
 	margin-left: auto;
 	margin-right: auto;
 	width: 960px;
@@ -28,7 +43,7 @@ body {
 	margin-left: -480px;
 	background-color: #fff;
 	backface-visibility: hidden;
-	z-index: 2;
+	z-index: 10000;
 }
 
 #menu {
@@ -54,12 +69,6 @@ body {
 	padding-top: 60px;
 	padding-right: 60px;
 	position: relative;
-}
-
-#illustration {
-	height: 400px;
-	width: 100%;
-	background-color: $lightGrey;
 }
 
 #illustration_l, #illustration_r {
@@ -92,5 +101,3 @@ body {
 	background: linear-gradient(to bottom,  #000000 0%,#2a2a2a 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2a2a2a',GradientType=0 ); /* IE6-9 */
 }
-
-#illustration .illustrationShadow {	width: 700px;}

@@ -1,0 +1,76 @@
+@import "colors";
+
+#ajaxGlobalLoader {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: transparent;
+	z-index: 21000;
+}
+
+.ajaxLoader {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 21000;
+}
+
+.ajaxLoaderBg {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: transparent;
+}
+
+.ajaxLoader i, #ajaxGlobalLoader i {
+	position: absolute;
+	left: calc(50% - 8px);
+	top: calc(50% - 8px);
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 100%;
+}
+
+.loadMore {
+	float: left;
+	width: 100%;
+	clear: both;
+	position: relative;
+	height: 30px;
+}
+
+.modalList .loadMore {
+	margin-bottom: 60px;
+}
+
+// spin color
+#notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
+
+// spin box bg color
+#notifications .ajaxLoader {	background: $lightHighlight;}
+#notifications .notifItem .ajaxLoader {
+	background: $lightHighlight;
+	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	filter:alpha(opacity=80);
+}
+.modal .ajaxLoader {	
+	background: #fff;
+	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	filter:alpha(opacity=80);
+}
+
+// ajust icon because of box padding
+#notifications .notifItem .ajaxLoader i {		top: calc(50% - 18px);}
