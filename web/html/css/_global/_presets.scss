@@ -12,12 +12,17 @@ a.parti {
 	color: #fff !important;
 	background-color: $anotherGrey;
 	text-transform: uppercase;
-	margin: 0 4px;
+	display: inline-block;
+	margin: -3px 0 0 0;
+	padding: 1px 4px 1px 4px;
 	line-height: 100%;
-	padding: 0 4px 1px 4px;
 } 
 
-a.parti:hover {background-color: $darkGrey;}
+.avatar40 {
+	width: 40px;
+	height: 40px;
+	float: left;
+}
 
 body {
 	margin: 0;
