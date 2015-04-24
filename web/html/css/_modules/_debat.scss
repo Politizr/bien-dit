@@ -2,13 +2,50 @@
 
 //debat author
 
+#debatAuthorHolder {
+	position:fixed;
+	z-index: 10000;
+}
+
 #debatAuthor {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 200px;
-	background: aqua;
-	
+	position:absolute;
+	bottom: -4px;
+	left: -180px;
+	width: 160px;
+	text-align: right;
+	text-transform: none;
+	color: $darkGrey;
+}
+
+#debatAuthor .authorName { 
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	margin-top: 5px;
+}
+
+#debatAuthor span {
+	display: inline-block;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+}
+
+#debatInfos {
+	position:absolute;
+	top : 20px;
+	left: -180px;
+	width: 160px;
+	color: $darkGrey;
+	text-transform: none;
+	text-align: right;
+	font-size: 12px;
+	font-family: 'Merriweather Bold Italic';
+}
+
+#debatInfos span {
+	display: inline-block;
+	clear: both;
+	margin-bottom: 4px;
 }
 
 //resume
@@ -82,6 +119,7 @@
 
 .debatResumeGotoFil a {color: $highlight; position: relative; padding-left: 20px;}
 .debatResumeGotoFil a i {position: absolute; left: 0;}
+.debatResumeGotoFil a:hover {color: #fff;}
 
 .debatResumeTitle {
 	float: left;
@@ -94,6 +132,7 @@
 }
 
 .debatResumeTitle a {	color: $highlight;}
+.debatResumeTitle a:hover {	color: #fff;}
 
 .debatResumeAuthor {
 	float: left;
@@ -115,10 +154,16 @@
 	color: $highlight;
 }
 
+.debatResumeAuthor a:hover {color: #fff;}
+
 .debatResumeAuthor a.parti {
 	font-size: 9px;
 	color: $highlight !important;
 	background: $darkGrey;	
+}
+
+.debatResumeAuthor a.parti:hover {
+	color: #fff !important;
 }
 
 .debatResumeTagList {
@@ -129,9 +174,8 @@
 	line-height: 150%;
 }
 
-.openListByTag {
-	cursor: pointer;
-}
+.openListByTag {	cursor: pointer;}
+.openListByTag:hover {color: $highlight;}
 
 .debatResumeActivity {
 	margin-top: 15px;

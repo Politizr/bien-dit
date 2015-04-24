@@ -21,13 +21,13 @@ a.parti {
 .avatar40 {
 	width: 40px;
 	height: 40px;
-	float: left;
+	display: inline-block;
 }
 
 .avatar60 {
 	width: 60px;
 	height: 60px;
-	float: left;
+	display: inline-block;
 }
 
 body {
@@ -53,7 +53,6 @@ body {
 	left: 50%;
 	margin-left: -480px;
 	background-color: #fff;
-	backface-visibility: hidden;
 	z-index: 10000;
 }
 

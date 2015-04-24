@@ -23,22 +23,25 @@
 	margin-left: -20px;
 }
 
-.listProfilAuthor {
+.authorName {
 	float: left;
 	width: 100%;
 	font-family: nerisblack;
 	margin-top: -3px;
 }
 
-.listProfilAuthor a {color: $darkGrey;}
+.authorName a {color: $darkGrey;}
+.authorName a:hover {color: $highlight;}
+.authorName a.parti:hover {background-color: $highlight;}
 
-.listProfilBio {
+.authorBio {
 	float: left;
 	width: 100%;
 	clear: both;
 	margin-top: 5px;
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+	line-height: 150%;
 }
 
 .listProfilFollow {
