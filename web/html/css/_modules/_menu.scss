@@ -1,0 +1,68 @@
+@import "../_global/colors";
+
+//menu sidebar
+#menu {
+	position: absolute;
+	top: 60px;
+	width: 200px;
+	min-height: 400px;
+	background-color: #fff;
+}
+
+#menu .pad40 {	padding: 40px 20px;}
+
+
+
+//menu préférences
+
+#menuPreferences {
+	position: absolute;
+	background: $darkGrey;
+	color: #fff;
+	height: 400px;
+	width: 220px;
+	top : 60px;
+	right: 0;
+	z-index: 1000;
+	text-align: right;
+}
+
+#menuPreferences .pad40 {	padding: 40px 20px;}
+
+#menuPreferences a {
+	color: $highlight;
+	margin: 5px 0;
+	display: inline-block;
+	width: 100%;
+	font-size: 12px;
+	font-family: 'Merriweather Bold';
+}
+
+#menuPreferences h2 {
+	padding: 0 20px 0 0;
+	margin: 0 0 10px 0;
+	font-family: nerissemibold;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: normal;
+	position: relative;
+}
+
+#menuPreferences h2 i { position: absolute;	right: 0;}
+
+#menuPreferences a.disconnect {
+	font-family: nerissemibold;
+	text-transform: uppercase;
+	position: relative;
+	padding-right: 15px;
+	margin-top: 40px;
+	float: right;	
+}
+
+#menuPreferences a.disconnect i {
+	font-size: 9px;
+	position: absolute;
+	right: 0;
+}
+
+#menuPreferences a:hover {color: #fff;}

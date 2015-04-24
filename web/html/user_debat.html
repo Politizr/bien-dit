@@ -713,7 +713,6 @@
 		</div>
 		<!-- end modal list by tag -->
 
-				
 		<div class="wrapper">
 			<div id="header">
 				<div class="headerLogo"><a href="user_monpolitizr.html"><i class="icon-pltzr-logo"></i></a></div>
@@ -728,12 +727,21 @@
 						<div id="hideMenuPreferences" style="display: none;"><i class="icon-gear"></i><i class="icon-arrow-up"></i></div>
 					</div>
 					
-					<div id="MenuPreferences" style="display: none;">
-						MenuPreferences
+					<div id="menuPreferences" style="display: none;">
+						<div class="pad40">
+							<h2>mes préférences<i class="icon-prefs"></i></h2>
+							<a href="user_prefs-notifs.html">Réglages des notifications</a>
+							<a href="user_prefs-connexion.html">Paramètres de connexion</a>
+							<a href="user_prefs-formule.html">Modifier ma formule</a>
+							<a class="disconnect" href="public_home.html">déconnexion<i class="icon-cross-insquare"></i></a>
+						</div>
 					</div>
 				</div>
 				<div id="menu">
 					menu
+					<div id="debatAuthor">
+						auteur
+					</div>
 				</div>
 				<div id="social">
 					social
@@ -787,12 +795,6 @@
 						</div>
 					</div>
 					
-					<!--
-<div id="illustration">
-						<div class="illustrationShadow"></div>
-						<img src="images/illustration01.jpg">
-					</div>
--->
 					<div class="debatResume">
 						<div class="pad40">
 							<div class="debatResumeHeader">
@@ -807,7 +809,7 @@
 								<div class="debatResumeTagList">
 									<span class="openListByTag">élections</span>, <span class="openListByTag">démocratie</span>, <span class="openListByTag">abstention</span>, <span class="openListByTag">vote blanc</span>, <span class="openListByTag">france</span>, <span class="openListByTag">europe</span>
 								</div>
-								<div class="debatResumeTitle"><a href="user_debat.html">Faut-il reconnaître le vote blanc aux élections ?</a></div>
+								<div class="debatResumeTitle">Faut-il reconnaître le vote blanc aux élections ?</div>
 								<div class="debatResumeActivity">
 									<div class="reactionsCounter"><i class="icon-reaction"></i>3 réactions</div><div class="commentsCounter"><i class="icon-comment"></i>34 commentaires</div>
 								</div>
@@ -914,13 +916,13 @@ Maecenas faucibus mollis interdum. Curabitur blandit tempus porttitor. Maecenas 
 				
 				/* hide / show menu preferences */
 				$("body").on("click", "#openMenuPreferences", function() {
-					$('#MenuPreferences').fadeIn('fast');
+					$('#menuPreferences').fadeIn('fast');
 					$(this).hide();
 					$('#hideMenuPreferences').fadeIn('fast');
 				});
 				
 				$("body").on("click", "#hideMenuPreferences", function() {
-					$('#MenuPreferences').fadeOut('fast');
+					$('#menuPreferences').fadeOut('fast');
 					$(this).hide();
 					$('#openMenuPreferences').fadeIn('fast');
 				});

@@ -1,5 +1,18 @@
 @import "../_global/colors";
 
+//debat author
+
+#debatAuthor {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 200px;
+	background: aqua;
+	
+}
+
+//resume
+
 .debatResume {
 	width: 700px;
 	height: 400px;
@@ -77,6 +90,7 @@
 	font-size: 40px;
 	font-family: nerissemibold;
 	line-height: 100%;
+	color: $highlight;
 }
 
 .debatResumeTitle a {	color: $highlight;}
