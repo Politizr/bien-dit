@@ -26,9 +26,10 @@
 	left: 0;
 	top: 0;
 	background: transparent;
+	z-index: 21000;
 }
 
-.ajaxLoader i, #ajaxGlobalLoader i {
+.ajaxLoader i, #ajaxGlobalLoader i, .fixedActions .withLoaderInside .ajaxLoader i {
 	position: absolute;
 	left: calc(50% - 8px);
 	top: calc(50% - 8px);
@@ -36,6 +37,8 @@
 	height: 16px;
 	font-size: 16px;
 	line-height: 100%;
+	padding: 0;
+	margin: 0;
 }
 
 .loadMore {
@@ -87,3 +90,6 @@
 }
 
 .actionsButtons .ajaxLoader i {color: #fff;}
+
+// in fixed actions
+.fixedActions .withLoaderInside .ajaxLoader {background-color: $highlight;}
