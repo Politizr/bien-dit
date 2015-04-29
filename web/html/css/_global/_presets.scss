@@ -103,3 +103,25 @@ body {
 	background: linear-gradient(to bottom,  #000000 0%,#2a2a2a 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2a2a2a',GradientType=0 ); /* IE6-9 */
 }
+
+#goUpHolder {
+	position: fixed;
+	width: 960px;
+	height: 40px;
+	left: 50%;
+	margin-left: -480px;
+	bottom: 25px;
+	z-index: 19000;
+}
+
+#goUp {
+	position: absolute;
+	right: 0;
+	width: 40px;
+	padding: 13px 0;
+	background-color: $semilightGrey;
+	color: $anotherGrey;
+	text-align: center;
+	font-size: 10px;
+	cursor: pointer;
+}

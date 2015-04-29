@@ -1,6 +1,6 @@
 @import "../_global/colors";
 
-.fixedActions {
+#fixedActions {
 	z-index: 12000;
 	position: fixed;
 	bottom: 20px;
@@ -12,7 +12,7 @@
     font-family: 'nerissemibold';
 }
 
-.fixedActions a, .fixedActions .actionFollow, .fixedActions .actionUnfollow, .fixedActions .actionCosign {
+#fixedActions a, #fixedActions .actionFollow, #fixedActions .actionUnfollow, #fixedActions .actionCosign {
 	width: 100%;
 	float: left;
 	margin-top: 3px;
@@ -22,7 +22,7 @@
     font-family: 'nerissemibold';
 }
 
-.fixedActions a i, .fixedActions .actionFollow i, .fixedActions .actionUnfollow i, .fixedActions .actionCosign i {
+#fixedActions a i, #fixedActions .actionFollow i, #fixedActions .actionUnfollow i, #fixedActions .actionCosign i {
 	padding-right: 6px;
 	font-size: 11px;
 	top:-1px;
@@ -55,6 +55,6 @@
 	margin-bottom: 15px;
 }
 
-.fixedActions a.actionReact i {font-size: 13px;}
-.fixedActions .actionCosign i {font-size: 14px;}
-.fixedActions a.actionReact:hover {background-color: $highlight;}
+#fixedActions a.actionReact i {font-size: 13px;}
+#fixedActions .actionCosign i {font-size: 14px;}
+#fixedActions a.actionReact:hover {background-color: $highlight;}
