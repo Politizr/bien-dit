@@ -1,0 +1,117 @@
+@import "../_global/colors";
+
+input {	padding: 0; margin: 0; }
+input[type=submit] {cursor: pointer;}
+textarea:focus, input:focus{    outline: 0;}
+.actionsButtons {
+	float: left; 
+	clear: both; 
+	position: relative; 
+	margin-top: 60px;
+}
+
+.formIntro {
+	text-align: center;
+	display: inline-block;
+	width: 100%;
+	margin-top: 20px;
+	color: $anotherGrey;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	line-height: 160%;
+}
+
+//search form
+
+#search form {
+	width: 440px;
+	display: inline-block;
+	margin: 60px 0 0 260px;
+	clear: both;
+}
+
+#search form input {
+	padding: 0;
+	font-family: nerislight;
+	font-size: 40px;
+	font-weight: normal;
+	border: none;
+	width: 90%;
+	display: inline-block;
+	background: transparent;
+}
+
+#search form input[type=submit] {
+	font-size: 28px;
+	text-align: right;
+	width: 10%;
+	font-family: 'fontello';
+	cursor: pointer;
+	color: $semiGrey;
+}
+
+// form abus
+
+#formAbus {
+	text-align: center;
+}
+
+#formAbus .listProfil, #formAbus form {	width: 480px; display: inline-block;}
+
+#formAbus .listProfil {
+	margin-top: 60px;
+	color: $highlight;
+	float: none;
+}
+
+#formAbus .listProfil a { color: $highlight;}
+#formAbus .listProfil a.parti {	background-color: $highlight;}
+#formAbus .listProfilRight {	width: 430px;}
+
+#formAbus .listProfilRight .authorName span {
+	font-family: 'Merriweather Italic';
+	font-size: 12px;
+}
+
+#formAbus .postResume {
+	font-size: 13px;
+	font-family: 'Merriweather';
+	line-height: 160%;
+}
+
+#formAbus .modalItem {	margin-bottom: 40px;}
+
+#formAbus form textarea {
+	padding: 20px;
+	margin: 0;
+	width: 438px;
+	height: 98px;
+	border: solid 1px $formGrey;
+	font-family: 'Merriweather Italic';
+	font-size: 13px;
+}
+
+#formAbus form input[type=submit] {
+	font-family: 'fontello', 'nerissemibold';
+	background-color: $highlight;
+	color: #fff;
+	text-transform: uppercase;
+	border: none;
+	float: left;
+	clear: both;
+	width: 180px;
+	height: 40px;	
+	font-size: 13px;
+	text-align: center;
+}
+
+#formAbus .cancel {
+	position: absolute;
+	bottom: 0;
+	left: 200px;
+	font-family: 'nerissemibold';
+	color: $highlight;
+	cursor: pointer;
+}
+
+#formAbus form input[type=submit]:hover {	background: $darkGrey;}

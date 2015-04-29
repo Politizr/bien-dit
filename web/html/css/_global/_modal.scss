@@ -192,3 +192,15 @@ a.modalItemShow:hover {color: $darkGrey;}
 	float: right;
 	text-align: left;
 }
+
+// no results
+
+.noresults {
+	float: left;
+	width: 100%;
+	clear: both;
+	font-family: nerislight;
+	font-size: 14px;
+	text-align: center;
+	margin-top: 40px;
+}
