@@ -1,6 +1,31 @@
 @import "../_global/colors";
 
-//debat author
+// debat 
+
+#textBody {
+	padding: 60px 0;
+	background-color: $lightGrey;
+}
+
+.paragraph {
+	padding: 20px 80px;
+}
+
+.paragraph.resume {
+	color: $highlight;
+}
+
+.paragraph.resume p::before {
+	content: "—";
+	float: left;
+	margin-right: 5px;}
+
+.paragraph p {
+	font-size: 15px;
+	line-height: 200%;
+}
+
+//debat author on post
 
 #debatAuthorHolder {
 	position:fixed;
@@ -48,7 +73,7 @@
 	margin-bottom: 4px;
 }
 
-//resume
+// resume of debat
 
 .debatResume {
 	width: 700px;
@@ -73,10 +98,6 @@
 	z-index: 1;
 	width: 620px;
 	height: 320px;
-}
-
-.debatResumeHeader {
-	
 }
 
 .readingTime, .notePlus, .noteMinus { position: relative;}
