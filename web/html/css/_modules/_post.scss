@@ -1,0 +1,247 @@
+@import "../_global/colors";
+
+// post
+
+#textBody {
+	padding: 60px 0;
+	background-color: $lightGrey;
+}
+
+.paragraph {
+	padding: 20px 80px;
+	float: left;
+	width: 540px;
+}
+
+.paragraph p.resume {
+	color: $highlight;
+}
+
+.paragraph p.resume::before {
+	content: "—";
+	float: left;
+	margin-right: 5px;}
+
+.paragraph p {
+	font-size: 15px;
+	line-height: 200%;
+}
+
+.comments {
+	background: #fff;
+	width: 620px;
+	padding: 0 0 40px 80px;
+	margin: 20px 0 0 -80px;
+}
+
+// post author on post
+
+#postAuthorHolder {
+	position:fixed;
+	z-index: 10000;
+}
+
+#postAuthor {
+	position:absolute;
+	bottom: -4px;
+	left: -180px;
+	width: 160px;
+	text-align: right;
+	text-transform: none;
+	color: $darkGrey;
+}
+
+#postAuthor .authorName { 
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	margin-top: 5px;
+}
+
+#postAuthor span {
+	display: inline-block;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+}
+
+#postInfos {
+	position:absolute;
+	top : 20px;
+	left: -180px;
+	width: 160px;
+	color: $darkGrey;
+	text-transform: none;
+	text-align: right;
+	font-size: 12px;
+	font-family: 'Merriweather Bold Italic';
+}
+
+#postInfos span {
+	display: inline-block;
+	clear: both;
+	margin-bottom: 4px;
+}
+
+// resume of post
+
+.postResume {
+	width: 700px;
+	height: 360px;
+	display: inline-block;
+	position: relative;
+	color: #fff;
+	font-family: nerisblack;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: $lightGrey;
+}
+
+.postResume .illustrationShadow {	
+	width: 700px; 
+	left: 0; 
+	top: 0;
+}
+
+.postResume .pad40 {
+	position: relative;
+	z-index: 1;
+	width: 620px;
+	height: 280px;
+}
+
+.readingTime, .notePlus, .noteMinus { position: relative;}
+.readingTime i, .notePlus i, .noteMinus i {	position: absolute;}
+.readingTime { 	padding-left: 18px;}
+
+.readingTime i {
+	left: 0;
+	font-size: 14px;
+	top: -1px;
+}
+
+.postNote {
+	float: left;
+	clear: both;
+	margin-top: 6px;
+}
+
+.notePlus, .noteMinus {	float: left}
+.notePlus i, .noteMinus i {font-size: 9px;}
+.notePlus {margin-right: 5px; padding-right: 13px;}
+.notePlus i {	right: 0;}
+.noteMinus {	padding-left: 13px;}
+.noteMinus i {	left: 0;}
+
+.postResumeFooter {
+	position: absolute;
+	bottom: 40px;
+	width: 620px;
+}
+
+.postResumeGotoFil {
+	float: left;
+	width: 100%;
+	line-height: 150%;
+	margin-bottom: 10px;
+	font-family: nerissemibold;
+	font-size: 13px;
+}
+
+.postResumeGotoFil a {color: $highlight; position: relative; padding-left: 20px;}
+.postResumeGotoFil a i {position: absolute; left: 0;}
+.postResumeGotoFil a:hover {color: #fff;}
+
+.postResumeTitle {
+	float: left;
+	width: 100%;
+	text-transform: none;
+	font-size: 40px;
+	font-family: nerissemibold;
+	line-height: 100%;
+	color: $highlight;
+}
+
+.postResumeTitle a {	color: $highlight;}
+.postResumeTitle a:hover {	color: #fff;}
+
+.postResumeAuthor {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+	color: $highlight;
+	text-transform: none;
+}
+
+.postResumeAuthor span {
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	display: inline-block;
+	margin-right: 4px;
+}
+
+.postResumeAuthor a {
+	font-size: 13px;
+	color: $highlight;
+}
+
+.postResumeAuthor a:hover {color: #fff;}
+
+.postResumeAuthor a.parti {
+	font-size: 9px;
+	color: $highlight !important;
+	background: $darkGrey;	
+}
+
+.postResumeAuthor a.parti:hover {
+	color: #fff !important;
+}
+
+.postResumeTagList {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-bottom: 5px;
+	line-height: 150%;
+}
+
+.openListByTag {	cursor: pointer;}
+.openListByTag:hover {color: $highlight;}
+
+.postResumeActivity {
+	margin-top: 15px;
+	float: left;
+	clear: both;
+}
+
+.reactionsCounter, .commentsCounter {
+	margin-right: 40px;
+	display: inline-block;
+	position: relative;
+	padding-left: 18px;
+}
+
+.reactionsCounter i, .commentsCounter i {
+	position: absolute;
+	left: 0;
+	font-size: 12px;
+}
+
+.reactionsCounter i {
+	font-size: 14px;
+	top: -1px;
+}
+
+.listPostFollow {
+	float: left;
+	clear: both;
+	margin-top: 20px;
+	margin-left: 40px;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 14px;
+	cursor: pointer;
+}
+
+.listPostFollow:hover {color: $darkGrey;}
+.listPostFollow i {position: absolute; left: 0; font-size: 9px;}
