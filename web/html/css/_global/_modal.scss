@@ -169,7 +169,6 @@ span.activeFilter {cursor: default;}
 }
 
 a.modalItemShow {
-	clear: both;
 	display: inline-block;
 	margin: 20px 0 0 40px;
 	color: $highlight;
@@ -180,6 +179,12 @@ a.modalItemShow {
 
 a.modalItemShow i {	position: absolute;	left: 0; }
 a.modalItemShow:hover {color: $darkGrey;}
+
+.listPost .listProfileFollow {
+	display: inline-block;
+	clear: none;
+	margin-left: 40px;
+}
 
 .modalLeftCol {
 	width: 220px;

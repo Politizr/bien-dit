@@ -52,36 +52,36 @@ textarea:focus, input:focus{    outline: 0;}
 
 // form abus
 
-#formAbus {
+#formAbuse {
 	text-align: center;
 }
 
-#formAbus .listProfil, #formAbus form {	width: 480px; display: inline-block;}
+#formAbuse .listProfile, #formAbuse form {	width: 480px; display: inline-block;}
 
-#formAbus .listProfil {
+#formAbuse .listProfile {
 	margin-top: 60px;
 	color: $highlight;
 	float: none;
 }
 
-#formAbus .listProfil a { color: $highlight;}
-#formAbus .listProfil a.parti {	background-color: $highlight;}
-#formAbus .listProfilRight {	width: 430px;}
+#formAbuse .listProfile a { color: $highlight;}
+#formAbuse .listProfile a.parti {	background-color: $highlight;}
+#formAbuse .listProfileRight {	width: 430px;}
 
-#formAbus .listProfilRight .authorName span {
+#formAbuse .listProfileRight .authorName span {
 	font-family: 'Merriweather Italic';
 	font-size: 12px;
 }
 
-#formAbus .postResume {
+#formAbuse .formAbuse_postResume {
 	font-size: 13px;
 	font-family: 'Merriweather';
 	line-height: 160%;
 }
 
-#formAbus .modalItem {	margin-bottom: 40px;}
+#formAbuse .modalItem {	margin-bottom: 40px;}
 
-#formAbus form textarea {
+#formAbuse form textarea {
 	padding: 20px;
 	margin: 0;
 	width: 438px;
@@ -91,7 +91,7 @@ textarea:focus, input:focus{    outline: 0;}
 	font-size: 13px;
 }
 
-#formAbus form input[type=submit] {
+#formAbuse form input[type=submit] {
 	font-family: 'fontello', 'nerissemibold';
 	background-color: $highlight;
 	color: #fff;
@@ -105,7 +105,7 @@ textarea:focus, input:focus{    outline: 0;}
 	text-align: center;
 }
 
-#formAbus .cancel {
+#formAbuse .cancel {
 	position: absolute;
 	bottom: 0;
 	left: 200px;
@@ -114,4 +114,4 @@ textarea:focus, input:focus{    outline: 0;}
 	cursor: pointer;
 }
 
-#formAbus form input[type=submit]:hover {	background: $darkGrey;}
+#formAbuse form input[type=submit]:hover {	background: $darkGrey;}
