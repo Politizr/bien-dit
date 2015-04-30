@@ -11,6 +11,13 @@
 	padding: 20px 80px;
 	float: left;
 	width: 540px;
+	position: relative;
+}
+
+.paragraph .commentsCounter {
+	position: absolute;
+    font-family: 'nerisblack';
+    font-size: 10px;
 }
 
 .paragraph p.summary {
