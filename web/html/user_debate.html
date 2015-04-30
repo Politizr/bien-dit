@@ -1239,6 +1239,7 @@
 						<div class="commentsCounter">45<i class="icon-comment"></i></div>
 	                    <p class="summary">Reconnaître le vote blanc dans la pratique du suffrage universel est une démarche d’importance, car elle est intimement liée à la notion même de démocratie représentative.</p>
 	                    <div class="comments" style="display: block;">
+		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
 		                    comments
 	                    </div>
 	                </div>
@@ -1387,7 +1388,8 @@
 		<script type="text/javascript">
 			$(function(){	
 			    $("body").on("click", ".paragraph .commentsCounter", function() {
-					$(this).siblings('.comments').slideToggle('fast');
+				    $('.comments').slideUp('fast');
+					$(this).siblings('.comments').slideToggle('fast');			
 				}); 
 			});
 		</script>

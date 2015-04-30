@@ -36,6 +36,22 @@
 
 .paragraph .commentsCounter:hover {color: $darkGrey;}
 
+.commentsClose {
+	color: $semiGrey;
+    font-family: 'nerissemibold';
+    font-size: 10px;
+    text-transform: uppercase;
+    float: right;
+    position: relative;
+    padding-right: 12px;
+}
+
+.commentsClose i {
+	font-size: 9px;
+	position: absolute;
+	right: 0;
+}
+
 .paragraph p.summary {
 	color: $highlight;
 }
