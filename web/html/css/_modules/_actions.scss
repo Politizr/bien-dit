@@ -39,12 +39,12 @@
 	color: #fff;
 }
 
-.actionGotoDebat {
+.actionGotoDebate {
 	color: $darkGrey;
 	background-color: $semilightGrey;
 }
 
-.actionFollow:hover, .actionCosign:hover, .actionUnfollow:hover, .actionGotoDebat:hover {
+.actionFollow:hover, .actionCosign:hover, .actionUnfollow:hover, .actionGotoDebate:hover {
 	background-color: $darkGrey;	
 	color: #fff;
 }

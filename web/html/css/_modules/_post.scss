@@ -13,11 +13,11 @@
 	width: 540px;
 }
 
-.paragraph p.resume {
+.paragraph p.summary {
 	color: $highlight;
 }
 
-.paragraph p.resume::before {
+.paragraph p.summary::before {
 	content: "—";
 	float: left;
 	margin-right: 5px;}
@@ -84,7 +84,7 @@
 
 // resume of post
 
-.postResume {
+.postSummary {
 	width: 700px;
 	height: 360px;
 	display: inline-block;
@@ -96,13 +96,13 @@
 	background-color: $lightGrey;
 }
 
-.postResume .illustrationShadow {	
+.postSummary .illustrationShadow {	
 	width: 700px; 
 	left: 0; 
 	top: 0;
 }
 
-.postResume .pad40 {
+.postSummary .pad40 {
 	position: relative;
 	z-index: 1;
 	width: 620px;
@@ -132,13 +132,13 @@
 .noteMinus {	padding-left: 13px;}
 .noteMinus i {	left: 0;}
 
-.postResumeFooter {
+.postSummaryFooter {
 	position: absolute;
 	bottom: 40px;
 	width: 620px;
 }
 
-.postResumeGotoFil {
+.postSummaryGotoFil {
 	float: left;
 	width: 100%;
 	line-height: 150%;
@@ -147,11 +147,11 @@
 	font-size: 13px;
 }
 
-.postResumeGotoFil a {color: $highlight; position: relative; padding-left: 20px;}
-.postResumeGotoFil a i {position: absolute; left: 0;}
-.postResumeGotoFil a:hover {color: #fff;}
+.postSummaryGotoFil a {color: $highlight; position: relative; padding-left: 20px;}
+.postSummaryGotoFil a i {position: absolute; left: 0;}
+.postSummaryGotoFil a:hover {color: #fff;}
 
-.postResumeTitle {
+.postSummaryTitle {
 	float: left;
 	width: 100%;
 	text-transform: none;
@@ -161,10 +161,10 @@
 	color: $highlight;
 }
 
-.postResumeTitle a {	color: $highlight;}
-.postResumeTitle a:hover {	color: #fff;}
+.postSummaryTitle a {	color: $highlight;}
+.postSummaryTitle a:hover {	color: #fff;}
 
-.postResumeAuthor {
+.postSummaryAuthor {
 	float: left;
 	width: 100%;
 	margin-top: 10px;
@@ -172,31 +172,31 @@
 	text-transform: none;
 }
 
-.postResumeAuthor span {
+.postSummaryAuthor span {
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
 	display: inline-block;
 	margin-right: 4px;
 }
 
-.postResumeAuthor a {
+.postSummaryAuthor a {
 	font-size: 13px;
 	color: $highlight;
 }
 
-.postResumeAuthor a:hover {color: #fff;}
+.postSummaryAuthor a:hover {color: #fff;}
 
-.postResumeAuthor a.parti {
+.postSummaryAuthor a.parti {
 	font-size: 9px;
 	color: $highlight !important;
 	background: $darkGrey;	
 }
 
-.postResumeAuthor a.parti:hover {
+.postSummaryAuthor a.parti:hover {
 	color: #fff !important;
 }
 
-.postResumeTagList {
+.postSummaryTagList {
 	float: left;
 	width: 100%;
 	clear: both;
@@ -207,7 +207,7 @@
 .openListByTag {	cursor: pointer;}
 .openListByTag:hover {color: $highlight;}
 
-.postResumeActivity {
+.postSummaryActivity {
 	margin-top: 15px;
 	float: left;
 	clear: both;
