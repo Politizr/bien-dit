@@ -1234,7 +1234,7 @@
 					</div>
 				</div>
 					
-				<div id="textBody">
+				<div id="postText">
 					<div class="paragraph">
 						<div class="commentsCounter">45<i class="icon-comment"></i></div>
 	                    <p class="summary">Reconnaître le vote blanc dans la pratique du suffrage universel est une démarche d’importance, car elle est intimement liée à la notion même de démocratie représentative.</p>
@@ -1243,6 +1243,7 @@
 	                    </div>
 	                </div>
 					<div class="paragraph">
+						<div class="commentsCounter"><i class="icon-comment"></i></div>
 						<p>La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes nuls. Un sondage récent indique d’ailleurs que <i>pas moins de 69 % des Français estimeraient nécessaire de reconnaître le vote blanc</i> aux élections.</p>
 						<div class="comments" style="display: block;">
 		                    comments
@@ -1381,6 +1382,15 @@
 				});
 			});
 		</script>
+		
+		<!-- open/close comments in text body -->
+		<script type="text/javascript">
+			$(function(){	
+			    $("body").on("click", ".paragraph .commentsCounter", function() {
+					$(this).siblings('.comments').slideToggle('fast');
+				}); 
+			});
+		</script>
 				
 		<!-- full size illustration image -->
 		<script type="text/javascript">
@@ -1393,7 +1403,7 @@
 			});
 		</script>
 		
-		<!-- full size image in debat resume -->
+		<!-- full size image in debate summary -->
 		<script type="text/javascript">
 			$(function(){	
 			    $(".postSummary").imgLiquid({

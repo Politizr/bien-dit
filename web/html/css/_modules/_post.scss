@@ -2,7 +2,7 @@
 
 // post
 
-#textBody {
+#postText {
 	padding: 60px 0;
 	background-color: $lightGrey;
 }
@@ -15,10 +15,26 @@
 }
 
 .paragraph .commentsCounter {
+	margin-right: 0;
 	position: absolute;
     font-family: 'nerisblack';
     font-size: 10px;
+    color: $anotherGrey;
+    padding: 0 16px 0 0;
+    left: 0;
+    top: 26px;
+    width: 38px;
+    text-align: right;
+    cursor: pointer;
 }
+
+.paragraph .commentsCounter i {
+	font-size: 12px;
+	right: 0;
+	left: auto;
+}
+
+.paragraph .commentsCounter:hover {color: $darkGrey;}
 
 .paragraph p.summary {
 	color: $highlight;
