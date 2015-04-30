@@ -246,7 +246,7 @@ liip_imagine:
         facebook_share:
             quality:              100
             filters:
-                thumbnail:         { size: [90, 90], mode: outbound }
+                thumbnail:         { size: [400, 400], mode: outbound }
 
         debate_header:
             quality:              100
