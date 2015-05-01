@@ -5,6 +5,7 @@
 #postText {
 	padding: 60px 0;
 	background-color: $lightGrey;
+	float: left;
 }
 
 .paragraph {
@@ -12,12 +13,15 @@
 	float: left;
 	width: 540px;
 	position: relative;
-
 }
 
-.paragraph p.summary {
-	color: $highlight;
+.paragraph p {
+	font-size: 15px;
+	line-height: 200%;
 }
+
+.paragraph p.summary, .paragraph p a {	color: $highlight;}
+.paragraph p a:hover {color: $darkGrey;}
 
 .paragraph p.summary::before {
 	content: "—";
@@ -25,10 +29,77 @@
 	margin-right: 5px;
 }
 
-.paragraph p {
+.paragraph h1 {
+	padding: 0;
+	margin: 0;
+	font-size: 20px;
+    font-family: 'nerisblack';
+    font-weight: normal;
+    line-height: 140%;
+}
+
+.paragraph h2 {
+	font-family: 'fontello', 'Merriweather Italic';	
+	line-height: 200%;
+	font-size: 15px;
+	font-weight: normal;
+	margin: 0;
+	padding: 0 0 0 16px;
+	border-left: solid 4px $highlight;
+}
+
+.paragraph h3 {
+	font-family: 'Merriweather Bold';
+	font-weight: normal;	
+	line-height: 200%;
+	margin: 0;
+	padding: 0;
+	font-size: 15px;
+}
+
+.paragraph h3::before {
+	font-family: 'fontello';
+	content: "\e810";
+	float: left;
+	width: 100%;
+	color: $highlight;
+	font-size: 18px;
+}
+
+.paragraph ul {
+	margin: 0;
+	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
 }
+
+// give note
+
+#giveNote {
+	background: $semiDarkGrey;
+	float: left;
+	width: calc(100% - 80px);
+	padding: 20px 40px;	
+}
+
+#giveNote span {
+	float: left;
+	font-size: 10px;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;
+}
+
+#giveNote .postNote {
+	clear: none;
+	margin: 0 0 0 20px;
+}
+#giveNote .notePlus, #giveNote .noteMinus {
+	font-size: 12px;
+	font-family: 'Merriweather Heavy Italic';	
+}
+#giveNote .notePlus:hover, #giveNote .noteMinus:hover {color: #fff; }
+
+// comments
 
 .comments {
 	background: #fff;
