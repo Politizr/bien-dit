@@ -1394,11 +1394,16 @@
 		<script type="text/javascript">
 			$(function(){	
 			    $("body").on("click", ".paragraph .commentsCounter", function() {
-				    $('.comments').slideUp('fast');
-					$(this).siblings('.comments').slideToggle('1000');			
-				});
-				$("body").on("click", ".paragraph .commentsClose", function() {
-					$('.comments').slideUp('fast');		
+					if( $(this).siblings('.comments').is(':visible') ) {
+						$(this).siblings('.comments').slideUp('fast');
+						}
+					else {
+						$('.comments').slideUp('fast');
+						$(this).siblings('.comments').slideDown('fast');						
+					}
+					$("body").on("click", ".paragraph .commentsClose", function() {
+						$('.comments').slideUp('fast');		
+					});
 				});
 			});
 		</script>
