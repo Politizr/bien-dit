@@ -1238,12 +1238,13 @@
 					<div class="paragraph">
 						<div class="commentsCounter">45<i class="icon-comment"></i></div>
 	                    <p class="summary">Reconnaître le vote blanc dans la pratique du suffrage universel est une démarche d’importance, car elle est intimement liée à la notion même de démocratie représentative.</p>
-	                    <div class="comments" style="display: none;">
+	                    <div class="comments" style="display: none;">		                    
 		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
 		                    <form>
-			                    form comments
+			                    <textarea class="commentsTextarea"></textarea><input type="submit" value="Valider">
 		                    </form>
-		                    <div class="commentsList">
+		                    <div class="commentsList withLoaderInside">
+			                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
 			                    comments list
 			                </div>
 		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
@@ -1252,8 +1253,16 @@
 					<div class="paragraph">
 						<div class="commentsCounter"><i class="icon-comment"></i></div>
 						<p>La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes nuls. Un sondage récent indique d’ailleurs que <i>pas moins de 69 % des Français estimeraient nécessaire de reconnaître le vote blanc</i> aux élections.</p>
-						<div class="comments" style="display: none;">
-		                    comments
+						<div class="comments" style="display: none;">							
+		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
+		                     <form>
+			                    <textarea class="commentsTextarea"></textarea><input type="submit" value="Valider">
+		                    </form>
+		                    <div class="commentsList withLoaderInside">
+			                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+			                    comments list
+			                </div>
+		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
 	                    </div>
 					</div>
 	
@@ -1293,8 +1302,8 @@
 					
 				</div>
 				<div id="footer">
-						footer
-					</div>
+					footer
+				</div>
 			</div>
 		</div>
 		<!-- close success / error / alert -->
@@ -1399,7 +1408,8 @@
 						}
 					else {
 						$('.comments').slideUp('fast');
-						$(this).siblings('.comments').slideDown('fast');						
+						$(this).siblings('.comments').slideDown('2000');						
+						$(this).siblings('.comments').children('form').children('.commentsTextarea').focus();										
 					}
 					$("body").on("click", ".paragraph .commentsClose", function() {
 						$('.comments').slideUp('fast');		

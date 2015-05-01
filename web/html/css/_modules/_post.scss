@@ -33,7 +33,7 @@
 .comments {
 	background: #fff;
 	width: 540px;
-	padding: 40px 80px 80px 80px;
+	padding: 20px 80px 60px 80px;
 	margin: 20px 0 0 -80px;
 }
 
@@ -67,6 +67,7 @@
     float: right;
     position: relative;
    	padding: 0 11px 0 0;
+   	margin: 20px 0 20px 0;
    	cursor: pointer;
 }
 
@@ -80,14 +81,14 @@
 	display: inline-block;
 	clear: both;
 	width: 100%;
-	padding: 40px 0;
+	padding: 20px 0 20px 0;
 }
 
 .commentsList {
 	display: inline-block;
 	clear: both;
 	width: 100%;
-	padding: 0 0 40px 0;
+	padding: 20px 0 20px 0;
 }
 
 // post author on post

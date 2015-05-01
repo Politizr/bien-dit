@@ -54,20 +54,21 @@
 }
 
 // spin color
-#notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
+.ajaxLoader i, #notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
 
 // spin box bg color
-#notifications .ajaxLoader {	background: $lightHighlight;}
-#notifications .notifItem .ajaxLoader {
-	background: $lightHighlight;
+.ajaxLoader, .modal .ajaxLoader {	
+	background: #fff;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
 	filter:alpha(opacity=80);
 }
-.modal .ajaxLoader {	
-	background: #fff;
+
+#notifications .ajaxLoader {	background: $lightHighlight;}
+#notifications .notifItem .ajaxLoader {
+	background: $lightHighlight;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
