@@ -12,6 +12,29 @@
 	float: left;
 	width: 540px;
 	position: relative;
+
+}
+
+.paragraph p.summary {
+	color: $highlight;
+}
+
+.paragraph p.summary::before {
+	content: "—";
+	float: left;
+	margin-right: 5px;
+}
+
+.paragraph p {
+	font-size: 15px;
+	line-height: 200%;
+}
+
+.comments {
+	background: #fff;
+	width: 540px;
+	padding: 40px 80px 80px 80px;
+	margin: 20px 0 0 -80px;
 }
 
 .paragraph .commentsCounter {
@@ -34,7 +57,7 @@
 	left: auto;
 }
 
-.paragraph .commentsCounter:hover {color: $darkGrey;}
+.paragraph .commentsCounter:hover, .commentsClose:hover {color: $darkGrey;}
 
 .commentsClose {
 	color: $semiGrey;
@@ -43,7 +66,8 @@
     text-transform: uppercase;
     float: right;
     position: relative;
-    padding-right: 12px;
+   	padding: 0 11px 0 0;
+   	cursor: pointer;
 }
 
 .commentsClose i {
@@ -52,26 +76,18 @@
 	right: 0;
 }
 
-.paragraph p.summary {
-	color: $highlight;
+.comments form {
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	padding: 40px 0;
 }
 
-.paragraph p.summary::before {
-	content: "—";
-	float: left;
-	margin-right: 5px;
-}
-
-.paragraph p {
-	font-size: 15px;
-	line-height: 200%;
-}
-
-.comments {
-	background: #fff;
-	width: 620px;
-	padding: 0 0 40px 80px;
-	margin: 20px 0 0 -80px;
+.commentsList {
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	padding: 0 0 40px 0;
 }
 
 // post author on post
