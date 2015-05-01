@@ -36,6 +36,7 @@ textarea:focus, input:focus{    outline: 0;}
     overflow: hidden;
     height: 1em;
     margin-bottom: 5px;
+    resize: none;
 }
 
 .comments input[type=submit] {

@@ -35,6 +35,8 @@
 	width: 540px;
 	padding: 20px 80px 60px 80px;
 	margin: 20px 0 0 -80px;
+	clear: both;
+	display: inline-block;
 }
 
 .paragraph .commentsCounter {
@@ -87,17 +89,17 @@
 	display: inline-block;
 	clear: both;
 	width: 100%;
-	background-color: red;
 }
 
 .commentsItem {
 	position: relative;
-	background: aqua;
 	padding: 20px;
 	margin-bottom: 20px;
 	width: calc(100% - 40px);
 	display: inline-block;
 }
+
+.commentsItem.commentLevel1 { margin-top: 20px; }
 
 .commentsItem .signalAbuse {
 	position: absolute;
@@ -110,7 +112,7 @@
 .commentsItem .signalAbuse:hover {color: $darkGrey;}
 
 .commentsOfficial {background-color: $lightGrey; }
-.commentsUser {background-color: #fff; }
+.commentsUser {background-color: #fff; padding-bottom: 0; }
 .commentsPostAuthor {background-color: $anotherLightHighlight; }
 
 .commentsContent {
@@ -135,6 +137,13 @@
 }
 .commentsContentHeader a:hover {color: $highlight;}
 
+.commentsContentHeader a.parti {
+	font-size: 9px;
+	color: #fff;
+	background-color: $anotherGrey;
+}
+.commentsContentHeader a.parti:hover {background-color: $highlight;}
+
 .commentsInfos {float: left;}
 
 .commentsNote {
@@ -146,6 +155,26 @@
 
 .notePlus, .noteMinus { cursor: pointer;}
 .notePlus:hover, .noteMinus:hover { color: $darkGrey;}
+
+.commentLevel2 {
+	width: calc(100% - 100px);
+	float: right;
+}
+
+.commentsSlideFormNew {
+	font-family: 'nerissemibold';
+	color: $highlight;
+	margin: 0 20px 20px 20px; 
+	padding-left: 20px;
+	cursor: pointer;
+	position: relative;
+}
+.commentsSlideFormNew:hover {color: $darkGrey;}
+.commentsSlideFormNew i {position: absolute; left: 0;}
+
+.commentsSlideFormNew.commentLevel2 {
+	width: calc(100% - 120px);	
+}
 
 // post author on post
 

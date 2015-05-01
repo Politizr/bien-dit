@@ -1238,8 +1238,10 @@
 					<div class="paragraph">
 						<div class="commentsCounter">45<i class="icon-comment"></i></div>
 	                    <p class="summary">Reconnaître le vote blanc dans la pratique du suffrage universel est une démarche d’importance, car elle est intimement liée à la notion même de démocratie représentative.</p>
-	                    <div class="comments" style="display: block;">		                    
+	                    <!-- new comment with comments -->
+	                    <div class="comments" style="display: none;">		                    
 		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
+		                    
 		                    <div class="commentsEditNew">
 			                    <div class="avatar40"><img src="images/profil_damien.jpg"></div>
 			                    <form>
@@ -1250,15 +1252,18 @@
 									</div>
 			                    </form>
 			                </div>
+		                    
 		                    <div class="commentsList withLoaderInside">
 			                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+			                    
+			                    <!-- level 1 -->
 			                    <div class="commentsItem commentsPostAuthor commentLevel1">
 				                    <div class="signalAbuse"><i class="icon-alert"></i></div>
 				                    <div class="avatar40"><img src="images/profil_default.png"></div>
 				                    <div class="commentsContent withLoaderInside">
 					                    <div class="commentsContentHeader">
 						                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
-											<div class="commentsInfos"> Par <a href="user_profile-default.html">M. Jean-Pierre Dupond</a>, hier à 9h50</div>
+											<div class="commentsInfos">Par <a href="user_profile-default.html">Jean-Pierre Dupond</a>, hier à 9h50</div>
 						                    <div class="commentsNote">
 							                    <div class="notePlus">122<i class="icon-note-plus"></i></div>
 												<div class="noteMinus"><i class="icon-note-minus"></i>0</div>
@@ -1267,15 +1272,90 @@
 					                    <div class="commentsText">La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes.</div>
 				                    </div>
 			                    </div>
-			                </div>
-		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
+
+		                   		<!-- level 2 with edit new comment -->
+		                    	<div class="commentsSlideFormNew commentLevel2"><i class="icon-comment"></i>Rédiger un commentaire</div>
+								<div class="commentsEditNew commentLevel2" style="display: none">
+				                    <div class="avatar40"><img src="images/profil_damien.jpg"></div>
+				                    <form>
+					                    <textarea class="commentsTextarea" placeholder="Votre commentaire" rows="1"></textarea>	
+					                    <div class="actionsButtons withLoaderInside">
+											<div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+											<input type="submit" value="&#xe82c; Publier"><div class="cancel">Annuler</div>
+										</div>
+				                    </form>
+								</div>
+								<div class="commentsItem commentsUser commentLevel2">
+			                    	<div class="signalAbuse"><i class="icon-alert"></i></div>
+				                    <div class="avatar40"><img src="images/profil_default.png"></div>
+				                    <div class="commentsContent withLoaderInside">
+					                    <div class="commentsContentHeader">
+						                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+											<div class="commentsInfos">Par <a href="user_profile-default.html">Hélène Martin</a>, aujourd’hui à 15h20</div>
+						                    <div class="commentsNote">
+							                    <div class="notePlus">342<i class="icon-note-plus"></i></div>
+												<div class="noteMinus"><i class="icon-note-minus"></i>-2</div>
+						                    </div>
+						                </div>
+					                    <div class="commentsText">La reconnaissance du vote blanc ne soit pas distingué des votes nuls.</div>
+				                    </div>
+			                    </div>
+								<div class="commentsItem commentsOfficial commentLevel2">
+				                    <div class="signalAbuse"><i class="icon-alert"></i></div>
+				                    <div class="avatar40"><img src="images/profil_alain.jpg"></div>
+				                    <div class="commentsContent withLoaderInside">
+					                    <div class="commentsContentHeader">
+						                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+											<div class="commentsInfos">Par <a class="followedMember" href="user_profile-official.html">M. Alain Vidalies</a> <a href="user_partySheet.html" class="parti">ps</a>, le 8 juillet 2014 à 10h09</div>
+						                    <div class="commentsNote">
+							                    <div class="notePlus">4<i class="icon-note-plus"></i></div>
+												<div class="noteMinus"><i class="icon-note-minus"></i>0</div>
+						                    </div>
+						                </div>
+					                    <div class="commentsText">La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnen blanc aux élections.</div>
+				                    </div>
+			                    </div>
+			                    
+			                    <div class="commentsItem commentsUser commentLevel1">
+				                    <div class="signalAbuse"><i class="icon-alert"></i></div>
+				                    <div class="avatar40"><img src="images/profil_damien.jpg"></div>
+				                    <div class="commentsContent withLoaderInside">
+					                    <div class="commentsContentHeader">
+						                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+											<div class="commentsInfos">Par <a href="user_myprofile-default.html">Vous</a>, le 3 juillet 2014 à 18h30</div>
+						                    <div class="commentsNote">
+							                    <div class="notePlus">0<i class="icon-note-plus"></i></div>
+												<div class="noteMinus"><i class="icon-note-minus"></i>-24</div>
+						                    </div>
+						                </div>
+					                    <div class="commentsText">La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes nuls. Un sondage récent indique d’ailleurs que pas moins de 69 % des Français estimeraient nécessaire de reconnaître le vote blanc aux </div>
+				                    </div>
+			                    </div>
+			                    
+			                    <!-- level 2 with edit new comment -->
+			                    <div class="commentsSlideFormNew commentLevel2"><i class="icon-comment"></i>Rédiger un commentaire</div>
+								<div class="commentsEditNew commentLevel2" style="display: none">
+				                    <div class="avatar40"><img src="images/profil_damien.jpg"></div>
+				                    <form>
+					                    <textarea class="commentsTextarea" placeholder="Votre commentaire" rows="1"></textarea>	
+					                    <div class="actionsButtons withLoaderInside">
+											<div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+											<input type="submit" value="&#xe82c; Publier"><div class="cancel">Annuler</div>
+										</div>
+				                    </form>
+								</div>
+							</div>
+		                
+							<div class="commentsClose">fermer<i class="icon-cross"></i></div>
 	                    </div>
 	                </div>
 					<div class="paragraph">
 						<div class="commentsCounter"><i class="icon-comment"></i></div>
 						<p>La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes nuls. Un sondage récent indique d’ailleurs que <i>pas moins de 69 % des Français estimeraient nécessaire de reconnaître le vote blanc</i> aux élections.</p>
-						<div class="comments" style="display: none;">	
-							<div class="commentsClose">fermer<i class="icon-cross"></i></div>					
+						<!-- new comment no comments -->
+						<div class="comments" style="display: none;">		                    
+		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
+		                    
 		                    <div class="commentsEditNew">
 			                    <div class="avatar40"><img src="images/profil_damien.jpg"></div>
 			                    <form>
@@ -1286,11 +1366,12 @@
 									</div>
 			                    </form>
 			                </div>
+		                    
 		                    <div class="commentsList withLoaderInside">
-			                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
-			                    comments list
-			                </div>
-		                    <div class="commentsClose">fermer<i class="icon-cross"></i></div>
+			                    <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>			                    
+							</div>
+		                
+							<div class="commentsClose">fermer<i class="icon-cross"></i></div>
 	                    </div>
 					</div>
 	
@@ -1429,26 +1510,42 @@
 		
 		<!-- comments in text body -->
 		<script type="text/javascript">
-			$(function(){
-				/* open/close comments in text body */
+			$(function(){		
+				/* open/close comments in text body */	
 			    $("body").on("click", ".paragraph .commentsCounter", function() {
+				    
 					if( $(this).siblings('.comments').is(':visible') ) {
 						$(this).siblings('.comments').slideUp('fast');
+						$('.commentLevel2.commentsEditNew').slideUp('fast');	
 						}
 					else {
 						$('.comments').slideUp('fast');
-						$(this).siblings('.comments').slideDown('2000');												
+						$('.commentLevel2.commentsEditNew').slideUp('fast');	
+						$(this).siblings('.comments').slideDown('2000');	
+						/* form new comment : auto resize text area */										
 						$('.comments').on( 'change keyup keydown paste cut', 'textarea', function (){
-						    $(this).height(0).height(this.scrollHeight);
-						/* form new comment : auto resize text area */
+						    $(this).height(0).height(this.scrollHeight);					
 						}).find( 'textarea' ).change();	
+						/* focus in textarea */
 						$(this).siblings('.comments').children('.commentsEditNew').children('form').children('.commentsTextarea').focus();									
 					}
+					
+					/* close with cross */
 					$("body").on("click", ".paragraph .commentsClose", function() {
-						$('.comments').slideUp('fast');		
+						$('.comments').slideUp('fast');	
+						$('.commentLevel2.commentsEditNew').slideUp('fast');						
 					});
 				});
 				
+				$("body").on("click", ".commentsSlideFormNew", function() {
+					$(this).next('.commentsEditNew').slideToggle('fast');
+					/* form new comment : auto resize text area */	
+					$('.comments').on( 'change keyup keydown paste cut', 'textarea', function (){
+					    $(this).height(0).height(this.scrollHeight);					
+					}).find( 'textarea' ).change();
+					/* focus in textarea */
+					$(this).next('.commentsEditNew').children('form').children('.commentsTextarea').focus();		
+				});
 				
 				
 									
