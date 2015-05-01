@@ -77,24 +77,75 @@
 	right: 0;
 }
 
-.commentsList {
-	display: inline-block;
-	clear: both;
-	width: 100%;
-	padding: 20px 0 20px 0;
-	background-color: red;
-}
-
 .commentsEditNew {
 	width: calc(100% - 40px);
 	display: inline-block;
 	padding: 20px;
 }
 
-.comments form {
-	float: right;
-	width: calc(100% - 50px);
+.commentsList {
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	background-color: red;
 }
+
+.commentsItem {
+	position: relative;
+	background: aqua;
+	padding: 20px;
+	margin-bottom: 20px;
+	width: calc(100% - 40px);
+	display: inline-block;
+}
+
+.commentsItem .signalAbuse {
+	position: absolute;
+	left: -38px;
+	top: 3px;
+	font-size: 16px;
+	color: $semilightGrey;
+}
+
+.commentsItem .signalAbuse:hover {color: $darkGrey;}
+
+.commentsOfficial {background-color: $lightGrey; }
+.commentsUser {background-color: #fff; }
+.commentsPostAuthor {background-color: $anotherLightHighlight; }
+
+.commentsContent {
+	width: calc(100% - 80px);
+	float: right;
+	padding: 0 20px;
+	line-height: 180%;
+}
+
+.commentsContentHeader {
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	margin-top: -5px;
+	float: left;
+	width: 100%;
+}
+
+.commentsContentHeader a {
+	font-family: 'nerisblack';
+	font-size: 13px;
+	color: $darkGrey;
+}
+.commentsContentHeader a:hover {color: $highlight;}
+
+.commentsInfos {float: left;}
+
+.commentsNote {
+	display: inline-block;
+	margin-left: 20px;
+	color: $highlight;
+	font-family: 'Merriweather Heavy Italic';
+}
+
+.notePlus, .noteMinus { cursor: pointer;}
+.notePlus:hover, .noteMinus:hover { color: $darkGrey;}
 
 // post author on post
 

@@ -80,7 +80,7 @@
 #notifications .notifItem .ajaxLoader i {		top: calc(50% - 18px);}
 
 
-// in actions buttons (i.e. form abus)
+// in actions buttons (i.e. form abus + add new comment)
 .actionsButtons .ajaxLoader {
 	background-color: $highlight;
 	-moz-opacity: 1;
@@ -94,3 +94,23 @@
 
 // in fixed actions
 .fixedActions .withLoaderInside .ajaxLoader {background-color: $highlight;}
+
+// in form new comments
+.comments .actionsButtons .ajaxLoader {
+	width: 14px;
+	background-color: #fff;
+}
+
+.comments .actionsButtons .ajaxLoader i {
+	font-size: 12px;
+	width: 12px; 
+	height: 12px;
+	left: calc(50% - 8px);
+	top: calc(50% - 6px);
+	color: $highlight;
+}
+
+.commentsOfficial .ajaxLoader {	background-color: $lightGrey;}
+.commentsUser .ajaxLoader {	background-color: #fff;}
+.commentsPostAuthor .ajaxLoader {	background-color: $anotherLightHighlight;}
+.comments .ajaxLoader i { color: $darkGrey;}
