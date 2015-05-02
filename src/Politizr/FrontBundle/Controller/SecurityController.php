@@ -190,7 +190,7 @@ class SecurityController extends Controller
             return $this->redirect($this->generateUrl('HomepageC'));
         }
 
-        return $this->render('PolitizrFrontBundle:Public:inscriptionContact.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
                     'form' => $form->createView()
                     ));
     }
@@ -211,7 +211,7 @@ class SecurityController extends Controller
         $user = new PUser();
         $form = $this->createForm(new PUserElectedRegisterType(), $user);
         
-        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElected.html.twig', array(
                     'form' => $form->createView()
                     ));
     }
@@ -248,7 +248,7 @@ class SecurityController extends Controller
             return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
         
-        return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElected.html.twig', array(
                     'form' => $form->createView()
                     ));
     }
