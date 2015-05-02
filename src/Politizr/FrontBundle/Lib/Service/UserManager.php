@@ -808,7 +808,6 @@ class UserManager
         $form->bind($request);
         if ($form->isValid()) {
             $userPerso = $form->getData();
-            $logger->info('userPerso = '.print_r($userPerso, true));
 
             // enregistrement object user
             $userPerso->save();
