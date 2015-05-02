@@ -111,7 +111,7 @@
 #reactionsToPost h1 {
 	font-weight: normal;
 	font-size: 13px;
-	padding: 0 0 20px 0;
+	padding: 0;
 	margin: 0;
     font-family: 'nerisblack';
     text-transform: uppercase;
@@ -122,9 +122,111 @@
 	float: left;
 	width: 100%;
 	clear: both;
-	background: aqua;
-	padding: 20px 0;
+	padding: 40px 0 40px 0;
+	border-bottom: solid 1px $semiDarkGrey;
 }
+
+.reactionsToPostItem:last-child {border: none; padding-bottom: 20px;}
+
+.reactionsToPostItemHeader {
+	float: left;
+	width: 100%;
+	padding: 0 0 5px 20px;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+}
+
+.reactionsToPostItemSummary {
+	float: left;
+	width: 100%;
+	clear: both;
+	position: relative;
+	line-height: 200%;
+	font-size: 13px;
+    font-family: 'nerisblack';
+}
+
+.reactionsToPostItemSummary i {
+	font-size: 8px;
+	position: absolute;
+	left: -20px;
+}
+
+.reactionsToPostItemSummary a, .reactionsToPostItemPostSummary a {color: $darkGrey;}
+.reactionsToPostItemSummary a:hover, .reactionsToPostItemPostSummary a:hover {color: $highlight;}
+.reactionsToPostItemSummary a.parti:hover {background-color: $highlight;}
+
+.reactionsToPostItemContent {
+	float: right;
+	width: calc(100% - 20px);
+	border-left: solid 4px $highlight;
+	padding-left: 14px;
+}
+
+.reactionsToPostItemIllustration {
+	float: right;
+	width: 600px;
+	height: 200px;
+	margin-bottom: 20px;
+}
+
+.reactionsToPostItemPostSummary {
+	float: right;
+	width: 550px;
+	font-size: 15px;
+	line-height: 200%;
+	margin-top: -6px;
+}
+
+.reactionsToPostItemPostSummary a {display: block;}
+
+.reactionsToPostItemFooter {
+	float: left;
+	width: calc(100% - 20px);
+	padding: 20px 0 0 20px;
+    font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+	color: $anotherGrey;
+	cursor: default;
+}
+
+.reactionsToPostItemFooter .postSummaryActivity {
+	float: left;
+	width: 69%;
+	margin: 0;
+}
+
+.reactionsToPostItemFooter .postSummaryActivity .readingTime {
+	width: auto;
+	float: none;
+	clear: none;
+	display: inline-block;
+}
+
+.reactionsToPostItemFooter .postNote {
+	float: right;
+	clear: none;
+	margin: 0;
+}
+
+.reactionsToPostItemFooter .postNote .notePlus, .reactionsToPostItemFooter .postNote .noteMinus { cursor: default;}
+.reactionsToPostItemFooter .postNote .notePlus:hover, .reactionsToPostItemFooter .postNote .noteMinus:hover { color: $anotherGrey;}
+	
+a.linkToPost {
+	float: left;
+	clear: both;
+	margin: 20px 0 0 0;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 17px;
+	text-transform: none;
+	font-size: 13px;
+}
+
+a.linkToPost i {	position: absolute;	left: 0; }
+a.linkToPost:hover {color: $darkGrey;}
 
 // comments
 
