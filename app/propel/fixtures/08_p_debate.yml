@@ -5,7 +5,7 @@ Politizr\Model\PDDebate:
 
         title:			Devons-nous créer une CDU-CSU française?
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         summary:        |
             <p>
@@ -82,7 +82,7 @@ Politizr\Model\PDDebate:
     debat2:
         p_user_id:      depute2
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         title:          L'UMP a-t-elle raison de saborder la loi sur les ondes électromagnétiques?
 
@@ -143,7 +143,7 @@ Politizr\Model\PDDebate:
     debat3:
         p_user_id:      depute3
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         title:          Mayote: la France abuse-t-elle de l'intégrité territoriale des Comores?
 
@@ -196,7 +196,7 @@ Politizr\Model\PDDebate:
     debat4:
         p_user_id:      depute4
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         title:          Histoire de triangles
 
@@ -243,7 +243,7 @@ Politizr\Model\PDDebate:
     debat5:
         p_user_id:      depute5
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         title:          Lettre à mes amis de l'UMP pour notre crédibilité politique
 
@@ -361,7 +361,7 @@ Politizr\Model\PDDebate:
     debat6:
         p_user_id:      depute6
 
-        file_name:      <?php $faker('image', '/home/lionel/www/Politizr v2.0/web/uploads/documents', '640', '480', 'city', false) ?>
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
 
         title:          Les forces armés françaises en Irak?
 

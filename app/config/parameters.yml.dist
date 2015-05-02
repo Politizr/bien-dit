@@ -2,15 +2,15 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: politizr_v2
-    database_user: root
-    database_password: root
+    database_name: ***
+    database_user: ***
+    database_password: ***
     mailer_auth_mode: login
     mailer_port:     25
     mailer_transport:  mail
     mailer_host:       localhost
-    mailer_user:       postmaster@studio-echo.fr
-    mailer_password:   post09MASTER
+    mailer_user:       ***
+    mailer_password:   ***
     mailer_encryption: ssl
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
@@ -21,15 +21,15 @@ parameters:
 
     # OAuth parameters
     # Facebook
-    facebook_client_id: 583693971728599
-    facebook_client_secret: d79e946c38f54927e4c22a5753455c01
+    facebook_client_id: ***
+    facebook_client_secret: ***
     facebook_scope: public_profile,email
 
     #Twitter
-    twitter_api_key: gP2NLxvlDNrnFlz0afMfXvWLk
-    twitter_api_secret: AvRZJfQvG59npj422zdMBcxVwZAWonJhou33KnVwN8bdNGuIFy
+    twitter_api_key: ***
+    twitter_api_secret: ***
 
     # Google
-    google_client_id: 167079406705-ubja0t0pja7045ir5qjokr72t939tksj.apps.googleusercontent.com
-    google_client_secret: 7Du41VjtFEJaw15i7Slttafn
+    google_client_id: ***
+    google_client_secret: ***
     google_scope: email profile
