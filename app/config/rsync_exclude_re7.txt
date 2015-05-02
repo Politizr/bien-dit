@@ -20,4 +20,4 @@ reload-bdd.sh
 /web/*_stage.php
 
 /web/uploads/
-/web/static/
+/web/html/

@@ -54,7 +54,7 @@ ReactionDelete:
 ################################################################################
 Comments:
     pattern:  /comments.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Document:comments, _format: json }
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:comments, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 CommentNew:

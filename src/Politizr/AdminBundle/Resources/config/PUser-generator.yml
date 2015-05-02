@@ -199,8 +199,6 @@ builders:
                 "Abonnement":
                     "Followers":                [ block_followers_q, block_followers_c ]
                     "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
-                "Affinité":
-                    "Partis Politiques":        [ block_affinities ]
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_connect ]
