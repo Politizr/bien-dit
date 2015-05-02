@@ -17,7 +17,9 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PTagQuery;
 
+
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDReactionType;
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
