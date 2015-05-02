@@ -1,13 +1,13 @@
 @import "../_global/colors";
 
 input {	padding: 0; margin: 0; }
-input[type=submit] {cursor: pointer;}
+input[type=submit] {cursor: pointer; font-family: 'fontello', 'nerissemibold'; border: none;}
+textarea {margin: 0;}
 textarea:focus, input:focus{    outline: 0;}
 .actionsButtons {
 	float: left; 
 	clear: both; 
-	position: relative; 
-	margin-top: 60px;
+	position: relative;
 }
 
 .formIntro {
@@ -20,6 +20,43 @@ textarea:focus, input:focus{    outline: 0;}
 	font-family: 'Merriweather Italic';
 	line-height: 160%;
 }
+
+//comments form 
+.comments form {
+	float: right;
+	width: calc(100% - 60px);
+}
+
+.comments form textarea {
+	padding: 0;
+	width: 100%;
+	border: none;
+	font-size: 13px;
+	font-family: 'Merriweather';
+    overflow: hidden;
+    height: 1em;
+    margin-bottom: 5px;
+    resize: none;
+}
+
+.comments input[type=submit] {
+	background: transparent;
+	color: $highlight;
+	font-size: 13px;
+	height: auto;
+	width: auto;
+	display: inline-block;
+}
+
+.comments .cancel {
+	display: inline-block;
+	font-family: 'nerissemibold';
+	color: $highlight;
+	cursor: pointer;
+	margin-left: 20px;
+}
+
+.comments input[type=submit]:hover, .comments .cancel:hover {	color: $darkGrey;}
 
 //search form
 
@@ -45,45 +82,42 @@ textarea:focus, input:focus{    outline: 0;}
 	font-size: 28px;
 	text-align: right;
 	width: 10%;
-	font-family: 'fontello';
-	cursor: pointer;
 	color: $semiGrey;
 }
 
 // form abus
 
-#formAbus {
+#formAbuse {
 	text-align: center;
 }
 
-#formAbus .listProfil, #formAbus form {	width: 480px; display: inline-block;}
+#formAbuse .listProfile, #formAbuse form {	width: 480px; display: inline-block;}
 
-#formAbus .listProfil {
+#formAbuse .listProfile {
 	margin-top: 60px;
 	color: $highlight;
 	float: none;
 }
 
-#formAbus .listProfil a { color: $highlight;}
-#formAbus .listProfil a.parti {	background-color: $highlight;}
-#formAbus .listProfilRight {	width: 430px;}
+#formAbuse .listProfile a { color: $highlight;}
+#formAbuse .listProfile a.parti {	background-color: $highlight;}
+#formAbuse .listProfileRight {	width: 430px;}
 
-#formAbus .listProfilRight .authorName span {
+#formAbuse .listProfileRight .authorName span {
 	font-family: 'Merriweather Italic';
 	font-size: 12px;
 }
 
-#formAbus .postResume {
+#formAbuse .formAbuse_postResume {
 	font-size: 13px;
 	font-family: 'Merriweather';
 	line-height: 160%;
 }
 
-#formAbus .modalItem {	margin-bottom: 40px;}
+#formAbuse .modalItem {	margin-bottom: 40px;}
 
-#formAbus form textarea {
+#formAbuse form textarea {
 	padding: 20px;
-	margin: 0;
 	width: 438px;
 	height: 98px;
 	border: solid 1px $formGrey;
@@ -91,8 +125,11 @@ textarea:focus, input:focus{    outline: 0;}
 	font-size: 13px;
 }
 
-#formAbus form input[type=submit] {
-	font-family: 'fontello', 'nerissemibold';
+#formAbuse .actionsButtons {
+	margin-top: 60px;
+}
+
+#formAbuse form input[type=submit] {
 	background-color: $highlight;
 	color: #fff;
 	text-transform: uppercase;
@@ -105,7 +142,7 @@ textarea:focus, input:focus{    outline: 0;}
 	text-align: center;
 }
 
-#formAbus .cancel {
+#formAbuse .cancel {
 	position: absolute;
 	bottom: 0;
 	left: 200px;
@@ -114,4 +151,4 @@ textarea:focus, input:focus{    outline: 0;}
 	cursor: pointer;
 }
 
-#formAbus form input[type=submit]:hover {	background: $darkGrey;}
+#formAbuse form input[type=submit]:hover {	background: $darkGrey;}

@@ -13,10 +13,14 @@ a.parti {
 	background-color: $anotherGrey;
 	text-transform: uppercase;
 	display: inline-block;
-	margin: -3px 0 0 0;
+	margin: -3px 1px 0 0;
 	padding: 1px 4px 1px 4px;
 	line-height: 100%;
 } 
+
+a.followedMember::after {
+	content: "*";
+}
 
 .avatar40 {
 	width: 40px;
@@ -58,6 +62,9 @@ body {
 
 #footer {
 	padding: 60px 0 40px 0;
+	float: left;
+	width: 100%;
+	clear: both;
 }
 
 #social {
@@ -65,7 +72,7 @@ body {
 	top: 60px;
 	right: 0;
 	width: 60px;
-	min-height: 400px;
+	min-height: 380px;
 	background-color: #fff;
 }
 
@@ -79,7 +86,7 @@ body {
 
 #illustration_l, #illustration_r {
 	background-color: $lightGrey;
-	height: 400px;
+	height: 360px;
 	position: fixed;
 	top: 60px;
 	width: calc(50% - 480px);
@@ -91,7 +98,7 @@ body {
 
 .illustrationShadow {
 	width: 100%;
-	height: 400px;
+	height: 360px;
 	position: absolute;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
@@ -110,10 +117,9 @@ body {
 
 #goUpHolder {
 	position: fixed;
-	width: 960px;
+	width: 40px;
 	height: 40px;
-	left: 50%;
-	margin-left: -480px;
+	margin-left: 920px;
 	bottom: 25px;
 	z-index: 19000;
 }

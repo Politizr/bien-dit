@@ -1,37 +1,11 @@
 @import "../_global/colors";
 
-//menu social 
-#social {	color: $semiGrey; text-align: center;}
-#social .pad40 {	padding: 40px 20px;}
-
-#social a {
-	display: inline-block;
-	clear: both;
-	margin-bottom: 20px;
-	color: $semiGrey;
-	font-size: 14px;
-}
-
-#social a i.icon-social-tw {
-	font-size: 17px;
-}
-
-.signalAbus {
-	display: inline-block;
-	clear: both;
-	margin-top: 20px;
-	font-size: 18px;
-	cursor: pointer;
-}
-
-#social a:hover, .signalAbus:hover {color: $darkGrey;}
-
 //menu sidebar
 #menu {
 	position: absolute;
 	top: 60px;
 	width: 200px;
-	min-height: 400px;
+	min-height: 360px;
 	background-color: #fff;
 	font-family: nerissemibold;
 	text-transform: uppercase;
@@ -91,7 +65,7 @@
 	position: absolute;
 	background: $darkGrey;
 	color: #fff;
-	height: 400px;
+	height: 360px;
 	width: 220px;
 	top : 60px;
 	right: 0;
@@ -138,3 +112,29 @@
 }
 
 #menuPreferences a:hover {color: #fff;}
+
+//menu social 
+#social {	color: $semiGrey; text-align: center;}
+#social .pad40 {	padding: 40px 20px;}
+
+#social a {
+	display: inline-block;
+	clear: both;
+	margin-bottom: 20px;
+	color: $semiGrey;
+	font-size: 14px;
+}
+
+#social a i.icon-social-tw {
+	font-size: 17px;
+}
+
+.signalAbuse {
+	display: inline-block;
+	clear: both;
+	margin-top: 20px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+#social a:hover, .signalAbuse:hover {color: $darkGrey;}

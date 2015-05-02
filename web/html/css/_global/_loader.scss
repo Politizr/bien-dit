@@ -49,14 +49,22 @@
 	height: 30px;
 }
 
-.modalList .loadMore {
-	margin-bottom: 60px;
-}
+.modalList .loadMore {	margin-bottom: 60px; }
 
 // spin color
-#notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
+.ajaxLoader i, #notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
+#giveNote .ajaxLoader i {color: #fff;}
 
 // spin box bg color
+.ajaxLoader, .modal .ajaxLoader {	
+	background: #fff;
+	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	filter:alpha(opacity=80);
+}
+
 #notifications .ajaxLoader {	background: $lightHighlight;}
 #notifications .notifItem .ajaxLoader {
 	background: $lightHighlight;
@@ -66,20 +74,14 @@
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
 	filter:alpha(opacity=80);
 }
-.modal .ajaxLoader {	
-	background: #fff;
-	-moz-opacity: 0.80;
-	opacity: 0.80;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
-	filter:alpha(opacity=80);
-}
+
+#giveNote .ajaxLoader {	background-color: $darkGrey;}
 
 // ajust icon because of box padding
 #notifications .notifItem .ajaxLoader i {		top: calc(50% - 18px);}
 
 
-// in actions buttons (i.e. form abus)
+// in actions buttons (i.e. form abus + add new comment)
 .actionsButtons .ajaxLoader {
 	background-color: $highlight;
 	-moz-opacity: 1;
@@ -93,3 +95,23 @@
 
 // in fixed actions
 .fixedActions .withLoaderInside .ajaxLoader {background-color: $highlight;}
+
+// in form new comments
+.comments .actionsButtons .ajaxLoader {
+	width: 14px;
+	background-color: #fff;
+}
+
+.comments .actionsButtons .ajaxLoader i {
+	font-size: 12px;
+	width: 12px; 
+	height: 12px;
+	left: calc(50% - 8px);
+	top: calc(50% - 6px);
+	color: $highlight;
+}
+
+.commentsOfficial .ajaxLoader {	background-color: $lightGrey;}
+.commentsUser .ajaxLoader {	background-color: #fff;}
+.commentsPostAuthor .ajaxLoader {	background-color: $anotherLightHighlight;}
+.comments .ajaxLoader i { color: $darkGrey;}

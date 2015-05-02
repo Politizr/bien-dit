@@ -1,21 +1,21 @@
 @import "../_global/colors";
 
-.listProfil {
+.listProfile {
 	float: left;
 	width: 100%;
 }
 
-.listProfil .avatar40 {
+.listProfile .avatar40 {
 	float: left;
 }
 
-.listProfil .listProfilRight {
+.listProfile .listProfileRight {
 	float: right;
 	width: 170px;
 	line-height: 140%;
 }
 
-.listProfilElu {
+.listProfileOfficial {
 	float: left;
 	width: 100%;
 	background: $lightGrey;
@@ -44,7 +44,7 @@
 	line-height: 150%;
 }
 
-.listProfilFollow {
+.listProfileFollow {
 	float: left;
 	clear: both;
 	margin-top: 20px;
@@ -55,11 +55,11 @@
 	cursor: pointer;
 }
 
-.listProfilFollow:hover {color: $darkGrey;}
-.listProfilFollow i {position: absolute; left: 0; font-size: 9px;}
+.listProfileFollow:hover {color: $darkGrey;}
+.listProfileFollow i {position: absolute; left: 0; font-size: 9px;}
 
 
 // in search results
 
-#search .listProfil {	float: none; width: 620px;}
-#search .listProfilRight {	width: 570px;}
+#search .listProfile {	float: none; width: 620px;}
+#search .listProfileRight {	width: 570px;}
