@@ -111,7 +111,7 @@
 #reactionsToPost h1 {
 	font-weight: normal;
 	font-size: 13px;
-	padding: 0;
+	padding: 0 0 20px 0;
 	margin: 0;
     font-family: 'nerisblack';
     text-transform: uppercase;
@@ -122,11 +122,11 @@
 	float: left;
 	width: 100%;
 	clear: both;
-	padding: 40px 0 40px 0;
+	padding: 20px 0;
 	border-bottom: solid 1px $semiDarkGrey;
 }
 
-.reactionsToPostItem:last-child {border: none; padding-bottom: 20px;}
+.reactionsToPostItem:last-child {border: none;}
 
 .reactionsToPostItemHeader {
 	float: left;
