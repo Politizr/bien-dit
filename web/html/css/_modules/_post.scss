@@ -99,6 +99,34 @@
 }
 #giveNote .notePlus:hover, #giveNote .noteMinus:hover {color: #fff; }
 
+// reaction to post
+
+#reactionsToPost {
+	padding: 40px 40px 20px 40px;
+	float: left;
+	width: calc(100% - 80px);
+	clear: both;
+}
+
+#reactionsToPost h1 {
+	font-weight: normal;
+	font-size: 13px;
+	padding: 0 0 20px 0;
+	margin: 0;
+    font-family: 'nerisblack';
+    text-transform: uppercase;
+    color: $highlight;
+}
+
+.reactionsToPostItem {
+	float: left;
+	width: 100%;
+	clear: both;
+	background: aqua;
+	padding: 20px 0;
+}
+
+
 // comments
 
 .comments {
