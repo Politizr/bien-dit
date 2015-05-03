@@ -20,8 +20,8 @@
 	line-height: 200%;
 }
 
-.paragraph p.summary, .paragraph p a {	color: $highlight;}
-.paragraph p a:hover {color: $darkGrey;}
+.paragraph p.summary, .paragraph p a, .paragraph p.summary a:hover { color: $darkHighlight;}
+.paragraph p a:hover, .paragraph p.summary a {color: $darkGrey;}
 
 .paragraph p.summary::before {
 	content: "—";

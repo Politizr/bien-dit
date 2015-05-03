@@ -212,7 +212,7 @@
 							<div class="illustrationShadow"></div>
 							<img src="images/illustration06.jpg">
 						</div>
-						<div class="listPostFollow"><i class="icon-check-insquare"></i>Suivre</div><a href="user_debate.html" class="shotPost"><i class="icon-goto"></i>Afficher</a>
+						<div class="listPostFollow"><i class="icon-check-insquare"></i>Suivre</div><a href="user_debate.html" class="modalItemShow"><i class="icon-goto"></i>Afficher</a>
 					</div>
 					
 					<div class="loadMore" style="display: none;">
@@ -2164,6 +2164,7 @@
 				/* open classement */
 				$("body").on("click", "#linkRanking", function() {
 					$('#ranking').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2171,6 +2172,7 @@
 				/* open suggestion */
 				$("body").on("click", "#linkSuggestions", function() {
 					$('#suggestions').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2178,6 +2180,8 @@
 				/* open listbytag */
 				$("body").on("click", ".openListByTag", function() {
 					$('#listByTag').fadeIn('fast');
+					$('body').addClass('noscroll');
+					$('#ranking, #suggestions, #search, #formAbuse').fadeOut('fast');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2185,6 +2189,7 @@
 				/* open search */
 				$("body").on("click", ".openSearch", function() {
 					$('#search').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2193,6 +2198,7 @@
 				/* open form abus */
 				$("body").on("click", ".signalAbuse", function() {
 					$('#formAbuse').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2200,7 +2206,8 @@
 				
 				/* close modal */
 				$("body").on("click", ".modalClose", function() {
-					$(this).parent().parent().parent('.modal').fadeOut('fast');
+					$('body').removeClass('noscroll');
+					$(this).parent().parent().parent('.modal').hide();		
 				});
 				
 				/* notifications */
