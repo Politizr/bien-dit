@@ -1,19 +1,21 @@
               beforeSend: function ( xhr ) {
-                $('#notifError').hide();
+                $('#infoBoxHolder.boxSuccess').hide();
+                $('#infoBoxHolder.boxError').hide();
+                $('#infoBoxHolder.boxAlert').hide();
               },
               statusCode: {
                 404: function() {
-                  $('.alert-danger-msg').html('Erreur 404: merci de recharger la page.');
-                  $('.alert.alert-danger').show();
+                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur 404: cette action n\'existe pas.');
+                  $('#infoBoxHolder.boxError').show();
                 },
                 500: function() {
-                  $('.alert-danger-msg').html('Erreur 500: merci de recharger la page.');
-                  $('.alert.alert-danger').show();
+                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur 500: merci de recharger la page.');
+                  $('#infoBoxHolder.boxError').show();
                 }
               },            
               error: function(jqXHR, textStatus, errorThrown) {
-                  $('.alert-danger-msg').html('Erreur inconnue: merci de recharger la page.');
+                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+                  $('#infoBoxHolder.boxError').show();
                   console.log('textStatus - '+textStatus);
                   console.log('errorThrown - '+errorThrown);
-                  $('.alert.alert-danger').show();
               },

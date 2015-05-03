@@ -38,10 +38,10 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
                     $(this).find('.counter').html(data['counter']);
@@ -65,10 +65,10 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
                     $(this).find('.counter').html(data['counter']);

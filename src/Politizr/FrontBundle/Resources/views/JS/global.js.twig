@@ -3,14 +3,14 @@
     //      Initialisation
     // **************************** //
     $(document).ready(function () {
-        $('#ajax-loader').hide();
+        $('#ajaxGlobalLoader').hide();
     });
 
     // **************************** //
     //      Fonctions simples
     // **************************** //
-    $('body').on('click', '.close', function(e){
+    $('body').on('click', '.icon-cross', function(e){
         // cache parent div
-        $(this).parents('div').hide();
+        $(this).closest('div').hide();
     });
 </script>

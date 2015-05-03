@@ -22,13 +22,13 @@
             data: $("#form-orga-update").serialize(),
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
-                    $('.alert-success-msg').html('Organisation bien enregistrée.');
-                    $('.alert.alert-success').show();
+                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Organisation bien enregistrée.');
+                    $('#infoBoxHolder.boxSuccess').show();
                 }
             }
         });
@@ -45,13 +45,13 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
-                    $('.alert-success-msg').html('Affinités mises à jour.');
-                    $('.alert.alert-success').show();
+                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Affinités mises à jour.');
+                    $('#infoBoxHolder.boxSuccess').show();
                 }
             }
         });
@@ -69,13 +69,13 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
-                    $('.alert-success-msg').html('Mandat bien enregistré.');
-                    $('.alert.alert-success').show();
+                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat bien enregistré.');
+                    $('#infoBoxHolder.boxSuccess').show();
 
                     $('#mandates').html(data['html']);
                 }
@@ -94,13 +94,13 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
-                    $('.alert-success-msg').html('Mandat mis à jour.');
-                    $('.alert.alert-success').show();
+                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat mis à jour.');
+                    $('#infoBoxHolder.boxSuccess').show();
                 }
             }
         });
@@ -120,13 +120,13 @@
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
-                        $('#ajax-loader').hide();
+                        $('#ajaxGlobalLoader').hide();
                         if (data['error']) {
-                            $('.alert-danger-msg').html(data['error']);
-                            $('.alert.alert-danger').show();
+                            $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                            $('#infoBoxHolder.boxError').show();
                         } else {
-                            $('.alert-success-msg').html('Mandat supprimé.');
-                            $('.alert.alert-success').show();
+                            $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat supprimé.');
+                            $('#infoBoxHolder.boxSuccess').show();
 
                             $(this).closest('.mandate').slideUp();
                         }

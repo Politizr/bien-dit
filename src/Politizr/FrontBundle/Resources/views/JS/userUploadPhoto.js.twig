@@ -41,11 +41,11 @@
         // iframe: true,
         beforeSend: function() 
         {
-            $('#ajax-loader').show();
+            $('#ajaxGlobalLoader').show();
         },
         success: function() 
         {
-            $('#ajax-loader').hide();
+            $('#ajaxGlobalLoader').hide();
         },
         complete: function(data) 
         {
@@ -62,17 +62,17 @@
             console.log('data parse JSON = ' + data);
 
             if (!data['success']) {
-                $('.alert-danger-msg').html(data['error']);
-                $('.alert.alert-danger').show();
+                $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                $('#infoBoxHolder.boxError').show();
             } else {
                 $('#header').css('background-image', 'url(/uploads/users/'+data['filename']+')');
             }
         },
         error: function(data)
         {
-            $('#ajax-loader').hide();
-            $('.alert-danger-msg').html('Erreur inconnue: merci de recharger la page.');
-            $('.alert.alert-danger').show();
+            $('#ajaxGlobalLoader').hide();
+            $('#infoBoxHolder.boxError.notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+            $('#infoBoxHolder.boxError').show();
         }
     }; 
 
@@ -81,11 +81,11 @@
         // iframe: true,
         beforeSend: function() 
         {
-            $('#ajax-loader').show();
+            $('#ajaxGlobalLoader').show();
         },
         success: function() 
         {
-            $('#ajax-loader').hide();
+            $('#ajaxGlobalLoader').hide();
         },
         complete: function(data) 
         {
@@ -102,17 +102,17 @@
             console.log('data parse JSON = ' + data);
 
             if (!data['success']) {
-                $('.alert-danger-msg').html(data['error']);
-                $('.alert.alert-danger').show();
+                $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                $('#infoBoxHolder.boxError').show();
             } else {
                 $('#current-photo').html('<img class="img-rounded" src="/uploads/users/'+data['filename']+'" />')
             }
         },
         error: function(data)
         {
-            $('#ajax-loader').hide();
-            $('.alert-danger-msg').html('Erreur inconnue: merci de recharger la page.');
-            $('.alert.alert-danger').show();
+            $('#ajaxGlobalLoader').hide();
+            $('#infoBoxHolder.boxError.notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+            $('#infoBoxHolder.boxError').show();
         }
     }; 
 
@@ -131,10 +131,10 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
                     $('#header').css('background-image', 'url(/bundles/politizrfront/images/default_user_back.jpg');
                 }
@@ -156,10 +156,10 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
                     $('#current-photo').html('<img  class="img-rounded" src="{{ asset("bundles/politizrfront/images/default_user.png") }}">');
                 }

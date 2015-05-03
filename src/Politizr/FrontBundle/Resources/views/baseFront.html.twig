@@ -1,105 +1,92 @@
 <!doctype html>
 <html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
-<head>
-    <title>{% block title %}{% endblock title %}</title>
-    {% include 'PolitizrFrontBundle:Navigation:favicon.html.twig' %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Merriweather:300italic,400italic,300,400' rel='stylesheet' type='text/css'>
+        <meta name="description" content="{% block description %}{% endblock description %}">
 
-    <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
-    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
-
-    <meta name="description" content="{% block description %}{% endblock description %}">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-
-    {% block metaopengraph %}
-    {% endblock %}
-
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
-
-        <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/style.css') }}">
-
-        <link rel="stylesheet" href="{{ asset('components/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all" />
-        <link rel="stylesheet" href="{{ asset('components/bootstrap/css/bootstrap-theme.min.css') }}" type="text/css" media="all" />
-        <link rel="stylesheet" href="{{ asset('components/font-awesome/css/font-awesome.min.css') }}" type="text/css" media="all" />
-        <!--[if lt IE 7]>
-            <link rel="stylesheet" href="{{ asset('components/font-awesome/css/font-awesome-ie7.min') }}" type="text/css" media="all" />
-        <![endif]-->        
-    {% endblock %}
-
-    {% block javascriptHeader %}
-    {% endblock %}
-</head>
-{% block body %}
-    <body>
-        {% include 'PolitizrFrontBundle:Navigation:analytics.html.twig' %}
-        <noscript>
-            <div id="no-js-box">
-                Désolé, vous devez activer Javascript pour naviguer sur ce site.
-            </div>
-        </noscript>
-
-        {% block genericBoxes %}
-            <!-- ajax loader -->
-            <div id="ajax-loader" class="overlay-loader" style="display: none"></div>
-
-            <!-- box alert JS twitter bootstrap -->
-            <div class="alert alert-warning" style="display: none">
-                <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
-                <div class="alert-warning-msg">this is an alert message</div>
-            </div>                
-
-            <div class="alert alert-danger" style="display: none">
-                <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
-                <div class="alert-danger-msg">this is an alert message</div>
-            </div>                
-
-            <div class="alert alert-info" style="display: none">
-                <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
-                <div class="alert-info-msg">this is an alert message</div>
-            </div>                
-
-            <div class="alert alert-success" style="display: none">
-                <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
-                <div class="alert-success-msg">this is an alert message</div>
-            </div>                
-
-            <!-- les box alert serveur sont générés automatiquement via braincrafted/bootstrap-bundle -->
-            <!-- via session bag: success, error, alert, info -->
-            {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        {% block metaopengraph %}
         {% endblock %}
 
-        {% block header %}
-        {% endblock %}
-        
-        {% block connexionBox %}
-        {% endblock %}
-
-        {% block inscriptionSteps %}
-        {% endblock inscriptionSteps %}
-
-        {% block main %}
-        {% endblock main %}
-
-        {% block footer %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/PltzrIconFont.css') }}">        
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/PltzrIconFont-animation.css') }}">
         {% endblock %}
 
-        {% block javascriptFooter %}
-            {# jQuery (necessary for Bootstraps JavaScript plugins) #}
-            <script src="{{ asset('components/jquery/jquery.js') }}"></script>
+        {% block javascriptHeader %}
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.11.2.min.js') }}"></script>  
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/restive.min.js') }}"></script>    
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js') }}"></script>  
+            <!--
+            <script>
+                $(document).ready(function () {
+                    $('body').restive({
+                        breakpoints: ['400-p', '600-p', '820-p', '400-l', '600-l', '820-l', '1040-l', '10000'],
+                        classes: ['css1040 css820 css400', 'css1040 css820 css600', 'css1040 css820', 'css1040 css820 css400', 'css1040 css820 css600', 'css1040 css820', 'css1040', 'css'],
+                        force_dip: true
+                    });
+                });
+            </script>
+            -->
+        {% endblock %}
+    
+    </head>
+    {% block body %}
+        <body>
+            {% include 'PolitizrFrontBundle:Navigation:analytics.html.twig' %}
+            <noscript>
+                <div id="no-js-box">
+                    Désolé, vous devez activer Javascript pour naviguer sur ce site.
+                </div>
+            </noscript>
+
+            {% block genericBoxes %}
+                {# messages de succès / erreurs / alertes #} 
+                <div id="infoBoxHolder">        
+                    <div class="boxSuccess" style="display: none;">
+                        <div class="notifBoxText">Un texte de notification.</div>
+                        <i class="icon-cross"></i>
+                    </div>
+                    <div class="boxError" style="display: none;">
+                        <div class="notifBoxText">Un texte d'erreur.</div>
+                        <i class="icon-cross"></i>
+                    </div>
+                    <div class="boxAlert" style="display: none;">
+                        <div class="notifBoxText">Un texte d'alerte.</div>
+                        <i class="icon-cross"></i>
+                    </div>
+                </div>
+
+                {# loader ajax global #} 
+                <div id="ajaxGlobalLoader" class="modal">
+                    <div class="ajaxLoader">
+                        <i class="icon-spin5 animate-spin"></i>
+                        <div class="ajaxLoaderBg"></div>
+                    </div>
+                </div>                
+
+            {% endblock %}
+
+            {% block header %}
+            {% endblock %}
             
-            {# Bootstrap #}
-            <script src="{{ asset('components/bootstrap/js/bootstrap.js') }}"></script>
+            {% block connexionBox %}
+            {% endblock %}
 
-            {# Bootbox http://bootboxjs.com/ #}
-            <script src="{{ asset('components/bootbox/bootbox.js') }}"></script>
+            {% block inscriptionSteps %}
+            {% endblock inscriptionSteps %}
 
-            {# JQuery UI #}
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui-1.10.4.custom.min.js') }}"></script>
-        {% endblock %}
-    </body>
-{% endblock body %}
+            {% block main %}
+            {% endblock main %}
+
+            {% block footer %}
+            {% endblock %}
+
+            {% block javascriptFooter %}
+            {% endblock %}
+        </body>
+    {% endblock body %}
 </html>

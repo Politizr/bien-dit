@@ -12,7 +12,7 @@
             url : "{{ path('NotificationsLoad') }}",
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
 
                 // MAJ compteur
                 $('#notif-counter').html(data['nb']);
@@ -52,10 +52,10 @@
             data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
-                   $(this).attr('class', '');
-                   $('#notif-counter').html(parseInt($('#notif-counter').text()) - 1);
+                $(this).attr('class', '');
+                $('#notif-counter').html(parseInt($('#notif-counter').text()) - 1);
 
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
             }
         });
 
@@ -73,7 +73,7 @@
             data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
-                   window.location = $(this).attr('href');
+                window.location = $(this).attr('href');
             }
         });
 
@@ -95,7 +95,7 @@
 
                 // MAJ du compteur
                    $('#notif-counter').html('-');
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
             }
         });
 

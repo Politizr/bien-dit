@@ -51,9 +51,6 @@ class AppKernel extends Kernel
             // Géolocalisation
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
-            // Twitter Bootstrap
-            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-
             // FOSElastica
             new FOS\ElasticaBundle\FOSElasticaBundle(),
 

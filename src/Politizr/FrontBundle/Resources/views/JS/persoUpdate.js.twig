@@ -13,13 +13,13 @@
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
-                    $('.alert-success-msg').html('Les données modifiées ont bien été mises à jour.');
-                    $('.alert.alert-success').show();
+                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Les données modifiées ont bien été mises à jour.');
+                    $('#infoBoxHolder.boxSuccess').show();
                 }
             }
         });

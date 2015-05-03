@@ -33,11 +33,11 @@
         // iframe: true,
         beforeSend: function() 
         {
-            $('#ajax-loader').show();
+            $('#ajaxGlobalLoader').show();
         },
         success: function() 
         {
-            $('#ajax-loader').hide();
+            $('#ajaxGlobalLoader').hide();
         },
         complete: function(data) 
         {
@@ -54,17 +54,17 @@
             console.log('data parse JSON = ' + data);
 
             if (!data['success']) {
-                $('.alert-danger-msg').html(data['error']);
-                $('.alert.alert-danger').show();
+                $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                $('#infoBoxHolder.boxError').show();
             } else {
                 $('#current-photo').html(data['html']);
             }
         },
         error: function(data)
         {
-            $('#ajax-loader').hide();
-            $('.alert-danger-msg').html('Erreur inconnue: merci de recharger la page.');
-            $('.alert.alert-danger').show();
+            $('#ajaxGlobalLoader').hide();
+            $('#infoBoxHolder.boxError.notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+            $('#infoBoxHolder.boxError').show();
         }
     }; 
 
@@ -83,10 +83,10 @@
             data: $("#form-document-photo").serialize(),
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $('#ajax-loader').hide();
+                $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('.alert-danger-msg').html(data['error']);
-                    $('.alert.alert-danger').show();
+                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
+                    $('#infoBoxHolder.boxError').show();
                 } else {
                     $('#current-photo').html(data['html']);
                 }
