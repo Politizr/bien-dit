@@ -25,6 +25,16 @@
 -->
 	</head>
 	<body>
+		<!-- facebook sdk -->
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.3&appId=209537269111753";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+
 		<div id="infoBoxHolder">		
 			<div class="boxSuccess" style="display: none;">
 				<div class="notifBoxText">Votre commentaire a bien été publié.</div>
@@ -2062,9 +2072,75 @@
 						<div class="noteMinus"><i class="icon-note-minus"></i>0</div>
 					</div>
 				</div>
-				<div id="footer">
-					footer
+				<div id="reactionsToPost">
+					<h1>les réactions à cette publication</h1>
+					<div class="reactionsToPostItem">
+						<div class="reactionsToPostItemHeader">
+							<span>Le 5 juillet à 10h34</span>
+							<div class="reactionsToPostItemSummary"><i class="icon-notif-yes"></i><a href="user_profile-official.html">M. Jean-Pierre Dupond</a> <a href="user_partySheet.html" class="parti">modem</a> a réagit :</div>
+						</div>
+						<div class="reactionsToPostItemContent">
+							<div class="reactionsToPostItemIllustration"><img src="images/illustration01.jpg"></div>
+							<div class="avatar40"><img src="images/profil_damien.jpg"></div>
+							<div class="reactionsToPostItemPostSummary"><a href="user_debate.html">La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombreux citoyens intéressés, qui s’étonnent que leur bulletin blanc ne soit pas distingué des votes.</a></div>
+						</div>
+						<div class="reactionsToPostItemFooter">
+							<div class="postSummaryActivity">
+								<div class="reactionsCounter"><i class="icon-reaction"></i>3 réactions</div><div class="commentsCounter"><i class="icon-comment"></i>34 commentaires</div><div class="readingTime"><i class="icon-time"></i>4 minutes</div>
+							</div>
+							<div class="postNote"><div class="notePlus">2<i class="icon-note-light-plus"></i></div><div class="noteMinus"><i class="icon-note-light-minus"></i>0</div></div>
+							<a href="user_debate.html" class="linkToPost"><i class="icon-goto"></i>Afficher</a>
+						</div>
+					</div>
+					<div class="reactionsToPostItem">
+						<div class="reactionsToPostItemHeader">
+							<span>Hier à 14h50</span>
+							<div class="reactionsToPostItemSummary"><i class="icon-notif-yes"></i><a href="user_profile-official.html">M. Alain Vidalies</a> <a href="user_partySheet.html" class="parti">ps</a> a réagit :</div>
+						</div>
+						<div class="reactionsToPostItemContent">
+							<div class="reactionsToPostItemIllustration"><img src="images/illustration02.jpg"></div>
+							<div class="avatar40"><img src="images/profil_alain.jpg"></div>
+							<div class="reactionsToPostItemPostSummary"><a href="user_debate.html">La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations comme par de nombr La reconnaissance du vote blanc n’est pas une question nouvelle, loin s’en faut. Elle est ainsi régulièrement évoquée par les associations.</a></div>
+						</div>
+						<div class="reactionsToPostItemFooter">
+							<div class="postSummaryActivity">
+								<div class="reactionsCounter"><i class="icon-reaction"></i>3 réactions</div><div class="commentsCounter"><i class="icon-comment"></i>4 commentaires</div><div class="readingTime"><i class="icon-time"></i>20 minutes</div>
+							</div>
+							<div class="postNote"><div class="notePlus">45<i class="icon-note-light-plus"></i></div><div class="noteMinus"><i class="icon-note-light-minus"></i>-5</div></div>
+							<a href="user_debate.html" class="linkToPost"><i class="icon-goto"></i>Afficher</a>
+						</div>
+					</div>
+					<div class="reactionsToPostItem">
+						<div class="reactionsToPostItemHeader">
+							<span>23h43</span>
+							<div class="reactionsToPostItemSummary"><i class="icon-notif-yes"></i><a href="user_profile-official.html">Mme Martine Lévy</a> <a href="user_partySheet.html" class="parti">lr</a> a réagit :</div>
+						</div>
+						<div class="reactionsToPostItemContent">
+							<div class="reactionsToPostItemIllustration"><img src="images/reactionsToPostItemIllustration_default.jpg"></div>
+							<div class="avatar40"><img src="images/profil_default.png"></div>
+							<div class="reactionsToPostItemPostSummary"><a href="user_debate.html">Le vote blanc n’est pas uniquement l’expression de gens indécis, indifférents ou sans opinion. Il n’est pas plus confondu les erreurs matérielles, volontaires ou involontaires, qui caractérisent le vote nul.</a></div>
+						</div>
+						<div class="reactionsToPostItemFooter">
+							<div class="postSummaryActivity">
+								<div class="reactionsCounter"><i class="icon-reaction"></i>aucune réaction</div><div class="commentsCounter"><i class="icon-comment"></i>aucun commentaire</div><div class="readingTime"><i class="icon-time"></i>20 minutes</div>
+							</div>
+							<div class="postNote"><div class="notePlus">0<i class="icon-note-light-plus"></i></div><div class="noteMinus"><i class="icon-note-light-minus"></i>-563</div></div>
+							<a href="user_debate.html" class="linkToPost"><i class="icon-goto"></i>Afficher</a>
+						</div>
+					</div>
 				</div>
+				
+				<div id="footer">
+					<div id="footerLeft">
+						<a href="user_about.html">À propos</a>
+						<a href="user_cgucgv.html">Conditions</a>
+						<a href="user_assistance.html">Assistance</a>
+					</div>
+					<div id="footerRight">
+						<div class="fb-like" data-href="https://www.facebook.com/Politizr" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		<!-- close success / error / alert -->
@@ -2088,6 +2164,7 @@
 				/* open classement */
 				$("body").on("click", "#linkRanking", function() {
 					$('#ranking').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2095,6 +2172,7 @@
 				/* open suggestion */
 				$("body").on("click", "#linkSuggestions", function() {
 					$('#suggestions').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2102,6 +2180,8 @@
 				/* open listbytag */
 				$("body").on("click", ".openListByTag", function() {
 					$('#listByTag').fadeIn('fast');
+					$('body').addClass('noscroll');
+					$('#ranking, #suggestions, #search, #formAbuse').fadeOut('fast');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2109,6 +2189,7 @@
 				/* open search */
 				$("body").on("click", ".openSearch", function() {
 					$('#search').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2117,6 +2198,7 @@
 				/* open form abus */
 				$("body").on("click", ".signalAbuse", function() {
 					$('#formAbuse').fadeIn('fast');
+					$('body').addClass('noscroll');
 					$('html, body').animate({
 						scrollTop: $("body").offset().top
 					}, 0);
@@ -2124,7 +2206,8 @@
 				
 				/* close modal */
 				$("body").on("click", ".modalClose", function() {
-					$(this).parent().parent().parent('.modal').fadeOut('fast');
+					$('body').removeClass('noscroll');
+					$(this).parent().parent().parent('.modal').hide();		
 				});
 				
 				/* notifications */
@@ -2230,6 +2313,17 @@
 		<script type="text/javascript">
 			$(function(){	
 			    $(".avatar40, .avatar60").imgLiquid({
+			        fill: true,
+			        horizontalAlign: "center",
+			        verticalAlign: "center"
+			    });   
+			});
+		</script>
+		
+		<!-- full size image in reaction to post illustration -->
+		<script type="text/javascript">
+			$(function(){	
+			    $(".reactionsToPostItemIllustration").imgLiquid({
 			        fill: true,
 			        horizontalAlign: "center",
 			        verticalAlign: "center"

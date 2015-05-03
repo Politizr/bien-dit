@@ -60,13 +60,6 @@ body {
 	z-index: 10000;
 }
 
-#footer {
-	padding: 60px 0 40px 0;
-	float: left;
-	width: 100%;
-	clear: both;
-}
-
 #social {
 	position: absolute;
 	top: 60px;
@@ -115,6 +108,13 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2a2a2a',GradientType=0 ); /* IE6-9 */
 }
 
+#footer {
+	padding: 60px 0 24px 0;
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
 #goUpHolder {
 	position: fixed;
 	width: 40px;
@@ -135,3 +135,5 @@ body {
 	font-size: 10px;
 	cursor: pointer;
 }
+
+#goUp:hover {color: $darkGrey;}
