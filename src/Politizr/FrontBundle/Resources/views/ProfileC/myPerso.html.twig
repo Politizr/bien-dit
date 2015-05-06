@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h1>Mes informations personnelles</h1>
         <p>
             Vous disposez actuellement d'un compte citoyen.
@@ -57,7 +57,7 @@
                 {{ form_row(formPerso2.email) }}
                 {{ form_row(formPerso2.newsletter) }}
 
-                {{ form_row(formPerso2.actions) }}
+                <button type="button" action="btn-submit-perso" form-id-name="form-perso2">Mettre à jour</button>
             {{ form_end(formPerso2) }}
         </div>
         
@@ -74,7 +74,7 @@
                 <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
                 <hr>
 
-                {{ form_row(formPerso3.actions) }}
+                <button type="button" action="btn-submit-perso" form-id-name="form-perso3">Mettre à jour</button>
             {{ form_end(formPerso3) }}
         </div>
 

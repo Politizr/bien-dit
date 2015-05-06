@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h1>Mes informations personnelles</h1>
         <p>
             Vous disposez actuellement d'un compte débatteur.
@@ -21,7 +21,7 @@
                     <p class="bg-info">Ces informations ont été validé par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.</p>
                 {% else %}
                     <div class="col-lg-offset-2 col-lg-10">
-                        <button type="button" id="user_actions_save" name="user[actions][save]" class="btn-success btn btn-default" action="btn-submit-perso" form-id-name="form-perso1">Mettre à jour</button>
+                        <button type="button" action="btn-submit-perso" form-id-name="form-perso1">Mettre à jour</button>
                     </div>                    
                 {% endif %}
             {{ form_end(formPerso1) }}
@@ -37,7 +37,7 @@
                 {{ form_row(formPerso2.email) }}
                 {{ form_row(formPerso2.newsletter) }}
 
-                {{ form_row(formPerso2.actions) }}
+                <button type="button" action="btn-submit-perso" form-id-name="form-perso2">Mettre à jour</button>
             {{ form_end(formPerso2) }}
         </div>
         
@@ -54,7 +54,7 @@
                 <p class="bg-info">Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
                 <hr>
 
-                {{ form_row(formPerso3.actions) }}
+                <button type="button" action="btn-submit-perso" form-id-name="form-perso3">Mettre à jour</button>
             {{ form_end(formPerso3) }}
         </div>
 

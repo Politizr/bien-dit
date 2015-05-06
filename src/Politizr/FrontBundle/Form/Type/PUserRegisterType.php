@@ -16,8 +16,8 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
 
 /**
- * TODO: commentaires
- * 
+ * Inscription user citoyen
+ *
  * @author Lionel Bouzonville
  */
 class PUserRegisterType extends AbstractType
@@ -25,61 +25,52 @@ class PUserRegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('qualified', 'hidden', array(
-            'attr'     => array( 'value' => false )
-            )
-        );
+            'attr' => array( 'value' => false)
+        ));
+
         $builder->add('p_u_status_id', 'hidden', array(
             'attr'     => array( 'value' => PUStatus::ACTIVED )
-            )
-        );
+        ));
+
         $builder->add('online', 'hidden', array(
             'attr'     => array( 'value' => false )
-            )
-        );
+        ));
 
         $builder->add('username', 'text', array(
             'required' => true,
-            'label' => 'Identifiant', 
+            'label' => 'Identifiant',
             'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
             'attr' => array('placeholder' => 'Identifiant')
-            )
-        );
+        ));
         
         # TODO > contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
                 'label' => 'Mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe') 
-                ),
+                'attr' => array('placeholder' => 'Mot de passe')
+            ),
             'second_options' =>   array(
                 'label' => 'Confirmation',
-                'attr' => array('placeholder' => 'Mot de passe') 
-                ),
+                'attr' => array('placeholder' => 'Mot de passe')
+            ),
             'type' => 'password',
             'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
-            )
-        );
+        ));
 
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
-                ]
-            ]);
-        
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'register';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -87,5 +78,4 @@ class PUserRegisterType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

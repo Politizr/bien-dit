@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h1>Migration vers un compte élu</h1>
         <p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les autres débatteurs sur Politizr.</p>
         <hr>
@@ -33,7 +33,7 @@
                 {{ form_row(form.uploaded_supporting_document) }}
                 {{ form_row(form.elective_mandates) }}
 
-                {{ form_row(form.actions) }}
+                <button type="submit">Valider</button>
             {{ form_end(form) }}
             <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
         </div>

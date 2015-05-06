@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Gestion de la MAJ des données personnelles
- * 
+ *
  * @author Lionel Bouzonville
  */
 class PUserConnectionType extends AbstractType
@@ -33,44 +33,35 @@ class PUserConnectionType extends AbstractType
         // Username / Password
         $builder->add('username', 'text', array(
             'required' => true,
-            'label' => 'Identifiant', 
+            'label' => 'Identifiant',
             'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
-            )
-        );
+        ));
 
         # TODO > contraintes en plus mot de passe "fort"
         $builder->add('password', 'repeated', array(
             // 'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe', 
+                'label' => 'Mot de passe',
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation', 
+                'label' => 'Confirmation',
                 ),
             'type' => 'password',
             // 'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
-            )
-        );
-
-
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso3' ] ]],
-                ]
-            ]);
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -78,5 +69,4 @@ class PUserConnectionType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

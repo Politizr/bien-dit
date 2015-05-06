@@ -2,6 +2,7 @@
 <html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
     <head>
         <title>{% block title %}{% endblock title %}</title>
+        {% include 'PolitizrFrontBundle:Navigation:favicon.html.twig' %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -70,6 +71,20 @@
 
             {% endblock %}
 
+            {% block modalBoxes %}
+            {% endblock %}
+            
+            {% block wrapper %}
+            {% endblock wrapper %}
+
+            {% block javascriptFooter %}
+            {% endblock %}
+        </body>
+    {% endblock body %}
+</html>
+{#
+@todo / structures à rechercher/remplacer
+
             {% block header %}
             {% endblock %}
             
@@ -85,8 +100,4 @@
             {% block footer %}
             {% endblock %}
 
-            {% block javascriptFooter %}
-            {% endblock %}
-        </body>
-    {% endblock body %}
-</html>
+#}

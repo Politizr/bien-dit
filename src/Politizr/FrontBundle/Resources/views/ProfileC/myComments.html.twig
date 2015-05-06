@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::layoutC.html.twig' %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h3>Mes commentaires</h3>
         {% for comment in comments %}
             {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment, 'docLink': true } %}

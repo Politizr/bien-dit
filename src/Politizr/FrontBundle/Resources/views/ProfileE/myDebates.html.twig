@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h3>Mes débats</h3>
         {% for debate in debates %}
             {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}

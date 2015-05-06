@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h1>Choix de la formule</h1>
         <p class="bg-info">Choisissez la formule la plus adaptée à vos besoins.</p>
         <div id="box-inscription-elected-order">
@@ -14,7 +14,8 @@
 
                 {{ form_row(form.p_o_subscription) }}
 
-                {{ form_row(form.actions) }}
+                <button type="submit">Valider</button>
+
             {{ form_end(form) }}
             <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
         </div>

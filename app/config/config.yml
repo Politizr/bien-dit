@@ -56,27 +56,6 @@ assetic:
             node_paths:     [/usr/local/lib/node_modules]
             apply_to:       "\.less$"
 
-# Twitter Bootstrap config
-braincrafted_bootstrap:
-    output_dir:             bootstrap
-    assets_dir:             %kernel.root_dir%/../vendor/twbs/bootstrap
-    jquery_path:            %kernel.root_dir%/../web/bundles/politizrfront/js/jquery-1.11.1.min.js
-    less_filter:            sass # "less", "lessphp", "sass" or "none"
-    fonts_dir:              %kernel.root_dir%/../web/fonts
-    icon_prefix:            fa
-    fontawesome_dir:        %kernel.root_dir%/../vendor/fortawesome/font-awesome
-    auto_configure:
-        assetic:            true
-        twig:               true
-        knp_menu:           true
-        knp_paginator:      true
-    customize:
-        variables_file:     ~
-        bootstrap_output:   %kernel.root_dir%/Resources/less/bootstrap.less
-        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
-
-
-
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

@@ -11,16 +11,22 @@
     <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
 {% endblock metaopengraph %}
 
-{% block header %}
-    {% include 'PolitizrFrontBundle:Navigation:headerC.html.twig' %}
-{% endblock %}
+{% block wrapper %}
+    <div class="wrapper">
+        {% block header %}
+            {% include 'PolitizrFrontBundle:Navigation:headerC.html.twig' %}
+        {% endblock %}
 
-{% block main %}
-{% endblock main %}
+        {% block content %}
+            {% block main %}
+            {% endblock main %}
 
-{% block footer %}
-    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-{% endblock %}
+            {% block footer %}
+                {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+            {% endblock %}
+        {% endblock content %}
+    </div>
+{% endblock wrapper %}
 
 {% block javascriptFooter %}
     {{ parent() }}

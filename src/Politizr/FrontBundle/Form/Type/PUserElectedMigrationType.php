@@ -17,7 +17,7 @@ use Politizr\Model\PUStatus;
 
 /**
  * Formulaire associée à la migration d'un compte citoyen vers débatteur
- * 
+ *
  * @author Lionel Bouzonville
  */
 class PUserElectedMigrationType extends AbstractType
@@ -32,72 +32,64 @@ class PUserElectedMigrationType extends AbstractType
         // Nom, prénom, etc.
         $builder->add('gender', 'choice', array(
             'required' => true,
-            'label' => 'Civilité', 
+            'label' => 'Civilité',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.')),
         ));
 
         $builder->add('name', 'text', array(
             'required' => true,
-            'label' => 'Nom', 
+            'label' => 'Nom',
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
-            )
-        );
+        ));
+
         $builder->add('firstname', 'text', array(
             'required' => true,
-            'label' => 'Prénom', 
+            'label' => 'Prénom',
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
-            )
-        );
+        ));
+
         $builder->add('birthday', 'date', array(
             'required' => true,
-            'label' => 'Date de naissance', 
+            'label' => 'Date de naissance',
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
-            )
-        );
+        ));
 
         // Justificatif + mandats électifs
         $builder->add('uploaded_supporting_document', 'file', array(
             'required' => true,
-            'label' => 'Pièce justificative', 
+            'label' => 'Pièce justificative',
             'mapped' => false,
             'attr' => array('help_text' => 'Scan de votre pièce d\'identité.'),
             'constraints' => new NotBlank(array('message' => 'Scan d\'une pièce justificative obligatoire.'))
-            )
-        );
+        ));
 
         $builder->add('elective_mandates', 'textarea', array(
             'required' => true,
-            'label' => 'Mandats électifs', 
+            'label' => 'Mandats électifs',
             'mapped' => false,
             'attr' => array('help_text' => 'Liste des mandats électifs exercés.'),
             'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.')),
             'attr' => array('placeholder' => 'Liste de vos mandats électifs passés ou présents')
-            )
-        );
+        ));
 
 
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
-                ]
-            ]);
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user_elected_migration';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -105,5 +97,4 @@ class PUserElectedMigrationType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

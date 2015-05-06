@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         {% include 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' with { 'debate': debate, 'paragraphs': paragraphs } %}
     </div>
 {% endblock main %}

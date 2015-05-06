@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <div class="row text-center">
             <div class="img-responsive">
                 <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_detail') }}" alt="{{ organization.initials }}">

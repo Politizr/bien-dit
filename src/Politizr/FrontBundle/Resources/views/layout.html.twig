@@ -15,19 +15,25 @@
     {{ parent() }}
 {% endblock stylesheets %}
 
-{% block header %}
-    {% include 'PolitizrFrontBundle:Navigation:header.html.twig' %}
-{% endblock %}
+{% block wrapper %}
+    <div class="wrapper">
+        {% block header %}
+            {% include 'PolitizrFrontBundle:Navigation:header.html.twig' %}
+        {% endblock %}
 
-{% block inscriptionSteps %}
-{% endblock inscriptionSteps %}
+        {% block inscriptionSteps %}
+        {% endblock inscriptionSteps %}
 
-{% block main %}
-{% endblock main %}
+        {% block content %}
+            {% block main %}
+            {% endblock main %}
 
-{% block footer %}
-    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-{% endblock %}
+            {% block footer %}
+                {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+            {% endblock %}
+        {% endblock content %}
+    </div>
+{% endblock wrapper %}
 
 {% block javascriptFooter %}
     {{ parent() }}

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('components/medium-editor/dist/css/themes/bootstrap.min.css') }}"> {# theme #}
 {% endblock %}
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h3>Mon profil public</h3>
         {% include 'PolitizrFrontBundle:Fragment\\User:DetailEdit.html.twig' with { 'user': user, 'form': formBio } %}
         

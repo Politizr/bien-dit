@@ -16,7 +16,7 @@ use Politizr\Model\PUser;
 
 /**
  * Gestion de la MAJ des données personnelles
- * 
+ *
  * @author Lionel Bouzonville
  */
 class PUserIdentityType extends AbstractType
@@ -26,7 +26,8 @@ class PUserIdentityType extends AbstractType
     /**
      *
      */
-    public function __construct(PUser $user) {
+    public function __construct(PUser $user)
+    {
         $this->user = $user;
     }
 
@@ -44,7 +45,7 @@ class PUserIdentityType extends AbstractType
         // Nom, prénom, etc. > non modifiable par l'utilisateur directement
         $builder->add('gender', 'choice', array(
             'required' => true,
-            'label' => 'Civilité', 
+            'label' => 'Civilité',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'empty_value' => 'Civilité',
             'disabled' => $this->user->getValidated()? true : false ,
@@ -53,40 +54,39 @@ class PUserIdentityType extends AbstractType
 
         $builder->add('name', 'text', array(
             'required' => true,
-            'label' => 'Nom', 
+            'label' => 'Nom',
             'disabled' => $this->user->getValidated()? true : false ,
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
-            )
-        );
+        ));
+
         $builder->add('firstname', 'text', array(
             'required' => true,
-            'label' => 'Prénom', 
+            'label' => 'Prénom',
             'disabled' => $this->user->getValidated()? true : false ,
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
-            )
-        );
+        ));
+
         $builder->add('birthday', 'date', array(
             'required' => true,
-            'label' => 'Date de naissance', 
+            'label' => 'Date de naissance',
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'disabled' => $this->user->getValidated()? true : false ,
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
-            )
-        );
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -94,5 +94,4 @@ class PUserIdentityType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

@@ -1,3 +1,50 @@
-<div class="container">
-    {% include 'PolitizrFrontBundle:Navigation:menuC.html.twig' %}
+<div id="header">
+    <div class="headerLogo">
+        <a href="{{ path('HomepageC') }}">
+            <i class="icon-pltzr-logo"></i>
+        </a>
+    </div>
+    <div id="headerCenter">
+        <div id="linkRanking"><i class="icon-ranking"></i>classement</div>
+        <div id="linkNotifications" class="notifYes"><i class="icon-notif-yes"></i>notifications</div>
+        <div id="linkSuggestions" class="notifNo"><i class="icon-notif-no"></i>suggestions</div>
+    </div>
+    <div id="headerRight">
+        <div id="linkMenuPreferences">
+            <div id="openMenuPreferences"><i class="icon-gear"></i><i class="icon-arrow-down"></i></div>
+            <div id="hideMenuPreferences" style="display: none;"><i class="icon-gear"></i><i class="icon-arrow-up"></i></div>
+        </div>              
+        <div id="menuPreferences" style="display: none;">
+            <div class="pad40">
+                <h2>mes préférences<i class="icon-prefs"></i></h2>
+                <a href="#">Réglages des notifications</a>
+                <a href="#">Paramètres de connexion</a>
+                <a href="#">Modifier ma formule</a>
+                <a class="disconnect" href="#">déconnexion<i class="icon-cross-insquare"></i></a>
+            </div>
+        </div>
+    </div>
+    <div id="menu">
+        <div class="pad40">
+            {% include 'PolitizrFrontBundle:Navigation:menuC.html.twig' %}
+            {#
+            <div class="openSearch">recherchez<i class="icon-search"></i></div>
+            <a class="linkMyPolitizr" href="user_mypolitizr.html"><i class="icon-timeline"></i>mon politizr</a>
+            <a href="user_edit-newpost.html"><i class="icon-quote"></i>nouveau débat</a>
+            <a href="user_contents-drafts"><i class="icon-draft"></i>brouillons</a>
+            <a class="miniLink" href="user_contents-myposts.html">mes débats</a>
+            <a class="miniLink" href="user_contents-myreactions.html">mes réactions</a>
+            <a class="miniLink" href="user_monprofil-official.html">mon profil</a>
+            #}
+        </div>
+    </div>
+    
+    <div id="social">
+        <div class="pad40">
+            <a href=""><i class="icon-social-fb"></i></a>
+            <a href=""><i class="icon-social-tw"></i></a>
+            <a href=""><i class="icon-social-gg"></i></a>
+            <div class="signalAbuse"><i class="icon-alert"></i></div>
+        </div>
+    </div>
 </div>

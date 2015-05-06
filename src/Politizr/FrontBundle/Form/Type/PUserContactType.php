@@ -1,5 +1,4 @@
 <?php
-
 namespace Politizr\FrontBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -16,8 +15,8 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUStatus;
 
 /**
- * TODO: commentaires
- * 
+ * Inscription user citoyen étape 2
+ *
  * @author Lionel Bouzonville
  */
 class PUserContactType extends AbstractType
@@ -26,25 +25,24 @@ class PUserContactType extends AbstractType
     {
         $builder->add('id', 'hidden', array(
             'required' => true
-            )
-        );
+        ));
+
         $builder->add('qualified', 'hidden', array(
             'attr'     => array( 'value' => false )
-            )
-        );
+        ));
+
         $builder->add('p_u_status_id', 'hidden', array(
             'attr'     => array( 'value' => PUStatus::ACTIVED )
-            )
-        );
+        ));
+
         $builder->add('online', 'hidden', array(
             'attr'     => array( 'value' => true )
-            )
-        );
+        ));
 
 
         $builder->add('gender', 'choice', array(
             'required' => true,
-            'label' => 'Civilité', 
+            'label' => 'Civilité',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'expanded' => true,
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
@@ -52,74 +50,63 @@ class PUserContactType extends AbstractType
 
         $builder->add('name', 'text', array(
             'required' => true,
-            'label' => 'Nom', 
+            'label' => 'Nom',
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
             'attr' => array('placeholder' => 'Nom')
-            )
-        );
+        ));
+
         $builder->add('firstname', 'text', array(
             'required' => true,
-            'label' => 'Prénom', 
+            'label' => 'Prénom',
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
             'attr' => array('placeholder' => 'Prénom')
-            )
-        );
+        ));
+
         $builder->add('birthday', 'date', array(
             'required' => true,
-            'label' => 'Date de naissance', 
+            'label' => 'Date de naissance',
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
             'attr' => array('placeholder' => 'JJ/MM/AAAA')
-            )
-        );
+        ));
 
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
                 'label' => 'Email',
                 'attr' => array('placeholder' => 'Email')
-                ),
+            ),
             'second_options' =>   array(
                 'label' => 'Confirmation email',
-                'attr' => array('placeholder' => 'Email') 
-                ),
+                'attr' => array('placeholder' => 'Email')
+            ),
             'type' => 'email',
             'constraints' => array(
                 new NotBlank(array('message' => 'Email obligatoire.')),
                 new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
-                )
             )
-        );
+        ));
 
-        $builder->add('newsletter', 'checkbox', array(  
+        $builder->add('newsletter', 'checkbox', array(
             'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr', 
+            'label' => 'Je souhaite recevoir les news de Politizr',
             'attr'     => array( 'checked' => 'checked', 'align_with_widget' => true )
-            )
-        );
-
-
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Valider', 'attr' => [ 'class' => 'btn-success' ] ]],
-                ]
-            ]);
-        
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user_contact';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -127,5 +114,4 @@ class PUserContactType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

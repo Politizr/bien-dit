@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         {% if form.vars.errors|length %}
             <div class="box-error">
                 {{ form_errors(form) }}
@@ -24,7 +24,8 @@
                 {{ form_row(form.email) }}
                 {{ form_row(form.newsletter) }}
 
-                {{ form_row(form.actions) }}
+                <button type="submit">Valider</button>
+
             {{ form_end(form) }}
             <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
         </div>

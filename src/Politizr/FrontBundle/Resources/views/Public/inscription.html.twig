@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="content">
         <h1>Inscription</h1>
         <p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
         <div id="o-auth-buttons">
@@ -28,8 +28,9 @@
             {{ form_start(form, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
                 {{ form_row(form.username) }}
                 {{ form_row(form.plainPassword) }}
+        
+                <button type="submit">Valider</button>
 
-                {{ form_row(form.actions) }}
             {{ form_end(form) }}
             <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
         </div>

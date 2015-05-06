@@ -1,7 +1,34 @@
-<div class="container">
-    {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
-        {% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
-    {% else %}
-        {% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
-    {% endif %}
+<div id="header">
+    <div class="headerLogo">
+        <a href="{{ path('Homepage') }}">
+            <i class="icon-pltzr-logo"></i>
+        </a>
+    </div>
+    <div id="menu">
+        <div class="pad40">
+            {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
+                {% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
+            {% else %}
+                {% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
+            {% endif %}
+            {#
+            <div class="openSearch">recherchez<i class="icon-search"></i></div>
+            <a class="linkMyPolitizr" href="user_mypolitizr.html"><i class="icon-timeline"></i>mon politizr</a>
+            <a href="user_edit-newpost.html"><i class="icon-quote"></i>nouveau débat</a>
+            <a href="user_contents-drafts"><i class="icon-draft"></i>brouillons</a>
+            <a class="miniLink" href="user_contents-myposts.html">mes débats</a>
+            <a class="miniLink" href="user_contents-myreactions.html">mes réactions</a>
+            <a class="miniLink" href="user_monprofil-official.html">mon profil</a>
+            #}
+        </div>
+    </div>
+    
+    <div id="social">
+        <div class="pad40">
+            <a href=""><i class="icon-social-fb"></i></a>
+            <a href=""><i class="icon-social-tw"></i></a>
+            <a href=""><i class="icon-social-gg"></i></a>
+            <div class="signalAbuse"><i class="icon-alert"></i></div>
+        </div>
+    </div>
 </div>

@@ -13,7 +13,8 @@
             {{ form_row(formLogin.password) }}
             {{ form_row(formLogin.remember_me) }}
 
-            {{ form_row(formLogin.actions) }}
+            <button type="button" action="btn-submit-login">Connexion</button>
+            <button type="button" action="btn-lost-password">Mot de passe oublié?</button>
         {{ form_end(formLogin) }}
     </div>
     <div id="box-lost-password" style="display:none">
@@ -22,7 +23,8 @@
 
             {{ form_row(formLostPassword.email) }}
 
-            {{ form_row(formLostPassword.actions) }}
+            <button type="button" action="btn-submit-lost-password">Réinitialisation mot de passe</button>
+            <button type="button" action="btn-login">Connexion</button>
         {{ form_end(formLostPassword) }}
     </div>
     <hr>
