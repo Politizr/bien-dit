@@ -888,7 +888,7 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glNotificationList.html.twig',
+            'PolitizrFrontBundle:Notification:_list.html.twig',
             array(
                 'notifs' => $notifs,
             )

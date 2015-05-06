@@ -1,6 +1,12 @@
 @import "../_global/colors";
 
-input {	padding: 0; margin: 0; }
+input {	
+	padding: 0; 
+	margin: 0;
+	-webkit-appearance: none;
+    -webkit-border-radius:0; 
+    border-radius:0; 
+}
 input[type=submit] {cursor: pointer; font-family: 'fontello', 'nerissemibold'; border: none;}
 textarea {margin: 0;}
 textarea:focus, input:focus{    outline: 0;}
@@ -40,7 +46,7 @@ textarea:focus, input:focus{    outline: 0;}
 }
 
 .comments input[type=submit] {
-	background: transparent;
+	background-color: transparent;
 	color: $highlight;
 	font-size: 13px;
 	height: auto;
@@ -75,7 +81,7 @@ textarea:focus, input:focus{    outline: 0;}
 	border: none;
 	width: 90%;
 	display: inline-block;
-	background: transparent;
+	background-color: transparent;
 }
 
 #search form input[type=submit] {
@@ -92,7 +98,14 @@ textarea:focus, input:focus{    outline: 0;}
 	text-align: center;
 }
 
-#formAbuse .listProfile, #formAbuse form {	width: 480px; display: inline-block;}
+#formAbuse .listProfile, #formAbuse form {	width: 480px;}
+
+#formAbuse form {
+	clear: both;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 60px;
+}
 
 #formAbuse .listProfile {
 	margin-top: 60px;
@@ -127,7 +140,7 @@ textarea:focus, input:focus{    outline: 0;}
 }
 
 #formAbuse .actionsButtons {
-	margin-top: 60px;
+	margin: 60px 0;
 }
 
 #formAbuse form input[type=submit] {
@@ -152,4 +165,4 @@ textarea:focus, input:focus{    outline: 0;}
 	cursor: pointer;
 }
 
-#formAbuse form input[type=submit]:hover {	background: $darkGrey;}
+#formAbuse form input[type=submit]:hover {	background-color: $darkGrey;}

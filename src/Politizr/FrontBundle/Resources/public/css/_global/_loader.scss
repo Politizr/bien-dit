@@ -6,7 +6,7 @@
 	height: 100%;
 	left: 0;
 	top: 0;
-	background: transparent;
+	background-color: transparent;
 	z-index: 21000;
 }
 
@@ -17,6 +17,7 @@
 	left: 0;
 	top: 0;
 	z-index: 21000;
+	text-align: center;
 }
 
 .ajaxLoaderBg {
@@ -25,7 +26,7 @@
 	height: 100%;
 	left: 0;
 	top: 0;
-	background: transparent;
+	background-color: transparent;
 	z-index: 21000;
 }
 
@@ -33,12 +34,13 @@
 	position: absolute;
 	left: calc(50% - 8px);
 	top: calc(50% - 8px);
-	width: 16px;
+	width: 22px;
 	height: 16px;
 	font-size: 16px;
 	line-height: 100%;
 	padding: 0;
 	margin: 0;
+	font-family: 'fontello';
 }
 
 .loadMore {
@@ -57,7 +59,7 @@
 
 // spin box bg color
 .ajaxLoader, .modal .ajaxLoader {	
-	background: #fff;
+	background-color: #fff;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
@@ -65,9 +67,9 @@
 	filter:alpha(opacity=80);
 }
 
-#notifications .ajaxLoader {	background: $lightHighlight;}
+#notifications .ajaxLoader {	background-color: $lightHighlight;}
 #notifications .notifItem .ajaxLoader {
-	background: $lightHighlight;
+	background-color: $lightHighlight;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
@@ -78,7 +80,7 @@
 #giveNote .ajaxLoader {	background-color: $darkGrey;}
 
 // ajust icon because of box padding
-#notifications .notifItem .ajaxLoader i {		top: calc(50% - 18px);}
+#notifications .notifItem .ajaxLoader i { top: calc(50% - 18px);}
 
 
 // in actions buttons (i.e. form abus + add new comment)

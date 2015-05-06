@@ -13,9 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="content">
-        {% include 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' with { 'debate': debate, 'paragraphs': paragraphs } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Fragment\\Debate:Detail.html.twig' with { 'debate': debate, 'paragraphs': paragraphs } %}
 {% endblock main %}
 
 {% block javascriptFooter %}

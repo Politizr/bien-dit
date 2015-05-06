@@ -4,6 +4,18 @@
         notificationsCheck();
     })
 
+    // ouverture/fermeture box notifications
+    $("body").on("click", "#linkNotifications", function() {
+        $('#notifications').slideDown('fast');
+        $('html, body').animate({
+            scrollTop: $("body").offset().top
+        }, 'fast');
+    });
+    $("body").on("click", ".notifClose", function() {
+        $('#notifications').slideUp('fast');
+    });
+    
+
     // Regular function with arguments
     function notificationsCheck(){
         $.ajax({
@@ -17,20 +29,8 @@
                 // MAJ compteur
                 $('#notif-counter').html(data['nb']);
 
-                // http://getbootstrap.com/javascript/#popovers
-                // $('[data-toggle=popover]').popover('destroy');
-                $('[data-toggle=popover]').popover({
-                    container: 'body',
-                    placement: 'bottom',
-                    trigger: 'click',
-                    html: 'true',
-                    content: function (){ return data['html'] },
-                });
-
-                // maj contenu pour gérer les pb de rafraichissement / cache
-                var myPopover = $('[data-toggle=popover]').data('bs.popover');
-                myPopover.options.html = true;
-                myPopover.options.content = data['html'];
+                // MAJ listing des notifs
+                $('#notif-list').html(data['html']);
             }
         });
 
@@ -49,7 +49,7 @@
             dataType: 'json',
             url : "{{ path('NotificationCheck') }}",
             context: $(this).closest('tr'),
-            data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
+            data: { 'subjectId': $(this).closest('span').attr('subject-id') },
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
                 $(this).attr('class', '');
@@ -70,7 +70,7 @@
             dataType: 'json',
             url : "{{ path('NotificationCheck') }}",
             context: this,
-            data: { 'subjectId': $(this).closest('tr').attr('subject-id') },
+            data: { 'subjectId': $(this).closest('span').attr('subject-id') },
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
                 window.location = $(this).attr('href');
@@ -80,7 +80,7 @@
     })
     
     // check / uncheck toutes les notifications
-    $("body").on("click", "a[action='notification-check-all']", function(e) {
+    $("body").on("click", "div[action='notification-check-all']", function(e) {
         console.log('*** click notification-check-all');
 
         $.ajax({
@@ -90,11 +90,11 @@
             context: $(this).closest('table'),
             {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
-                   // MAJ du style des lignes du tableau
-                $('#notifTable tr').not('thead tr').attr('class', '');
+                // MAJ du style
+                $('.notifHighlight').attr('class', '');
 
                 // MAJ du compteur
-                   $('#notif-counter').html('-');
+                $('#notif-counter').html('-');
                 $('#ajaxGlobalLoader').hide();
             }
         });

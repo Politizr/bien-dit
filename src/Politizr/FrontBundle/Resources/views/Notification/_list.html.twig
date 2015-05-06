@@ -1,0 +1,20 @@
+{% for notif in notifs %}
+    <div class="notifItem withLoaderInside">
+        <div class="ajaxLoader" style="display: none;"><i class="icon-spin5 animate-spin"></i><div class="ajaxLoaderBg"></div></div>
+        <div class="notifItemHeader"><i class="icon-duo"></i>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}<i class="icon-cross"></i></div>
+        <div class="notifItemContent">
+            <span {% if not notif.checked %}class="notifHighlight"{% endif %} subject-id="{{ notif.id }}">
+                {{ notif | linkedNotification }}
+            </span>
+            <span>
+                <i class="fa fa-bullseye" {% if not notif.checked %}action="notification-check" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
+            </span>
+        </div>
+    </div>
+{% else %}
+    <tr>
+        <td colspan="2">
+            <p class="bg-info">Vous n'avez aucune notification.</p>
+        </td>
+    </tr>
+{% endfor %}

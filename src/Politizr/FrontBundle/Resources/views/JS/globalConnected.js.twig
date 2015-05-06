@@ -1,0 +1,14 @@
+<script>
+    /* hide / show menu preferences */
+    $("body").on("click", "#openMenuPreferences", function() {
+        $('#menuPreferences').show();
+        $(this).hide();
+        $('#hideMenuPreferences').show();
+    });
+    
+    $("body").on("click", "#hideMenuPreferences", function() {
+        $('#menuPreferences').hide();
+        $(this).hide();
+        $('#openMenuPreferences').show();
+    });    
+</script>

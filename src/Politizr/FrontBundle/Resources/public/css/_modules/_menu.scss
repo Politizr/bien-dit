@@ -45,7 +45,7 @@
 
 #menu .pad40 a i {
 	position: absolute;
-	left: 0;
+	left: -2px;
 	font-size: 12px;
 }
 
@@ -56,14 +56,14 @@
 }
 
 #menu .pad40 a.miniLink, #menu a.linkMyPolitizr {	color: $highlight;}
-#menu .pad40 a.miniLink:hover, #menu a.linkMyPolitizr:hover {	color: $darkGrey;}
 #menu .pad40 a:hover {	color: $highlight;}
+#menu .pad40 a.miniLink:hover, #menu a.linkMyPolitizr:hover {	color: $darkGrey;}
 
 //menu préférences
 
 #menuPreferences {
 	position: absolute;
-	background: $darkGrey;
+	background-color: $darkGrey;
 	color: #fff;
 	height: 360px;
 	width: 220px;
@@ -94,7 +94,7 @@
 	position: relative;
 }
 
-#menuPreferences h2 i { position: absolute;	right: 0;}
+#menuPreferences h2 i { position: absolute;	right: -2px;}
 
 #menuPreferences a.disconnect {
 	font-family: nerissemibold;
@@ -108,7 +108,7 @@
 #menuPreferences a.disconnect i {
 	font-size: 9px;
 	position: absolute;
-	right: 0;
+	right: -2px;
 }
 
 #menuPreferences a:hover {color: #fff;}

@@ -25,12 +25,14 @@
         {% endblock inscriptionSteps %}
 
         {% block content %}
-            {% block main %}
-            {% endblock main %}
+            <div id="content">
+                {% block main %}
+                {% endblock main %}
 
-            {% block footer %}
-                {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-            {% endblock %}
+                {% block footer %}
+                    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+                {% endblock %}
+            </div>
         {% endblock content %}
     </div>
 {% endblock wrapper %}

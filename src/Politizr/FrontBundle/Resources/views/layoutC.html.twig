@@ -18,12 +18,18 @@
         {% endblock %}
 
         {% block content %}
-            {% block main %}
-            {% endblock main %}
+            <div id="content">
+                {% block notifications %}
+                    {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}
+                {% endblock notifications %}
 
-            {% block footer %}
-                {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-            {% endblock %}
+                {% block main %}
+                {% endblock main %}
+
+                {% block footer %}
+                    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+                {% endblock %}
+            </div>
         {% endblock content %}
     </div>
 {% endblock wrapper %}
@@ -31,6 +37,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:globalConnected.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:share.js.twig' %}
     
     {% include 'PolitizrFrontBundle:JS:notifications.js.twig' %}

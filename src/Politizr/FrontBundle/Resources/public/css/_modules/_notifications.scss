@@ -3,6 +3,13 @@
 #notifications {
 	background-color: $lightHighlight;
 	margin-bottom: 60px;
+	float: left;
+	width: 100%;
+}
+
+#notifications .pad40 {
+	float: left;
+	width: calc(100% - 80px);
 }
 
 #notifHeader, #notifFooter {

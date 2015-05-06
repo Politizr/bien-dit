@@ -56,7 +56,7 @@ body.noscroll {
 
 .modalClose i {
 	position: absolute;
-	right: 0;
+	right: -2px;
 	font-size: 7px;
 }
 
@@ -106,7 +106,7 @@ body.noscroll {
 
 .modalChoices span i {
 	position: absolute;
-	left: 0;
+	left: -2px;
 }
 
 .modalFiltersTabs span:first-child, .modalChoices span:first-child {margin-left: 0;}
@@ -145,7 +145,7 @@ a.modalItemShow {
 	padding-left: 17px;
 }
 
-a.modalItemShow i {	position: absolute;	left: 0; }
+a.modalItemShow i {	position: absolute;	left: -2px; }
 a.modalItemShow:hover {color: $darkGrey;}
 
 .listPost .listProfileFollow {
@@ -197,18 +197,17 @@ a.modalItemShow:hover {color: $darkGrey;}
 	font-family: nerissemibold;
 	line-height: 160%;
 	position: relative;
-	-moz-box-shadow: 0px 0px 20px 0px #656565;
-	-webkit-box-shadow: 0px 0px 20px 0px #656565;
-	-o-box-shadow: 0px 0px 20px 0px #656565;
-	box-shadow: 0px 0px 20px 0px #656565;
-	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=NaN, Strength=20);
+	-moz-box-shadow: 0px 0px 20px 0px #000000;
+	-webkit-box-shadow: 0px 0px 20px 0px #000000;
+	-o-box-shadow: 0px 0px 20px 0px #000000;
+	box-shadow: 0px 0px 20px 0px #000000;
 }
 
 .boxSuccess a, .boxError a, .boxAlert a { text-decoration: underline; color: inherit;}
 
-.boxSuccess {background: $success;}
-.boxError {background: $error;}
-.boxAlert {background: $alert;}
+.boxSuccess {background-color: $success;}
+.boxError {background-color: $error;}
+.boxAlert {background-color: $alert;}
 
 .notifBoxText {	width: 220px;}
 

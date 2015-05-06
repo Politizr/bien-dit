@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
-    <div id="content">
+    <div id="main">
         <h3>Mes réactions</h3>
         {% for reaction in reactions %}
             {% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowUser.html.twig' with { 'reaction': reaction } %}

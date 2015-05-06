@@ -76,7 +76,7 @@
 // give note
 
 #giveNote {
-	background: $semiDarkGrey;
+	background-color: $semiDarkGrey;
 	float: left;
 	width: calc(100% - 80px);
 	padding: 20px 40px;	
@@ -172,7 +172,7 @@
 
 .reactionsToPostItemPostSummary {
 	float: right;
-	width: 550px;
+	width: calc(100% - 50px);
 	font-size: 15px;
 	line-height: 200%;
 	margin-top: -6px;
@@ -225,13 +225,13 @@ a.linkToPost {
 	font-size: 13px;
 }
 
-a.linkToPost i {	position: absolute;	left: 0; }
+a.linkToPost i {	position: absolute;	left: -2px; }
 a.linkToPost:hover {color: $darkGrey;}
 
 // comments
 
 .comments {
-	background: #fff;
+	background-color: #fff;
 	width: 540px;
 	padding: 20px 80px 60px 80px;
 	margin: 20px 0 0 -80px;
@@ -255,7 +255,7 @@ a.linkToPost:hover {color: $darkGrey;}
 
 .paragraph .commentsCounter i {
 	font-size: 12px;
-	right: 0;
+	right: -2px;
 	left: auto;
 }
 
@@ -276,7 +276,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .commentsClose i {
 	font-size: 9px;
 	position: absolute;
-	right: 0;
+	right: -2px;
 }
 
 .commentsEditNew {
@@ -353,8 +353,8 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-family: 'Merriweather Heavy Italic';
 }
 
-.notePlus, .noteMinus { cursor: pointer;}
-.notePlus:hover, .noteMinus:hover { color: $darkGrey;}
+.commentsNote .notePlus, .commentsNote  .noteMinus { cursor: pointer;}
+.commentsNote .notePlus:hover, .commentsNote  .noteMinus:hover { color: $darkGrey;}
 
 .commentLevel2 {
 	width: calc(100% - 100px);
@@ -370,10 +370,13 @@ a.linkToPost:hover {color: $darkGrey;}
 	position: relative;
 }
 .commentsSlideFormNew:hover {color: $darkGrey;}
-.commentsSlideFormNew i {position: absolute; left: 0;}
+.commentsSlideFormNew i {position: absolute; left: -2px;}
 
 .commentsSlideFormNew.commentLevel2 {
 	width: calc(100% - 120px);	
+	width: auto;
+	float: left;
+	margin-left: 78px;
 }
 
 // post author on post
@@ -447,16 +450,16 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummary .pad40 {
 	position: relative;
 	z-index: 1;
-	width: 620px;
+	width: calc(100% - 80px);
 	height: 280px;
 }
 
 .readingTime, .notePlus, .noteMinus { position: relative;}
 .readingTime i, .notePlus i, .noteMinus i {	position: absolute;}
-.readingTime { 	padding-left: 18px;}
+.readingTime { 	padding-left: 17px;}
 
 .readingTime i {
-	left: 0;
+	left: -2px;
 	font-size: 14px;
 	top: -1px;
 }
@@ -470,19 +473,19 @@ a.linkToPost:hover {color: $darkGrey;}
 .notePlus, .noteMinus {	float: left}
 .notePlus i, .noteMinus i {font-size: 9px;}
 .notePlus {margin-right: 5px; padding-right: 13px;}
-.notePlus i {	right: 0;}
+.notePlus i {	right: -2px;}
 .noteMinus {	padding-left: 13px;}
-.noteMinus i {	left: 0;}
+.noteMinus i {	left: -2px;}
 
 .postSummaryFooter {
 	position: absolute;
 	bottom: 40px;
-	width: 620px;
+	width: calc(100% - 80px);
 }
 
 .postSummaryGotoFil {
 	float: left;
-	width: 100%;
+	width: calc(100% - 20px);
 	line-height: 150%;
 	margin-bottom: 10px;
 	font-family: nerissemibold;
@@ -531,7 +534,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummaryAuthor a.parti {
 	font-size: 9px;
 	color: $highlight !important;
-	background: $darkGrey;	
+	background-color: $darkGrey;	
 }
 
 .postSummaryAuthor a.parti:hover {
@@ -559,16 +562,21 @@ a.linkToPost:hover {color: $darkGrey;}
 	margin-right: 40px;
 	display: inline-block;
 	position: relative;
-	padding-left: 18px;
+
 }
 
-.reactionsCounter i, .commentsCounter i {
+.reactionsCounter {	padding-left: 18px;}
+.commentsCounter {	padding-left: 20px;}
+
+.commentsCounter i {
 	position: absolute;
-	left: 0;
+	left: 0px;
 	font-size: 12px;
 }
 
 .reactionsCounter i {
+	position: absolute;
+	left: -1px;
 	font-size: 14px;
 	top: -1px;
 }

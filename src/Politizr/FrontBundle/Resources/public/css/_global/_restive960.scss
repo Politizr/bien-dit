@@ -1,0 +1,78 @@
+@import "colors";
+
+//////presets
+
+body.css960 .wrapper {	width: 100%;	position: relative;}
+
+body.css960 #header {
+	width: 100%;
+	margin-left: auto;
+	left: auto;
+}
+
+body.css960 #content {	padding-top: 60px;	width: calc(100% - 260px);}
+body.css960 #illustration_l, body.css960 #illustration_r {display: none;}
+body.css960 #footer {	width: calc(100% - 260px);}
+body.css960 #goUpHolder { display: none;}
+
+//////loader
+ 
+//////modal
+
+body.css960 .modalHeader {	width: 100%;}
+body.css960 .modalList {	width: 100%;}
+
+body.css960 .modalHeader .headerLogo a { margin-left: 25px;}
+body.css960 .modalClose {margin-right: 30px;}
+
+body.css960 .modalLeftCol {
+	width: calc(30% - 60px);
+	margin-left: 30px;
+}
+
+body.css960 .modalRightCol {
+	width: calc(70% - 40px);
+	margin-right: 30px;
+}
+
+
+body.css960 .postSummary, body.css960 .illustrationShadow {	height: 440px;}
+body.css960 .postSummary .pad40 {	height: 360px;}
+
+body.css960 .listProfileRight {	width: calc(100% - 50px);}
+
+//////form
+
+body.css960 #search form {
+	width: 60%;
+	padding: 0 20%;
+	margin: 40px 0 20px 0;
+	float: left;
+}
+
+//////header
+
+body.css960 #headerCenter {	width: calc(100% - 342px);}
+
+//////menu
+
+//////post
+
+body.css960 .postSummary {width: 100%;}
+body.css960 .postSummary .illustrationShadow {	width: 100%;}
+body.css960 .postSummaryFooter {	width: calc(100% - 80px);}
+body.css960 .paragraph {	width: calc(100% - 160px);	}
+body.css960 .reactionsToPostItemIllustration {	width: 100%;}
+
+//////profile
+
+//////footer
+
+//////actions
+
+body.css960 #fixedActions {
+	width: 160px;
+	left: 20px;
+}
+
+//////notifications
