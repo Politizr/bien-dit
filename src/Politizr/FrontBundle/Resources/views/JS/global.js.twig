@@ -13,4 +13,12 @@
         // cache parent div
         $(this).closest('div').hide();
     });
+
+    /* close modal */
+    $("body").on("click", "[action='modalClose']", function() {
+        $('body').removeClass('noscroll');
+        $(this).parent().parent().parent('.modal').hide();  
+        $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
+    });
+        
 </script>

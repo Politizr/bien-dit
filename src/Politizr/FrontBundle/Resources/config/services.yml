@@ -1,3 +1,5 @@
+# @todo supprimer l'injection du service_container
+
 parameters:
     politizr.oauth_user_provider.class:   	Politizr\Security\User\Provider\OAuthUserProvider
     fos_elastica.elastica_to_model_transformer.collection.class:  Politizr\FrontBundle\Lib\ElasticSearch\ElasticaToModelTransformerPropelCollection
@@ -28,6 +30,10 @@ services:
 
 
     # SERVICES METIERS
+    politizr.service.generic:
+        class:                              Politizr\FrontBundle\Lib\Service\GenericManager
+        arguments:                          [ @service_container ]
+
     politizr.service.security:
         class:                              Politizr\FrontBundle\Lib\Service\SecurityManager
         arguments:                          [ @service_container ]

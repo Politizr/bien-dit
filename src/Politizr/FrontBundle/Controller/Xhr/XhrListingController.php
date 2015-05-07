@@ -14,6 +14,22 @@ use Symfony\Component\HttpFoundation\Request;
 class XhrListingController extends Controller
 {
     /**
+     *  Chargement d'une box modal
+     */
+    public function modalPaginatedListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** modalPaginatedListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.generic',
+            'modalPaginatedList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
      *  Chargement d'une liste type "timeline"
      */
     public function timelinePaginatedAction(Request $request)
@@ -156,5 +172,4 @@ class XhrListingController extends Controller
 
         return $jsonResponse;
     }
-
 }

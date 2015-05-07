@@ -970,7 +970,6 @@ class DocumentManager
     /*                                              SUGGESTIONS (FONCTIONS AJAX)                                */
     /* ######################################################################################################## */
 
-
     /**
      *  Listing de débats du jour ordonnancés suivant l'argument récupéré
      *

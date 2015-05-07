@@ -5,7 +5,7 @@
     })
 
     // ouverture/fermeture box notifications
-    $("body").on("click", "#linkNotifications", function() {
+    $("body").on("click", "[action='linkNotifications']", function() {
         $('#notifications').slideDown('fast');
         $('html, body').animate({
             scrollTop: $("body").offset().top

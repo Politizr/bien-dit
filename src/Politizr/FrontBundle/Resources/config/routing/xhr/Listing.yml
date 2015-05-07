@@ -1,4 +1,12 @@
 ################################################################################
+#               MODAL
+################################################################################
+ModalPaginatedList:
+    pattern:  /modal/paginated.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrListing:modalPaginatedList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
 #               TIMELINE
 ################################################################################
 TimelinePaginated:

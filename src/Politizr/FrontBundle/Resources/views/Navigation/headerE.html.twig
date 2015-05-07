@@ -1,18 +1,20 @@
 <div id="header">
     <div class="headerLogo">
         <a href="{{ path('HomepageE') }}">
-            <i class="icon-pltzr-logo"></i>
+            <i class="iconPltzrLogo"></i>
         </a>
     </div>
+    <div id="menuMobileTriggerMenu" action="menuMobileTriggerMenu"><i class="iconMenu"></i></div>
+    <div id="menuMobileTriggerActions" action="menuMobileTriggerActions"><i class="iconNotePlus"></i></div>
     <div id="headerCenter">
-        <div id="linkRanking"><i class="icon-ranking"></i>classement</div>
-        <div id="linkNotifications" class="notifYes"><i class="icon-notif-yes"></i>notifications</div>
-        <div id="linkSuggestions" class="notifNo"><i class="icon-notif-no"></i>suggestions</div>
+        <div id="linkRanking"><i class="iconRanking"></i>classement</div>
+        <div id="linkNotifications" action="linkNotifications" class="notifYes"><i class="iconNotifYes"></i>notifications <span id="notifCounter">-</span></div>
+        <div id="linkSuggestions" action="linkSuggestions">suggestions</div>
     </div>
     <div id="headerRight">
         <div id="linkMenuPreferences">
-            <div id="openMenuPreferences"><i class="icon-gear"></i><i class="icon-arrow-down"></i></div>
-            <div id="hideMenuPreferences" style="display: none;"><i class="icon-gear"></i><i class="icon-arrow-up"></i></div>
+            <div id="openMenuPreferences" action="openMenuPreferences"><i class="iconGear"></i><i class="iconArrowDown"></i></div>
+            <div id="hideMenuPreferences" action="hideMenuPreferences" style="display: none;"><i class="iconGear"></i><i class="iconArrowUp"></i></div>
         </div>              
         <div id="menuPreferences" style="display: none;">
             <div class="pad40">
@@ -28,10 +30,7 @@
     
     <div id="social">
         <div class="pad40">
-            <a href=""><i class="icon-social-fb"></i></a>
-            <a href=""><i class="icon-social-tw"></i></a>
-            <a href=""><i class="icon-social-gg"></i></a>
-            <div class="signalAbuse"><i class="icon-alert"></i></div>
+            {% include 'PolitizrFrontBundle:Navigation:share.html.twig' with { 'uri': app.request.uri } %}
         </div>
     </div>
 </div>
