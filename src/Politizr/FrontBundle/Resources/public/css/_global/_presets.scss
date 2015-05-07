@@ -8,6 +8,18 @@ img {border:none;}
 .withLoaderInside {position: relative;}
 .pad40 {padding: 40px;}
 
+.parti {
+	font-family: nerisblack;
+	font-size: 9px;
+	color: #fff !important;
+	background-color: $anotherGrey;
+	text-transform: uppercase;
+	display: inline-block;
+	margin: -3px 1px 0 0;
+	padding: 1px 4px 1px 4px;
+	line-height: 100%;
+} 
+
 a.parti {
 	font-family: nerisblack;
 	font-size: 9px;
@@ -69,7 +81,7 @@ body {
 	top: 60px;
 	right: 0;
 	width: 60px;
-	min-height: 380px;
+	min-height: 360px;
 	background-color: #fff;
 }
 
@@ -92,6 +104,23 @@ body {
 
 #illustration_l {	left: 0;}
 #illustration_r {	right: 0;}
+
+#copyrightHolder {
+	position: fixed;
+	z-index: 19000;
+	margin-left: 800px;
+	top: 365px;
+}
+
+.iconCopyright {
+	font-size: 10px;
+	color: #fff;
+	left: 20px;
+	bottom:40px;
+	cursor: pointer;
+}
+
+.iconCopyright:hover {color: $highlight;}
 
 .illustrationShadow {
 	width: 100%;

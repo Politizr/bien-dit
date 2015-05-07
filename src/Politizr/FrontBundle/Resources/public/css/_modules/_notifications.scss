@@ -79,10 +79,10 @@
 	font-size: 8px;
 }
 
-.notifItemHeader i.icon-duo {font-size: 12px;}
-.notifItemHeader i.icon-bookmark {font-size: 12px;}
+.notifItemHeader i.iconDuo {font-size: 12px;}
+.notifItemHeader i.iconBookmark {font-size: 12px;}
 
-.notifItemHeader i.icon-cross {
+.notifItemHeader i.iconCross {
 	right: 0;
 	left: auto;
 	font-size: 8px;
@@ -94,7 +94,7 @@
 	filter:alpha(opacity=60);
 }
 
-.notifItemHeader i.icon-cross:hover {
+.notifItemHeader i.iconCross:hover {
 	cursor: pointer;
 	-moz-opacity: 1;
 	opacity: 1;
@@ -143,4 +143,4 @@ span.notifHighlight {
 }
 
 .notifItemFooter a:hover {color: $darkGrey;}
-.notifItemFooter a i.icon-comment {top: 3px;}
+.notifItemFooter a i.iconComment {top: 3px;}

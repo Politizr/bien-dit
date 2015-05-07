@@ -19,7 +19,7 @@ body.css760 #header {
 }
 
 body.css760 #illustration_l, body.css960 #illustration_r {display: none;}
-body.css760 #goUpHolder { display: none;}
+body.css760 #goUpHolder, body.css960 .copyrightHolder { display: none;}
 
 //////loader
  
@@ -356,7 +356,7 @@ body.css760 #linkMenuPreferences {
 	position: relative;
 }
 
-body.css760 #linkMenuPreferences .icon-gear {	
+body.css760 #linkMenuPreferences .iconGear {	
 	font-size: 14px;
 	position: absolute;
 	top: 15px;
@@ -365,8 +365,8 @@ body.css760 #linkMenuPreferences .icon-gear {
 	padding: 0;
 }
 
-body.css760 #linkMenuPreferences .icon-arrow-down, 
-body.css760 #linkMenuPreferences .icon-arrow-up  {display: none;}
+body.css760 #linkMenuPreferences .iconArrowDown, 
+body.css760 #linkMenuPreferences .iconArrowUp  {display: none;}
 
 body.css760 #menuPreferences {
 	width: 200px;

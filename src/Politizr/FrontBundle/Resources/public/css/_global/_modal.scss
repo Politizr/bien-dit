@@ -232,3 +232,31 @@ a.modalItemShow:hover {color: $darkGrey;}
 	filter:alpha(opacity=100);
 }
 
+// copyright
+
+#copyright {
+	position: absolute;
+	padding: 20px;
+	width: 280px;
+	background: $darkGrey;
+	color: #fff;
+	font-size: 12px;
+	right: -20px;
+	top:25px;	
+	-moz-box-shadow: 0px 0px 20px 0px #000000;
+	-webkit-box-shadow: 0px 0px 20px 0px #000000;
+	-o-box-shadow: 0px 0px 20px 0px #000000;
+	box-shadow: 0px 0px 20px 0px #000000;
+    font-family: 'nerissemibold_italic';
+}
+
+#copyright i {
+	position: absolute;
+	right: 18px;
+	top: -10px;
+	color: $darkGrey;
+	font-size: 12px;
+}
+
+#copyright a {color: $highlight;}
+#copyright a:hover {color: #fff;}

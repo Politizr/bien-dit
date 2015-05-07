@@ -11,8 +11,8 @@
 	float: right;
 	margin: 0 20px 0 0;
 }
-.headerLogo i.icon-pltzr-logo {	font-size: 24px;}
-.headerLogo i.icon-pltzr-logo:hover {	color: $darkGrey}
+.headerLogo i.iconPltzrLogo {	font-size: 24px;}
+.headerLogo i.iconPltzrLogo:hover {	color: $darkGrey}
 
 #headerCenter {
 	float: left;
@@ -47,13 +47,15 @@
 	left: -2px;
 }
 
-#headerCenter i.icon-ranking {
+#headerCenter i.iconRanking {
 	font-size: 14px;
 	top:-1px;
 }
 
 .notifYes {	color: $highlight;}
 #linkRanking:hover, #linkSuggestions:hover {	color: $darkGrey;}
+
+#notifCounter {margin-right: 2px;}
 
 #headerRight {
 	float: left;
@@ -74,14 +76,14 @@
 
 #linkMenuPreferences i {	position: absolute;}
 
-#linkMenuPreferences i.icon-gear {
+#linkMenuPreferences i.iconGear {
 	font-size: 10px;
 	padding-right: 3px;
 	left: 0;
 	top: 0;
 }
 
-#linkMenuPreferences i.icon-arrow-down, #linkMenuPreferences i.icon-arrow-up {	
+#linkMenuPreferences i.iconArrowDown, #linkMenuPreferences i.iconArrowUp {	
 	font-size: 6px;
 	left: 14px;
 	top: 1px;
