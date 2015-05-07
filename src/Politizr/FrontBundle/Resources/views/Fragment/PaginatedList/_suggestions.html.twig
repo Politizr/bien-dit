@@ -1,3 +1,25 @@
+<h1>Classement</h1>
+<div id="paginatedList">
+    <div class="modalFilters">
+        {# @todo ThreeTabs > 3Tabs #}
+        <div class="modalFiltersTabs ThreeTabs">
+            <span action="order" order="last" class="active">derniers</span>
+            <span action="order" order="bestNote">mieux notés</span>
+            <span action="order" order="mostFollowed">plus suivis</span>
+        </div>
+
+        <div class="modalChoices">
+            <form id="listFilter">
+                <input type="checkbox" class="filter" name="filters[]" value="suggestion"/>&nbsp;suggérés
+                <input type="checkbox" class="filter" name="filters[]" value="newest"/>&nbsp;les plus récents
+                <input type="checkbox" class="filter" name="filters[]" value="qualified" />&nbsp;élus uniquement
+            </form>
+        </div>
+    </div>
+    <div id="listContent"></div>
+</div>
+
+{#
 <div id="paginated-list">
     <ul class="nav nav-tabs">
         <li role="list" class="active"><a class="order" order="last">Derniers</a></li>
@@ -14,6 +36,9 @@
     <div id="list-content">
     </div>
 </div>
+#}
 
 {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
 {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'DailyDebateList' } %}
+
+

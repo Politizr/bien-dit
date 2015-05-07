@@ -5,9 +5,9 @@
     });
 
     // Gestion de l'ordonnancement
-    $("body").on("click", "a.order", function(e) {
+    $("body").on("click", "[action='order']", function(e) {
+        // @todo positionnement du class active sur le span cliqué
         e.preventDefault();
-        $(this).tab('show');
         listing();
     });
 
@@ -28,16 +28,16 @@
         offset = (typeof offset === "undefined") ? 0 : offset;
 
         // Récupération de l'ordonnancement en cours
-        order = $("#paginated-list li.active").children().attr('order');
+        order = $(".modalFiltersTabs span.active").attr('order');
         order = (typeof order === "undefined") ? null : order;
 
         // Récupération du form des filtres
-        var datas = $('#list-filter').serializeArray();
+        var datas = $('#listFilter').serializeArray();
         datas.push({name: 'order', value: order});
         datas.push({name: 'offset', value: offset});
 
         // Récupération d'arguments JS supplémentaires
-        var additionalDatas = $('#paginated-list').data();
+        var additionalDatas = $('#paginatedList').data();
         $.each(additionalDatas, function(index, element) {
             datas.push({name: index, value: element});
         });
@@ -55,9 +55,9 @@
                 } else {
                     $('#scroll-nav').remove();
                     if (init) {
-                        $('#list-content').html(data['html']);
+                        $('#listContent').html(data['html']);
                     } else {
-                        $('#list-content').append(data['html']);
+                        $('#listContent').append(data['html']);
                     }
                 }
                 $('#ajaxGlobalLoader').hide();
