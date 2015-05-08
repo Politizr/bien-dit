@@ -1,12 +1,13 @@
 <script>
     // Initialisation de la liste
-    $(document).ready(function () {
+    // $(document).ready(function () {
+    $("body").on("click", "#testList", function(e) {
+        e.preventDefault();
         listing();
     });
 
     // Gestion de l'ordonnancement
-    $("body").on("click", "[action='order']", function(e) {
-        // @todo positionnement du class active sur le span cliqué
+    $("body").on("change", ".order", function(e) {
         e.preventDefault();
         listing();
     });
@@ -24,27 +25,43 @@
 
     // Chargement paginé de la liste
     function listing(init, offset) {
+        console.log('*** listing');
+        console.log(init);
+        console.log(offset);
+
         init = (typeof init === "undefined") ? true : init;
         offset = (typeof offset === "undefined") ? 0 : offset;
 
         // Récupération de l'ordonnancement en cours
-        order = $(".modalFiltersTabs span.active").attr('order');
+        order = $(".order selected").val();
         order = (typeof order === "undefined") ? null : order;
+
+        console.log('order');
+        console.log(order);
 
         // Récupération du form des filtres
         var datas = $('#listFilter').serializeArray();
+
+        console.log('listFilter');
+        console.dir(datas);
+        
         datas.push({name: 'order', value: order});
         datas.push({name: 'offset', value: offset});
 
         // Récupération d'arguments JS supplémentaires
         var additionalDatas = $('#paginatedList').data();
+        console.log('additionalDatas');
+        console.log(additionalDatas);
         $.each(additionalDatas, function(index, element) {
             datas.push({name: index, value: element});
         });
 
+        // Récupération de l'URL de la liste
+        var url = $('#paginatedList').attr('url');
+
         $.ajax({
             type: 'POST',
-            url: "{{ path(RouteName) }}",
+            url: url,
             data: datas,
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}

@@ -1,0 +1,6 @@
+{% for tag in tags %}
+    {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag } %}&nbsp;
+{% else %}
+    <!-- @todo html/css: à prévoir -->
+    <span class="tag default">Aucun tag</span>
+{% endfor %}

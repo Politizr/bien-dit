@@ -41,7 +41,7 @@ class GenericManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\PaginatedList:'.$twigTemplate
+            'PolitizrFrontBundle:PaginatedList:'.$twigTemplate
         );
 
         // Renvoi de l'ensemble des blocs HTML maj

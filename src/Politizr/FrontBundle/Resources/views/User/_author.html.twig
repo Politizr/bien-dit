@@ -1,0 +1,25 @@
+{% if user %}
+    <span>Par</span>
+    <!-- @todo html/css: ajout d'une classe elected si le user est un élu -->
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %}">
+        {{ user }}
+        <!-- @todo html/css: ajout d'un check user validé -->
+        {% if user.validated %}
+            <span class="fa fa-check-square-o" title="Profil validé"></span>
+        {% endif %}
+    </a>
+    {# @todo twig helper + branchement modal #}
+    {% set organizations = user.currentOrganizations %}
+    {% for organization in organizations %}
+        <!-- @todo html/css: parti > organization -->
+        <div class="parti" action="openPartiSheet">{{ organization.initials }}</div>
+        {#
+        <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
+            <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+        </a>
+        #}
+    {% endfor %}
+{% else %}
+    {# @todo html/css: à prévoir #}
+    <span>Utilisateur supprimé</span>
+{% endif %}

@@ -1,0 +1,48 @@
+<div class="modalItem listPost">
+    <div class="postSummary">
+        <div class="pad40">
+            <div class="postSummaryHeader">
+                <div class="readingTime">
+                    {# @todo temps de lecture #}
+                    <i class="iconTime"></i>X minutes
+                </div>
+                <div class="postNote">
+                    <div class="notePlus">{{ debate.notePos }}<i class="iconNotePlus"></i></div>
+                    <div class="noteMinus"><i class="iconNoteMinus"></i>{{ debate.noteNeg }}</div>
+                </div>
+            </div>
+            <div class="postSummaryFooter">
+                <div class="postSummaryTagList">
+                    {{ debate | docTags }}
+                </div>
+                <div class="postSummaryTitle">
+                    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
+                </div>
+                <div class="postSummaryAuthor">
+                    {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
+                </div>
+                <div class="postSummaryActivity">
+                    <div class="reactionsCounter">
+                        <i class="iconReaction"></i>{{ debate | nbReactions }}
+                    </div>
+                    <div class="commentsCounter" action="paragraphCommentsCounter">
+                        {# @todo nombre de commentaires total #}
+                        <i class="iconComment"></i>X commentaires
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="illustrationShadow"></div>
+        <!-- @todo html/css fournir informations de resize -->
+        {{ debate | image('debate_header') }}
+    </div>
+    <div class="listPostFollow">
+        <i class="iconCheckInSquare"></i>
+        <!-- @todo html/css + div à prévoir + lien -->
+        <div class="subscribe">
+            {{ debate | linkSubscribeDebate }}
+        </div>
+    </div>
+    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
+</div>

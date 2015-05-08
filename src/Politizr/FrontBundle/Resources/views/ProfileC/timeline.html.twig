@@ -2,7 +2,7 @@
 
 {% block main %}
     <div id="main">
-        <div id="paginated-list">
+        <div id="paginatedList"  url="{{path('TimelinePaginated')}}">
             <form id="list-filter" class="text-center">
             </form>
             <hr>
@@ -16,5 +16,4 @@
     {{ parent() }}
     
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'TimelinePaginated' } %}
 {% endblock javascriptFooter %}

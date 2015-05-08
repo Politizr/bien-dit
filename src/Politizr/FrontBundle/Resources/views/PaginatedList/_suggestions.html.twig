@@ -1,0 +1,26 @@
+<h1>Suggestions de débats</h1>
+<div id="paginatedList" url="{{ path('DailyDebateList') }}">
+    {# @todo renommer class > listCriteria #}
+    <div class="modalFilters">
+        <div id="testList">chargement de la liste</div>
+        <!-- @todo html/css renommer ThreeTabs > 3Tabs -->
+        {# @todo définir un form #listOrder + radio + refonte js #}
+        <div class="modalFiltersTabs ThreeTabs">
+            <form id="listOrder">
+                <input type="radio" name="order" value="last" />dernier
+                <input type="radio" name="order" value="bestNote" />mieux notés
+                <input type="radio" name="order" value="mostFollowed" />plus suivis
+            </form>
+        </div>
+
+        <div class="modalChoices">
+            <form id="listFilter">
+                <input type="checkbox" class="filter" name="filters[]" value="suggestion"/>&nbsp;suggérés
+                <input type="checkbox" class="filter" name="filters[]" value="newest"/>&nbsp;les plus récents
+                <input type="checkbox" class="filter" name="filters[]" value="qualified" />&nbsp;élus uniquement
+            </form>
+        </div>
+    </div>
+    <!-- @todo html/css + div listContent -->
+    <div id="listContent"></div>
+</div>

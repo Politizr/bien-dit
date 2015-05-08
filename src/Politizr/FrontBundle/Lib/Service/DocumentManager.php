@@ -1006,7 +1006,7 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Debate:glList.html.twig',
+            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,

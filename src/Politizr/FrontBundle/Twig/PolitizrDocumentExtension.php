@@ -159,7 +159,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
                 'document' => $document,
                 'path' => $path,
@@ -228,7 +228,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @param integer $tagTypeId                    Type de tag
      * @return string                               Structure HTML
      */
-    public function docTags($debate, $tagTypeId = null)
+    public function docTags(\Politizr\Model\PDDebate $debate, $tagTypeId = null)
     {
         // $this->logger->info('*** doctags');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -238,7 +238,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
                 'tags' => $tags
             )
@@ -494,7 +494,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $debate,
                 'type' => PDocument::TYPE_DEBATE,

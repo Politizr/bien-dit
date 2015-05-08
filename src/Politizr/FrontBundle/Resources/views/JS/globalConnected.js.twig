@@ -15,6 +15,12 @@
     /* open suggestion */
     $("body").on("click", "[action='linkSuggestions']", function() {
         console.log('*** linkSuggestions');
+        $('#suggestions').fadeIn('fast');
+        $('body').addClass('noscroll');
+        $('html, body').animate({
+            scrollTop: $("body").offset().top
+        }, 0);
+        $(".modalRightCol").addClass('activeMobileModal'); /* for mobile purpose */
         loadPaginatedList('_suggestions.html.twig');
     });
 
