@@ -154,7 +154,7 @@
 
 .reactionsToPostItemSummary a, .reactionsToPostItemPostSummary a {color: $darkGrey;}
 .reactionsToPostItemSummary a:hover, .reactionsToPostItemPostSummary a:hover {color: $highlight;}
-.reactionsToPostItemSummary a.parti:hover {background-color: $highlight;}
+.reactionsToPostItemSummary .parti:hover {background-color: $highlight; cursor: pointer;}
 
 .reactionsToPostItemContent {
 	float: right;
@@ -337,12 +337,12 @@ a.linkToPost:hover {color: $darkGrey;}
 }
 .commentsContentHeader a:hover {color: $highlight;}
 
-.commentsContentHeader a.parti {
+.commentsContentHeader .parti {
 	font-size: 9px;
 	color: #fff;
 	background-color: $anotherGrey;
 }
-.commentsContentHeader a.parti:hover {background-color: $highlight;}
+.commentsContentHeader .parti:hover {background-color: $highlight; cursor: pointer;}
 
 .commentsInfos {float: left;}
 
@@ -527,18 +527,21 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummaryAuthor a {
 	font-size: 13px;
 	color: $highlight;
+	width: auto !important;
+	display: inline-block !important;
 }
 
 .postSummaryAuthor a:hover {color: #fff;}
 
-.postSummaryAuthor a.parti {
+.postSummaryAuthor .parti {
 	font-size: 9px;
 	color: $highlight !important;
 	background-color: $darkGrey;	
 }
 
-.postSummaryAuthor a.parti:hover {
+.postSummaryAuthor .parti:hover {
 	color: #fff !important;
+	cursor: pointer;
 }
 
 .postSummaryTagList {

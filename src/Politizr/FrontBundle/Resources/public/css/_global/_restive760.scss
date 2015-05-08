@@ -21,6 +21,11 @@ body.css760 #header {
 body.css760 #illustration_l, body.css960 #illustration_r {display: none;}
 body.css760 #goUpHolder, body.css960 .copyrightHolder { display: none;}
 
+body.css760 h1 {
+	width: calc(100% - 40px); 
+	padding: 0 20px;	
+}
+
 //////loader
  
 ////// modal
@@ -99,6 +104,10 @@ body.css760 .modalRightCol::before { content: "\e810";}
 body.css760 .modalLeftCol.activeMobileModal::before, body.css760 .modalRightCol.activeMobileModal::before {	display: none;}
 body.css760 .modalRightCol .listDebate {width: 100%; padding: 0}
 
+body.css760 .wikiSample {	width: calc(100% - 40px); padding: 0 20px;}
+body.css760 .wikiSampleMask {	width: calc(100% - 40px); padding: 0 20px;}
+
+
 // actions box error, succes, alert
 
 body.css760 #infoBoxHolder {
@@ -171,6 +180,14 @@ body.css760 #search .listProfile {
 }
 
 body.css760 #search .listProfileRight {	width: calc(100% - 50px);}
+
+
+body.css760 #partiSheet .listProfile {
+	width: calc(100% - 80px);
+	margin: 0 40px 50px 40px;
+}
+
+body.css760 #partiSheet .listProfileRight {	width: calc(100% - 50px);}
 
 //////header
 //////menu
@@ -578,6 +595,8 @@ body.css760 .commentsEditNew.commentLevel2 {
 	padding: 10px 0 20px 0;
 	width: calc(100% - 40px);
 }
+
+
 
 //////footer
 

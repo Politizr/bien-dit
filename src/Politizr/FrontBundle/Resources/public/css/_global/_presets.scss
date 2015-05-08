@@ -20,21 +20,7 @@ img {border:none;}
 	line-height: 100%;
 } 
 
-a.parti {
-	font-family: nerisblack;
-	font-size: 9px;
-	color: #fff !important;
-	background-color: $anotherGrey;
-	text-transform: uppercase;
-	display: inline-block;
-	margin: -3px 1px 0 0;
-	padding: 1px 4px 1px 4px;
-	line-height: 100%;
-} 
-
-a.followedMember::after {
-	content: "*";
-}
+a.followedMember::after {	content: "*";}
 
 .avatar40 {
 	width: 40px;

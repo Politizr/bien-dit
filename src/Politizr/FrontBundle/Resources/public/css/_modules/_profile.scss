@@ -32,7 +32,7 @@
 
 .authorName a {color: $darkGrey;}
 .authorName a:hover {color: $highlight;}
-.authorName a.parti:hover {background-color: $highlight;}
+.authorName .parti:hover {background-color: $highlight; cursor: pointer;}
 
 .authorBio {
 	float: left;
@@ -63,3 +63,8 @@
 
 #search .listProfile {	float: none; width: 620px;}
 #search .listProfileRight {	width: 570px;}
+
+// in fiche parti
+
+#partiSheet .listProfile {	float: none; width: 620px;}
+#partiSheet .listProfileRight {	width: 570px;}

@@ -15,6 +15,11 @@ body.css960 #illustration_l, body.css960 #illustration_r {display: none;}
 body.css960 #footer {	width: calc(100% - 260px);}
 body.css960 #goUpHolder, body.css960 .copyrightHolder { display: none;}
 
+body.css960 h1 {
+	width: calc(100% - 40px); 
+	padding: 0 20px;	
+}
+
 //////loader
  
 //////modal
@@ -35,11 +40,13 @@ body.css960 .modalRightCol {
 	margin-right: 30px;
 }
 
-
 body.css960 .postSummary, body.css960 .illustrationShadow {	height: 440px;}
 body.css960 .postSummary .pad40 {	height: 360px;}
 
 body.css960 .listProfileRight {	width: calc(100% - 50px);}
+
+body.css960 .wikiSample {	width: calc(100% - 60px); padding: 0 30px;}
+body.css960 .wikiSampleMask {	width: calc(100% - 60px); padding: 0 30px;}
 
 //////form
 
