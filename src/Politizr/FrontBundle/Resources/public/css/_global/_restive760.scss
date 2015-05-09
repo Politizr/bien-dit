@@ -40,7 +40,7 @@ body.css760 .modal h1 { margin: 40px 0 0 0;}
 body.css760 .modalList .postSummaryTitle {	font-size: 30px;}
 
 body.css760 .modalChoices { margin-top: 30px; }
-body.css760 .modalFiltersTabs span, body.css760 .modalChoices span {	margin: 0 15px 10px 15px;}
+body.css760 .listCriteriaTabs span, body.css760 .modalChoices span {	margin: 0 15px 10px 15px;}
 
 body.css760 .listPost {	
 	width: calc(100% - 40px);
@@ -51,6 +51,7 @@ body.css760 .postSummary, body.css960 .illustrationShadow {	height: 440px;}
 body.css760 .postSummary .pad40 {	height: 360px;}
 body.css760 .listProfileRight {	width: calc(100% - 50px);}
 body.css760 .modalItem.listProfile {margin-bottom: 50px;}
+body.css760 .modalItem.listProfileOneCol {margin-bottom: 50px;}
 
 body.css760 .listPostFollow {margin-left: 20px;}
 
@@ -143,51 +144,48 @@ body.css760 #notifications .pad40 {
 //////form
 
 //form abuse
-body.css760 #formAbuse.modal h1,
+body.css760 .formAbuse.modal h1,
 body.css760 .formIntro,
-body.css760 #formAbuse .listProfile,
-body.css760 #formAbuse form { 
+body.css760 .formAbuse form { 
 	width: calc(100% - 40px); 
 	padding: 0 20px;	
 }
  
-body.css760 #formAbuse .listProfileRight { width: calc(100% - 50px);}
+body.css760 .formAbuse .listProfileOneCol .listProfileRight { width: calc(100% - 50px);}
 
-body.css760 #formAbuse form textarea {width: calc(100% - 40px);}
+body.css760 .formAbuse form textarea {width: calc(100% - 40px);}
+
+body.css760 .formAbuse .listProfileOneCol {
+	width: calc(100% - 40px);
+	margin: 50px 20px 50px 20px;
+}
+
 
 //search form
 
-body.css760 #search form {
+body.css760 .search form {
 	width: 60%;
 	padding: 0 20%;
 	margin: 40px 0 20px 0;
 	float: left;
 }
 
-body.css760 #search form input {
+body.css760 .search form input {
 	font-size: 26px;
 	width: 88%;
 }
 
-body.css760 #search form input[type=submit] {
+body.css760 .search form input[type=submit] {
 	font-size: 26px;
 	width: 12%;
 }
 
-body.css760 #search .listProfile {
+body.css760 .listProfileOneCol {
 	width: calc(100% - 80px);
 	margin: 0 40px 50px 40px;
 }
 
-body.css760 #search .listProfileRight {	width: calc(100% - 50px);}
-
-
-body.css760 #partiSheet .listProfile {
-	width: calc(100% - 80px);
-	margin: 0 40px 50px 40px;
-}
-
-body.css760 #partiSheet .listProfileRight {	width: calc(100% - 50px);}
+body.css760 .listProfileRight {	width: calc(100% - 50px);}
 
 //////header
 //////menu
@@ -596,8 +594,6 @@ body.css760 .commentsEditNew.commentLevel2 {
 	width: calc(100% - 40px);
 }
 
-
-
 //////footer
 
 body.css760 #footerLeft {
@@ -614,3 +610,56 @@ body.css760 #footerRight {
 	clear: both;
 	margin-top: 10px;
 }
+
+////// debate timeline
+
+body.css760 #timelineHeader {padding: 20px;}
+
+body.css760 .timelineDayContainer {
+	width: calc(100% - 40px);
+	margin: 0 20px;
+}
+
+body.css760 .timelineDay { 
+	top:0 !important; 
+	padding:16px 20px 0 0;	
+	width: calc(100% + 20px);
+	margin-left: -20px;
+}
+body.css760 .timelineDay h4 { 
+	width: calc(100% - 48px);
+	margin: 0;
+	padding: 0 20px 15px 48px;
+}
+
+body.css760 .timelineDay i {	left: 15px;}
+body.css760 .timelineItemObject i {	left: 20px;}
+
+body.css760 .timelineItemIllustration {	width: 100%;}
+
+body.css760 .timelineItemContent.timelineItemOfficial, body.css760 .timelineItemContent.timelineItemAuthor {
+	padding: 10px 40px;
+	margin: 10px 0 10px -40px;
+}
+
+body.css760 .timelineItemHighlight { -webkit-text-size-adjust: 80%;	}
+
+
+.timelineItemContentFooter {
+	width: calc(100% + 20px);
+	margin-left: -20px;
+}
+
+body.css760 .timelineItemContentFooter .reactionsCounter, 
+body.css760 .timelineItemContentFooter .commentsCounter,
+body.css760 .timelineItemContentFooter .readingTime {
+	clear: both;
+	float: left;
+}
+
+body.css760 .timelineItemContentFooter .reactionsCounter, 
+body.css760 .timelineItemContentFooter .commentsCounter {
+	margin-bottom: 5px;
+}
+
+body.css760 .timelineItemFooter a { margin-left: 0; }

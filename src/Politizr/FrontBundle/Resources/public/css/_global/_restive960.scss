@@ -50,7 +50,7 @@ body.css960 .wikiSampleMask {	width: calc(100% - 60px); padding: 0 30px;}
 
 //////form
 
-body.css960 #search form {
+body.css960 .search form {
 	width: 60%;
 	padding: 0 20%;
 	margin: 40px 0 20px 0;
@@ -75,6 +75,21 @@ body.css960 .reactionsToPostItemIllustration {	width: 100%;}
 
 //////footer
 
+body.css960 #footerLeft {
+	float: left;
+	width: calc(100% - 20px);
+	padding-left: 20px;
+}
+
+body.css960 #footerRight {
+	float: left;
+	width: calc(100% - 20px);
+	padding-left: 20px;
+	text-align: left;
+	clear: both;
+	margin-top: 10px;
+}
+
 //////actions
 
 body.css960 #fixedActions {
@@ -83,3 +98,21 @@ body.css960 #fixedActions {
 }
 
 //////notifications
+
+////// debate timeline
+
+body.css960 .timelineDay { width: 100%;}
+body.css960 .timelineDay h4 { width: calc(100% - 68px);	}
+body.css960 .timelineItemIllustration {	width: 100%;}
+
+body.css960 .timelineItemContentFooter .reactionsCounter, 
+body.css960 .timelineItemContentFooter .commentsCounter,
+body.css960 .timelineItemContentFooter .readingTime {
+	clear: both;
+	float: left;
+}
+
+body.css960 .timelineItemContentFooter .reactionsCounter, 
+body.css960 .timelineItemContentFooter .commentsCounter {
+	margin-bottom: 5px;
+}

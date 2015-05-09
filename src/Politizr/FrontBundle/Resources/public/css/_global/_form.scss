@@ -66,14 +66,14 @@ textarea:focus, input:focus{    outline: 0;}
 
 //search form
 
-#search form {
+.search form {
 	width: 440px;
 	display: inline-block;
 	margin: 60px 0 0 260px;
 	clear: both;
 }
 
-#search form input {
+.search form input {
 	padding: 0;
 	font-family: nerislight;
 	font-size: 40px;
@@ -84,7 +84,7 @@ textarea:focus, input:focus{    outline: 0;}
 	background-color: transparent;
 }
 
-#search form input[type=submit] {
+.search form input[type=submit] {
 	font-size: 28px;
 	text-align: right;
 	width: 10%;
@@ -94,43 +94,44 @@ textarea:focus, input:focus{    outline: 0;}
 
 // form abus
 
-#formAbuse {
-	text-align: center;
+.formAbuse {
+	text-align: center !important;
 }
 
-#formAbuse .listProfile, #formAbuse form {	width: 480px;}
+.formAbuse .listProfileOneCol, .formAbuse form {	width: 480px;}
 
-#formAbuse form {
+.formAbuse form {
 	clear: both;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 60px;
 }
 
-#formAbuse .listProfile {
+.formAbuse .listProfileOneCol {
 	margin-top: 60px;
 	color: $highlight;
 	float: none;
 }
 
-#formAbuse .listProfile a { color: $highlight;}
-#formAbuse .listProfile .parti {	background-color: $highlight;}
-#formAbuse .listProfileRight {	width: 430px;}
+.formAbuse .listProfileOneCol .listProfileRight {	width: 430px; float: right;}
+.formAbuse .listProfileOneCol a { color: $highlight;}
+.formAbuse .listProfileOneCol .parti {	background-color: $highlight;}
 
-#formAbuse .listProfileRight .authorName span {
+
+.formAbuse .listProfileRight .authorName span {
 	font-family: 'Merriweather Italic';
 	font-size: 12px;
 }
 
-#formAbuse .formAbuse_postResume {
+.formAbuse .formAbusePostResume {
 	font-size: 13px;
 	font-family: 'Merriweather';
 	line-height: 160%;
 }
 
-#formAbuse .modalItem {	margin-bottom: 40px;}
+.formAbuse .modalItem {	margin-bottom: 40px;}
 
-#formAbuse form textarea {
+.formAbuse form textarea {
 	padding: 20px;
 	width: 438px;
 	height: 98px;
@@ -139,11 +140,11 @@ textarea:focus, input:focus{    outline: 0;}
 	font-size: 13px;
 }
 
-#formAbuse .actionsButtons {
+.formAbuse .actionsButtons {
 	margin: 60px 0;
 }
 
-#formAbuse form input[type=submit] {
+.formAbuse form input[type=submit] {
 	background-color: $highlight;
 	color: #fff;
 	text-transform: uppercase;
@@ -156,7 +157,7 @@ textarea:focus, input:focus{    outline: 0;}
 	text-align: center;
 }
 
-#formAbuse .cancel {
+.formAbuse .cancel {
 	position: absolute;
 	bottom: 0;
 	left: 200px;
@@ -165,4 +166,4 @@ textarea:focus, input:focus{    outline: 0;}
 	cursor: pointer;
 }
 
-#formAbuse form input[type=submit]:hover {	background-color: $darkGrey;}
+.formAbuse form input[type=submit]:hover {	background-color: $darkGrey;}

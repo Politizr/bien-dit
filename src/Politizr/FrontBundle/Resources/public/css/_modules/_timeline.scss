@@ -1,9 +1,194 @@
 @import "../_global/colors";
 
-// post
+#timelineHeader {
+	padding: 20px 40px;
+	background-color: $semiDarkGrey;
+	font-size: 10px;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;	
+}
+.timelineMarkAllAsRead { 
+	position: relative; 
+	padding-left: 15px;
+	cursor: pointer;
+	display: inline-block;
+}
+.timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
+.timelineMarkAllAsRead:hover {color: #fff;}
 
 #timeline {
-	background-color: $lightGrey;
-	float: left;
-	width: 100%;
+	padding-bottom: 20px;
 }
+
+.timelineDayContainer {
+	width: calc(100% - 80px);
+	margin: 0 40px;
+	border-bottom: solid 4px $highlight;
+}
+
+.timelineDayContainer:last-child { border: none; }
+
+.timelineDay {
+	background-color: #fff;
+	width: calc(100% + 40px);
+	margin-left: -40px;
+	padding: 35px 0 0 40px;	
+	z-index: 1;	
+}
+ 
+.timelineDay h4 {
+    position: relative;
+	padding: 0 0 20px 28px;
+	width: 592px;
+	margin: 0;
+    font-family: 'nerisblack';
+    font-size: 18px;
+    color: $highlight;
+    font-weight: normal;	
+    border-bottom: solid 1px $semiDarkGrey; 
+}
+
+.timelineDay i {
+	position: absolute;
+	left: -5px;
+	top: -3px;
+	font-size: 1.1em;
+}
+
+.timelineItem {
+	padding: 20px 0;
+	border-bottom: solid 1px $semiDarkGrey;
+}
+.timelineItem:last-child {	border: none;}
+
+.timelineItem a {	color: $darkGrey;}
+.timelineItem a:hover {	color: $highlight;}
+
+.timelineItemHeader {
+	padding: 0 20px 0 20px;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';	
+}
+
+.timelineItemHolder {
+	padding: 0 20px 10px 20px;
+}
+
+.timelineItemContext {
+	padding: 10px 0;
+	line-height: 160%;
+}
+
+span.timelineItemContextHighlight {
+	clear: both;
+	display: inline-block;
+	font-family: nerisblack;
+}
+
+.timelineItemContent {
+	float: left;
+	clear: both;
+}
+
+.timelineItemContent.timelineItemOfficial, .timelineItemContent.timelineItemAuthor {
+	padding: 10px 60px;
+	margin: 10px 0 10px -60px;
+	width: 100%;	
+}
+
+.timelineItemContent.timelineItemOfficial {	background-color: $lightGrey;}
+.timelineItemContent.timelineItemAuthor {	background-color: $anotherLightHighlight;}
+
+.timelineItemObject {
+	padding: 10px 0 0 0;
+	font-family: nerisblack;
+	line-height: 140%;
+}
+
+#timeline .parti:hover {background-color: $highlight;}
+
+.timelineItemObject i {
+	position: absolute;
+	left: 40px;
+	font-size: 8px;
+}
+
+.timelineItemHighlight {
+	border-left: solid 4px $highlight;
+	padding-left: 12px;
+	margin:  10px 0 10px -16px;
+	font-size: 15px;
+	line-height: 200%;
+	width: calc(100% + 20px);
+	float: left;
+	clear: both;
+}
+
+.timelineItemIllustration {
+	float: right;
+	width: 600px;
+	height: 200px;
+	margin-bottom: 10px;
+}
+
+.timelineItemHighlight .avatar40 {float: left; margin-top: 5px;}
+
+.timelineItemHighlight a {
+	display: inline-block;
+	float: right;
+	width: calc(100% - 50px);
+}
+
+.timelineItemContentFooter {
+	float: left;
+	width: calc(100% + 20px);
+	color: $anotherGrey;
+	margin: 10px 0;
+}
+
+.timelineItemContentFooterLeft {
+	float: left;
+	width: 70%;
+}
+
+.timelineItemContentFooter .readingTime { display: inline-block;}
+
+.timelineItemContentFooter .postNote {
+	float: right;
+	width: 29%;
+	margin: 0;
+	text-align: right;
+	clear: none;
+}
+
+.timelineItemContentFooter .postNote .noteMinus, .timelineItemContentFooter .postNote .notePlus {
+	display: inline-block;
+	float: none;
+}
+
+.postSummaryActivity {
+	margin-top: 15px;
+	float: left;
+	clear: both;
+}
+
+.timelineItemFooter {
+	display: inline-block;
+	margin-top :10px;
+}
+
+.timelineItemFooter a {
+	color: $highlight;
+	padding-left: 17px;
+	margin-left: 20px;
+    font-family: 'nerissemibold';
+    position: relative;
+    z-index: 0;
+}
+
+.timelineItemFooter a i {
+	position: absolute;
+	left: 0;
+	font-size: 12px;
+}
+

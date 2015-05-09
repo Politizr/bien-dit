@@ -454,29 +454,6 @@ a.linkToPost:hover {color: $darkGrey;}
 	height: 280px;
 }
 
-.readingTime, .notePlus, .noteMinus { position: relative;}
-.readingTime i, .notePlus i, .noteMinus i {	position: absolute;}
-.readingTime { 	padding-left: 17px;}
-
-.readingTime i {
-	left: -2px;
-	font-size: 14px;
-	top: -1px;
-}
-
-.postNote {
-	float: left;
-	clear: both;
-	margin-top: 6px;
-}
-
-.notePlus, .noteMinus {	float: left}
-.notePlus i, .noteMinus i {font-size: 9px;}
-.notePlus {margin-right: 5px; padding-right: 13px;}
-.notePlus i {	right: -2px;}
-.noteMinus {	padding-left: 13px;}
-.noteMinus i {	left: -2px;}
-
 .postSummaryFooter {
 	position: absolute;
 	bottom: 40px;
@@ -559,29 +536,6 @@ a.linkToPost:hover {color: $darkGrey;}
 	margin-top: 15px;
 	float: left;
 	clear: both;
-}
-
-.reactionsCounter, .commentsCounter {
-	margin-right: 40px;
-	display: inline-block;
-	position: relative;
-
-}
-
-.reactionsCounter {	padding-left: 18px;}
-.commentsCounter {	padding-left: 20px;}
-
-.commentsCounter i {
-	position: absolute;
-	left: 0px;
-	font-size: 12px;
-}
-
-.reactionsCounter i {
-	position: absolute;
-	left: -1px;
-	font-size: 14px;
-	top: -1px;
 }
 
 .listPostFollow {

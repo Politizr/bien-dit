@@ -5,13 +5,25 @@
 	width: 100%;
 }
 
-.listProfile .avatar40 {
+.listProfileOneCol {	
+	float: none; 
+	width: 620px;
+}
+
+
+.listProfile .avatar40, .listProfileOneCol .avatar40 {
 	float: left;
 }
 
 .listProfile .listProfileRight {
 	float: right;
 	width: 170px;
+	line-height: 140%;
+}
+
+.listProfileOneCol .listProfileRight {	
+	float: right;
+	width: 570px;
 	line-height: 140%;
 }
 
@@ -57,14 +69,3 @@
 
 .listProfileFollow:hover {color: $darkGrey;}
 .listProfileFollow i {position: absolute; left: 0; font-size: 9px;}
-
-
-// in search results
-
-#search .listProfile {	float: none; width: 620px;}
-#search .listProfileRight {	width: 570px;}
-
-// in fiche parti
-
-#partiSheet .listProfile {	float: none; width: 620px;}
-#partiSheet .listProfileRight {	width: 570px;}

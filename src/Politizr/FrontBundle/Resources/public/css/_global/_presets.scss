@@ -18,9 +18,65 @@ img {border:none;}
 	margin: -3px 1px 0 0;
 	padding: 1px 4px 1px 4px;
 	line-height: 100%;
+	cursor: pointer;
 } 
 
 a.followedMember::after {	content: "*";}
+
+.reactionsCounter, .commentsCounter {
+	margin-right: 40px;
+	display: inline-block;
+	position: relative;
+    font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.reactionsCounter {	padding-left: 18px;}
+.commentsCounter {	padding-left: 20px;}
+
+.commentsCounter i {
+	position: absolute;
+	left: 0px;
+	font-size: 12px;
+}
+
+.reactionsCounter i {
+	position: absolute;
+	left: -1px;
+	font-size: 14px;
+	top: -1px;
+}
+
+.readingTime, .notePlus, .noteMinus { position: relative;}
+.readingTime i, .notePlus i, .noteMinus i {	position: absolute;}
+.readingTime { 
+	padding-left: 17px;
+    font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.readingTime i {
+	left: -2px;
+	font-size: 14px;
+	top: -1px;
+}
+
+.postNote {
+	float: left;
+	clear: both;
+	margin-top: 6px;
+    font-family: 'nerisblack';
+	font-size: 10px;
+}
+
+.notePlus, .noteMinus {	float: left}
+.notePlus i, .noteMinus i {font-size: 9px;}
+.notePlus {margin-right: 5px; padding-right: 13px;}
+.notePlus i {	right: -2px;}
+.noteMinus {	padding-left: 13px;}
+.noteMinus i {	left: -2px;}
 
 .avatar40 {
 	width: 40px;

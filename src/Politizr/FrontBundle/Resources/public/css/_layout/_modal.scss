@@ -72,31 +72,31 @@ body.noscroll {
 	font-weight: normal;
 }
 
-.modal h1, .modalFilters, .modalFiltersTabs, .modalChoices {
+.modal h1, .listCriteria, .listCriteriaTabs, .modalChoices {
 	width: 100%;
 	float: left;
 	clear: both;
 }
 
-.modalFilters {
+.listCriteria {
 	font-family: nerissemibold;
 	font-size: 10px;
 	text-transform: uppercase;
 }
 
-.modalFiltersTabs {
+.listCriteriaTabs {
 	margin-top: 20px;
 	text-align: center;
 }
 
-.modalFiltersTabs span, .modalChoices span {
+.listCriteriaTabs span, .modalChoices span {
 	display: inline-block;
 	margin: 0 60px;
 	color: $semiGrey;
 	cursor: pointer;
 }
 
-.modalFiltersTabs span:hover, .modalChoices span:hover { color: $darkGrey;}
+.listCriteriaTabs span:hover, .modalChoices span:hover { color: $darkGrey;}
 
 .modalChoices span {
 	margin: 0 20px;
@@ -109,8 +109,8 @@ body.noscroll {
 	left: -2px;
 }
 
-.modalFiltersTabs span:first-child, .modalChoices span:first-child {margin-left: 0;}
-.modalFiltersTabs span:last-child, .modalChoices span:last-child, span.filterBy {	margin-right: 0;}
+.listCriteriaTabs span:first-child, .modalChoices span:first-child {margin-left: 0;}
+.listCriteriaTabs span:last-child, .modalChoices span:last-child, span.filterBy {	margin-right: 0;}
 
 span.activeFilter, span.filterBy {color: $darkGrey;}
 span.activeFilter {cursor: default;}
