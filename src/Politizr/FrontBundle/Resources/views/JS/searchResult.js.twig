@@ -1,6 +1,6 @@
 <script type="text/javascript">
     // clic précédent / suivant
-    $("body").on("click", "a[action='paginate-next']", function(e) {
+    $("body").on("click", "[action='paginate-next']", function(e) {
         console.log('*** click paginate-next');
         console.log('next-page = ' + $(this).attr('next-page'));
 

@@ -8,7 +8,7 @@
 
 
     // Fermeture commentaires
-    $("body").on("click", "a[action='close-comments']", function(e) {
+    $("body").on("click", "[action='close-comments']", function(e) {
         console.log('*** click close-comments');
 
         context = $(this).closest('.paragraph').find('.comments');
@@ -23,7 +23,7 @@
 
     // affichage des commentaires par paragraphe
     // TODO > fermeture des autres paragraphes ouverts avant l'ouverture du courant
-    $("body").on("click", "a[action='comments']", function(e) {
+    $("body").on("click", "[action='comments']", function(e) {
         console.log('*** click comments');
 
         // Fermeture préalable de tous les paragraphes ouverts
@@ -71,7 +71,7 @@
                     $('#infoBoxHolder.boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
-                    $(this).find('.counter').html(data['counter']);
+                    $(this).find('.commentsCounter').html(data['counter']);
                 }
             }
         });

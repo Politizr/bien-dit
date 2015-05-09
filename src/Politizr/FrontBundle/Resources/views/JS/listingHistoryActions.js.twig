@@ -7,7 +7,7 @@
     });
 
     // Page suivante
-    $("body").on("click", "a[action='paginate-next']", function(e) {
+    $("body").on("click", "[action='paginate-next']", function(e) {
         console.log('*** click paginate-next');
 
         console.log($(this).attr('offset'));

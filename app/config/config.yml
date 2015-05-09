@@ -225,16 +225,16 @@ liip_imagine:
         facebook_share:
             quality:              100
             filters:
-                thumbnail:         { size: [400, 400], mode: outbound }
+                thumbnail:         { size: [400, 400], mode: inbound }
 
         debate_header:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 480], mode: outbound }
+                thumbnail:         { size: [700, 360], mode: inbound }
         debate_list:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 200], mode: outbound }
+                thumbnail:         { size: [700, 360], mode: inbound }
 
         user_bio_back:
             quality:              100
@@ -243,15 +243,15 @@ liip_imagine:
         user_bio:
             quality:              100
             filters:
-                thumbnail:         { size: [150, 150], mode: outbound }
+                thumbnail:         { size: [150, 150], mode: inbound }
         user_mini:
             quality:              100
             filters:
-                thumbnail:         { size: [25, 25], mode: outbound }
+                thumbnail:         { size: [40, 40], mode: inbound }
         user_follower:
             quality:              100
             filters:
-                thumbnail:         { size: [50, 50], mode: outbound }
+                thumbnail:         { size: [50, 50], mode: inbound }
 
         organization_mini:
             quality:              100

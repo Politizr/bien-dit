@@ -127,24 +127,23 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      *  @return html
      */
-    public function photo($user, $filterName = 'user_bio', $effect = 'img-rounded')
+    public function photo($user, $filterName = 'user_bio')
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $path = 'bundles/politizrfront/images/default_user.png';
+        $path = 'bundles/politizrfront/images/profil_default.png';
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:UserPhoto.html.twig',
+            'PolitizrFrontBundle:User:_photo.html.twig',
             array(
                 'user' => $user,
                 'path' => $path,
                 'filterName' => $filterName,
-                'effect' => $effect,
                 )
         );
 

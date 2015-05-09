@@ -1,0 +1,19 @@
+<!-- @todo html/css +div class notes -->
+<div class="notes">
+    {% if app.user %}
+        {% if not pos %}
+            <div class="notePlus" action="note" object-id="{{ object.id }}" type="{{ type }}" way="up">{{ object.notePos }}<i class="iconNotePlus"></i></div>
+        {% else %}
+            <div class="notePlus">{{ object.notePos }}<i class="iconNotePlus"></i></div>
+        {% endif %}
+        {% if not neg %}
+            <div class="noteMinus" action="note" object-id="{{ object.id }}" type="{{ type }}" way="down"><i class="iconNoteMinus"></i>{{ object.noteNeg }}</div>
+        {% else %}
+            <div class="noteMinus"><i class="iconNoteMinus"></i>{{ object.noteNeg }}</div>
+        {% endif %}
+    {% else %}
+        <div class="notePlus">{{ object.notePos }}<i class="iconNotePlus"></i></div>
+        <div class="noteMinus"><i class="iconNoteMinus"></i>{{ object.noteNeg }}</div>
+        <a href="{{ path('Inscription') }}">M'inscrire pour noter</a>
+    {% endif %}
+</div>

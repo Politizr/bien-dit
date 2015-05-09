@@ -83,7 +83,7 @@ class DocumentController extends Controller
         $paragraphs = explode('<p>', $description);
         array_shift($paragraphs);
 
-        return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
                     'debate' => $debate,
                     'paragraphs' => $paragraphs,
         ));

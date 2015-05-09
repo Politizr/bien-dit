@@ -307,7 +307,7 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:glNotation.html.twig',
+            'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
             array(
                 'object' => $object,
                 'type' => $type,
@@ -359,7 +359,7 @@ class DocumentManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig',
+            'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
             array(
                 'document' => $document,
                 'comments' => $comments,
@@ -367,7 +367,7 @@ class DocumentManager
             )
         );
         $counter = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig',
+            'PolitizrFrontBundle:Comment:_counter.html.twig',
             array(
                 'document' => $document,
                 'paragraphNo' => $noParagraph,
@@ -883,7 +883,7 @@ class DocumentManager
             // Construction rendu
             $templating = $this->sc->get('templating');
             $html = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Comment:glFormList.html.twig',
+                'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
                 array(
                     'document' => $document,
                     'comments' => $comments,
@@ -891,7 +891,7 @@ class DocumentManager
                 )
             );
             $counter = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Comment:Counter.html.twig',
+                'PolitizrFrontBundle:Comment:_counter.html.twig',
                 array(
                     'document' => $document,
                     'paragraphNo' => $noParagraph,

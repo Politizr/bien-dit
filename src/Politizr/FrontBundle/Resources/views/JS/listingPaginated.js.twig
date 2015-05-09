@@ -19,7 +19,7 @@
     });
 
     // Page suivante
-    $("body").on("click", "a[action='paginate-next']", function(e) {
+    $("body").on("click", "[action='paginate-next']", function(e) {
         listing(false, $(this).attr('offset'));
     });
 

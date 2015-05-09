@@ -28,15 +28,15 @@
 
     // MAJ des tags
     $(".auto_submit_form").change(function() {
-        $('a[action="debate-save"]').trigger('click', 'silence');
+        $('[action="debate-save"]').trigger('click', 'silence');
     });
 
     // Saisie de texte sur les éditeurs medium
     // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
     var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
     function dataRequest() {
-        // $('a[action="debate-save"]').click();
-        $('a[action="debate-save"]').trigger('click', 'silence');
+        // $('[action="debate-save"]').click();
+        $('[action="debate-save"]').trigger('click', 'silence');
     }
     function delayRequest(ev) {
         if(delayRequest.timeout) {
@@ -52,7 +52,7 @@
 
     // Mise en forme sur les éditeurs medium
     $('.summary-editable, .description-editable').on('mouseup', function() {
-        $('a[action="debate-save"]').trigger('click', 'silence');
+        $('[action="debate-save"]').trigger('click', 'silence');
     });
 
 
@@ -60,7 +60,7 @@
     //      POST
     // **************************** //
     // Update debate
-    $("body").on("click", "a[action='debate-save']", function(e, mode) {
+    $("body").on("click", "[action='debate-save']", function(e, mode) {
         console.log('*** click save');
         console.log(mode);
 
@@ -100,8 +100,8 @@
     });
 
     // Retour liste
-    $('body').on('click', "a[action='debate-list']", function(e){
-        window.location = $("a[action='debate-list']").attr('url');
+    $('body').on('click', "[action='debate-list']", function(e){
+        window.location = $("[action='debate-list']").attr('url');
     });
 
 </script>

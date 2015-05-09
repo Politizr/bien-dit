@@ -1,0 +1,21 @@
+{{ form_start(formComment, {'attr': {'id': 'form-comment-new'} }) }}
+    {{ form_errors(formComment) }}
+
+    {{ form_widget(formComment.description) }}
+    {% if formComment.description.vars.errors|length %}
+        <div class="field_error">{{ form_errors(formComment.description) }}</div>
+    {% endif %}
+{{ form_end(formComment) }}
+<div class="actionsButtons withLoaderInside">
+    <div class="ajaxLoader" style="display: none;">
+        <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
+    </div>
+    {% if app.user %}
+        <!-- @todo html/css à styler -->
+        <input type="button" action="btn-submit-comment" value="&#xe82c; Publier">
+    {% else %}
+        <!-- @todo html/css à prévoir -->
+        <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
+    {% endif %}
+    <div class="cancel">Annuler</div>
+</div>

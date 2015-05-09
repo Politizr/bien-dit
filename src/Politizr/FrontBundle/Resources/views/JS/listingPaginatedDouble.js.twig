@@ -18,10 +18,10 @@
     });
 
     // Page suivante
-    $("body").on("click", "a[action='paginate-next-user']", function(e) {
+    $("body").on("click", "[action='paginate-next-user']", function(e) {
         listingUser(false, $(this).attr('offset'));
     });
-    $("body").on("click", "a[action='paginate-next-debate']", function(e) {
+    $("body").on("click", "[action='paginate-next-debate']", function(e) {
         listingDebate(false, $(this).attr('offset'));
     });
 

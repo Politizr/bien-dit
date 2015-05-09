@@ -128,7 +128,7 @@
     });
 
     // clic suppression tag
-    $("body").on("click", "a[action='deleteTag']", function() {
+    $("body").on("click", "[action='deleteTag']", function() {
         console.log('click deleteTag');
 
         var tagId = $(this).attr('tag-id');

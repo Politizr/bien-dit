@@ -1,10 +1,10 @@
 <script>
 
-    $("body").on("click", "a[action='show-mandate-create']", function(e) {
+    $("body").on("click", "[action='show-mandate-create']", function(e) {
         $('#mandate-create').slideDown("slow");
     });
 
-    $("body").on("click", "a[action='hide-mandate-create']", function(e) {
+    $("body").on("click", "[action='hide-mandate-create']", function(e) {
         $('#mandate-create').slideUp("slow");
     });
 
@@ -35,7 +35,7 @@
     });
 
     // MAJ des affinités politiques
-    $("body").on("click", "a[action='affinities-update']", function(e) {
+    $("body").on("click", "[action='affinities-update']", function(e) {
         console.log('*** click affinities-update');
 
         $.ajax({
@@ -59,7 +59,7 @@
 
 
     // Création d'un mandat
-    $("body").on("click", "a[action='mandate-add']", function(e) {
+    $("body").on("click", "[action='mandate-add']", function(e) {
         console.log('*** click mandate-add');
 
         $.ajax({
@@ -84,7 +84,7 @@
     });
 
     // MAJ d'un mandat
-    $("body").on("click", "a[action='mandate-update']", function(e) {
+    $("body").on("click", "[action='mandate-update']", function(e) {
         console.log('*** click mandate-update');
 
         $.ajax({
@@ -107,7 +107,7 @@
     });
 
     // Suppression d'un mandat
-    $("body").on("click", "a[action='mandate-delete']", function(e) {
+    $("body").on("click", "[action='mandate-delete']", function(e) {
         console.log('*** click mandate-delete');
         var subjectId = $(this).attr('subject-id');
         bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {

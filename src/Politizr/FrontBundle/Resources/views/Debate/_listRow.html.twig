@@ -7,8 +7,12 @@
                     <i class="iconTime"></i>X minutes
                 </div>
                 <div class="postNote">
-                    <div class="notePlus">{{ debate.notePos }}<i class="iconNotePlus"></i></div>
-                    <div class="noteMinus"><i class="iconNoteMinus"></i>{{ debate.noteNeg }}</div>
+                    <div class="notePlus">
+                        {{ debate.notePos }}<i class="iconNotePlus"></i>
+                    </div>
+                    <div class="noteMinus">
+                        <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
+                    </div>
                 </div>
             </div>
             <div class="postSummaryFooter">
@@ -16,18 +20,22 @@
                     {{ debate | docTags }}
                 </div>
                 <div class="postSummaryTitle">
-                    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
+                    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
+                        {{ debate.title }}
+                    </a>
                 </div>
                 <div class="postSummaryAuthor">
-                    {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
+                    {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
                 </div>
                 <div class="postSummaryActivity">
                     <div class="reactionsCounter">
-                        <i class="iconReaction"></i>{{ debate | nbReactions }}
+                        <i class="iconReaction"></i>
+                        {{ debate | nbReactions }}
                     </div>
                     <div class="commentsCounter" action="paragraphCommentsCounter">
                         {# @todo nombre de commentaires total #}
-                        <i class="iconComment"></i>X commentaires
+                        <i class="iconComment"></i>
+                        X commentaires
                     </div>
                 </div>
             </div>

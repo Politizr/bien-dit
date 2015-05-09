@@ -1,0 +1,118 @@
+{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
+{% if (isGrantedE()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% elseif (isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% endif %}
+{% extends layout %}
+
+{% block connexionBox %}
+    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div id="main">
+        <div class="postSummary">
+            <div class="pad40">
+                <div class="postSummaryHeader">
+                    <div class="readingTime">
+                        {# @todo temps de lecture #}
+                        <i class="iconTime"></i>X minutes
+                    </div>
+                    <div class="postNote">
+                        <div class="notePlus">
+                            {{ debate.notePos }}<i class="iconNotePlus"></i>
+                        </div>
+                        <div class="noteMinus">
+                            <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
+                        </div>
+                    </div>
+                </div>
+                <div class="postSummaryFooter">
+                    <div class="postSummaryGotoFil">
+                        <a href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+                            <i class="iconTimeline"></i>
+                            Fil du débat
+                        </a>
+                    </div>
+                    <div class="postSummaryTagList">
+                        {{ debate | docTags }}
+                    </div>
+                    <div class="postSummaryTitle">
+                        {{ debate.title }}
+                    </div>
+                    <div class="postSummaryActivity">
+                        <div class="reactionsCounter">
+                            <i class="iconReaction"></i>
+                            {{ debate | nbReactions }}
+                        </div>
+                        <div class="commentsCounter" action="paragraphCommentsCounter">
+                            {# @todo nombre de commentaires total #}
+                            <i class="iconComment"></i>
+                            X commentaires
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+            <div class="illustrationShadow"></div>
+            <!-- @todo html/css fournir informations de resize -->
+            {{ debate | image('debate_header') }}
+        </div>
+        <div id="illustration_l">
+            <div class="illustrationShadow"></div>
+            <!-- @todo html/css fournir informations de resize -->
+            {{ debate | image('debate_header') }}
+        </div>
+        <div id="illustration_r">
+            <div class="illustrationShadow"></div>
+            <!-- @todo html/css fournir informations de resize -->
+            {{ debate | image('debate_header') }}
+        </div>
+        <div id="copyrightHolder">
+            <!-- @todo gestion des copyrights à voir avec juriste -->
+            <i class="iconCopyright" action="showCopyright"></i>
+            <div id="copyright" style="display: none;" action="showCopyright">
+                <i class="iconArrowUp"></i>
+                Nom prénom, <a href="" target="_blank">lien</a>
+            </div>
+        </div>
+    
+        <div id="postAuthorHolder">
+            <div id="postAuthor">
+                {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
+            </div>
+            <div id="postInfos">
+                {% include 'PolitizrFrontBundle:DateTime:publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
+            </div>
+        </div>
+
+        <div id="postText">
+            <div class="paragraph">
+                {# @todo gestion des commentaires sur le résumé #}
+                <p class="summary">{{ debate.summary | raw }}</p>
+            </div>
+            {% for paragraph in paragraphs %}
+                <div class="paragraph">
+                    {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
+                    <p>{{ paragraph | raw }}</p>
+                    {# @todo chargement des imgLiquid post ajax #}
+                    <div class="comments"></div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+    
+    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

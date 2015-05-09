@@ -20,7 +20,7 @@
     //      POST
     // **************************** //
     // clic connexion
-    $("body").on("click", "a[action='payment-process']", function(e) {
+    $("body").on("click", "[action='payment-process']", function(e) {
         console.log('*** payment-process');
 
         $.ajax({

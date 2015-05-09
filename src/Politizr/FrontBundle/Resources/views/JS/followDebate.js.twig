@@ -4,7 +4,7 @@
     // **************************** //
 
     // suivre / ne plus suivre
-    $("body").on("click", "a[action='follow']", function(e) {
+    $("body").on("click", "[action='follow']", function(e) {
         console.log('*** click follow');
         
         var context = $(this).closest('.following');

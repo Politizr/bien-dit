@@ -1,0 +1,17 @@
+<div class="commentsClose" action="close-comments">fermer<i class="iconCross"></i></div>
+
+<div class="commentsEditNew">
+    <div class="avatar40">
+        {{ app.user | photo('user_mini') }}
+    </div>
+    {% include 'PolitizrFrontBundle:Comment:_new.html.twig' with { 'formComment': formComment } %}
+</div>
+
+<div class="commentsList withLoaderInside">
+    <div class="ajaxLoader" style="display: none;"><i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div></div>
+    {% for comment in comments %}
+        {% include 'PolitizrFrontBundle:Comment:_listRow.html.twig' with { 'comment': comment } %}
+    {% endfor %}
+</div>
+
+<div class="commentsClose" action="close-comments">fermer<i class="iconCross"></i></div>

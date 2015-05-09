@@ -1,6 +1,6 @@
 <script>
     // Publication debat
-    $('body').on('click', "a[action='debate-publish']", function(e){
+    $('body').on('click', "[action='debate-publish']", function(e){
         console.log('*** click publish');
         
         bootbox.confirm('Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?', function(result) {
@@ -9,7 +9,7 @@
                     type: 'POST',
                     dataType: 'json',
                     url : "{{ path('DebatePublish') }}",
-                    data: { 'id': $("a[action='debate-publish']").attr('object-id'), 'url': $("a[action='debate-publish']").attr('url') },
+                    data: { 'id': $("[action='debate-publish']").attr('object-id'), 'url': $("[action='debate-publish']").attr('url') },
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
@@ -29,7 +29,7 @@
 
 
     // Suppression debat
-    $('body').on('click', "a[action='debate-delete']", function(e){
+    $('body').on('click', "[action='debate-delete']", function(e){
         console.log('*** click delete');
 
         bootbox.confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?', function(result) {
@@ -38,7 +38,7 @@
                     type: 'POST',
                     dataType: 'json',
                     url : "{{ path('DebateDelete') }}",
-                    data: { 'id': $('#debate_id').val(), 'url': $("a[action='debate-delete']").attr('url') },
+                    data: { 'id': $('#debate_id').val(), 'url': $("[action='debate-delete']").attr('url') },
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                     success: function(data) {
