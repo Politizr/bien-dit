@@ -84,36 +84,36 @@ body.noscroll {
 	text-transform: uppercase;
 }
 
+
 .listCriteriaTabs {
 	margin-top: 20px;
 	text-align: center;
 }
 
-.listCriteriaTabs span, .modalChoices span {
+.listCriteria form#listOrder input:checked + label, .listCriteria form#listFilter input:checked + label {	color: $darkGrey;}
+.listCriteria form#listOrder label, .listCriteria form#listFilter label {	color: $semiGrey;}
+.listCriteria form#listOrder label:hover, .listCriteria form#listFilter label:hover { color: $darkGrey;}
+
+.listCriteria label {
 	display: inline-block;
-	margin: 0 60px;
+	margin: 0 40px 5px 40px !important;
 	color: $semiGrey;
 	cursor: pointer;
 }
 
-.listCriteriaTabs span:hover, .modalChoices span:hover { color: $darkGrey;}
-
-.modalChoices span {
-	margin: 0 20px;
+.listCriteria label {
 	position: relative;
 	padding-left: 14px;
 }
 
-.modalChoices span i {
+.listCriteria label i {
 	position: absolute;
 	left: -2px;
 }
 
-.listCriteriaTabs span:first-child, .modalChoices span:first-child {margin-left: 0;}
-.listCriteriaTabs span:last-child, .modalChoices span:last-child, span.filterBy {	margin-right: 0;}
+span.filterBy {	margin: 0 !important;}
 
-span.activeFilter, span.filterBy {color: $darkGrey;}
-span.activeFilter {cursor: default;}
+
 
 .modalChoices {
 	margin-top: 40px;

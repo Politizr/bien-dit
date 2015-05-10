@@ -4,10 +4,11 @@ input {
 	padding: 0; 
 	margin: 0;
 	-webkit-appearance: none;
+	appearance: none;
     -webkit-border-radius:0; 
     border-radius:0; 
 }
-input[type=submit] {cursor: pointer; font-family: 'fontello', 'nerissemibold'; border: none;}
+input[type=submit], input[type=button] {cursor: pointer; font-family: 'fontello', 'nerissemibold'; border: none;}
 textarea {margin: 0;}
 textarea:focus, input:focus{    outline: 0;}
 .actionsButtons {
@@ -45,7 +46,7 @@ textarea:focus, input:focus{    outline: 0;}
     resize: none;
 }
 
-.comments input[type=submit] {
+.comments input[type=submit], .comments input[type=button] {
 	background-color: transparent;
 	color: $highlight;
 	font-size: 13px;
@@ -62,7 +63,7 @@ textarea:focus, input:focus{    outline: 0;}
 	margin-left: 20px;
 }
 
-.comments input[type=submit]:hover, .comments .cancel:hover {	color: $darkGrey;}
+.comments input[type=submit]:hover, .comments input[type=button]:hover, .comments .cancel:hover {	color: $darkGrey;}
 
 //search form
 

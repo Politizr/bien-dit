@@ -4,10 +4,8 @@
     </div>
     <div class="authorName">
         <span>Par</span>
-        <!-- @todo html/css: ajout d'une classe elected si le user est un élu -->
         <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %}">
             {{ user }}
-            <!-- @todo html/css: ajout d'un check user validé -->
             {% if user.validated %}
                 <span class="fa fa-check-square-o" title="Profil validé"></span>
             {% endif %}
@@ -24,7 +22,6 @@
             #}
         {% endfor %}
     </div>
-    <!-- @todo html/css mandat en cours plutôt que début de la bio -->
     <div class="authorMandate">
         {# Mandats en cours #}
         {% set mandates = user.currentMandates %}
@@ -33,6 +30,5 @@
         {% endfor %}        
     </div>
 {% else %}
-    {# @todo html/css: à prévoir #}
     <span>Utilisateur supprimé</span>
 {% endif %}

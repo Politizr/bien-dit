@@ -5,7 +5,6 @@
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}
-<!-- @todo html/css: sous-classe d'un tag à styler: default, geo, theme -->
 {# @todo branchement modal #}
 {# <a class="tag {{ twbLabel }}" href="{{ path('Tag', { 'slug': tag.slug }) }}"><i class="fa fa-tag"></i>&nbsp;{{ tag.title }}</a> #}
 <span class="tag {{ twbLabel }}" action="openListByTag">{{ tag.title }}</span>
