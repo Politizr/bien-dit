@@ -298,7 +298,7 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glList.html.twig',
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
                 'offset' => intval($offset) + 10,

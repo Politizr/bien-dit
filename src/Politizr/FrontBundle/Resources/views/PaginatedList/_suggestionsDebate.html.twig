@@ -1,0 +1,27 @@
+<h1>Suggestions de débats</h1>
+<div id="paginatedList" url="{{ path('DailyDebateList') }}">
+    <div class="listCriteria">
+        <div id="testList">chargement de la liste</div>
+        <!-- @todo html/css renommage class="listCriteriaTabs" > class="modalOrders" -->
+        <div class="modalOrders">
+            <form id="listOrder">
+                <span class="filterBy">trier par :</span>
+                <!-- @todo html/css virer les id sur les radio & les for sur les label -->
+                <input type="radio" class="order" name="order" value="last" selected/><label><i class="iconCheck"></i>dernier</label>
+                <input type="radio" class="order" name="order" value="bestNote" /><label><i class="iconCheck"></i>mieux notés</label>
+                <input type="radio" class="order" name="order" value="mostFollowed" /><label><i class="iconCheck"></i>plus suivis</label>
+            </form>
+        </div>
+
+        <div class="modalChoices">
+            <form id="listFilter">
+                <span class="filterBy">filtrer par :</span>
+                <!-- @todo html/css virer les id sur les checkbox -->
+                <input type="checkbox" class="filter" name="filters[]" value="suggestion"/><label><i class="iconCheck"></i>suggérés</label>
+                <input type="checkbox" class="filter" name="filters[]" value="newest"/><label><i class="iconCheck"></i>les plus récents</label>
+                <input type="checkbox" class="filter" name="filters[]" value="qualified" /><label><i class="iconCheck"></i>élus uniquement</label>
+            </form>
+        </div>
+    </div>
+    <div id="listContent"></div>
+</div>

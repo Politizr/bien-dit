@@ -32,19 +32,15 @@
         init = (typeof init === "undefined") ? true : init;
         offset = (typeof offset === "undefined") ? 0 : offset;
 
-        // Récupération de l'ordonnancement en cours
-        order = $(".order selected").val();
-        order = (typeof order === "undefined") ? null : order;
-
-        console.log('order');
-        console.log(order);
-
         // Récupération du form des filtres
         var datas = $('#listFilter').serializeArray();
-
-        console.log('listFilter');
         console.dir(datas);
         
+        // Récupération de l'ordonnancement en cours
+        var order = $('#listOrder').serializeArray();
+        console.dir(order);
+
+        // Concaténation des attributs supplémentaires
         datas.push({name: 'order', value: order});
         datas.push({name: 'offset', value: offset});
 

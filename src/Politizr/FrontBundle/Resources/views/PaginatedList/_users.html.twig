@@ -1,0 +1,16 @@
+{# @todo refactoring + générique #}
+<div class="scroll">
+    <div class="modalList withLoaderInside">
+        <div class="ajaxLoader" style="display: none;">
+            <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
+        </div>
+        {% for user in users %}
+            {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } only %}
+        {% endfor %}
+    </div>
+</div>
+{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'results': users, 'offset': offset } %}
+
+<script>
+    // imgLiquid
+</script>
