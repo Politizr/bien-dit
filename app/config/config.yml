@@ -230,38 +230,43 @@ liip_imagine:
         debate_header:
             quality:              100
             filters:
-                thumbnail:         { size: [700, 360], mode: inbound }
+                relative_resize:  { widen: 700 }
+
         debate_list:
             quality:              100
             filters:
-                thumbnail:         { size: [700, 360], mode: inbound }
+                relative_resize:  { widen: 700 }
 
         user_bio_back:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 480], mode: inbound }
+                relative_resize:  { widen: 700 }
+
         user_bio:
             quality:              100
             filters:
-                thumbnail:         { size: [150, 150], mode: inbound }
+                relative_resize:  { widen: 60 }
+
         user_mini:
             quality:              100
             filters:
-                thumbnail:         { size: [40, 40], mode: inbound }
+                relative_resize:  { widen: 40 }
+
         user_follower:
             quality:              100
             filters:
-                thumbnail:         { size: [50, 50], mode: inbound }
+                relative_resize:  { widen: 40 }
 
         organization_mini:
             quality:              100
             filters:
-                relative_resize:  { heighten: 30 }
+                relative_resize:  { widen: 30 }
 
         organization_detail:
             quality:              100
             filters:
-                relative_resize: { heighten: 250 }
+                relative_resize:  { widen: 250 }
+
 
 
         # FRONT / ESPACE CITOYEN
