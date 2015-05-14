@@ -8,15 +8,17 @@
         console.log('*** click followDebate');
         
         var context = $(this).closest('.subscribe');
+        var localLoader = $(this).closest('.subscribe').prev('.ajaxLoader');
+
         $.ajax({
             type: 'POST',
             url: "{{ path('FollowDebate') }}",
             context: context,
             data: { 'objectId': $(this).attr('object-id'), 'way': $(this).attr('way') },
             dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
-                $('#ajaxGlobalLoader').hide();
+                localLoader.hide();
                 if (data['error']) {
                     $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
                     $('#infoBoxHolder.boxError').show();
@@ -34,7 +36,6 @@
                 }
             }
         });
-
     });
 
 </script>

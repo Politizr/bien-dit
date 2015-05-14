@@ -45,6 +45,7 @@
         {{ debate | image('debate_header') }}
     </div>
     <div class="listPostFollow">
+        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
         <div class="subscribe">
             {{ debate | linkSubscribeDebate }}
         </div>

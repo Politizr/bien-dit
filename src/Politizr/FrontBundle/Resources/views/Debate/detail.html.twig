@@ -17,10 +17,7 @@
         <i class="iconTimeline"></i>fil du débat
     </a>
     <div class="actionFollow withLoaderInside">
-        <div class="ajaxLoader" style="display: none;">
-            <i class="iconSpin5 animateSpin"></i>
-            <div class="ajaxLoaderBg"></div>
-        </div>
+        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
         <div class="subscribe">
             {{ debate | linkSubscribeDebate }}
         </div>
