@@ -23,6 +23,16 @@
         listing(false, $(this).attr('offset'));
     });
 
+    /* imgLiquid onSuccess */
+    function imgLiquidOnSuccess() {
+        // full size image in debate summary 
+        $(".postSummary").imgLiquid({
+            fill: true,
+            horizontalAlign: "center",
+            verticalAlign: "center"
+        });
+    }
+
     // Chargement paginé de la liste
     function listing(init, offset) {
         console.log('*** listing');
@@ -72,6 +82,7 @@
                     } else {
                         $('#listContent').append(data['html']);
                     }
+                    imgLiquidOnSuccess();
                 }
                 $('#ajaxGlobalLoader').hide();
             }

@@ -15,7 +15,7 @@
         loadPaginatedList('_suggestionsUser.html.twig');
     });
 
-    /* code générique de chargement d'une modal */4
+    /* code générique de chargement d'une modal */
     function modalLoading() {
         $('#modalBox').fadeIn('fast');
         $('body').addClass('noscroll');
@@ -48,8 +48,6 @@
                 } else {
                     $('#modalBoxContent').html(data['html']);
                     listing();
-                    // @todo imgLiquid
-                    // @todo refactoring > function modalLoadingOnSuccess()
                 }
                 $('#ajaxGlobalLoader').hide();
             }
