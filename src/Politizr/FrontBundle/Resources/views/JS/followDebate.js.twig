@@ -4,10 +4,10 @@
     // **************************** //
 
     // suivre / ne plus suivre
-    $("body").on("click", "[action='follow']", function(e) {
-        console.log('*** click follow');
+    $("body").on("click", "[action='followDebate']", function(e) {
+        console.log('*** click followDebate');
         
-        var context = $(this).closest('.following');
+        var context = $(this).closest('.listPost');
         $.ajax({
             type: 'POST',
             url: "{{ path('FollowDebate') }}",
@@ -24,6 +24,7 @@
                     // MAJ du bouton suivre / ne plus suivre
                     $(this).find('.subscribe').html(data['html']);
 
+                    // @todo refactoring / à supprimer?
                     // Bloc followers existant à rafraichir?
                     if ($(this).find('#followers').length) {
                         $(this).find('#followers').html(data['followers']);

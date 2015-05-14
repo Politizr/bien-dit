@@ -25,6 +25,5 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'DailyDebateList' } %}
 {% endblock javascriptFooter %}

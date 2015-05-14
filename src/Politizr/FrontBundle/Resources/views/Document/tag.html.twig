@@ -40,7 +40,5 @@
     {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:listingPaginatedDouble.js.twig' with { 'RouteUserName': 'TagUserList', 'RouteDebateName': 'TagDebateList' } %}
 {% endblock javascriptFooter %}

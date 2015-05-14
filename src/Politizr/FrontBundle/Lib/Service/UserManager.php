@@ -237,7 +237,7 @@ class UserManager
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:glSubscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $object,
                 'type' => PDocument::TYPE_USER

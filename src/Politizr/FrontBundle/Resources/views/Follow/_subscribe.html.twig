@@ -1,9 +1,7 @@
-{% if app.user %}
-    {% if follower %}
-        <a action="follow" object-id="{{ object.id }}" type="{{ type }}" way="unfollow">Ne plus suivre</a>
-    {% else %}
-        <a action="follow" object-id="{{ object.id }}" type="{{ type }}" way="follow">Suivre</a>
-    {% endif %}
-{% else %}
-    <a href="{{ path('Inscription') }}">M'inscrire pour suivre</a>
+{# @todo normalisation à mettreen place pour les templates se contentant d'appeller un filtre twig pour afficher un autre template#}
+{# Gestion Twig suivre débat / user #}
+{% if type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %} 
+    {{ object | linkSubscribeDebate }}
+{% elseif type == constant('Politizr\\Model\\PDocument::TYPE_USER') %} 
+    {{ object | linkSubscribeUser }}
 {% endif %}

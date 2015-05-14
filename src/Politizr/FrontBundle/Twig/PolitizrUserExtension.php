@@ -250,10 +250,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeUser.html.twig',
             array(
                 'object' => $user,
-                'type' => PDocument::TYPE_USER,
                 'follower' => $follower
             )
         );

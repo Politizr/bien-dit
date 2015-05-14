@@ -494,10 +494,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Follow:_subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocument::TYPE_DEBATE,
                 'follower' => $follower
             )
         );
