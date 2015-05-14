@@ -7,7 +7,7 @@
     $("body").on("click", "[action='followDebate']", function(e) {
         console.log('*** click followDebate');
         
-        var context = $(this).closest('.listPost');
+        var context = $(this).closest('.subscribe');
         $.ajax({
             type: 'POST',
             url: "{{ path('FollowDebate') }}",
@@ -22,7 +22,7 @@
                     $('#infoBoxHolder.boxError').show();
                 } else {
                     // MAJ du bouton suivre / ne plus suivre
-                    $(this).find('.subscribe').html(data['html']);
+                    $(this).html(data['html']);
 
                     // @todo refactoring / à supprimer?
                     // Bloc followers existant à rafraichir?

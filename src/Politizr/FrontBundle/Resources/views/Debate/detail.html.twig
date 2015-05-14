@@ -12,6 +12,23 @@
     {% endif %}
 {% endblock %}
 
+{% block fixedActions %}
+    <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+        <i class="iconTimeline"></i>fil du débat
+    </a>
+    <div class="actionFollow withLoaderInside">
+        <div class="ajaxLoader" style="display: none;">
+            <i class="iconSpin5 animateSpin"></i>
+            <div class="ajaxLoaderBg"></div>
+        </div>
+        <div class="subscribe">
+            {{ debate | linkSubscribeDebate }}
+        </div>
+    </div>
+    
+    {{ parent() }}
+{% endblock fixedActions %}
+
 {% block main %}
     <div id="main">
         <div class="postSummary">
