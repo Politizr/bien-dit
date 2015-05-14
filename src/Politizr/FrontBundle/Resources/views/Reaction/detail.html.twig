@@ -1,0 +1,140 @@
+{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
+{% if (isGrantedE()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% elseif (isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% endif %}
+{% extends layout %}
+
+{% block connexionBox %}
+    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+    {% endif %}
+{% endblock %}
+
+{% block fixedActions %}
+    <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+        <i class="iconTimeline"></i>fil du débat
+    </a>
+    <div class="actionFollow withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
+        <div class="subscribe">
+            {{ debate | linkSubscribeDebate }}
+        </div>
+    </div>
+    
+    {{ parent() }}
+{% endblock fixedActions %}
+
+{% block main %}
+    <div id="main">
+        <div class="postSummary">
+            <div class="pad40">
+                <div class="postSummaryHeader">
+                    <div class="readingTime">
+                        {# @todo temps de lecture #}
+                        <i class="iconTime"></i>X minutes
+                    </div>
+                    <div class="postNote">
+                        <div class="notePlus">
+                            {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                        </div>
+                        <div class="noteMinus">
+                            <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                        </div>
+                    </div>
+                </div>
+                <div class="postSummaryFooter">
+                    <div class="postSummaryGotoFil">
+                        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
+                            <i class="iconTimeline"></i>
+                            {{ debate.title }}
+                        </a>
+                    </div>
+
+                    {# @todo TwigExtension Parent Réaction #}
+                    {% if reaction.level > 1 %}
+                        {% set parentReaction = reaction.getParent %}
+                        <div class="postSummaryGotoFil">
+                            <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">
+                                <i class="iconTimeline"></i>
+                                {{ parentReaction.title }}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <div class="postSummaryTagList">
+                        {{ debate | docTags }}
+                    </div>
+                    <div class="postSummaryTitle">
+                        {{ reaction.title }}
+                    </div>
+                    <div class="postSummaryActivity">
+                        <div class="reactionsCounter">
+                            <i class="iconReaction"></i>
+                            {{ reaction | nbReactions }}
+                        </div>
+                        <div class="commentsCounter" action="paragraphCommentsCounter">
+                            {# @todo nombre de commentaires total #}
+                            <i class="iconComment"></i>
+                            X commentaires
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+            <div class="illustrationShadow"></div>
+            {{ reaction | image('debate_header') }}
+        </div>
+        <div id="illustration_l">
+            <div class="illustrationShadow"></div>
+            {{ reaction | image('debate_header') }}
+        </div>
+        <div id="illustration_r">
+            <div class="illustrationShadow"></div>
+            {{ reaction | image('debate_header') }}
+        </div>
+        <div id="copyrightHolder">
+            <!-- @todo gestion des copyrights à voir avec juriste -->
+            <i class="iconCopyright" action="showCopyright"></i>
+            <div id="copyright" style="display: none;" action="showCopyright">
+                <i class="iconArrowUp"></i>
+                Nom prénom, <a href="" target="_blank">lien</a>
+            </div>
+        </div>
+    
+        <div id="postAuthorHolder">
+            <div id="postAuthor">
+                {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': reaction.user } only %}
+            </div>
+            <div id="postInfos">
+                {% include 'PolitizrFrontBundle:DateTime:publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+            </div>
+        </div>
+
+        <div id="postText">
+            <div class="paragraph">
+                {# @todo gestion des commentaires sur le résumé #}
+                <p class="summary">{{ reaction.summary | raw }}</p>
+            </div>
+            {% for paragraph in paragraphs %}
+                <div class="paragraph">
+                    {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': reaction, 'paragraphNo': loop.index } only %}
+                    <p>{{ paragraph | raw }}</p>
+                    {# @todo chargement des imgLiquid post ajax #}
+                    <div class="comments"></div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+    
+    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+{% endblock javascriptFooter %}

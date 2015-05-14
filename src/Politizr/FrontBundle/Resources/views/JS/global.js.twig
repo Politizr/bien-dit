@@ -20,5 +20,12 @@
         $(this).parent().parent().parent('.modal').hide();  
         $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
     });
+
+    /* go up */
+    $("body").on("click", "[action='goUp']", function() {
+        $('html, body').animate({
+            scrollTop: $("body").offset().top
+        }, '1000');
+    });
         
 </script>
