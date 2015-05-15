@@ -40,7 +40,9 @@ body.css760 .modal h1 { margin: 40px 0 0 0;}
 body.css760 .modalList .postSummaryTitle {	font-size: 30px;}
 
 body.css760 .modalChoices { margin-top: 30px; }
+body.css760 .listCriteriaTabs input, body.css760 .modalChoices input {display: none;}
 body.css760 .listCriteriaTabs span, body.css760 .modalChoices span {	margin: 0 15px 10px 15px;}
+
 
 body.css760 .listPost {	
 	width: calc(100% - 40px);
