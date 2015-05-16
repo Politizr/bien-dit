@@ -357,29 +357,33 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     }
 
     /**
-     *    Renvoit le nombre de réactions publiées associées à la réaction courante.
+     * Renvoit le nombre de réactions publiées associées à la réaction courante.
      *
-     *     @param     integer     $online         réactions en ligne
-     *     @param     integer     $published      réactions publiées
+     * @param integer $online Réactions en ligne
+     * @param integer $published Réactions publiées
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function countChildrenReactions($online = true, $published = true)
+    public function countChildrenReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
+                    ->_if(null !== $online)
+                        ->filterByOnline(true)
+                    ->_endif()
+                    ->_if(null !== $published)
+                        ->filterByPublished(true)
+                    ->_endif()
                     ->orderByPublishedAt(\Criteria::DESC);
 
         return parent::countChildren($query);
     }
 
     /**
-     *     @see countChildrenReactions
+     * @see countChildrenReactions
      */
-    public function countReactions()
+    public function countReactions($online = null, $published = null)
     {
-        return $this->countChildrenReactions(true, true);
+        return $this->countChildrenReactions($online, $published);
     }
 
 

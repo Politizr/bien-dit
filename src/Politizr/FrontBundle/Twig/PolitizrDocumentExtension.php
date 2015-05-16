@@ -384,7 +384,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $debate,
                 'type' => PDocument::TYPE_DEBATE,
@@ -447,7 +447,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $reaction,
                 'type' => PDocument::TYPE_REACTION,

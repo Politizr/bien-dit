@@ -13,7 +13,7 @@
             <div class="commentsInfos">
                 {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}, {% include 'PolitizrFrontBundle:DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': comment.publishedAt } only %}
             </div>
-            <div class="commentsNote">
+            <div class="notes commentsNote">
                 {{ comment | linkNoteComment }}
             </div>
         </div>

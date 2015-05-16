@@ -315,7 +315,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     /**
      * Renvoit le document associé à la réaction
      *
-     * @return     PDDebate     Objet débat
+     * @return PDDebate
      */
     public function getDocument()
     {
@@ -323,9 +323,9 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
     /**
-     *    Renvoit les réactions associées en mode arbre / nested set
+     * Renvoit les réactions associées en mode arbre / nested set
      *
-     * @return PropelCollection d'objets PDReaction
+     * @return PropelCollection PDReaction
      */
     public function getTreeReactions($online = false, $published = false)
     {
@@ -345,17 +345,20 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
     /**
-     *    Renvoit le nombre de réactions associées au débat
+     * Renvoit le nombre de réactions associées au débat
      *
+     * @param boolean $online
+     * @param boolean $published
+     * @return int
      */
-    public function countReactions($online = false, $published = false)
+    public function countReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
                     ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
-                    ->_if($online)
+                    ->_if(null !== $online)
                         ->filterByOnline(true)
                     ->_endif()
-                    ->_if($published)
+                    ->_if(null !== $published)
                         ->filterByPublished(true)
                     ->_endif()
                     ;

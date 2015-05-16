@@ -1,0 +1,60 @@
+<div id="reactionsToPost">
+    <h1>les réactions à cette publication</h1>
+    {% for reaction in document.treeReactions(true, true) %}
+        <div class="reactionsToPostItem">
+            <div class="reactionsToPostItemHeader">
+                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+                <div class="reactionsToPostItemSummary">
+                    <i class="iconNotifYes"></i>
+                    {% spaceless %}
+                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': reaction.user } only %}
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': reaction.user } only %}
+                        a réagit :
+                    {% endspaceless %}
+                </div>
+            </div>
+            <div class="reactionsToPostItemContent">
+                <div class="reactionsToPostItemIllustration">
+                    {{ document | image('debate_header') }}
+                </div>
+                <div class="avatar40">
+                    {{ reaction.user | photo('user_mini') }}
+                </div>
+                <div class="reactionsToPostItemPostSummary">
+                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                        {{ reaction.summary | raw }}
+                    </a>
+                </div>
+            </div>
+            <div class="reactionsToPostItemFooter">
+                <div class="postSummaryActivity">
+                    <div class="reactionsCounter">
+                        <i class="iconReaction"></i>
+                        {{ reaction | nbReactions }}
+                    </div>
+                    <div class="commentsCounter" action="paragraphCommentsCounter">
+                        <i class="iconComment"></i>
+                        {{ reaction | nbComments }}
+                    </div>
+                    <div class="readingTime">
+                        {# @todo temps de lecture #}
+                        <i class="iconTime"></i>
+                        X minutes
+                    </div>
+                </div>
+                <div class="postNote">
+                    <div class="notePlus">
+                        {{ reaction.notePos }}<i class="iconNoteLightPlus"></i>
+                    </div>
+                    <div class="noteMinus">
+                        <i class="iconNoteLightMinus"></i>{{ reaction.noteNeg }}
+                    </div>
+                </div>
+                <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}" class="linkToPost">
+                    <i class="iconGoTo"></i>
+                    Afficher
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
