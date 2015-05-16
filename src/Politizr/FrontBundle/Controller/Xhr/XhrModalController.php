@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- *  Gestion des listings / appels XHR
+ *  Gestion des modals / appels XHR
  *
  *  @author Lionel Bouzonville
  */
-class XhrListingController extends Controller
+class XhrModalController extends Controller
 {
     /**
      *  Chargement d'une box modal
@@ -22,7 +22,7 @@ class XhrListingController extends Controller
         $logger->info('*** modalPaginatedListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.generic',
+            'politizr.service.modal',
             'modalPaginatedList'
         );
 
@@ -54,7 +54,7 @@ class XhrListingController extends Controller
         $logger->info('*** dailyDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
+            'politizr.service.modal',
             'dailyDebateList'
         );
 
@@ -70,7 +70,7 @@ class XhrListingController extends Controller
         $logger->info('*** dailyUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+            'politizr.service.modal',
             'dailyUserList'
         );
 
@@ -86,7 +86,7 @@ class XhrListingController extends Controller
         $logger->info('*** historyActionsList');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+            'politizr.service.modal',
             'historyActionsList'
         );
 
@@ -102,7 +102,7 @@ class XhrListingController extends Controller
         $logger->info('*** followedDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
+            'politizr.service.modal',
             'followedDebateList'
         );
 
@@ -118,7 +118,7 @@ class XhrListingController extends Controller
         $logger->info('*** followedUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+            'politizr.service.modal',
             'followedUserList'
         );
 
@@ -134,7 +134,7 @@ class XhrListingController extends Controller
         $logger->info('*** organizationUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+            'politizr.service.modal',
             'organizationUserList'
         );
 
@@ -150,7 +150,7 @@ class XhrListingController extends Controller
         $logger->info('*** tagDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
+            'politizr.service.modal',
             'tagDebateList'
         );
 
@@ -166,7 +166,7 @@ class XhrListingController extends Controller
         $logger->info('*** tagUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+            'politizr.service.modal',
             'tagUserList'
         );
 

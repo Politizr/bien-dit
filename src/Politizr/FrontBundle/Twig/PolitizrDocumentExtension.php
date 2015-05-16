@@ -79,6 +79,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'nbComments',
+                array($this, 'nbComments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'docTags',
                 array($this, 'docTags'),
                 array('is_safe' => array('html'))
@@ -86,6 +91,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'nbViewsFormat',
                 array($this, 'nbViewsFormat'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkParentReaction',
+                array($this, 'linkParentReaction'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -172,13 +182,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /**
-     *  Nombre de réactions d'un document.
+     * Nombre de réactions d'un document.
      *
-     *  pour un débat: nombre de réaction total / pour une réaction: nombre de réactions filles
+     * pour un débat: nombre de réaction total / pour une réaction: nombre de réactions filles
      *
-     *  @param $document          PDocument
+     * @param $document          PDocument
      *
-     *  @return html
+     * @return html
      */
     public function nbReactions($document)
     {
@@ -189,35 +199,46 @@ class PolitizrDocumentExtension extends \Twig_Extension
         switch(get_class($document)) {
             case PDocument::TYPE_DEBATE:
                 $nbReactions = $document->countReactions(true, true);
-                $url = $this->router->generate('DebateFeed', array('slug' => $document->getSlug()));
                 break;
             case PDocument::TYPE_REACTION:
                 $nbReactions = $document->countChildrenReactions(true, true);
-                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
                 break;
         }
 
-        if ($nbReactions === 0) {
-            $reactions = 'Aucune réaction';
-        } elseif ($nbReactions === 1) {
-            $reactions = '1 réaction';
+        if (0 === $nbReactions) {
+            $html = 'Aucune réaction';
+        } elseif (1 === $nbReactions) {
+            $html = '1 réaction';
         } else {
-            $reactions = $nbReactions.' réactions';
+            $html = $nbReactions.' réactions';
         }
 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:NbReactions.html.twig',
-            array(
-                'document' => $document,
-                'url' => $url,
-                'nbReactions' => $nbReactions,
-                'reactions' => $reactions,
-            )
-        );
+        return $html;
+    }
+
+    /**
+     * Nombre de commentaires d'un document.
+     *
+     * @param $document          PDocument
+     *
+     * @return html
+     */
+    public function nbComments(PDocument $document)
+    {
+        // $this->logger->info('*** nbComments');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbComments = $document->countComments();
+
+        if (0 === $nbComments) {
+            $html = 'Aucun commentaire';
+        } elseif (1 === $nbComments) {
+            $html = '1 commentaire';
+        } else {
+            $html = $nbComments.' commentaires';
+        }
 
         return $html;
-
     }
 
 
@@ -278,6 +299,40 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
 
     }
+
+    /**
+     * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
+     *
+     * @param PDReaction $reaction
+     *
+     * @return string
+     */
+    public function linkParentReaction(PDReaction $reaction)
+    {
+        // $this->logger->info('*** linkParentReaction');
+        // $this->logger->info('$debate = '.print_r($reaction, true));
+
+        if ($reaction->getLevel() > 1) {
+            $parent = $reaction->getParent();
+            $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+        } else {
+            $parent = $reaction->getDebate();
+            $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reaction:_linkParentReaction.html.twig',
+            array(
+                'parent' => $parent,
+                'url' => $url,
+            )
+        );
+
+        return $html;
+
+    }
+
 
     /**
      *  Affiche & active / désactive les Note + / Note -

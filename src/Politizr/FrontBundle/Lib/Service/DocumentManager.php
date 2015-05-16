@@ -966,59 +966,6 @@ class DocumentManager
             );
     }
 
-    /* ######################################################################################################## */
-    /*                                              SUGGESTIONS (FONCTIONS AJAX)                                */
-    /* ######################################################################################################## */
-
-    /**
-     *  Listing de débats du jour ordonnancés suivant l'argument récupéré
-     *
-     */
-    public function dailyDebateList()
-    {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** dailyDebateList');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // $params = $request->request->all();
-        // $logger->info('$params = ' . print_r($params, true));
-
-        $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
-        $filters = $request->get('filters');
-        $logger->info('$filters = ' . print_r($filters, true));
-        $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
-
-        $debates = PDDebateQuery::create()
-                    ->online()
-                    ->filterByKeywords($filters, $user)
-                    ->orderWithKeyword($order)
-                    ->limit(10)
-                    ->offset($offset)
-                    ->find();
-
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-        $html = $templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + 10,
-            )
-        );
-
-        // Renvoi de l'ensemble des blocs HTML maj
-        return array(
-            'html' => $html,
-            );
-    }
-
 
     /* ######################################################################################################## */
     /*                                            DEBATS SUIVIS (FONCTIONS AJAX)                                */

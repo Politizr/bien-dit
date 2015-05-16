@@ -28,7 +28,7 @@ LAYOUT REACTION
             {# Réaction parente #}
             <div class="row">
                 <div class="col-sm-12">
-                    {# TODO / TwigExtension Parent Réaction #}
+                    {# @todo TwigExtension Parent Réaction #}
                     {% if reaction.level > 1 %}
                         {% set parentReaction = reaction.getParent %}
                         <h4>En réaction à <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a> sur le débat <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ reaction.debate.title }}</a></h4>

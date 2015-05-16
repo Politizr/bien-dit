@@ -11,11 +11,9 @@
         <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
     </div>
     {% if app.user %}
-        <!-- @todo html/css à styler -->
         <input type="button" action="btn-submit-comment" value="&#xe82c; Publier">
     {% else %}
-        <!-- @todo html/css à prévoir -->
         <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
     {% endif %}
-    <div class="cancel">Annuler</div>
+    <div class="cancel" action="close-comments">Annuler</div>
 </div>

@@ -45,24 +45,9 @@
                     </div>
                 </div>
                 <div class="postSummaryFooter">
-                    <div class="postSummaryGotoFil">
-                        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
-                            <i class="iconTimeline"></i>
-                            {{ debate.title }}
-                        </a>
+                    <div class="postSummaryGotoParent">
+                        {{ reaction | linkParentReaction }}
                     </div>
-
-                    {# @todo TwigExtension Parent Réaction #}
-                    {% if reaction.level > 1 %}
-                        {% set parentReaction = reaction.getParent %}
-                        <div class="postSummaryGotoFil">
-                            <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">
-                                <i class="iconTimeline"></i>
-                                {{ parentReaction.title }}
-                            </a>
-                        </div>
-                    {% endif %}
-
                     <div class="postSummaryTagList">
                         {{ debate | docTags }}
                     </div>
@@ -75,9 +60,8 @@
                             {{ reaction | nbReactions }}
                         </div>
                         <div class="commentsCounter" action="paragraphCommentsCounter">
-                            {# @todo nombre de commentaires total #}
                             <i class="iconComment"></i>
-                            X commentaires
+                            {{ debate | nbComments }}
                         </div>
                     </div>
                 </div>
@@ -94,7 +78,7 @@
             {{ reaction | image('debate_header') }}
         </div>
         <div id="copyrightHolder">
-            <!-- @todo gestion des copyrights à voir avec juriste -->
+            {# @todo maj bdd > nouveaux champs copyright_text + copyright_url #}
             <i class="iconCopyright" action="showCopyright"></i>
             <div id="copyright" style="display: none;" action="showCopyright">
                 <i class="iconArrowUp"></i>
@@ -107,7 +91,7 @@
                 {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': reaction.user } only %}
             </div>
             <div id="postInfos">
-                {% include 'PolitizrFrontBundle:DateTime:publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
             </div>
         </div>
 

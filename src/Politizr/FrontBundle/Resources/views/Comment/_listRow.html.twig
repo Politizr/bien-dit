@@ -11,7 +11,7 @@
                 <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
             </div>
             <div class="commentsInfos">
-                {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}, {% include 'PolitizrFrontBundle:DateTime:publishedAtTiny.html.twig' with { 'dateTimeAt': comment.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}, {% include 'PolitizrFrontBundle:DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': comment.publishedAt } only %}
             </div>
             <div class="commentsNote">
                 {{ comment | linkNoteComment }}

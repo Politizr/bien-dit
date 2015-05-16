@@ -1,7 +1,5 @@
 <div id="scrollNav">
     {% if results | length == 10 %}
         <a id="moreResults" action="paginate-next" offset="{{ offset }}">suite</a>
-    {% else %}
-        <p class="noResult">Il n'y a plus de résultats</p>
     {% endif %}
 </div>

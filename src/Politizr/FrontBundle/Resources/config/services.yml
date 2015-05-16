@@ -34,6 +34,10 @@ services:
         class:                              Politizr\FrontBundle\Lib\Service\GenericManager
         arguments:                          [ @service_container ]
 
+    politizr.service.modal:
+        class:                              Politizr\FrontBundle\Lib\Service\ModalManager
+        arguments:                          [ @service_container ]
+
     politizr.service.security:
         class:                              Politizr\FrontBundle\Lib\Service\SecurityManager
         arguments:                          [ @service_container ]

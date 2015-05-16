@@ -6,9 +6,12 @@
             <form id="listOrder">
                 <span class="filterBy">trier par :</span>
                 <!-- @todo html/css virer les id sur les radio & les for sur les label -->
-                <input type="radio" class="order" name="order" value="last" checked/><label><i class="iconCheck"></i>dernier</label>
-                <input type="radio" class="order" name="order" value="bestNote" /><label><i class="iconCheck"></i>mieux notés</label>
-                <input type="radio" class="order" name="order" value="mostFollowed" /><label><i class="iconCheck"></i>plus suivis</label>
+                <input type="radio" class="order" name="order" id="last" value="last" checked/>
+                <label for="last"><i class="iconCheck"></i>dernier</label>
+                <input type="radio" class="order" name="order" id="bestNote" value="bestNote" />
+                <label for="bestNote"><i class="iconCheck"></i>mieux notés</label>
+                <input type="radio" class="order" name="order" id="mostFollowed" value="mostFollowed" />
+                <label for="mostFollowed"><i class="iconCheck"></i>plus suivis</label>
             </form>
         </div>
 
@@ -16,9 +19,12 @@
             <form id="listFilter">
                 <span class="filterBy">filtrer par :</span>
                 <!-- @todo html/css virer les id sur les checkbox -->
-                <input type="checkbox" class="filter" name="filters[]" value="suggestion"/><label><i class="iconCheck"></i>suggérés</label>
-                <input type="checkbox" class="filter" name="filters[]" value="newest"/><label><i class="iconCheck"></i>les plus récents</label>
-                <input type="checkbox" class="filter" name="filters[]" value="qualified" /><label><i class="iconCheck"></i>élus uniquement</label>
+                <input type="checkbox" class="filter" name="filters[]" id="suggestion" value="suggestion"/>
+                <label for="suggestion"><i class="iconCheck"></i>suggérés</label>
+                <input type="checkbox" class="filter" name="filters[]" id="newest" value="newest"/>
+                <label for="newest"><i class="iconCheck"></i>les plus récents</label>
+                <input type="checkbox" class="filter" name="filters[]" id="qualified" value="qualified" />
+                <label for="qualified"><i class="iconCheck"></i>élus uniquement</label>
             </form>
         </div>
     </div>

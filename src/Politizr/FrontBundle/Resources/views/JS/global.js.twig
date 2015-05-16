@@ -17,7 +17,8 @@
     /* close modal */
     $("body").on("click", "[action='modalClose']", function() {
         $('body').removeClass('noscroll');
-        $(this).parent().parent().parent('.modal').hide();  
+        $('#modalBoxContent').html('');
+        $(this).closest('.modal').hide();
         $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
     });
 

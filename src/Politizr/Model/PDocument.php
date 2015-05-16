@@ -48,7 +48,8 @@ class PDocument extends BasePDocument
      *
      *     @return boolean
      */
-    public function isOwner($pUserId) {
+    public function isOwner($pUserId)
+    {
         if ($this->getPUserId() == $pUserId) {
             return true;
         } else {
@@ -64,7 +65,8 @@ class PDocument extends BasePDocument
      *
      * @return     string
      */
-    public function getType() {
+    public function getType()
+    {
         $object = $this->getDescendantClass();
 
         if ($object == 'Politizr\Model\PDDebate') {
@@ -81,7 +83,8 @@ class PDocument extends BasePDocument
      *
      *     @return     PDDebate
      */
-    public function getDebate() {
+    public function getDebate()
+    {
         if ($type = $this->getType() == PDocument::TYPE_DEBATE) {
             return PDDebateQuery::create()->findPk($this->getId());
         } else {
@@ -94,7 +97,8 @@ class PDocument extends BasePDocument
      *
      *     @return     PDReaction
      */
-    public function getReaction() {
+    public function getReaction()
+    {
         if ($type = $this->getType() == PDocument::TYPE_REACTION) {
             return PDReactionQuery::create()->findPk($this->getId());
         } else {
@@ -105,11 +109,12 @@ class PDocument extends BasePDocument
     // *****************************    COMMENTAIRES   ************************* //
 
     /**
-     *    Renvoit le nombre de commentaires du débat.
+     * Renvoit le nombre de commentaires du document.
      *
-     * @return     integer     Nombre de commentaires
+     * @return integer Nombre de commentaires
      */
-    public function countComments($online = true, $paragraphNo = null) {
+    public function countComments($online = true, $paragraphNo = null)
+    {
         $query = PDCommentQuery::create()
                     ->filterByOnline($online)
                     ->_if($paragraphNo)
@@ -117,7 +122,7 @@ class PDocument extends BasePDocument
                     ->_else()
                         ->filterByParagraphNo(0)
                             ->_or()
-                        ->filterByParagraphNo(null)                    
+                        ->filterByParagraphNo(null)
                     ->_endif()
                     ;
         
@@ -128,9 +133,10 @@ class PDocument extends BasePDocument
     /**
      *    Renvoit les commentaires associés au débat
      *
-     * @return PropelCollection d'objets PDDComment 
+     * @return PropelCollection d'objets PDDComment
      */
-    public function getComments($online = true, $paragraphNo = null, $orderBy = null) {
+    public function getComments($online = true, $paragraphNo = null, $orderBy = null)
+    {
         $query = PDCommentQuery::create()
                     ->filterByOnline($online)
                     ->_if($paragraphNo)
@@ -138,7 +144,7 @@ class PDocument extends BasePDocument
                     ->_else()
                         ->filterByParagraphNo(0)
                             ->_or()
-                        ->filterByParagraphNo(null)                    
+                        ->filterByParagraphNo(null)
                     ->_endif()
                     ->_if($orderBy)
                         ->orderBy($orderBy[0], $orderBy[1])
@@ -154,9 +160,10 @@ class PDocument extends BasePDocument
     /**
      *    Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
      *
-     * @return PropelCollection d'objets PDDComment 
+     * @return PropelCollection d'objets PDDComment
      */
-    public function getGlobalComments($online = true, $orderBy = null) {
+    public function getGlobalComments($online = true, $orderBy = null)
+    {
         return $this->getComments($online, 0, $orderBy);
     }
 }

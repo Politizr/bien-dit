@@ -67,9 +67,9 @@ XhrUserPerso:
 XhrUserNotification:
     resource: "./routing/xhr/UserNotification.yml"
 
-# GESTION LISTING
-XhrListing:
-    resource: "./routing/xhr/Listing.yml"
+# GESTION MODAL
+XhrModal:
+    resource: "./routing/xhr/Modal.yml"
 
 # DOCUMENT
 XhrDocument:

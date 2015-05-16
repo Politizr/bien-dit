@@ -45,12 +45,6 @@
                     </div>
                 </div>
                 <div class="postSummaryFooter">
-                    <div class="postSummaryGotoFil">
-                        <a href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
-                            <i class="iconTimeline"></i>
-                            Fil du débat
-                        </a>
-                    </div>
                     <div class="postSummaryTagList">
                         {{ debate | docTags }}
                     </div>
@@ -63,9 +57,8 @@
                             {{ debate | nbReactions }}
                         </div>
                         <div class="commentsCounter" action="paragraphCommentsCounter">
-                            {# @todo nombre de commentaires total #}
                             <i class="iconComment"></i>
-                            X commentaires
+                            {{ debate | nbComments }}
                         </div>
                     </div>
                 </div>
@@ -82,7 +75,7 @@
             {{ debate | image('debate_header') }}
         </div>
         <div id="copyrightHolder">
-            <!-- @todo gestion des copyrights à voir avec juriste -->
+            {# @todo maj bdd > nouveaux champs copyright_text + copyright_url #}
             <i class="iconCopyright" action="showCopyright"></i>
             <div id="copyright" style="display: none;" action="showCopyright">
                 <i class="iconArrowUp"></i>
@@ -95,7 +88,7 @@
                 {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
             </div>
             <div id="postInfos">
-                {% include 'PolitizrFrontBundle:DateTime:publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
             </div>
         </div>
 
