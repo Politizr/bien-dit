@@ -400,21 +400,28 @@ LIMIT ".$offset.", ".$count."
         $logger = $this->sc->get('logger');
         $logger->info('*** getSql');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-        $userId = $user->getId();
-        $logger->info('userId = '.print_r($userId, true));
+        $user = null;
+        $securityContext = $this->sc->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            // Récupération user
+            $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération d'un tableau des ids des users suivis
-        $userIds = $this->getFollowedUsersIdsArray($user->getId());
-        $inQueryUserIds = implode(',', $userIds);
+            $userId = $user->getId();
+            $logger->info('userId = '.print_r($userId, true));
 
-        // Ajout du user courant
-        if (empty($inQueryUserIds)) {
-            $inQueryUserIds = $userId;
+            // Récupération d'un tableau des ids des users suivis
+            $userIds = $this->getFollowedUsersIdsArray($user->getId());
+
+            $inQueryUserIds = implode(',', $userIds);
+            if (empty($inQueryUserIds)) {
+                $inQueryUserIds = $userId;
+            } else {
+                $inQueryUserIds .= ',' . $userId;
+            }
         } else {
-            $inQueryUserIds .= ',' . $userId;
+            $inQueryUserIds = 0;
         }
+
         $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
         // Préparation requête SQL
