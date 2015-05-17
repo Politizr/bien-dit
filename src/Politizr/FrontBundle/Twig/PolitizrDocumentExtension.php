@@ -620,7 +620,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             case PDocument::TYPE_DEBATE:
                 $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
                 $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Debate:TimelineRow.html.twig',
+                    'PolitizrFrontBundle:Timeline:_itemDebate.html.twig',
                     array(
                         'debate' => $debate
                     )
@@ -629,56 +629,33 @@ class PolitizrDocumentExtension extends \Twig_Extension
             case PDocument::TYPE_REACTION:
                 $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
 
-                // MAJ de variables spécifiques aux réactions
                 $parentReaction = null;
-                $isParentReactionMine = false;
-                $isParentDebateMine = false;
                 if ($reaction->getLevel() > 1) {
                     $parentReaction = $reaction->getParent();
-                    if ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
-                        $isParentDebateMine = true;
-                    }
-                    if ($this->user->getId() == $parentReaction->getPUserId()) {
-                        $isParentReactionMine = true;
-                    }
-                } elseif ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
-                    $isParentDebateMine = true;
                 }
 
                 $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig',
+                    'PolitizrFrontBundle:Timeline:_itemReaction.html.twig',
                     array(
                         'reaction' => $reaction,
                         'parentReaction' => $parentReaction,
-                        'isParentReactionMine' => $isParentReactionMine,
-                        'isParentDebateMine' => $isParentDebateMine,
                     )
                 );
                 break;
             case PDocument::TYPE_COMMENT:
                 $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
 
-                // MAJ de variables spécifiques aux commentaires
-                $isParentMine = false;
-                if ($comment->getPDocument() && $this->user->getId() == $comment->getPDocument()->getPUserId()) {
-                    $isParentMine = true;
-                }
-
                 $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig',
+                    'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
                     array(
                         'comment' => $comment,
-                        'isParentMine' => $isParentMine,
                     )
                 );
                 break;
         }
 
         return $html;
-
     }
-
-
 
 
 

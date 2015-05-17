@@ -1,0 +1,30 @@
+<div class="timelineItem">
+    <div class="timelineItemHeader">
+        {% include 'PolitizrFrontBundle:DateTime:_timeAt.html.twig' with { 'dateTimeAt': comment.publishedAt } only %}
+    </div>
+    <div class="timelineItemHolder">
+        <div class="timelineItemContent timelineItemOfficial">
+            <div class="timelineItemObject">
+                <i class="iconNotifNo"></i>
+                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': comment.user } only %}
+                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': comment.user } only %} a rédigé un commentaire :
+            </div>
+            <div class="timelineItemHighlight">
+                <div class="avatar40">
+                    {{ comment.user | photo('user_40') }}
+                </div>
+                <div class="commentsText">{{ comment.description | raw }}</div>
+                <div class="postNote">
+                    <div class="notePlus">
+                        {{ comment.notePos }}<i class="iconNotePlus"></i>
+                    </div>
+                    <div class="noteMinus">
+                        <i class="iconNoteMinus"></i>{{ comment.noteNeg }}
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class="timelineItemFooter">
+    </div>
+</div>

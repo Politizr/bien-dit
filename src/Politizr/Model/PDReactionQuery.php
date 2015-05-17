@@ -13,7 +13,8 @@ class PDReactionQuery extends BasePDReactionQuery
      *
      *     @return PDReaction
      */
-    public function findOrCreateRoot($debateId) {
+    public function findOrCreateRoot($debateId)
+    {
         $rootNode = $this->findRoot($debateId);
 
         if (!$rootNode) {
@@ -37,8 +38,22 @@ class PDReactionQuery extends BasePDReactionQuery
     /**
      * Cumule les contraintes associés à un objet en ligne
      */
-    public function online() {
+    public function online()
+    {
         return $this->filterByOnline(true)->filterByPublished(true);
     }
 
+    /**
+     *
+     */
+    public function onlinePublished($online = null, $published = null)
+    {
+        return $this->_if(null !== $online)
+                        ->filterByOnline($online)
+                    ->_endif()
+                    ->_if(null !== $published)
+                        ->filterByPublished($published)
+                    ->_endif()
+                    ;
+    }
 }

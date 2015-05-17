@@ -34,28 +34,6 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     * Fil débat
-     */
-    public function debateFeedAction($slug)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** debateFeedAction');
-        $logger->info('$slug = '.print_r($slug, true));
-
-        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
-        }
-
-        return $this->render('PolitizrFrontBundle:Document:debateFeed.html.twig', array(
-                    'debate' => $debate
-        ));
-    }
-
-    /**
      * Détail débat
      */
     public function debateDetailAction($slug)
@@ -88,6 +66,7 @@ class DocumentController extends Controller
                     'paragraphs' => $paragraphs,
         ));
     }
+
 
     /**
      * Détail réaction
@@ -128,6 +107,34 @@ class DocumentController extends Controller
                     'paragraphs' => $paragraphs,
         ));
     }
+
+    /**
+     * Fil débat
+     */
+    public function debateFeedAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** debateFeedAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
+        if (!$debate) {
+            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
+        }
+
+        // Service Timeline
+        $timelineManager = $this->get('politizr.service.timeline');
+        $timelineDateKey = $timelineManager->debateFeed($debate->getId());
+
+        return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
+                    'debate' => $debate,
+                    'timelineDateKey' => $timelineDateKey
+        ));
+    }
+
 
     /**
      * Détail auteur

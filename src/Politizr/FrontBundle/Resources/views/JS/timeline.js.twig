@@ -1,11 +1,8 @@
 <script>
-    // Ouverture box jumbotron
-    $("body").on("click", "[action='more-info']", function() {
-        if ($(this).closest('.timeline-row').find('.jumbotron').is(':visible')) {
-            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
-        } else {
-            $(this).closest('.timeline-row').find('.jumbotron').slideUp();
-            $(this).closest('.timeline-row').find('.jumbotron').slideDown();
-        }
+    $(function() {
+        // sticky timeline dates for browser
+        $('body.css .timelineDayContainer, body.css960 .timelineDayContainer').stickyHeader({stickyClass : 'timelineDay'});
+        // sticky timeline dates for mobile
+        $('body.css760 .timelineDayContainer').stickyHeaderMobile({stickyClass : 'timelineDay'});
     });
 </script>

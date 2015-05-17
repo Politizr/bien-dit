@@ -1,17 +1,18 @@
-{% if user %}
-    <span>Par</span>
-    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { user: user } only %}
-    {# @todo twig helper + branchement modal #}
-    {% set organizations = user.currentOrganizations %}
-    {% for organization in organizations %}
-        <!-- @todo html/css: parti > organization -->
-        <div class="parti" action="openPartiSheet">{{ organization.initials }}</div>
-        {#
-        <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
-            <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
-        </a>
-        #}
-    {% endfor %}
-{% else %}
-    <i>utilisateur supprimé</i>
-{% endif %}
+{% spaceless %}
+    {% if user %}
+        <span>Par</span>
+        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { user: user } only %}
+        {# @todo twig helper + branchement modal #}
+        {% set organizations = user.currentOrganizations %}
+        {% for organization in organizations %}
+            <div class="organization" action="openOrganizationSheet">{{ organization.initials }}</div>
+            {#
+            <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
+                <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
+            </a>
+            #}
+        {% endfor %}
+    {% else %}
+        <i>utilisateur supprimé</i>
+    {% endif %}
+{% endspaceless %}

@@ -327,32 +327,32 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     // *****************************    REACTIONS   ************************* //
 
     /**
-     *    Renvoit les réactions enfants associées à la réaction courante.
+     * Renvoit les réactions enfants associées à la réaction courante.
      *
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function getChildrenReactions($online = true, $published = true)
+    public function getChildrenReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published);
+                    ->onlinePublished($online, $published)
+                    ;
 
         return parent::getChildren($query);
     }
 
     /**
-     *    Renvoit les réactions descendantes associées à la réaction courante.
+     * Renvoit les réactions descendantes associées à la réaction courante.
      *
      *
      * @return PropelCollection d'objets PDReaction
      */
-    public function getDescendantsReactions($online = true, $published = true)
+    public function getDescendantsReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published);
-
+                    ->onlinePublished($online, $published)
+                    ;
+                    
         return parent::getDescendants($query);
     }
 
@@ -367,12 +367,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     public function countChildrenReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->_if(null !== $online)
-                        ->filterByOnline(true)
-                    ->_endif()
-                    ->_if(null !== $published)
-                        ->filterByPublished(true)
-                    ->_endif()
+                    ->onlinePublished($online, $published)
                     ->orderByPublishedAt(\Criteria::DESC);
 
         return parent::countChildren($query);

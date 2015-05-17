@@ -37,27 +37,30 @@
                     </div>
                     <div class="postNote">
                         <div class="notePlus">
-                            {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                            {{ debate.notePos }}<i class="iconNotePlus"></i>
                         </div>
                         <div class="noteMinus">
-                            <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                            <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
                         </div>
                     </div>
                 </div>
                 <div class="postSummaryFooter">
-                    <div class="postSummaryGotoParent">
-                        {{ reaction | linkParentReaction }}
-                    </div>
                     <div class="postSummaryTagList">
                         {{ debate | docTags }}
                     </div>
                     <div class="postSummaryTitle">
-                        {{ reaction.title }}
+                        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
+                    </div>
+                    <div id="postSummaryPublishedAt">
+                        {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
+                    </div>                    
+                    <div class="postSummaryAuthor">
+                        {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
                     </div>
                     <div class="postSummaryActivity">
                         <div class="reactionsCounter">
                             <i class="iconReaction"></i>
-                            {{ reaction | nbReactions }}
+                            {{ debate | nbReactions }}
                         </div>
                         <div class="commentsCounter" action="paragraphCommentsCounter">
                             <i class="iconComment"></i>
@@ -67,15 +70,15 @@
                 </div>
             </div>                      
             <div class="illustrationShadow"></div>
-            {{ reaction | image('debate_header') }}
+            {{ debate | image('debate_header') }}
         </div>
         <div id="illustration_l">
             <div class="illustrationShadow"></div>
-            {{ reaction | image('debate_header') }}
+            {{ debate | image('debate_header') }}
         </div>
         <div id="illustration_r">
             <div class="illustrationShadow"></div>
-            {{ reaction | image('debate_header') }}
+            {{ debate | image('debate_header') }}
         </div>
         <div id="copyrightHolder">
             {# @todo maj bdd > nouveaux champs copyright_text + copyright_url #}
@@ -85,55 +88,28 @@
                 Nom prénom, <a href="" target="_blank">lien</a>
             </div>
         </div>
-    
-        <div id="postAuthorHolder">
-            <div id="postAuthor">
-                {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': reaction.user } only %}
-            </div>
-            <div id="postInfos">
-                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
-            </div>
-        </div>
 
-        <div id="postText">
-            <div class="paragraph summary">
-                {# @todo gestion des commentaires sur le résumé #}
-                {{ reaction.summary | raw }}
-            </div>
-            {% for paragraph in paragraphs %}
-                <div class="paragraph">
-                    {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': reaction, 'paragraphNo': loop.index } only %}
-                    <p>{{ paragraph | raw }}</p>
-                    {# @todo chargement des imgLiquid post ajax #}
-                    <div class="comments"></div>
+        <div id="timeline">
+            {% for dateTimeAt, timeline in timelineDateKey %}
+                <div class="timelineDayContainer">
+                    <div class="timelineDay">
+                        <h4>
+                            <i class="iconCalendar"></i>
+                            {% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}
+                        </h4>
+                    </div>
+                    {% for timelineRow in timeline %}
+                        {{ timelineRow(timelineRow) }}
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>
-
-        <div id="giveNote" class="withLoaderInside">
-            <div class="ajaxLoader" style="display: none;">
-                <i class="iconSpin5 animateSpin"></i>
-                <div class="ajaxLoaderBg"></div>
-            </div>
-            <span>noter cette publication : </span>
-            <div class="notes postNote">
-                {{ reaction | linkNoteReaction }}
-            </div>
-        </div>
-
-        {% if reaction.countReactions(true, true) %}
-            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction } only %}
-        {% endif %}
-
     </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 {% endblock javascriptFooter %}

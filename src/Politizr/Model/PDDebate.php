@@ -310,7 +310,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
 
-    // *****************************    DOCUMENTS   ************************* //
+    // *****************************    DOCUMENT   ************************* //
 
     /**
      * Renvoit le document associé à la réaction
@@ -322,26 +322,40 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
         return parent::getPDocument();
     }
 
+    // *****************************    NESTED SET   ************************* //
+
     /**
      * Renvoit les réactions associées en mode arbre / nested set
      *
+     * @param boolean $online
+     * @param boolean $published
      * @return PropelCollection PDReaction
      */
-    public function getTreeReactions($online = false, $published = false)
+    public function getTreeReactions($online = null, $published = null)
     {
         $treeReactions = PDReactionQuery::create()
                     ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
-                    ->_if($online)
-                        ->filterByOnline(true)
-                    ->_endif()
-                    ->_if($published)
-                        ->filterByPublished(true)
-                    ->_endif()
+                    ->onlinePublished($online, $published)
                     ->filterByPDDebateId($this->getId())
                     ->findTree($this->getId())
                     ;
 
         return $treeReactions;
+    }
+
+    /**
+     * Renvoit les réactions filles immédiates en mode arbre / nested set
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection PDReaction
+     */
+    public function getChildrenReactions($online = null, $published = null)
+    {
+        $rootNode = PDReactionQuery::create()->findRoot($this->getId());
+        $children = $rootNode->getChildrenReactions($online, $published);
+
+        return $children;
     }
 
     /**

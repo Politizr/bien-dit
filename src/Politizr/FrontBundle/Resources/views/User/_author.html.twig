@@ -1,7 +1,7 @@
 {# @todo à supprimer / refactoring extraire chaque mini-bloc d'un auteur #}
 {% if user %}
     <div class="avatar60">
-        {{ user | photo('user_mini') }}
+        {{ user | photo('user_60') }}
     </div>
     <div class="authorName">
         <span>Par</span>
@@ -15,7 +15,7 @@
         {% set organizations = user.currentOrganizations %}
         {% for organization in organizations %}
             <!-- @todo html/css: parti > organization -->
-            <div class="organization" action="openPartiSheet">{{ organization.initials }}</div>
+            <div class="organization" action="openOrganizationSheet">{{ organization.initials }}</div>
             {#
             <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
                 <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">

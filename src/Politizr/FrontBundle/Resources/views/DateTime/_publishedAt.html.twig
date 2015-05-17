@@ -1,2 +1,2 @@
-<span>Publié le {{ dateTimeAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "d MMMM" ) | capitalize }}</span>
+<span>Publié le {{ dateTimeAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "d MMMM yyyy" ) | capitalize }}</span>
 <span>à {{ dateTimeAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "HH'h'mm" ) }}</span>

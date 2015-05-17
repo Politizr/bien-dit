@@ -7,7 +7,7 @@ Normalisation: nom de fichier sans majuscule ni d'héritage twig
         {% block authorPhoto %}
             {# TODO / TwigExtension Photo #}
             <a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
-                {{ user | photo('user_mini') }}
+                {{ user | photo('user_40') }}
             </a>
             &nbsp;
         {% endblock authorPhoto %}

@@ -7,9 +7,28 @@
     <div id="menuMobileTriggerMenu" action="menuMobileTriggerMenu"><i class="iconMenu"></i></div>
     <div id="menuMobileTriggerActions" action="menuMobileTriggerActions"><i class="iconNotePlus"></i></div>
     <div id="headerCenter">
-        <div id="linkNotifications" action="linkNotifications" class="active"><i class="iconNotifYes"></i><span id="notifCounter">-</span>&nbsp;notifications</div>
-        <div id="linkSuggestions" action="linkSuggestionsDebate"><i class="iconNotifNo"></i>suivre des débats</div>
-        <div id="linkSuggestions" action="linkSuggestionsUser"><i class="iconNotifNo"></i>suivre des utilisateurs</div>
+        {% spaceless %}
+            <div id="linkNotifications" action="linkNotifications" class="active">
+                <i class="iconNotifYes"></i>
+                <span id="notifCounter">-</span>&nbsp;notifications
+            </div>
+            <div id="linkSuggestions" action="linkSuggestionsDebate">
+                <i class="iconNotifNo"></i>
+                suivre des débats
+            </div>
+            <div id="linkSuggestions" action="linkSuggestionsUser">
+                <i class="iconNotifNo"></i>
+                suivre des utilisateurs
+            </div>
+            <div id="logged">
+                <a href="{{ path('MyProfileC') }}">
+                    {{ app.user.firstname }} {{ app.user.name }}
+                    <span class="avatar15">
+                        {{ app.user | photo('user_15') }}
+                    </span>
+                </a>
+            </div>
+        {% endspaceless %}
     </div>
     <div id="headerRight">
         <div id="linkMenuPreferences">

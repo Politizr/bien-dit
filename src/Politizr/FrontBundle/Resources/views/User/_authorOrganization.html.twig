@@ -2,7 +2,7 @@
 {% set organizations = user.currentOrganizations %}
 {% for organization in organizations %}
     <!-- @todo html/css: parti > organization -->
-    <div class="organization" action="openPartiSheet">{{ organization.initials }}</div>
+    <div class="organization" action="openOrganizationSheet">{{ organization.initials }}</div>
     {#
     <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
         <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">

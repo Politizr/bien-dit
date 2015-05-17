@@ -3,20 +3,9 @@
         <i class="iconAlert"></i>
     </div>
     <div class="avatar40">
-        {{ comment.user | photo('user_mini') }}
+        {{ comment.user | photo('user_40') }}
     </div>
     <div class="commentsContent withLoaderInside">
-        <div class="commentsContentHeader">
-            <div class="ajaxLoader" style="display: none;">
-                <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
-            </div>
-            <div class="commentsInfos">
-                {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}, {% include 'PolitizrFrontBundle:DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': comment.publishedAt } only %}
-            </div>
-            <div class="notes commentsNote">
-                {{ comment | linkNoteComment }}
-            </div>
-        </div>
-        <div class="commentsText">{{ comment.description | raw }}</div>
+        {% include 'PolitizrFrontBundle:Comment:_comment.html.twig' with { 'comment': comment } only %}
     </div>
 </div>

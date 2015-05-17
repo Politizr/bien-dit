@@ -1,6 +1,6 @@
 <div id="reactionsToPost">
     <h1>les réactions à cette publication</h1>
-    {% for reaction in document.treeReactions(true, true) %}
+    {% for reaction in document.childrenReactions(true, true) %}
         <div class="reactionsToPostItem">
             <div class="reactionsToPostItemHeader">
                 {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
@@ -18,11 +18,11 @@
                     {{ document | image('debate_header') }}
                 </div>
                 <div class="avatar40">
-                    {{ reaction.user | photo('user_mini') }}
+                    {{ reaction.user | photo('user_40') }}
                 </div>
-                <div class="reactionsToPostItemPostSummary">
+                <div class="reactionsToPostItemPostTitle">
                     <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
-                        {{ reaction.summary | raw }}
+                        {{ reaction.title }}
                     </a>
                 </div>
             </div>
