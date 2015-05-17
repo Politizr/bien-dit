@@ -259,9 +259,9 @@ a.modalItemShow:hover {color: $darkGrey;}
 #copyright a {color: $highlight;}
 #copyright a:hover {color: #fff;}
 
-// fiche parti
+// fiche organization
 
-#partiSheetLogo {
+#organizationSheetLogo {
 	width: 100%;
 	text-align: center;
 	float: left;
@@ -269,12 +269,12 @@ a.modalItemShow:hover {color: $darkGrey;}
 	margin-bottom: -40px;
 }
 
-#partiSheetLogo img {
+#organizationSheetLogo img {
 	height: 80px;
 	width: auto;
 }
 
-.partiSheetParti {
+.organizationSheetorganization {
 	float: left;
 	width: 100%;
 	clear: both;
@@ -282,7 +282,7 @@ a.modalItemShow:hover {color: $darkGrey;}
 	margin: 10px 0 40px 0;
 }
 
-.partiSheetParti .parti {background-color: $darkGrey;}
+.organizationSheetorganization .organization {background-color: $darkGrey;}
 
 .wikiSample {
 	width: 620px;

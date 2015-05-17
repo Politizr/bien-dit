@@ -310,6 +310,8 @@ body.css760 #headerCenter #linkSuggestions:hover { color: #fff;}
 body.css760 #headerCenter #linkNotifications.notifYes:hover, 
 body.css760 #headerCenter #linkSuggestions.notifYes:hover { color: $highlight; }
 
+body.css760 #logged {display: none;}
+
 body.css760 #menu {
 	width: 200px;
 	position: fixed;
@@ -454,7 +456,7 @@ body.css760 .postSummary .pad40 {
 
 body.css760 .postSummary .illustrationShadow {	height: 480px; width: 100%;}
 body.css760 .postSummaryFooter { width: calc(100% - 60px); bottom: 20px;}
-body.css760 .postSummaryGotoFil {	font-size: 11px;}
+body.css760 .postSummaryGotoParent {	font-size: 11px;}
 
 body.css760 #postAuthorHolder {
 	position: relative;
@@ -483,7 +485,7 @@ body.css760 #postAuthor .authorName {
 	margin: 0;
 }
 
-body.css760 #postAuthor .authorBio {
+body.css760 #postAuthor .authorInAFewWords {
 	float: right;
 	width: calc(100% - 70px);
 	clear: none;
@@ -526,7 +528,7 @@ body.css760 .reactionsToPostItemContent {
 
 body.css760 .reactionsToPostItemContent .avatar40 {display: none;}
 
-body.css760 .reactionsToPostItemContent .reactionsToPostItemPostSummary {
+body.css760 .reactionsToPostItemContent .reactionsToPostItemPostTitle {
 	width: 100%;
 	-webkit-text-size-adjust: 90%; 
 	font-size: 13px;

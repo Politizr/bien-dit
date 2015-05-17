@@ -44,9 +44,9 @@
 
 .authorName a {color: $darkGrey;}
 .authorName a:hover {color: $highlight;}
-.authorName .parti:hover {background-color: $highlight; cursor: pointer;}
+.authorName .organization:hover {background-color: $highlight; cursor: pointer;}
 
-.authorBio {
+.authorInAFewWords {
 	float: left;
 	width: 100%;
 	clear: both;

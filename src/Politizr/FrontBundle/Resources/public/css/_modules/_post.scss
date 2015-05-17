@@ -152,9 +152,9 @@
 	left: -20px;
 }
 
-.reactionsToPostItemSummary a, .reactionsToPostItemPostSummary a {color: $darkGrey;}
-.reactionsToPostItemSummary a:hover, .reactionsToPostItemPostSummary a:hover {color: $highlight;}
-.reactionsToPostItemSummary .parti:hover {background-color: $highlight; cursor: pointer;}
+.reactionsToPostItemSummary a, .reactionsToPostItemPostTitle a {color: $darkGrey;}
+.reactionsToPostItemSummary a:hover, .reactionsToPostItemPostTitle a:hover {color: $highlight;}
+.reactionsToPostItemSummary .organization:hover {background-color: $highlight; cursor: pointer;}
 
 .reactionsToPostItemContent {
 	float: right;
@@ -170,7 +170,7 @@
 	margin-bottom: 20px;
 }
 
-.reactionsToPostItemPostSummary {
+.reactionsToPostItemPostTitle {
 	float: right;
 	width: calc(100% - 50px);
 	font-size: 15px;
@@ -178,7 +178,7 @@
 	margin-top: -6px;
 }
 
-.reactionsToPostItemPostSummary a {display: block;}
+.reactionsToPostItemPostTitle a {display: block;}
 
 .reactionsToPostItemFooter {
 	float: left;
@@ -337,12 +337,12 @@ a.linkToPost:hover {color: $darkGrey;}
 }
 .commentsContentHeader a:hover {color: $highlight;}
 
-.commentsContentHeader .parti {
+.commentsContentHeader .organization {
 	font-size: 9px;
 	color: #fff;
 	background-color: $anotherGrey;
 }
-.commentsContentHeader .parti:hover {background-color: $highlight; cursor: pointer;}
+.commentsContentHeader .organization:hover {background-color: $highlight; cursor: pointer;}
 
 .commentsInfos {float: left;}
 
@@ -460,7 +460,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	width: calc(100% - 80px);
 }
 
-.postSummaryGotoFil {
+.postSummaryGotoParent {
 	float: left;
 	width: calc(100% - 20px);
 	line-height: 150%;
@@ -469,9 +469,9 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-size: 13px;
 }
 
-.postSummaryGotoFil a {color: $highlight; position: relative; padding-left: 20px;}
-.postSummaryGotoFil a i {position: absolute; left: 0;}
-.postSummaryGotoFil a:hover {color: #fff;}
+.postSummaryGotoParent a {color: $highlight; position: relative; padding-left: 20px;}
+.postSummaryGotoParent a i {position: absolute; left: 0;}
+.postSummaryGotoParent a:hover {color: #fff;}
 
 .postSummaryTitle {
 	float: left;
@@ -510,13 +510,13 @@ a.linkToPost:hover {color: $darkGrey;}
 
 .postSummaryAuthor a:hover {color: #fff;}
 
-.postSummaryAuthor .parti {
+.postSummaryAuthor .organization {
 	font-size: 9px;
 	color: $highlight !important;
 	background-color: $darkGrey;	
 }
 
-.postSummaryAuthor .parti:hover {
+.postSummaryAuthor .organization:hover {
 	color: #fff !important;
 	cursor: pointer;
 }
