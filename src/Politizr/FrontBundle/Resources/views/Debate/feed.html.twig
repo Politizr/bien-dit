@@ -45,7 +45,7 @@
                     <div class="postSummaryTitle">
                         <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
                     </div>
-                    <div id="postSummaryPublishedAt">
+                    <div class="postSummaryPublishedAt">
                         {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
                     </div>                    
                     <div class="postSummaryAuthor">
