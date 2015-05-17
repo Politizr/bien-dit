@@ -616,6 +616,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
 
         $html = '';
+
         switch ($timelineRow->getType()) {
             case PDocument::TYPE_DEBATE:
                 $debate = PDDebateQuery::create()->findPk($timelineRow->getId());

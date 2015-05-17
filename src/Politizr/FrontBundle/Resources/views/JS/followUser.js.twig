@@ -8,7 +8,7 @@
         console.log('*** click followUser');
 
         var context = $(this).closest('.subscribe');
-        var localLoader = $(this).closest('.subscribe').prev('.ajaxLoader');
+        var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
         
         $.ajax({
             type: 'POST',
@@ -28,11 +28,11 @@
 
                     // @todo refactoring / à supprimer?
                     // Bloc followers existant à rafraichir?
-                    if ($(this).find('#followers').length) {
-                        $(this).find('#followers').html(data['followers']);
-                        $(this).find("div[action='followers-c-list']").hide();
-                        $(this).find("div[action='followers-q-list']").hide();           
-                    }
+                    // if ($(this).find('#followers').length) {
+                    //     $(this).find('#followers').html(data['followers']);
+                    //     $(this).find("div[action='followers-c-list']").hide();
+                    //     $(this).find("div[action='followers-q-list']").hide();           
+                    // }
                 }
             }
         });

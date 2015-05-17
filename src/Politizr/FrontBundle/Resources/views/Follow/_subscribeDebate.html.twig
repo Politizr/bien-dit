@@ -1,3 +1,4 @@
+{% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
 {% if app.user %}
     {% if follower %}
         <a action="followDebate" object-id="{{ object.id }}" way="unfollow">

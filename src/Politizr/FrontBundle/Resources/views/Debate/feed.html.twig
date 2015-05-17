@@ -13,14 +13,8 @@
 {% endblock %}
 
 {% block fixedActions %}
-    <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
-        <i class="iconTimeline"></i>fil du débat
-    </a>
-    <div class="actionFollow withLoaderInside">
-        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
-        <div class="subscribe">
-            {{ debate | linkSubscribeDebate }}
-        </div>
+    <div class="subscribe actionFollow withLoaderInside">
+        {{ debate | linkSubscribeDebate }}
     </div>
     
     {{ parent() }}

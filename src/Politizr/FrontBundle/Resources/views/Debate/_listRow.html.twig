@@ -44,11 +44,8 @@
         <div class="illustrationShadow"></div>
         {{ debate | image('debate_header') }}
     </div>
-    <div class="listPostFollow">
-        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
-        <div class="subscribe">
-            {{ debate | linkSubscribeDebate }}
-        </div>
+    <div class="subscribe listPostFollow">
+        {{ debate | linkSubscribeDebate }}
     </div>
     <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
 </div>

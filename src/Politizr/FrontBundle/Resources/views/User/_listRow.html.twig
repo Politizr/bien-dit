@@ -12,10 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="listProfileFollow">
-        {% include 'PolitizrFrontBundle:Navigation:_ajaxLocalLoader.html.twig' %}
-        <div class="subscribe">
-            {{ user | linkSubscribeUser }}
-        </div>
+    <div class="subscribe listProfileFollow">
+        {{ user | linkSubscribeUser }}
     </div>
 </div>
