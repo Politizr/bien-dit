@@ -54,6 +54,30 @@
 .modalList .loadMore {	margin-bottom: 60px; }
 
 
+#scrollNav {
+	float: left;
+	width: 100%;
+	clear: both;
+	position: relative;
+	margin-bottom: 60px;
+}
+
+a#moreResults {
+	font-family: 'nerisblack';
+	font-size: 10px;
+	color: #fff;
+	background-color: $darkGrey;
+	text-transform: uppercase;
+	padding: 10px 20px;
+	display: inline-block;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+a#moreResults:hover {background-color: $highlight;}
+
+p.noResult { font-family: 'nerissemibold';	}
+
 // spin color
 .ajaxLoader i, #notifications .ajaxLoader i, .modal .ajaxLoader i {	color: $highlight;}
 #giveNote .ajaxLoader i {color: #fff;}

@@ -20,13 +20,14 @@
 	line-height: 200%;
 }
 
-.paragraph p.summary, .paragraph p a, .paragraph p.summary a:hover { color: $darkHighlight;}
-.paragraph p a:hover, .paragraph p.summary a {color: $darkGrey;}
+.paragraph.summary, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
+.paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
-.paragraph p.summary::before {
+.paragraph.summary::before {
 	content: "—";
 	float: left;
 	margin-right: 5px;
+	margin-top: 10px;
 }
 
 .paragraph h1 {
@@ -486,9 +487,18 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummaryTitle a {	color: $highlight;}
 .postSummaryTitle a:hover {	color: #fff;}
 
+.postSummaryPublishedAt {
+	float: left;
+	margin-top: 10px;
+	color: $highlight;
+	text-transform: none;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	margin-right: 4px;
+}
+
 .postSummaryAuthor {
 	float: left;
-	width: 100%;
 	margin-top: 10px;
 	color: $highlight;
 	text-transform: none;

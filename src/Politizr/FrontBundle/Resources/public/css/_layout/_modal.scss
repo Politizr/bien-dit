@@ -72,7 +72,7 @@ body.noscroll {
 	font-weight: normal;
 }
 
-.modal h1, .listCriteria, .listCriteriaTabs, .modalChoices {
+.modal h1, .listCriteria, .listCriteriaTabs {
 	width: 100%;
 	float: left;
 	clear: both;
@@ -89,32 +89,15 @@ body.noscroll {
 	text-align: center;
 }
 
-.listCriteria form#listOrder input:checked + label, .listCriteria form#listFilter input:checked + label {	color: $darkGrey;}
-.listCriteria form#listOrder label, .listCriteria form#listFilter label {	color: $semiGrey;}
-.listCriteria form#listOrder label:hover, .listCriteria form#listFilter label:hover { color: $darkGrey;}
+.listCriteria form input:checked + label {	color: $darkGrey;}
+.listCriteria formlabel { color: $semiGrey;}
+.listCriteria form label:hover { color: $darkGrey;}
 
-.listCriteria label {
+.listCriteriaTabs label {
 	display: inline-block;
-	margin: 0 40px 5px 40px !important;
+	margin: 0 20px 5px 20px !important;
 	color: $semiGrey;
 	cursor: pointer;
-}
-
-.listCriteria label {
-	position: relative;
-	padding-left: 14px;
-}
-
-.listCriteria label i {
-	position: absolute;
-	left: -2px;
-}
-
-span.filterBy {	margin: 0 !important;}
-
-.modalChoices {
-	margin-top: 40px;
-	text-align: center;
 }
 
 .modalList {	
@@ -151,18 +134,9 @@ a.modalItemShow:hover {color: $darkGrey;}
 	margin-left: 40px;
 }
 
-.modalLeftCol {
-	width: 220px;
-	float: left;
-	text-align: left;
+.listTab {
+	
 }
-
-.modalRightCol {
-	width: 700px;
-	float: right;
-	text-align: left;
-}
-
 
 // no results
 
@@ -259,7 +233,7 @@ a.modalItemShow:hover {color: $darkGrey;}
 #copyright a {color: $highlight;}
 #copyright a:hover {color: #fff;}
 
-// fiche organization
+// organization sheet
 
 #organizationSheetLogo {
 	width: 100%;

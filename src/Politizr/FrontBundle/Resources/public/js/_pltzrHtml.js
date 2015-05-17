@@ -1,4 +1,5 @@
-$(function(){										
+$(function(){		
+	// open modal with content								
 	$("body").on("click", "#linkRanking", function() {
 		$('#modalBoxContent, #modalBoxContent.suggestions, #modalBoxContent.listByTag, #modalBoxContent.organizationSheet, #modalBoxContent.formAbuse, #modalBoxContent.search').hide();
 		$('#modalBoxContent.ranking').fadeIn('fast');
@@ -28,5 +29,29 @@ $(function(){
 		$('#modalBoxContent, #modalBoxContent.suggestions, #modalBoxContent.listByTag, #modalBoxContent.organizationSheet, #modalBoxContent.formAbuse, #modalBoxContent.ranking').hide();
 		$('#modalBoxContent.search').fadeIn('fast');
 	});
+	// end open modal with content
 	
+	// criteria tabs
+	
+	$("body").on("click", "input#criteriaProfile", function() {	    
+		if( $('.postTab').is(':visible') ) {
+			$('.postTab').hide();
+			$('.profileTab').show();	
+			}
+		else {
+			$('.profileTab').hide();
+			$('.postTab').show();
+		}
+	});
+	
+	$("body").on("click", "input#criteriaPost", function() {	    
+		if( $('.profileTab').is(':visible') ) {
+			$('.profileTab').hide();
+			$('.postTab').show();	
+			}
+		else {
+			$('.postTab').hide();
+			$('.profileTab').show();
+		}
+	});
 });
