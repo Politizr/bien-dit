@@ -1,0 +1,118 @@
+@import "../_global/colors";
+
+// filters
+.listCriteria, .listCriteriaTabs {
+	width: 100%;
+	float: left;
+	clear: both;
+}
+
+.listCriteria {
+	font-family: nerissemibold;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.listCriteria label { 
+	color: $semiGrey; 
+	cursor: pointer;
+	padding-left: 12px;
+	position: relative;
+}
+.listCriteria input:checked + label {	color: $darkGrey;}
+.listCriteria label:hover { color: $darkGrey;}
+
+.listCriteria label i {
+	position: absolute;
+	left: 0;
+	font-size: 7px;
+}
+.listCriteria label i.iconCheck {font-size: 8px;}
+
+.listCriteriaTabs {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.listCriteriaTabs label {
+	display: inline-block;
+	margin: 0 20px 5px 20px;
+	padding: 0;
+	color: $semiGrey;
+	position: relative;
+}
+
+
+// list with filters in sidebar
+
+.listCriteria.criteriaSidebar {
+	float: left;
+	clear: both;
+	width: 220px;
+	padding: 0;
+	margin: 0 40px 0 0;
+	text-align: left;
+}
+
+.listCriteria.criteriaSidebar form {
+	width: 100%;
+	float: left;
+	clear: both;
+	margin-bottom: 40px;
+	padding-bottom: 30px;
+	border-bottom: solid 1px $semilightGrey;
+}
+.listCriteria.criteriaSidebar form:last-child {border: none; padding-bottom: 0; margin-bottom: 0;}
+
+.listCriteria.criteriaSidebar label {
+	clear: both;
+	float: left;
+	margin-bottom: 10px;
+}
+
+
+.listCriteria.criteriaSidebar form.inlineLabels label {
+	clear: none;
+	margin-right: 20px;
+}
+
+// standard list
+
+.modalList {	
+	padding: 60px 0 60px 0;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	clear: both;
+}
+.modalList.withSidebar .modalItem {float: right;}
+.modalList.withSidebar .modalItem.listProfile {
+	width: 660px;
+	margin-right: 20px;
+}
+
+.modalItem {
+	width: 700px;
+	display: inline-block;
+	text-align: left;
+	margin-bottom: 60px;
+}
+
+a.modalItemShow {
+	display: inline-block;
+	margin: 20px 0 0 0;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 17px;
+}
+
+.listPost a.modalItemShow {margin-left: 40px;}
+
+a.modalItemShow i {	position: absolute;	left: -2px; }
+a.modalItemShow:hover {color: $darkGrey;}
+
+// manager profile / debate
+
+.profileManager .modalItem .modalItemShow {	margin-left: 0;}

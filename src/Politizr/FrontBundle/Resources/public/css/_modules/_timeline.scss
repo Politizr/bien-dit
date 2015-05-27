@@ -1,24 +1,55 @@
 @import "../_global/colors";
 
 #timelineHeader {
-	padding: 20px 40px;
+	padding: 20px 0;
+	height: 10px;
+	width: 100%;
+	display: inline-block;
 	background-color: $semiDarkGrey;
 	font-size: 10px;
     font-family: 'nerissemibold';
-    text-transform: uppercase;	
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
 }
-.timelineMarkAllAsRead { 
+
+.timelineMarkAllAsRead, .timelineGoToToday { 
 	position: relative; 
 	padding-left: 15px;
 	cursor: pointer;
 	display: inline-block;
 }
-.timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
-.timelineMarkAllAsRead:hover {color: #fff;}
-
-#timeline {
-	padding-bottom: 20px;
+.timelineMarkAllAsRead {margin-left: 40px;}
+.timelineGoToToday {
+	margin-left: 40px;
+	padding-left: 16px;
 }
+.timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
+.timelineGoToToday i {font-size: 10px; position: absolute; left: 0;}
+.timelineMarkAllAsRead:hover, .timelineGoToToday:hover {color: #fff;}
+
+#timelineHeaderRight {
+	float: right;
+	text-align: right;
+	color: #fff;
+}
+
+.showProfileManager, .showDebateManager {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 18px;
+}
+.showDebateManager {	margin: 0 40px; padding-left: 14px;}
+.showProfileManager i, .showDebateManager i {
+	position: absolute;
+	left: 0;
+	font-size: 9px;
+}
+.showProfileManager i {font-size: 12px; top:-1px;}
+.showProfileManager:hover, .showDebateManager:hover {color: $darkGrey;}
+
+#timeline {	padding-bottom: 20px;}
 
 .timelineDayContainer {
 	width: calc(100% - 80px);
@@ -88,6 +119,7 @@ span.timelineItemContextHighlight {
 .timelineItemContent {
 	float: left;
 	clear: both;
+	width: 100%;
 }
 
 .timelineItemContent.timelineItemOfficial, .timelineItemContent.timelineItemAuthor {
@@ -124,6 +156,23 @@ span.timelineItemContextHighlight {
 	clear: both;
 }
 
+.timelineItemHighlight span {
+	display: block;
+	width: 100%;
+	font-size: 30px;
+	line-height: 120%;
+	margin-bottom: 10px;
+	margin-top: -3px;
+	font-family: 'nerissemibold';
+}
+
+.timelineItemHighlight p::before {
+	content: "—";
+	display: inline-block;
+	margin-right: 5px;
+	font-size: 13px;
+}
+
 .timelineItemIllustration {
 	float: right;
 	width: 600px;
@@ -148,20 +197,23 @@ span.timelineItemContextHighlight {
 
 .timelineItemContentFooterLeft {
 	float: left;
-	width: 70%;
+	width: calc(70% - 20px);
+	padding-left: 20px;
 }
 
 .timelineItemContentFooter .readingTime { display: inline-block;}
 
-.timelineItemContentFooter .postNote {
+.timelineItemContentFooter .postNote, .timelineItemContentFooter .commentsNote {
 	float: right;
 	width: 29%;
 	margin: 0;
 	text-align: right;
 	clear: none;
+    font-family: 'nerisblack';
+	font-size: 10px;
 }
 
-.timelineItemContentFooter .postNote .noteMinus, .timelineItemContentFooter .postNote .notePlus {
+.timelineItemContentFooter .postNote .noteMinus, .timelineItemContentFooter .postNote .notePlus, .timelineItemContentFooter .commentsNote .noteMinus, .timelineItemContentFooter .commentsNote .notePlus {
 	display: inline-block;
 	float: none;
 }
@@ -175,6 +227,7 @@ span.timelineItemContextHighlight {
 .timelineItemFooter {
 	display: inline-block;
 	margin-top :10px;
+	width: calc(100% - 20px);
 }
 
 .timelineItemFooter a {
@@ -192,3 +245,25 @@ span.timelineItemContextHighlight {
 	font-size: 12px;
 }
 
+.timelineItemFooter a:hover {color: $darkGrey;}
+
+.timelineActions {
+	float: right;
+	width: 80%;
+	text-align: right;
+	line-height: 100%;
+}
+
+.timelineActions .actionUnfollow {	display: inline-block;}
+.timelineActions a {	padding-left: 14px;	display: inline-block;}
+.timelineActions a i {	font-size: 8px; bottom:0;}
+
+.timelineItem .postSummary {
+	margin: 20px 0 10px -40px;
+	z-index: 0;
+}
+
+.timelineItem .postSummary .pad40 {
+	padding: 40px 60px;
+	width: calc(100% - 120px);
+}

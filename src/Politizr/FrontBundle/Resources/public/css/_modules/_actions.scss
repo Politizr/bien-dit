@@ -12,7 +12,7 @@
     font-family: 'nerissemibold';
 }
 
-#fixedActions a, #fixedActions .actionFollow, #fixedActions .actionUnfollow, #fixedActions .actionCosign {
+#fixedActions a, #fixedActions .actionFollow a, #fixedActions .actionUnfollow a, #fixedActions .actionCosign {
 	width: 100%;
 	float: left;
 	margin-top: 3px;
@@ -22,34 +22,34 @@
     font-family: 'nerissemibold';
 }
 
-#fixedActions a i, #fixedActions .actionFollow i, #fixedActions .actionUnfollow i, #fixedActions .actionCosign i {
+#fixedActions a i, #fixedActions .actionFollow a i, #fixedActions .actionUnfollow a i, #fixedActions .actionCosign i {
 	padding-right: 6px;
 	font-size: 11px;
 	top:-1px;
 	position: relative;
 }
 
-.actionFollow, .actionCosign {
+#fixedActions .actionFollow a, #fixedActions .actionCosign {
 	background-color: $highlight;
 	color: #fff;
 }
 
-.actionUnfollow {
+#fixedActions .actionUnfollow a {
 	background-color: $anotherGrey;
 	color: #fff;
 }
 
-.actionGotoDebate {
+#fixedActions .actionGotoDebate {
 	color: $darkGrey;
 	background-color: $semilightGrey;
 }
 
-.actionFollow:hover, .actionCosign:hover, .actionUnfollow:hover, .actionGotoDebate:hover {
+#fixedActions .actionFollow:hover, #fixedActions .actionFollow a:hover, #fixedActions .actionUnfollow:hover, #fixedActions .actionUnfollow a:hover, #fixedActions .actionCosign:hover, #fixedActions .actionGotoDebate:hover {
 	background-color: $darkGrey;	
 	color: #fff;
 }
 
-.actionReact {
+#fixedActions .actionReact {
 	background-color: $darkGrey;	
 	color: #fff;
 	margin-bottom: 15px;

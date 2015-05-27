@@ -18,8 +18,8 @@ body.css760 #header {
 	left: auto;
 }
 
-body.css760 #illustration_l, body.css960 #illustration_r {display: none;}
-body.css760 #goUpHolder, body.css960 .copyrightHolder { display: none;}
+body.css760 #illustration_l{display: none;}
+body.css760 #goUpHolder { display: none;}
 
 body.css760 h1 {
 	width: calc(100% - 40px); 
@@ -28,88 +28,70 @@ body.css760 h1 {
 
 //////loader
  
-////// modal
+////// modal + list
 
 body.css760 .modalHeader {	width: 100%;}
 body.css760 .modalHeader .headerLogo {background-color: #fff;}
 body.css760 .modalHeader .headerLogo a { margin : 10px 0 0 12px; background-color: #fff;}
 body.css760 .modalClose {margin : 25px 20px 0 0;}
 
+body.css760 .listCriteria input { display: none; }
+
 body.css760 .modalList {	width: 100%; float: left; margin: 40px 0; padding: 0;}
 body.css760 .modal h1 { margin: 40px 0 0 0;}
-body.css760 .modalList .postSummaryTitle {	font-size: 30px;}
-
-body.css760 .modalChoices { margin-top: 30px; }
-body.css760 .listCriteriaTabs input, body.css760 .modalChoices input {display: none;}
-body.css760 .listCriteriaTabs span, body.css760 .modalChoices span {	margin: 0 15px 10px 15px;}
-
 
 body.css760 .listPost {	
 	width: calc(100% - 40px);
 	padding: 0 20px;
 	margin-bottom: 50px;
 }
-body.css760 .postSummary, body.css960 .illustrationShadow {	height: 440px;}
+body.css760 .postSummary, body.css760 .illustrationShadow {	height: 440px;}
+body.css760 .postSummaryTitle {	font-size: 34px; max-height: 5em;}
 body.css760 .postSummary .pad40 {	height: 360px;}
 body.css760 .listProfileRight {	width: calc(100% - 50px);}
 body.css760 .modalItem.listProfile {margin-bottom: 50px;}
-body.css760 .modalItem.listProfileOneCol {margin-bottom: 50px;}
 
 body.css760 .listPostFollow {margin-left: 20px;}
-
-body.css760 .modalLeftCol, body.css760 .modalRightCol {
-	width: calc(100% - 80px);
-	position: fixed;
-	background-color: $darkGrey;
-	top: calc(100% - 50px);
-	padding: 20px 40px 20px 40px;
-	z-index: 22000;
-	-moz-box-shadow: 0 5px 20px #000000;
-	-webkit-box-shadow: 0 5px 20px #000000;
-	-o-box-shadow: 0 5px 20px #000000;
-	box-shadow: 0 5px 20px #000000;
-}
-
-body.css760 .modalLeftCol.activeMobileModal, body.css760 .modalRightCol.activeMobileModal {
-	position: static;
-	margin-top: 20px;
-	background-color: transparent;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	-o-box-shadow: none;
-	box-shadow: none;
-}
-
-body.css760 .modalLeftCol.activeMobileModal {
-	width: calc(100% - 80px);
-	padding: 0 40px;
-}
-
-body.css760 .modalRightCol.activeMobileModal {
-	width: 100%;
-	padding: 0;
-}
-
-body.css760 .modalLeftCol::before, body.css760 .modalRightCol::before {
-	font-family: 'fontello';
-	content: "\e810";
-	float: left;
-	width: 100%;
-	text-align: center;
-	font-size: 18px;
-	padding-bottom: 20px;
-	color: $highlight;
-}
-
-body.css760 .modalLeftCol::before {	content: "\e823";}
-body.css760 .modalRightCol::before { content: "\e810";}
-
-body.css760 .modalLeftCol.activeMobileModal::before, body.css760 .modalRightCol.activeMobileModal::before {	display: none;}
-body.css760 .modalRightCol .listDebate {width: 100%; padding: 0}
 
 body.css760 .wikiSample {	width: calc(100% - 40px); padding: 0 20px;}
 body.css760 .wikiSampleMask {	width: calc(100% - 40px); padding: 0 20px;}
 
+//////list with filters in sidebar
+
+body.css760 #listContent.withSidebar {	width: calc(100% - 40px); padding: 0 20px 0 20px;}
+
+body.css760 .listCriteria.criteriaSidebar {
+	clear: none;
+	width: 100%;
+	padding: 0;
+	margin: 0 0 40px 0;
+	float: left;
+	text-align: center;
+}
+
+body.css760 .listCriteria.criteriaSidebar form {
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+}
+
+body.css760 .listCriteria.criteriaSidebar form:last-child {margin-bottom: 0;}
+
+body.css760 .listCriteria.criteriaSidebar form label {
+	clear: none;
+	float: none;
+	display: inline-block;
+	margin: 0 10px 10px 10px;
+}
+
+body.css760 #listContent.withSidebar .listTab, body.css760 #listContent.withSidebar .modalItem {
+	width: 100%;
+	float: none;
+	padding: 0;
+}
+
+body.css760 #listContent.withSidebar .modalItem.listProfile {
+	width: calc(100% - 80px);	
+}
 
 // actions box error, succes, alert
 
@@ -152,37 +134,34 @@ body.css760 .formAbuse form {
 	width: calc(100% - 40px); 
 	padding: 0 20px;	
 }
- 
-body.css760 .formAbuse .listProfileOneCol .listProfileRight { width: calc(100% - 50px);}
 
 body.css760 .formAbuse form textarea {width: calc(100% - 40px);}
 
-body.css760 .formAbuse .listProfileOneCol {
+body.css760 .formAbuse .listProfile {
 	width: calc(100% - 40px);
 	margin: 50px 20px 50px 20px;
 }
 
-
 //search form
 
-body.css760 .search form {
+body.css760 .search form.searchForm {
 	width: 60%;
 	padding: 0 20%;
 	margin: 40px 0 20px 0;
 	float: left;
 }
 
-body.css760 .search form input {
+body.css760 .search form.searchForm input {
 	font-size: 26px;
 	width: 88%;
 }
 
-body.css760 .search form input[type=submit] {
+body.css760 .search form.searchForm input[type=submit] {
 	font-size: 26px;
 	width: 12%;
 }
 
-body.css760 .listProfileOneCol {
+body.css760 .listProfile {
 	width: calc(100% - 80px);
 	margin: 0 40px 50px 40px;
 }
@@ -429,18 +408,22 @@ body.css760 #fixedActions {
 	box-shadow: -10px 5px 20px #000000;
 }
 
-body.css760  #fixedActions a, 
-body.css760  #fixedActions .actionFollow, 
-body.css760  #fixedActions .actionUnfollow, 
-body.css760  #fixedActions .actionCosign {
+body.css760 #fixedActions a, 
+body.css760 #fixedActions .actionFollow a, 
+body.css760 #fixedActions .actionUnfollow a, 
+body.css760 #fixedActions .actionCosign {
 	width: 50%;
 	margin: 0;
 	padding: 17px 0;
 	cursor: pointer;
 	font-size: 11px;
+	float: left;
 }
 
-body.css760  #fixedActions a.actionReact, body.css760  #fixedActions .actionCosign  {	width: 100%;}
+body.css760  #fixedActions a.actionReact, 
+body.css760  #fixedActions .actionCosign  {	
+	width: 100%; margin-bottom: 0;
+}
 
 
 //////post
@@ -617,7 +600,23 @@ body.css760 #footerRight {
 
 ////// debate timeline
 
-body.css760 #timelineHeader {padding: 20px;}
+body.css760 #timelineHeader {
+	width: calc(100% - 40px);
+	padding: 20px;
+	height: auto;
+}
+
+body.css760 #timelineHeader i {display: none;}
+
+body.css760 .timelineMarkAllAsRead, body.css760 .timelineGoToToday {	clear: both; float: left; margin: 0; padding: 0;}
+body.css760 .timelineGoToToday {margin-top: 10px;}
+
+body.css760 #timelineHeaderRight {
+	position: absolute;
+	right: 20px;
+}
+body.css760 .showProfileManager, body.css760 .showDebateManager {clear: both; float: right; margin: 0; padding: 0;}
+body.css760 .showDebateManager {margin-top: 10px;}
 
 body.css760 .timelineDayContainer {
 	width: calc(100% - 40px);
@@ -634,6 +633,7 @@ body.css760 .timelineDay h4 {
 	width: calc(100% - 48px);
 	margin: 0;
 	padding: 0 20px 15px 48px;
+	font-size: 16px;
 }
 
 body.css760 .timelineDay i {	left: 15px;}
@@ -646,8 +646,16 @@ body.css760 .timelineItemContent.timelineItemOfficial, body.css760 .timelineItem
 	margin: 10px 0 10px -40px;
 }
 
-body.css760 .timelineItemHighlight { -webkit-text-size-adjust: 80%;	}
+body.css760 .timelineItem .pad40 {
+	padding: 20px 40px;
+	width: calc(100% - 100px);
+}
+body.css760 .timelineItem .postSummary {
+	margin: 20px 0 10px -20px;
+	width: calc(100% + 40px);
+}
 
+body.css760 .timelineItemHighlight { -webkit-text-size-adjust: 70%;	}
 
 .timelineItemContentFooter {
 	width: calc(100% + 20px);
@@ -666,4 +674,12 @@ body.css760 .timelineItemContentFooter .commentsCounter {
 	margin-bottom: 5px;
 }
 
-body.css760 .timelineItemFooter a { margin-left: 0; }
+body.css760 .timelineActions {
+	float: left;
+	clear: both;
+	text-align: left;
+}
+
+body.css760 .timelineActions i {top: 1px;}
+
+body.css760 .actionFollow, body.css760 .actionUnfollow {	margin-top: 5px; }

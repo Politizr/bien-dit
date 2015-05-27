@@ -1,27 +1,15 @@
 @import "../_global/colors";
 
-.listProfile {
-	float: left;
-	width: 100%;
-}
-
-.listProfileOneCol {	
+.listProfile {	
 	float: none; 
 	width: 620px;
 }
 
-
-.listProfile .avatar40, .listProfileOneCol .avatar40 {
+.listProfile .avatar40 {
 	float: left;
 }
 
-.listProfile .listProfileRight {
-	float: right;
-	width: 170px;
-	line-height: 140%;
-}
-
-.listProfileOneCol .listProfileRight {	
+.listProfile .listProfileRight {	
 	float: right;
 	width: 570px;
 	line-height: 140%;
@@ -33,6 +21,11 @@
 	background-color: $lightGrey;
 	padding: 20px;
 	margin-left: -20px;
+}
+
+.listProfileDefault {
+	float: left;
+	width: 100%;
 }
 
 .authorName {
@@ -56,10 +49,11 @@
 	line-height: 150%;
 }
 
-.listProfileFollow {
-	float: left;
+.listProfileFollow, .listProfileUnfollow {
+	float: right;
 	clear: both;
 	margin-top: 20px;
+	margin-right: 0;
 	color: $highlight;
 	font-family: nerissemibold;
 	position: relative;
@@ -67,5 +61,5 @@
 	cursor: pointer;
 }
 
-.listProfileFollow:hover {color: $darkGrey;}
-.listProfileFollow i {position: absolute; left: 0; font-size: 9px;}
+.listProfileFollow:hover, .listProfileUnfollow:hover {color: $darkGrey;}
+.listProfileFollow i, .listProfileUnfollow i {position: absolute; left: 0; font-size: 9px;}

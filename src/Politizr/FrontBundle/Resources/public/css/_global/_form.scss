@@ -8,6 +8,7 @@ input {
     -webkit-border-radius:0; 
     border-radius:0; 
 }
+
 input[type=submit], input[type=button] {cursor: pointer; font-family: 'fontello', 'nerissemibold'; border: none;}
 textarea {margin: 0;}
 textarea:focus, input:focus{    outline: 0;}
@@ -67,14 +68,14 @@ textarea:focus, input:focus{    outline: 0;}
 
 //search form
 
-.search form {
+.search form.searchForm {
 	width: 440px;
 	display: inline-block;
 	margin: 60px 0 0 260px;
 	clear: both;
 }
 
-.search form input {
+.search form.searchForm input {
 	padding: 0;
 	font-family: nerislight;
 	font-size: 40px;
@@ -85,7 +86,7 @@ textarea:focus, input:focus{    outline: 0;}
 	background-color: transparent;
 }
 
-.search form input[type=submit] {
+.search form.searchForm input[type=submit] {
 	font-size: 28px;
 	text-align: right;
 	width: 10%;
@@ -99,7 +100,7 @@ textarea:focus, input:focus{    outline: 0;}
 	text-align: center !important;
 }
 
-.formAbuse .listProfileOneCol, .formAbuse form {	width: 480px;}
+.formAbuse .listProfile, .formAbuse form {	width: 480px;}
 
 .formAbuse form {
 	clear: both;
@@ -108,15 +109,15 @@ textarea:focus, input:focus{    outline: 0;}
 	margin-bottom: 60px;
 }
 
-.formAbuse .listProfileOneCol {
+.formAbuse .listProfile {
 	margin-top: 60px;
 	color: $highlight;
 	float: none;
 }
 
-.formAbuse .listProfileOneCol .listProfileRight {	width: 430px; float: right;}
-.formAbuse .listProfileOneCol a { color: $highlight;}
-.formAbuse .listProfileOneCol .organization {	background-color: $highlight;}
+.formAbuse .listProfile .listProfileRight {	width: 430px; float: right;}
+.formAbuse .listProfile a { color: $highlight;}
+.formAbuse .listProfile .organization {	background-color: $highlight;}
 
 
 .formAbuse .listProfileRight .authorName span {

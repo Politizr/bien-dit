@@ -41,31 +41,7 @@ $(function(){
 			$('#headerCenter, #menu, #menuPreferences').hide();	    
 		}					
 	});
-	
-	///// has been ///// mobile : gestion pseudo tabs in modal with two cols
-	$("body.css760").on("touchstart click", "[action='mobileTriggerLeftCol']", function() {
-		$(this).addClass('activeMobileModal');
-		$(".modalRightCol").removeClass('activeMobileModal');
-		$('.modal .wrapper').animate({
-			scrollTop: $("body").offset().top
-		}, 'fast');
-	});
-	
-	$("body.css760").on("touchstart click", "[action='mobileTriggerRightCol']", function() {
-		$(this).addClass('activeMobileModal');
-		$(".modalLeftCol").removeClass('activeMobileModal');
-		$('.modal .wrapper').animate({
-			scrollTop: $("body").offset().top
-		}, 'fast');
-	});
-	
-	$("body.css760").on("touchstart click", ".modalRightCol.activeMobileModal", function() {
-		$('.modal .wrapper').stop();
-	});
-	$("body.css760").on("touchstart click", ".modalLeftCol.activeMobileModal", function() {
-		$('.modal .wrapper').stop();
-	});
-	
+		
 	// mobile : hide menus when opening nofications
 	$("body.css760").on("body.css760 click", "[action='linkNotifications']", function() {
 		$('#notifications').slideDown('fast');
@@ -105,13 +81,13 @@ $(function(){
 	});
 	
 	// hide / show menu preferences
-	$("body.css, body.css960").on("click", "[action='openMenuPreferences']", function() {
+	$("body.css, body.css1000").on("click", "[action='openMenuPreferences']", function() {
 		$('#menuPreferences').show();
 		$(this).hide();
 		$('#hideMenuPreferences').show();
 	});
 	
-	$("body.css, body.css960").on("click", "[action='hideMenuPreferences']", function() {
+	$("body.css, body.css1000").on("click", "[action='hideMenuPreferences']", function() {
 		$('#menuPreferences').hide();
 		$(this).hide();
 		$('#openMenuPreferences').show();

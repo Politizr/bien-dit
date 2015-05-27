@@ -72,75 +72,15 @@ body.noscroll {
 	font-weight: normal;
 }
 
-.modal h1, .listCriteria, .listCriteriaTabs {
+.modal h1 {
 	width: 100%;
 	float: left;
 	clear: both;
 }
 
-.listCriteria {
-	font-family: nerissemibold;
-	font-size: 10px;
-	text-transform: uppercase;
-}
-
-.listCriteriaTabs {
-	margin-top: 20px;
-	text-align: center;
-}
-
-.listCriteria form input:checked + label {	color: $darkGrey;}
-.listCriteria formlabel { color: $semiGrey;}
-.listCriteria form label:hover { color: $darkGrey;}
-
-.listCriteriaTabs label {
-	display: inline-block;
-	margin: 0 20px 5px 20px !important;
-	color: $semiGrey;
-	cursor: pointer;
-}
-
-.modalList {	
-	padding: 60px 0 60px 0;
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-	width: 960px;
-	clear: both;
-}
-
-.modalItem {
-	width: 700px;
-	display: inline-block;
-	text-align: left;
-	margin-bottom: 60px;
-}
-
-a.modalItemShow {
-	display: inline-block;
-	margin: 20px 0 0 40px;
-	color: $highlight;
-	font-family: nerissemibold;
-	position: relative;
-	padding-left: 17px;
-}
-
-a.modalItemShow i {	position: absolute;	left: -2px; }
-a.modalItemShow:hover {color: $darkGrey;}
-
-.listPost .listProfileFollow {
-	display: inline-block;
-	clear: none;
-	margin-left: 40px;
-}
-
-.listTab {
-	
-}
-
 // no results
 
-.noresults {
+.noResults {
 	float: left;
 	width: 100%;
 	clear: both;
@@ -148,6 +88,18 @@ a.modalItemShow:hover {color: $darkGrey;}
 	font-size: 14px;
 	text-align: center;
 	margin-top: 40px;
+}
+
+.noResultsSuggestionSentence {
+	font-size: 10px;
+	color: $highlight;
+	text-transform: uppercase;
+    font-family: 'nerissemibold';
+    float: left;
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin: 20px 0 -20px 0;
 }
 
 // actions box error, succes, alert

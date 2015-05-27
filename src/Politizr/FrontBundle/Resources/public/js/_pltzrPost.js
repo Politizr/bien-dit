@@ -33,11 +33,11 @@ $(function(){
 	});	
 	
 	// focus in textarea only for browser, crash fixed elements in mobile
-	$("body.css, body.css960").on("click", "[action='commentsSlideFormNew']", function() {
+	$("body.css, body.css1000").on("click", "[action='commentsSlideFormNew']", function() {
 		$(this).next('.commentsEditNew').children('form').children('.commentsTextarea').focus();		
 	});	
 	
-	$("body.css, body.css960").on("click", "[action='paragraphCommentsCounter']", function() {
+	$("body.css, body.css1000").on("click", "[action='paragraphCommentsCounter']", function() {
 		$(this).siblings('.comments').children('.commentsEditNew').children('form').children('.commentsTextarea').focus();			
 	});	
 	

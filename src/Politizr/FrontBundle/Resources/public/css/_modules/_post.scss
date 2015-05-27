@@ -20,14 +20,16 @@
 	line-height: 200%;
 }
 
-.paragraph.summary, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
+.paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
 .paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
 .paragraph.summary::before {
 	content: "—";
 	float: left;
+	line-height: 200%;
+	margin-top: 2px;
 	margin-right: 5px;
-	margin-top: 10px;
+	color: $darkHighlight;
 }
 
 .paragraph h1 {
@@ -162,6 +164,23 @@
 	width: calc(100% - 20px);
 	border-left: solid 4px $highlight;
 	padding-left: 14px;
+}
+
+.reactionsToPostItemContent span {
+	display: block;
+	width: 100%;
+	font-size: 30px;
+	line-height: 120%;
+	margin-bottom: 10px;
+	margin-top: -3px;
+	font-family: 'nerissemibold';
+}
+
+.reactionsToPostItemContent p::before {
+	content: "—";
+	display: inline-block;
+	margin-right: 5px;
+	font-size: 13px;
 }
 
 .reactionsToPostItemIllustration {
@@ -348,8 +367,9 @@ a.linkToPost:hover {color: $darkGrey;}
 .commentsInfos {float: left;}
 
 .commentsNote {
-	display: inline-block;
-	margin-left: 20px;
+	float: left;
+	clear: both;
+	margin: 0 0 5px 0;
 	color: $highlight;
 	font-family: 'Merriweather Heavy Italic';
 }
@@ -422,6 +442,19 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-family: 'Merriweather Bold Italic';
 }
 
+.postCosigners {
+	position: absolute;
+	bottom: -16px;
+	right: 0;
+	max-width: 160px;
+	font-size: 12px;
+    font-family: 'nerisblack';
+    cursor: pointer;
+}
+
+.postCosigners:hover { color: $highlight;}
+.withCosigners #postInfos {	top: 40px;}
+
 #postInfos span {
 	display: inline-block;
 	clear: both;
@@ -482,6 +515,8 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-family: nerissemibold;
 	line-height: 100%;
 	color: $highlight;
+	max-height: 3em;
+	overflow: hidden;
 }
 
 .postSummaryTitle a {	color: $highlight;}
@@ -548,11 +583,10 @@ a.linkToPost:hover {color: $darkGrey;}
 	clear: both;
 }
 
-.listPostFollow {
-	float: left;
-	clear: both;
+.listPostFollow, .listPostUnfollow, .listDebateUnfollow {
+	float: right;
 	margin-top: 20px;
-	margin-left: 40px;
+	margin-right: 40px;
 	color: $highlight;
 	font-family: nerissemibold;
 	position: relative;
@@ -560,5 +594,5 @@ a.linkToPost:hover {color: $darkGrey;}
 	cursor: pointer;
 }
 
-.listPostFollow:hover {color: $darkGrey;}
-.listPostFollow i {position: absolute; left: 0; font-size: 9px;}
+.listPostFollow:hover, .listPostUnfollow:hover, .listDebateUnfollow:hover {color: $darkGrey;}
+.listPostFollow i, .listPostUnfollow i, .listDebateUnfollow i {position: absolute; left: 0; font-size: 9px;}
