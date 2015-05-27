@@ -1,9 +1,11 @@
-<div id="header">
+<div id="header" class="menuMobileHolder">
     <div class="headerLogo">
         <a href="{{ path('Homepage') }}">
             <i class="iconPltzrLogo"></i>
         </a>
     </div>
+    <div id="menuMobileTriggerMenu" action="menuMobileTriggerMenu"><i class="iconMenu"></i></div>
+    <div id="menuMobileTriggerActions" action="menuMobileTriggerActions"><i class="iconNotePlus"></i></div>
     <div id="menu">
         <div class="pad40">
             {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}

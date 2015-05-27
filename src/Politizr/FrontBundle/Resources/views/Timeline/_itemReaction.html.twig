@@ -30,6 +30,7 @@
                 </div>
                 <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
                     {{ reaction.title }}
+                    {{ reaction.summary | raw }}
                 </a>
             </div>
             <div class="timelineItemContentFooter">

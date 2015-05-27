@@ -219,23 +219,34 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Nombre de commentaires d'un document.
      *
-     * @param $document          PDocument
+     * @param PDocument $document
+     * @param integer $paragraphNo
      *
-     * @return html
+     * @return string
      */
-    public function nbComments(PDocument $document)
+    public function nbComments(PDocument $document, $paragraphNo = null)
     {
         // $this->logger->info('*** nbComments');
         // $this->logger->info('$document = '.print_r($document, true));
 
-        $nbComments = $document->countComments();
+        $nbComments = $document->countComments(true, $paragraphNo);
 
-        if (0 === $nbComments) {
-            $html = 'Aucun commentaire';
-        } elseif (1 === $nbComments) {
-            $html = '1 commentaire';
+        if (null === $paragraphNo) {
+            // Affichage globale
+            if (0 === $nbComments) {
+                $html = 'Aucun commentaire';
+            } elseif (1 === $nbComments) {
+                $html = '1 commentaire';
+            } else {
+                $html = $nbComments.' commentaires';
+            }
         } else {
-            $html = $nbComments.' commentaires';
+            // Affichage par paragraphe
+            if (0 === $nbComments) {
+                $html = '';
+            } else {
+                $html = $nbComments;
+            }
         }
 
         return $html;
