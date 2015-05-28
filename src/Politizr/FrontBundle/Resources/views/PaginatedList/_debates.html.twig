@@ -1,9 +1,6 @@
 {# @todo refactoring + générique #}
 <div class="scroll">
-    <div class="modalList withLoaderInside">
-        <div class="ajaxLoader" style="display: none;">
-            <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
-        </div>
+    <div class="modalList">
         {% for debate in debates %}
             {% include 'PolitizrFrontBundle:Debate:_listRow.html.twig' with { 'debate': debate } only %}
         {% endfor %}

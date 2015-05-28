@@ -6,25 +6,44 @@ ModalPaginatedList:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:modalPaginatedList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+Filters:
+    pattern:  /profil/classement/filtres.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:filters, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               CLASSEMENTS
+################################################################################
+RankingDebateList:
+    pattern:  /profil/debat/classement.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:rankingDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+RankingUserList:
+    pattern:  /profil/user/classement.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:rankingUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+################################################################################
+#               SUGGESTIONS
+################################################################################
+SuggestionDebateList:
+    pattern:  /profil/debat/suggestion.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:suggestionDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+SuggestionUserList:
+    pattern:  /profil/user/suggestion.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:suggestionUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+
 ################################################################################
 #               TIMELINE
 ################################################################################
 TimelinePaginated:
     pattern:  /profil/timeline/paginated.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:timelinePaginated, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-#               PLUS DE DEBATS / DE DEBATTEURS
-################################################################################
-DailyDebateList:
-    pattern:  /profil/debat/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:dailyDebateList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-DailyUserList:
-    pattern:  /profil/user/evenements.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:dailyUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
 ################################################################################

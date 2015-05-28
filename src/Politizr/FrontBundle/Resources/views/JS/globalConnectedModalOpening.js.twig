@@ -1,39 +1,45 @@
 <script>
-    /* open suggestion débats */
-    $("body").on("click", "[action='linkSuggestionsDebate']", function() {
-        console.log('*** linkSuggestions');
-        $('#modalBoxContent').removeClass().addClass('suggestions');
+    // modal ranking
+    $("body").on("click", "[action='modalRanking']", function() {
+        console.log('*** modalRanking');
+        $('#modalBoxContent').removeClass().addClass('ranking');
         modalLoading();
-        loadPaginatedList('_suggestionsDebate.html.twig');
+        loadPaginatedList('_ranking.html.twig', 'true');
     });
 
-    /* open suggestion de users */
-    $("body").on("click", "[action='linkSuggestionsUser']", function() {
-        console.log('*** linkSuggestions');
+    // modal suggestions
+    $("body").on("click", "[action='modalSuggestions']", function() {
+        console.log('*** modalSuggestions');
         $('#modalBoxContent').removeClass().addClass('suggestions');
         modalLoading();
-        loadPaginatedList('_suggestionsUser.html.twig');
+        loadPaginatedList('_suggestions.html.twig', 'false');
     });
 
-    /* code générique de chargement d'une modal */
+    // code générique de chargement d'une modal
     function modalLoading() {
         $('#modalBox').fadeIn('fast');
         $('body').addClass('noscroll');
         $('html, body').animate({
             scrollTop: $("body").offset().top
         }, 0);
-        $(".modalRightCol").addClass('activeMobileModal'); /* for mobile purpose */
+        $(".modalRightCol").addClass('activeMobileModal');
     };
 
-    // @todo rendre générique le chargement des contenu de modal de liste
-    // Liste paginée des suggestions de débat
-    function loadPaginatedList(twigTemplate) {
+    /**
+     * Chargement d'une liste paginée
+     * @todo rendre générique le chargement des contenu de modal de liste
+     *
+     * @param string twigTemplate
+     * @param string withFilters  true | false
+     */
+    function loadPaginatedList(twigTemplate, withFilters) {
         console.log('*** loadPaginatedList');
         console.log(twigTemplate);
 
         if (typeof twigTemplate === "undefined") {
             return false;
         }
+        withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
         $.ajax({
             type: 'POST',
@@ -47,7 +53,7 @@
                     $('#infoBoxHolder.boxError').show();
                 } else {
                     $('#modalBoxContent').html(data['html']);
-                    listing();
+                    initListing('debate', withFilters);
                 }
                 $('#ajaxGlobalLoader').hide();
             }

@@ -1,0 +1,25 @@
+<h1>Suggestions</h1>
+<!-- @todo html / css structure + renommage -->
+<div id="paginatedList" url="{{ path('SuggestionDebateList') }}" withFilters="false">
+    <div class="listCriteria">
+        <!-- listCriteriaTabs > listCriteriaTop -->
+        <div class="listCriteriaTabs">
+            <form id="listType">
+                <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('SuggestionDebateList') }}" checked/>
+                <label for="debateType">publications</label>
+                <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('SuggestionUserList') }}" />
+                <label for="userType">profils</label>
+            </form>
+        </div>
+    </div>
+    <!-- id listContent > à supprimer -->
+    <!-- loader inside > à supprimer -->
+    <div id="listContent" class="modalList">
+        <!-- est-il possible d'avoir un div au même niveau que listCriteriaTabs pour listCriteriaSideBar? -->
+        <!-- + un div en dessous pour les résultats -->
+        <div class="listTab postTab">
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+</div>

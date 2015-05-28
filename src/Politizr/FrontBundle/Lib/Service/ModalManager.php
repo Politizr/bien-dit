@@ -17,6 +17,7 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PUserQuery;
 
 /**
  * Services métiers associés aux modal.
@@ -60,38 +61,76 @@ class ModalManager
             );
     }
 
-    /* ######################################################################################################## */
-    /*                                              SUGGESTIONS                                                 */
-    /* ######################################################################################################## */
-
     /**
-     *  Listing de débats du jour ordonnancés suivant l'argument récupéré
-     *
+     * Chargement des filtres
      */
-    public function dailyDebateList()
+    public function filters()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** dailyDebateList');
+        $logger->info('*** filters');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
         // Récupération args
         $request = $this->sc->get('request');
 
-        // $params = $request->request->all();
-        // $logger->info('$params = ' . print_r($params, true));
+        $type = $request->get('type');
 
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        if ('debate' === $type) {
+            $listOrder = $templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
+            );
+            $listFilter = $templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
+            );
+        } elseif ('user' === $type) {
+            $listOrder = $templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig'
+            );
+            $listFilter = $templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig'
+            );
+        }
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'listOrder' => $listOrder,
+            'listFilter' => $listFilter,
+            );
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                              CLASSEMENT                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Liste des débats type "classement"
+     *
+     */
+    public function rankingDebateList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** rankingDebateList');
+        
+        // Récupération args
+        $request = $this->sc->get('request');
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
-        $filters = $request->get('filters');
-        $logger->info('$filters = ' . print_r($filters, true));
+        $filtersDate = $request->get('filtersDate');
+        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
+        $filtersUserType = $request->get('filtersUserType');
+        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
         $logger->info('$offset = ' . print_r($offset, true));
 
+        // regroupement des filtres
+        $filters = array_merge($filtersDate, $filtersUserType);
+
+        // @todo gérer les "limit" dans une variable
         $debates = PDDebateQuery::create()
                     ->online()
-                    ->filterByKeywords($filters, $user)
+                    ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
                     ->limit(10)
                     ->offset($offset)
@@ -114,31 +153,32 @@ class ModalManager
     }
 
     /**
-     *  Listing de profils du jour ordonnancés suivant l'argument récupéré
+     * Liste des profils type "classement"
      *
      */
-    public function dailyUserList()
+    public function rankingUserList()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** dailyUserList');
+        $logger->info('*** rankingUserList');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
         // Récupération args
         $request = $this->sc->get('request');
-
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
-        $filters = $request->get('filters');
-        $logger->info('$filters = ' . print_r($filters, true));
+        $filtersDate = $request->get('filtersDate');
+        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
+        $filtersUserType = $request->get('filtersUserType');
+        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
         $logger->info('$offset = ' . print_r($offset, true));
 
-        // Requête suivant order
+        // regroupement des filtres
+        $filters = array_merge($filtersDate, $filtersUserType);
+
+        // @todo gérer les "limit" dans une variable
         $users = PUserQuery::create()
                     ->online()
-                    ->filterByKeywords($filters, $user)
+                    ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
                     ->limit(10)
                     ->offset($offset)
@@ -161,4 +201,75 @@ class ModalManager
     }
 
 
+    /**
+     * Liste des débats type "suggestion"
+     *
+     */
+    public function suggestionDebateList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** suggestionDebateList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // @todo gérer les "limit" dans une variable
+        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
+        
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+            array(
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Liste des profils type "suggestion"
+     *
+     */
+    public function suggestionUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** suggestionUserList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // @todo gérer les "limit" dans une variable
+        $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
+        
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+            );
+    }
 }

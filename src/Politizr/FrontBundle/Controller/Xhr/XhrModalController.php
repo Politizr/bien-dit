@@ -30,6 +30,86 @@ class XhrModalController extends Controller
     }
 
     /**
+     *  Chargement des filtres du classement
+     */
+    public function filtersAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** filtersAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'filters'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Liste des débats type "classement"
+     */
+    public function rankingDebateListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** rankingDebateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'rankingDebateList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Liste des profils type "classement"
+     */
+    public function rankingUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** rankingUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'rankingUserList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Liste des débats type "suggestion"
+     */
+    public function suggestionDebateListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** suggestionDebateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'suggestionDebateList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Liste des profils type "suggestion"
+     */
+    public function suggestionUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** suggestionUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'suggestionUserList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
      *  Chargement d'une liste type "timeline"
      */
     public function timelinePaginatedAction(Request $request)
@@ -40,38 +120,6 @@ class XhrModalController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.timeline',
             'timelinePaginated'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste de debats "actualité"
-     */
-    public function dailyDebateListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** dailyDebateListAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'dailyDebateList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste de users
-     */
-    public function dailyUserListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** dailyUserListAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'dailyUserList'
         );
 
         return $jsonResponse;

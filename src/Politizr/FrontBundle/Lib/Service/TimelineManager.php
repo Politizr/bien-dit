@@ -45,6 +45,10 @@ class TimelineManager
      */
     private function getFollowedDebatesIdsArray($userId)
     {
+        // @todo refactoring
+        // $results = Query->select('Id')->find()
+        // $results->getData()
+        // => tableau d'Ids
         $debateIds = PUFollowDDQuery::create()
                         ->filterByPUserId($userId)
                         ->find()
@@ -492,12 +496,12 @@ ORDER BY published_at ASC
     public function hydrateTimelineRows($sql)
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** getTimeline');
+        $logger->info('*** hydrateTimelineRows');
 
         $timeline = array();
 
         if ($sql) {
-            // Exécution de la requête timeline brute
+            // Exécution de la requête brute
             $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
             $stmt = $con->prepare($sql);
             $stmt->execute();
