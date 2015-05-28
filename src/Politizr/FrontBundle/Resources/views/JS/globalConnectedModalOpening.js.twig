@@ -21,13 +21,16 @@
         $('#modalBoxContent').removeClass().addClass('listByTag');
         modalLoading();
 
-        var model = $(this).attr('model');
-        var slug = $(this).attr('slug');
+        loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
+    });
 
-        console.log(model);
-        console.log(slug);
+    // modal organisation
+    $("body").on("click", "[action='modalOrganization']", function() {
+        console.log('*** modalTagged');
+        $('#modalBoxContent').removeClass().addClass('organizationSheet');
+        modalLoading();
 
-        loadPaginatedList('_tagged.html.twig', 'true', model, slug);
+        loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
     });
 
     // code générique de chargement d'une modal

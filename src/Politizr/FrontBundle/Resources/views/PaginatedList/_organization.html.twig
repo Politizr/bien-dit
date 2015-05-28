@@ -1,0 +1,35 @@
+<div id="organizationSheetLogo">
+    <img src="{{ asset('uploads/organizations/'~subject.fileName) | imagine_filter('organization_detail') }}" alt="{{ subject.initials }}">
+</div>
+<h1>{{ subject.title }}</h1>
+<div class="organizationSheetorganization">
+    <div class="organization">{{ subject.initials }}</div>
+</div>
+<div class="wikiSample">
+    {{ subject.description | raw }}
+    <div class="wikiSampleMask"></div>
+</div>
+<div class="wikiLink">
+    <a href="{{ subject.url }}" target="_blank">afficher la suite sur wikipédia</a>
+</div>
+<h1>Profils correspondants</h1>
+
+<!-- @todo html / css structure + renommage -->
+<div id="paginatedList" url="{{ path('OrganizationUserList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
+    <!-- id listContent > à supprimer -->
+    <!-- loader inside > à supprimer -->
+    <div id="listContent" class="modalList withSidebar">
+        <!-- est-il possible d'avoir un div au même niveau que listCriteriaTabs pour listCriteriaSideBar? -->
+        <!-- + un div en dessous pour les résultats -->
+        <div class="listTab postTab withSidebar">
+            <div class="listCriteria criteriaSidebar">
+                <form id="listOrder">
+                </form>
+
+                <form id="listFilter">
+                </form>
+            </div>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+</div>

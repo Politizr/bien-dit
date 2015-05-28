@@ -41,7 +41,8 @@ class ModalManager
     /* ######################################################################################################## */
 
     /**
-     * Retourne un tableau contenant 3 éléments: l'odonnancement, les filtres et l'offset à appliquer à la recherche
+     * Retourne un tableau contenant 4 éléments: l'odonnancement, les filtres, l'offset à appliquer à la recherche
+     * et éventuellement l'id de l'objet associé
      *
      * @return array
      */
@@ -58,11 +59,13 @@ class ModalManager
         $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
         $logger->info('$offset = ' . print_r($offset, true));
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
 
         // regroupement des filtres
         $filters = array_merge($filtersDate, $filtersUserType);
 
-        return [ $order, $filters, $offset ];
+        return [ $order, $filters, $offset, $subjectId ];
     }
 
     /* ######################################################################################################## */
@@ -307,7 +310,7 @@ class ModalManager
 
 
     /**
-     *  Listing de débats par tag
+     * Liste de débats par tag
      *
      */
     public function tagDebateList()
@@ -356,7 +359,7 @@ class ModalManager
     }
 
     /**
-     *  Listing de profils par tag
+     * Liste de profils par tag
      *
      */
     public function tagUserList()
@@ -369,24 +372,70 @@ class ModalManager
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
 
-        // paramètre supplémentaire
-        $request = $this->sc->get('request');
-        $tagId = $request->get('subjectId');
-        $logger->info('$tagId = ' . print_r($tagId, true));
-
-        // Requête suivant order
+        // @todo gérer les "limit" dans une variable
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->usePuTaggedTPUserQuery()
-                        ->filterByPTagId($tagId)
+                        ->filterByPTagId($subjectId)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
                     ->limit(10)
                     ->offset($offset)
                     ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Liste de users associé à l'organisation
+     *
+     */
+    public function organizationUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** organizationUserList');
+        
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
+
+        // @todo gérer les "limit" dans une variable
+        $users = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePUCurrentQOPUserQuery(null, \Criteria::LEFT_JOIN)
+                        ->filterByPQOrganizationId($subjectId)
+                    ->endUse()
+                    ->_or()
+                    ->usePUAffinityQOPUserQuery(null, \Criteria::LEFT_JOIN)
+                        ->filterByPQOrganizationId($subjectId)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find()
+                    ;
 
         // Construction rendu
         $templating = $this->sc->get('templating');

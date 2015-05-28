@@ -50,6 +50,14 @@ TagUserList:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:tagUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+#               ORGANISATIONS
+################################################################################
+OrganizationUserList:
+    pattern:  /organisation.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:organizationUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 
 ################################################################################
 #               TIMELINE
@@ -78,12 +86,4 @@ FollowedDebateList:
 FollowedUserList:
     pattern:  /profil/user/suivis.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedUserList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-#               ORGANISATIONS
-################################################################################
-OrganizationUserList:
-    pattern:  /organisation.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:organizationUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }

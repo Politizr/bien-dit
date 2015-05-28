@@ -142,6 +142,22 @@ class XhrModalController extends Controller
     }
 
     /**
+     *  Chargement d'une liste de users d'une organisation
+     */
+    public function organizationUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** organizationUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'organizationUserList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
      *  Chargement d'une liste type "timeline"
      */
     public function timelinePaginatedAction(Request $request)
@@ -200,22 +216,6 @@ class XhrModalController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.modal',
             'followedUserList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste de users d'une organisation
-     */
-    public function organizationUserListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** organizationUserListAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'organizationUserList'
         );
 
         return $jsonResponse;
