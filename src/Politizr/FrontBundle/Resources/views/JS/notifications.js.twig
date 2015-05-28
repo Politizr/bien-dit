@@ -11,6 +11,7 @@
             scrollTop: $("body").offset().top
         }, 'fast');
     });
+
     $("body").on("click", ".notifClose", function() {
         $('#notifications').slideUp('fast');
     });
@@ -27,10 +28,10 @@
                 $('#ajaxGlobalLoader').hide();
 
                 // MAJ compteur
-                $('#notif-counter').html(data['nb']);
+                $('#notifCounter').html(data['nb']);
 
                 // MAJ listing des notifs
-                $('#notif-list').html(data['html']);
+                $('#notifList').html(data['html']);
             }
         });
 
@@ -41,19 +42,21 @@
     }
 
     // check une notification
-    $("body").on("click", "i[action='notification-check']", function(e) {
-        console.log('*** click i notification-check');
+    $("body").on("click", "i[action='notificationCheck']", function(e) {
+        console.log('*** click i notificationCheck');
 
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url : "{{ path('NotificationCheck') }}",
-            context: $(this).closest('tr'),
-            data: { 'subjectId': $(this).closest('span').attr('subject-id') },
-            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
+            context: $(this).closest('.notifItem'),
+            data: { 'subjectId': $(this).attr('subject-id') },
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
-                $(this).attr('class', '');
-                $('#notif-counter').html(parseInt($('#notif-counter').text()) - 1);
+                $(this).find('.notifHighlight').attr('class', '');
+                $(this).find('.iconCross').remove();
+
+                $('#notifCounter').html(parseInt($('#notifCounter').text()) - 1);
 
                 $('#ajaxGlobalLoader').hide();
             }
@@ -61,8 +64,8 @@
 
     })
     
-    $("body").on("click", "[action='notification-check']", function(e) {
-        console.log('*** click a notification-check');
+    $("body").on("click", "[action='notificationCheck']", function(e) {
+        console.log('*** click a notificationCheck');
 
         e.preventDefault();
         $.ajax({
@@ -71,7 +74,7 @@
             url : "{{ path('NotificationCheck') }}",
             context: this,
             data: { 'subjectId': $(this).closest('span').attr('subject-id') },
-            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 window.location = $(this).attr('href');
             }
@@ -80,21 +83,22 @@
     })
     
     // check / uncheck toutes les notifications
-    $("body").on("click", "div[action='notification-check-all']", function(e) {
-        console.log('*** click notification-check-all');
+    $("body").on("click", "div[action='notificationCheckAll']", function(e) {
+        console.log('*** click notificationCheckAll');
 
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url : "{{ path('NotificationsCheckAll') }}",
             context: $(this).closest('table'),
-            {% include 'PolitizrFrontBundle:JS:ajaxErrorNoLoader.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 // MAJ du style
                 $('.notifHighlight').attr('class', '');
 
                 // MAJ du compteur
-                $('#notif-counter').html('-');
+                $('#notifCounter').html('-');
+
                 $('#ajaxGlobalLoader').hide();
             }
         });

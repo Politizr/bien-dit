@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <td colspan="2">
-                Notifications - Tout marquer <a action="notification-check-all">lu</a>
+                Notifications - Tout marquer <a action="notificationCheckAll">lu</a>
             </td>
         </tr>
     </thead>
@@ -12,7 +12,7 @@
                 <span>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}</span>, {{ notif | linkedNotification }}
             </td>
             <td width="5%">
-                <i class="fa fa-bullseye" {% if not notif.checked %}action="notification-check" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
+                <i class="fa fa-bullseye" {% if not notif.checked %}action="notificationCheck" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
             </td>
         </tr>
     {% else %}
