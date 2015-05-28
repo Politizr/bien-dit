@@ -1,8 +1,7 @@
 <h1>Classement</h1>
-<!-- @todo html / css structure + renommage -->
 <div id="paginatedList" url="{{ path('RankingDebateList') }}" withFilters="true">
+    <!-- @todo html / css class="listCriteria criteriaTop" -->
     <div class="listCriteria">
-        <!-- listCriteriaTabs > listCriteriaTop -->
         <div class="listCriteriaTabs">
             <form id="listType">
                 <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('RankingDebateList') }}" checked/>
@@ -12,21 +11,9 @@
             </form>
         </div>
     </div>
-    <!-- id listContent > à supprimer -->
-    <!-- loader inside > à supprimer -->
-    <div id="listContent" class="modalList withSidebar">
-        <!-- est-il possible d'avoir un div au même niveau que listCriteriaTabs pour listCriteriaSideBar? -->
-        <!-- + un div en dessous pour les résultats -->
-        <div class="listTab postTab withSidebar">
-            <div class="listCriteria criteriaSidebar">
-                <form id="listOrder">
-                </form>
-
-                <form id="listFilter">
-                </form>
-            </div>
-            <div id="resultContent"></div>
-        </div>
+    <div class="listCriteria criteriaSidebar">
+        <form id="listOrder"></form>
+        <form id="listFilter"></form>
     </div>
-
+    <div id="listContent" class="modalList withSidebar"></div>
 </div>

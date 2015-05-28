@@ -80,9 +80,9 @@
                 } else {
                     $('#scrollNav').remove();
                     if (init) {
-                        $('#resultContent').html(data['html']);
+                        $('#listContent').html(data['html']);
                     } else {
-                        $('#resultContent').append(data['html']);
+                        $('#listContent').append(data['html']);
                     }
 
                     imgLiquidOnSuccess();
@@ -107,7 +107,7 @@
         type = (typeof type === "undefined") ? 'debate' : type;
         withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
-        $('#resultContent').html('');
+        $('#listContent').html('');
 
         if ('false' == withFilters) {
             // initialisation de la liste
