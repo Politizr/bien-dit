@@ -5,23 +5,8 @@
     </div>
     <div class="authorName">
         <span>Par</span>
-        <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %}">
-            {{ user }}
-            {% if user.validated %}
-                <span class="fa fa-check-square-o" title="Profil validé"></span>
-            {% endif %}
-        </a>
-        {# @todo twig helper + branchement modal #}
-        {% set organizations = user.currentOrganizations %}
-        {% for organization in organizations %}
-            <!-- @todo html/css: parti > organization -->
-            <div class="organization" action="openOrganizationSheet">{{ organization.initials }}</div>
-            {#
-            <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
-                <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
-            </a>
-            #}
-        {% endfor %}
+        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { user: user } only %}
+        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { user: user } only %}
     </div>
     <div class="authorMandate">
         {% include 'PolitizrFrontBundle:User:_authorMandate.html.twig' with { user: user } only %}
