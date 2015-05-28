@@ -119,10 +119,6 @@ class PDocument extends BasePDocument
                     ->filterByOnline($online)
                     ->_if($paragraphNo)
                         ->filterByParagraphNo($paragraphNo)
-                    ->_else()
-                        ->filterByParagraphNo(0)
-                            ->_or()
-                        ->filterByParagraphNo(null)
                     ->_endif()
                     ;
         
