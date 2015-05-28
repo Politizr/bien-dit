@@ -10,4 +10,13 @@
         // sticky timeline dates for css 760
         $('body.css760 .timelineDayContainer').stickyDay760({stickyClass : 'timelineDay'});
     });
+
+    // Allez à ancre <date>
+    $("body").on("change", "[action='goToDate']", function(e) {
+        console.log('*** goToDate');
+        console.log($('option:selected').val());
+        location.hash = $('option:selected').val();
+    });
+
+
 </script>
