@@ -42,19 +42,16 @@
 	position: relative;
 }
 
-
 // list with filters in sidebar
 
 .listCriteria.criteriaSidebar {
-	float: left;
-	clear: both;
 	width: 220px;
 	padding: 0;
-	margin: 0 40px 0 0;
+	margin: 60px 40px 0 0;
 	text-align: left;
 }
 
-.listCriteria.criteriaSidebar form {
+.listCriteria.criteriaSidebar form, .listCriteria.criteriaSidebar .innerFormContainer {
 	width: 100%;
 	float: left;
 	clear: both;
@@ -62,7 +59,7 @@
 	padding-bottom: 30px;
 	border-bottom: solid 1px $semilightGrey;
 }
-.listCriteria.criteriaSidebar form:last-child {border: none; padding-bottom: 0; margin-bottom: 0;}
+.listCriteria.criteriaSidebar form:last-child, .listCriteria.criteriaSidebar .innerFormContainer:last-child {border: none; padding-bottom: 0; margin-bottom: 0;}
 
 .listCriteria.criteriaSidebar label {
 	clear: both;
@@ -70,11 +67,21 @@
 	margin-bottom: 10px;
 }
 
-
 .listCriteria.criteriaSidebar form.inlineLabels label {
 	clear: none;
 	margin-right: 20px;
 }
+
+// special ranking (filters in sidebar)
+
+#modalBoxContent.ranking {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.modalList.withSidebar { clear: none;}
+#resultContent .listTab .modalItem:first-child {margin-top: 60px;}
 
 // standard list
 

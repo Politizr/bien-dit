@@ -35,9 +35,10 @@ body.css760 .modalHeader .headerLogo {background-color: #fff;}
 body.css760 .modalHeader .headerLogo a { margin : 10px 0 0 12px; background-color: #fff;}
 body.css760 .modalClose {margin : 25px 20px 0 0;}
 
+body.css760 .listCriteria {margin-bottom: 40px;}
 body.css760 .listCriteria input { display: none; }
 
-body.css760 .modalList {	width: 100%; float: left; margin: 40px 0; padding: 0;}
+body.css760 .modalList {	width: 100%; float: left; margin: 20px 0; padding: 0;}
 body.css760 .modal h1 { margin: 40px 0 0 0;}
 
 body.css760 .listPost {	
@@ -58,13 +59,13 @@ body.css760 .wikiSampleMask {	width: calc(100% - 40px); padding: 0 20px;}
 
 //////list with filters in sidebar
 
-body.css760 #listContent.withSidebar {	width: calc(100% - 40px); padding: 0 20px 0 20px;}
+body.css760 .modalList.withSidebar {	width: calc(100% - 40px); padding: 0 20px 0 20px;}
 
 body.css760 .listCriteria.criteriaSidebar {
 	clear: none;
 	width: 100%;
 	padding: 0;
-	margin: 0 0 40px 0;
+	margin: 0 0 20px 0;
 	float: left;
 	text-align: center;
 }
@@ -83,15 +84,23 @@ body.css760 .listCriteria.criteriaSidebar form label {
 	margin: 0 10px 10px 10px;
 }
 
-body.css760 #listContent.withSidebar .listTab, body.css760 #listContent.withSidebar .modalItem {
+body.css760 .modalList.withSidebar .listTab, body.css760 .modalList.withSidebar .modalItem {
 	width: 100%;
 	float: none;
 	padding: 0;
 }
 
-body.css760 #listContent.withSidebar .modalItem.listProfile {
+body.css760 .modalList.withSidebar .modalItem.listProfile {
 	width: calc(100% - 80px);	
 }
+
+// special ranking
+
+body.css760 #modalBoxContent.ranking {
+	width: calc(100% - 40px);
+	padding: 0 20px;
+}
+body.css760 #resultContent .listTab .modalItem:first-child {margin-top: 0;}
 
 // actions box error, succes, alert
 
