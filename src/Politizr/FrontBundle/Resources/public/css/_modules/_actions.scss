@@ -12,7 +12,12 @@
     font-family: 'nerissemibold';
 }
 
-#fixedActions a, #fixedActions .actionFollow a, #fixedActions .actionUnfollow a, #fixedActions .actionCosign {
+#fixedActions a, 
+#fixedActions .actionFollow a, 
+#fixedActions .actionUnfollow a,
+#fixedActions .actionPublish a, 
+#fixedActions .actionCosign, 
+#fixedActions .actionSave  {
 	width: 100%;
 	float: left;
 	margin-top: 3px;
@@ -22,14 +27,21 @@
     font-family: 'nerissemibold';
 }
 
-#fixedActions a i, #fixedActions .actionFollow a i, #fixedActions .actionUnfollow a i, #fixedActions .actionCosign i {
-	padding-right: 6px;
+#fixedActions i {
+	padding-right: 5px;
 	font-size: 11px;
 	top:-1px;
 	position: relative;
 }
 
-#fixedActions .actionFollow a, #fixedActions .actionCosign {
+#fixedActions .actionSave i, #fixedActions .actionPublish i {font-size: 12px; }
+#fixedActions .actionSave i {padding-right: 3px;}
+#fixedActions a.actionReact i {font-size: 13px;}
+#fixedActions .actionCosign i {font-size: 14px;}
+
+#fixedActions .actionFollow a, 
+#fixedActions .actionPublish a,
+#fixedActions .actionCosign {
 	background-color: $highlight;
 	color: #fff;
 }
@@ -39,12 +51,20 @@
 	color: #fff;
 }
 
-#fixedActions .actionGotoDebate {
+#fixedActions .actionGotoDebate, 
+#fixedActions .actionSave {
 	color: $darkGrey;
 	background-color: $semilightGrey;
 }
 
-#fixedActions .actionFollow:hover, #fixedActions .actionFollow a:hover, #fixedActions .actionUnfollow:hover, #fixedActions .actionUnfollow a:hover, #fixedActions .actionCosign:hover, #fixedActions .actionGotoDebate:hover {
+#fixedActions .actionFollow:hover, 
+#fixedActions .actionFollow a:hover, 
+#fixedActions .actionUnfollow:hover, 
+#fixedActions .actionUnfollow a:hover, 
+#fixedActions .actionCosign:hover, 
+#fixedActions .actionGotoDebate:hover, 
+#fixedActions .actionPublish a:hover, 
+#fixedActions .actionSave:hover {
 	background-color: $darkGrey;	
 	color: #fff;
 }
@@ -55,6 +75,5 @@
 	margin-bottom: 15px;
 }
 
-#fixedActions a.actionReact i {font-size: 13px;}
-#fixedActions .actionCosign i {font-size: 14px;}
 #fixedActions a.actionReact:hover {background-color: $highlight;}
+

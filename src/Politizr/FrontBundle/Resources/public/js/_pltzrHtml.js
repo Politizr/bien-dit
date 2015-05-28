@@ -10,7 +10,7 @@ $(function(){
 		$('#modalBoxContent.suggestions').fadeIn('fast');
 	});
 	
-	$("body").on("click", ".openListByTag", function() {
+	$("body").on("click", ".tag", function() {
 		$('#modalBoxContent, #modalBoxContent.suggestions, #modalBoxContent.ranking, #modalBoxContent.organizationSheet, #modalBoxContent.formAbuse, #modalBoxContent.search, #modalBoxContent.cosigner, #modalBoxContent.debateManager, #modalBoxContent.profileManager').hide();
 		$('#modalBoxContent.listByTag').fadeIn('fast');
 	});
