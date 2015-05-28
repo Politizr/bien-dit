@@ -16,6 +16,53 @@ class PUserQuery extends BasePUserQuery
      *
      *
      * #  Concordance des tags suivis / tags caractérisant des users
+     * SELECT DISTINCT
+     *     id,
+     *     provider,
+     *     provider_id,
+     *     nickname,
+     *     realname,
+     *     username,
+     *     username_canonical,
+     *     email,
+     *     email_canonical,
+     *     enabled,
+     *     salt,
+     *     password,
+     *     last_login,
+     *     locked,
+     *     expired,
+     *     expires_at,
+     *     confirmation_token,
+     *     password_requested_at,
+     *     credentials_expired,
+     *     credentials_expire_at,
+     *     roles,
+     *     last_activity,
+     *     p_u_status_id,
+     *     file_name,
+     *     back_file_name,
+     *     gender,
+     *     firstname,
+     *     name,
+     *     birthday,
+     *     subtitle,
+     *     biography,
+     *     website,
+     *     twitter,
+     *     facebook,
+     *     phone,
+     *     newsletter,
+     *     last_connect,
+     *     nb_connected_days,
+     *     nb_views,
+     *     qualified,
+     *     validated,
+     *     online,
+     *     created_at,
+     *     updated_at,
+     *     slug
+     * FROM (
      * ( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
      * FROM p_user
      *     LEFT JOIN p_u_tagged_t
@@ -46,6 +93,9 @@ class PUserQuery extends BasePUserQuery
      * GROUP BY p_user.id
      * ORDER BY nb_users DESC )
      *
+     * ORDER BY unionsorting ASC
+     * ) unionsorting
+     *
      * @param  integer     $userId
      * @param  integer     $offset
      * @param  integer     $count
@@ -56,11 +106,58 @@ class PUserQuery extends BasePUserQuery
         // Requête SQL
         $sql = "
 #  Concordance des tags suivis / tags caractérisant des users
+SELECT DISTINCT
+    id,
+    provider,
+    provider_id,
+    nickname,
+    realname,
+    username,
+    username_canonical,
+    email,
+    email_canonical,
+    enabled,
+    salt,
+    password,
+    last_login,
+    locked,
+    expired,
+    expires_at,
+    confirmation_token,
+    password_requested_at,
+    credentials_expired,
+    credentials_expire_at,
+    roles,
+    last_activity,
+    p_u_status_id,
+    file_name,
+    back_file_name,
+    gender,
+    firstname,
+    name,
+    birthday,
+    subtitle,
+    biography,
+    website,
+    twitter,
+    facebook,
+    phone,
+    newsletter,
+    last_connect,
+    nb_connected_days,
+    nb_views,
+    qualified,
+    validated,
+    online,
+    created_at,
+    updated_at,
+    slug
+FROM (
 ( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
 FROM p_user
     LEFT JOIN p_u_tagged_t
         ON p_user.id = p_u_tagged_t.p_user_id
-WHERE 
+WHERE
     p_u_tagged_t.p_tag_id IN (
                 SELECT p_tag.id
                 FROM p_tag
@@ -69,8 +166,8 @@ WHERE
                 WHERE
                     p_tag.online = true
                     AND p_u_follow_t.p_user_id = ".$userId."
-    )   
-        AND p_user.online = 1   
+    )
+        AND p_user.online = 1
         AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ".$userId.")
         AND p_user.id <> ".$userId." )
 
@@ -87,6 +184,8 @@ GROUP BY p_user.id
 ORDER BY nb_users DESC )
 
 ORDER BY unionsorting ASC
+) unionsorting
+
 LIMIT ".$offset.", ".$count."
         ";
 
