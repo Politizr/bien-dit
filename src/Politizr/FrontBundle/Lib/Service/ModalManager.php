@@ -36,6 +36,40 @@ class ModalManager
         $this->sc = $serviceContainer;
     }
 
+    /* ######################################################################################################## */
+    /*                                         FONCTIONS PRIVEES                                                */
+    /* ######################################################################################################## */
+
+    /**
+     * Retourne un tableau contenant 3 éléments: l'odonnancement, les filtres et l'offset à appliquer à la recherche
+     *
+     * @return array
+     */
+    private function getFiltersFromRequest()
+    {
+        $logger = $this->sc->get('logger');
+        $request = $this->sc->get('request');
+
+        $order = $request->get('order');
+        $logger->info('$order = ' . print_r($order, true));
+        $filtersDate = $request->get('filtersDate');
+        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
+        $filtersUserType = $request->get('filtersUserType');
+        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+
+        // regroupement des filtres
+        $filters = array_merge($filtersDate, $filtersUserType);
+
+        return [ $order, $filters, $offset ];
+    }
+
+    /* ######################################################################################################## */
+    /*                                FONCTIONS MODAL GENERIQUES                                                */
+    /* ######################################################################################################## */
+
+
     /**
      * Chargement d'une box modal contenant une liste paginée
      */
@@ -48,11 +82,25 @@ class ModalManager
         $request = $this->sc->get('request');
 
         $twigTemplate = $request->get('twigTemplate');
+        $model = $request->get('model');
+        $slug = $request->get('slug');
+
+        // Récupération objet associé à la modal
+        $subject = null;
+        if ($model && $slug) {
+            $queryModel = 'Politizr\Model\\' . $model . 'Query';
+            $subject = $queryModel::create()
+                ->filterBySlug($slug)
+                ->findOne();
+        }
 
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:PaginatedList:'.$twigTemplate
+            'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
+            array(
+                'subject' => $subject
+            )
         );
 
         // Renvoi de l'ensemble des blocs HTML maj
@@ -113,22 +161,15 @@ class ModalManager
         $logger = $this->sc->get('logger');
         $logger->info('*** rankingDebateList');
         
-        // Récupération args
-        $request = $this->sc->get('request');
-        $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
-        $filtersDate = $request->get('filtersDate');
-        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
-        $filtersUserType = $request->get('filtersUserType');
-        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
-        $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
-
-        // regroupement des filtres
-        $filters = array_merge($filtersDate, $filtersUserType);
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
 
         // @todo gérer les "limit" dans une variable
         $debates = PDDebateQuery::create()
+                    ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -161,22 +202,15 @@ class ModalManager
         $logger = $this->sc->get('logger');
         $logger->info('*** rankingUserList');
         
-        // Récupération args
-        $request = $this->sc->get('request');
-        $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
-        $filtersDate = $request->get('filtersDate');
-        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
-        $filtersUserType = $request->get('filtersUserType');
-        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
-        $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
-
-        // regroupement des filtres
-        $filters = array_merge($filtersDate, $filtersUserType);
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
 
         // @todo gérer les "limit" dans une variable
         $users = PUserQuery::create()
+                    ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -216,7 +250,6 @@ class ModalManager
         // Récupération args
         $request = $this->sc->get('request');
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
 
         // @todo gérer les "limit" dans une variable
         $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -252,7 +285,6 @@ class ModalManager
         // Récupération args
         $request = $this->sc->get('request');
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
 
         // @todo gérer les "limit" dans une variable
         $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -270,6 +302,105 @@ class ModalManager
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html
+            );
+    }
+
+
+    /**
+     *  Listing de débats par tag
+     *
+     */
+    public function tagDebateList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** tagDebateList');
+        
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // paramètre supplémentaire
+        $request = $this->sc->get('request');
+        $tagId = $request->get('subjectId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
+
+        // @todo gérer les "limit" dans une variable
+        $debates = PDDebateQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePDDTaggedTQuery()
+                        ->filterByPTagId($tagId)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+            array(
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     *  Listing de profils par tag
+     *
+     */
+    public function tagUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** tagUserList');
+        
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // paramètre supplémentaire
+        $request = $this->sc->get('request');
+        $tagId = $request->get('subjectId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
+
+        // Requête suivant order
+        $users = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePuTaggedTPUserQuery()
+                        ->filterByPTagId($tagId)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
             );
     }
 }

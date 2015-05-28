@@ -5,6 +5,5 @@
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}
-{# @todo branchement modal #}
-{# <a class="tag {{ twbLabel }}" href="{{ path('Tag', { 'slug': tag.slug }) }}"><i class="fa fa-tag"></i>&nbsp;{{ tag.title }}</a> #}
-<span class="tag {{ twbLabel }}" action="openListByTag">{{ tag.title }}</span>
+<!-- @todo html/css renommer openListByTag > tag -->
+<span class="tag {{ twbLabel }}" action="modalTagged" model="PTag" slug="{{ tag.slug }}">{{ tag.title }}</span>

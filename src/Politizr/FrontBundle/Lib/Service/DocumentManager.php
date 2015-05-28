@@ -909,64 +909,6 @@ class DocumentManager
             );
     }
 
-
-    /* ######################################################################################################## */
-    /*                                                        TAG                                               */
-    /* ######################################################################################################## */
-
-
-    /**
-     *  Listing de débats par tag
-     *
-     */
-    public function tagDebateList()
-    {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** tagDebateList');
-        
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // $params = $request->request->all();
-        // $logger->info('$params = ' . print_r($params, true));
-
-        $tagId = $request->get('subjectId');
-        $logger->info('$tagId = ' . print_r($tagId, true));
-        $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
-        $filters = $request->get('filters');
-        $logger->info('$filters = ' . print_r($filters, true));
-        $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
-
-        $debates = PDDebateQuery::create()
-                    ->usePDDTaggedTQuery()
-                        ->filterByPTagId($tagId)
-                    ->endUse()
-                    ->online()
-                    ->filterByKeywords($filters)
-                    ->orderWithKeyword($order)
-                    ->limit(10)
-                    ->offset($offset)
-                    ->find();
-
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-        $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Debate:glListDouble.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + 10,
-            )
-        );
-
-        // Renvoi de l'ensemble des blocs HTML maj
-        return array(
-            'html' => $html,
-            );
-    }
-
-
     /* ######################################################################################################## */
     /*                                            DEBATS SUIVIS (FONCTIONS AJAX)                                */
     /* ######################################################################################################## */

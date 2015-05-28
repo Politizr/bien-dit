@@ -15,6 +15,21 @@
         loadPaginatedList('_suggestions.html.twig', 'false');
     });
 
+    // modal tag
+    $("body").on("click", "[action='modalTagged']", function() {
+        console.log('*** modalTagged');
+        $('#modalBoxContent').removeClass().addClass('listByTag');
+        modalLoading();
+
+        var model = $(this).attr('model');
+        var slug = $(this).attr('slug');
+
+        console.log(model);
+        console.log(slug);
+
+        loadPaginatedList('_tagged.html.twig', 'true', model, slug);
+    });
+
     // code générique de chargement d'une modal
     function modalLoading() {
         $('#modalBox').fadeIn('fast');
@@ -32,7 +47,7 @@
      * @param string twigTemplate
      * @param string withFilters  true | false
      */
-    function loadPaginatedList(twigTemplate, withFilters) {
+    function loadPaginatedList(twigTemplate, withFilters, model, slug) {
         console.log('*** loadPaginatedList');
         console.log(twigTemplate);
 
@@ -44,7 +59,7 @@
         $.ajax({
             type: 'POST',
             url: "{{ path('ModalPaginatedList') }}",
-            data: { 'twigTemplate': twigTemplate },
+            data: { 'twigTemplate': twigTemplate, 'model': model, 'slug': slug },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {

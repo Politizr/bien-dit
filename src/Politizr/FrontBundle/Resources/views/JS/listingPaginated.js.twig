@@ -56,15 +56,13 @@
         var datas = $.merge(order, filters);
         datas.push({name: 'offset', value: offset});
 
-        console.dir(datas);
-
         // Récupération d'arguments JS supplémentaires
-        // var additionalDatas = $('#paginatedList').data();
-        // console.log('additionalDatas');
-        // console.log(additionalDatas);
-        // $.each(additionalDatas, function(index, element) {
-        //     datas.push({name: index, value: element});
-        // });
+        var additionalDatas = $('#paginatedList').data();
+        $.each(additionalDatas, function(index, element) {
+            datas.push({name: index, value: element});
+        });
+
+        console.dir(datas);
 
         // Récupération de l'URL de la liste
         var url = $('#paginatedList').attr('url');

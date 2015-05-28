@@ -110,6 +110,38 @@ class XhrModalController extends Controller
     }
 
     /**
+     *  Chargement d'une liste de debats par tag
+     */
+    public function tagDebateListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagDebateListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'tagDebateList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Chargement d'une liste de users par tag
+     */
+    public function tagUserListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagUserListAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'tagUserList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
      *  Chargement d'une liste type "timeline"
      */
     public function timelinePaginatedAction(Request $request)
@@ -184,38 +216,6 @@ class XhrModalController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.modal',
             'organizationUserList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste de debats par tag
-     */
-    public function tagDebateListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** tagDebateListAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'tagDebateList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste de users par tag
-     */
-    public function tagUserListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** tagUserListAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'tagUserList'
         );
 
         return $jsonResponse;
