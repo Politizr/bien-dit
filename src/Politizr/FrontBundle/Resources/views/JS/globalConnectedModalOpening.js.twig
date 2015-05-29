@@ -33,6 +33,15 @@
         loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
     });
 
+    // modal subscriptions
+    $("body").on("click", "[action='modalSubscriptions']", function() {
+        console.log('*** modalTagged');
+        $('#modalBoxContent').removeClass().addClass('subscriptions');
+        modalLoading();
+
+        loadPaginatedList('_subscriptions.html.twig', 'true');
+    });
+
     // code générique de chargement d'une modal
     function modalLoading() {
         $('#modalBox').fadeIn('fast');

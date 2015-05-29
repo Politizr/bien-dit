@@ -58,6 +58,19 @@ OrganizationUserList:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:organizationUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+################################################################################
+#               DEBATS SUIVIS / PROFILS SUIVIS
+################################################################################
+FollowedDebateList:
+    pattern:  /profil/debat/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedDebateList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+FollowedUserList:
+    pattern:  /profil/user/suivis.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedUserList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 
 ################################################################################
 #               TIMELINE
@@ -75,15 +88,3 @@ HistoryActionsList:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:historyActionsList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
-################################################################################
-#               DEBATS SUIVIS / PROFILS SUIVIS
-################################################################################
-FollowedDebateList:
-    pattern:  /profil/debat/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedDebateList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-FollowedUserList:
-    pattern:  /profil/user/suivis.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedUserList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }

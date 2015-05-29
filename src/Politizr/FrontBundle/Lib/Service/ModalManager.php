@@ -451,4 +451,97 @@ class ModalManager
             'html' => $html,
             );
     }
+
+    /**
+     * Liste des débats suivis
+     *
+     */
+    public function followedDebateList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** followedDebateList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // @todo gérer les "limit" dans une variable
+        $debates = PDDebateQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePuFollowDdPDDebateQuery()
+                        ->filterByPUserId($user->getId())
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+            array(
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Liste des users suivis
+     */
+    public function followedUserList()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** followedUserList');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération paramètres requête
+        $queryParams = $this->getFiltersFromRequest();
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // @todo gérer les "limit" dans une variable
+        $query = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ;
+
+        $users = $user->getSubscribers($query);
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'order' => $order,
+                'offset' => intval($offset) + 10,
+                )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html,
+            );
+    }
 }

@@ -158,38 +158,6 @@ class XhrModalController extends Controller
     }
 
     /**
-     *  Chargement d'une liste type "timeline"
-     */
-    public function timelinePaginatedAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** timelinePaginatedAction');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.timeline',
-            'timelinePaginated'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Historique des actions
-     */
-    public function historyActionsListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** historyActionsList');
-
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.modal',
-            'historyActionsList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
      * Chargement d'une liste de debats suivis par le user
      */
     public function followedDebateListAction(Request $request)
@@ -216,6 +184,38 @@ class XhrModalController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
             'politizr.service.modal',
             'followedUserList'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Chargement d'une liste type "timeline"
+     */
+    public function timelinePaginatedAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** timelinePaginatedAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.timeline',
+            'timelinePaginated'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Historique des actions
+     */
+    public function historyActionsListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** historyActionsList');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.modal',
+            'historyActionsList'
         );
 
         return $jsonResponse;

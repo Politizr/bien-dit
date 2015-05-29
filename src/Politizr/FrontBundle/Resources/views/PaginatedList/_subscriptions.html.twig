@@ -1,0 +1,16 @@
+<h1>Mes abonnements</h1>
+<div id="paginatedList" class="listContainer" url="{{ path('FollowedDebateList') }}" withFilters="true">
+    <div class="listCriteria listCriteriaTabs">
+        <form id="listType">
+            <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('FollowedDebateList') }}" checked/>
+            <label for="debateType">publications</label>
+            <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('FollowedUserList') }}" />
+            <label for="userType">profils</label>
+        </form>
+    </div>
+    <div class="listCriteria criteriaSidebar">
+        <form id="listOrder"></form>
+        <form id="listFilter"></form>
+    </div>
+    <div id="listContent" class="modalList withSidebar"></div>
+</div>
