@@ -280,7 +280,7 @@ liip_imagine:
         organization_detail:
             quality:              100
             filters:
-                relative_resize:  { widen: 250 }
+                relative_resize:  { heighten: 80 }
 
 
 

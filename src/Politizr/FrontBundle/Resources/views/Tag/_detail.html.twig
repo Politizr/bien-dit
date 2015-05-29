@@ -5,5 +5,4 @@
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}
-<!-- @todo html/css renommer openListByTag > tag -->
 <span class="tag {{ twbLabel }}" action="modalTagged" model="PTag" slug="{{ tag.slug }}">{{ tag.title }}</span>
