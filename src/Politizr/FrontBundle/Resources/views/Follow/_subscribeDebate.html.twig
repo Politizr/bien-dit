@@ -3,14 +3,14 @@
     {% if follower %}
         <a action="followDebate" object-id="{{ object.id }}" way="unfollow">
             <i class="iconCross"></i>
-            Ne plus suivre
+            Se désabonner
         </a>
     {% else %}
         <a action="followDebate" object-id="{{ object.id }}" way="follow">
             <i class="iconCheckInSquare"></i>
-            Suivre
+            S'abonner
         </a>
     {% endif %}
 {% else %}
-    <a href="{{ path('Inscription') }}">M'inscrire pour suivre</a>
+    <a href="{{ path('Inscription') }}">S'abonner</a>
 {% endif %}

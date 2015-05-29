@@ -3,7 +3,7 @@
     //      AJAX
     // **************************** //
 
-    // suivre / ne plus suivre
+    // suivre / Se désabonner
     $("body").on("click", "[action='followUser']", function(e) {
         console.log('*** click followUser');
 
@@ -23,7 +23,7 @@
                     $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
                     $('#infoBoxHolder.boxError').show();
                 } else {
-                    // MAJ du bouton suivre / ne plus suivre
+                    // MAJ du bouton suivre / Se désabonner
                     $(this).html(data['html']);
 
                     // @todo refactoring / à supprimer?
