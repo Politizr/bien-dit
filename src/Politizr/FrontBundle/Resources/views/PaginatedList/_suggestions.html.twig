@@ -1,14 +1,12 @@
 <h1>Suggestions</h1>
-<div id="paginatedList" url="{{ path('SuggestionDebateList') }}" withFilters="false">
-    <div class="listCriteria">
-        <div class="listCriteriaTabs">
-            <form id="listType">
-                <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('SuggestionDebateList') }}" checked/>
-                <label for="debateType">publications</label>
-                <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('SuggestionUserList') }}" />
-                <label for="userType">profils</label>
-            </form>
-        </div>
+<div id="paginatedList" class="listContainer" url="{{ path('SuggestionDebateList') }}" withFilters="false">
+    <div class="listCriteria listCriteriaTabs">
+        <form id="listType">
+            <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('SuggestionDebateList') }}" checked/>
+            <label for="debateType">publications</label>
+            <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('SuggestionUserList') }}" />
+            <label for="userType">profils</label>
+        </form>
     </div>
     <div id="listContent" class="modalList"></div>
 </div>

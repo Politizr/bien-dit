@@ -122,7 +122,6 @@ class ModalManager
         
         // Récupération args
         $request = $this->sc->get('request');
-
         $type = $request->get('type');
 
         // Construction rendu

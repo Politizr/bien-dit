@@ -1,9 +1,6 @@
-{# @todo refactoring + générique #}
-<div class="scroll">
-    <div class="modalList">
-        {% for debate in debates %}
-            {% include 'PolitizrFrontBundle:Debate:_listRow.html.twig' with { 'debate': debate } only %}
-        {% endfor %}
-    </div>
+<div class="listTab postTab">
+    {% for debate in debates %}
+        {% include 'PolitizrFrontBundle:Debate:_listRow.html.twig' with { 'debate': debate } only %}
+    {% endfor %}
 </div>
 {% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'results': debates, 'offset': offset } %}

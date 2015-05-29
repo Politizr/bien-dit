@@ -1,15 +1,12 @@
 <h1>Classement</h1>
-<div id="paginatedList" url="{{ path('RankingDebateList') }}" withFilters="true">
-    <!-- @todo html / css class="listCriteria criteriaTop" -->
-    <div class="listCriteria">
-        <div class="listCriteriaTabs">
-            <form id="listType">
-                <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('RankingDebateList') }}" checked/>
-                <label for="debateType">publications</label>
-                <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('RankingUserList') }}" />
-                <label for="userType">profils</label>
-            </form>
-        </div>
+<div id="paginatedList" class="listContainer" url="{{ path('RankingDebateList') }}" withFilters="true">
+    <div class="listCriteria listCriteriaTabs">
+        <form id="listType">
+            <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('RankingDebateList') }}" checked/>
+            <label for="debateType">publications</label>
+            <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('RankingUserList') }}" />
+            <label for="userType">profils</label>
+        </form>
     </div>
     <div class="listCriteria criteriaSidebar">
         <form id="listOrder"></form>

@@ -13,7 +13,7 @@
     <a href="{{ subject.url }}" target="_blank">afficher la suite sur wikipédia</a>
 </div>
 <h1>Profils correspondants</h1>
-<div id="paginatedList" url="{{ path('OrganizationUserList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
+<div id="paginatedList" class="listContainer" url="{{ path('OrganizationUserList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
     <div class="listCriteria criteriaSidebar">
         <form id="listOrder"></form>
         <form id="listFilter"></form>

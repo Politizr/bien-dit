@@ -1,15 +1,12 @@
 <h1>{{ subject.title }}</h1>
-<div id="paginatedList" url="{{ path('TagDebateList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
-    <div class="listCriteria">
-        <!-- @todo html / css listCriteriaTabs > listCriteriaTop -->
-        <div class="listCriteriaTabs">
-            <form id="listType">
-                <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('TagDebateList') }}" checked/>
-                <label for="debateType">publications</label>
-                <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('TagUserList') }}" />
-                <label for="userType">profils</label>
-            </form>
-        </div>
+<div id="paginatedList" class="listContainer" url="{{ path('TagDebateList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
+    <div class="listCriteria listCriteriaTabs">
+        <form id="listType">
+            <input type="radio" class="type" name="type" id="debateType" value="debate" url="{{ path('TagDebateList') }}" checked/>
+            <label for="debateType">publications</label>
+            <input type="radio" class="type" name="type" id="userType" value="user" url="{{ path('TagUserList') }}" />
+            <label for="userType">profils</label>
+        </form>
     </div>
     <div class="listCriteria criteriaSidebar">
         <form id="listOrder"></form>
