@@ -9,10 +9,4 @@ $(function() {
 	// sticky timeline dates for css 760
 	$('body.css760 .timelineDayContainer').stickyDay760({stickyClass : 'timelineDay'});
 	
-	// scroll to .today
-	$("body").on("click", "[action='goToToday']", function() {
-		$('html, body').animate({
-			scrollTop: $(".today").offset().top - 60 // minus 60px (sticky height)
-		}, '2000');
-	});
 });

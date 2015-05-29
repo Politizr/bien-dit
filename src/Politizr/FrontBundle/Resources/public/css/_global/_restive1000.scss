@@ -38,32 +38,28 @@ body.css1000 .listProfileRight {	width: calc(100% - 50px);}
 body.css1000 .wikiSample {	width: calc(100% - 60px); padding: 0 30px;}
 body.css1000 .wikiSampleMask {	width: calc(100% - 60px); padding: 0 30px;}
 
+//////list
+
+body.css1000 .listContainer {
+width: calc(100% - 60px); padding: 0 30px;
+
+}
+
 //////list with filters in sidebar
 
-body.css1000 .modalList.withSidebar {	width: calc(100% - 60px); padding: 60px 30px;}
-
+body.css1000 .modalList.withSidebar { 	width: 70%; padding: 0;}
 
 body.css1000 .listCriteria.criteriaSidebar {
 	width: calc(30% - 40px);
 	padding: 0;
-	margin: 40px 0 0 0;
+	margin: 0;
 }
 
 body.css1000 .modalList.withSidebar .modalItem.listProfile,
-body.css1000 .modalList.withSidebar .listTab .modalItem.listProfile {	
-	width: calc(70% - 40px); 
-	margin-right: 20px;
+body.css1000 .modalList.withSidebar .listTab .modalItem.listProfile,
+body.css1000 .modalList.withSidebar .modalItem.listPost {	
+	width: 100%;
 }
-
-body.css1000 .modalList.withSidebar .modalItem.listPost {	width: 70%; }
-
-// special ranking
-
-body.css1000 #modalBoxContent.ranking {
-	width: calc(100% - 30px);
-	padding: 0 0 0 30px;
-}
-
 
 //////form
 
