@@ -1,14 +1,14 @@
 {% extends 'PolitizrFrontBundle::layoutE.html.twig' %}
 
 {% block main %}
-    <div id="main">
-        <div id="paginated-list">
-            <form id="list-filter" class="text-center">
-            </form>
-            <hr>
-            <div id="list-content">
+    <div id="timeline">
+        <div id="timelineHeader" class="stickyTimelineHeader">
+            <!-- @todo html/css à styler (provisoire à tester) -->
+            <div class="timelineMore">
+                Abonnez-vous à des <span action="modalSuggestions">débats</span> et des <span action="modalSuggestions">profils</span> et <span action="reloadPage">rechargez</span> votre politizr!
             </div>
         </div>
+        <div id="listContent"></div>
     </div>
 {% endblock main %}
 
@@ -16,5 +16,4 @@
     {{ parent() }}
     
     {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' with { 'RouteName': 'TimelinePaginated' } %}
 {% endblock javascriptFooter %}

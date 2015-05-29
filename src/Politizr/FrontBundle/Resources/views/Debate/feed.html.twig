@@ -99,19 +99,7 @@
                     {% endfor %}
                 </select>
             </div>
-            {% for dateTimeAt, timeline in timelineDateKey %}
-                <div class="timelineDayContainer" id="day-{{ dateTimeAt | date('Y-m-d') }}">
-                    <div class="timelineDay">
-                        <h4>
-                            <i class="iconCalendar"></i>
-                            {% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}
-                        </h4>
-                    </div>
-                    {% for timelineRow in timeline %}
-                        {{ timelineRow(timelineRow) }}
-                    {% endfor %}
-                </div>
-            {% endfor %}
+            {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'debateContext': true } only %}
         </div>
     </div>
 {% endblock main %}
@@ -119,6 +107,6 @@
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS:timeline.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:feed.js.twig' %}
 
 {% endblock javascriptFooter %}

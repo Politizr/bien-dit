@@ -104,4 +104,21 @@ class PDComment extends BasePDComment
     {
         return parent::getPUser();
     }
+
+    /**
+     * Check si le <user id> passé en argument est l'auteur du commentaire courant.
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public function isUserId($userId)
+    {
+        $user = $this->getUser();
+
+        if ($user && $userId === $user->getId()) {
+            return true;
+        }
+
+        return false;
+    }
 }

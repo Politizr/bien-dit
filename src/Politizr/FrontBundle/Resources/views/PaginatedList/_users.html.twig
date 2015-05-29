@@ -3,4 +3,4 @@
         {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } only %}
     {% endfor %}
 </div>
-{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'results': users, 'offset': offset } %}
+{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset } %}

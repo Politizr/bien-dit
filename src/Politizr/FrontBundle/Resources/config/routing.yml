@@ -74,3 +74,7 @@ XhrModal:
 # DOCUMENT
 XhrDocument:
     resource: "./routing/xhr/Document.yml"
+
+# TIMELINE
+XhrTimeline:
+    resource: "./routing/xhr/Timeline.yml"

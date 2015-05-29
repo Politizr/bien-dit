@@ -1,20 +1,15 @@
 <script>
-    // **************************** //
-    //      Initialisation
-    // **************************** //
     $(document).ready(function () {
         $('#ajaxGlobalLoader').hide();
     });
 
-    // **************************** //
-    //      Fonctions simples
-    // **************************** //
+    // Fermeture d'une box
     $('body').on('click', '.icon-cross', function(e){
         // cache parent div
         $(this).closest('div').hide();
     });
 
-    /* close modal */
+    // Fermeture d'une modal
     $("body").on("click", "[action='modalClose']", function() {
         $('body').removeClass('noscroll');
         $('#modalBoxContent').html('');
@@ -22,11 +17,16 @@
         $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
     });
 
-    /* go up */
+    // Scroll haut de page
     $("body").on("click", "[action='goUp']", function() {
         $('html, body').animate({
             scrollTop: $("body").offset().top
         }, '1000');
     });
-        
+
+    // Reload page
+    $("body").on("click", "[action='reloadPage']", function() {
+        location.reload()
+    });
+
 </script>

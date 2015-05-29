@@ -507,11 +507,48 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     // *****************************    USERS   ************************* //
     
     /**
-     *
+     * @see getPUser
      */
     public function getUser()
     {
         return $this->getPUser();
+    }
+
+    /**
+     * Check si le <user id> passé en argument est l'auteur du débat courant.
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public function isUserId($userId)
+    {
+        $user = $this->getUser();
+
+        if ($user && $userId === $user->getId()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check si le <user id> passé en argument est abonné au débat courant.
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public function isFollowedByUserId($userId)
+    {
+        $followers = PUFollowDDQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPDDebateId($this->getId())
+            ->count();
+
+        if ($followers > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     // *****************************    NOTIFICATIONS    ************************* //

@@ -1,0 +1,13 @@
+{% for dateTimeAt, timeline in timelineDateKey %}
+    <div class="timelineDayContainer" id="day-{{ dateTimeAt | date('Y-m-d') }}">
+        <div class="timelineDay">
+            <h4>
+                <i class="iconCalendar"></i>
+                {% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}
+            </h4>
+        </div>
+        {% for timelineRow in timeline %}
+            {{ timelineRow(timelineRow, debateContext) }}
+        {% endfor %}
+    </div>
+{% endfor %}

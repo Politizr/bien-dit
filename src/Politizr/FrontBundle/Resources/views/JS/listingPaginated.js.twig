@@ -21,19 +21,10 @@
     });
 
     // Page suivante
-    $("body").on("click", "[action='paginate-next']", function(e) {
+    // @todo bug listing "subscriptions" > un désabonnement modifie les retours de la requête et l'offset n'est plus bon
+    $("body").on("click", "[action='paginateNext']", function(e) {
         listing(false, $(this).attr('offset'));
     });
-
-    // imgLiquid onSuccess
-    function imgLiquidOnSuccess() {
-        // full size image in debate summary 
-        $(".postSummary").imgLiquid({
-            fill: true,
-            horizontalAlign: "center",
-            verticalAlign: "center"
-        });
-    }
 
     // Chargement paginé de la liste
     function listing(init, offset) {
@@ -85,7 +76,8 @@
                         $('#listContent').append(data['html']);
                     }
 
-                    imgLiquidOnSuccess();
+                    // maj DOM onSuccess
+                    onSuccessImgLiquid();
                 }
                 $('#ajaxGlobalLoader').hide();
             }

@@ -577,13 +577,23 @@ ORDER BY published_at ASC
         // Exécution de la requête SQL & préparation du modèle
         $timeline = $this->hydrateTimelineRows($sql);
 
+        // @todo gérer les "limit" dans une variable
+        $moreResults = false;
+        if (sizeof($timeline) == 10) {
+            $moreResults = true;
+        }
+
+        // Ajout d'une clef date
+        $timelineDateKey = $this->addDateKey($timeline);
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:Timeline.html.twig',
+            'PolitizrFrontBundle:Timeline:_paginatedTimeline.html.twig',
             array(
-                'timeline' => $timeline,
+                'timelineDateKey' => $timelineDateKey,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
             )
         );
 

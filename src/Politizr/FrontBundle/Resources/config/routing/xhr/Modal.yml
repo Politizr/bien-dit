@@ -71,15 +71,6 @@ FollowedUserList:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
-
-################################################################################
-#               TIMELINE
-################################################################################
-TimelinePaginated:
-    pattern:  /profil/timeline/paginated.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:timelinePaginated, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
 ################################################################################
 #               REPUTATION
 ################################################################################

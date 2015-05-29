@@ -2,52 +2,59 @@
     <div class="timelineItemHeader">
         {% include 'PolitizrFrontBundle:DateTime:_timeAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
     </div>
-    <div class="timelineItemHolder">
-        <div class="timelineItemContent timelineItemOfficial">
-            <div class="timelineItemObject">
-                <i class="iconNotifNo"></i>
-                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': debate.user } only %}
-                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': debate.user } only %} a rédigé un débat :
+
+    {% spaceless %}
+        <div class="timelineItemHolder">
+            <div class="timelineItemContent timelineItemOfficial">
+                <div class="timelineItemObject">
+                    <i class="iconNotifNo"></i>
+                    {% if authorIsMe %}
+                        Vous avez rédigé un débat :
+                    {% else %}
+                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': debate.user, 'isFollowed': authorIsFollowed } only %}
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': debate.user } only %} a rédigé un <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span> :
+                    {% endif %}
+                </div>
+                <div class="timelineItemHighlight">
+                    <div class="timelineItemIllustration">
+                        {{ debate | image('debate_timeline') }}
+                    </div>
+                    <div class="avatar40">
+                        {{ debate.user | photo('user_40') }}
+                    </div>
+                    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
+                        <span>{{ debate.title }}</span>
+                        {{ debate.summary | raw }}
+                    </a>
+                </div>
+                <div class="timelineItemContentFooter">
+                    <div class="timelineItemContentFooterLeft">
+                        <div class="reactionsCounter">
+                            <i class="iconReaction"></i>
+                            {{ debate | nbReactions }}
+                        </div>
+                        <div class="commentsCounter" action="paragraphCommentsCounter">
+                            <i class="iconComment"></i>
+                            {{ debate | nbComments }}
+                        </div>
+                        <div class="readingTime">
+                            {# @todo temps de lecture #}
+                            <i class="iconTime"></i>
+                            X minutes
+                        </div>
+                    </div>
+                    <div class="postNote">
+                        <div class="notePlus">
+                            {{ debate.notePos }}<i class="iconNotePlus"></i>
+                        </div>
+                        <div class="noteMinus">
+                            <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
+                        </div>
+                    </div>  
+                </div>                              
             </div>
-            <div class="timelineItemHighlight">
-                <div class="timelineItemIllustration">
-                    {{ debate | image('debate_timeline') }}
-                </div>
-                <div class="avatar40">
-                    {{ debate.user | photo('user_40') }}
-                </div>
-                <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
-                    {{ debate.title }}
-                    {{ debate.summary | raw }}
-                </a>
-            </div>
-            <div class="timelineItemContentFooter">
-                <div class="timelineItemContentFooterLeft">
-                    <div class="reactionsCounter">
-                        <i class="iconReaction"></i>
-                        {{ debate | nbReactions }}
-                    </div>
-                    <div class="commentsCounter" action="paragraphCommentsCounter">
-                        <i class="iconComment"></i>
-                        {{ debate | nbComments }}
-                    </div>
-                    <div class="readingTime">
-                        {# @todo temps de lecture #}
-                        <i class="iconTime"></i>
-                        X minutes
-                    </div>
-                </div>
-                <div class="postNote">
-                    <div class="notePlus">
-                        {{ debate.notePos }}<i class="iconNotePlus"></i>
-                    </div>
-                    <div class="noteMinus">
-                        <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
-                    </div>
-                </div>  
-            </div>                              
         </div>
-    </div>
+    {% endspaceless %}
     <div class="timelineItemFooter">
         <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
     </div>

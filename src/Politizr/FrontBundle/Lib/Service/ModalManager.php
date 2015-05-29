@@ -179,6 +179,11 @@ class ModalManager
                     ->offset($offset)
                     ->find();
 
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -186,6 +191,7 @@ class ModalManager
             array(
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
             )
         );
 
@@ -220,6 +226,11 @@ class ModalManager
                     ->offset($offset)
                     ->find();
 
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -227,6 +238,7 @@ class ModalManager
             array(
                 'users' => $users,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
                 )
         );
 
@@ -256,6 +268,11 @@ class ModalManager
         // @todo gérer les "limit" dans une variable
         $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
         
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -263,6 +280,7 @@ class ModalManager
             array(
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
             )
         );
 
@@ -291,6 +309,11 @@ class ModalManager
         // @todo gérer les "limit" dans une variable
         $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
         
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -298,6 +321,7 @@ class ModalManager
             array(
                 'users' => $users,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
                 )
         );
 
@@ -341,6 +365,11 @@ class ModalManager
                     ->offset($offset)
                     ->find();
 
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -348,6 +377,7 @@ class ModalManager
             array(
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
             )
         );
 
@@ -386,6 +416,11 @@ class ModalManager
                     ->offset($offset)
                     ->find();
 
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -393,6 +428,7 @@ class ModalManager
             array(
                 'users' => $users,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
                 )
         );
 
@@ -436,6 +472,11 @@ class ModalManager
                     ->find()
                     ;
 
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -443,6 +484,7 @@ class ModalManager
             array(
                 'users' => $users,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
                 )
         );
 
@@ -483,6 +525,11 @@ class ModalManager
                     ->offset($offset)
                     ->find();
 
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -490,6 +537,7 @@ class ModalManager
             array(
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
             )
         );
 
@@ -528,6 +576,11 @@ class ModalManager
 
         $users = $user->getSubscribers($query);
 
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
@@ -536,6 +589,7 @@ class ModalManager
                 'users' => $users,
                 'order' => $order,
                 'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
                 )
         );
 

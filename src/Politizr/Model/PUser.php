@@ -619,7 +619,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         $stmt = $con->prepare($sql);
         $stmt->bindValue(1, $this->getPrimaryKey(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $this->getPrimaryKey(), PDO::PARAM_INT);
+        // $stmt->bindValue(2, $this->getPrimaryKey(), PDO::PARAM_INT);
         $stmt->execute();
 
         $listPKs = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -630,7 +630,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         return $pUsers;
     }
-
 
     /**
      * Renvoie les abonnements qualifiés (élus)
@@ -657,7 +656,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return count($pUsers);
     }
 
-
     /**
      * Renvoie les abonnements citoyens
      *
@@ -683,6 +681,26 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return count($pUsers);
     }
 
+    /**
+     * Le <user id> passé en argument est-il abonné au profil courant
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public function isFollowedByUserId($userId)
+    {
+        $followers = PUFollowUQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterByPUserFollowerId($userId)
+            ->count();
+
+        if ($followers > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     // *****************************    QUALIFICATION    ************************* //
 
     /**
@@ -693,7 +711,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     public function getMandates()
     {
         $query = PUMandateQuery::create()
-                    ->orderByBeginAt(\Criteria::DESC);
+            ->orderByBeginAt(\Criteria::DESC);
 
         return parent::getPUMandates($query);
     }
