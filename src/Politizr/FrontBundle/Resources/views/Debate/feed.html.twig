@@ -85,19 +85,15 @@
 
         <div id="timeline">
             <div id="timelineHeader" class="stickyTimelineHeader">
-                <!--
-                <div class="timelineMarkAllAsRead"><i class="iconCheck"></i>Tout marquer comme vu</div><div class="timelineGoToToday" action="goToToday"><i class="iconNow"></i>Aller à aujourd'hui</div>
-                <div id="timelineHeaderRight">
-                    <div class="showProfileManager" action="modalOpen"><i class="iconReaction"></i>Profils suivis</div>
-                    <div class="showDebateManager" action="modalOpen"><i class="iconCheckInSquare"></i>Débats suivis</div>
+                <div class="timelinePickADate">
+                    <i class="iconNow"></i> Aller au ...
+                    <select action="goToDate">
+                        <option>sélectionnez une date</option>
+                        {% for dateTimeAt, timeline in timelineDateKey %}
+                            <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                -->
-                <i class="iconNow"></i>Aller à 
-                <select action="goToDate">
-                    {% for dateTimeAt, timeline in timelineDateKey %}
-                        <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
-                    {% endfor %}
-                </select>
             </div>
             {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'debateContext': true } only %}
         </div>
