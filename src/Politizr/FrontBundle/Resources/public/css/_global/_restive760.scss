@@ -315,7 +315,7 @@ body.css760 #menu {
 body.css760 #menu .pad40 {	padding: 30px;}
 body.css760 #menu a {color: $semiGrey;}
 body.css760 #menu a.linkMyPolitizr {color: $highlight;}
-body.css760 #menu a.miniLink:hover, 
+body.css760 #menu a.miniLink:hover,
 body.css760 #menu .openSearch:hover, 
 body.css760 #menu a.linkMyPolitizr:hover {color: #fff;}
 
@@ -608,21 +608,18 @@ body.css760 #footerRight {
 
 body.css760 #timelineHeader {
 	width: calc(100% - 40px);
-	padding: 20px;
+	padding: 23px 20px;
 	height: auto;
 }
 
-body.css760 #timelineHeader i {display: none;}
-
-body.css760 .timelineMarkAllAsRead, body.css760 .timelineGoToToday {	clear: both; float: left; margin: 0; padding: 0;}
-body.css760 .timelineGoToToday {margin-top: 10px;}
+body.css760 .timelinePickADate { margin-left: 0;}
+body.css760 .timelineMarkAllAsRead { margin: 0; }
 
 body.css760 #timelineHeaderRight {
-	position: absolute;
-	right: 20px;
+	float: left;
+	clear: both;
+	margin-top: 19px;
 }
-body.css760 .showProfileManager, body.css760 .showDebateManager {clear: both; float: right; margin: 0; padding: 0;}
-body.css760 .showDebateManager {margin-top: 10px;}
 
 body.css760 .timelineDayContainer {
 	width: calc(100% - 40px);

@@ -13,41 +13,44 @@
     z-index: 2;
 }
 
-.timelineMarkAllAsRead, .timelineGoToToday { 
-	position: relative; 
-	padding-left: 15px;
-	cursor: pointer;
-	display: inline-block;
-}
-.timelineMarkAllAsRead {margin-left: 40px;}
-.timelineGoToToday {
+.timelinePickADate {
+	float: left;
 	margin-left: 40px;
-	padding-left: 16px;
 }
-.timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
-.timelineGoToToday i {font-size: 10px; position: absolute; left: 0;}
-.timelineMarkAllAsRead:hover, .timelineGoToToday:hover {color: #fff;}
+
+.timelinePickADate select {
+	padding: 0;
+	margin: 0;
+	border: none;
+	background: transparent;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-family: 'fontello', 'nerissemibold';
+    text-transform: uppercase;
+    font-size: 10px;
+    color: $darkGrey;
+    cursor: pointer;
+}
+
+.timelinePickADate option {
+	font-family: 'fontello', 'nerissemibold';	
+}
 
 #timelineHeaderRight {
 	float: right;
 	text-align: right;
-	color: #fff;
 }
 
-.showProfileManager, .showDebateManager {
-	display: inline-block;
+.timelineMarkAllAsRead { 
+	position: relative; 
+	padding-left: 15px;
 	cursor: pointer;
-	position: relative;
-	padding-left: 18px;
+	display: inline-block;
+	margin-right: 40px;
 }
-.showDebateManager {	margin: 0 40px; padding-left: 14px;}
-.showProfileManager i, .showDebateManager i {
-	position: absolute;
-	left: 0;
-	font-size: 9px;
-}
-.showProfileManager i {font-size: 12px; top:-1px;}
-.showProfileManager:hover, .showDebateManager:hover {color: $darkGrey;}
+.timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
+.timelineMarkAllAsRead:hover {color: #fff;}
 
 #timeline {	padding-bottom: 20px;}
 

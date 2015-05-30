@@ -12,7 +12,7 @@
 }
 
 #menu .pad40 {	
-	padding: 40px 20px; 
+	padding: 40px 20px 0 20px; 
 	width: 160px;
 	display: inline-block;
 }
@@ -56,7 +56,7 @@
 }
 
 #menu .pad40 a.miniLink, #menu a.linkMyPolitizr {	color: $highlight;}
-#menu .pad40 a:hover {	color: $highlight;}
+#menu .pad40 a:hover {	cursor: pointer; color: $highlight;}
 #menu .pad40 a.miniLink:hover, #menu a.linkMyPolitizr:hover {	color: $darkGrey;}
 
 //menu préférences

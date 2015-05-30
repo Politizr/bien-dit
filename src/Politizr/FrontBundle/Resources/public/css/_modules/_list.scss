@@ -29,6 +29,7 @@
 	padding-left: 12px;
 	position: relative;
 }
+.listCriteria input {display: none;}
 .listCriteria input:checked + label {	color: $darkGrey;}
 .listCriteria label:hover { color: $darkGrey;}
 

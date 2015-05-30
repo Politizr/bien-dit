@@ -134,14 +134,11 @@ body.css1000 .timelineItemContentFooter .commentsCounter {
 	margin-bottom: 5px;
 }
 
-body.css1000 .timelineMarkAllAsRead, body.css1000 .timelineGoToToday {	clear: both; float: left; margin: 0;}
-body.css1000 .timelineGoToToday {margin-top: 10px;}
+body.css1000 .timelineMarkAllAsRead {	clear: both; float: left; margin: 0;}
 
 body.css1000 #timelineHeader {	height: auto;}
-body.css1000 .timelineMarkAllAsRead, body.css1000 .timelineGoToToday {margin-left: 40px;}
+body.css1000 .timelineMarkAllAsRead{margin-left: 40px;}
 body.css1000 #timelineHeaderRight {
 	position: absolute;
 	right: 40px;
 }
-body.css1000 .showProfileManager, body.css1000 .showDebateManager {clear: both; float: right; margin: 0;}
-body.css1000 .showDebateManager {margin-top: 10px;}

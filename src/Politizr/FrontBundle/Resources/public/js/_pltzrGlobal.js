@@ -71,13 +71,16 @@ $(function(){
 	
 	// notifications 
 	$("body").on("click", "[action='linkNotifications']", function() {
-		$('#notifications').slideToggle();
+		$('#notifications').slideDown();
 		$('html, body').animate({
 			scrollTop: $("body").offset().top
 		}, 'fast');
 	});
 	$("body").on("click", "[action='notifClose']", function() {
 		$('#notifications').slideUp('fast');
+		$('html, body').animate({
+			scrollTop: $("body").offset().top
+		}, 'fast');
 	});
 	
 	// hide / show menu preferences
