@@ -13,6 +13,17 @@
     z-index: 2;
 }
 
+#timelineHeader .timelineMore {
+	margin-left: 40px;
+	text-transform: none;
+    font-family: 'Merriweather Italic';
+    font-style: italic;
+	font-size: 12px;
+    color: #fff;
+} 
+#timelineHeader .timelineMore span { font-family: 'Merriweather Bold Italic'; font-style: normal; cursor: pointer;}
+#timelineHeader .timelineMore span:hover {color: $darkGrey;}
+
 .timelinePickADate {
 	float: left;
 	margin-left: 40px;
@@ -52,12 +63,24 @@
 .timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
 .timelineMarkAllAsRead:hover {color: #fff;}
 
-#timeline {	padding-bottom: 20px;}
+#timeline {	padding-bottom: 20px; }
+
+#emptyTimeline {
+	background-color: $lightGrey;
+	min-height: 280px;
+	padding: 40px;
+	text-align: center;
+	font-family: 'Merriweather Italic';
+    font-style: italic;
+}
+#emptyTimeline span { font-family: 'Merriweather Bold Italic'; font-style: normal; cursor: pointer;}
+#emptyTimeline span:hover {color: $highlight;}
 
 .timelineDayContainer {
 	width: calc(100% - 80px);
 	margin: 0 40px;
 	border-bottom: solid 4px $highlight;
+	display: inline-block;
 }
 
 .timelineDayContainer:last-child { border: none; }
@@ -67,7 +90,7 @@
 	width: calc(100% + 40px);
 	margin-left: -40px;
 	padding: 35px 0 0 40px;	
-	z-index: 1;	
+	z-index: 1;
 }
  
 .timelineDay h4 {
@@ -102,6 +125,7 @@
 	padding: 0 20px 0 20px;
 	font-size: 12px;
 	font-family: 'Merriweather Italic';	
+	font-style: italic;
 }
 
 .timelineItemHolder {
@@ -185,10 +209,15 @@ span.timelineItemContextHighlight {
 
 .timelineItemHighlight .avatar40 {float: left; margin-top: 5px;}
 
-.timelineItemHighlight a {
+.timelineItemHighlight p, .timelineItemHighlight a {
 	display: inline-block;
 	float: right;
 	width: calc(100% - 50px);
+}
+
+.timelineItemHighlight a p {
+	float: left;
+	width: 100%;
 }
 
 .timelineItemContentFooter {

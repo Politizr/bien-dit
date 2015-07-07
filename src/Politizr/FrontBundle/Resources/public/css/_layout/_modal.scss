@@ -45,10 +45,11 @@ body.noscroll {
 
 .modalClose {
 	float: right;
-	margin-top: 22px;
+	margin-top: 24px;
 	text-transform: uppercase;
 	font-family: nerissemibold;
-	font-size: 9px;
+    font-weight: 200;
+	font-size: 10px;
 	position: relative;
 	padding-right: 10px;
 	cursor: pointer;
@@ -121,10 +122,10 @@ body.noscroll {
 	font-family: nerissemibold;
 	line-height: 160%;
 	position: relative;
-	-moz-box-shadow: 0px 0px 20px 0px #000000;
-	-webkit-box-shadow: 0px 0px 20px 0px #000000;
-	-o-box-shadow: 0px 0px 20px 0px #000000;
-	box-shadow: 0px 0px 20px 0px #000000;
+	-moz-box-shadow: 0px 0px 20px 0px #656565;
+	-webkit-box-shadow: 0px 0px 20px 0px #656565;
+	-o-box-shadow: 0px 0px 20px 0px #656565;
+	box-shadow: 0px 0px 20px 0px #656565;
 }
 
 .boxSuccess a, .boxError a, .boxAlert a { text-decoration: underline; color: inherit;}
@@ -165,13 +166,14 @@ body.noscroll {
 	background: $darkGrey;
 	color: #fff;
 	font-size: 12px;
+	font-family: 'Merriweather Italic';
+    font-style: italic;
 	right: -20px;
 	top:25px;	
 	-moz-box-shadow: 0px 0px 20px 0px #000000;
 	-webkit-box-shadow: 0px 0px 20px 0px #000000;
 	-o-box-shadow: 0px 0px 20px 0px #000000;
 	box-shadow: 0px 0px 20px 0px #000000;
-    font-family: 'nerissemibold_italic';
 }
 
 #copyright i {
@@ -254,5 +256,4 @@ body.noscroll {
 }
 
 .wikiLink a:hover {color: $highlight;}
-
 .organizationSheet .listCriteria.criteriaSidebar, .organizationSheet #listContent {padding-top: 60px;}

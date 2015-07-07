@@ -1,6 +1,5 @@
 @import "colors";
 
-
 a {text-decoration: none;}
 a:visited {color: inherit;}
 p {padding: 0; margin: 0;}
@@ -104,6 +103,7 @@ body {
     font-family: 'Merriweather';
     font-size: 13px;
     line-height: 100%;
+    cursor: default;
 }
 
 #menuMobileTriggerMenu, #menuMobileTriggerActions {display: none;}

@@ -23,44 +23,57 @@
 .paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
 .paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
-.paragraph.summary::before {
+.paragraph.summary p::before, .paragraph.summary .editable.summary p:first-child::before {
 	content: "—";
-	float: left;
+	display: inline-block;
 	line-height: 200%;
 	margin-top: 2px;
 	margin-right: 5px;
 	color: $darkHighlight;
 }
+.paragraph.summary .editable.summary p::before  {display: none;}
 
 .paragraph h1 {
 	padding: 0;
 	margin: 0;
 	font-size: 20px;
-    font-family: 'nerisblack';
-    font-weight: normal;
     line-height: 140%;
+    width: 100%;
 }
+.paragraph h1, .paragraph h1 b, .paragraph h1 i {
+    font-family: 'nerisblack';
+    font-style: normal;
+    font-weight: normal;
+}
+.paragraph .editable h1 {margin: 0 0 40px 0; float: left; clear: both;}
 
 .paragraph h2 {
-	font-family: 'fontello', 'Merriweather Italic';	
 	line-height: 200%;
 	font-size: 15px;
 	font-weight: normal;
+	font-style: italic;
 	margin: 0;
 	padding: 0 0 0 16px;
 	border-left: solid 4px $highlight;
+    width: 100%;
 }
+.paragraph .editable h2 {margin: 0 0 40px 0; float: left; clear: both;}
 
-.paragraph h3 {
+.paragraph blockquote {
 	font-family: 'Merriweather Bold';
 	font-weight: normal;	
 	line-height: 200%;
-	margin: 0;
+	margin: 0 0 40px 0;
 	padding: 0;
 	font-size: 15px;
+	clear: both;
+	width: 100%;
+	display: inline-block;
 }
+.paragraph.summary blockquote { color: $darkHighlight;}
+.paragraph.summary ul { color: $darkHighlight;}
 
-.paragraph h3::before {
+.paragraph blockquote:before {
 	font-family: 'fontello';
 	content: "\e810";
 	float: left;
@@ -74,6 +87,7 @@
 	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
+	width: 100%;
 }
 
 // give note
@@ -137,6 +151,7 @@
 	padding: 0 0 5px 20px;
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+    font-style: italic;
 }
 
 .reactionsToPostItemSummary {
@@ -345,6 +360,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .commentsContentHeader {
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+    font-style: italic;
 	margin-top: -5px;
 	float: left;
 	width: 100%;
@@ -372,6 +388,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	margin: 0 0 5px 0;
 	color: $highlight;
 	font-family: 'Merriweather Heavy Italic';
+    font-style: italic;
 }
 
 .commentsNote .notePlus, .commentsNote  .noteMinus { cursor: pointer;}
@@ -402,7 +419,7 @@ a.linkToPost:hover {color: $darkGrey;}
 
 // post author on post
 
-#postAuthorHolder {
+#lateralHolder {
 	position:fixed;
 	z-index: 10000;
 }
@@ -428,6 +445,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	display: inline-block;
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+    font-style: italic;
 }
 
 #postInfos {
@@ -529,6 +547,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	text-transform: none;
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+    font-style: italic;
 	margin-right: 4px;
 }
 
@@ -542,6 +561,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummaryAuthor span {
 	font-size: 12px;
 	font-family: 'Merriweather Italic';
+    font-style: italic;
 	display: inline-block;
 	margin-right: 4px;
 }

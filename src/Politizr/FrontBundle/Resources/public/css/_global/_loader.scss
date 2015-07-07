@@ -1,5 +1,33 @@
 @import "colors";
 
+// animated loader @ 16px
+.ajaxLoader i, #ajaxGlobalLoader i, #fixedActions .withLoaderInside .ajaxLoader i {
+	position: absolute;
+	left: calc(50% - 8px);
+	top: calc(50% - 8px);
+	width: 22px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: 'fontello';
+}
+
+// animated loader @ 12px
+.listPostFollow .ajaxLoader i {
+	position: absolute;
+	left: calc(50% - 6px);
+	top: calc(50% - 6px);
+	width: 22px;
+	height: 12px;
+	font-size: 12px;
+	line-height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: 'fontello';
+}
+
 #ajaxGlobalLoader {
 	position: fixed;
 	width: 100%;
@@ -28,19 +56,6 @@
 	top: 0;
 	background-color: transparent;
 	z-index: 21000;
-}
-
-.ajaxLoader i, #ajaxGlobalLoader i, .fixedActions .withLoaderInside .ajaxLoader i {
-	position: absolute;
-	left: calc(50% - 8px);
-	top: calc(50% - 8px);
-	width: 22px;
-	height: 16px;
-	font-size: 16px;
-	line-height: 100%;
-	padding: 0;
-	margin: 0;
-	font-family: 'fontello';
 }
 
 .loadMore {

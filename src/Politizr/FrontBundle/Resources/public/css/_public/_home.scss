@@ -1,0 +1,719 @@
+@import "../_global/colors";
+
+body {	overflow-x: hidden;}
+
+.homeWrapper {position: relative;}
+
+#publicHeader {
+	display:inline-block;
+	width: 100%;
+	height: 60px;
+	overflow: hidden;
+	left: 0;
+	top: 0;
+	color: $darkGrey;
+	background-color: #fff;
+    text-transform: uppercase;
+    font-family: 'nerissemibold';
+    font-size: 10px;
+}
+
+.headerLogo {
+	float: left;
+	width: 200px;
+	margin-top: 18px;
+}
+
+.headerLogo a {	
+	float: left;
+	margin: 0 0 0 60px;
+	color: $darkGrey;
+	position: relative;
+}
+.headerLogo a:hover {	color: $darkHighlight;}
+.headerLogo i.iconPltzrLogoAlt {	font-size: 27px;}
+.headerLogo i.iconPltzrLogo {	font-size: 24px; color: $semiGrey;}
+.headerLogo i.iconPltzrLogo:hover {	color: $darkGrey;}
+.headerLogo a span {
+	position: absolute;
+	left: 38px;
+	top: 7px;
+}
+
+#headerRight {
+	float: right;
+	margin-top: 20px;
+    font-family: 'nerissemibold';
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+#modalHeaderRight {
+	float: none;
+	display: inline-block;
+	width: 850px;
+	margin-top: 19px;
+	text-align: right;
+    font-family: 'nerissemibold';
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+#headerRight a, #modalHeaderRight a {
+	color: $darkGrey;
+	display: inline-block;
+}
+#headerRight a:hover, #modalHeaderRight a:hover {color: $darkHighlight;}
+
+#headerRight a:last-child, #modalHeaderRight a:last-child {
+	color: #fff;
+	background-color: $darkHighlight;
+	padding: 5px 8px; 
+	margin: 0 60px 0 20px;
+}
+#modalHeaderRight a:last-child {margin-right: 0;}
+#headerRight a:last-child:hover, #modalHeaderRight a:last-child:hover { background-color: $darkGrey;}
+
+.highlightOverlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: $darkHighlight;	
+	-moz-opacity: 0.53;
+	opacity: 0.53;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=53);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=53);
+	filter:alpha(opacity=53);
+}
+
+#homeClaim {
+	width: 100%;
+	height: 540px;
+	float: left;
+	position: relative;
+}
+
+#homeClaim .homeText {
+    position: absolute;
+	z-index: 1;
+    width: 100%;
+    left: 0;
+    bottom: 100px;
+    text-transform: uppercase;
+	text-align: center;
+}
+
+#homeClaim .homeText h1 {
+	color: #fff;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    line-height: 140%;
+    font-weight: 100;
+    font-family: 'neristhin';
+}
+
+#homeClaim .homeText a {
+	font-size: 14px;
+    font-family: 'nerissemibold';
+    background-color: #fff;
+    padding: 24px 40px;
+    margin-top: 20px;
+    width: auto !important;
+    height: auto !important;
+    display: inline-block !important;
+    clear: both;
+    position: relative;
+    color: $darkHighlight;
+    cursor: pointer;
+}
+
+#homeClaim .homeText a:hover {
+	color: #fff;
+    background-color: $darkHighlight;
+       cursor: pointer;	
+}
+
+#homeClaim .homeText i {
+    font-family: 'neristhin_italic';
+    font-style: normal;	
+}
+
+#homeSearch {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 40px 0;	
+	text-align: center;
+	background-color: $darkGrey;
+}
+
+#homeSearch .openSearch {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+	background: aqua;
+}
+
+#homeSearch .openSearch .pseudoInput {
+	float: left;
+	text-align: left;
+	padding: 21px 20px 19px 20px;
+	margin: 0;
+	height: 17px;
+	width: 380px;
+	text-transform: uppercase;
+	font-size: 14px;
+    background-color: $anotherGrey;
+    color: $darkGrey;
+    font-family: 'nerislight';
+    cursor: pointer;
+}
+
+#homeSearch .openSearch .pseudoInput b {
+	font-weight: normal;
+	font-family: 'nerissemibold';
+}
+
+#homeSearch .openSearch .pseudoSubmit {
+	float: right;
+	padding: 21px 0 19px 0;
+	width: 180px;
+	height: 17px;
+	font-size: 14px;
+    text-transform: uppercase;
+    background-color: $homeGrey;
+    color: $anotherGrey;
+    font-family: 'nerissemibold';
+    cursor: pointer;
+}
+
+#homeSearch form input[type="submit"]:hover {
+	background-color: $darkHighlight;
+	color: #fff;
+}
+
+.homeText {
+	display: inline-block;
+}
+
+.homeText h1 {
+	display: inline-block;
+    font-family: 'nerislight';
+    font-weight: normal;
+    text-transform: uppercase;
+	font-size: 24px;
+	margin: 0 0 10px 0;
+	padding: 0;
+	line-height: 130%;
+}
+
+.homeText h1 i {
+	font-style: normal;
+    font-family: 'nerislight_italic';	
+}
+
+.homeText p {
+	padding-right: 20px;
+	font-size: 13px;
+	font-family: 'Merriweather Light Italic';
+	margin-bottom: 5px;
+	line-height: 170%;
+}
+
+.homeText p b {
+	font-weight: normal;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+}
+
+////// slide 01
+
+#homeFollow {
+	width: 100%;
+	height: 480px;
+	float: left;
+	clear: both;
+	background-color: #e6d1ba;
+}
+
+#homeFollow .homeText {
+	width: 370px;
+	height: calc(480px - 110px);
+	margin: 110px 0 0 0;
+	display: inline-block;
+}
+
+#homeFollow .homeTextImgHolder {
+	position: absolute;
+	right: -200px;
+	width: 771px;
+	height: 100%;
+	top: 0;
+	background-image: url(../images/f_follow.jpg);
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+
+////// end slide 01
+
+////// slide 02
+
+#homeContribute {
+	width: 100%;
+	height: 480px;
+	float: left;
+	clear: both;
+	background-image: url(../images/f_contributeBg.jpg);
+	background-size: cover;
+	color: #fff;
+	position: relative;
+}
+
+#homeContribute .homeWrapper {height: 100%; }
+
+#homeContribute .homeText {
+	float: right;
+	width: 360px;
+	margin: 90px 0 0 0;
+	height: calc(480px - 90px);
+}
+
+#homeContribute .homeTextImgHolder {
+	position: absolute;
+	left: -420px;
+	width: 1200px;
+	height: 100%;
+	top: 0;
+	background-image: url(../images/f_contributeForeground.png);
+	background-repeat: no-repeat;
+	z-index: 2000;
+}
+
+#homeContribute .homeTextImgHolderBg {
+	background-image: url(../images/f_contributeForegroundPattern.jpg);
+	position: absolute;
+	left: 0;
+	width: calc(50% - 820px);
+	height: 100%;
+	top: 0;
+}
+
+////// end slide 02
+
+////// slide 03
+
+#homeMyPolitizr {
+	width: 100%;
+	height: 480px;
+	float: left;
+	clear: both;
+	background-color: #e6d1ba;
+}
+
+#homeMyPolitizr .homeText {
+	width: 360px;
+	height: calc(480px - 150px);
+	margin: 150px 0 0 0;
+	display: inline-block;
+}
+
+#homeMyPolitizr .homeTextImgHolder {
+	position: absolute;
+	right: -220px;
+	width: 769px;
+	height: 100%;
+	top: 0;
+	background-image: url(../images/f_mypolitizr.jpg);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+////// end slide 03
+
+////// slide 04 // stats
+
+#homeStats {
+	width: 100%;
+	height: 220px;
+	float: left;
+	clear: both;
+	background-color: #de9f88;
+}
+
+#homeStats .wrapper {
+	height: 220px;
+	background-image: url(../images/f_stats.jpg);
+	background-position: 60px bottom;
+	background-repeat: no-repeat;
+}
+
+#homeStats .homeText {
+	float: right;
+	width: 385px;
+	height: calc(220px - 60px);
+	margin: 60px 60px 0 0;
+	display: inline-block;
+}
+
+////// end slide 04
+
+////// plans
+
+#homePlans {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 100px 0 60px 0;
+}
+
+#homePlans .wrapper {
+	text-align: center;
+}
+
+#homePlans .pltzrHeader {
+	height: 60px;
+	width: 340px;
+	border: solid 1px #cccccc;
+	border-bottom: none;
+	display: inline-block;
+}
+
+#homePlans .pltzrHeader i {
+	font-size: 42px;
+	background-color: #fff;
+	padding: 10px;
+	margin-top: -32px;
+	display: inline-block;
+}
+
+#plans {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	background: aqua;
+}
+
+.userPlan, .officialPlan { width: 260px; float: left;}
+.officialPlan {float: right;}
+
+#plans h1 {
+    font-family: 'nerisblack';
+    font-size: 24px;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+#plans h2 {
+    font-family: 'nerissemibold';
+    font-size: 12px;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+#plans h3 {
+	font-family: 'nerislight';
+    font-size: 15px;
+    font-weight: normal;    
+    padding: 0;
+    margin: 27px 0 0 0;
+    color: $darkHighlight;
+}
+#plans .userPlan h3 { margin-top: 60px;}
+
+#plans a {
+	background: $darkHighlight;
+	color: #fff;
+    margin: 20px 0 0 0;
+    padding: 20px 0;
+    display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;
+}
+#plans a:hover {background-color: $darkGrey;}
+
+#plans ul {
+	margin: 40px 0 0 0;
+	padding: 0;
+	list-style: none;
+	text-align: left;
+}
+
+#plans ul li {
+	padding: 0 10px 20px 0;
+	width: 230px;
+	float: right;
+	font-family: 'nerislight';
+    font-size: 14px;	
+    line-height: 130%;
+    position: relative;
+}
+
+#plans ul li b {
+	font-weight: normal;
+    font-family: 'nerissemibold';
+}
+
+#plans ul li i {
+	position: absolute;
+	left: -20px;
+	font-size: 11px;
+}
+
+////// end plans
+
+////// slide for officials
+
+#homeOfficial {
+	float: left;
+	clear: both;
+	width: 100%;
+	height: 680px;
+}
+
+#homeOfficial .wrapper {
+	height: 680px;
+	position: relative;
+	text-align: center;
+}
+
+#homeOfficial .homeText {
+	position: absolute;
+	left: 0;
+	bottom: 80px;
+	width: 100%;
+	color: #fff;
+}
+
+#homeOfficial .homeText h1 {
+	font-size: 30px;
+    font-family: 'nerisblack';
+}
+
+#homeOfficial .homeText p {
+	padding-right: 0;
+	font-size: 16px;
+	font-family: 'neristhin';
+	line-height: 140%;
+}
+
+#homeOfficial .homeText p b {
+	font-weight: normal;
+    font-family: 'nerissemibold';
+    font-style: normal;	
+}
+
+#homeOfficial .homeText a {
+	font-size: 14px;
+    font-family: 'nerissemibold';
+    background-color: #fff;
+    padding: 24px 40px;
+    margin-top: 20px;
+    width: auto !important;
+    height: auto !important;
+    display: inline-block !important;
+    clear: both;
+    position: relative;
+    color: $darkHighlight;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+#homeOfficial .homeText a:hover {
+	color: #fff;
+    background-color: $darkHighlight;
+    cursor: pointer;	
+}
+
+////// end slide for officials
+
+////// home extraits
+
+#homeLive {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 100px 0;
+	background-color: #f4eadf;
+}
+
+#homeLive .wrapper {text-align: center;}
+
+#homeLive .pltzrHeader {
+	height: 60px;
+	width: 320px;
+	border-top: solid 1px #eabaa2;
+	display: inline-block;
+}
+
+#homeLive .pltzrHeader i {
+	font-size: 42px;
+	background-color: #f4eadf;
+	color: $darkHighlight;
+	padding: 10px;
+	margin-top: -32px;
+	display: inline-block;
+}
+
+#homeLive .separator {
+	width: 320px;
+	border-top: solid 1px #eabaa2;
+	display: inline-block;
+	margin: 30px 0 35px 0;
+}
+
+#homeLive .liveItem {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#homeLive .liveItem h1 {
+	font-size: 10px;
+	font-weight: normal;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+#homeLive .liveItem h2 {
+	font-weight: normal;
+    font-family: 'nerissemibold';
+    margin: 0 0 20px 0;
+    padding: 0;
+    font-size: 26px;
+    line-height: 120%;
+}
+
+#homeLive .liveItem h2 a {color: $darkGrey;}
+#homeLive .liveItem h2 a:hover {color: $darkHighlight;}
+
+#homeLive .itemInfo {
+	color: $darkHighlight;
+	margin-bottom: 10px;
+	float: left;
+	width: 100%;
+	clear: both;
+	position: relative;
+}
+
+#homeLive .itemInfo .reactionsCounter, #homeLive .itemInfo .commentsCounter {
+	margin-right: 20px;
+	line-height: 100%;
+}
+#homeLive .itemInfo .reactionsCounter i {font-size: 13px;}
+
+#homeLive .itemInfo .postNote {
+	margin-top: 2px;
+	float: none;
+	display: inline-block;
+}
+#homeLive .itemInfo .postNote .notePlus, #homeLive .itemInfo .postNote .noteMinus { line-height: 8px;}
+
+#homeLive .liveItem .postSummaryTagList {
+	font-size: 10px;
+	font-weight: normal;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;
+    color: $darkHighlight;
+}
+
+#homeLive .liveItem .postSummaryTagList .tag:hover {color: $darkGrey;}
+
+#homeLive .liveItemLeft, .liveItemRight {
+	width: 46.5%;
+	line-height: 160%;
+}
+
+#homeLive .liveItemLeft {
+	float: left;
+	text-align: right;
+}
+#homeLive .liveItemLeft .avatar60 { float: right;}
+
+#homeLive .liveItemRight {
+	float: right;
+	text-align: left;
+}
+#homeLive .liveItemRight .avatar60 { float: left;}
+
+#homeLive .liveItem .listProfileLeft, .liveItem .listProfileRight {
+	width : calc(100% - 80px);
+}
+#homeLive .liveItem .listProfileLeft { float: left;}
+#homeLive .liveItem .listProfileRight { float: right;}
+
+#homeLive .liveItem .authorInAFewWords {
+	max-height: 3.5em;
+	overflow: hidden;
+	line-height: 180%;
+}
+
+////// end home extraits
+
+////// footer
+
+#footer {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 80px 0 40px 0;
+	background-color: $darkGrey;
+	color: #525252;
+}
+
+#footer .wrapper {text-align: center;}
+
+#footerLinks a { 
+	color: #fff;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-size: 12px;
+	margin: 0 20px; 
+	color: $semiGrey;
+}
+
+#footerSocial {
+	margin: 20px 0 50px 0;
+}
+
+#footerSocial a {
+	color: #fff;
+	margin: 0 5px;
+	font-size: 16px;
+	color: $semiGrey;
+}
+
+#footerLinks a:hover, #footerSocial a:hover { color: $darkHighlight;}
+
+#footerMentions {
+    font-family: 'nerislight_italic';
+    font-size: 12px;
+    line-height: 180%;
+    margin-bottom: 10px;
+}
+
+#footerMentions img {margin-left: 7px;}
+
+#footerMentions span { font-size: 10px;}
+
+#footerFbShare {
+	-moz-opacity: 0.50;
+	opacity: 0.50;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=50);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+	filter:alpha(opacity=50);
+}
+
+////// end footer
