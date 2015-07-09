@@ -18,33 +18,27 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            
+
             // FOSUserBundle
             new FOS\UserBundle\FOSUserBundle(),
             
             // OAuthBundle
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             
-            // Menu
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
-            // Pager
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-            
             // HTML2PDF
             new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
-
-            // Generator
-            new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
-            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
-            new Admingenerator\UserBundle\AdmingeneratorUserBundle(),
-            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
 
             // Propel
             new Propel\PropelBundle\PropelBundle(),
             new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
             new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
             
+            // Admin Generator & dependencies
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+    
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),
 

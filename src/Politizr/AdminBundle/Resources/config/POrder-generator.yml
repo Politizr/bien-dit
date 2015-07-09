@@ -11,22 +11,27 @@ params:
         p_user_id:
             label:          Utilisateur
         p_user:
+            dbType:         model
             label:          Utilisateur
         p_o_payment_state_id:
             label:          Paiement
         p_o_payment_state:
+            dbType:         model
             label:          Paiement
         p_o_order_state_id:
             label:          Etat
         p_o_order_state:
+            dbType:         model
             label:          Etat
         p_o_payment_type_id:
             label:          Mode paiement
         p_o_payment_type:
+            dbType:         model
             label:          Mode paiement
         p_o_subscription_id:
             label:          Formule
         p_o_subscription:
+            dbType:         model
             label:          Formule
         subscription_title:
             label:          Titre

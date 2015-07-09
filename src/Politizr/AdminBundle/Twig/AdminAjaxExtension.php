@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\Adminbundle\Twig;
+namespace Politizr\AdminBundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
 

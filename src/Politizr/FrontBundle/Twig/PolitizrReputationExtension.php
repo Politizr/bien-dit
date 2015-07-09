@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;

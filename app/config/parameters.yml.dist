@@ -1,16 +1,16 @@
 parameters:
-    database_driver: pdo_mysql
+    database_driver: mysql
     database_host: localhost
     database_port: null
-    database_name: ***
-    database_user: ***
-    database_password: ***
-    mailer_auth_mode: login
-    mailer_port:     25
+    database_name: 123
+    database_user: 123
+    database_password: 123
+    mailer_auth_mode:  login
+    mailer_port:       25
     mailer_transport:  mail
     mailer_host:       localhost
-    mailer_user:       ***
-    mailer_password:   ***
+    mailer_user:       123
+    mailer_password:   123
     mailer_encryption: ssl
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
@@ -21,15 +21,15 @@ parameters:
 
     # OAuth parameters
     # Facebook
-    facebook_client_id: ***
-    facebook_client_secret: ***
+    facebook_client_id: 123
+    facebook_client_secret: 123
     facebook_scope: public_profile,email
 
     #Twitter
-    twitter_api_key: ***
-    twitter_api_secret: ***
+    twitter_api_key: 123
+    twitter_api_secret: 123
 
     # Google
-    google_client_id: ***
-    google_client_secret: ***
+    google_client_id: 123
+    google_client_secret: 123
     google_scope: email profile

@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
 /**
  * Extension Twig / Gestion de  l'édition des tags

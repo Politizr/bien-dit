@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
     - { resource: @GlorpenPropelBundle/Resources/config/config.yml }
 
 parameters:
@@ -47,6 +48,10 @@ twig:
 # Assetic Configuration
 assetic:
     filters:
+        uglifyjs2:
+            bin:            /usr/local/bin/uglifyjs
+        uglifycss:
+            bin:            /usr/local/bin/uglifycss
         cssrewrite:         ~
         sass:
             bin:            /usr/local/bin/sass
@@ -80,26 +85,21 @@ jms_security_extra:
 
 # Propel Configuration
 propel:
-    # The next two lines are useless if you are using Composer
-    # to manage your dependencies
-    path:       "%kernel.root_dir%/../vendor/propel"
-    phing_path: "%kernel.root_dir%/../vendor/phing"
-
-    #db connection
     dbal:
+        default_connection:         default
         connections:
             default:
-               driver:             mysql
-               user:               %database_user%
-               password:           %database_password%
-               dsn:                mysql:host=%database_host%;dbname=%database_name%
-               options:
-                   ATTR_PERSISTENT: false
-               attributes:
-                   ATTR_EMULATE_PREPARES: true
-               settings:
-                   charset:        { value: UTF8 }
-                   queries:        { query: 'set names utf8' }
+                driver:             %database_driver%
+                user:               %database_user%
+                password:           %database_password%
+                dsn:                %database_driver%:host=%database_host%;dbname=%database_name%
+                options:
+                    ATTR_PERSISTENT: false
+                attributes:
+                    ATTR_EMULATE_PREPARES: true
+                settings:
+                    charset:        { value: UTF8 }
+                    queries:        { query: 'set names utf8' }
 
 # FOSUser Configuration
 fos_user:
@@ -119,20 +119,76 @@ knp_menu:
     templating:         false # if true, enables the helper for PHP templates
     default_renderer:   twig # The renderer to use, list is also available by default
 
-# AdminGeneratorGenerator Configuration
+# Admin Generator
+# https://github.com/symfony2admingenerator/GeneratorBundle/blob/master/Resources/doc/installation/configuration.md
 admingenerator_generator:
-    base_admin_template:  PolitizrAdminBundle::base_admin.html.twig
-    dashboard_welcome_path: admin_homepage
+    ## Global
+    use_doctrine_orm: false
+    use_doctrine_odm: false
+    use_propel: true
+    overwrite_if_exists: false
+    base_admin_template: PolitizrAdminBundle::base_admin.html.twig
+    dashboard_route: PolitizrAdminHomepage
+    login_route: fos_user_security_login
+    logout_route: fos_user_security_logout
+    exit_route: ~
+    generator_cache: ~
 
-#    templates_dirs:       [ %kernel.root_dir%/../vendor/cedriclombardot/admingenerator-oldtheme-bundle/Admingenerator/OldThemeBundle/Resources/templates ]
-    use_propel:           true
-    use_doctrine_orm:     false
-    use_doctrine_odm:     false
-
-    login_path:           fos_user_security_login
-    logout_path:          fos_user_security_logout
-
+    ## Twig and Templates
+    twig:
+        use_form_resources: true
+        use_localized_date: false
+        date_format: Y-m-d
+        datetime_format: Y-m-d H:i:s
+        localized_date_format: medium
+        localized_datetime_format: medium
+        number_format:
+            decimal: 0
+            decimal_point: ,
+            thousand_separator: .
+    templates_dirs: []
+    stylesheets: [] # array of {path: path_to_stylesheet, media: all}
+    javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
+        doctrine_orm:
+            datetime:     datetime 
+            vardatetime:  datetime 
+            datetimetz:   datetime 
+            date:         datetime 
+            time:         time 
+            decimal:      number 
+            float:        number 
+            integer:      integer 
+            bigint:       integer 
+            smallint:     integer 
+            string:       text 
+            text:         textarea
+            entity:       entity 
+            collection:   collection 
+            array:        collection 
+            boolean:      checkbox 
+        doctrine_odm:
+            datetime:     datetime 
+            timestamp:    datetime 
+            vardatetime:  datetime 
+            datetimetz:   datetime 
+            date:         datetime 
+            time:         time 
+            decimal:      number 
+            float:        number 
+            int:          integer 
+            integer:      integer 
+            int_id:       integer 
+            bigint:       integer 
+            smallint:     integer 
+            id:           text 
+            custom_id:    text 
+            string:       text 
+            text:         textarea 
+            document:     document 
+            collection:   collection 
+            hash:         collection 
+            boolean:      checkbox 
         propel:
             TIMESTAMP:    datetime 
             BU_TIMESTAMP: datetime 
@@ -159,52 +215,95 @@ admingenerator_generator:
             PHP_ARRAY:    collection 
             ENUM:         choice 
             BOOLEAN:      checkbox 
-            BOOLEAN_EMU:  checkbox
-
+            BOOLEAN_EMU:  checkbox 
     filter_types:
+        doctrine_orm:
+            datetime:      datetime
+            vardatetime:   datetime
+            datetimetz:    datetime
+            date:          date
+            time:          time
+            decimal:       number
+            float:         number
+            integer:       number
+            bigint:        number
+            smallint:      number
+            string:        text
+            entity:        model
+            collection:    collection
+            array:         text
+            boolean:       choice
+        doctrine_odm:
+            datetime:      datetime
+            timestamp:     datetime
+            vardatetime:   datetime
+            datetimetz:    datetime
+            date:          date
+            time:          time
+            decimal:       number
+            float:         number
+            int:           number
+            integer:       number
+            int_id:        number
+            bigint:        number
+            smallint:      number
+            id:            text
+            custom_id:     text
+            string:        text
+            text:          text
+            document:      model
+            collection:    collection
+            hash:          text
+            boolean:       choice
         propel:
-          BOOLEAN:       choice
-          BOOLEAN_EMU:   choice
-          collection:    model
-          DATE:          afe_daterange_picker
-          BU_DATE:       afe_daterange_picker
-          TIMESTAMP:     afe_daterange_picker 
-          BU_TIMESTAMP:  afe_daterange_picker 
-
-    twig:
-        use_localized_date:           true
-        # by default the localized date is disabled thats why default settings 
-        # use PHP date()'s format if you enable localized date make sure to change 
-        # these to ISO 8601 compatible format!
-        date_format:                  'dd/MM/Y'         # for ISO 8601 "yyyy-MM-dd"
-        datetime_format:              'dd/MM/Y H:mm'     # for ISO 8601 "yyyy-MM-dd HH:mm:ss"
-        localized_date_format:        "medium"
-        localized_datetime_format:    "medium"
-        number_format:
-          decimal:        2
-          decimal_point:  ','
-          thousand_separator: ' '
-
-
-    stylesheets:
-      - { path: bundles/politizradmin/css/backoffice.css }
-
-# AdminGeneratorUser Configuration
-admingenerator_user:
-    login_template:      PolitizrAdminBundle::Login\login.html.twig
+            TIMESTAMP:     datetime
+            BU_TIMESTAMP:  datetime
+            DATE:          date
+            BU_DATE:       date
+            TIME:          time
+            FLOAT:         number
+            REAL:          number
+            DOUBLE:        number
+            DECIMAL:       number
+            TINYINT:       number
+            SMALLINT:      number
+            INTEGER:       number
+            BIGINT:        number
+            NUMERIC:       number
+            CHAR:          text
+            VARCHAR:       text
+            LONGVARCHAR:   text
+            BLOB:          text
+            CLOB:          text
+            CLOB_EMU:      text
+            model:         model
+            collection:    collection
+            PHP_ARRAY:     text
+            ENUM:          text
+            BOOLEAN:       choice
+            BOOLEAN_EMU:   choice
 
 # Liip Imagine Configuration
 liip_imagine:
+    resolvers:
+        default:
+            web_path:
+              web_root:     %kernel.root_dir%/../web
+              cache_prefix: /uploads/cache
+
+#    loaders:
+#        default:
+#            filesystem:
+#                data_root: ~  # %kernel.root_dir%/../web/
+#
 #    driver:               gd
-#    web_root:             %kernel.root_dir%/../web
-#    data_root:            %kernel.root_dir%/../web
-    cache_mkdir_mode:     0777
-    cache_prefix:         /uploads/cache
-#    cache:                web_path
-#    cache_clearer:        true
-#    data_loader:          filesystem
-#    controller_action:    liip_imagine.controller:filterAction
-#    formats:              []
+#    cache:                default
+#    data_loader:          default
+#    default_image:        null
+#    controller:
+#        filter_action:         liip_imagine.controller:filterAction
+#        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+
     filter_sets:
         # ADMIN
         admin_list_thumb:

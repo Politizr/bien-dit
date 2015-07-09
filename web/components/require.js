@@ -2017,7 +2017,6 @@ var requirejs, require, define;
     //Set up with config info.
     req(cfg);
 }(this));
-
 var components = {
     "packages": [
         {
@@ -2035,18 +2034,6 @@ var components = {
         {
             "name": "jquery-ui",
             "main": "jquery-ui-built.js"
-        },
-        {
-            "name": "medium-editor",
-            "main": "medium-editor-built.js"
-        },
-        {
-            "name": "classList.js",
-            "main": "classList.js-built.js"
-        },
-        {
-            "name": "form",
-            "main": "form-built.js"
         }
     ],
     "shim": {
@@ -2060,11 +2047,6 @@ var components = {
                 "jquery"
             ],
             "exports": "jQuery"
-        },
-        "form": {
-            "deps": [
-                "jquery"
-            ]
         }
     },
     "baseUrl": "components"

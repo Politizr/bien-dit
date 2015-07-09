@@ -23,7 +23,7 @@ fos_user_change_password:
 ################################################################################
 
 # Accueil
-admin_homepage:
+PolitizrAdminHomepage:
     pattern:  /
     defaults: { _controller: PolitizrAdminBundle:Homepage\AdminHomepage:index }
 

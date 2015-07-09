@@ -1,5 +1,4 @@
 <?php
-
 namespace Politizr\AdminBundle\Menu;
 
 use Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder;
@@ -13,13 +12,19 @@ class AdminMenu extends AdmingeneratorMenuBuilder
      * @param Request $requestaddNavLinkURI
      * @param Router $router
      */
-    public function navbarMenu(FactoryInterface $factory, array $options)
+    public function sidebarMenu(FactoryInterface $factory, array $options)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
-      
         $menu = $factory->createItem('root');
-        $menu->setChildrenAttributes(array('id' => 'main_navigation', 'class' => 'nav navbar-nav'));
-        
+        $menu->setChildrenAttributes(array('class' => 'sidebar-menu'));
+
+        if ($dashboardRoute = $this->container->getParameter('admingenerator.dashboard_route')) {
+            $this
+                ->addLinkRoute($menu, 'admingenerator.dashboard', $dashboardRoute)
+                ->setExtra('icon', 'fa fa-dashboard');
+        }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+              
         // Order
         $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
 
