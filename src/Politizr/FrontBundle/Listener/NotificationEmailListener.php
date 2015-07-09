@@ -20,14 +20,13 @@ use Politizr\Model\PUSubscribeEmailQuery;
  */
 class NotificationEmailListener
 {
-
     protected $logger;
     protected $eventDispatcher;
 
     /**
      *
      */
-    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher)
+    public function __construct($logger, $eventDispatcher)
     {
         $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;

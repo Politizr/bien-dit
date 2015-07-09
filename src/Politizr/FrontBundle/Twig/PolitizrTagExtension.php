@@ -100,7 +100,7 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            'PolitizrFrontBundle:Tag:_debate.html.twig',
             array(
                 'object' => $debate,
                 'tagTypeId' => $tagTypeId,

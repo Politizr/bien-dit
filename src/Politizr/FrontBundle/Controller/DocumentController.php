@@ -188,7 +188,8 @@ class DocumentController extends Controller
     }
 
     /**
-     *  Edition d'un débat
+     * Edition d'un débat
+     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
     public function debateEditAction($id)
     {
@@ -216,7 +217,7 @@ class DocumentController extends Controller
         $debate = PDDebateQuery::create()->findPk($id);
         $form = $this->createForm(new PDDebateType(), $debate);
 
-        return $this->render('PolitizrFrontBundle:Document:debateEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
             ));

@@ -18,13 +18,15 @@
         {% endblock %}
 
         {% block content %}
-             <div id="fixedActions">
-               {% block fixedActions %}
+            {% block fixedActions %}
+                <div id="fixedActions">
+                </div>
+            {% endblock fixedActions %}
+            {% block goUp %}
                 <div id="goUpHolder">
                     <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
                 </div>
-                {% endblock fixedActions %}
-            </div>
+            {% endblock goUp %}
             <div id="content">
                 {% block notifications %}
                     {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}

@@ -62,13 +62,14 @@ class DocumentManager
         // Création d'un nouvel objet et redirection vers l'édition
         $debate = new PDDebate();
         
-        $debate->setTitle('Un nouveau débat');
-        
+        // $debate->setTitle('Un nouveau débat');
+        $debate->setSummary('<p></p>');
+
         $debate->setPUserId($user->getId());
 
         $debate->setNotePos(0);
         $debate->setNoteNeg(0);
-        
+
         $debate->setOnline(true);
         $debate->setPublished(false);
         

@@ -23,7 +23,9 @@
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js') }}"></script>
 
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.stuckontop.js') }}"></script>
+        {% endblock %}
 
+        {% block responsiveHeader %}
             <script>
                 $(document).ready(function () {
                     $('body').restive({
@@ -33,8 +35,7 @@
                     });
                 });
             </script> 
-        {% endblock %}
-    
+        {% endblock %}    
     </head>
     {% block body %}
         <body>

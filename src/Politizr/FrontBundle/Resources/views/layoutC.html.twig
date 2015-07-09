@@ -17,15 +17,17 @@
             {% include 'PolitizrFrontBundle:Navigation:headerC.html.twig' %}
         {% endblock %}
 
-        {% block content %}
-             <div id="fixedActions">
-               {% block fixedActions %}
-                    <!-- @todo html/css aucune raison de ne pas le conserver sur mon politizr, au contraire -->
-                    <div id="goUpHolder">
-                        <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
-                    </div>
-                {% endblock fixedActions %}
+        {% block fixedActions %}
+            <div id="fixedActions">
             </div>
+        {% endblock fixedActions %}
+        {% block goUp %}
+            <div id="goUpHolder">
+                <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
+            </div>
+        {% endblock goUp %}
+
+        {% block content %}
             <div id="content">
                 {% block notifications %}
                     {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}
@@ -60,4 +62,6 @@
     {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:helper.js.twig' %}
 {% endblock javascriptFooter %}

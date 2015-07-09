@@ -10,11 +10,12 @@ use Politizr\Model\PDocument;
 use Politizr\Model\PUReputation;
 
 /**
- * 	Gestion des actions mettant à jour la réputation
+ * Gestion des actions mettant à jour la réputation
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
-class ReputationListener {
+class ReputationListener
+{
 
     protected $logger;
     protected $eventDispatcher;
@@ -22,9 +23,10 @@ class ReputationListener {
     /**
      *
      */
-    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher) {
+    public function __construct($logger, $eventDispatcher)
+    {
         $this->logger = $logger;
-    	$this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -33,7 +35,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRDebatePublish(GenericEvent $event) {
+    public function onRDebatePublish(GenericEvent $event)
+    {
         $this->logger->info('*** onRDebatePublish');
 
         $subject = $event->getSubject();
@@ -50,7 +53,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRReactionPublish(GenericEvent $event) {
+    public function onRReactionPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onRReactionPublish');
 
         // Réaction de la réaction
@@ -94,7 +98,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRCommentPublish(GenericEvent $event) {
+    public function onRCommentPublish(GenericEvent $event)
+    {
         $this->logger->info('*** onRCommentPublish');
 
         $subject = $event->getSubject();
@@ -127,7 +132,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRNotePos(GenericEvent $event) {
+    public function onRNotePos(GenericEvent $event)
+    {
         $this->logger->info('*** onRNotePos');
 
         $subject = $event->getSubject();
@@ -170,7 +176,7 @@ class ReputationListener {
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
-        } 
+        }
     }
 
     /**
@@ -178,7 +184,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRNoteNeg(GenericEvent $event) {
+    public function onRNoteNeg(GenericEvent $event)
+    {
         $this->logger->info('*** onRNoteNeg');
 
         $subject = $event->getSubject();
@@ -221,7 +228,7 @@ class ReputationListener {
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
-        } 
+        }
     }
 
 
@@ -230,7 +237,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRDebateFollow(GenericEvent $event) {
+    public function onRDebateFollow(GenericEvent $event)
+    {
         $this->logger->info('*** onRDebateFollow');
 
         $subject = $event->getSubject();
@@ -255,7 +263,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRUserFollow(GenericEvent $event) {
+    public function onRUserFollow(GenericEvent $event)
+    {
         $this->logger->info('*** onRUserFollow');
 
         $subject = $event->getSubject();
@@ -279,7 +288,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRDebateUnfollow(GenericEvent $event) {
+    public function onRDebateUnfollow(GenericEvent $event)
+    {
         $this->logger->info('*** onRDebateUnfollow');
 
         $subject = $event->getSubject();
@@ -304,7 +314,8 @@ class ReputationListener {
      *
      * @param GenericEvent
      */
-    public function onRUserUnfollow(GenericEvent $event) {
+    public function onRUserUnfollow(GenericEvent $event)
+    {
         $this->logger->info('*** onRUserUnfollow');
 
         $subject = $event->getSubject();
@@ -334,7 +345,8 @@ class ReputationListener {
      *
      * @param
      */
-    private function insertPUReputation($userId, $prActionId, $objectName, $objectId) {
+    private function insertPUReputation($userId, $prActionId, $objectName, $objectId)
+    {
         $this->logger->info('*** insertPUReputation');
         $this->logger->info('userId = '.print_r($userId, true));
         $this->logger->info('prActionId = '.print_r($prActionId, true));

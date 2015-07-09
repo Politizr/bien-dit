@@ -1,0 +1,147 @@
+{# @todo manage not granted case #}
+{% if (isGrantedE()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+{% elseif (isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% endif %}
+{% extends layout %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {# @todo html/css jqueryui (w. only autocomplete widget) > à styler / thème UI (?) #}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery-ui.min.css') }}">
+{% endblock %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
+{% endblock %}
+
+{% block fixedActions %}
+    <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
+    <div id="fixedActions">
+        {% set urlPublishBack = path('ContribDashboardC') %}
+        {% set urlDeleteBack = path('MyDraftsC') %}
+        {% if isGrantedE() %}
+            {% set urlPublishBack = path('ContribDashboardE') %}
+            {% set urlDeleteBack = path('MyDraftsE') %}
+        {% endif %}
+        <div class="ajaxLoader" style="display: none;">
+            <i class="iconSpin5 animateSpin"></i>
+            <div class="ajaxLoaderBg"></div>
+        </div>
+        <div class="actionSave">
+            <a action="debateSave" subjectId="{{ debate.id }}"><i class="iconDraft"></i>sauvegarder</a>
+        </div>
+        <div class="actionPublish">
+            <a action="debatePublish" subjectId="{{ debate.id }}" url="{{ urlPublishBack }}"><i class="iconPublish"></i>publier</a>
+        </div>
+        <div class="actionDelete">
+            <!-- @todo html/css à prévoir & styler -->
+            <a action="debateDelete" subjectId="{{ debate.id }}" url="{{ urlDeleteBack }}"><i class="iconDelete"></i>supprimer</a>
+        </div>
+    </div>
+{% endblock fixedActions %}
+
+{% block main %}
+    <div id="main">
+        <!-- @todo html/css pour info: blocs encadrés par un form -->
+        <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm">
+            <div class="postSummary">
+                <div class="pad40">
+                    <div class="postSummaryFooter">
+                        <!-- <textarea class="postSummaryTitle" action="editTitle" placeholder="Donnez un titre à votre débat"></textarea> -->
+                        {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre débat'}}) }}
+                    </div>
+                </div>
+                <div id="bigCamera" action="modalUploadOpen"><i class="iconCamera"></i><i class="iconNotifYes"></i></div>
+
+                <div class="illustrationShadow"></div>
+                {{ debate | image('debate_header') }}
+            </div>
+            <div id="illustration_l">
+                <div class="illustrationShadow"></div>
+                {{ debate | image('debate_header') }}
+            </div>
+            <div id="illustration_r">
+                <div class="illustrationShadow"></div>
+                {{ debate | image('debate_header') }}
+            </div>
+            <div id="copyrightHolder">
+                <i class="iconCopyright" action="showCopyright"></i>
+                <div id="copyright" style="display: none;" action="showCopyright">
+                    <i class="iconArrowUp"></i>
+                    Nom prénom, <a href="" target="_blank">lien</a>
+                </div>
+            </div>
+
+            <div id="lateralHolder">
+                <div id="lateralInfo">
+                    <i class="iconInfo"></i><br>
+                    <b>Attention, une fois publié, vous ne pourrez plus modifier votre débat.</b>
+                </div>
+            </div>
+            
+            <div id="tagBox">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">les thématiques du débat</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        @todo : slider ajouter un tag
+                    </div>
+                </div>
+
+                {{ debateTagsEdit(debate, null, 1, true) }}
+            </div>
+
+            <div id="postText">
+                <div class="paragraph summary">
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderLeft" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>éditer un champ texte</h4>
+                        {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
+                    </div>
+                    <div class="editable summary">
+                        {{ debate.summary | raw }}
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderLeft" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>éditer un champ texte</h4>
+                        {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
+                    </div>
+                    <div class="editable description">
+                        {{ debate.description | raw }}
+                    </div>
+                </div>
+            </div>
+
+            {# hidden form inputs filled by js #}
+            {{ form_row(form.summary) }}
+            {{ form_row(form.description) }}
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
+
+    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 1 } %}
+
+    {% include 'PolitizrFrontBundle:JS:editor.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:debatePublishDelete.js.twig' %}
+{% endblock javascriptFooter %}

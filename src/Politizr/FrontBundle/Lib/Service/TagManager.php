@@ -142,7 +142,7 @@ class TagManager
         $tagTitle = $request->get('tagTitle');
         $tagId = $request->get('tagId');
         $tagTypeId = $request->get('tagTypeId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
         $newTag = $request->get('newTag');
 
         if (empty($tagTypeId)) {
@@ -153,7 +153,7 @@ class TagManager
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
 
         // Association du tag au debat
-        $created = PDDTaggedTQuery::create()->addElement($objectId, $tagId);
+        $created = PDDTaggedTQuery::create()->addElement($subjectId, $tagId);
 
         if (!$created) {
             $htmlTag = null;
@@ -162,9 +162,9 @@ class TagManager
             $tag = PTagQuery::create()->findPk($tagId);
             $templating = $this->sc->get('templating');
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
+                'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
-                    'objectId' => $objectId,
+                    'subjectId' => $subjectId,
                     'tag' => $tag,
                     'deleteUrl' => $this->sc->get('router')->generate('DebateDeleteTag')
                 )
@@ -196,10 +196,10 @@ class TagManager
 
         // Récupération args
         $tagId = $request->get('tagId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
 
         // Suppression du tag / profil
-        $deleted = PDDTaggedTQuery::create()->deleteElement($objectId, $tagId);
+        $deleted = PDDTaggedTQuery::create()->deleteElement($subjectId, $tagId);
 
         return true;
     }

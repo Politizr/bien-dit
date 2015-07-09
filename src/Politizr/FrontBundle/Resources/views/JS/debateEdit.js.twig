@@ -1,66 +1,44 @@
 <script>
     // **************************** //
-    //      Initialisation editeur
-    // **************************** //
-    var summaryEditor = new MediumEditor('.summary-editable', {
-        // buttonLabels: 'fontawesome',
-        anchorButtonClass: 'mdm-btn',
-        placeholder: 'Saisissez ici le résumé du débat.',
-    });
-    var descriptionEditor = new MediumEditor('.description-editable', {
-        // buttonLabels: 'fontawesome'
-        anchorButtonClass: 'mdm-btn',
-        placeholder: 'Saisissez ici le corps du débat.',
-    });
-
-
-    // **************************** //
-    //      Suppression style Bootstrap sur input
-    // **************************** //
-    $(function () {
-        $("body").find("#main input.form-control").attr("class", "h1");
-    });
-
-    // **************************** //
     //      Auto save silencieuse
     //      TODO: à affiner
-    // **************************** //
-
-    // MAJ des tags
-    $(".auto_submit_form").change(function() {
-        $('[action="debate-save"]').trigger('click', 'silence');
-    });
-
-    // Saisie de texte sur les éditeurs medium
-    // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
-    var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
-    function dataRequest() {
-        // $('[action="debate-save"]').click();
-        $('[action="debate-save"]').trigger('click', 'silence');
-    }
-    function delayRequest(ev) {
-        if(delayRequest.timeout) {
-            clearTimeout(delayRequest.timeout);
-        }
-    
-        var target = this;
-    
-        delayRequest.timeout = setTimeout(function() {
-            dataRequest.call(target, ev);
-        }, 2000); // 2s
-    }
-
-    // Mise en forme sur les éditeurs medium
-    $('.summary-editable, .description-editable').on('mouseup', function() {
-        $('[action="debate-save"]').trigger('click', 'silence');
-    });
-
-
+//    // **************************** //
+//
+//    // MAJ des tags
+//    $(".auto_submit_form").change(function() {
+//        $('[action="debate-save"]').trigger('click', 'silence');
+//    });
+//
+//    // Saisie de texte sur les éditeurs medium
+//    // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+//    var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
+//    function dataRequest() {
+//        // $('[action="debate-save"]').click();
+//        $('[action="debate-save"]').trigger('click', 'silence');
+//    }
+//    function delayRequest(ev) {
+//        if(delayRequest.timeout) {
+//            clearTimeout(delayRequest.timeout);
+//        }
+//    
+//        var target = this;
+//    
+//        delayRequest.timeout = setTimeout(function() {
+//            dataRequest.call(target, ev);
+//        }, 2000); // 2s
+//    }
+//
+//    // Mise en forme sur les éditeurs medium
+//    $('.summary-editable, .description-editable').on('mouseup', function() {
+//        $('[action="debate-save"]').trigger('click', 'silence');
+//    });
+//
+//
     // **************************** //
     //      POST
     // **************************** //
     // Update debate
-    $("body").on("click", "[action='debate-save']", function(e, mode) {
+    $("body").on("click", "[action='debateSave']", function(e, mode) {
         console.log('*** click save');
         console.log(mode);
 
@@ -75,13 +53,13 @@
      
         if (mode === 'silence') {
             // sauvegarde silencieuse
-            $.ajax({type: 'POST', url : "{{ path('DebateUpdate') }}", data: $("#form-debate-update").serialize() });
+            $.ajax({type: 'POST', url : "{{ path('DebateUpdate') }}", data: $("#formDebateUpdate").serialize() });
         } else {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
                 url : "{{ path('DebateUpdate') }}",
-                data: $("#form-debate-update").serialize(),
+                data: $("#formDebateUpdate").serialize(),
                 {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                 success: function(data) {
                     $('#ajaxGlobalLoader').hide();
@@ -98,10 +76,4 @@
 
         return false;
     });
-
-    // Retour liste
-    $('body').on('click', "[action='debate-list']", function(e){
-        window.location = $("[action='debate-list']").attr('url');
-    });
-
 </script>

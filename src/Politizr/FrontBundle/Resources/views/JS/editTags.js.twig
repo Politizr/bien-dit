@@ -24,7 +24,7 @@
         console.log('nbZones = '+nbZones);
 
         for (i = 1; i <= nbZones; i++ ) {
-            var tagTypeId = $('#edit-tag-zone-'+i).children('.tagsAttr').eq(0).attr('tag-type-id');
+            var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
             console.log('tagTypeId = '+tagTypeId);
 
             $.ajax({
@@ -32,7 +32,7 @@
                 url: "{{ path('GetTags') }}",
                 data: { 'tagTypeId': tagTypeId, 'zoneId': i },
                 dataType: 'json',
-                // context: $('#edit-tag-zone-'+i),
+                // context: $('#editTagZone-'+i),
                 {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                 success: function(data) {
                     $('#ajaxGlobalLoader').hide();
@@ -52,7 +52,7 @@
                         var zoneId = data['zoneId'];
 
                         // http://api.jqueryui.com/autocomplete/
-                        $('#edit-tag-zone-'+zoneId).children('.selectedTag').eq(0).autocomplete({
+                        $('#editTagZone-'+zoneId).children('.selectedTag').first().autocomplete({
                         // $('.selectedTag').autocomplete({
                             source: function( request, response ) {
                                 var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
@@ -65,8 +65,8 @@
                                 event.preventDefault();
 
                                 // Affichage de la sélection
-                                $('#edit-tag-zone-'+zoneId).children('.selectedTag').eq(0).val(ui.item.label);     // display the selected text
-                                $('#edit-tag-zone-'+zoneId).children('.selectedTagID').eq(0).val(ui.item.value);   // save selected id to hidden input
+                                $('#editTagZone-'+zoneId).children('.selectedTag').first().val(ui.item.label);     // display the selected text
+                                $('#editTagZone-'+zoneId).children('.selectedTagID').first().val(ui.item.value);   // save selected id to hidden input
                             }
                         });
                     }
@@ -79,17 +79,18 @@
     $("body").on("click", "button[action='addTag']", function() {
         console.log('click addTag');
 
-        var tagTitle = $(this).siblings('.selectedTag').eq(0).val();
-        var tagId = $(this).siblings('.selectedTagID').eq(0).val();
-        var tagTypeId = $(this).siblings('.tagsAttr').eq(0).attr('tag-type-id');
-        var objectId = $(this).siblings('.tagsAttr').eq(0).attr('object-id');
-        var newTag = $(this).siblings('.tagsAttr').eq(0).attr('new-tag');
-        var addUrl = $(this).siblings('.tagsAttr').eq(0).attr('path');
+        var tagTitle = $(this).siblings('.selectedTag').first().val();
+        var tagId = $(this).siblings('.selectedTagID').first().val();
+
+        var tagTypeId = $(this).closest('.addTag').attr('tagTypeId');
+        var subjectId = $(this).closest('.addTag').attr('subjectId');
+        var newTag = $(this).closest('.addTag').attr('newTag');
+        var addUrl = $(this).closest('.addTag').attr('path');
 
         console.log('title = ' + tagTitle);
         console.log('id = ' + tagId);
         console.log('type = ' + tagTypeId);
-        console.log('objectId = ' + objectId);
+        console.log('subjectId = ' + subjectId);
         console.log('newTag = ' + newTag);
         console.log('url = ' + addUrl);
 
@@ -102,7 +103,7 @@
         $.ajax({
             type: 'POST',
             url: addUrl,
-            data: { 'tagTitle': tagTitle, 'tagId': tagId, 'tagTypeId': tagTypeId, 'objectId': objectId, 'newTag': newTag },
+            data: { 'tagTitle': tagTitle, 'tagId': tagId, 'tagTypeId': tagTypeId, 'subjectId': subjectId, 'newTag': newTag },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             context: this,
@@ -116,12 +117,12 @@
 
                     if (data['created']) {
                         // Association du nouveau tag aux tags suivis
-                        $(this).siblings('.displayTagsZone').eq(0).append(data['htmlTag']);
+                        $(this).siblings('.editableTagList').first().append(data['htmlTag']);
                     }
 
                     // Init inputs tag
-                    $(this).siblings('.selectedTag').eq(0).val('');
-                    $(this).siblings('.selectedTagID').eq(0).val('');
+                    $(this).siblings('.selectedTag').first().val('');
+                    $(this).siblings('.selectedTagID').first().val('');
                 }
             }
         });
@@ -131,18 +132,18 @@
     $("body").on("click", "[action='deleteTag']", function() {
         console.log('click deleteTag');
 
-        var tagId = $(this).attr('tag-id');
-        var objectId = $(this).attr('object-id');;
+        var tagId = $(this).attr('tagId');
+        var subjectId = $(this).attr('subjectId');;
         var deleteUrl = $(this).attr('path');
 
         console.log('tagId = ' + tagId);
-        console.log('objectId = ' + objectId);
+        console.log('subjectId = ' + subjectId);
         console.log('deleteUrl = ' + deleteUrl);
 
         $.ajax({
             type: 'POST',
             url: deleteUrl,
-            data: { 'objectId': objectId, 'tagId': tagId },
+            data: { 'subjectId': subjectId, 'tagId': tagId },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             context: $(this).parent(),

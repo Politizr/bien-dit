@@ -1,0 +1,14 @@
+<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" subjectId="{{ object.id }}" newTag="{{ newTag }}" path="{{ path(addPath) }}">
+
+    {# @todo maj code avec normalisation camelCase #}
+    <div class="editableTagList">
+        {% for tag in tags %}
+            {% include 'PolitizrFrontBundle:Tag:_detailEditable.html.twig' with { 'subjectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
+        {% endfor %}
+    </div>
+
+    {# Sélection #}
+    <input type="text" class="selectedTag" placeholder="saisissez une nouvelle thématique" />
+    <input type="hidden" class="selectedTagID" />
+    <button type="button" action="addTag"><i class="iconCheck"></i></button>
+</div>

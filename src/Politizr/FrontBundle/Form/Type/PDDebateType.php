@@ -12,59 +12,46 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * form minimaliste > token, id
- * 
+ * Debate edition form
+ *
  * @author Lionel Bouzonville
  */
 class PDDebateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add('id', 'hidden', array(
-            'required' => true, 
-            )
-        );
+            'required' => true,
+        ));
         
         $builder->add('p_user_id', 'hidden', array(
-            'required' => true, 
-            )
-        );
-        
+            'required' => true,
+        ));
 
-        $builder->add('title', 'text', array(
-            'required' => false,
-            'label' => 'Titre', 
-            'attr' =>   array(
-                'class' => 'h1',
-                )
-            )
-        );
+        $builder->add('title', 'textarea', array(
+            'required' => true,
+        ));
         
         $builder->add('summary', 'hidden', array(
             'required' => false,
-            'label' => 'Résumé', 
-            )
-        );
+        ));
         
         $builder->add('description', 'hidden', array(
             'required' => false,
-            'label' => 'Description',
-            )
-        );     
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'debate';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -72,5 +59,4 @@ class PDDebateType extends AbstractType
             'data_class' => 'Politizr\Model\PDDebate',
         ));
     }
-
 }

@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block fixedActions %}
-    <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
-        <i class="iconTimeline"></i>fil du débat
-    </a>
-    <div class="subscribe actionFollow withLoaderInside">
-        {{ debate | linkSubscribeDebate }}
+    <div id="fixedActions">
+        <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+            <i class="iconTimeline"></i>fil du débat
+        </a>
+        <div class="subscribe actionFollow withLoaderInside">
+            {{ debate | linkSubscribeDebate }}
+        </div>
     </div>
-    
-    {{ parent() }}
 {% endblock fixedActions %}
 
 {% block main %}
