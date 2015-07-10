@@ -83,6 +83,18 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     protected $file_name;
 
     /**
+     * The value for the copyright field.
+     * @var        string
+     */
+    protected $copyright;
+
+    /**
+     * The value for the with_shadow field.
+     * @var        boolean
+     */
+    protected $with_shadow;
+
+    /**
      * The value for the summary field.
      * @var        string
      */
@@ -326,6 +338,28 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     {
 
         return $this->file_name;
+    }
+
+    /**
+     * Get the [copyright] column value.
+     *
+     * @return string
+     */
+    public function getCopyright()
+    {
+
+        return $this->copyright;
+    }
+
+    /**
+     * Get the [with_shadow] column value.
+     *
+     * @return boolean
+     */
+    public function getWithShadow()
+    {
+
+        return $this->with_shadow;
     }
 
     /**
@@ -659,6 +693,56 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     } // setFileName()
 
     /**
+     * Set the value of [copyright] column.
+     *
+     * @param  string $v new value
+     * @return PDDebateArchive The current object (for fluent API support)
+     */
+    public function setCopyright($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->copyright !== $v) {
+            $this->copyright = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::COPYRIGHT;
+        }
+
+
+        return $this;
+    } // setCopyright()
+
+    /**
+     * Sets the value of the [with_shadow] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebateArchive The current object (for fluent API support)
+     */
+    public function setWithShadow($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->with_shadow !== $v) {
+            $this->with_shadow = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::WITH_SHADOW;
+        }
+
+
+        return $this;
+    } // setWithShadow()
+
+    /**
      * Set the value of [summary] column.
      *
      * @param  string $v new value
@@ -964,17 +1048,19 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->summary = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->description = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->note_pos = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->note_neg = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->nb_views = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->published = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->published_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->published_by = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->favorite = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->archived_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->copyright = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->with_shadow = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->summary = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->description = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->note_pos = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->note_neg = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+            $this->nb_views = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->published = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->published_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->published_by = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->favorite = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->online = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->archived_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -984,7 +1070,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 18; // 18 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebateArchive object", $e);
@@ -1228,6 +1314,12 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
+        if ($this->isColumnModified(PDDebateArchivePeer::COPYRIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`copyright`';
+        }
+        if ($this->isColumnModified(PDDebateArchivePeer::WITH_SHADOW)) {
+            $modifiedColumns[':p' . $index++]  = '`with_shadow`';
+        }
         if ($this->isColumnModified(PDDebateArchivePeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
@@ -1292,6 +1384,12 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
+                        break;
+                    case '`copyright`':
+                        $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
+                        break;
+                    case '`with_shadow`':
+                        $stmt->bindValue($identifier, (int) $this->with_shadow, PDO::PARAM_INT);
                         break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
@@ -1475,36 +1573,42 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return $this->getFileName();
                 break;
             case 7:
-                return $this->getSummary();
+                return $this->getCopyright();
                 break;
             case 8:
-                return $this->getDescription();
+                return $this->getWithShadow();
                 break;
             case 9:
-                return $this->getNotePos();
+                return $this->getSummary();
                 break;
             case 10:
-                return $this->getNoteNeg();
+                return $this->getDescription();
                 break;
             case 11:
-                return $this->getNbViews();
+                return $this->getNotePos();
                 break;
             case 12:
-                return $this->getPublished();
+                return $this->getNoteNeg();
                 break;
             case 13:
-                return $this->getPublishedAt();
+                return $this->getNbViews();
                 break;
             case 14:
-                return $this->getPublishedBy();
+                return $this->getPublished();
                 break;
             case 15:
-                return $this->getFavorite();
+                return $this->getPublishedAt();
                 break;
             case 16:
-                return $this->getOnline();
+                return $this->getPublishedBy();
                 break;
             case 17:
+                return $this->getFavorite();
+                break;
+            case 18:
+                return $this->getOnline();
+                break;
+            case 19:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1542,17 +1646,19 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $keys[4] => $this->getPUserId(),
             $keys[5] => $this->getTitle(),
             $keys[6] => $this->getFileName(),
-            $keys[7] => $this->getSummary(),
-            $keys[8] => $this->getDescription(),
-            $keys[9] => $this->getNotePos(),
-            $keys[10] => $this->getNoteNeg(),
-            $keys[11] => $this->getNbViews(),
-            $keys[12] => $this->getPublished(),
-            $keys[13] => $this->getPublishedAt(),
-            $keys[14] => $this->getPublishedBy(),
-            $keys[15] => $this->getFavorite(),
-            $keys[16] => $this->getOnline(),
-            $keys[17] => $this->getArchivedAt(),
+            $keys[7] => $this->getCopyright(),
+            $keys[8] => $this->getWithShadow(),
+            $keys[9] => $this->getSummary(),
+            $keys[10] => $this->getDescription(),
+            $keys[11] => $this->getNotePos(),
+            $keys[12] => $this->getNoteNeg(),
+            $keys[13] => $this->getNbViews(),
+            $keys[14] => $this->getPublished(),
+            $keys[15] => $this->getPublishedAt(),
+            $keys[16] => $this->getPublishedBy(),
+            $keys[17] => $this->getFavorite(),
+            $keys[18] => $this->getOnline(),
+            $keys[19] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1614,36 +1720,42 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->setFileName($value);
                 break;
             case 7:
-                $this->setSummary($value);
+                $this->setCopyright($value);
                 break;
             case 8:
-                $this->setDescription($value);
+                $this->setWithShadow($value);
                 break;
             case 9:
-                $this->setNotePos($value);
+                $this->setSummary($value);
                 break;
             case 10:
-                $this->setNoteNeg($value);
+                $this->setDescription($value);
                 break;
             case 11:
-                $this->setNbViews($value);
+                $this->setNotePos($value);
                 break;
             case 12:
-                $this->setPublished($value);
+                $this->setNoteNeg($value);
                 break;
             case 13:
-                $this->setPublishedAt($value);
+                $this->setNbViews($value);
                 break;
             case 14:
-                $this->setPublishedBy($value);
+                $this->setPublished($value);
                 break;
             case 15:
-                $this->setFavorite($value);
+                $this->setPublishedAt($value);
                 break;
             case 16:
-                $this->setOnline($value);
+                $this->setPublishedBy($value);
                 break;
             case 17:
+                $this->setFavorite($value);
+                break;
+            case 18:
+                $this->setOnline($value);
+                break;
+            case 19:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1677,17 +1789,19 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSummary($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setNotePos($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setNoteNeg($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setNbViews($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublished($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setPublishedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPublishedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setFavorite($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setArchivedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCopyright($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setWithShadow($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setSummary($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setDescription($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setNotePos($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setNoteNeg($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setNbViews($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setPublished($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setPublishedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPublishedBy($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setFavorite($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setOnline($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setArchivedAt($arr[$keys[19]]);
     }
 
     /**
@@ -1706,6 +1820,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::P_USER_ID)) $criteria->add(PDDebateArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDDebateArchivePeer::TITLE)) $criteria->add(PDDebateArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDDebateArchivePeer::FILE_NAME)) $criteria->add(PDDebateArchivePeer::FILE_NAME, $this->file_name);
+        if ($this->isColumnModified(PDDebateArchivePeer::COPYRIGHT)) $criteria->add(PDDebateArchivePeer::COPYRIGHT, $this->copyright);
+        if ($this->isColumnModified(PDDebateArchivePeer::WITH_SHADOW)) $criteria->add(PDDebateArchivePeer::WITH_SHADOW, $this->with_shadow);
         if ($this->isColumnModified(PDDebateArchivePeer::SUMMARY)) $criteria->add(PDDebateArchivePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PDDebateArchivePeer::DESCRIPTION)) $criteria->add(PDDebateArchivePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDDebateArchivePeer::NOTE_POS)) $criteria->add(PDDebateArchivePeer::NOTE_POS, $this->note_pos);
@@ -1786,6 +1902,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
+        $copyObj->setCopyright($this->getCopyright());
+        $copyObj->setWithShadow($this->getWithShadow());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
@@ -1855,6 +1973,8 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $this->p_user_id = null;
         $this->title = null;
         $this->file_name = null;
+        $this->copyright = null;
+        $this->with_shadow = null;
         $this->summary = null;
         $this->description = null;
         $this->note_pos = null;

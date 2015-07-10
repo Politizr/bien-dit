@@ -1,25 +1,25 @@
               beforeSend: function ( xhr ) {
-                $('#infoBoxHolder.boxSuccess').hide();
-                $('#infoBoxHolder.boxError').hide();
+                $('#infoBoxHolder .boxSuccess').hide();
+                $('#infoBoxHolder .boxError').hide();
                 $('#infoBoxHolder.boxAlert').hide();
                 localLoader.show();
               },
               statusCode: {
                 404: function() {
                   localLoader.hide();
-                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur 404: cette action n\'existe pas.');
-                  $('#infoBoxHolder.boxError').show();
+                  $('#infoBoxHolder .boxError .notifBoxText').html('Erreur 404: cette action n\'existe pas.');
+                  $('#infoBoxHolder .boxError').show();
                 },
                 500: function() {
                   localLoader.hide();
-                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur 500: merci de recharger la page.');
-                  $('#infoBoxHolder.boxError').show();
+                  $('#infoBoxHolder .boxError .notifBoxText').html('Erreur 500: merci de recharger la page.');
+                  $('#infoBoxHolder .boxError').show();
                 }
               },            
               error: function(jqXHR, textStatus, errorThrown) {
                   localLoader.hide();
-                  $('#infoBoxHolder.boxError.notifBoxText').html('Erreur inconnue: merci de recharger la page.');
-                  $('#infoBoxHolder.boxError').show();
+                  $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+                  $('#infoBoxHolder .boxError').show();
                   console.log('textStatus - '+textStatus);
                   console.log('errorThrown - '+errorThrown);
               },

@@ -20,6 +20,11 @@ DebateUpdate:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debateUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+DebatePhotoInfoUpdate:
+    pattern:  /profil/debat/photo-info/update.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debatePhotoInfoUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 DebatePublish:
     pattern:  /profil/debat/publish.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:debatePublish, _format: json }

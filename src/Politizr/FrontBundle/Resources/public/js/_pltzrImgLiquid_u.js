@@ -1,6 +1,6 @@
 $(function(){	
 	// full size illustration image
-    $("#illustration, #illustration_l, #illustration_r, #current-photo").imgLiquid({
+    $("#illustration, #illustration_l, #illustration_r, #currentPhoto").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"

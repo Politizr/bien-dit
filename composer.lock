@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "098feab95375ec4b4eb215b08541f818",
+    "hash": "72c4db4cf8e52b733ae98f79a7b5265e",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -660,7 +660,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/2483917ccb94513b74135425722da425ea243d21",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
                 "reference": "2483917ccb94513b74135425722da425ea243d21",
                 "shasum": ""
             },

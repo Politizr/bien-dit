@@ -159,7 +159,7 @@ body.noscroll {
 
 // copyright
 
-#copyright {
+#copyrightBox {
 	position: absolute;
 	padding: 20px;
 	width: 280px;
@@ -176,7 +176,7 @@ body.noscroll {
 	box-shadow: 0px 0px 20px 0px #000000;
 }
 
-#copyright i {
+#copyrightBox i {
 	position: absolute;
 	right: 18px;
 	top: -10px;
@@ -184,8 +184,8 @@ body.noscroll {
 	font-size: 12px;
 }
 
-#copyright a {color: $highlight;}
-#copyright a:hover {color: #fff;}
+#copyrightBox a {color: $highlight;}
+#copyrightBox a:hover {color: #fff;}
 
 // organization sheet
 

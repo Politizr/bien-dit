@@ -37,9 +37,6 @@
     </table>
 
 
-
-
-
     <table name="p_r_badge">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -692,9 +689,11 @@
         <column name="title" type="varchar" size="100" />
 
         <column name="file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
+        <column name="with_shadow" type="boolean" />
 
         <column name="summary" type="longvarchar" />
-        <column name="description" type="longvarchar" />
+        <column name="description" type="clob" />
 
         <column name="note_pos" type="integer" defaultValue="0" />
         <column name="note_neg" type="integer" defaultValue="0" />

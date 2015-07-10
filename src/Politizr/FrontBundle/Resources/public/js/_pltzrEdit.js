@@ -95,12 +95,12 @@ $(function(){
 	
 	// close upload modal 
 	$("body").on("click", "[action='maskIllustrationShadow']", function() {
-		$('.maskIllustrationShadow, #current-photo .illustrationShadow').hide();
+		$('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
 		$('.showIllustrationShadow').show();
 	});
 	$("body").on("click", "[action='showIllustrationShadow']", function() {
 		$('.showIllustrationShadow').hide();
-		$('.maskIllustrationShadow, #current-photo .illustrationShadow').show();
+		$('.maskIllustrationShadow, #currentPhoto .illustrationShadow').show();
 	});
 	
 	// toggle image copyright

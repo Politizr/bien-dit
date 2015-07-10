@@ -28,6 +28,8 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDocumentQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDocumentQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
+ * @method PDocumentQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
+ * @method PDocumentQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PDocumentQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDocumentQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDocumentQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
@@ -44,6 +46,8 @@ use Politizr\Model\PUser;
  * @method PDocumentQuery groupByPUserId() Group by the p_user_id column
  * @method PDocumentQuery groupByTitle() Group by the title column
  * @method PDocumentQuery groupByFileName() Group by the file_name column
+ * @method PDocumentQuery groupByCopyright() Group by the copyright column
+ * @method PDocumentQuery groupByWithShadow() Group by the with_shadow column
  * @method PDocumentQuery groupBySummary() Group by the summary column
  * @method PDocumentQuery groupByDescription() Group by the description column
  * @method PDocumentQuery groupByNotePos() Group by the note_pos column
@@ -82,6 +86,8 @@ use Politizr\Model\PUser;
  * @method PDocument findOneByPUserId(int $p_user_id) Return the first PDocument filtered by the p_user_id column
  * @method PDocument findOneByTitle(string $title) Return the first PDocument filtered by the title column
  * @method PDocument findOneByFileName(string $file_name) Return the first PDocument filtered by the file_name column
+ * @method PDocument findOneByCopyright(string $copyright) Return the first PDocument filtered by the copyright column
+ * @method PDocument findOneByWithShadow(boolean $with_shadow) Return the first PDocument filtered by the with_shadow column
  * @method PDocument findOneBySummary(string $summary) Return the first PDocument filtered by the summary column
  * @method PDocument findOneByDescription(string $description) Return the first PDocument filtered by the description column
  * @method PDocument findOneByNotePos(int $note_pos) Return the first PDocument filtered by the note_pos column
@@ -98,6 +104,8 @@ use Politizr\Model\PUser;
  * @method array findByPUserId(int $p_user_id) Return PDocument objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDocument objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDocument objects filtered by the file_name column
+ * @method array findByCopyright(string $copyright) Return PDocument objects filtered by the copyright column
+ * @method array findByWithShadow(boolean $with_shadow) Return PDocument objects filtered by the with_shadow column
  * @method array findBySummary(string $summary) Return PDocument objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDocument objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDocument objects filtered by the note_pos column
@@ -221,7 +229,7 @@ abstract class BasePDocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `descendant_class` FROM `p_document` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -453,6 +461,62 @@ abstract class BasePDocumentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentPeer::FILE_NAME, $fileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the copyright column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCopyright('fooValue');   // WHERE copyright = 'fooValue'
+     * $query->filterByCopyright('%fooValue%'); // WHERE copyright LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $copyright The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByCopyright($copyright = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($copyright)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $copyright)) {
+                $copyright = str_replace('*', '%', $copyright);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::COPYRIGHT, $copyright, $comparison);
+    }
+
+    /**
+     * Filter the query on the with_shadow column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWithShadow(true); // WHERE with_shadow = true
+     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
+     * </code>
+     *
+     * @param     boolean|string $withShadow The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentQuery The current query, for fluid interface
+     */
+    public function filterByWithShadow($withShadow = null, $comparison = null)
+    {
+        if (is_string($withShadow)) {
+            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDocumentPeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

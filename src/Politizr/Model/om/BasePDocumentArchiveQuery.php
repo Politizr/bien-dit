@@ -21,6 +21,8 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDocumentArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDocumentArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
+ * @method PDocumentArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
+ * @method PDocumentArchiveQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PDocumentArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDocumentArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDocumentArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
@@ -37,6 +39,8 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDocumentArchiveQuery groupByTitle() Group by the title column
  * @method PDocumentArchiveQuery groupByFileName() Group by the file_name column
+ * @method PDocumentArchiveQuery groupByCopyright() Group by the copyright column
+ * @method PDocumentArchiveQuery groupByWithShadow() Group by the with_shadow column
  * @method PDocumentArchiveQuery groupBySummary() Group by the summary column
  * @method PDocumentArchiveQuery groupByDescription() Group by the description column
  * @method PDocumentArchiveQuery groupByNotePos() Group by the note_pos column
@@ -59,6 +63,8 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method PDocumentArchive findOneByPUserId(int $p_user_id) Return the first PDocumentArchive filtered by the p_user_id column
  * @method PDocumentArchive findOneByTitle(string $title) Return the first PDocumentArchive filtered by the title column
  * @method PDocumentArchive findOneByFileName(string $file_name) Return the first PDocumentArchive filtered by the file_name column
+ * @method PDocumentArchive findOneByCopyright(string $copyright) Return the first PDocumentArchive filtered by the copyright column
+ * @method PDocumentArchive findOneByWithShadow(boolean $with_shadow) Return the first PDocumentArchive filtered by the with_shadow column
  * @method PDocumentArchive findOneBySummary(string $summary) Return the first PDocumentArchive filtered by the summary column
  * @method PDocumentArchive findOneByDescription(string $description) Return the first PDocumentArchive filtered by the description column
  * @method PDocumentArchive findOneByNotePos(int $note_pos) Return the first PDocumentArchive filtered by the note_pos column
@@ -75,6 +81,8 @@ use Politizr\Model\PDocumentArchiveQuery;
  * @method array findByPUserId(int $p_user_id) Return PDocumentArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDocumentArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDocumentArchive objects filtered by the file_name column
+ * @method array findByCopyright(string $copyright) Return PDocumentArchive objects filtered by the copyright column
+ * @method array findByWithShadow(boolean $with_shadow) Return PDocumentArchive objects filtered by the with_shadow column
  * @method array findBySummary(string $summary) Return PDocumentArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDocumentArchive objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDocumentArchive objects filtered by the note_pos column
@@ -192,7 +200,7 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `archived_at` FROM `p_document_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -422,6 +430,62 @@ abstract class BasePDocumentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDocumentArchivePeer::FILE_NAME, $fileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the copyright column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCopyright('fooValue');   // WHERE copyright = 'fooValue'
+     * $query->filterByCopyright('%fooValue%'); // WHERE copyright LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $copyright The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByCopyright($copyright = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($copyright)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $copyright)) {
+                $copyright = str_replace('*', '%', $copyright);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDocumentArchivePeer::COPYRIGHT, $copyright, $comparison);
+    }
+
+    /**
+     * Filter the query on the with_shadow column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWithShadow(true); // WHERE with_shadow = true
+     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
+     * </code>
+     *
+     * @param     boolean|string $withShadow The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDocumentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByWithShadow($withShadow = null, $comparison = null)
+    {
+        if (is_string($withShadow)) {
+            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDocumentArchivePeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

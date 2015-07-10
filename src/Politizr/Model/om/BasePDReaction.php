@@ -122,6 +122,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
     protected $file_name;
 
     /**
+     * The value for the copyright field.
+     * @var        string
+     */
+    protected $copyright;
+
+    /**
+     * The value for the with_shadow field.
+     * @var        boolean
+     */
+    protected $with_shadow;
+
+    /**
      * The value for the summary field.
      * @var        string
      */
@@ -453,6 +465,28 @@ abstract class BasePDReaction extends PDocument implements Persistent
     {
 
         return $this->file_name;
+    }
+
+    /**
+     * Get the [copyright] column value.
+     *
+     * @return string
+     */
+    public function getCopyright()
+    {
+
+        return $this->copyright;
+    }
+
+    /**
+     * Get the [with_shadow] column value.
+     *
+     * @return boolean
+     */
+    public function getWithShadow()
+    {
+
+        return $this->with_shadow;
     }
 
     /**
@@ -863,6 +897,56 @@ abstract class BasePDReaction extends PDocument implements Persistent
     } // setFileName()
 
     /**
+     * Set the value of [copyright] column.
+     *
+     * @param  string $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setCopyright($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->copyright !== $v) {
+            $this->copyright = $v;
+            $this->modifiedColumns[] = PDReactionPeer::COPYRIGHT;
+        }
+
+
+        return $this;
+    } // setCopyright()
+
+    /**
+     * Sets the value of the [with_shadow] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setWithShadow($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->with_shadow !== $v) {
+            $this->with_shadow = $v;
+            $this->modifiedColumns[] = PDReactionPeer::WITH_SHADOW;
+        }
+
+
+        return $this;
+    } // setWithShadow()
+
+    /**
      * Set the value of [summary] column.
      *
      * @param  string $v new value
@@ -1150,16 +1234,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $this->p_user_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
             $this->title = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->file_name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->summary = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->note_pos = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->note_neg = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->nb_views = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-            $this->published = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->published_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->published_by = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->favorite = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->online = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->copyright = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->with_shadow = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->summary = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->description = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->note_pos = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->note_neg = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+            $this->nb_views = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+            $this->published = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->published_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->published_by = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->favorite = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->online = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1169,7 +1255,7 @@ abstract class BasePDReaction extends PDocument implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 22; // 22 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 24; // 24 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1531,6 +1617,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
+        if ($this->isColumnModified(PDReactionPeer::COPYRIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`copyright`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::WITH_SHADOW)) {
+            $modifiedColumns[':p' . $index++]  = '`with_shadow`';
+        }
         if ($this->isColumnModified(PDReactionPeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
@@ -1607,6 +1699,12 @@ abstract class BasePDReaction extends PDocument implements Persistent
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
+                        break;
+                    case '`copyright`':
+                        $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
+                        break;
+                    case '`with_shadow`':
+                        $stmt->bindValue($identifier, (int) $this->with_shadow, PDO::PARAM_INT);
                         break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
@@ -1826,33 +1924,39 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 return $this->getFileName();
                 break;
             case 12:
-                return $this->getSummary();
+                return $this->getCopyright();
                 break;
             case 13:
-                return $this->getDescription();
+                return $this->getWithShadow();
                 break;
             case 14:
-                return $this->getNotePos();
+                return $this->getSummary();
                 break;
             case 15:
-                return $this->getNoteNeg();
+                return $this->getDescription();
                 break;
             case 16:
-                return $this->getNbViews();
+                return $this->getNotePos();
                 break;
             case 17:
-                return $this->getPublished();
+                return $this->getNoteNeg();
                 break;
             case 18:
-                return $this->getPublishedAt();
+                return $this->getNbViews();
                 break;
             case 19:
-                return $this->getPublishedBy();
+                return $this->getPublished();
                 break;
             case 20:
-                return $this->getFavorite();
+                return $this->getPublishedAt();
                 break;
             case 21:
+                return $this->getPublishedBy();
+                break;
+            case 22:
+                return $this->getFavorite();
+                break;
+            case 23:
                 return $this->getOnline();
                 break;
             default:
@@ -1896,16 +2000,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
             $keys[9] => $this->getPUserId(),
             $keys[10] => $this->getTitle(),
             $keys[11] => $this->getFileName(),
-            $keys[12] => $this->getSummary(),
-            $keys[13] => $this->getDescription(),
-            $keys[14] => $this->getNotePos(),
-            $keys[15] => $this->getNoteNeg(),
-            $keys[16] => $this->getNbViews(),
-            $keys[17] => $this->getPublished(),
-            $keys[18] => $this->getPublishedAt(),
-            $keys[19] => $this->getPublishedBy(),
-            $keys[20] => $this->getFavorite(),
-            $keys[21] => $this->getOnline(),
+            $keys[12] => $this->getCopyright(),
+            $keys[13] => $this->getWithShadow(),
+            $keys[14] => $this->getSummary(),
+            $keys[15] => $this->getDescription(),
+            $keys[16] => $this->getNotePos(),
+            $keys[17] => $this->getNoteNeg(),
+            $keys[18] => $this->getNbViews(),
+            $keys[19] => $this->getPublished(),
+            $keys[20] => $this->getPublishedAt(),
+            $keys[21] => $this->getPublishedBy(),
+            $keys[22] => $this->getFavorite(),
+            $keys[23] => $this->getOnline(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1993,33 +2099,39 @@ abstract class BasePDReaction extends PDocument implements Persistent
                 $this->setFileName($value);
                 break;
             case 12:
-                $this->setSummary($value);
+                $this->setCopyright($value);
                 break;
             case 13:
-                $this->setDescription($value);
+                $this->setWithShadow($value);
                 break;
             case 14:
-                $this->setNotePos($value);
+                $this->setSummary($value);
                 break;
             case 15:
-                $this->setNoteNeg($value);
+                $this->setDescription($value);
                 break;
             case 16:
-                $this->setNbViews($value);
+                $this->setNotePos($value);
                 break;
             case 17:
-                $this->setPublished($value);
+                $this->setNoteNeg($value);
                 break;
             case 18:
-                $this->setPublishedAt($value);
+                $this->setNbViews($value);
                 break;
             case 19:
-                $this->setPublishedBy($value);
+                $this->setPublished($value);
                 break;
             case 20:
-                $this->setFavorite($value);
+                $this->setPublishedAt($value);
                 break;
             case 21:
+                $this->setPublishedBy($value);
+                break;
+            case 22:
+                $this->setFavorite($value);
+                break;
+            case 23:
                 $this->setOnline($value);
                 break;
         } // switch()
@@ -2058,16 +2170,18 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if (array_key_exists($keys[9], $arr)) $this->setPUserId($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setTitle($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setFileName($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSummary($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setNotePos($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setNoteNeg($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setNbViews($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublished($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPublishedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setPublishedBy($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setFavorite($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setOnline($arr[$keys[21]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCopyright($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setWithShadow($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setSummary($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setDescription($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setNotePos($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setNoteNeg($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setNbViews($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setPublished($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setPublishedAt($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setPublishedBy($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setFavorite($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setOnline($arr[$keys[23]]);
     }
 
     /**
@@ -2091,6 +2205,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_USER_ID)) $criteria->add(PDReactionPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDReactionPeer::TITLE)) $criteria->add(PDReactionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) $criteria->add(PDReactionPeer::FILE_NAME, $this->file_name);
+        if ($this->isColumnModified(PDReactionPeer::COPYRIGHT)) $criteria->add(PDReactionPeer::COPYRIGHT, $this->copyright);
+        if ($this->isColumnModified(PDReactionPeer::WITH_SHADOW)) $criteria->add(PDReactionPeer::WITH_SHADOW, $this->with_shadow);
         if ($this->isColumnModified(PDReactionPeer::SUMMARY)) $criteria->add(PDReactionPeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PDReactionPeer::DESCRIPTION)) $criteria->add(PDReactionPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDReactionPeer::NOTE_POS)) $criteria->add(PDReactionPeer::NOTE_POS, $this->note_pos);
@@ -2175,6 +2291,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
+        $copyObj->setCopyright($this->getCopyright());
+        $copyObj->setWithShadow($this->getWithShadow());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
@@ -2415,6 +2533,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->p_user_id = null;
         $this->title = null;
         $this->file_name = null;
+        $this->copyright = null;
+        $this->with_shadow = null;
         $this->summary = null;
         $this->description = null;
         $this->note_pos = null;
@@ -3589,6 +3709,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $parent->setPUserId($this->getPUserId());
         $parent->setTitle($this->getTitle());
         $parent->setFileName($this->getFileName());
+        $parent->setCopyright($this->getCopyright());
+        $parent->setWithShadow($this->getWithShadow());
         $parent->setSummary($this->getSummary());
         $parent->setDescription($this->getDescription());
         $parent->setNotePos($this->getNotePos());
@@ -3707,6 +3829,8 @@ abstract class BasePDReaction extends PDocument implements Persistent
         $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());
+        $this->setCopyright($archive->getCopyright());
+        $this->setWithShadow($archive->getWithShadow());
         $this->setSummary($archive->getSummary());
         $this->setDescription($archive->getDescription());
         $this->setNotePos($archive->getNotePos());

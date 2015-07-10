@@ -43,11 +43,11 @@
                 success: function(data) {
                     $('#ajaxGlobalLoader').hide();
                     if (data['error']) {
-                        $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                        $('#infoBoxHolder.boxError').show();
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
                     } else {
-                        $('#infoBoxHolder.boxSuccess.notifBoxText').html('Objet bien enregistré!');
-                        $('#infoBoxHolder.boxSuccess').show();
+                        $('#infoBoxHolder .boxSuccess .notifBoxText').html('Objet bien enregistré!');
+                        $('#infoBoxHolder .boxSuccess').show();
                     }
                 }
             });

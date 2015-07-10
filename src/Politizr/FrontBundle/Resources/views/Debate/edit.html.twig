@@ -11,14 +11,21 @@
 
     {# @todo html/css jqueryui (w. only autocomplete widget) > à styler / thème UI (?) #}
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery-ui.min.css') }}">
-{% endblock %}
+{% endblock stylesheets %}
 
 {% block javascriptHeader %}
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
-{% endblock %}
+{% endblock javascriptHeader %}
+
+{% block modalBox %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:Debate:_modelEditUpload.html.twig' %}
+{% endblock modalBox %}
+
 
 {% block fixedActions %}
     <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
@@ -60,21 +67,34 @@
                 <div id="bigCamera" action="modalUploadOpen"><i class="iconCamera"></i><i class="iconNotifYes"></i></div>
 
                 <div class="illustrationShadow"></div>
-                {{ debate | image('debate_header') }}
+                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
+                <div id="mainPhoto">
+                    {{ debate | image('debate_header') }}
+                </div>
             </div>
             <div id="illustration_l">
                 <div class="illustrationShadow"></div>
-                {{ debate | image('debate_header') }}
+                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
+                <div id="lPhoto">
+                    {{ debate | image('debate_header') }}
+                </div>
             </div>
             <div id="illustration_r">
                 <div class="illustrationShadow"></div>
-                {{ debate | image('debate_header') }}
+                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
+                <div id="rPhoto">
+                    {{ debate | image('debate_header') }}
+                </div>
             </div>
             <div id="copyrightHolder">
                 <i class="iconCopyright" action="showCopyright"></i>
-                <div id="copyright" style="display: none;" action="showCopyright">
+                {# @todo html/css renommer "copyright" en "copyrightBox" #}
+                <div id="copyrightBox" style="display: none;" action="showCopyright">
                     <i class="iconArrowUp"></i>
-                    Nom prénom, <a href="" target="_blank">lien</a>
+                    {# @todo html/css à ajouter > div encadrant uniquement le copyright pour reload dynamique #}
+                    <div id="copyright">
+                        {{ debate.copyright | raw }}
+                    </div>
                 </div>
             </div>
 
@@ -138,10 +158,12 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
 
     {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 1 } %}
 
-    {% include 'PolitizrFrontBundle:JS:editor.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:debateEdit.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:debatePublishDelete.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentMediumEditor.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentEdit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentEditXhr.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:documentEditPhoto.js.twig' %}
 {% endblock javascriptFooter %}

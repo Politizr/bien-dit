@@ -1,5 +1,4 @@
 {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'debateContext': false } only %}
-<!-- @todo html/css ) styler scroll nav sur la timeline -->
 <div id="timelineScrollNav">
     {% if moreResults %}
         <a id="moreResults" action="timelinePaginateNext" offset="{{ offset }}">suite</a>

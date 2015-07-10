@@ -283,7 +283,7 @@ overflow-y: scroll;
 	margin: 0px 0px 40px 0px;
 }
 
-#current-photo {
+#currentPhoto {
 	width: 700px;
 	height: 360px;
 	float: left;
@@ -304,7 +304,7 @@ overflow-y: scroll;
 .toggleIllustrationShadow i { position: absolute; font-size: 10px; top: 0; left: 0;}
 .toggleIllustrationShadow:hover {color: $semiGrey;}
 
-#upload-file-container { position: relative; margin-bottom: 40px;}
+#uploadFileContainer { position: relative; margin-bottom: 40px;}
 
 #form-document-photo {display: inline-block; width: 100%;}
 #form-document-photo input[type="file"] { display: none;}

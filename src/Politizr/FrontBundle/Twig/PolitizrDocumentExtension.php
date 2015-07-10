@@ -166,14 +166,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $path = 'bundles/politizrfront/images/default_debate.jpg';
         if ($fileName = $document->getFileName()) {
-            $path = 'uploads/documents/'.$fileName;
+            $path = PDocument::UPLOAD_WEB_PATH.$fileName;
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'document' => $document,
+                'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,
             )

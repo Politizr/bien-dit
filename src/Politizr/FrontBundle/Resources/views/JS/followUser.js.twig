@@ -20,8 +20,8 @@
             success: function(data) {
                 localLoader.hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     // MAJ du bouton suivre / Se désabonner
                     $(this).html(data['html']);

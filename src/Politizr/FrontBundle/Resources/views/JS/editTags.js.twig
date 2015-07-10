@@ -37,8 +37,8 @@
                 success: function(data) {
                     $('#ajaxGlobalLoader').hide();
                     if (data['error']) {
-                        $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                        $('#infoBoxHolder.boxError').show();
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
                     } else {
                         var availableTags = [];
                         $.each( data['tags'], function( key, val ) {
@@ -110,8 +110,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $('#ajaxLoader').hide();
 
@@ -150,8 +150,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $('#ajaxLoader').hide();
 

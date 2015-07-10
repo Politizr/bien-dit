@@ -24,11 +24,11 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Organisation bien enregistrée.');
-                    $('#infoBoxHolder.boxSuccess').show();
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Organisation bien enregistrée.');
+                    $('#infoBoxHolder .boxSuccess').show();
                 }
             }
         });
@@ -47,11 +47,11 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Affinités mises à jour.');
-                    $('#infoBoxHolder.boxSuccess').show();
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Affinités mises à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
                 }
             }
         });
@@ -71,11 +71,11 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat bien enregistré.');
-                    $('#infoBoxHolder.boxSuccess').show();
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat bien enregistré.');
+                    $('#infoBoxHolder .boxSuccess').show();
 
                     $('#mandates').html(data['html']);
                 }
@@ -96,11 +96,11 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat mis à jour.');
-                    $('#infoBoxHolder.boxSuccess').show();
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat mis à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
                 }
             }
         });
@@ -122,11 +122,11 @@
                     success: function(data) {
                         $('#ajaxGlobalLoader').hide();
                         if (data['error']) {
-                            $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                            $('#infoBoxHolder.boxError').show();
+                            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                            $('#infoBoxHolder .boxError').show();
                         } else {
-                            $('#infoBoxHolder.boxSuccess.notifBoxText').html('Mandat supprimé.');
-                            $('#infoBoxHolder.boxSuccess').show();
+                            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat supprimé.');
+                            $('#infoBoxHolder .boxSuccess').show();
 
                             $(this).closest('.mandate').slideUp();
                         }

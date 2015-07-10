@@ -65,6 +65,18 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
     protected $file_name;
 
     /**
+     * The value for the copyright field.
+     * @var        string
+     */
+    protected $copyright;
+
+    /**
+     * The value for the with_shadow field.
+     * @var        boolean
+     */
+    protected $with_shadow;
+
+    /**
      * The value for the summary field.
      * @var        string
      */
@@ -217,6 +229,28 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
     {
 
         return $this->file_name;
+    }
+
+    /**
+     * Get the [copyright] column value.
+     *
+     * @return string
+     */
+    public function getCopyright()
+    {
+
+        return $this->copyright;
+    }
+
+    /**
+     * Get the [with_shadow] column value.
+     *
+     * @return boolean
+     */
+    public function getWithShadow()
+    {
+
+        return $this->with_shadow;
     }
 
     /**
@@ -481,6 +515,56 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
 
         return $this;
     } // setFileName()
+
+    /**
+     * Set the value of [copyright] column.
+     *
+     * @param  string $v new value
+     * @return PDocumentArchive The current object (for fluent API support)
+     */
+    public function setCopyright($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->copyright !== $v) {
+            $this->copyright = $v;
+            $this->modifiedColumns[] = PDocumentArchivePeer::COPYRIGHT;
+        }
+
+
+        return $this;
+    } // setCopyright()
+
+    /**
+     * Sets the value of the [with_shadow] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDocumentArchive The current object (for fluent API support)
+     */
+    public function setWithShadow($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->with_shadow !== $v) {
+            $this->with_shadow = $v;
+            $this->modifiedColumns[] = PDocumentArchivePeer::WITH_SHADOW;
+        }
+
+
+        return $this;
+    } // setWithShadow()
 
     /**
      * Set the value of [summary] column.
@@ -785,17 +869,19 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->file_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->nb_views = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->favorite = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->online = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->archived_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->copyright = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->with_shadow = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+            $this->summary = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->note_pos = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->note_neg = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->nb_views = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->published = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->published_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->published_by = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->favorite = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->online = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->archived_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -805,7 +891,7 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = PDocumentArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = PDocumentArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDocumentArchive object", $e);
@@ -1040,6 +1126,12 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
+        if ($this->isColumnModified(PDocumentArchivePeer::COPYRIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`copyright`';
+        }
+        if ($this->isColumnModified(PDocumentArchivePeer::WITH_SHADOW)) {
+            $modifiedColumns[':p' . $index++]  = '`with_shadow`';
+        }
         if ($this->isColumnModified(PDocumentArchivePeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
@@ -1095,6 +1187,12 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
+                        break;
+                    case '`copyright`':
+                        $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
+                        break;
+                    case '`with_shadow`':
+                        $stmt->bindValue($identifier, (int) $this->with_shadow, PDO::PARAM_INT);
                         break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
@@ -1269,36 +1367,42 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                 return $this->getFileName();
                 break;
             case 4:
-                return $this->getSummary();
+                return $this->getCopyright();
                 break;
             case 5:
-                return $this->getDescription();
+                return $this->getWithShadow();
                 break;
             case 6:
-                return $this->getNotePos();
+                return $this->getSummary();
                 break;
             case 7:
-                return $this->getNoteNeg();
+                return $this->getDescription();
                 break;
             case 8:
-                return $this->getNbViews();
+                return $this->getNotePos();
                 break;
             case 9:
-                return $this->getPublished();
+                return $this->getNoteNeg();
                 break;
             case 10:
-                return $this->getPublishedAt();
+                return $this->getNbViews();
                 break;
             case 11:
-                return $this->getPublishedBy();
+                return $this->getPublished();
                 break;
             case 12:
-                return $this->getFavorite();
+                return $this->getPublishedAt();
                 break;
             case 13:
-                return $this->getOnline();
+                return $this->getPublishedBy();
                 break;
             case 14:
+                return $this->getFavorite();
+                break;
+            case 15:
+                return $this->getOnline();
+                break;
+            case 16:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1333,17 +1437,19 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getTitle(),
             $keys[3] => $this->getFileName(),
-            $keys[4] => $this->getSummary(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getNotePos(),
-            $keys[7] => $this->getNoteNeg(),
-            $keys[8] => $this->getNbViews(),
-            $keys[9] => $this->getPublished(),
-            $keys[10] => $this->getPublishedAt(),
-            $keys[11] => $this->getPublishedBy(),
-            $keys[12] => $this->getFavorite(),
-            $keys[13] => $this->getOnline(),
-            $keys[14] => $this->getArchivedAt(),
+            $keys[4] => $this->getCopyright(),
+            $keys[5] => $this->getWithShadow(),
+            $keys[6] => $this->getSummary(),
+            $keys[7] => $this->getDescription(),
+            $keys[8] => $this->getNotePos(),
+            $keys[9] => $this->getNoteNeg(),
+            $keys[10] => $this->getNbViews(),
+            $keys[11] => $this->getPublished(),
+            $keys[12] => $this->getPublishedAt(),
+            $keys[13] => $this->getPublishedBy(),
+            $keys[14] => $this->getFavorite(),
+            $keys[15] => $this->getOnline(),
+            $keys[16] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1396,36 +1502,42 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
                 $this->setFileName($value);
                 break;
             case 4:
-                $this->setSummary($value);
+                $this->setCopyright($value);
                 break;
             case 5:
-                $this->setDescription($value);
+                $this->setWithShadow($value);
                 break;
             case 6:
-                $this->setNotePos($value);
+                $this->setSummary($value);
                 break;
             case 7:
-                $this->setNoteNeg($value);
+                $this->setDescription($value);
                 break;
             case 8:
-                $this->setNbViews($value);
+                $this->setNotePos($value);
                 break;
             case 9:
-                $this->setPublished($value);
+                $this->setNoteNeg($value);
                 break;
             case 10:
-                $this->setPublishedAt($value);
+                $this->setNbViews($value);
                 break;
             case 11:
-                $this->setPublishedBy($value);
+                $this->setPublished($value);
                 break;
             case 12:
-                $this->setFavorite($value);
+                $this->setPublishedAt($value);
                 break;
             case 13:
-                $this->setOnline($value);
+                $this->setPublishedBy($value);
                 break;
             case 14:
+                $this->setFavorite($value);
+                break;
+            case 15:
+                $this->setOnline($value);
+                break;
+            case 16:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1456,17 +1568,19 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setFileName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setNbViews($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setFavorite($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setOnline($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setArchivedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCopyright($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setWithShadow($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSummary($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNotePos($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setNoteNeg($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setNbViews($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublished($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPublishedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setPublishedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setFavorite($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setOnline($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setArchivedAt($arr[$keys[16]]);
     }
 
     /**
@@ -1482,6 +1596,8 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDocumentArchivePeer::P_USER_ID)) $criteria->add(PDocumentArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDocumentArchivePeer::TITLE)) $criteria->add(PDocumentArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDocumentArchivePeer::FILE_NAME)) $criteria->add(PDocumentArchivePeer::FILE_NAME, $this->file_name);
+        if ($this->isColumnModified(PDocumentArchivePeer::COPYRIGHT)) $criteria->add(PDocumentArchivePeer::COPYRIGHT, $this->copyright);
+        if ($this->isColumnModified(PDocumentArchivePeer::WITH_SHADOW)) $criteria->add(PDocumentArchivePeer::WITH_SHADOW, $this->with_shadow);
         if ($this->isColumnModified(PDocumentArchivePeer::SUMMARY)) $criteria->add(PDocumentArchivePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PDocumentArchivePeer::DESCRIPTION)) $criteria->add(PDocumentArchivePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDocumentArchivePeer::NOTE_POS)) $criteria->add(PDocumentArchivePeer::NOTE_POS, $this->note_pos);
@@ -1559,6 +1675,8 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
+        $copyObj->setCopyright($this->getCopyright());
+        $copyObj->setWithShadow($this->getWithShadow());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
@@ -1625,6 +1743,8 @@ abstract class BasePDocumentArchive extends BaseObject implements Persistent
         $this->p_user_id = null;
         $this->title = null;
         $this->file_name = null;
+        $this->copyright = null;
+        $this->with_shadow = null;
         $this->summary = null;
         $this->description = null;
         $this->note_pos = null;

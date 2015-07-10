@@ -17,8 +17,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $(this).attr('class', 'fa fa-check-square-o');
                     $(this).attr('action', 'email-unsubscribe');
@@ -42,8 +42,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $(this).attr('class', 'fa fa-square-o');
                     $(this).attr('action', 'email-subscribe');

@@ -1,14 +1,14 @@
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% block title %}PolitizR - Espace Citoyen{% endblock title %}
-{% block description %}PolitizR Espace Citoyen{% endblock description %}
+{% block title %}Politizr - Espace Citoyen{% endblock title %}
+{% block description %}Politizr Espace Citoyen{% endblock description %}
 
 {% block metaopengraph %}
     {% block ogImage %}{% render controller("PolitizrFrontBundle:SocialNetworks:ogImage") %}{% endblock ogImage %}
-    <meta property="og:site_name" content="PolitizR" /> 
-    <meta property="og:title" content="{% block ogTitle %}PolitizR{% endblock ogTitle %}" /> 
+    <meta property="og:site_name" content="Politizr" /> 
+    <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
     <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
-    <meta property="og:description" content="{% block ogDescription %}PolitizR{% endblock ogDescription %}" />
+    <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
 {% endblock metaopengraph %}
 
 {% block wrapper %}

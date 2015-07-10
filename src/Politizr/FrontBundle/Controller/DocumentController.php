@@ -19,6 +19,7 @@ use Politizr\Model\PTagQuery;
 
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 
 /**
@@ -216,10 +217,12 @@ class DocumentController extends Controller
 
         $debate = PDDebateQuery::create()->findPk($id);
         $form = $this->createForm(new PDDebateType(), $debate);
+        $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
+            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 

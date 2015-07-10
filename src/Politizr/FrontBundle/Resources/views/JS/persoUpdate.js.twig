@@ -15,11 +15,11 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#infoBoxHolder.boxSuccess.notifBoxText').html('Les données modifiées ont bien été mises à jour.');
-                    $('#infoBoxHolder.boxSuccess').show();
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Les données modifiées ont bien été mises à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
                 }
             }
         });

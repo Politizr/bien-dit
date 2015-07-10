@@ -24,6 +24,7 @@ use Politizr\Model\PDCommentQuery;
 
 use Politizr\FrontBundle\Form\Type\PDCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 
 /**
@@ -432,6 +433,81 @@ class DocumentManager
 
 
     /**
+     *  Update debate photo info
+     *
+     */
+    public function debatePhotoInfoUpdate()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** debatePhotoInfoUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Récupération id objet édité
+        $id = $request->get('debate_photo_info')['id'];
+        $document = PDocumentQuery::create()->findPk($id);
+        if (!$document) {
+            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        }
+
+        $debate = PDDebateQuery::create()->findPk($id);
+        $form = $this->sc->get('form.factory')->create(new PDDebatePhotoInfoType(), $debate);
+
+        // Retrieve actual file name
+        $oldFileName = $debate->getFileName();
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $debate = $form->getData();
+            $debate->save();
+
+            // Remove old file if new upload or deletion has been done
+            $fileName = $debate->getFileName();
+            if ($fileName != $oldFileName) {
+                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
+                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
+                    unlink($path . $oldFileName);
+                }
+            }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+
+        $path = 'bundles/politizrfront/images/default_debate.jpg';
+        if ($fileName = $debate->getFileName()) {
+            $path = PDocument::UPLOAD_WEB_PATH.$fileName;
+        }
+        $imageHeader = $templating->render(
+            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            array(
+                'title' => $debate->getTitle(),
+                'path' => $path,
+                'filterName' => 'debate_header',
+            )
+        );
+
+        return array(
+            'imageHeader' => $imageHeader,
+            'copyright' => $debate->getCopyright(),
+            );
+    }
+
+
+    /**
      *  Publication du débat
      *
      */
@@ -529,7 +605,7 @@ class DocumentManager
 
 
     /**
-     *  Upload du bandeau photo du document (débat ou réaction)
+     * Upload du bandeau photo du document (débat ou réaction)
      *
      */
     public function documentPhotoUpload()
@@ -548,96 +624,30 @@ class DocumentManager
         $logger->info(print_r($id, true));
         $document = PDocumentQuery::create()->findPk($id);
 
-        // Récupération de l'objet descendant
-        $docChild = $document->getChildObject();
-
         // Chemin des images
         $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
 
         // Appel du service d'upload ajax
         $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
-            'file-name',
+            'fileName',
             $path,
             1024,
             1024
         );
 
-        // Suppression photo déjà uploadée
-        $oldFilename = $docChild->getFilename();
-        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
-            unlink($path . $oldFilename);
-        }
-
-
-        // MAJ du modèle
-        $docChild->setFilename($fileName);
-        $docChild->save();
-
         // Construction rendu
         $templating = $this->sc->get('templating');
         $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'document' => $document,
-                'path' => 'uploads/documents/'.$fileName,
+                'path' => PDocument::UPLOAD_WEB_PATH . $fileName,
                 'filterName' => 'debate_header',
+                'title' => $document->getTitle(),
             )
         );
 
         return array(
-            'html' => $html,
-            );
-    }
-
-
-    /**
-     *  Upload du bandeau photo du débat
-     *
-     */
-    public function documentPhotoDelete()
-    {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** documentPhotoDelete');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // Récupération débat courant
-        $id = $request->get('id');
-        $logger->info(print_r($id, true));
-        $document = PDocumentQuery::create()->findPk($id);
-
-        // Récupération de l'objet descendant
-        $docChild = $document->getChildObject();
-
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
-
-        // Suppression photo déjà uploadée
-        $filename = $docChild->getFilename();
-        if ($filename && $fileExists = file_exists($path . $filename)) {
-            unlink($path . $filename);
-        }
-
-        // MAJ du modèle
-        $docChild->setFilename(null);
-        $docChild->save();
-
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-        $html = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
-            array(
-                'document' => $document,
-                'path' => 'bundles/politizrfront/images/default_debate.jpg',
-                'filterName' => 'debate_header',
-            )
-        );
-
-        return array(
+            'fileName' => $fileName,
             'html' => $html,
             );
     }

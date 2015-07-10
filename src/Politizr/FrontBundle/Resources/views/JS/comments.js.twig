@@ -39,8 +39,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
                     $(this).find('.counter').html(data['counter']);
@@ -66,8 +66,8 @@
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
                 if (data['error']) {
-                    $('#infoBoxHolder.boxError.notifBoxText').html(data['error']);
-                    $('#infoBoxHolder.boxError').show();
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
                     $(this).find('.commentsCounter').html(data['counter']);

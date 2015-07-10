@@ -1,39 +1,46 @@
 <script>
     // imgLiquid onSuccess
     function onSuccessImgLiquid() {
-        // full size illustration image
+        // document read / edition
         $("#illustration, #illustration_l, #illustration_r").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"
         });
 
-        // full size image in debate summary 
+        // document photo edition
+        $("#currentPhoto").imgLiquid({
+            fill: true,
+            horizontalAlign: "center",
+            verticalAlign: "center"
+        });
+
+        // debate summary 
         $(".postSummary").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"
         });
 
-        // full size image in avatars
+        // avatars
         $(".avatar15, .avatar40, .avatar60").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"
         });
 
-        // full size image in timeline item illustration
+        // timeline item illustration
         $(".timelineItemIllustration").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"
         });
 
-        // full size image in reaction to post illustration
+        // reaction to post illustration
         $(".reactionsToPostItemIllustration").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"
-        });   
+        });
     }
 </script>
