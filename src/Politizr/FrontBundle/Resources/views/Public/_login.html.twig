@@ -1,0 +1,30 @@
+{# @todo html/css à styler dans une modal "classique" w. div #modalBoxContent > addClass('connection') #}
+<div id="oAuthButtons">
+    {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
+    {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
+    {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
+</div>
+<div id="boxLogin">
+    <form id="formLogin">
+        {{ form_errors(formLogin) }}
+
+        {{ form_row(formLogin.username) }}
+        {{ form_row(formLogin.password) }}
+        {{ form_row(formLogin.remember_me) }}
+        
+        {{ form_rest(formLogin) }}
+    </form>
+    <a action="login">Connexion</button>
+    <a action="showLostPasswordBox">Mot de passe oublié?</button>
+</div>
+<div id="boxLostPassword" style="display:none">
+    <form id="formLostPassword">
+        {{ form_errors(formLostPassword) }}
+
+        {{ form_row(formLostPassword.email) }}
+
+        {{ form_rest(formLostPassword) }}
+    </form>
+    <a action="reinitPassword">Réinitialisation mot de passe</button>
+    <a action="showLoginBox">Connexion</button>
+</div>

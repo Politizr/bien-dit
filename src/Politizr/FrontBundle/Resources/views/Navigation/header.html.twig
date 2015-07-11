@@ -1,24 +1,15 @@
-<div id="header" class="menuMobileHolder">
-    <div class="headerLogo">
-        <a href="{{ path('Homepage') }}">
-            <i class="iconPltzrLogo"></i>
-        </a>
-    </div>
-    <div id="menuMobileTriggerMenu" action="menuMobileTriggerMenu"><i class="iconMenu"></i></div>
-    <div id="menuMobileTriggerActions" action="menuMobileTriggerActions"><i class="iconNotePlus"></i></div>
-    <div id="menu">
-        <div class="pad40">
-            {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
-                {% include 'PolitizrFrontBundle:Navigation:menuInscription.html.twig' %}
-            {% else %}
-                {% include 'PolitizrFrontBundle:Navigation:menuPublic.html.twig' %}
-            {% endif %}
+<div id="publicHeader">
+    <div class="wrapper">
+        <div class="headerLogo">
+            <a href="{{ path('Homepage') }}"><i class="iconPltzrLogoAlt"></i><span>politizr</span></a>
         </div>
-    </div>
-    
-    <div id="social">
-        <div class="pad40">
-            {% include 'PolitizrFrontBundle:Navigation:share.html.twig' with { 'uri': app.request.uri } %}
+        <div id="headerRight">
+            {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
+                <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
+            {% else %}
+                <a action="modalConnection">identification</button>
+                <a href="{{ path('Inscription') }}">inscription</a>   
+            {% endif %}
         </div>
     </div>
 </div>

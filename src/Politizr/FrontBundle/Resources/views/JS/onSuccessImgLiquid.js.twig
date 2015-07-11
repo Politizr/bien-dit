@@ -3,6 +3,13 @@
     function onSuccessImgLiquid() {
         console.log('*** onSuccessImgLiquid');
 
+        // full size image on public homepage
+        $("#homeClaim, #homeOfficial").imgLiquid({
+            fill: true,
+            horizontalAlign: "center",
+            verticalAlign: "center"
+        });
+
         // document read / edition
         $("#illustrationMain, #illustration_l, #illustration_r, #currentPhoto").imgLiquid({
             fill: true,

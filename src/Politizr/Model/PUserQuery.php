@@ -310,7 +310,7 @@ LIMIT ".$offset.", ".$count."
                         ->filterByQualified(true)
                     ->_endif()
                     ->_if($keywords && in_array('citizen', $keywords))
-                        ->filterByCitizen(false)
+                        ->filterByQualified(false)
                     ->_endif()
                     ;
     }

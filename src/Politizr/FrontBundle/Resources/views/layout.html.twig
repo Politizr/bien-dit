@@ -13,7 +13,10 @@
 
 {% block stylesheets %}
     {{ parent() }}
-{% endblock stylesheets %}
+
+    {# @todo html/css fixer les incompatibilités de style entre styleUser.css & stylePublic.css #}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/stylePublic.css') }}">
+{% endblock %}
 
 {% block wrapper %}
     <div class="wrapper">
@@ -35,28 +38,26 @@
             <div id="content">
                 {% block main %}
                 {% endblock main %}
-
-                {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-                {% endblock %}
             </div>
         {% endblock content %}
+
+        {% block footer %}
+            {% include 'PolitizrFrontBundle:Navigation:footerPublic.html.twig' %}
+        {% endblock %}
     </div>
 {% endblock wrapper %}
 
 {% block javascriptFooter %}
     {{ parent() }}
     {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:globalImgLiquid.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:share.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS:modalOpening.js.twig' %}
+
+    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:onSuccessImgLiquid.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:onSuccessSticky.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:onSuccessImgLiquid.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' %}
 
     {% include 'PolitizrFrontBundle:JS:globalDocumentReady.js.twig' %}    

@@ -1,55 +1,158 @@
 {% extends 'PolitizrFrontBundle::layout.html.twig' %}
 
-{% block connexionBox %}
-    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-{% endblock %}
-
-{% block main %}
-    <div id="main">
-        <div id="debates">
-            <h2>Les derniers débats publiés...</h2>
-            <div>
-                {% for debate in debates %}
-                    {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRow.html.twig' with { 'debate': debate } only %}
-                    <hr>
-                {% endfor %}
+{% block content %}
+    <div id="homeClaim">
+        <div class="wrapper">
+            <div class="homeText">
+                <h1><i>politizr</i> est le premier véritable<br>espace de débat politique en ligne<br><i>pour</i> les élus, <i>par</i> les citoyens.</h1><br>
+                <a href="{{ path('Inscription') }}">inscrivez-vous</a>
             </div>
         </div>
-        <div class="border-row">&nbsp;</div>
-        <div id="users">
-            <h2>Les profils les plus populaires...</h2>
-            <div>
-                {% for user in users %}
-                    {% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } %}
-                    <hr>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="border-row">&nbsp;</div>
-        <div id="comments">
-            <h2>Les derniers commentaires...</h2>
-            <div>
-                {% for comment in comments %}
-                    {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRow.html.twig' with { 'comment': comment } %}
-                    <hr>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!--
-        <div id="homeLocalDebates">
-            <h2>Les débats de votre région</h2>
-            <div>
-            </div>
-        </div>
-        -->
-
+        <div class="highlightOverlay"></div>
+        <img src="{{ asset('bundles/politizrfront/images/f_concil.jpg') }}" alt="f_concil" width="1800" height="1200">
     </div>
-{% endblock main %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
+    <div id="homeSearch">
+        <div class="wrapper">
+            <div class="openSearch" action="modalOpen">
+                <div class="pseudoInput"><b>trouvez un débat</b> par sujet, nom ou lieu</div><div class="pseudoSubmit">rechercher</div>
+            </div>
+        </div>
+    </div>
     
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
-{% endblock javascriptFooter %}
+    <div id="homeFollow">
+        <div class="wrapper homeWrapper">
+            <div class="homeText">
+                <h1>trouvez et suivez les débats qui vous concernent<br><i>et créez ceux qui n’existent pas encore...</i></h1>
+                <p>Recherchez un débat <b>par zone géographique</b> (locale, régionale ou nationale) <b>par thématique</b> ou <b>par participant</b>.<p>
+                <p>Consultez le détail des publications, suivez toute nouvelle intervention et constituez <b>votre fil des débats personnel</b>.</p>
+                <p><b>Rédigez les termes d'un débat</b> pour susciter les réactions des élus et les commentaires des autres membres.</p>
+            </div>
+            <div class="homeTextImgHolder"></div>
+        </div>
+    </div>
+    
+    <div id="homeContribute">
+        <div class="wrapper homeWrapper">
+            <div class="homeText">
+                <h1>participez aux débats</h1>
+                <p>Apportez votre contribution — en publiant une réaction, un commentaire, ou simplement, en attribuant une note — <b>et faites progresser les débats !</b><p>
+                <p>Élu(e) et ex-élu(e) : <b>réagissez à toutes les publications</b> quel que soit ou quel que fût votre mandat électoral.</p>
+            </div>
+            <div class="homeTextImgHolder"></div>               
+        </div>
+        <div class="homeTextImgHolderBg"></div>
+    </div>
+    
+    <div id="homeMyPolitizr">
+        <div class="wrapper homeWrapper">
+            <div class="homeText">
+                <h1>suivez l’activité de vos élu(e)s et des autres utilisateurs</h1>
+                <p>Ne perdez pas le fil de vos débats : suivez <b>toutes les nouvelles publications minute par minute</b> sur votre Potilizr : réactions, commentaires, activité de vos publications, évolution des réputations, ... Rien ne vous échappera.<p>
+            </div>
+            <div class="homeTextImgHolder"></div>           
+        </div>
+    </div>
+    
+    <div id="homeStats">
+        <div class="wrapper ">
+            <div class="homeText">
+                <h1>améliorez votre réputation</h1>
+                <p>En prenant part aux débats, en partageant des publications sur les réseaux sociaux, en obtenant de nouveaux badges, ... vous améliorerez votre réputation et <b>votre visibilité sur le site</b>.<p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="homePlans">
+        <div class="wrapper">
+            <div class="pltzrHeader"><i class="iconPltzrLogoAlt"></i></div>
+            <div id="plans">
+                <div class="userPlan">
+                    <h1>citoyen</h1>
+                    <h3>Gratuit</h3>
+                    <a href="{{ path('Inscription') }}">s'inscrire</a>
+                    <ul>
+                        <li><i class="iconCheck"></i>Lancez des débats.</li>
+                        <li><i class="iconCheck"></i>Suivez des débats, des élus, des débatteurs et des membres par affinités.</li>
+                        <li><i class="iconCheck"></i>Commentez les réactions des élus et des débatteurs.</li>
+                    </ul>
+                </div>
+                <div class="officialPlan">
+                    <h1>débatteur</h1>
+                    <h2>Réservé aux élus et anciens élus</h2>
+                    <h3>5 € par mois ou 50 € par an</h3>
+                    <a href="{{ path('InscriptionElected') }}">s'inscrire</a>
+                    <ul>
+                        <li><i class="iconCheck"></i>Lancez des débats.</li>
+                        <li><i class="iconCheck"></i>Suivez des débats, des élus, des débatteurs et des membres par affinités.</li>
+                        <li><i class="iconCheck"></i>Commentez les réactions des élus et des débatteurs.</li>
+                        <li><i class="iconCheck"></i><b>Réagissez aux débats et aux réactions des autres débatteurs.</b></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="homeOfficial">
+        <div class="wrapper">
+            <div class="homeText">
+                <h1>êtes vous prêt à débattre ?</h1>
+                <p>Elu(e) ou ex-élu(e), Politizr est fait pour vous :<br>
+                Abordez librement les sujets de fond ou d’actualité. Argumentez entre élus.<br>
+                Prenez le temps de la réflexion. Développez vos idées. <br>
+                <b>Débattez et redonnez du sens à la parole politique : (re)mobilisez les électeurs !</b></p>
+                <a href="{{ path('InscriptionElected') }}">inscrivez-vous</a>
+            </div>
+        </div>
+        <img src="{{ asset('bundles/politizrfront/images/f_official.jpg') }}">
+    </div>
+    
+    <div id="homeLive">
+        <div class="wrapper">
+            <div class="pltzrHeader"><i class="iconPltzrLogoAlt"></i></div>
+            <div class="liveItem">
+                <h1>débat le plus actif aujourd’hui</h1>
+                {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': activeDebate} only %}
+            </div>
+            <div class="separator"></div>
+            <div class="liveItem">
+                <h1>débat le plus suivi aujourd’hui</h1>
+                {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': followedDebate} only %}
+            </div>
+            <div class="separator"></div>
+            <div class="liveItem">
+                <h1>les plus populaires aujourd’hui</h1>
+                {% if citizenUser %}
+                    <div class="liveItemLeft">
+                        <div class="avatar60">
+                            <a href="{{ path('UserDetail', { 'slug': citizenUser.slug }) }}">
+                                {{ citizenUser | photo('user_60') }}
+                            </a>
+                        </div>
+                        <div class="listProfileLeft">
+                            <div class="authorName">
+                                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': citizenUser} only %}
+                            </div>
+                            <div class="authorInAFewWords">@todo</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if qualifiedUser %}
+                    <div class="liveItemRight">
+                        <div class="avatar60">
+                            <a href="{{ path('UserDetail', { 'slug': qualifiedUser.slug }) }}">
+                                {{ qualifiedUser | photo('user_60') }}
+                            </a>
+                        </div>
+                        <div class="listProfileRight">
+                            <div class="authorName">
+                                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': qualifiedUser} only %}
+                                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with {'user': qualifiedUser} only %}
+                            </div>
+                            <div class="authorInAFewWords">@todo</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

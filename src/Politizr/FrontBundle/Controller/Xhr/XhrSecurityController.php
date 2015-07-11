@@ -11,8 +11,25 @@ use Symfony\Component\HttpFoundation\Request;
  *
  *  @author Lionel Bouzonville
  */
-class XhrInscriptionController extends Controller
+class XhrSecurityController extends Controller
 {
+
+    /**
+     * Connexion
+     */
+    public function loginAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** loginAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.security',
+            'login'
+        );
+
+        return $jsonResponse;
+    }
+
     /**
      *  Validation de la connexion
      */

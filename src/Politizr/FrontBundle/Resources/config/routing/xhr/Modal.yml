@@ -7,7 +7,7 @@ ModalPaginatedList:
     requirements: { _format: (xml|json), _method: POST }
 
 Filters:
-    pattern:  /profil/classement/filtres.{_format}
+    pattern:  /classement/filtres.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:filters, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 

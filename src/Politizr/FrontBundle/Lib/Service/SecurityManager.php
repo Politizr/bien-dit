@@ -425,6 +425,33 @@ class SecurityManager
 
 
     /**
+     *  Connexion
+     */
+    public function login()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** login');
+        
+        // Formulaire
+        $formLogin = $this->sc->get('form.factory')->create(new LoginType());
+        $formLostPassword = $this->sc->get('form.factory')->create(new LostPasswordType());
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Public:_login.html.twig',
+            array(
+                'formLogin' => $formLogin->createView(),
+                'formLostPassword' => $formLostPassword->createView(),
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
      *  Validation de la connexion
      *
      */

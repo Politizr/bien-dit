@@ -14,10 +14,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PDCommentQuery;
 
 /**
- *  Gestion du routing tout public
- *
- *  TODO:
- *      - gestion redirection / connexion + droits + activ
+ * Public controller
  *
  * @author  Lionel Bouzonville
  */
@@ -31,30 +28,115 @@ class PublicController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
 
-        // derniers débats publiés
-        $debates = PDDebateQuery::create()->online()->orderByLast()->setLimit(5)->find();
+        // @todo most "active" debate today
+        $activeDebate = PDDebateQuery::create()
+            ->online()
+            ->orderByLast()
+            ->findOne();
 
-        // profils les plus populaires
-        $users = PUserQuery::create()->filterByQualified(true)->online()->orderByMostFollowed()->setLimit(5)->find();
+        // most "followed" debate today
+        $followedDebate = PDDebateQuery::create()
+            ->online()
+            ->filterByLastDay()
+            ->orderByMostFollowed()
+            ->orderByLast()
+            ->findOne();
+
+        // search oldest debate if none found
+        if (null === $followedDebate) {
+            $followedDebate = PDDebateQuery::create()
+                ->online()
+                ->filterByLastWeek()
+                ->orderByMostFollowed()
+                ->orderByLast()
+                ->findOne();
+            if (null === $followedDebate) {
+                $followedDebate = PDDebateQuery::create()
+                    ->online()
+                    ->filterByLastMonth()
+                    ->orderByMostFollowed()
+                    ->orderByLast()
+                    ->findOne();
+                if (null === $followedDebate) {
+                    $followedDebate = PDDebateQuery::create()
+                        ->online()
+                        ->orderByLast()
+                        ->findOne();
+                }
+            }
+        }
+
+        // profil public le plus populaire
+        $citizenUser = PUserQuery::create()
+            ->online()
+            ->filterByLastDay()
+            ->filterByQualified(false)
+            ->orderByMostFollowed()
+            ->findOne();
         
-        // commentaires les plus populaires
-        $comments = PDCommentQuery::create()->online()->last()->setLimit(5)->find();
+        // search oldest users if none found
+        if (null === $citizenUser) {
+            $citizenUser = PUserQuery::create()
+                ->online()
+                ->filterByLastWeek()
+                ->filterByQualified(false)
+                ->orderByMostFollowed()
+                ->findOne();
+            if (null === $citizenUser) {
+                $citizenUser = PUserQuery::create()
+                    ->online()
+                    ->filterByLastMonth()
+                    ->filterByQualified(false)
+                    ->orderByMostFollowed()
+                    ->findOne();
+                if (null === $citizenUser) {
+                    $citizenUser = PUserQuery::create()
+                        ->online()
+                        ->filterByQualified(false)
+                        ->orderByMostFollowed()
+                        ->findOne();
+                }
+            }
+        }
 
-        // débats locaux / adresse IP
-        // $request = $this->get('request');
-        // $result = $this->container
-        //     ->get('bazinga_geocoder.geocoder')
-        //     ->using('free_geo_ip')
-        //     ->geocode($request->server->get('REMOTE_ADDR'));
-        // $logger->info('$result = '.print_r($result, true));
- 
-        // $homeGeoDebates = PDDebateQuery::create()->geolocalized($result, 10)->find();
+        // profil débatteur le plus populaire
+        $qualifiedUser = PUserQuery::create()
+            ->online()
+            ->filterByLastDay()
+            ->filterByQualified(true)
+            ->orderByMostFollowed()
+            ->findOne();
+        
+        // search oldest users if none found
+        if (null === $qualifiedUser) {
+            $qualifiedUser = PUserQuery::create()
+                ->online()
+                ->filterByLastWeek()
+                ->filterByQualified(true)
+                ->orderByMostFollowed()
+                ->findOne();
+            if (null === $qualifiedUser) {
+                $qualifiedUser = PUserQuery::create()
+                    ->online()
+                    ->filterByLastMonth()
+                    ->filterByQualified(true)
+                    ->orderByMostFollowed()
+                    ->findOne();
+                if (null === $qualifiedUser) {
+                    $qualifiedUser = PUserQuery::create()
+                        ->online()
+                        ->filterByQualified(true)
+                        ->orderByMostFollowed()
+                        ->findOne();
+                }
+            }
+        }
 
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
-            'debates' => $debates,
-            'users' => $users,
-            'comments' => $comments,
-            // 'homeGeoDebates' => $homeGeoDebates
+            'activeDebate' => $activeDebate,
+            'followedDebate' => $followedDebate,
+            'citizenUser' => $citizenUser,
+            'qualifiedUser' => $qualifiedUser,
         ));
     }
 

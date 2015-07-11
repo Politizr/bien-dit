@@ -14,7 +14,7 @@
 
 {% block fixedActions %}
     <div id="fixedActions">
-        {% if app.user | isAuthorizedToReact(debate) %}
+        {% if app.user and app.user | isAuthorizedToReact(debate) %}
             <a class="actionReact" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': null }) }}">
                 <i class="iconReaction"></i>réagir
             </a>

@@ -83,24 +83,6 @@ class SecurityController extends Controller
         return $this->redirect($this->generateUrl('Logout'));
     }
 
-    /**
-     * Connexion
-     */
-    public function loginAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** loginAction');
-
-        // Formulaire
-        $formLogin = $this->createForm(new LoginType());
-        $formLostPassword = $this->createForm(new LostPasswordType());
-
-        return $this->render('PolitizrFrontBundle:Navigation:login.html.twig', array(
-                        'formLogin' => $formLogin->createView(),
-                        'formLostPassword' => $formLostPassword->createView()
-            ));
-    }
-
     /* ######################################################################################################## */
     /*                                               INSCRIPTION CLASSIQUE                                      */
     /* ######################################################################################################## */

@@ -9,10 +9,6 @@ CancelInscription:
     pattern:  /annuler-inscription
     defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
 
-Login:
-    pattern:  /login
-    defaults: { _controller: PolitizrFrontBundle:Security:login }
-
 ################################################################################
 #               ROUTING CREATION PROFIL CITOYEN
 ################################################################################
