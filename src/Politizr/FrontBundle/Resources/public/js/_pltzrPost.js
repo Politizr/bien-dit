@@ -41,9 +41,4 @@ $(function(){
 		$(this).siblings('.comments').children('.commentsEditNew').children('form').children('.commentsTextarea').focus();			
 	});	
 	
-	
-	// toggle image copyright
-	$("body").on("click", "[action='showCopyright']", function() {
-		$('#copyright').toggle();		
-	});						
 });

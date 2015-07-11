@@ -113,4 +113,9 @@ $(function(){
 	$("body").on("click", "[action='closeBoxAlert']", function() {
 		$(this).parent('.boxAlert').fadeOut('fast');
 	});
+
+	// toggle image copyright
+	$("body").on("click", "[action='showCopyright']", function() {
+		$('#copyrightBox').toggle();		
+	});
 });

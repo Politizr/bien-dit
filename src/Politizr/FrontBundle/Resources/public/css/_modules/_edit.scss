@@ -306,9 +306,9 @@ overflow-y: scroll;
 
 #uploadFileContainer { position: relative; margin-bottom: 40px;}
 
-#form-document-photo {display: inline-block; width: 100%;}
-#form-document-photo input[type="file"] { display: none;}
-#form-document-photo label {
+#formDocumentPhoto {display: inline-block; width: 100%;}
+#formDocumentPhoto input[type="file"] { display: none;}
+#formDocumentPhoto label {
 	display: inline-block;
 	font-size: 13px;
     font-family: 'nerissemibold';
@@ -320,7 +320,42 @@ overflow-y: scroll;
     text-align: center;
     cursor: pointer;
 }
-#form-document-photo label:hover { color: $highlight; border-color: $highlight;}
+#formDocumentPhoto label:hover { color: $highlight; border-color: $highlight;}
+
+.photoDelete {
+	display: inline-block;
+	margin-left: 20px;
+	font-size: 10px;
+    font-family: 'nerissemibold';
+    color: $semiDarkGrey;
+    cursor: pointer;
+    position: relative;
+    padding-left: 14px;
+}
+.photoDelete a:hover {color: $highlight;}
+.photoDelete i {
+	font-size: 8px;
+	position: absolute;
+	left: 0;
+}
+
+.photoInfoSave {display: inline-block;}
+.photoInfoSave a {
+	cursor: pointer; 
+	font-family: 'fontello', 'nerissemibold'; 
+	background-color: $highlight;
+	color: #fff;
+	text-transform: uppercase;
+	border: none;
+	display: inline-block;
+	clear: both;
+	width: 180px;	
+	font-size: 13px;
+	padding: 15px 0;
+	height: 13px;
+	text-align: center;
+}
+.photoInfoSave a:hover {background-color: $darkGrey;}
 
 a.cancelModalUploadBox {
 	text-transform: none;
@@ -334,7 +369,7 @@ a.cancelModalUploadBox {
 }
 a.cancelModalUploadBox:hover { color: $darkGrey;}
 
-.medium-editor-textarea {
+.editableCopyright {
 	margin-bottom: 40px;
 	padding: 40px;
 	border: solid 1px $formGrey;
@@ -345,12 +380,13 @@ a.cancelModalUploadBox:hover { color: $darkGrey;}
   	line-height: 160%;
     text-transform: none;
 }
-.medium-editor-textarea:focus {    outline: 0;}
-.medium-editor-textarea a {color: $highlight;}
-.medium-editor-textarea.medium-editor-placeholder:after {
+.editableCopyright:focus {    outline: 0;}
+.editableCopyright a {color: $highlight;}
+.editableCopyright.medium-editor-placeholder:after {
 	color: $semiGrey;
 	left: 40px;
     top: 40px;
     font-size: 12px;
     text-transform: none;
 } 
+

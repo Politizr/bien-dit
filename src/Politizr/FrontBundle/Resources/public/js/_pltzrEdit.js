@@ -39,8 +39,8 @@ $(function(){
         firstHeader:'h1',
         secondHeader:'h2'
     });	    
-	
-	var copyrightEditor = new MediumEditor('.editableTextarea', {
+	// edit copyright photo
+	var copyrightEditor = new MediumEditor('.editableCopyright', {
 		buttons: ['bold', 'italic', 'anchor'],
         buttonLabels: {
 	        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
@@ -101,11 +101,6 @@ $(function(){
 	$("body").on("click", "[action='showIllustrationShadow']", function() {
 		$('.showIllustrationShadow').hide();
 		$('.maskIllustrationShadow, #currentPhoto .illustrationShadow').show();
-	});
-	
-	// toggle image copyright
-	$("body").on("click", "[action='showCopyright']", function() {
-		$('#copyright').toggle();		
 	});
 	
 	// toggle helpers
