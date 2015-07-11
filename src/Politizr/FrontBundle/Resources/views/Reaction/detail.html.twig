@@ -14,6 +14,11 @@
 
 {% block fixedActions %}
     <div id="fixedActions">
+        {% if app.user | isAuthorizedToReact(debate) %}
+            <a class="actionReact" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': reaction.id }) }}">
+                <i class="iconReaction"></i>réagir
+            </a>
+        {% endif %}
         <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
             <i class="iconTimeline"></i>fil du débat
         </a>

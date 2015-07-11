@@ -55,7 +55,7 @@ class POrderQuery extends BasePOrderQuery
         $order->setElectiveMandates($electiveMandates);
         $order->setSupportingDocument($supportingDocument);
 
-        // TODO > gestion prix & promo
+        // @todo > gestion prix & promo
         $order->setPrice($subscription->getPrice());
         $order->setPromotion(0);
         $order->setTotal($subscription->getPrice());

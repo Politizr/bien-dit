@@ -26,6 +26,7 @@ use Politizr\FrontBundle\Form\Type\PDCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
+use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
  * Services métiers associés aux documents (débats / réactions / commentaires).
@@ -55,7 +56,7 @@ class DocumentManager
      *
      *  @return PDDebate  Objet débat créé
      */
-    public function debateNew()
+    public function createDebate()
     {
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -88,7 +89,7 @@ class DocumentManager
      *
      *  @return PDReaction  Objet réaction créé
      */
-    public function reactionNew($debateId, $parentId)
+    public function createReaction($debateId, $parentId)
     {
         // Récupération user
         $user = $this->sc->get('security.context')->getToken()->getUser();
@@ -431,9 +432,8 @@ class DocumentManager
         return true;
     }
 
-
     /**
-     *  Update debate photo info
+     * Update debate photo info
      *
      */
     public function debatePhotoInfoUpdate()
@@ -505,7 +505,6 @@ class DocumentManager
             'copyright' => $debate->getCopyright(),
             );
     }
-
 
     /**
      *  Publication du débat
@@ -603,7 +602,6 @@ class DocumentManager
             );
     }
 
-
     /**
      * Upload du bandeau photo du document (débat ou réaction)
      *
@@ -697,6 +695,80 @@ class DocumentManager
         }
 
         return true;
+    }
+
+    /**
+     * Update reaction photo info
+     *
+     */
+    public function reactionPhotoInfoUpdate()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** reactionPhotoInfoUpdate');
+        
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Récupération id objet édité
+        $id = $request->get('reaction_photo_info')['id'];
+        $document = PDocumentQuery::create()->findPk($id);
+        if (!$document) {
+            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        }
+
+        $reaction = PDReactionQuery::create()->findPk($id);
+        $form = $this->sc->get('form.factory')->create(new PDReactionPhotoInfoType(), $reaction);
+
+        // Retrieve actual file name
+        $oldFileName = $reaction->getFileName();
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $reaction = $form->getData();
+            $reaction->save();
+
+            // Remove old file if new upload or deletion has been done
+            $fileName = $reaction->getFileName();
+            if ($fileName != $oldFileName) {
+                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
+                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
+                    unlink($path . $oldFileName);
+                }
+            }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+
+        $path = 'bundles/politizrfront/images/default_reaction.jpg';
+        if ($fileName = $reaction->getFileName()) {
+            $path = PDocument::UPLOAD_WEB_PATH.$fileName;
+        }
+        $imageHeader = $templating->render(
+            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            array(
+                'title' => $reaction->getTitle(),
+                'path' => $path,
+                'filterName' => 'debate_header',
+            )
+        );
+
+        return array(
+            'imageHeader' => $imageHeader,
+            'copyright' => $reaction->getCopyright(),
+            );
     }
 
     /**

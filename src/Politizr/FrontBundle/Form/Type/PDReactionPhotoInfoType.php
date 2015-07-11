@@ -12,15 +12,14 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Reaction edition form
+ * Photo info reaction edition form
  *
  * @author Lionel Bouzonville
  */
-class PDReactionType extends AbstractType
+class PDReactionPhotoInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add('id', 'hidden', array(
             'required' => true,
         ));
@@ -32,16 +31,16 @@ class PDReactionType extends AbstractType
         $builder->add('p_user_id', 'hidden', array(
             'required' => true,
         ));
-        
-        $builder->add('title', 'textarea', array(
+
+        $builder->add('with_shadow', 'hidden', array(
             'required' => false,
         ));
-        
-        $builder->add('summary', 'hidden', array(
+
+        $builder->add('file_name', 'hidden', array(
             'required' => false,
         ));
-        
-        $builder->add('description', 'hidden', array(
+
+        $builder->add('copyright', 'hidden', array(
             'required' => false,
         ));
     }
@@ -52,7 +51,7 @@ class PDReactionType extends AbstractType
      */
     public function getName()
     {
-        return 'reaction';
+        return 'reaction_photo_info';
     }
     
     /**

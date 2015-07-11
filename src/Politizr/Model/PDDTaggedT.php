@@ -23,7 +23,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null)
@@ -40,7 +40,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null)
@@ -57,7 +57,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null)

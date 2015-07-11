@@ -74,7 +74,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null)
@@ -89,7 +89,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null)
@@ -104,7 +104,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null)
@@ -445,7 +445,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        // TODO /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
+        // @todo /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
 
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',

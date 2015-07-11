@@ -34,7 +34,7 @@
 {% block modalBox %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:Debate:_modalEditUpload.html.twig' %}
+    {% include 'PolitizrFrontBundle:Reaction:_modalEditUpload.html.twig' %}
 {% endblock modalBox %}
 
 
@@ -52,14 +52,14 @@
             <div class="ajaxLoaderBg"></div>
         </div>
         <div class="actionSave">
-            <a action="debateSave" subjectId="{{ debate.id }}"><i class="iconDraft"></i>sauvegarder</a>
+            <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>sauvegarder</a>
         </div>
         <div class="actionPublish">
-            <a action="debatePublish" subjectId="{{ debate.id }}" url="{{ urlPublishBack }}"><i class="iconPublish"></i>publier</a>
+            <a action="reactionPublish" subjectId="{{ reaction.id }}" url="{{ urlPublishBack }}"><i class="iconPublish"></i>publier</a>
         </div>
         <div class="actionDelete">
             <!-- @todo html/css à prévoir & styler -->
-            <a action="debateDelete" subjectId="{{ debate.id }}" url="{{ urlDeleteBack }}"><i class="iconDelete"></i>supprimer</a>
+            <a action="reactionDelete" subjectId="{{ reaction.id }}" url="{{ urlDeleteBack }}"><i class="iconDelete"></i>supprimer</a>
         </div>
     </div>
 {% endblock fixedActions %}
@@ -67,12 +67,15 @@
 {% block main %}
     <div id="main">
         <!-- @todo html/css pour info: blocs encadrés par un form -->
-        <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm">
+        <form method="POST" name="reaction" id="formReactionUpdate" class="autoSubmitForm">
             <div class="postSummary">
                 <div class="pad40">
                     <div class="postSummaryFooter">
-                        <!-- <textarea class="postSummaryTitle" action="editTitle" placeholder="Donnez un titre à votre débat"></textarea> -->
-                        {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre débat'}}) }}
+                        <!-- @todo fonctionnel > est-ce bien raisonnable de disposer d'un lien "normal" au niveau d'un écran d'édition? -->
+                        <div class="postSummaryGotoParent">
+                            {{ reaction | linkParentReaction }}
+                        </div>
+                        {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre réaction'}}) }}
                     </div>
                 </div>
                 <div id="bigCamera" action="modalUploadOpen"><i class="iconCamera"></i><i class="iconNotifYes"></i></div>
@@ -80,21 +83,21 @@
                 <div class="illustrationShadow"></div>
                 {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
                 <div id="mainPhoto">
-                    {{ debate | image('debate_header') }}
+                    {{ reaction | image('debate_header') }}
                 </div>
             </div>
             <div id="illustration_l">
                 <div class="illustrationShadow"></div>
                 {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
                 <div id="lPhoto">
-                    {{ debate | image('debate_header') }}
+                    {{ reaction | image('debate_header') }}
                 </div>
             </div>
             <div id="illustration_r">
                 <div class="illustrationShadow"></div>
                 {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
                 <div id="rPhoto">
-                    {{ debate | image('debate_header') }}
+                    {{ reaction | image('debate_header') }}
                 </div>
             </div>
             <div id="copyrightHolder">
@@ -104,7 +107,7 @@
                     <i class="iconArrowUp"></i>
                     {# @todo html/css à ajouter > div encadrant uniquement le copyright pour reload dynamique #}
                     <div id="copyright">
-                        {{ debate.copyright | raw }}
+                        {{ reaction.copyright | raw }}
                     </div>
                 </div>
             </div>
@@ -112,24 +115,15 @@
             <div id="lateralHolder">
                 <div id="lateralInfo">
                     <i class="iconInfo"></i><br>
-                    <b>Attention, une fois publié, vous ne pourrez plus modifier votre débat.</b>
+                    <b>Attention, une fois publié, vous ne pourrez plus modifier votre réaction.</b>
                 </div>
             </div>
             
-            <div id="tagBox">
-                <div class="fieldsetHeader">
-                    <div class="fieldsetHeaderTitle">les thématiques du débat</div>
-                    <i class="iconQuestion" action="toggleHelper"></i>
-                    <div class="helperSlider helperSliderRight" style="display: none;">
-                        <i class="iconArrowUp"></i>
-                        <i class="iconCross" action="hideHelper"></i>
-                        @todo : slider ajouter un tag
-                    </div>
-                </div>
-
-                {{ debateTagsEdit(debate, null, 1, true) }}
+            <div id="switchEditionMode">
+                <div id="swithEditionIndependentEdition" action="activeComparedEdition" class="swithEdition">Rédaction comparée<span><i class="iconSwitchRight"></i>Rédaction autonome</span></div>
+                <div id="swithEditionComparedEdition" action="activeIndenpendentEdition" class="swithEdition" style="display: none;"><span>Rédaction comparée<i class="iconSwitchLeft"></i></span>Rédaction autonome</div>
             </div>
-
+                
             <div id="postText">
                 <div class="paragraph summary">
                     <i class="iconQuestion" action="toggleHelper"></i>
@@ -140,7 +134,7 @@
                         {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
                     </div>
                     <div class="editable summary">
-                        {{ debate.summary | raw }}
+                        {{ reaction.summary | raw }}
                     </div>
                 </div>
                 <div class="paragraph">
@@ -152,9 +146,30 @@
                         {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
                     </div>
                     <div class="editable description">
-                        {{ debate.description | raw }}
+                        {{ reaction.description | raw }}
                     </div>
                 </div>
+            </div>
+
+            <div id="originalText" class="withLoaderInside" style="display: none;">
+                <div class="ajaxLoader" style="display: none;"><i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div></div>
+                <div class="postTitle">
+                    <!-- @todo html/css suppression du lien sur le titre pour l'édition comparée -->
+                    {{ parent.title }}
+                </div>
+                <div class="authorName">
+                    <span>Par</span>
+                    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parent.user } only %}
+                    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parent.user } only %}
+                </div>
+                <div class="paragraph summary">
+                    {{ parent.summary | raw }}
+                </div>
+                {% for paragraph in paragraphs %}
+                    <div class="paragraph">
+                        <p>{{ paragraph | raw }}</p>
+                    </div>
+                {% endfor %}
             </div>
 
             {# hidden form inputs filled by js #}
@@ -170,8 +185,6 @@
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
-
-    {% include 'PolitizrFrontBundle:JS:editTags.js.twig' with { 'nbZones': 1 } %}
 
     {% include 'PolitizrFrontBundle:JS:documentMediumEditor.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:documentEdit.js.twig' %}

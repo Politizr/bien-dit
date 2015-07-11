@@ -37,7 +37,7 @@
 
     // Save debate
     $("body").on("click", "[action='debateSave']", function(e, mode) {
-        console.log('*** click save');
+        console.log('*** click debate save');
         console.log(mode);
 
         var summary = summaryEditor.serialize();
@@ -75,9 +75,49 @@
         return false;
     });
 
-    // Publication debat
+    // Save reaction
+    $("body").on("click", "[action='reactionSave']", function(e, mode) {
+        console.log('*** click reaction save');
+        console.log(mode);
+
+        var summary = summaryEditor.serialize();
+        var description = descriptionEditor.serialize();
+
+        console.log(summary['element-0']['value']);
+        console.log(description['element-0']['value']);
+
+        $('#reaction_summary').val(summary['element-0']['value']);
+        $('#reaction_description').val(description['element-0']['value']);
+     
+        if (mode === 'silence') {
+            // sauvegarde silencieuse
+            $.ajax({type: 'POST', url : "{{ path('ReactionUpdate') }}", data: $("#formReactionUpdate").serialize() });
+        } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : "{{ path('ReactionUpdate') }}",
+                data: $("#formReactionUpdate").serialize(),
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    $('#ajaxGlobalLoader').hide();
+                    if (data['error']) {
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
+                    } else {
+                        $('#infoBoxHolder .boxSuccess .notifBoxText').html('Document bien enregistré');
+                        $('#infoBoxHolder .boxSuccess').show();
+                    }
+                }
+            });
+        }
+
+        return false;
+    });
+
+    // Publish debate
     $('body').on('click', "[action='debatePublish']", function(e){
-        console.log('*** click publish');
+        console.log('*** click publish debate');
         
         if (confirm('Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?')) {
             $.ajax({
@@ -101,9 +141,35 @@
         }
     });
 
-    // Suppression debat
+    // Publish reaction
+    $('body').on('click', "[action='reactionPublish']", function(e){
+        console.log('*** click publish reaction');
+        
+        if (confirm('Une fois publié, vous ne pourrez plus modifier votre réaction. Voulez-vous publier votre réaction?')) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : "{{ path('ReactionPublish') }}",
+                data: { 'id': $(this).attr('subjectId'), 'url': $(this).attr('url') },
+                dataType: 'json',
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    if (data['error']) {
+                        $('#ajaxGlobalLoader').hide();
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
+                    } else {
+                        // redirection
+                        window.location = data['redirectUrl'];
+                    }
+                }
+            });
+        }
+    });
+
+    // Delete debate
     $('body').on('click', "[action='debateDelete']", function(e){
-        console.log('*** click delete');
+        console.log('*** click delete debate');
 
         if (confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?')) {
             $.ajax({
@@ -111,6 +177,32 @@
                 dataType: 'json',
                 url : "{{ path('DebateDelete') }}",
                 data: { 'id': $('#debate_id').val(), 'url': $(this).attr('url') },
+                dataType: 'json',
+                {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
+                success: function(data) {
+                    if (data['error']) {
+                        $('#ajaxGlobalLoader').hide();
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
+                    } else {
+                        // redirection
+                        window.location = data['redirectUrl'];
+                    }
+                }
+            });
+        }
+    });
+
+    // Delete reaction
+    $('body').on('click', "[action='reactionDelete']", function(e){
+        console.log('*** click delete reaction');
+
+        if (confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?')) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : "{{ path('ReactionDelete') }}",
+                data: { 'id': $('#reaction_id').val(), 'url': $(this).attr('url') },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
                 success: function(data) {

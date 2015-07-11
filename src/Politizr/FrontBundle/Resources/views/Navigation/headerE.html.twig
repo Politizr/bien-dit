@@ -45,9 +45,11 @@
         </div>
     </div>
     
-    <div id="social">
-        <div class="pad40">
-            {% include 'PolitizrFrontBundle:Navigation:share.html.twig' with { 'uri': app.request.uri } %}
+    {% block socialLinks %}
+        <div id="social">
+            <div class="pad40">
+                {% include 'PolitizrFrontBundle:Navigation:share.html.twig' with { 'uri': app.request.uri } %}
+            </div>
         </div>
-    </div>
+    {% endblock socialLinks %}
 </div>

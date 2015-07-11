@@ -18,7 +18,7 @@ use Politizr\Model\PUStatus;
  *       http://keiruaprod.fr/symblog-fr/docs/tests-unitaires-et-fonctionels-phpunit.html
  *       + mockery
  *
- *  TODO:
+ *  @todo:
  *        - test de l'upload
  *        - init / purge de la bdd?
  *
@@ -28,7 +28,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * This is run before each unit test
-     * TODO: it populates the database?
+     * @todo: it populates the database?
      */
     protected function setUp()
     {
@@ -37,7 +37,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * This is run after each unit test
-     * TODO: it empties the database?
+     * @todo: it empties the database?
      */
     protected function tearDown()
     {

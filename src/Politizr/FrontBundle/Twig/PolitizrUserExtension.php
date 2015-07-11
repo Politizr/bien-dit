@@ -1,10 +1,14 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Model\PDocument;
+use Politizr\Model\PDDebate;
 use Politizr\Model\PUStatus;
 use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
+use Politizr\Model\PUser;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PRBadgeQuery;
@@ -101,6 +105,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array($this, 'linkedNotification'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToReact',
+                array($this, 'isAuthorizedToReact'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -121,13 +130,12 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Photo de profil d'un user
+     * Photo de profil d'un user
      *
-     *  @param $user         PUser       PUser
-     *
-     *  @return html
+     * @param PUser $user
+     * @return html
      */
-    public function photo($user, $filterName = 'user_bio')
+    public function photo(PUser $user, $filterName = 'user_bio')
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -151,13 +159,12 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     *  Photo de profil d'un user
+     * Photo de profil d'un user
      *
-     *  @param $user         PUser       PUser
-     *
-     *  @return html
+     * @param PUser $user
+     * @return html
      */
-    public function photoBack($user, $filterName = 'user_bio_back')
+    public function photoBack(PUser $user, $filterName = 'user_bio_back')
     {
         // $this->logger->info('*** photoBack');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -174,12 +181,11 @@ class PolitizrUserExtension extends \Twig_Extension
    /**
      *  Affiche les tags suivis par un user suivant le type fourni
      *
-     * @param $user         PUser       PUser
+     * @param PUser $user
      * @param $tagTypeId    integer     ID type de tag
-     *
      * @return string
      */
-    public function followTags($user, $tagTypeId)
+    public function followTags(PUser $user, $tagTypeId)
     {
         $this->logger->info('*** followTags');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -200,12 +206,11 @@ class PolitizrUserExtension extends \Twig_Extension
    /**
      *  Affiche les tags associés à un user suivant le type fourni
      *
-     * @param $user         PUser       PUser
+     * @param PUser $user
      * @param $tagTypeId    integer     ID type de tag
-     *
      * @return string
      */
-    public function tags($user, $tagTypeId)
+    public function tags(PUser $user, $tagTypeId)
     {
         $this->logger->info('*** tags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
@@ -227,11 +232,10 @@ class PolitizrUserExtension extends \Twig_Extension
     /**
      *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
      *
-     * @param $user       PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function linkSubscribeUser(\Politizr\Model\PUser $user)
+    public function linkSubscribeUser(PUser $user)
     {
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($user, true));
@@ -264,11 +268,10 @@ class PolitizrUserExtension extends \Twig_Extension
     /**
      *  Affiche le bloc des followers
      *
-     *  @param $user       PUser
-     *
-     *  @return string
+     * @param PUser $user
+     * @return string
      */
-    public function followersUser(\Politizr\Model\PUser $user)
+    public function followersUser(PUser $user)
     {
         // $this->logger->info('*** followersUser');
         // $this->logger->info('$debate = '.print_r($user, true));
@@ -301,10 +304,10 @@ class PolitizrUserExtension extends \Twig_Extension
 
     /**
      * Construit la structure texte + liens associé à une notification.
+     * @todo dead code?
      *
      * @param $notification         PUNotification
      * @param $absolute             boolean                 URL absolu pour les liens
-     *
      * @return html
      */
     public function linkedNotification(PUNotification $notification, $absolute = false)
@@ -392,6 +395,34 @@ class PolitizrUserExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * Test if the user can publish a reaction to the debate
+     *
+     * @param PUser $user
+     * @param PDDebate $debate
+     * @return boolean
+     */
+    public function isAuthorizedToReact(PUser $user, PDDebate $debate)
+    {
+        // $this->logger->info('*** isAuthorizedToReact');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        // elected profile can react
+        if ($this->sc->get('security.context')->isGranted('ROLE_ELECTED')) {
+            return true;
+        }
+
+        // author of the debate can react
+        // + min reputation to reach
+        $debateUser = $debate->getUser();
+        $id = $user->getId();
+        $score = $user->getReputationScore();
+        if ($debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+            return true;
+        }
+
+        return false;
+    }
 
 
     /* ######################################################################################################## */

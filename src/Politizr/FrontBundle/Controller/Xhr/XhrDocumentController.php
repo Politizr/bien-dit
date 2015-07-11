@@ -69,7 +69,6 @@ class XhrDocumentController extends Controller
         return $jsonResponse;
     }
 
-
     /**
      *  Update debate photo info
      */
@@ -133,6 +132,22 @@ class XhrDocumentController extends Controller
         $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
             'politizr.service.document',
             'reactionUpdate'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Update reaction photo info
+     */
+    public function reactionPhotoInfoUpdateAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** reactionPhotoInfoUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
+            'politizr.service.document',
+            'reactionPhotoInfoUpdate'
         );
 
         return $jsonResponse;

@@ -21,6 +21,7 @@ use Politizr\Model\PTagQuery;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
+use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
  * Gestion des documents: débats, réactions, commentaires.
@@ -57,10 +58,9 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $debate->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.utils');
+        $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
                     'debate' => $debate,
@@ -97,10 +97,9 @@ class DocumentController extends Controller
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
 
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $reaction->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.utils');
+        $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
                     'reaction' => $reaction,
@@ -175,7 +174,7 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Création d'un nouveau débat
+     * Création d'un nouveau débat
      */
     public function debateNewAction()
     {
@@ -183,7 +182,7 @@ class DocumentController extends Controller
         $logger->info('*** debateNewAction');
 
         // Service associé a la création d'une réaction
-        $debate = $this->get('politizr.service.document')->debateNew();
+        $debate = $this->get('politizr.service.document')->createDebate();
 
         return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
     }
@@ -205,6 +204,7 @@ class DocumentController extends Controller
         //      Récupération objets vue
         // *********************************** //
         $document = PDocumentQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->findPk($id);
         if (!$document) {
             throw new InconsistentDataException('Document n°'.$id.' not found.');
         }
@@ -215,7 +215,8 @@ class DocumentController extends Controller
             throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $debate = PDDebateQuery::create()->findPk($id);
+        
+        // forms
         $form = $this->createForm(new PDDebateType(), $debate);
         $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
@@ -231,7 +232,7 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Création d'une nouvelle réaction
+     * Création d'une nouvelle réaction
      */
     public function reactionNewAction($debateId, $parentId)
     {
@@ -239,13 +240,14 @@ class DocumentController extends Controller
         $logger->info('*** reactionNewAction');
 
         // Service associé a la création d'une réaction
-        $reaction = $this->get('politizr.service.document')->reactionNew($debateId, $parentId);
+        $reaction = $this->get('politizr.service.document')->createReaction($debateId, $parentId);
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
     }
 
     /**
-     *  Edition d'une réaction
+     * Edition d'une réaction
+     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
     public function reactionEditAction($id)
     {
@@ -257,6 +259,7 @@ class DocumentController extends Controller
         $user = $this->getUser();
 
         $document = PDocumentQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->findPk($id);
         if (!$document) {
             throw new InconsistentDataException('Document n°'.$id.' not found.');
         }
@@ -267,12 +270,28 @@ class DocumentController extends Controller
             throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
         }
 
+        // parent document for compared edition
+        if ($reaction->getLevel() > 1) {
+            $parent = $reaction->getParent();
+        } else {
+            $parent = $reaction->getDebate();
+        }
+
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.utils');
+        $paragraphs = $utilsManager->explodeParagraphs($parent->getDescription());
+
+        // forms
         $reaction = PDReactionQuery::create()->findPk($id);
         $form = $this->createForm(new PDReactionType(), $reaction);
+        $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
-        return $this->render('PolitizrFrontBundle:Document:reactionEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
             'reaction' => $reaction,
+            'parent' => $parent,
+            'paragraphs' => $paragraphs,
             'form' => $form->createView(),
+            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 

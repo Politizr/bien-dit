@@ -20,7 +20,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null) {
@@ -36,7 +36,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null) {
@@ -52,7 +52,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null) {

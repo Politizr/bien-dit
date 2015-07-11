@@ -21,7 +21,7 @@ class PDComment extends BasePDComment
             $this->setPublishedAt(time());
 
             // User associé
-            // TODO: /!\ chaine en dur
+            // @todo: /!\ chaine en dur
             $publisher = $this->getPUser();
             if ($publisher) {
                 $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());

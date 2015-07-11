@@ -80,4 +80,20 @@ class UtilsManager
 
         return $fileName;
     }
+
+    /**
+     * Explode HTML text in an array of containing all the paragraphs
+     * http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+     *
+     * @param string $htmlText
+     * @return array
+     */
+    public function explodeParagraphs($htmlText)
+    {
+        $htmlText = str_replace('</p>', '', $htmlText);
+        $paragraphs = explode('<p>', $htmlText);
+        array_shift($paragraphs);
+
+        return $paragraphs;
+    }
 }

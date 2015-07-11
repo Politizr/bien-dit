@@ -64,7 +64,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null)
@@ -79,7 +79,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null)
@@ -94,7 +94,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null)
@@ -165,7 +165,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
      */
     public function preSave(\PropelPDO $con = null)
     {
-        // TODO > en commentaire pour avoir des fixtures variées (à supprimer)
+        // @todo > en commentaire pour avoir des fixtures variées (à supprimer)
         // if ($this->published && ($this->isNew() || in_array(PDDebatePeer::PUBLISHED, $this->modifiedColumns))) {
         //     $this->setPublishedAt(time());
         // } else {
@@ -173,7 +173,7 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
         // }
 
         // User associé
-        // TODO > chaine en dur
+        // @todo > chaine en dur
         $publisher = $this->getPUser();
         if ($publisher) {
             $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());

@@ -20,9 +20,9 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
       const UPLOAD_WEB_PATH = '/uploads/documents/';
 
 
-      /**
-       *
-       */
+    /**
+     *
+     */
     public function getClassName()
     {
         return PDocument::TYPE_REACTION;
@@ -32,9 +32,9 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
        private $elasticaPersister;
     private $highlights;
 
-       /**
-        *
-        */
+    /**
+     *
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         if ($container) {
@@ -44,7 +44,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
     /**
      *
-      */
+     */
     public function getHighlights()
     {
         return $this->highlights;
@@ -62,7 +62,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null)
@@ -77,7 +77,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null)
@@ -92,7 +92,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null)
@@ -148,7 +148,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
      */
     public function preSave(\PropelPDO $con = null)
     {
-        // TODO > en commentaire pour avoir des fixtures variées (à supprimer)
+        // @todo > en commentaire pour avoir des fixtures variées (à supprimer)
         // if ($this->published && ($this->isNew() || in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns))) {
         //     $this->setPublishedAt(time());
         // } else {
@@ -156,7 +156,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
         // }
 
         // User associé
-        // TODO > chaine en dur
+        // @todo > chaine en dur
         $publisher = $this->getPUser();
         if ($publisher) {
             $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());

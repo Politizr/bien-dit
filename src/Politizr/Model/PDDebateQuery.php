@@ -351,7 +351,7 @@ LIMIT ".$offset.", ".$limit."
 
     /**
      * Filtre les objets par géolocalisation
-     * TODO requête géoloc / tags
+     * @todo requête géoloc / tags
      *
      * @param   Geocoder\Result\Geocoded    $geocoded
      * @return  Query

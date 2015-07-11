@@ -43,6 +43,11 @@ ReactionUpdate:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionUpdate, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+ReactionPhotoInfoUpdate:
+    pattern:  /profil/reaction/photo-info/update.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionPhotoInfoUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
 ReactionPublish:
     pattern:  /elu/reaction/publish.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrDocument:reactionPublish, _format: json }
