@@ -114,7 +114,8 @@ class DocumentManager
 
         $reaction->setPDDebateId($debate->getId());
         
-        $reaction->setTitle('Une nouvelle réaction');
+        // $reaction->setTitle('Une nouvelle réaction');
+        $debate->setSummary('<p></p>');
         
         $reaction->setPUserId($user->getId());
 
@@ -494,6 +495,7 @@ class DocumentManager
         $imageHeader = $templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
+                'withShadow' => $debate->getWithShadow(),
                 'title' => $debate->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
@@ -599,54 +601,6 @@ class DocumentManager
         // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
-            );
-    }
-
-    /**
-     * Upload du bandeau photo du document (débat ou réaction)
-     *
-     */
-    public function documentPhotoUpload()
-    {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** documentPhotoUpload');
-
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // Récupération débat courant
-        $id = $request->get('id');
-        $logger->info(print_r($id, true));
-        $document = PDocumentQuery::create()->findPk($id);
-
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
-
-        // Appel du service d'upload ajax
-        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
-            'fileName',
-            $path,
-            1024,
-            1024
-        );
-
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-        $html = $templating->render(
-            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
-            array(
-                'path' => PDocument::UPLOAD_WEB_PATH . $fileName,
-                'filterName' => 'debate_header',
-                'title' => $document->getTitle(),
-            )
-        );
-
-        return array(
-            'fileName' => $fileName,
-            'html' => $html,
             );
     }
 
@@ -759,6 +713,7 @@ class DocumentManager
         $imageHeader = $templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
+                'withShadow' => $reaction->getWithShadow(),
                 'title' => $reaction->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
@@ -901,6 +856,59 @@ class DocumentManager
         // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
+            );
+    }
+
+    /* ######################################################################################################## */
+    /*                                          EDITION DEBAT / REACTION (FONCTIONS AJAX)                       */
+    /* ######################################################################################################## */
+
+    /**
+     * Upload du bandeau photo du document (débat ou réaction)
+     *
+     */
+    public function documentPhotoUpload()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** documentPhotoUpload');
+
+        // Récupération user
+        $user = $this->sc->get('security.context')->getToken()->getUser();
+
+        // Récupération args
+        $request = $this->sc->get('request');
+
+        // Récupération débat courant
+        $id = $request->get('id');
+        $logger->info(print_r($id, true));
+        $document = PDocumentQuery::create()->findPk($id);
+
+        // Chemin des images
+        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDocument::UPLOAD_WEB_PATH;
+
+        // Appel du service d'upload ajax
+        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
+            'fileName',
+            $path,
+            1024,
+            1024
+        );
+
+        // Construction rendu
+        $templating = $this->sc->get('templating');
+        $html = $templating->render(
+            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            array(
+                'withShadow' => $document->getWithShadow(),
+                'path' => PDocument::UPLOAD_WEB_PATH . $fileName,
+                'filterName' => 'debate_header',
+                'title' => $document->getTitle(),
+            )
+        );
+
+        return array(
+            'fileName' => $fileName,
+            'html' => $html,
             );
     }
 

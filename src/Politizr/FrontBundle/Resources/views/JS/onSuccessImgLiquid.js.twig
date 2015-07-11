@@ -1,15 +1,10 @@
 <script>
     // imgLiquid onSuccess
     function onSuccessImgLiquid() {
-        // document read / edition
-        $("#illustration, #illustration_l, #illustration_r").imgLiquid({
-            fill: true,
-            horizontalAlign: "center",
-            verticalAlign: "center"
-        });
+        console.log('*** onSuccessImgLiquid');
 
-        // document photo edition
-        $("#currentPhoto").imgLiquid({
+        // document read / edition
+        $("#illustrationMain, #illustration_l, #illustration_r, #currentPhoto").imgLiquid({
             fill: true,
             horizontalAlign: "center",
             verticalAlign: "center"

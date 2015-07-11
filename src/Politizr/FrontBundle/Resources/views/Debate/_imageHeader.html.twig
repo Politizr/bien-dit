@@ -1,1 +1,4 @@
+{% if withShadow %}
+    <div class="illustrationShadow"></div>
+{% endif %}
 <img src="{{ asset(path) | imagine_filter(filterName) }}" alt="{{ title }}">

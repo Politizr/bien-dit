@@ -77,25 +77,15 @@
                 </div>
                 <div id="bigCamera" action="modalUploadOpen"><i class="iconCamera"></i><i class="iconNotifYes"></i></div>
 
-                <div class="illustrationShadow"></div>
-                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
-                <div id="mainPhoto">
+                <div id="illustrationMain">
                     {{ debate | image('debate_header') }}
                 </div>
             </div>
             <div id="illustration_l">
-                <div class="illustrationShadow"></div>
-                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
-                <div id="lPhoto">
-                    {{ debate | image('debate_header') }}
-                </div>
+                {{ debate | image('debate_header') }}
             </div>
             <div id="illustration_r">
-                <div class="illustrationShadow"></div>
-                {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
-                <div id="rPhoto">
-                    {{ debate | image('debate_header') }}
-                </div>
+                {{ debate | image('debate_header') }}
             </div>
             <div id="copyrightHolder">
                 <i class="iconCopyright" action="showCopyright"></i>

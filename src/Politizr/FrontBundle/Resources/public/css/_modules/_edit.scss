@@ -369,7 +369,7 @@ a.cancelModalUploadBox {
 }
 a.cancelModalUploadBox:hover { color: $darkGrey;}
 
-.editableCopyright {
+.editable.copyright {
 	margin-bottom: 40px;
 	padding: 40px;
 	border: solid 1px $formGrey;
@@ -380,9 +380,9 @@ a.cancelModalUploadBox:hover { color: $darkGrey;}
   	line-height: 160%;
     text-transform: none;
 }
-.editableCopyright:focus {    outline: 0;}
-.editableCopyright a {color: $highlight;}
-.editableCopyright.medium-editor-placeholder:after {
+.editable.copyright:focus {    outline: 0;}
+.editable.copyright a {color: $highlight;}
+.editable.copyright.medium-editor-placeholder:after {
 	color: $semiGrey;
 	left: 40px;
     top: 40px;

@@ -173,6 +173,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
+                'withShadow' => $document->getWithShadow(),
                 'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,

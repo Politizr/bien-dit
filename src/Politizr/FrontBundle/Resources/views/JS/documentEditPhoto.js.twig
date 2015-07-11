@@ -2,6 +2,13 @@
     $(document).ready(function () {
         // Initialisation form ajax upload
         $("#formDocumentPhoto").ajaxForm(options);
+
+        // Shadow or no on photo init
+        if ($(".maskIllustrationShadow").attr('withShadow')) {
+            $('.showIllustrationShadow').hide();
+        } else {
+            $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
+        }
     });
 
     // open upload modal
@@ -134,9 +141,9 @@
 
                     // update & imgLiquid uploaded photo
                     console.log(data['imageHeader']);
-                    $('#mainPhoto').html(data['imageHeader']);
-                    $('#lPhoto').html(data['imageHeader']);
-                    $('#rPhoto').html(data['imageHeader']);
+                    $('#illustrationMain').html(data['imageHeader']);
+                    $('#illustration_l').html(data['imageHeader']);
+                    $('#illustration_r').html(data['imageHeader']);
                     onSuccessImgLiquid();
 
                     $("[action='modalUploadClose']").trigger('click');
@@ -178,9 +185,9 @@
 
                     // update & imgLiquid uploaded photo
                     console.log(data['imageHeader']);
-                    $('#mainPhoto').html(data['imageHeader']);
-                    $('#lPhoto').html(data['imageHeader']);
-                    $('#rPhoto').html(data['imageHeader']);
+                    $('#illustrationMain').html(data['imageHeader']);
+                    $('#illustration_l').html(data['imageHeader']);
+                    $('#illustration_r').html(data['imageHeader']);
                     onSuccessImgLiquid();
 
                     $("[action='modalUploadClose']").trigger('click');
