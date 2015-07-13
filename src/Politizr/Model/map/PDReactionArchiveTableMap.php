@@ -42,21 +42,14 @@ class PDReactionArchiveTableMap extends TableMap
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addColumn('p_d_debate_id', 'PDDebateId', 'INTEGER', true, null, null);
-        $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addColumn('tree_left', 'TreeLeft', 'INTEGER', false, null, null);
-        $this->addColumn('tree_right', 'TreeRight', 'INTEGER', false, null, null);
-        $this->addColumn('tree_level', 'TreeLevel', 'INTEGER', false, null, null);
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
+        $this->addColumn('p_d_debate_id', 'PDDebateId', 'INTEGER', true, null, null);
+        $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
         $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
-        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
@@ -66,6 +59,8 @@ class PDReactionArchiveTableMap extends TableMap
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('favorite', 'Favorite', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()

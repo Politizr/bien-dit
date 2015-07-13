@@ -17,16 +17,12 @@ use Politizr\Model\PDDebateArchivePeer;
 use Politizr\Model\PDDebateArchiveQuery;
 
 /**
- * @method PDDebateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PDDebateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method PDDebateArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PDDebateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDebateArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
  * @method PDDebateArchiveQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
- * @method PDDebateArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDDebateArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDDebateArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDDebateArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
@@ -36,18 +32,16 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDebateArchiveQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDDebateArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDebateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PDDebateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDDebateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
- * @method PDDebateArchiveQuery groupByCreatedAt() Group by the created_at column
- * @method PDDebateArchiveQuery groupByUpdatedAt() Group by the updated_at column
- * @method PDDebateArchiveQuery groupBySlug() Group by the slug column
  * @method PDDebateArchiveQuery groupById() Group by the id column
  * @method PDDebateArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDDebateArchiveQuery groupByTitle() Group by the title column
  * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
  * @method PDDebateArchiveQuery groupByCopyright() Group by the copyright column
  * @method PDDebateArchiveQuery groupByWithShadow() Group by the with_shadow column
- * @method PDDebateArchiveQuery groupBySummary() Group by the summary column
  * @method PDDebateArchiveQuery groupByDescription() Group by the description column
  * @method PDDebateArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDDebateArchiveQuery groupByNoteNeg() Group by the note_neg column
@@ -57,6 +51,8 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDDebateArchiveQuery groupByFavorite() Group by the favorite column
  * @method PDDebateArchiveQuery groupByOnline() Group by the online column
+ * @method PDDebateArchiveQuery groupByCreatedAt() Group by the created_at column
+ * @method PDDebateArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDDebateArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDDebateArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -66,15 +62,11 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOne(PropelPDO $con = null) Return the first PDDebateArchive matching the query
  * @method PDDebateArchive findOneOrCreate(PropelPDO $con = null) Return the first PDDebateArchive matching the query, or a new PDDebateArchive object populated from the query conditions when no match is found
  *
- * @method PDDebateArchive findOneByCreatedAt(string $created_at) Return the first PDDebateArchive filtered by the created_at column
- * @method PDDebateArchive findOneByUpdatedAt(string $updated_at) Return the first PDDebateArchive filtered by the updated_at column
- * @method PDDebateArchive findOneBySlug(string $slug) Return the first PDDebateArchive filtered by the slug column
  * @method PDDebateArchive findOneByPUserId(int $p_user_id) Return the first PDDebateArchive filtered by the p_user_id column
  * @method PDDebateArchive findOneByTitle(string $title) Return the first PDDebateArchive filtered by the title column
  * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
  * @method PDDebateArchive findOneByCopyright(string $copyright) Return the first PDDebateArchive filtered by the copyright column
  * @method PDDebateArchive findOneByWithShadow(boolean $with_shadow) Return the first PDDebateArchive filtered by the with_shadow column
- * @method PDDebateArchive findOneBySummary(string $summary) Return the first PDDebateArchive filtered by the summary column
  * @method PDDebateArchive findOneByDescription(string $description) Return the first PDDebateArchive filtered by the description column
  * @method PDDebateArchive findOneByNotePos(int $note_pos) Return the first PDDebateArchive filtered by the note_pos column
  * @method PDDebateArchive findOneByNoteNeg(int $note_neg) Return the first PDDebateArchive filtered by the note_neg column
@@ -84,18 +76,16 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByPublishedBy(string $published_by) Return the first PDDebateArchive filtered by the published_by column
  * @method PDDebateArchive findOneByFavorite(boolean $favorite) Return the first PDDebateArchive filtered by the favorite column
  * @method PDDebateArchive findOneByOnline(boolean $online) Return the first PDDebateArchive filtered by the online column
+ * @method PDDebateArchive findOneByCreatedAt(string $created_at) Return the first PDDebateArchive filtered by the created_at column
+ * @method PDDebateArchive findOneByUpdatedAt(string $updated_at) Return the first PDDebateArchive filtered by the updated_at column
  * @method PDDebateArchive findOneByArchivedAt(string $archived_at) Return the first PDDebateArchive filtered by the archived_at column
  *
- * @method array findByCreatedAt(string $created_at) Return PDDebateArchive objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PDDebateArchive objects filtered by the updated_at column
- * @method array findBySlug(string $slug) Return PDDebateArchive objects filtered by the slug column
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDDebateArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDDebateArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebateArchive objects filtered by the copyright column
  * @method array findByWithShadow(boolean $with_shadow) Return PDDebateArchive objects filtered by the with_shadow column
- * @method array findBySummary(string $summary) Return PDDebateArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDDebateArchive objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDDebateArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDDebateArchive objects filtered by the note_neg column
@@ -105,6 +95,8 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByPublishedBy(string $published_by) Return PDDebateArchive objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDDebateArchive objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDDebateArchive objects filtered by the online column
+ * @method array findByCreatedAt(string $created_at) Return PDDebateArchive objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PDDebateArchive objects filtered by the updated_at column
  * @method array findByArchivedAt(string $archived_at) Return PDDebateArchive objects filtered by the archived_at column
  */
 abstract class BasePDDebateArchiveQuery extends ModelCriteria
@@ -212,7 +204,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -300,121 +292,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
     {
 
         return $this->addUsingAlias(PDDebateArchivePeer::ID, $keys, Criteria::IN);
-    }
-
-    /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the slug column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
-     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $slug The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterBySlug($slug = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($slug)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $slug)) {
-                $slug = str_replace('*', '%', $slug);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::SLUG, $slug, $comparison);
     }
 
     /**
@@ -613,35 +490,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::WITH_SHADOW, $withShadow, $comparison);
-    }
-
-    /**
-     * Filter the query on the summary column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySummary('fooValue');   // WHERE summary = 'fooValue'
-     * $query->filterBySummary('%fooValue%'); // WHERE summary LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $summary The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterBySummary($summary = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($summary)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $summary)) {
-                $summary = str_replace('*', '%', $summary);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::SUMMARY, $summary, $comparison);
     }
 
     /**
@@ -950,6 +798,92 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the updated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $updatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    {
+        if (is_array($updatedAt)) {
+            $useMinMax = false;
+            if (isset($updatedAt['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($updatedAt['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**

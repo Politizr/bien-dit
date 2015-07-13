@@ -26,8 +26,6 @@ params:
             label:          Image
         title:
             label:          Titre
-        summary:
-            label:          Résumé
         description:
             label:          Description
         note_pos:
@@ -55,7 +53,7 @@ builders:
         params:
             title:                              Liste des réactions
             # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
-            display:                            [ id, tree_level, parent, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
+            display:                            [ id, tree_level, parent, p_user, title, note_pos, note_neg, online, published, published_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -80,7 +78,6 @@ builders:
             title:                              "Création d'un contenu réaction"
             display:
                 "Champs principaux":            [ p_user_id, parent_node, p_d_debate_id, title ]
-                "Champs complémentaires":       [ summary ]
             fields:
                 p_d_debate_id:
                     formType:                   hidden
@@ -97,9 +94,6 @@ builders:
                     addFormOptions:
                         mapped:                 false
                         choices:                \Politizr\Model\PDReactionQuery::create()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
             actions:
                 save:                           ~
                 list:
@@ -109,7 +103,7 @@ builders:
             title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ p_d_debate_id, uploadedFileName, title, summary, description ]
+                    "Texte":                    [ p_d_debate_id, uploadedFileName, title, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user_id ] ]
                 "Statut":
@@ -134,9 +128,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 description:
                     addFormOptions:
                         attr:                   { class : tinymce }

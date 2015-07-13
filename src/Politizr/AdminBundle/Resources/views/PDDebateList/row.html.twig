@@ -3,7 +3,3 @@
 {% block list_td_column_file_name %}
     <img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PDDebate.fileName }}" />
 {% endblock list_td_column_file_name %}
-
-{% block list_td_column_summary %}
-    {{ PDDebate.PDocument.summary | striptags | slice(0, 150) | raw }}...
-{% endblock %}

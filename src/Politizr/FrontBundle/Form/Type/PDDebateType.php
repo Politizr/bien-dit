@@ -32,10 +32,6 @@ class PDDebateType extends AbstractType
             'required' => true,
         ));
         
-        $builder->add('summary', 'hidden', array(
-            'required' => false,
-        ));
-        
         $builder->add('description', 'hidden', array(
             'required' => false,
         ));

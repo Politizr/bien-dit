@@ -129,14 +129,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     *
-     */
-    public function getClassName()
-    {
-        return PDocument::TYPE_USER;
-    }
-
-    /**
      *  Renvoit la liste des tags qualifiant le user sous forme de tableau de chaines.
      *
      *  @return string
@@ -462,6 +454,16 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     // ************************************************************************************ //
     //                      METHODES PUBLIQUES
     // ************************************************************************************ //
+
+    /**
+     * Get the object type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return PDocumentInterface::TYPE_USER;
+    }
 
 
 
@@ -819,23 +821,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return parent::getPuFollowTPTags($query);
     }
 
-    // *****************************    DOCUMENTS > DEBATS, REACTIONS    ************************* //
-
-    /**
-     * Renvoie les documents associés à l'utilisateur
-     *
-     * @return PropelCollection PDDebate
-     */
-    public function getDocuments($online = true, $published = true)
-    {
-        $query = PDocumentQuery::create()
-                    ->filterByPUserId($this->getId())
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
-                    ->orderByCreatedAt(\Criteria::DESC);
-
-        return $query->find();
-    }
+    // *****************************    DEBATES, REACTIONS    ************************* //
 
     /**
      * Renvoie les débats associés à l'utilisateur

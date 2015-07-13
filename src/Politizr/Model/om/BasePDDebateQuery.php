@@ -15,28 +15,23 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
+use Politizr\Model\PDDComment;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
-use Politizr\Model\PDocument;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUser;
 
 /**
- * @method PDDebateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PDDebateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method PDDebateQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PDDebateQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDebateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
  * @method PDDebateQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
- * @method PDDebateQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PDDebateQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDDebateQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDDebateQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
@@ -46,17 +41,16 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDebateQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDDebateQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDebateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PDDebateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PDDebateQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
- * @method PDDebateQuery groupByCreatedAt() Group by the created_at column
- * @method PDDebateQuery groupByUpdatedAt() Group by the updated_at column
- * @method PDDebateQuery groupBySlug() Group by the slug column
  * @method PDDebateQuery groupById() Group by the id column
  * @method PDDebateQuery groupByPUserId() Group by the p_user_id column
  * @method PDDebateQuery groupByTitle() Group by the title column
  * @method PDDebateQuery groupByFileName() Group by the file_name column
  * @method PDDebateQuery groupByCopyright() Group by the copyright column
  * @method PDDebateQuery groupByWithShadow() Group by the with_shadow column
- * @method PDDebateQuery groupBySummary() Group by the summary column
  * @method PDDebateQuery groupByDescription() Group by the description column
  * @method PDDebateQuery groupByNotePos() Group by the note_pos column
  * @method PDDebateQuery groupByNoteNeg() Group by the note_neg column
@@ -66,14 +60,13 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupByPublishedBy() Group by the published_by column
  * @method PDDebateQuery groupByFavorite() Group by the favorite column
  * @method PDDebateQuery groupByOnline() Group by the online column
+ * @method PDDebateQuery groupByCreatedAt() Group by the created_at column
+ * @method PDDebateQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PDDebateQuery groupBySlug() Group by the slug column
  *
  * @method PDDebateQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDDebateQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PDDebateQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method PDDebateQuery leftJoinPDocument($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDocument relation
- * @method PDDebateQuery rightJoinPDocument($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDocument relation
- * @method PDDebateQuery innerJoinPDocument($relationAlias = null) Adds a INNER JOIN clause to the query using the PDocument relation
  *
  * @method PDDebateQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
@@ -87,6 +80,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
  * @method PDDebateQuery innerJoinPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReaction relation
  *
+ * @method PDDebateQuery leftJoinPDDComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDComment relation
+ * @method PDDebateQuery rightJoinPDDComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDComment relation
+ * @method PDDebateQuery innerJoinPDDComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDComment relation
+ *
  * @method PDDebateQuery leftJoinPDDTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDTaggedT relation
  * @method PDDebateQuery rightJoinPDDTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDTaggedT relation
  * @method PDDebateQuery innerJoinPDDTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDTaggedT relation
@@ -94,15 +91,11 @@ use Politizr\Model\PUser;
  * @method PDDebate findOne(PropelPDO $con = null) Return the first PDDebate matching the query
  * @method PDDebate findOneOrCreate(PropelPDO $con = null) Return the first PDDebate matching the query, or a new PDDebate object populated from the query conditions when no match is found
  *
- * @method PDDebate findOneByCreatedAt(string $created_at) Return the first PDDebate filtered by the created_at column
- * @method PDDebate findOneByUpdatedAt(string $updated_at) Return the first PDDebate filtered by the updated_at column
- * @method PDDebate findOneBySlug(string $slug) Return the first PDDebate filtered by the slug column
  * @method PDDebate findOneByPUserId(int $p_user_id) Return the first PDDebate filtered by the p_user_id column
  * @method PDDebate findOneByTitle(string $title) Return the first PDDebate filtered by the title column
  * @method PDDebate findOneByFileName(string $file_name) Return the first PDDebate filtered by the file_name column
  * @method PDDebate findOneByCopyright(string $copyright) Return the first PDDebate filtered by the copyright column
  * @method PDDebate findOneByWithShadow(boolean $with_shadow) Return the first PDDebate filtered by the with_shadow column
- * @method PDDebate findOneBySummary(string $summary) Return the first PDDebate filtered by the summary column
  * @method PDDebate findOneByDescription(string $description) Return the first PDDebate filtered by the description column
  * @method PDDebate findOneByNotePos(int $note_pos) Return the first PDDebate filtered by the note_pos column
  * @method PDDebate findOneByNoteNeg(int $note_neg) Return the first PDDebate filtered by the note_neg column
@@ -112,17 +105,16 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneByPublishedBy(string $published_by) Return the first PDDebate filtered by the published_by column
  * @method PDDebate findOneByFavorite(boolean $favorite) Return the first PDDebate filtered by the favorite column
  * @method PDDebate findOneByOnline(boolean $online) Return the first PDDebate filtered by the online column
+ * @method PDDebate findOneByCreatedAt(string $created_at) Return the first PDDebate filtered by the created_at column
+ * @method PDDebate findOneByUpdatedAt(string $updated_at) Return the first PDDebate filtered by the updated_at column
+ * @method PDDebate findOneBySlug(string $slug) Return the first PDDebate filtered by the slug column
  *
- * @method array findByCreatedAt(string $created_at) Return PDDebate objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PDDebate objects filtered by the updated_at column
- * @method array findBySlug(string $slug) Return PDDebate objects filtered by the slug column
  * @method array findById(int $id) Return PDDebate objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PDDebate objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDDebate objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebate objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebate objects filtered by the copyright column
  * @method array findByWithShadow(boolean $with_shadow) Return PDDebate objects filtered by the with_shadow column
- * @method array findBySummary(string $summary) Return PDDebate objects filtered by the summary column
  * @method array findByDescription(string $description) Return PDDebate objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDDebate objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDDebate objects filtered by the note_neg column
@@ -132,8 +124,11 @@ use Politizr\Model\PUser;
  * @method array findByPublishedBy(string $published_by) Return PDDebate objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDDebate objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDDebate objects filtered by the online column
+ * @method array findByCreatedAt(string $created_at) Return PDDebate objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PDDebate objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PDDebate objects filtered by the slug column
  */
-abstract class BasePDDebateQuery extends PDocumentQuery
+abstract class BasePDDebateQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
@@ -244,7 +239,7 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `created_at`, `updated_at`, `slug`, `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `summary`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -335,121 +330,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the slug column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
-     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $slug The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateQuery The current query, for fluid interface
-     */
-    public function filterBySlug($slug = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($slug)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $slug)) {
-                $slug = str_replace('*', '%', $slug);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebatePeer::SLUG, $slug, $comparison);
-    }
-
-    /**
      * Filter the query on the id column
      *
      * Example usage:
@@ -459,8 +339,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
      * $query->filterById(array('min' => 12)); // WHERE id >= 12
      * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
-     *
-     * @see       filterByPDocument()
      *
      * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
@@ -649,35 +527,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
         }
 
         return $this->addUsingAlias(PDDebatePeer::WITH_SHADOW, $withShadow, $comparison);
-    }
-
-    /**
-     * Filter the query on the summary column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySummary('fooValue');   // WHERE summary = 'fooValue'
-     * $query->filterBySummary('%fooValue%'); // WHERE summary LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $summary The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateQuery The current query, for fluid interface
-     */
-    public function filterBySummary($summary = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($summary)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $summary)) {
-                $summary = str_replace('*', '%', $summary);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PDDebatePeer::SUMMARY, $summary, $comparison);
     }
 
     /**
@@ -989,79 +838,118 @@ abstract class BasePDDebateQuery extends PDocumentQuery
     }
 
     /**
-     * Filter the query by a related PDocument object
+     * Filter the query on the created_at column
      *
-     * @param   PDocument|PropelObjectCollection $pDocument The related object(s) to use as filter
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDDebateQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDocument($pDocument, $comparison = null)
-    {
-        if ($pDocument instanceof PDocument) {
-            return $this
-                ->addUsingAlias(PDDebatePeer::ID, $pDocument->getId(), $comparison);
-        } elseif ($pDocument instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PDDebatePeer::ID, $pDocument->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByPDocument() only accepts arguments of type PDocument or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDocument relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PDDebateQuery The current query, for fluid interface
      */
-    public function joinPDocument($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDocument');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDocument');
-        }
-
-        return $this;
+        return $this->addUsingAlias(PDDebatePeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
-     * Use the PDocument relation PDocument object
+     * Filter the query on the updated_at column
      *
-     * @see       useQuery()
+     * Example usage:
+     * <code>
+     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at < '2011-03-13'
+     * </code>
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     mixed $updatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   \Politizr\Model\PDocumentQuery A secondary query class using the current class as primary query
+     * @return PDDebateQuery The current query, for fluid interface
      */
-    public function usePDocumentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
-        return $this
-            ->joinPDocument($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDocument', '\Politizr\Model\PDocumentQuery');
+        if (is_array($updatedAt)) {
+            $useMinMax = false;
+            if (isset($updatedAt['min'])) {
+                $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($updatedAt['max'])) {
+                $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::SLUG, $slug, $comparison);
     }
 
     /**
@@ -1289,6 +1177,80 @@ abstract class BasePDDebateQuery extends PDocumentQuery
     }
 
     /**
+     * Filter the query by a related PDDComment object
+     *
+     * @param   PDDComment|PropelObjectCollection $pDDComment  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDDComment($pDDComment, $comparison = null)
+    {
+        if ($pDDComment instanceof PDDComment) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::ID, $pDDComment->getPDDebateId(), $comparison);
+        } elseif ($pDDComment instanceof PropelObjectCollection) {
+            return $this
+                ->usePDDCommentQuery()
+                ->filterByPrimaryKeys($pDDComment->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDDComment() only accepts arguments of type PDDComment or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDDComment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPDDComment($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDDComment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDDComment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDDComment relation PDDComment object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDDCommentQuery A secondary query class using the current class as primary query
+     */
+    public function usePDDCommentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPDDComment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDComment', '\Politizr\Model\PDDCommentQuery');
+    }
+
+    /**
      * Filter the query by a related PDDTaggedT object
      *
      * @param   PDDTaggedT|PropelObjectCollection $pDDTaggedT  the related object to use as filter
@@ -1433,8 +1395,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
     protected function basePreDelete(PropelPDO $con)
     {
         EventDispatcherProxy::trigger(array('delete.pre','query.delete.pre'), new QueryEvent($this));
-        // event behavior
-        // placeholder, issue #5
         // archivable behavior
 
         if ($this->archiveOnDelete) {
@@ -1443,6 +1403,8 @@ abstract class BasePDDebateQuery extends PDocumentQuery
             $this->archiveOnDelete = true;
         }
 
+        // event behavior
+        // placeholder, issue #5
 
         return $this->preDelete($con);
     }
@@ -1677,15 +1639,6 @@ abstract class BasePDDebateQuery extends PDocumentQuery
         return $stmt;
     }
 
-    // extend behavior
-    public function setFormatter($formatter)
-    {
-        if (is_string($formatter) && $formatter === \ModelCriteria::FORMAT_ON_DEMAND) {
-            $formatter = '\Glorpen\Propel\PropelBundle\Formatter\PropelOnDemandFormatter';
-        }
-
-        return parent::setFormatter($formatter);
-    }
     // archivable behavior
 
     /**
@@ -1769,4 +1722,13 @@ abstract class BasePDDebateQuery extends PDocumentQuery
         return $this->deleteAll($con);
     }
 
+    // extend behavior
+    public function setFormatter($formatter)
+    {
+        if (is_string($formatter) && $formatter === \ModelCriteria::FORMAT_ON_DEMAND) {
+            $formatter = '\Glorpen\Propel\PropelBundle\Formatter\PropelOnDemandFormatter';
+        }
+
+        return parent::setFormatter($formatter);
+    }
 }

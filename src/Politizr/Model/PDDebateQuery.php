@@ -16,6 +16,9 @@ class PDDebateQuery extends BasePDDebateQuery
      *  @todo:
      *   > + suggestions depuis les tags des débats déjà suivis
      *
+     * #########################
+     * # Suggestions de débats #
+     * #########################
      * #  Concordance des tags suivis / tags caractérisant des débats
      * SELECT DISTINCT
      *     created_at,
@@ -25,7 +28,8 @@ class PDDebateQuery extends BasePDDebateQuery
      *     p_user_id,
      *     title,
      *     file_name,
-     *     summary,
+     *     with_shadow,
+     *     copyright,
      *     description,
      *     note_pos,
      *     note_neg,
@@ -72,6 +76,8 @@ class PDDebateQuery extends BasePDDebateQuery
      * ORDER BY unionsorting ASC
      * ) unionsorting
      *
+     * LIMIT 0, 10
+     *
      * @param  integer     $userId
      * @param  integer     $offset
      * @param  integer     $limit
@@ -81,6 +87,9 @@ class PDDebateQuery extends BasePDDebateQuery
     {
         // Requête SQL
         $sql = "
+#########################
+# Suggestions de débats #
+#########################
 #  Concordance des tags suivis / tags caractérisant des débats
 SELECT DISTINCT
     created_at,
@@ -90,7 +99,8 @@ SELECT DISTINCT
     p_user_id,
     title,
     file_name,
-    summary,
+    with_shadow,
+    copyright,
     description,
     note_pos,
     note_neg,

@@ -8,16 +8,6 @@ Politizr\Model\PUMandate:
         begin_at:                2012-05-07 00:00:00
         localization:            <?php $faker('realText', 25) ?>
 
-# PARTI COURANT USERS DEBATTEURS DE TEST
-Politizr\Model\PUCurrentQO:
-    u1q1:
-        p_user_id:              fhollande
-        p_q_organization_id:    parti3
-    u2q1:
-        p_user_id:              sarko
-        p_q_organization_id:    parti10
-
-
 # LISTE DE MANDATS ACTUELS DE DEPUTE
     qualification1:
         p_user_id:               depute1
@@ -180,7 +170,15 @@ Politizr\Model\PUCurrentQO:
         localization:            <?php $faker('realText', 25) ?>
 
 # LISTE DES USERS / PARTIS EN COURS
+# PARTI COURANT USERS DEBATTEURS DE TEST
 Politizr\Model\PUCurrentQO:
+    u1q1:
+        p_user_id:              fhollande
+        p_q_organization_id:    parti3
+    u2q1:
+        p_user_id:              sarko
+        p_q_organization_id:    parti10
+
     depute1Current:
         p_user_id:               depute1
         p_q_organization_id:     parti10

@@ -1,3 +1,3 @@
-<div class="commentsCounter" action="comments" object-id="{{ document.id }}" no-paragraph="{{ paragraphNo }}">
+<div class="commentsCounter" action="comments" subjectId="{{ document.id }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
     {{ document | nbComments(paragraphNo) }}<i class="iconComment"></i>
 </div>

@@ -117,18 +117,6 @@
             </div>
 
             <div id="postText">
-                <div class="paragraph summary">
-                    <i class="iconQuestion" action="toggleHelper"></i>
-                    <div class="helperSlider helperSliderLeft" style="display: none;">
-                        <i class="iconArrowUp"></i>
-                        <i class="iconCross" action="hideHelper"></i>
-                        <h4>éditer un champ texte</h4>
-                        {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
-                    </div>
-                    <div class="editable summary">
-                        {{ debate.summary | raw }}
-                    </div>
-                </div>
                 <div class="paragraph">
                     <i class="iconQuestion" action="toggleHelper"></i>
                     <div class="helperSlider helperSliderLeft" style="display: none;">
@@ -144,7 +132,6 @@
             </div>
 
             {# hidden form inputs filled by js #}
-            {{ form_row(form.summary) }}
             {{ form_row(form.description) }}
             {{ form_rest(form) }}
         </form>

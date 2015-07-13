@@ -92,10 +92,6 @@
         </div>
 
         <div id="postText">
-            <div class="paragraph summary">
-                {# @todo gestion des commentaires sur le résumé #}
-                {{ debate.summary | raw }}
-            </div>
             {% for paragraph in paragraphs %}
                 <div class="paragraph">
                     {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}

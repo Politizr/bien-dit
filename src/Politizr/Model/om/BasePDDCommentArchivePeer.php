@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDDCommentArchive;
 use Politizr\Model\PDDCommentArchivePeer;
 use Politizr\Model\map\PDDCommentArchiveTableMap;
@@ -26,7 +29,7 @@ abstract class BasePDDCommentArchivePeer
     const OM_CLASS = 'Politizr\\Model\\PDDCommentArchive';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PDDCommentArchiveTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PDDCommentArchiveTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 13;
@@ -80,7 +83,7 @@ abstract class BasePDDCommentArchivePeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of PDDCommentArchive objects.
+     * An identity map to hold any loaded instances of PDDCommentArchive objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array PDDCommentArchive[]
@@ -162,8 +165,8 @@ abstract class BasePDDCommentArchivePeer
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
      * <code>
-     *        $c->addAlias("alias1", TablePeer::TABLE_NAME);
-     *        $c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
+     *		$c->addAlias("alias1", TablePeer::TABLE_NAME);
+     *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
      * @param      string $column The column name for current table. (i.e. PDDCommentArchivePeer::COLUMN_NAME).
@@ -184,7 +187,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      Criteria $criteria object containing the columns to add.
      * @param      string   $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -268,9 +271,9 @@ abstract class BasePDDCommentArchivePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 PDDCommentArchive
+     * @return PDDCommentArchive
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectOne(Criteria $criteria, PropelPDO $con = null)
     {
@@ -290,7 +293,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      PropelPDO $con
      * @return array           Array of selected Objects
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
@@ -305,7 +308,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
      * @param      PropelPDO $con The connection to use
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return PDOStatement The executed PDOStatement object.
      * @see        BasePeer::doSelect()
      */
@@ -335,7 +338,7 @@ abstract class BasePDDCommentArchivePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      PDDCommentArchive $obj A PDDCommentArchive object.
+     * @param PDDCommentArchive $obj A PDDCommentArchive object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -385,7 +388,7 @@ abstract class BasePDDCommentArchivePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   PDDCommentArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PDDCommentArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -406,10 +409,8 @@ abstract class BasePDDCommentArchivePeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (PDDCommentArchivePeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (PDDCommentArchivePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -464,7 +465,7 @@ abstract class BasePDDCommentArchivePeer
      * objects that inherit from the default.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function populateObjects(PDOStatement $stmt)
     {
@@ -497,7 +498,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return array (PDDCommentArchive object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
@@ -509,7 +510,7 @@ abstract class BasePDDCommentArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDDCommentArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDDCommentArchivePeer::OM_CLASS;
+            $cls = PDDCommentArchivePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDDCommentArchivePeer::addInstanceToPool($obj, $key);
@@ -523,7 +524,7 @@ abstract class BasePDDCommentArchivePeer
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -537,7 +538,7 @@ abstract class BasePDDCommentArchivePeer
     {
       $dbMap = Propel::getDatabaseMap(BasePDDCommentArchivePeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePDDCommentArchivePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PDDCommentArchiveTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\PDDCommentArchiveTableMap());
       }
     }
 
@@ -549,6 +550,13 @@ abstract class BasePDDCommentArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PDDCommentArchivePeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PDDCommentArchivePeer::OM_CLASS;
     }
 
@@ -559,7 +567,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doInsert($values, PropelPDO $con = null)
     {
@@ -583,7 +591,7 @@ abstract class BasePDDCommentArchivePeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -598,7 +606,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doUpdate($values, PropelPDO $con = null)
     {
@@ -656,7 +664,7 @@ abstract class BasePDDCommentArchivePeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -669,9 +677,9 @@ abstract class BasePDDCommentArchivePeer
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                if supported by native driver or if emulated using Propel.
+     *				if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, PropelPDO $con = null)
      {
@@ -715,7 +723,7 @@ abstract class BasePDDCommentArchivePeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -728,7 +736,7 @@ abstract class BasePDDCommentArchivePeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      PDDCommentArchive $obj The object to validate.
+     * @param PDDCommentArchive $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -761,7 +769,7 @@ abstract class BasePDDCommentArchivePeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return PDDCommentArchive
      */
@@ -791,7 +799,7 @@ abstract class BasePDDCommentArchivePeer
      * @param      PropelPDO $con the connection to use
      * @return PDDCommentArchive[]
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
@@ -817,3 +825,4 @@ abstract class BasePDDCommentArchivePeer
 //
 BasePDDCommentArchivePeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDDCommentArchivePeer'));

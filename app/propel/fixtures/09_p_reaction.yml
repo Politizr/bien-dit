@@ -22,10 +22,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute7
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:			<?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -45,10 +46,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute8
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -68,10 +70,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute9
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -104,10 +107,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute10
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -127,10 +131,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute11
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -150,10 +155,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute12
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -188,10 +194,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute13
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -211,10 +218,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute14
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true
@@ -234,10 +242,11 @@ Politizr\Model\PDReaction:
         p_user_id:      depute15
 
         file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        with_shadow:    1
+        copyright:      <p>&copy; Politizr</p>
 
         title:          <?php $faker('realText', 60) ?>
 
-        summary:        <?php $faker('lorem', 5, 2, 0, 0, 0, 0, 0, 0, 0) ?>
         description:    <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         online:         true

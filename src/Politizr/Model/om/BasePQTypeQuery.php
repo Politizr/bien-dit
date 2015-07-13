@@ -591,7 +591,7 @@ abstract class BasePQTypeQuery extends ModelCriteria
      *
      * @return PQTypeQuery The current query, for fluid interface
      */
-    public function joinPQMandate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPQMandate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PQMandate');
@@ -626,7 +626,7 @@ abstract class BasePQTypeQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQMandateQuery A secondary query class using the current class as primary query
      */
-    public function usePQMandateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePQMandateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPQMandate($relationAlias, $joinType)
@@ -665,7 +665,7 @@ abstract class BasePQTypeQuery extends ModelCriteria
      *
      * @return PQTypeQuery The current query, for fluid interface
      */
-    public function joinPQOrganization($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPQOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PQOrganization');
@@ -700,7 +700,7 @@ abstract class BasePQTypeQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQOrganizationQuery A secondary query class using the current class as primary query
      */
-    public function usePQOrganizationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePQOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPQOrganization($relationAlias, $joinType)

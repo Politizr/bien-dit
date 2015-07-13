@@ -41,9 +41,9 @@ LAYOUT COMMENT
         <div class="row">
             {# Description + lien #}
             <div class="col-sm-10">
-                {% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+                {% if comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE') %}
                     <a href="{{ path('DebateDetail', { 'slug': comment.debate.slug }) }}">
-                {% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+                {% elseif comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %}
                     <a href="{{ path('ReactionDetail', { 'slug': comment.reaction.slug }) }}">
                 {% endif %}
                     <em>"{{ comment.description }}"</em>
@@ -102,9 +102,9 @@ LAYOUT COMMENT
 {# Bloc ligne de la timeline #}
 {% block timelineRow %}
 
-    {% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+    {% if comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE') %}
         {% set route = path('DebateDetail', { 'slug': comment.debate.slug }) %}
-    {% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+    {% elseif comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %}
         {% set route = path('ReactionDetail', { 'slug': comment.reaction.slug }) %}
     {% endif %}
 
@@ -120,9 +120,9 @@ LAYOUT COMMENT
             <div class="col-sm-8">
                 <h4 {% if isParentMine %} class="bg-info"{% endif %}>
                     {% include 'PolitizrFrontBundle:Fragment\\User:authorName.html.twig' with { 'user': comment.user } only %} a rédigé un <a class="label label-info" href="{{ route }}">commentaire</a>
-                    {% if comment.type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+                    {% if comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE') %}
                         sur {% if isParentMine %}votre{% else %}le{% endif %} débat
-                    {% elseif comment.type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+                    {% elseif comment.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %}
                         sur {% if isParentMine %}votre{% else %}la{% endif %} réaction
                     {% endif %}
                     <a href="{{ route }}">{{ comment.document }}</a>

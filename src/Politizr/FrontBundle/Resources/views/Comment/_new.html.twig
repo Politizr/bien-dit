@@ -1,4 +1,4 @@
-{{ form_start(formComment, {'attr': {'id': 'form-comment-new'} }) }}
+{{ form_start(formComment, {'attr': {'id': 'formCommentNew'} }) }}
     {{ form_errors(formComment) }}
 
     {{ form_widget(formComment.description) }}
@@ -11,9 +11,9 @@
         <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
     </div>
     {% if app.user %}
-        <input type="button" action="btn-submit-comment" value="&#xe82c; Publier">
+        <input type="button" action="createComment" value="Publier">
     {% else %}
         <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
     {% endif %}
-    <div class="cancel" action="close-comments">Annuler</div>
+    <div class="cancel" action="closeComments">Annuler</div>
 </div>

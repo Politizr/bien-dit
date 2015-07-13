@@ -1,5 +1,1 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionList:row.html.twig" %}
-
-{% block list_td_column_summary %}
-    {{ PDReaction.PDocument.summary | striptags | slice(0, 150) | raw }}...
-{% endblock %}

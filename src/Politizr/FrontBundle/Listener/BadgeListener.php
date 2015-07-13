@@ -11,8 +11,8 @@ use Politizr\Model\PUBadge;
 
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUReputationQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PUFollowUQuery;
 
@@ -299,12 +299,18 @@ GROUP BY child.p_d_debate_id
     private function checkRedacteur($userId, $badgeId, $nbDocuments, $nbNotePos)
     {
         if (!$this->hasBadge($userId, $badgeId)) {
-            $nb = PDocumentQuery::create()
+            $nbDebate = PDDebateQuery::create()
+                        ->filterByPUserId($userId)
+                        ->filterByNotePos(array('min' => $nbNotePos))
+                        ->count();
+            $nbReaction = PDReactionQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByNotePos(array('min' => $nbNotePos))
                         ->count();
 
-            if ($nb >= $nbDocuments) {
+            $nbTotal = $nbDebate + $nbReaction;
+
+            if ($nbTotal >= $nbDocuments) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }

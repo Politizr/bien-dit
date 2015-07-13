@@ -10,11 +10,9 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 
-use Politizr\Model\PDocument;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;

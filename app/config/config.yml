@@ -469,7 +469,7 @@ bazinga_faker:
                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
 
 
-      #################################################################################################################
+        #################################################################################################################
         #                                   COMMANDE
         #################################################################################################################
         Politizr\Model\POrder:
@@ -508,7 +508,9 @@ bazinga_faker:
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 75 ] }
 
-                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+                WithShadow:             { method: boolean, parameters: [ 80 ] }
+                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
@@ -535,11 +537,28 @@ bazinga_faker:
                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
-        Politizr\Model\PDComment:
+        Politizr\Model\PDDComment:
             number:                     50
             custom_formatters:
+                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PDocumentId:            { method: numberBetween, parameters: [ 1, 6 ] }
+
+                Description:            { method: realText, parameters: [ 250 ] }
+                ParagraphNo:            { method: randomDigit }
+
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+
+                PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
+
+                Online:                 { method: boolean, parameters: [ 100 ] }
+
+        Politizr\Model\PDRComment:
+            number:                     50
+            custom_formatters:
+                PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }
@@ -643,10 +662,6 @@ fos_elastica:
                             boost:              3
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
-                        summary:
-                            boost:              2
-                            index_analyzer:     custom_analyzer
-                            search_analyzer:    custom_search_analyzer
                         description:
                             boost:              1
                             index_analyzer:     custom_analyzer
@@ -670,10 +685,6 @@ fos_elastica:
                     mappings:
                         title:
                             boost:              3
-                            index_analyzer:     custom_analyzer
-                            search_analyzer:    custom_search_analyzer
-                        summary:
-                            boost:              2
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
                         description:

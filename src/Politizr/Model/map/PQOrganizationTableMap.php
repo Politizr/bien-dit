@@ -43,6 +43,7 @@ class PQOrganizationTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_q_type_id', 'PQTypeId', 'INTEGER', 'p_q_type', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('initials', 'Initials', 'VARCHAR', false, 50, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
@@ -53,7 +54,6 @@ class PQOrganizationTableMap extends TableMap
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
-        $this->addForeignKey('p_q_type_id', 'PQTypeId', 'INTEGER', 'p_q_type', 'id', false, null, null);
         // validators
     } // initialize()
 

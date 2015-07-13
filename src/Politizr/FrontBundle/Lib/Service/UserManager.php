@@ -11,7 +11,7 @@ use Politizr\Exception\FormValidationException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
@@ -55,7 +55,6 @@ class UserManager
     /* ######################################################################################################## */
     /*                                            SUIVI (FONCTIONS AJAX)                                        */
     /* ######################################################################################################## */
-
 
     /**
      *
@@ -121,14 +120,14 @@ class UserManager
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $object,
-                'type' => PDocument::TYPE_USER
+                'type' => PDocumentInterface::TYPE_USER
             )
         );
         $followers = $templating->render(
             'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig',
             array(
                 'object' => $object,
-                'type' => PDocument::TYPE_USER
+                'type' => PDocumentInterface::TYPE_USER
             )
         );
 

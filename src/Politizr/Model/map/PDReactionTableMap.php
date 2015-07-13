@@ -40,23 +40,16 @@ class PDReactionTableMap extends TableMap
         $this->setPhpName('PDReaction');
         $this->setClassname('Politizr\\Model\\PDReaction');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
         $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addColumn('tree_left', 'TreeLeft', 'INTEGER', false, null, null);
-        $this->addColumn('tree_right', 'TreeRight', 'INTEGER', false, null, null);
-        $this->addColumn('tree_level', 'TreeLevel', 'INTEGER', false, null, null);
-        $this->addForeignPrimaryKey('id', 'Id', 'INTEGER' , 'p_document', 'id', true, null, null);
-        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
         $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
-        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
@@ -66,6 +59,12 @@ class PDReactionTableMap extends TableMap
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('favorite', 'Favorite', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('tree_left', 'TreeLeft', 'INTEGER', false, null, null);
+        $this->addColumn('tree_right', 'TreeRight', 'INTEGER', false, null, null);
+        $this->addColumn('tree_level', 'TreeLevel', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 
@@ -74,9 +73,9 @@ class PDReactionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PDocument', 'Politizr\\Model\\PDocument', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRComments');
     } // buildRelations()
 
     /**
@@ -97,6 +96,16 @@ class PDReactionTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
+),
             'sluggable' =>  array (
   'add_cleanup' => 'true',
   'slug_column' => 'slug',
@@ -115,26 +124,9 @@ class PDReactionTableMap extends TableMap
   'scope_column' => 'p_d_debate_id',
   'method_proxies' => 'false',
 ),
-            'concrete_inheritance' =>  array (
-  'extends' => 'p_document',
-  'descendant_column' => 'descendant_class',
-  'copy_data_to_parent' => 'true',
-  'schema' => '',
-  'excluded_parent_behavior' => 'nested_set',
-),
             'event' =>  array (
 ),
             'extend' =>  array (
-),
-            'archivable' =>  array (
-  'archive_table' => '',
-  'archive_phpname' => NULL,
-  'archive_class' => '',
-  'log_archived_at' => 'true',
-  'archived_at_column' => 'archived_at',
-  'archive_on_insert' => 'false',
-  'archive_on_update' => 'false',
-  'archive_on_delete' => 'true',
 ),
         );
     } // getBehaviors()

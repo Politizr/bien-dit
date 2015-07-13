@@ -28,14 +28,14 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         // Order
         $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
 
-        // User 
+        // User
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
         $documents = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
 
         // Commentaires
-        $comments = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
+        // $comments = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
 
         // Tags
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');

@@ -2,11 +2,11 @@
 
 <div class="boxResults">
     {% for result in results %}
-        {% if result.className == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %}
+        {% if result.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE') %}
             {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowSearch.html.twig' with { 'debate': result, 'highlights': result.highlights } %}
-        {% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %}
+        {% elseif result.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %}
             {% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowSearch.html.twig' with { 'reaction': result } %}
-        {% elseif result.className == constant('Politizr\\Model\\PDocument::TYPE_USER') %}
+        {% elseif result.type == constant('Politizr\\Model\\PDocumentInterface::TYPE_USER') %}
             {% include 'PolitizrFrontBundle:Fragment\\User:ListRowSearch.html.twig' with { 'user': result } %}
         {% endif %}
         <hr>

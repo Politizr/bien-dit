@@ -4,12 +4,13 @@ namespace Politizr\FrontBundle\Twig;
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PUReputation;
-use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentInterface;
 
 /**
  * Extension Twig / Gestion réputation
@@ -101,8 +102,7 @@ class PolitizrReputationExtension extends \Twig_Extension
     /**
      *  Construit un lien vers le débat / réaction / commentaire sur lequel il y a eu interaction.
      *
-     *  @param $reputation          PUReputation
-     *
+     *  @param PUReputation $reputation
      *  @return html
      */
     public function linkedReputation(PUReputation $reputation)
@@ -114,7 +114,7 @@ class PolitizrReputationExtension extends \Twig_Extension
         $title = 'Action inconnue';
 
         switch ($reputation->getPObjectName()) {
-            case PDocument::TYPE_DEBATE:
+            case PDocumentInterface::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -124,7 +124,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_REACTION:
+            case PDocumentInterface::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -134,22 +134,31 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_COMMENT:
-                $subject = PDCommentQuery::create()->findPk($reputation->getPObjectId());
+            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+                $subject = PDDCommentQuery::create()->findPk($reputation->getPObjectId());
+
                 if ($subject) {
                     $title = $subject->getDescription();
-                    $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
-                    if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
-                        $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
-                    } else {
-                        $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
-                    }
+                    $document = $subject->getPDocument();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()));
                 } else {
                     $title = 'Commentaire supprimé';
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_USER:
+            case PDocumentInterface::TYPE_REACTION_COMMENT:
+                $subject = PDRCommentQuery::create()->findPk($reputation->getPObjectId());
+
+                if ($subject) {
+                    $title = $subject->getDescription();
+                    $document = $subject->getPDocument();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
+                } else {
+                    $title = 'Commentaire supprimé';
+                    $url = '#';
+                }
+                break;
+            case PDocumentInterface::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();
@@ -170,8 +179,7 @@ class PolitizrReputationExtension extends \Twig_Extension
     /**
      *  Renvoie l'évolution du score de réputation formatté.
      *
-     *  @param $reputation          PUReputation
-     *
+     *  @param PUReputation $reputation
      *  @return html
      */
     public function scoreEvolution(PUReputation $reputation)

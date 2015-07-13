@@ -12,10 +12,10 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
-use Politizr\Model\PDCommentPeer;
+use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDReactionPeer;
-use Politizr\Model\PDocumentPeer;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\PTagPeer;
 use Politizr\Model\PUAffinityQOPeer;
@@ -702,24 +702,24 @@ abstract class BasePUserPeer
         // Invalidate objects in PUSubscribeScreenPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUSubscribeScreenPeer::clearInstancePool();
-        // Invalidate objects in PDocumentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDocumentPeer::clearInstancePool();
-        // Invalidate objects in PDCommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDCommentPeer::clearInstancePool();
-        // Invalidate objects in PUFollowUPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUFollowUPeer::clearInstancePool();
-        // Invalidate objects in PUFollowUPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUFollowUPeer::clearInstancePool();
         // Invalidate objects in PDDebatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDebatePeer::clearInstancePool();
         // Invalidate objects in PDReactionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDReactionPeer::clearInstancePool();
+        // Invalidate objects in PDDCommentPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDDCommentPeer::clearInstancePool();
+        // Invalidate objects in PDRCommentPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDRCommentPeer::clearInstancePool();
+        // Invalidate objects in PUFollowUPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUFollowUPeer::clearInstancePool();
+        // Invalidate objects in PUFollowUPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUFollowUPeer::clearInstancePool();
     }
 
     /**

@@ -1,16 +1,16 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
-use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
-use Politizr\Model\PDComment;
+use Politizr\Model\PDCommentInterface;
 use Politizr\Model\PRAction;
 
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
@@ -155,18 +155,26 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      *  Image d'en-tête d'un document
      *
-     *  @param $document          PDocument
-     *
+     *  @param PDocumentInterface $document
      *  @return html
      */
-    public function image($document, $filterName = 'debate_header')
+    public function image(PDocumentInterface $document, $filterName = 'debate_header')
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
 
         $path = 'bundles/politizrfront/images/default_debate.jpg';
         if ($fileName = $document->getFileName()) {
-            $path = PDocument::UPLOAD_WEB_PATH.$fileName;
+            switch ($document->getType()) {
+                case PDocumentInterface::TYPE_DEBATE:
+                    $uploadWebPath = PDDebate::UPLOAD_WEB_PATH;
+                    break;
+                case PDocumentInterface::TYPE_REACTION:
+                    $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
+                    break;
+            }
+
+            $path = $uploadWebPath.$fileName;
         }
 
         // Construction du rendu du tag
@@ -186,24 +194,22 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Nombre de réactions d'un document.
-     *
      * pour un débat: nombre de réaction total / pour une réaction: nombre de réactions filles
      *
-     * @param $document          PDocument
-     *
+     * @param PDocumentInterface $document
      * @return html
      */
-    public function nbReactions($document)
+    public function nbReactions(PDocumentInterface $document)
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
 
         $nbReactions = 0;
-        switch(get_class($document)) {
-            case PDocument::TYPE_DEBATE:
+        switch ($document->getType()) {
+            case PDocumentInterface::TYPE_DEBATE:
                 $nbReactions = $document->countReactions(true, true);
                 break;
-            case PDocument::TYPE_REACTION:
+            case PDocumentInterface::TYPE_REACTION:
                 $nbReactions = $document->countChildrenReactions(true, true);
                 break;
         }
@@ -222,12 +228,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Nombre de commentaires d'un document.
      *
-     * @param PDocument $document
+     * @param PDocumentInterface $document
      * @param integer $paragraphNo
-     *
      * @return string
      */
-    public function nbComments(PDocument $document, $paragraphNo = null)
+    public function nbComments(PDocumentInterface $document, $paragraphNo = null)
     {
         // $this->logger->info('*** nbComments');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -259,11 +264,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Tags d'un débat
      *
-     * @param \Politizr\Model\PDDebate $debate      Objet
-     * @param integer $tagTypeId                    Type de tag
-     * @return string                               Structure HTML
+     * @param PDDebate $debate
+     * @param integer $tagTypeId
+     * @return string
      */
-    public function docTags(\Politizr\Model\PDDebate $debate, $tagTypeId = null)
+    public function docTags(PDDebate $debate, $tagTypeId = null)
     {
         // $this->logger->info('*** doctags');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -283,11 +288,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     *  Nombre de vues d'un document
+     * Nombre de vues d'un document
      *
-     *  @param $nbViews         integer
-     *
-     *  @return html
+     * @param int $nbViews
+     * @return html
      */
     public function nbViewsFormat($nbViews)
     {
@@ -318,7 +322,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
      *
      * @param PDReaction $reaction
-     *
      * @return string
      */
     public function linkParentReaction(PDReaction $reaction)
@@ -349,11 +352,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /**
-     *  Affiche & active / désactive les Note + / Note -
+     * Affiche & active / désactive les Note + / Note -
      *
-     *  @param $nbViews         integer
-     *
-     *  @return html
+     * @param int $nbViews
+     * @return html
      */
     public function linkNoteDebate(PDDebate $debate)
     {
@@ -364,12 +366,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $neg = false;
 
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            $debate = PDDebateQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($debate->getId())
                 ->findOne();
 
-            if ($document) {
+            if ($debate) {
                 $pos = true;
                 $neg = true;
             } else {
@@ -401,7 +403,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocument::TYPE_DEBATE,
+                'type' => PDocumentInterface::TYPE_DEBATE,
                 'pos' => $pos,
                 'neg' => $neg,
             )
@@ -427,7 +429,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $neg = false;
 
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            $document = PDReactionQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($reaction->getId())
                 ->findOne();
@@ -464,7 +466,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $reaction,
-                'type' => PDocument::TYPE_REACTION,
+                'type' => PDocumentInterface::TYPE_REACTION,
                 'pos' => $pos,
                 'neg' => $neg,
             )
@@ -481,7 +483,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      *  @return html
      */
-    public function linkNoteComment(PDComment $comment)
+    public function linkNoteComment(PDCommentInterface $comment)
     {
         // $this->logger->info('*** linkNoteComment');
         // $this->logger->info('$comment = '.print_r($comment, true));
@@ -490,7 +492,19 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $neg = false;
 
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            switch ($comment->getType()) {
+                case PDocumentInterface::TYPE_DEBATE_COMMENT:
+                    $type = PDocumentInterface::TYPE_DEBATE_COMMENT;
+                    $query = PDDCommentQuery::create();
+                    break;
+                case PDocumentInterface::TYPE_REACTION_COMMENT:
+                    $type = PDocumentInterface::TYPE_REACTION_COMMENT;
+                    $query = PDRCommentQuery::create();
+                    break;
+                default:
+                    throw new InconsistentDataException('Object type not managed');
+            }
+            $document = $query
                 ->filterByPUserId($this->user->getId())
                 ->filterById($comment->getId())
                 ->findOne();
@@ -527,7 +541,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $comment,
-                'type' => PDocument::TYPE_COMMENT,
+                'type' => $type,
                 'pos' => $pos,
                 'neg' => $neg,
             )
@@ -633,7 +647,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = '';
 
         switch ($timelineRow->getType()) {
-            case PDocument::TYPE_DEBATE:
+            case PDocumentInterface::TYPE_DEBATE:
                 $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
 
                 // contexte
@@ -663,7 +677,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 );
 
                 break;
-            case PDocument::TYPE_REACTION:
+            case PDocumentInterface::TYPE_REACTION:
                 $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
 
                 $parentReaction = null;
@@ -700,19 +714,24 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     )
                 );
                 break;
-            case PDocument::TYPE_COMMENT:
-                $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
+            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case PDocumentInterface::TYPE_REACTION_COMMENT:
 
-                $parentType = $comment->getDocument()->getType();
+                if (PDocumentInterface::TYPE_DEBATE_COMMENT == $timelineRow->getType()) {
+                    $comment = PDDCommentQuery::create()->findPk($timelineRow->getId());
+                } else {
+                    $comment = PDRCommentQuery::create()->findPk($timelineRow->getId());
+                }
 
+                $parentType = $comment->getPDocumentType();
                 $parentDebate = null;
                 $parentReaction = null;
                 switch ($parentType) {
-                    case PDocument::TYPE_DEBATE:
-                        $parentDebate = $comment->getDocument()->getDebate();
+                    case PDocumentInterface::TYPE_DEBATE:
+                        $parentDebate = $comment->getPDocument();
                         break;
-                    case PDocument::TYPE_REACTION:
-                        $parentReaction = $comment->getDocument()->getReaction();
+                    case PDocumentInterface::TYPE_REACTION:
+                        $parentReaction = $comment->getPDocument();
                         $parentDebate = $parentReaction->getDebate();
                         break;
                 }

@@ -10,28 +10,20 @@ use Politizr\Model\om\BasePDDebate;
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
 /**
- * Débat
+ * Debate model object
  *
  * @author Lionel Bouzonville
  */
-class PDDebate extends BasePDDebate implements ContainerAwareInterface, HighlightableModelInterface
+class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwareInterface, HighlightableModelInterface
 {
     // ************************************************************************************ //
     //                                        CONSTANTES
     // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/documents/';
-      const UPLOAD_WEB_PATH = '/uploads/documents/';
-
-      /**
-       *
-       */
-    public function getClassName()
-    {
-        return PDocument::TYPE_DEBATE;
-    }
+    const UPLOAD_PATH = '/../../../web/uploads/documents/';
+    const UPLOAD_WEB_PATH = '/uploads/documents/';
 
     // *****************************  ELASTIC SEARCH  ****************** //
-       private $elasticaPersister;
+    private $elasticaPersister;
     private $highlights;
 
        /**
@@ -184,24 +176,6 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
         return parent::preSave($con);
     }
 
-    /**
-     * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
-     * https://github.com/propelorm/Propel/issues/366
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PDDebate The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-        $this->getParentOrCreate($con)->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
-
-
     // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
     // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
@@ -285,6 +259,14 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     //                                        METHODES
     // ************************************************************************************ //
 
+    /**
+     * @see PDocumentInterface::getType
+     */
+    public function getType()
+    {
+        return PDocumentInterface::TYPE_DEBATE;
+    }
+
     // *****************************    TAGS   ************************* //
 
     /**
@@ -310,17 +292,48 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
     }
 
 
-    // *****************************    DOCUMENT   ************************* //
+    // *****************************    COMMENTS    ************************** //
 
     /**
-     * Renvoit le document associé à la réaction
-     *
-     * @return PDDebate
+     * @see PDocumentInterface::countComments
      */
-    public function getDocument()
+    public function countComments($online = true, $paragraphNo = null)
     {
-        return parent::getPDocument();
+        $query = PDDCommentQuery::create()
+                    ->filterByOnline($online)
+                    ->_if($paragraphNo)
+                        ->filterByParagraphNo($paragraphNo)
+                    ->_endif()
+                    ;
+        
+        return parent::countPDDComments($query);
     }
+
+    /**
+     * @see PDocumentInterface::getComments
+     */
+    public function getComments($online = true, $paragraphNo = null, $orderBy = null)
+    {
+        $query = PDDCommentQuery::create()
+                    ->filterByOnline($online)
+                    ->_if($paragraphNo)
+                        ->filterByParagraphNo($paragraphNo)
+                    ->_else()
+                        ->filterByParagraphNo(0)
+                            ->_or()
+                        ->filterByParagraphNo(null)
+                    ->_endif()
+                    ->_if($orderBy)
+                        ->orderBy($orderBy[0], $orderBy[1])
+                    ->_else()
+                        ->orderBy('p_d_d_comment.created_at', 'desc')
+                    ->_endif()
+                    ;
+
+        return parent::getPDDComments($query);
+    }
+    
+
 
     // *****************************    NESTED SET   ************************* //
 
@@ -506,6 +519,18 @@ class PDDebate extends BasePDDebate implements ContainerAwareInterface, Highligh
 
     // *****************************    USERS   ************************* //
     
+    /**
+     * @see PDocumentInterface::isOwner
+     */
+    public function isOwner($userId)
+    {
+        if ($this->getPUserId() == $userId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @see getPUser
      */

@@ -3,7 +3,7 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
 
-use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PUStatus;
 use Politizr\Model\PNotification;
@@ -12,10 +12,10 @@ use Politizr\Model\PUser;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
 /**
@@ -320,12 +320,12 @@ class PolitizrUserExtension extends \Twig_Extension
         $reactionParentTitle = null;
         $reactionParentUrl = null;
         switch ($notification->getPObjectName()) {
-            case PDocument::TYPE_DEBATE:
+            case PDocumentInterface::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
                 break;
-            case PDocument::TYPE_REACTION:
+            case PDocumentInterface::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
@@ -344,24 +344,31 @@ class PolitizrUserExtension extends \Twig_Extension
                 }
 
                 break;
-            case PDocument::TYPE_COMMENT:
-                $subject = PDCommentQuery::create()->findPk($notification->getPObjectId());
+            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+                $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
                 
                 $title = $subject->getDescription();
-                $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
+                $document = $subject->getPDocument();
                 $commentDoc = $document->getTitle();
-                if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()), $absolute);
-                } else {
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()), $absolute);
-                }
+                $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+
                 break;
-            case PDocument::TYPE_USER:
+            case PDocumentInterface::TYPE_REACTION_COMMENT:
+                $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
+                
+                $title = $subject->getDescription();
+                $document = $subject->getPDocument();
+                $commentDoc = $document->getTitle();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+
+                break;
+            case PDocumentInterface::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getFirstname().' '.$subject->getName();
                 $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
+                
                 break;
-            case 'Politizr\Model\PRBadge':
+            case PDocumentInterface::TYPE_BADGE:
                 $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
 
@@ -369,6 +376,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 if ($this->isGrantedE()) {
                     $url = $this->router->generate('MyReputationE', array(), $absolute);
                 }
+                
                 break;
         }
 

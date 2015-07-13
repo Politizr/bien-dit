@@ -93,15 +93,6 @@ Politizr_AdminBundle_PDReaction:
     prefix:   /PDReaction
 
 
-# Contenus / Commentaires
-Politizr_AdminBundle_PDComment:
-    resource: "@PolitizrAdminBundle/Controller/PDComment/"
-    type:     admingenerator
-    prefix:   /PDComment
-
-
-
-
 # Tags
 Politizr_AdminBundle_PTag:
     resource: "@PolitizrAdminBundle/Controller/PTag/"

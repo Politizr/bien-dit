@@ -8,8 +8,8 @@
 
 
     // Fermeture commentaires
-    $("body").on("click", "[action='close-comments']", function(e) {
-        console.log('*** click close-comments');
+    $("body").on("click", "[action='closeComments']", function(e) {
+        console.log('*** click closeComments');
 
         context = $(this).closest('.paragraph').find('.comments');
         context.slideUp();
@@ -33,7 +33,7 @@
             type: 'POST',
             url: "{{ path('Comments') }}",
             context: context,
-            data: { 'objectId': $(this).attr('object-id'), 'noParagraph': $(this).attr('no-paragraph') },
+            data: { 'subjectId': $(this).attr('subjectId'), 'type':  $(this).attr('type'), 'noParagraph': $(this).attr('noParagraph') },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
@@ -50,8 +50,8 @@
     });
 
     // création d'un commentaire
-    $("body").on("click", "input[action='btn-submit-comment']", function(e) {
-        console.log('*** click comments');
+    $("body").on("click", "input[action='createComment']", function(e) {
+        console.log('*** click createComment');
         
         var context = $(this).closest('.paragraph');
         var localLoader = $(this).prev('.ajaxLoader');
@@ -60,7 +60,7 @@
             type: 'POST',
             url: "{{ path('CommentNew') }}",
             context: context,
-            data: $("#form-comment-new").serialize(),
+            data: $("#formCommentNew").serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {

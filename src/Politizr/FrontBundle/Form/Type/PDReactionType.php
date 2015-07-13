@@ -37,10 +37,6 @@ class PDReactionType extends AbstractType
             'required' => false,
         ));
         
-        $builder->add('summary', 'hidden', array(
-            'required' => false,
-        ));
-        
         $builder->add('description', 'hidden', array(
             'required' => false,
         ));

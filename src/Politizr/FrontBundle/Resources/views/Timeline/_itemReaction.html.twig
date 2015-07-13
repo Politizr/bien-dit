@@ -44,7 +44,8 @@
                     </div>
                     <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
                         <span>{{ reaction.title }}</span>
-                        {{ reaction.summary | raw }}
+                        {# @todo description excerpt #}
+                        {# reaction.summary | raw #}
                     </a>
                 </div>
                 <div class="timelineItemContentFooter">

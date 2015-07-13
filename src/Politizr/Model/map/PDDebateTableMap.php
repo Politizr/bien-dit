@@ -40,18 +40,14 @@ class PDDebateTableMap extends TableMap
         $this->setPhpName('PDDebate');
         $this->setClassname('Politizr\\Model\\PDDebate');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addForeignPrimaryKey('id', 'Id', 'INTEGER' , 'p_document', 'id', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
         $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
-        $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
@@ -61,6 +57,9 @@ class PDDebateTableMap extends TableMap
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('favorite', 'Favorite', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 
@@ -69,10 +68,10 @@ class PDDebateTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PDocument', 'Politizr\\Model\\PDocument', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
+        $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDComments');
         $this->addRelation('PDDTaggedT', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDTaggedTs');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PTags');
@@ -96,6 +95,16 @@ class PDDebateTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
+),
             'sluggable' =>  array (
   'add_cleanup' => 'true',
   'slug_column' => 'slug',
@@ -106,26 +115,9 @@ class PDDebateTableMap extends TableMap
   'permanent' => 'false',
   'scope_column' => '',
 ),
-            'concrete_inheritance' =>  array (
-  'extends' => 'p_document',
-  'descendant_column' => 'descendant_class',
-  'copy_data_to_parent' => 'true',
-  'schema' => '',
-  'excluded_parent_behavior' => 'nested_set',
-),
             'event' =>  array (
 ),
             'extend' =>  array (
-),
-            'archivable' =>  array (
-  'archive_table' => '',
-  'archive_phpname' => NULL,
-  'archive_class' => '',
-  'log_archived_at' => 'true',
-  'archived_at_column' => 'archived_at',
-  'archive_on_insert' => 'false',
-  'archive_on_update' => 'false',
-  'archive_on_delete' => 'true',
 ),
         );
     } // getBehaviors()

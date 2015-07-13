@@ -16,8 +16,6 @@ params:
             label:          Image
         title:
             label:          Titre
-        summary:
-            label:          Résumé
         description:
             label:          Description
         note_pos:
@@ -56,7 +54,7 @@ builders:
                     "Brouillons":
                         filters:
                             filterByPublished:  false
-            display:                            [ file_name, id, p_user, title, summary, count_reactions, online, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user, title, count_reactions, online, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réactions
@@ -82,7 +80,6 @@ builders:
             title:                              "Création d'un contenu débat"
             display:
                 "Champs principaux":            [ [ p_user_id ], [ title ] ]
-                "Champs complémentaires":       [ [ summary ] ]
             fields:
                 p_user_id:
                     label:                      Utilisateur
@@ -90,9 +87,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
             actions:
               save:                             ~
               list:                             ~
@@ -101,7 +95,7 @@ builders:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ uploadedFileName, title, summary, description ]
+                    "Texte":                    [ uploadedFileName, title, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user_id ] ]
                 "Réactions":
@@ -128,9 +122,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 description:
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -172,7 +163,7 @@ builders:
             title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, summary, description ]
+                    "Texte":                    [ file_name, title, description ]
                 "Objets":
                     "Utilisateur":              [ [ p_user ] ]
                 "Réactions":

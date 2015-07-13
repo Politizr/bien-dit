@@ -24,7 +24,8 @@
                     </div>
                     <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
                         <span>{{ debate.title }}</span>
-                        {{ debate.summary | raw }}
+                        {# @todo description excerpt #}
+                        {# debate.summary | raw #}
                     </a>
                 </div>
                 <div class="timelineItemContentFooter">

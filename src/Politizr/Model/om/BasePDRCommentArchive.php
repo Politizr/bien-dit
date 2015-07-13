@@ -13,6 +13,8 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\ModelEvent;
 use Politizr\Model\PDRCommentArchive;
 use Politizr\Model\PDRCommentArchivePeer;
 use Politizr\Model\PDRCommentArchiveQuery;
@@ -33,7 +35,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     protected static $peer;
 
     /**
-     * The flag var to prevent infinit loop in deep copy
+     * The flag var to prevent infinite loop in deep copy
      * @var       boolean
      */
     protected $startCopy = false;
@@ -70,12 +72,14 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
 
     /**
      * The value for the note_pos field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $note_pos;
 
     /**
      * The value for the note_neg field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $note_neg;
@@ -137,12 +141,36 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->note_pos = 0;
+        $this->note_neg = 0;
+    }
+
+    /**
+     * Initializes internal state of BasePDRCommentArchive object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
      */
     public function getId()
     {
+
         return $this->id;
     }
 
@@ -153,6 +181,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getPUserId()
     {
+
         return $this->p_user_id;
     }
 
@@ -163,6 +192,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getPDReactionId()
     {
+
         return $this->p_d_reaction_id;
     }
 
@@ -173,6 +203,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
@@ -183,6 +214,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getParagraphNo()
     {
+
         return $this->paragraph_no;
     }
 
@@ -193,6 +225,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getNotePos()
     {
+
         return $this->note_pos;
     }
 
@@ -203,6 +236,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getNoteNeg()
     {
+
         return $this->note_neg;
     }
 
@@ -211,7 +245,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -253,6 +287,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getPublishedBy()
     {
+
         return $this->published_by;
     }
 
@@ -263,6 +298,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function getOnline()
     {
+
         return $this->online;
     }
 
@@ -271,7 +307,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -311,7 +347,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -351,7 +387,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *                 If format is null, then the raw DateTime object will be returned.
+     *				 If format is null, then the raw DateTime object will be returned.
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
@@ -389,7 +425,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setId($v)
@@ -410,7 +446,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_user_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setPUserId($v)
@@ -431,7 +467,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [p_d_reaction_id] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setPDReactionId($v)
@@ -452,12 +488,12 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [description] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setDescription($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -473,7 +509,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [paragraph_no] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setParagraphNo($v)
@@ -494,7 +530,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [note_pos] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setNotePos($v)
@@ -515,7 +551,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [note_neg] column.
      *
-     * @param int $v new value
+     * @param  int $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setNoteNeg($v)
@@ -559,12 +595,12 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     /**
      * Set the value of [published_by] column.
      *
-     * @param string $v new value
+     * @param  string $v new value
      * @return PDRCommentArchive The current object (for fluent API support)
      */
     public function setPublishedBy($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -685,6 +721,14 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->note_pos !== 0) {
+                return false;
+            }
+
+            if ($this->note_neg !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -698,7 +742,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      * more tables.
      *
      * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
      * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
@@ -728,6 +772,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
+
             return $startcol + 13; // 13 = PDRCommentArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -815,12 +860,15 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
 
         $con->beginTransaction();
         try {
+            EventDispatcherProxy::trigger(array('delete.pre','model.delete.pre'), new ModelEvent($this));
             $deleteQuery = PDRCommentArchiveQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
+                // event behavior
+                EventDispatcherProxy::trigger(array('delete.post', 'model.delete.post'), new ModelEvent($this));
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -860,19 +908,31 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
+            // event behavior
+            EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // event behavior
+                EventDispatcherProxy::trigger('model.insert.pre', new ModelEvent($this));
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // event behavior
+                EventDispatcherProxy::trigger(array('update.pre', 'model.update.pre'), new ModelEvent($this));
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
                 if ($isInsert) {
                     $this->postInsert($con);
+                    // event behavior
+                    EventDispatcherProxy::trigger('model.insert.post', new ModelEvent($this));
                 } else {
                     $this->postUpdate($con);
+                    // event behavior
+                    EventDispatcherProxy::trigger(array('update.post', 'model.update.post'), new ModelEvent($this));
                 }
                 $this->postSave($con);
+                // event behavior
+                EventDispatcherProxy::trigger('model.save.post', new ModelEvent($this));
                 PDRCommentArchivePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -1098,10 +1158,10 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      * In addition to checking the current object, all related objects will
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggreagated array of ValidationFailed objects will be returned.
+     * an aggregated array of ValidationFailed objects will be returned.
      *
      * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
+     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
     {
@@ -1233,6 +1293,11 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
             $keys[11] => $this->getUpdatedAt(),
             $keys[12] => $this->getArchivedAt(),
         );
+        $virtualColumns = $this->virtualColumns;
+        foreach ($virtualColumns as $key => $virtualColumn) {
+            $result[$key] = $virtualColumn;
+        }
+
 
         return $result;
     }
@@ -1509,6 +1574,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1519,7 +1585,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      *
      * This method is a user-space workaround for PHP's inability to garbage collect
      * objects with circular references (even in PHP 5.3). This is currently necessary
-     * when using Propel in certain daemon or large-volumne/high-memory operations.
+     * when using Propel in certain daemon or large-volume/high-memory operations.
      *
      * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
@@ -1552,5 +1618,17 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     {
         return $this->alreadyInSave;
     }
+
+    // event behavior
+    public function preCommit(\PropelPDO $con = null){}
+    public function preCommitSave(\PropelPDO $con = null){}
+    public function preCommitDelete(\PropelPDO $con = null){}
+    public function preCommitUpdate(\PropelPDO $con = null){}
+    public function preCommitInsert(\PropelPDO $con = null){}
+    public function preRollback(\PropelPDO $con = null){}
+    public function preRollbackSave(\PropelPDO $con = null){}
+    public function preRollbackDelete(\PropelPDO $con = null){}
+    public function preRollbackUpdate(\PropelPDO $con = null){}
+    public function preRollbackInsert(\PropelPDO $con = null){}
 
 }

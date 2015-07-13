@@ -12,7 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PTagQuery;
@@ -203,16 +202,15 @@ class DocumentController extends Controller
         // *********************************** //
         //      Récupération objets vue
         // *********************************** //
-        $document = PDocumentQuery::create()->findPk($id);
         $debate = PDDebateQuery::create()->findPk($id);
-        if (!$document) {
-            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        if (!$debate) {
+            throw new InconsistentDataException('Debate n°'.$id.' not found.');
         }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        if (!$debate->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
         }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        if ($debate->getPublished()) {
+            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
         
@@ -258,16 +256,15 @@ class DocumentController extends Controller
         // Récupération user courant
         $user = $this->getUser();
 
-        $document = PDocumentQuery::create()->findPk($id);
         $reaction = PDReactionQuery::create()->findPk($id);
-        if (!$document) {
-            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        if (!$reaction) {
+            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
         }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        if (!$reaction->isOwner($user->getId())) {
+            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
         }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        if ($reaction->getPublished()) {
+            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
         // parent document for compared edition

@@ -26,6 +26,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PQOrganizationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PQOrganizationQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PQOrganizationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PQOrganizationQuery orderByInitials($order = Criteria::ASC) Order by the initials column
  * @method PQOrganizationQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
@@ -36,9 +37,9 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PQOrganizationQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PQOrganizationQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
- * @method PQOrganizationQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  *
  * @method PQOrganizationQuery groupById() Group by the id column
+ * @method PQOrganizationQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PQOrganizationQuery groupByTitle() Group by the title column
  * @method PQOrganizationQuery groupByInitials() Group by the initials column
  * @method PQOrganizationQuery groupByFileName() Group by the file_name column
@@ -49,7 +50,6 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery groupByUpdatedAt() Group by the updated_at column
  * @method PQOrganizationQuery groupBySlug() Group by the slug column
  * @method PQOrganizationQuery groupBySortableRank() Group by the sortable_rank column
- * @method PQOrganizationQuery groupByPQTypeId() Group by the p_q_type_id column
  *
  * @method PQOrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PQOrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -74,6 +74,7 @@ use Politizr\Model\PUser;
  * @method PQOrganization findOne(PropelPDO $con = null) Return the first PQOrganization matching the query
  * @method PQOrganization findOneOrCreate(PropelPDO $con = null) Return the first PQOrganization matching the query, or a new PQOrganization object populated from the query conditions when no match is found
  *
+ * @method PQOrganization findOneByPQTypeId(int $p_q_type_id) Return the first PQOrganization filtered by the p_q_type_id column
  * @method PQOrganization findOneByTitle(string $title) Return the first PQOrganization filtered by the title column
  * @method PQOrganization findOneByInitials(string $initials) Return the first PQOrganization filtered by the initials column
  * @method PQOrganization findOneByFileName(string $file_name) Return the first PQOrganization filtered by the file_name column
@@ -84,9 +85,9 @@ use Politizr\Model\PUser;
  * @method PQOrganization findOneByUpdatedAt(string $updated_at) Return the first PQOrganization filtered by the updated_at column
  * @method PQOrganization findOneBySlug(string $slug) Return the first PQOrganization filtered by the slug column
  * @method PQOrganization findOneBySortableRank(int $sortable_rank) Return the first PQOrganization filtered by the sortable_rank column
- * @method PQOrganization findOneByPQTypeId(int $p_q_type_id) Return the first PQOrganization filtered by the p_q_type_id column
  *
  * @method array findById(int $id) Return PQOrganization objects filtered by the id column
+ * @method array findByPQTypeId(int $p_q_type_id) Return PQOrganization objects filtered by the p_q_type_id column
  * @method array findByTitle(string $title) Return PQOrganization objects filtered by the title column
  * @method array findByInitials(string $initials) Return PQOrganization objects filtered by the initials column
  * @method array findByFileName(string $file_name) Return PQOrganization objects filtered by the file_name column
@@ -97,7 +98,6 @@ use Politizr\Model\PUser;
  * @method array findByUpdatedAt(string $updated_at) Return PQOrganization objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PQOrganization objects filtered by the slug column
  * @method array findBySortableRank(int $sortable_rank) Return PQOrganization objects filtered by the sortable_rank column
- * @method array findByPQTypeId(int $p_q_type_id) Return PQOrganization objects filtered by the p_q_type_id column
  */
 abstract class BasePQOrganizationQuery extends ModelCriteria
 {
@@ -207,7 +207,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `initials`, `file_name`, `description`, `url`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_q_type_id`, `title`, `initials`, `file_name`, `description`, `url`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_q_organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -337,6 +337,50 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQOrganizationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_q_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPQTypeId(1234); // WHERE p_q_type_id = 1234
+     * $query->filterByPQTypeId(array(12, 34)); // WHERE p_q_type_id IN (12, 34)
+     * $query->filterByPQTypeId(array('min' => 12)); // WHERE p_q_type_id >= 12
+     * $query->filterByPQTypeId(array('max' => 12)); // WHERE p_q_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPQType()
+     *
+     * @param     mixed $pQTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQOrganizationQuery The current query, for fluid interface
+     */
+    public function filterByPQTypeId($pQTypeId = null, $comparison = null)
+    {
+        if (is_array($pQTypeId)) {
+            $useMinMax = false;
+            if (isset($pQTypeId['min'])) {
+                $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pQTypeId['max'])) {
+                $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId, $comparison);
     }
 
     /**
@@ -669,50 +713,6 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_q_type_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPQTypeId(1234); // WHERE p_q_type_id = 1234
-     * $query->filterByPQTypeId(array(12, 34)); // WHERE p_q_type_id IN (12, 34)
-     * $query->filterByPQTypeId(array('min' => 12)); // WHERE p_q_type_id >= 12
-     * $query->filterByPQTypeId(array('max' => 12)); // WHERE p_q_type_id <= 12
-     * </code>
-     *
-     * @see       filterByPQType()
-     *
-     * @param     mixed $pQTypeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PQOrganizationQuery The current query, for fluid interface
-     */
-    public function filterByPQTypeId($pQTypeId = null, $comparison = null)
-    {
-        if (is_array($pQTypeId)) {
-            $useMinMax = false;
-            if (isset($pQTypeId['min'])) {
-                $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pQTypeId['max'])) {
-                $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PQOrganizationPeer::P_Q_TYPE_ID, $pQTypeId, $comparison);
-    }
-
-    /**
      * Filter the query by a related PQType object
      *
      * @param   PQType|PropelObjectCollection $pQType The related object(s) to use as filter
@@ -746,7 +746,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return PQOrganizationQuery The current query, for fluid interface
      */
-    public function joinPQType($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPQType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PQType');
@@ -781,7 +781,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQTypeQuery A secondary query class using the current class as primary query
      */
-    public function usePQTypeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePQTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPQType($relationAlias, $joinType)
@@ -1326,7 +1326,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return PQOrganizationQuery The current query, for fluid interface
      */
-    public function inList($scope = null)
+    public function inList($scope)
     {
 
         PQOrganizationPeer::sortableApplyScopeCriteria($this, $scope, 'addUsingAlias');
@@ -1343,7 +1343,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return    PQOrganizationQuery The current query, for fluid interface
      */
-    public function filterByRank($rank, $scope = null)
+    public function filterByRank($rank, $scope)
     {
 
 
@@ -1384,7 +1384,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return    PQOrganization
      */
-    public function findOneByRank($rank, $scope = null, PropelPDO $con = null)
+    public function findOneByRank($rank, $scope, PropelPDO $con = null)
     {
 
         return $this
@@ -1401,7 +1401,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return     mixed the list of results, formatted by the current formatter
      */
-    public function findList($scope = null, $con = null)
+    public function findList($scope, $con = null)
     {
 
 
@@ -1420,7 +1420,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      *
      * @return    integer highest position
      */
-    public function getMaxRank($scope = null, PropelPDO $con = null)
+    public function getMaxRank($scope, PropelPDO $con = null)
     {
         if ($con === null) {
             $con = Propel::getConnection(PQOrganizationPeer::DATABASE_NAME);

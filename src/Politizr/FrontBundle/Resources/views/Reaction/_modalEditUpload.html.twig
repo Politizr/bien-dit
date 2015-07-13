@@ -17,6 +17,7 @@
             </div>
             <form id="formDocumentPhoto" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="{{ reaction.id }}">
+                <input type="hidden" name="type" value="{{ constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') }}">
                 <div id="uploadFileContainer">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>

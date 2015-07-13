@@ -294,8 +294,6 @@
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
-        <column name="p_q_type_id" type="integer" required="true" />
-
         <column name="title" type="varchar" size="250" />
 
         <column name="online" type="boolean" />
@@ -317,6 +315,7 @@
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_q_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
         <column name="initials" type="varchar" size="50" />
@@ -676,13 +675,14 @@
     </table>
 
 
-
-
-
-    <table name="p_document">
+    <table name="p_d_debate">
+        <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
-        
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />
 
@@ -692,7 +692,6 @@
         <column name="copyright" type="longvarchar" />
         <column name="with_shadow" type="boolean" />
 
-        <column name="summary" type="longvarchar" />
         <column name="description" type="clob" />
 
         <column name="note_pos" type="integer" defaultValue="0" />
@@ -712,21 +711,10 @@
         </foreign-key>
     </table>
 
-    <table name="p_d_debate">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        <behavior name="sluggable">
-            <parameter name="slug_pattern" value="{title}" />
-        </behavior>
-        <behavior name="concrete_inheritance">
-            <parameter name="extends" value="p_document" />
-        </behavior>
-
-    </table>
-
     <table name="p_d_reaction">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
@@ -734,26 +722,49 @@
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_d_debate_id" />
         </behavior>
-        <behavior name="concrete_inheritance">
-            <parameter name="extends" value="p_document" />
-        </behavior>
 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="parent_reaction_id" type="integer" required="false" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
+        <column name="with_shadow" type="boolean" />
+
+        <column name="description" type="clob" />
+
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
+
+        <column name="nb_views" type="integer" />
+
+        <column name="published" type="boolean" />
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <column name="favorite" type="boolean" />
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
 
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
     </table>
 
-    <table name="p_d_comment">
+    <table name="p_d_d_comment">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
-        <column name="p_document_id" type="integer" required="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
 
         <column name="description" type="longvarchar" />
         <column name="paragraph_no" type="integer" />
@@ -769,8 +780,36 @@
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_document" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_document_id" foreign="id" />
+        <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_r_comment">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+
+        <column name="description" type="longvarchar" />
+        <column name="paragraph_no" type="integer" />
+
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
+
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
         </foreign-key>
     </table>
 

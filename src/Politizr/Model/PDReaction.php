@@ -11,22 +11,18 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\om\BasePDReaction;
 
-class PDReaction extends BasePDReaction implements ContainerAwareInterface, HighlightableModelInterface
+/**
+ * Reaction model object
+ *
+ * @author Lionel Bouzonville
+ */
+class PDReaction extends BasePDReaction implements PDocumentInterface, ContainerAwareInterface, HighlightableModelInterface
 {
     // ************************************************************************************ //
     //                                        CONSTANTES
     // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/documents/';
-      const UPLOAD_WEB_PATH = '/uploads/documents/';
-
-
-    /**
-     *
-     */
-    public function getClassName()
-    {
-        return PDocument::TYPE_REACTION;
-    }
+    const UPLOAD_PATH = '/../../../web/uploads/documents/';
+    const UPLOAD_WEB_PATH = '/uploads/documents/';
 
     // *****************************  ELASTIC SEARCH  ****************** //
        private $elasticaPersister;
@@ -167,23 +163,6 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
         return parent::preSave($con);
     }
 
-    /**
-     * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
-     * https://github.com/propelorm/Propel/issues/366
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PDDebate The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-        $this->getParentOrCreate($con)->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
-
     // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
     // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
 
@@ -262,19 +241,60 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
         }
     }
     
-
-
-    // *****************************  DEBAT / REACTION  ****************** //
+    // ************************************************************************************ //
+    //                                        METHODES
+    // ************************************************************************************ //
 
     /**
-     * Renvoit le document associé à la réaction
-     *
-     * @return     PDDebate     Objet débat
+     * @see PDocumentInterface::getType
      */
-    public function getDocument()
+    public function getType()
     {
-        return parent::getPDocument();
+        return PDocumentInterface::TYPE_REACTION;
     }
+
+    // *****************************    COMMENTS    ************************** //
+
+    /**
+     * @see PDocumentInterface::countComments
+     */
+    public function countComments($online = true, $paragraphNo = null)
+    {
+        $query = PDRCommentQuery::create()
+                    ->filterByOnline($online)
+                    ->_if($paragraphNo)
+                        ->filterByParagraphNo($paragraphNo)
+                    ->_endif()
+                    ;
+        
+        return parent::countPDRComments($query);
+    }
+
+    /**
+     * @see PDocumentInterface::getComments
+     */
+    public function getComments($online = true, $paragraphNo = null, $orderBy = null)
+    {
+        $query = PDRCommentQuery::create()
+                    ->filterByOnline($online)
+                    ->_if($paragraphNo)
+                        ->filterByParagraphNo($paragraphNo)
+                    ->_else()
+                        ->filterByParagraphNo(0)
+                            ->_or()
+                        ->filterByParagraphNo(null)
+                    ->_endif()
+                    ->_if($orderBy)
+                        ->orderBy($orderBy[0], $orderBy[1])
+                    ->_else()
+                        ->orderBy('p_d_r_comment.created_at', 'desc')
+                    ->_endif()
+                    ;
+
+        return parent::getPDRComments($query);
+    }
+
+    // *****************************  DEBAT / REACTION  ****************** //
 
     /**
      * Renvoit le débat associé à la réaction
@@ -287,6 +307,18 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
     }
 
     // *****************************    USERS   ************************* //
+
+    /**
+     * @see PDocumentInterface::isOwner
+     */
+    public function isOwner($userId)
+    {
+        if ($this->getPUserId() == $userId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Renvoie les abonnés qualifiés - au débat associé à la réaction courante.

@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
-use Politizr\Model\PDocument;
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUReputation;
 
 /**
@@ -112,14 +112,14 @@ class ReputationListener
 
         // Document associé au commentaire
         $document = $subject->getPDocument();
-
         $targetUserId = $document->getPUserId();
+
         switch ($document->getType()) {
-            case PDocument::TYPE_DEBATE:
+            case PDocumentInterface::TYPE_DEBATE:
                 $prActionId = PRAction::ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
-            case PDocument::TYPE_REACTION:
+            case PDocumentInterface::TYPE_REACTION:
                 $prActionId = PRAction::ID_D_TARGET_REACTION_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
