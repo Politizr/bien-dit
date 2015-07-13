@@ -20,7 +20,7 @@ $(function(){
         secondHeader:'h2'
     });
 	// edit paragraph
-	var descriptionEditor = new MediumEditor('.editable', {    
+	var descriptionEditor = new MediumEditor('.editable.description', {    
 		buttons: ['bold', 'italic', 'header1', 'header2', 'unorderedlist', 'quote', 'anchor'],
         buttonLabels: {
 	        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
@@ -40,7 +40,7 @@ $(function(){
         secondHeader:'h2'
     });	    
 	// edit copyright photo
-	var copyrightEditor = new MediumEditor('.editableCopyright', {
+	var copyrightEditor = new MediumEditor('.editable.copyright', {
 		buttons: ['bold', 'italic', 'anchor'],
         buttonLabels: {
 	        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',

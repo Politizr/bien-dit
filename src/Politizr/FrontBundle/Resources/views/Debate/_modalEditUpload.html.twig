@@ -17,11 +17,9 @@
             </div>
             <form id="formDocumentPhoto" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="{{ debate.id }}">
-                {# @todo html/css maj normalisation camelCase #}
                 <div id="uploadFileContainer">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
-                    {# @todo html/css action supprimer la photo #}
                     <div class="photoDelete">
                         <a action="fileDelete" subjectId="{{ debate.id }}"><i class="iconDraft"></i>supprimer</a>
                     </div>

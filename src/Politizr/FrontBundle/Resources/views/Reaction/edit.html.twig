@@ -66,7 +66,6 @@
 
 {% block main %}
     <div id="main">
-        <!-- @todo html/css pour info: blocs encadrés par un form -->
         <form method="POST" name="reaction" id="formReactionUpdate" class="autoSubmitForm">
             <div class="postSummary">
                 <div class="pad40">
@@ -92,10 +91,8 @@
             </div>
             <div id="copyrightHolder">
                 <i class="iconCopyright" action="showCopyright"></i>
-                {# @todo html/css renommer "copyright" en "copyrightBox" #}
                 <div id="copyrightBox" style="display: none;" action="showCopyright">
                     <i class="iconArrowUp"></i>
-                    {# @todo html/css à ajouter > div encadrant uniquement le copyright pour reload dynamique #}
                     <div id="copyright">
                         {{ reaction.copyright | raw }}
                     </div>
@@ -144,7 +141,6 @@
             <div id="originalText" class="withLoaderInside" style="display: none;">
                 <div class="ajaxLoader" style="display: none;"><i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div></div>
                 <div class="postTitle">
-                    <!-- @todo html/css suppression du lien sur le titre pour l'édition comparée -->
                     {{ parent.title }}
                 </div>
                 <div class="authorName">

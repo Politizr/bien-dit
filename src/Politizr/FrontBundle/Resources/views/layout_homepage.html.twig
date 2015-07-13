@@ -19,41 +19,20 @@
 {% endblock %}
 
 {% block wrapper %}
-    <div class="wrapper">
-        {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation:header.html.twig' %}
-        {% endblock %}
+    {% block header %}
+        {% include 'PolitizrFrontBundle:Navigation:header.html.twig' %}
+    {% endblock %}
 
-        {% block inscriptionSteps %}
-        {% endblock inscriptionSteps %}
+    {% block notifications %}
+        {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}
+    {% endblock notifications %}
 
-        {% block fixedActions %}
-            <div id="fixedActions">
-            </div>
-        {% endblock fixedActions %}
+    {% block content %}
+    {% endblock content %}
 
-        {% block goUp %}
-            <div id="goUpHolder">
-                <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
-            </div>
-        {% endblock goUp %}
-
-        {% block content %}
-            <div id="content">
-                {% block notifications %}
-                    {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}
-                {% endblock notifications %}
-
-                {% block main %}
-                {% endblock main %}
-
-                {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
-                {% endblock %}
-            </div>
-        {% endblock content %}
-
-    </div>
+    {% block footer %}
+        {% include 'PolitizrFrontBundle:Navigation:footerPublic.html.twig' %}
+    {% endblock %}
 {% endblock wrapper %}
 
 {% block javascriptFooter %}

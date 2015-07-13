@@ -4,10 +4,8 @@
         <div id="modalUpload" style="display: none;">
             <h4>illustration</h4>
             <div class="modalUploadIllustrationContainer" style="display: block;">
-                {# @todo html/css maj normalisation camelCase #}
                 <div id="currentPhoto">
                     <div class="illustrationShadow"></div>
-                    {# @todo html/css à ajouter > div encadrant uniquement l'image pour reload dynamique #}
                     <div id="uploadedPhoto">
                         {% if reaction.fileName %}
                             {{ reaction | image('debate_header') }}
@@ -19,11 +17,9 @@
             </div>
             <form id="formDocumentPhoto" action="{{ path('DocumentPhotoUpload') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="{{ reaction.id }}">
-                {# @todo html/css maj normalisation camelCase #}
                 <div id="uploadFileContainer">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
-                    {# @todo html/css action supprimer la photo #}
                     <div class="photoDelete">
                         <a action="fileDelete" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>supprimer</a>
                     </div>

@@ -11,6 +11,13 @@
     <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
 {% endblock metaopengraph %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    {# @todo html/css fixer les incompatibilités de style entre styleUser.css & stylePublic.css #}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+{% endblock %}
+
 {% block wrapper %}
     <div class="wrapper">
         {% block header %}

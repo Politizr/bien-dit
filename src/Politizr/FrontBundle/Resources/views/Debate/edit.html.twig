@@ -66,12 +66,10 @@
 
 {% block main %}
     <div id="main">
-        <!-- @todo html/css pour info: blocs encadrés par un form -->
         <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm">
             <div class="postSummary">
                 <div class="pad40">
                     <div class="postSummaryFooter">
-                        <!-- <textarea class="postSummaryTitle" action="editTitle" placeholder="Donnez un titre à votre débat"></textarea> -->
                         {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre débat'}}) }}
                     </div>
                 </div>
@@ -89,10 +87,8 @@
             </div>
             <div id="copyrightHolder">
                 <i class="iconCopyright" action="showCopyright"></i>
-                {# @todo html/css renommer "copyright" en "copyrightBox" #}
                 <div id="copyrightBox" style="display: none;" action="showCopyright">
                     <i class="iconArrowUp"></i>
-                    {# @todo html/css à ajouter > div encadrant uniquement le copyright pour reload dynamique #}
                     <div id="copyright">
                         {{ debate.copyright | raw }}
                     </div>
