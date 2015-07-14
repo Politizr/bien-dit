@@ -1,4 +1,6 @@
-{% set organizations = user.currentOrganizations %}
-{% for organization in organizations %}
-    <div class="organization" action="modalOrganization" model="PQOrganization" slug="{{ organization.slug }}">{{ organization.initials }}</div>
-{% endfor %}
+{% if user %}
+    {% set organizations = user.currentOrganizations %}
+    {% for organization in organizations %}
+        <div class="organization" action="modalOrganization" model="PQOrganization" slug="{{ organization.slug }}">{{ organization.initials }}</div>
+    {% endfor %}
+{% endif %}

@@ -1,8 +1,12 @@
 <!-- @todo html/css: ajout d'une classe elected si le user est un élu -->
-<a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %} {% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
-    {{ user }}
-    <!-- @todo html/css: ajout d'un check user validé -->
-    {% if user.validated %}
-        <span class="fa fa-check-square-o" title="Profil validé"></span>
-    {% endif %}
-</a>
+{% if user %}
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %} {% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+        {{ user }}
+        <!-- @todo html/css: ajout d'un check user validé -->
+        {% if user.validated %}
+            <span class="fa fa-check-square-o" title="Profil validé"></span>
+        {% endif %}
+    </a>
+{% else %}
+    utilisateur supprimé
+{% endif %}

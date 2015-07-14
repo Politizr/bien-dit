@@ -3,6 +3,8 @@
     {{ object | linkNoteDebate }}
 {% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %} 
     {{ object | linkNoteReaction }}
-{% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_COMMENT') %} 
+{% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE_COMMENT') %} 
+    {{ object | linkNoteComment }}
+{% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION_COMMENT') %} 
     {{ object | linkNoteComment }}
 {% endif %}
