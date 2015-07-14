@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
@@ -117,13 +116,9 @@ class CitizenController extends Controller
         // Débats rédigés
         $debates = PDDebateQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
 
-        // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
-
         return $this->render('PolitizrFrontBundle:ProfileC:contribDashboard.html.twig', array(
             'drafts' => $drafts,
-            'debates' => $debates,
-            'comments' => $comments,
+            'debates' => $debates
             ));
     }
 

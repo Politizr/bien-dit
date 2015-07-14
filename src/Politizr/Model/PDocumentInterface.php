@@ -4,7 +4,6 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePDocument;
 
-use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 

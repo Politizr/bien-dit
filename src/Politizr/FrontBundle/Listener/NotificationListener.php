@@ -57,7 +57,8 @@ class NotificationListener
             case 'Politizr\Model\PDReaction':
                 $pNotificationId = PNotification::ID_D_NOTE_POS;
                 break;
-            case 'Politizr\Model\PDComment':
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
                 $pNotificationId = PNotification::ID_D_C_NOTE_POS;
                 break;
         }
@@ -95,7 +96,8 @@ class NotificationListener
             case 'Politizr\Model\PDReaction':
                 $pNotificationId = PNotification::ID_D_NOTE_NEG;
                 break;
-            case 'Politizr\Model\PDComment':
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
                 $pNotificationId = PNotification::ID_D_C_NOTE_NEG;
                 break;
         }

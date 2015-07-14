@@ -2,7 +2,8 @@
 namespace Politizr\FrontBundle\Lib;
 
 /**
- * Objet virtuel permettant de construire des timeline mélangeant les objets PDDebate / PDReaction / PDComment.
+ * Virtual object to manage timeline with various object type
+ * PDDebate / PDReaction / PDDComment / PDRComment
  *
  * @author Lionel Bouzonville
  */
@@ -11,7 +12,6 @@ class TimelineRow
 
     protected $id;
     protected $title;
-    protected $summary;
     protected $publishedAt;
     protected $type;
 
@@ -45,22 +45,6 @@ class TimelineRow
     public function setTitle($val)
     {
         $this->title = $val;
-    }
-
-    /**
-     *
-     */
-    public function getSummary()
-    {
-        return $this->summary;
-    }
-
-    /**
-     *
-     */
-    public function setSummary($val)
-    {
-        $this->summary = $val;
     }
 
     /**

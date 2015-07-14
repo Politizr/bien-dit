@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PDCommentQuery;
 
 /**
  * Public controller

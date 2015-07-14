@@ -70,15 +70,6 @@
                 <a class="btn btn-primary" href="{{ path('MyDraftsE') }}">Vous n'avez aucune réaction en ligne pour le moment</a>
             </div>
         {% endfor %}
-        <h1>Mes commentaires</h1>
-        {% for comment in comments %}
-            {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment } %}
-            <hr>
-        {% else %}
-            <div class="no-results">
-                <a class="btn btn-primary" href="{{ path('TimelineE') }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
-            </div>
-        {% endfor %}
     </div>
 {% endblock main %}
 

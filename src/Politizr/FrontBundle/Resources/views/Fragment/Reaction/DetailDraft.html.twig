@@ -9,7 +9,6 @@
     {{ form_start(form, {'style': 'horizontal', 'attr': {'id': 'form-reaction-update', 'class': 'auto_submit_form'}}) }}
         {{ form_errors(form) }}
 
-        {{ form_row(form.summary) }}
         {{ form_row(form.description) }}
 
         <div class="row">
@@ -44,16 +43,6 @@
 {% endblock detailImage %}
 
 {% block detailSummary %}
-    {# Résumé #}
-    <hr>
-    <div class="jumbotron">
-        {# Résumé #}
-        <div class="row">
-            <div class="summary-editable col-sm-12">
-                {{ reaction.summary | raw }}
-            </div>
-        </div>
-    </div>
 {% endblock detailSummary %}
 
 {% block detailDescription %}

@@ -11,72 +11,12 @@ class PDDebateQuery extends BasePDDebateQuery
     // *****************************    RAW SQL    ************************* //
     
     /**
-     *  Construction de la requête SQL renvoyant les suggestions de users pour un user.
+     * Debates' suggestion for user.
      *
-     *  @todo:
+     * @see app/sql/suggestions.sql
+     *
+     * @todo:
      *   > + suggestions depuis les tags des débats déjà suivis
-     *
-     * #########################
-     * # Suggestions de débats #
-     * #########################
-     * #  Concordance des tags suivis / tags caractérisant des débats
-     * SELECT DISTINCT
-     *     created_at,
-     *     updated_at,
-     *     slug,
-     *     id,
-     *     p_user_id,
-     *     title,
-     *     file_name,
-     *     with_shadow,
-     *     copyright,
-     *     description,
-     *     note_pos,
-     *     note_neg,
-     *     nb_views,
-     *     published,
-     *     published_at,
-     *     published_by,
-     *     favorite,
-     *     online
-     * FROM (
-     * ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
-     * FROM p_d_debate
-     *     LEFT JOIN p_d_d_tagged_t
-     *         ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
-     * WHERE
-     *     p_d_d_tagged_t.p_tag_id IN (
-     *                 SELECT p_tag.id
-     *                 FROM p_tag
-     *                     LEFT JOIN p_u_follow_t
-     *                         ON p_tag.id = p_u_follow_t.p_tag_id
-     *                 WHERE
-     *                     p_tag.online = true
-     *                     AND p_u_follow_t.p_user_id = 73
-     *     )
-     *         AND p_d_debate.online = 1
-     *         AND p_d_debate.published = 1
-     *         AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = 73)
-     * )
-     *
-     * UNION DISTINCT
-     *
-     * #  Débats les plus populaires
-     * ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
-     *             FROM p_d_debate
-     *                 LEFT JOIN p_u_follow_d_d
-     *                     ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
-     *                 WHERE
-     *                     p_d_debate.online = 1
-     *                     AND p_d_debate.published = 1
-     *                 GROUP BY p_d_debate.id
-     *                 ORDER BY nb_users DESC
-     * )
-     *
-     * ORDER BY unionsorting ASC
-     * ) unionsorting
-     *
-     * LIMIT 0, 10
      *
      * @param  integer     $userId
      * @param  integer     $offset
@@ -87,20 +27,13 @@ class PDDebateQuery extends BasePDDebateQuery
     {
         // Requête SQL
         $sql = "
-#########################
-# Suggestions de débats #
-#########################
-#  Concordance des tags suivis / tags caractérisant des débats
 SELECT DISTINCT
-    created_at,
-    updated_at,
-    slug,
     id,
     p_user_id,
     title,
     file_name,
-    with_shadow,
     copyright,
+    with_shadow,
     description,
     note_pos,
     note_neg,
@@ -109,7 +42,10 @@ SELECT DISTINCT
     published_at,
     published_by,
     favorite,
-    online
+    online,
+    created_at,
+    updated_at,
+    slug
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
 FROM p_d_debate
@@ -132,7 +68,6 @@ WHERE
 
 UNION DISTINCT
 
-#  Débats les plus populaires
 ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
             FROM p_d_debate
                 LEFT JOIN p_u_follow_d_d

@@ -5,7 +5,7 @@
             <i class="iconDuo"></i>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}{% if not notif.checked %}<i action="notificationCheck" class="iconCross" subject-id="{{ notif.id }}"></i>{% endif %}
         </div>
         <div class="notifItemContent">
-            <span {% if not notif.checked %}class="notifHighlight"{% endif %} subject-id="{{ notif.id }}">
+            <span {% if not notif.checked %}class="notifHighlight"{% endif %} subjectId="{{ notif.id }}">
                 {{ notif | linkedNotification }}
             </span>
             <span>

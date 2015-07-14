@@ -66,12 +66,6 @@ LAYOUT REACTION
             {# Résumé #}
             <hr>
             <div class="jumbotron">
-                {# Résumé #}
-                <div class="row">
-                    <div class="col-sm-12">
-                        {{ reaction.summary | raw }}
-                    </div>
-                </div>
                 {% block detailLink %}
                     {# Lien détail #}
                     <div class="row text-center">
@@ -206,7 +200,6 @@ LAYOUT REACTION
             {% endif %}
         </td>
         <td>{{ document.title }}</td>
-        <td>{{ document.summary | striptags | slice(0, 150) | raw }}</td>
         <td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
         <td>
             <a class="btn btn-primary" href="{{ path('ReactionDraftEdit', { 'id': document.id }) }}">Editer</a>
@@ -248,13 +241,6 @@ LAYOUT REACTION
             <div class="row">
                 <div class="col-sm-12">
                     <h3>{{ reaction.title }}</h3>
-                </div>
-            </div>
-
-            {# Résumé #}
-            <div class="row">
-                <div class="col-sm-12">
-                    {{ reaction.summary | raw }}
                 </div>
             </div>
         </div>

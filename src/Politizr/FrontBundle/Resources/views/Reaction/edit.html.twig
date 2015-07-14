@@ -136,9 +136,6 @@
                     {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parent.user } only %}
                     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parent.user } only %}
                 </div>
-                <div class="paragraph summary">
-                    {{ parent.summary | raw }}
-                </div>
                 {% for paragraph in paragraphs %}
                     <div class="paragraph">
                         <p>{{ paragraph | raw }}</p>

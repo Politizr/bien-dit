@@ -10,7 +10,7 @@
                 {% if parentReaction %}
                     <span class="timelineItemContextHighlight">
                         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
-                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %} :
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
                     </span>
                     <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
                     <br/>
@@ -18,7 +18,7 @@
                 
                 {% if not debateContext %}
                     <span class="timelineItemContextHighlight">
-                        Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span> :
+                        Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
                     </span>
                     <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a>
                 {% endif %}
@@ -28,10 +28,10 @@
                 <div class="timelineItemObject">
                     <i class="iconNotifNo"></i>
                     {% if authorIsMe %}
-                        Vous avez rédigé une réaction :
+                        Vous avez rédigé une réaction:&nbsp;
                     {% else %}
                         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': comment.user, 'isFollowed': authorIsFollowed } only %}
-                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': comment.user } only %} a rédigé un commentaire :
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': comment.user } only %} a rédigé un commentaire:&nbsp;
                     {% endif %}
                 </div>
                 <div class="timelineItemHighlight">

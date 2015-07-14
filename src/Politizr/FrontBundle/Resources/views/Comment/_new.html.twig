@@ -1,11 +1,13 @@
-{{ form_start(formComment, {'attr': {'id': 'formCommentNew'} }) }}
+<form id="formCommentNew">
     {{ form_errors(formComment) }}
 
     {{ form_widget(formComment.description) }}
     {% if formComment.description.vars.errors|length %}
         <div class="field_error">{{ form_errors(formComment.description) }}</div>
     {% endif %}
-{{ form_end(formComment) }}
+    
+    {{ form_rest(formComment) }}
+</form>
 <div class="actionsButtons withLoaderInside">
     <div class="ajaxLoader" style="display: none;">
         <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>

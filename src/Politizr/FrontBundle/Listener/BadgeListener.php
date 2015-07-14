@@ -13,7 +13,8 @@ use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUFollowUQuery;
 
 /**
@@ -362,11 +363,17 @@ GROUP BY p_d_debate_id
     private function checkAnnotateur($userId, $badgeId, $nbComments)
     {
         if (!$this->hasBadge($userId, $badgeId)) {
-            $nb = PDCommentQuery::create()
+            $nbDebate = PDDCommentQuery::create()
                         ->filterByPUserId($userId)
                         ->count();
 
-            if ($nb >= $nbComments) {
+            $nbReaction = PDRCommentQuery::create()
+                        ->filterByPUserId($userId)
+                        ->count();
+
+            $nbTotal = $nbDebate + $nbReaction;
+
+            if ($nbTotal >= $nbComments) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }
@@ -383,12 +390,17 @@ GROUP BY p_d_debate_id
     private function checkEffronte($userId, $badgeId, $nbNotePos)
     {
         if (!$this->hasBadge($userId, $badgeId)) {
-            $nb = PDCommentQuery::create()
+            $nbDebate = PDDCommentQuery::create()
                         ->filterByPUserId($userId)
                         ->filterByNotePos(array('min' => $nbNotePos))
                         ->count();
 
-            if ($nb >= 0) {
+            $nbReaction = PDRCommentQuery::create()
+                        ->filterByPUserId($userId)
+                        ->filterByNotePos(array('min' => $nbNotePos))
+                        ->count();
+
+            if ($nbDebate >= 0 || $nbReaction >= 0) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }

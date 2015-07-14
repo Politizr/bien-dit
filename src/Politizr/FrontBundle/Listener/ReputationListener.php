@@ -165,7 +165,8 @@ class ReputationListener
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
-            case 'Politizr\Model\PDComment':
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
                 $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS;
 
                 // Auteur associé
@@ -217,7 +218,8 @@ class ReputationListener
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
-            case 'Politizr\Model\PDComment':
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
                 $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG;
 
                 // Auteur associé

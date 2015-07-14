@@ -898,39 +898,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $query->find();
     }
 
-
-
-    // *****************************    DOCUMENTS > COMMENTAIRES    ************************* //
-
-    /**
-     * Renvoit les commentaires associés à des documents (débats + réactions) pour le user courant.
-     *
-     * @param   $online     boolean     Renvoit uniquement les commentaires en ligne
-     *
-     * @return array    Liste d'objets PDDComment
-     */
-    public function getComments($online = true)
-    {
-        $query = PDCommentQuery::create()
-                    ->filterByOnline($online);
-
-        return parent::getPDComments($query);
-    }
-
-    /**
-     * Renvoie le nombre de comentaires associé à l'utilisateur
-     *
-     * @return     integer
-     */
-    public function countComments($online = true)
-    {
-        $comments = $this->getComments($online);
-
-        return count($comments);
-    }
-
-
-
     // *****************************    BADGES / REPUTATION    ************************* //
 
     /**

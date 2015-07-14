@@ -45,12 +45,13 @@
     $("body").on("click", "i[action='notificationCheck']", function(e) {
         console.log('*** click i notificationCheck');
 
+        e.preventDefault();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url : "{{ path('NotificationCheck') }}",
             context: $(this).closest('.notifItem'),
-            data: { 'subjectId': $(this).attr('subject-id') },
+            data: { 'subjectId': $(this).attr('subjectId') },
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 $(this).find('.notifHighlight').attr('class', '');
@@ -64,7 +65,7 @@
 
     })
     
-    $("body").on("click", "[action='notificationCheck']", function(e) {
+    $("body").on("click", "a[action='notificationCheck']", function(e) {
         console.log('*** click a notificationCheck');
 
         e.preventDefault();
@@ -73,7 +74,7 @@
             dataType: 'json',
             url : "{{ path('NotificationCheck') }}",
             context: this,
-            data: { 'subjectId': $(this).closest('span').attr('subject-id') },
+            data: { 'subjectId': $(this).closest('span').attr('subjectId') },
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {
                 window.location = $(this).attr('href');

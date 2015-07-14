@@ -7,8 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
  * Comment type for debate & reaction
  * /!\ do not use directly, use PDDCommentType or PDRComment type instead
@@ -17,13 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class PDCommentType extends AbstractType
 {
+    /**
+     *
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $builder->add('p_document_id', 'hidden', array(
-            'required' => true,
-        ));
-
         $builder->add('p_user_id', 'hidden', array(
             'required' => true,
         ));
@@ -45,8 +41,6 @@ class PDCommentType extends AbstractType
                 'placeholder' => 'Votre commentaire...',
                 )
         ));
-        
-
     }
 
     /**

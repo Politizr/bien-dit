@@ -14,7 +14,8 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PUFollowDD;
-use Politizr\Model\PDComment;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDRComment;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -423,6 +424,7 @@ class DocumentManager
                 'title' => $debate->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
+                'testShadow' => true,
             )
         );
 
@@ -634,6 +636,7 @@ class DocumentManager
                 'title' => $reaction->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
+                'testShadow' => true,
             )
         );
 
@@ -797,11 +800,11 @@ class DocumentManager
         // Récupération débat courant
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->findPk($subjectId);
+                $document = PDDebateQuery::create()->findPk($id);
                 $uploadWebPath = PDDebate::UPLOAD_WEB_PATH;
                 break;
             case PDocumentInterface::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($subjectId);
+                $document = PDReactionQuery::create()->findPk($id);
                 $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
                 break;
             default:
@@ -828,6 +831,7 @@ class DocumentManager
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',
                 'title' => $document->getTitle(),
+                'testShadow' => true,
             )
         );
 
@@ -857,18 +861,17 @@ class DocumentManager
         $request = $this->sc->get('request');
 
         // Récupération args
-        $type = $request->get('type');
+        $type = $request->get('comment')['type'];
         $logger->info('$type = ' . print_r($type, true));
 
         // Récupération objet
         switch ($type) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
                 $commentNew = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
-            case PDocumentInterface::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($subjectId);
+            case PDocumentInterface::TYPE_REACTION_COMMENT:
                 $comment = new PDRComment();
                 $commentNew = new PDRComment();
                 $formType = new PDRCommentType();

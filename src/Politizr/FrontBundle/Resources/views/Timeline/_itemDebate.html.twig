@@ -9,15 +9,15 @@
                 <div class="timelineItemObject">
                     <i class="iconNotifNo"></i>
                     {% if authorIsMe %}
-                        Vous avez rédigé un débat :
+                        Vous avez rédigé un débat:&nbsp;
                     {% else %}
                         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': debate.user, 'isFollowed': authorIsFollowed } only %}
-                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': debate.user } only %} a rédigé un <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span> :
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': debate.user } only %} a rédigé un <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
                     {% endif %}
                 </div>
                 <div class="timelineItemHighlight">
                     <div class="timelineItemIllustration">
-                        {{ debate | image('debate_timeline') }}
+                        {{ debate | image('debate_timeline', false) }}
                     </div>
                     <div class="avatar40">
                         {{ debate.user | photo('user_40') }}

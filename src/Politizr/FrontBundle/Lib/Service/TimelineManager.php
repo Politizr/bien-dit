@@ -107,104 +107,17 @@ class TimelineManager
 
 
     /**
-     *  Construction de la requête SQL renvoyant la timeline d'un user.
+     * User "my politizr" timeline
      *
+     * @see app/sql/timeline.sql
      *
-     *  TODO:
+     * @todo:
      *   > + réactions sur les débats / réactions rédigés par le user courant
      *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
-     * #  Réactions aux débats suivis
-     * ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     * FROM p_d_reaction
-     * WHERE
-     *     p_d_reaction.published = 1
-     *     AND p_d_reaction.online = 1
-     *     AND p_d_reaction.p_d_debate_id IN (5,1)
-     *     AND p_d_reaction.tree_level > 0 )
-     *
-     * UNION DISTINCT
-     *
-     * # Débats des users suivis
-     * ( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
-     * FROM p_d_debate
-     * WHERE
-     *     p_d_debate.published = 1
-     *     AND p_d_debate.online = 1
-     *     AND p_d_debate.p_user_id IN (6,9,60) )
-     *
-     * UNION DISTINCT
-     *
-     * # Réactions des users suivis
-     * ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     * FROM p_d_reaction
-     * WHERE
-     *     p_d_reaction.published = 1
-     *     AND p_d_reaction.online = 1
-     *     AND p_d_reaction.p_user_id IN (6,9,60) )
-     *
-     * UNION DISTINCT
-     *
-     * # Commentaires des users suivis
-     * ( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as description, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-     * FROM p_d_comment
-     * WHERE
-     *     p_d_comment.online = 1
-     *     AND p_d_comment.p_user_id IN (6,9,60) )
-     *
-     * UNION DISTINCT
-     *
-     * # Réactions sur mes débats
-     * ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     * FROM p_d_reaction
-     *     LEFT JOIN p_d_debate
-     *         ON p_d_reaction.p_d_debate_id = p_d_debate.id
-     * WHERE
-     *     p_d_reaction.published = 1
-     *     AND p_d_reaction.online = 1
-     *     AND p_d_debate.p_user_id = 72
-     *     AND p_d_reaction.tree_level > 0 )
-     *
-     * UNION DISTINCT
-     *
-     * # Réactions sur mes réactions
-     * ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     * FROM p_d_reaction as p_d_reaction
-     *     LEFT JOIN p_d_reaction as my_reaction
-     *         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
-     * WHERE
-     *     p_d_reaction.published = 1
-     *     AND p_d_reaction.online = 1
-     *     AND my_reaction.id IN (12, 16)
-     *     AND p_d_reaction.tree_left > my_reaction.tree_left
-     *     AND p_d_reaction.tree_left < my_reaction.tree_right
-     *     AND p_d_reaction.tree_level > my_reaction.tree_level
-     *     AND p_d_reaction.tree_level > 1 )
-     *
-     * UNION DISTINCT
-     *
-     * # Commentaires sur mes débats
-     * ( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
-     * FROM p_d_d_comment
-     * WHERE
-     *     p_d_d_comment.online = 1
-     *     AND p_d_d_comment.p_d_debate_id IN (1, 12, 16) )
-     *
-     * UNION DISTINCT
-     *
-     * # Commentaires sur mes réactions
-     * ( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
-     * FROM p_d_r_comment
-     * WHERE
-     *     p_d_r_comment.online = 1
-     *     AND p_d_r_comment.p_d_reaction_id IN (1, 12, 16) )
-     *
-     * ORDER BY published_at DESC
-     *
-     *  @param  integer     $offset
-     *  @param  integer     $count
-     *
-     *  @return string
+     * @param integer $offset
+     * @param integer $count
+     * @return string
      */
     public function getTimelineSql($offset, $count = 10)
     {
@@ -251,8 +164,7 @@ class TimelineManager
 
         // Préparation requête SQL
         $sql = "
-#  Réactions aux débats suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -262,8 +174,7 @@ WHERE
 
 UNION DISTINCT
 
-# Débats des users suivis
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -272,8 +183,7 @@ WHERE
 
 UNION DISTINCT
 
-# Réactions des users suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -282,17 +192,7 @@ WHERE
 
 UNION DISTINCT
 
-# Commentaires des users suivis
-( SELECT p_d_comment.id as id, \"commentaire\" as title, p_d_comment.description as description, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-FROM p_d_comment
-WHERE
-    p_d_comment.online = 1
-    AND p_d_comment.p_user_id IN (".$inQueryUserIds.") )
-
-UNION DISTINCT
-
-# Réactions sur mes débats
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_debate
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
@@ -304,8 +204,7 @@ WHERE
 
 UNION DISTINCT
 
-# Réactions sur mes réactions
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
@@ -320,8 +219,23 @@ WHERE
 
 UNION DISTINCT
 
-# Commentaires sur mes débats
-( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -329,8 +243,7 @@ WHERE
 
 UNION DISTINCT
 
-# Commentaires sur mes réactions
-( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -344,64 +257,16 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     *  Construction de la requête SQL renvoyant la timeline d'un user.
+     * Debate feed timeline
      *
+     * @see app/sql/debateFeed.sql
      *
-     *  TODO:
+     * @todo:
      *   > + réactions sur les débats / réactions rédigés par le user courant
      *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
-     *
-     *
-     * #  Réactions descendantes au débat courant
-     * ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
-     * FROM p_d_reaction
-     * WHERE
-     *     p_d_reaction.published = 1
-     *     AND p_d_reaction.online = 1
-     *     AND p_d_reaction.p_d_debate_id = 3
-     *     AND p_d_reaction.tree_level > 0
-     * )
-     *
-     * UNION DISTINCT
-     *
-     * # Commentaires du débat courant des users suivis + ses propres commentaires
-     * ( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-     * FROM p_d_d_comment
-     * WHERE
-     *     p_d_d_comment.online = 1
-     *     AND p_d_d_comment.p_d_debate_id = 3
-     *     AND p_d_d_comment.p_user_id IN (73, 36, 42)
-     * )
-     *
-     * UNION DISTINCT
-     *
-     * # Commentaires sur une des réactions descendantes du débat courant des users suivis + ses propres commentaires
-     * ( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-     * FROM p_d_r_comment
-     * WHERE
-     *     p_d_r_comment.online = 1
-     *     AND p_d_r_comment.p_d_reaction_id IN (
-     *         # Requête "Réactions descendantes au débat courant"
-     *         SELECT p_d_reaction.id as id
-     *         FROM p_d_reaction
-     *         WHERE
-     *             p_d_reaction.published = 1
-     *             AND p_d_reaction.online = 1
-     *             AND p_d_reaction.p_d_debate_id = 3
-     *             AND p_d_reaction.tree_level > 0
-     *             )
-     *             AND p_d_r_comment.p_user_id IN (73, 36, 42)
-     *     )
-     *
-     * ORDER BY published_at ASC
-     *
-     *
-     *
-     *
-     *  @param  integer     $debateId
-     *
-     *  @return string
+     * @param integer $debateId
+     * @return string
      */
     public function getDebateFeedSql($debateId)
     {
@@ -434,31 +299,28 @@ LIMIT ".$offset.", ".$count."
 
         // Préparation requête SQL
         $sql = "
-#  Réactions descendantes au débat courant
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as summary, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as summary, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_d_debate_id = 3
+    AND p_d_reaction.p_d_debate_id = ".$debateId."
     AND p_d_reaction.tree_level > 0
 )
 
 UNION DISTINCT
 
-# Commentaires du débat courant des users suivis + ses propres commentaires
-( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.description as summary, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.description as summary, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_d_debate_id = 3
-    AND p_d_d_comment.p_user_id IN (73, 36, 42)
+    AND p_d_d_comment.p_d_debate_id = ".$debateId."
+    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.")
 )
 
 UNION DISTINCT
 
-# Commentaires sur une des réactions descendantes du débat courant des users suivis + ses propres commentaires
-( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.description as summary, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.description as summary, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
 WHERE 
     p_d_r_comment.online = 1
@@ -469,10 +331,10 @@ WHERE
         WHERE
             p_d_reaction.published = 1
             AND p_d_reaction.online = 1
-            AND p_d_reaction.p_d_debate_id = 3
+            AND p_d_reaction.p_d_debate_id = ".$debateId."
             AND p_d_reaction.tree_level > 0
             )
-            AND p_d_r_comment.p_user_id IN (73, 36, 42)
+            AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.")
     )
 
 ORDER BY published_at ASC
@@ -504,21 +366,20 @@ ORDER BY published_at ASC
             // Exécution de la requête brute
             $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-            dump($sql);
+            // dump($sql);
 
             $stmt = $con->prepare($sql);
             $stmt->execute();
 
             $result = $stmt->fetchAll();
 
-            dump($result);
+            // dump($result);
 
             foreach ($result as $row) {
                 $timelineRow = new TimelineRow();
 
                 $timelineRow->setId($row['id']);
                 $timelineRow->setTitle($row['title']);
-                $timelineRow->setSummary($row['summary']);
                 $timelineRow->setPublishedAt($row['published_at']);
                 $timelineRow->setType($row['type']);
 

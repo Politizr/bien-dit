@@ -153,12 +153,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Image d'en-tête d'un document
+     * Load an <img> html tag with the image of document and apply it a filter.
      *
-     *  @param PDocumentInterface $document
-     *  @return html
+     * @param PDocumentInterface $document
+     * @param string $filterName
+     * @param boolean $testShadow
+     * @return html
      */
-    public function image(PDocumentInterface $document, $filterName = 'debate_header')
+    public function image(PDocumentInterface $document, $filterName = 'debate_header', $testShadow = true)
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -185,6 +187,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,
+                'testShadow' => $testShadow,
             )
         );
 
@@ -354,7 +357,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Affiche & active / désactive les Note + / Note -
      *
-     * @param int $nbViews
+     * @param PDDebate $debate
      * @return html
      */
     public function linkNoteDebate(PDDebate $debate)
@@ -366,12 +369,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $neg = false;
 
         if ($this->user) {
-            $debate = PDDebateQuery::create()
+            $ownDebate = PDDebateQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($debate->getId())
                 ->findOne();
 
-            if ($debate) {
+            if ($ownDebate) {
                 $pos = true;
                 $neg = true;
             } else {
@@ -429,12 +432,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $neg = false;
 
         if ($this->user) {
-            $document = PDReactionQuery::create()
+            $ownReaction = PDReactionQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($reaction->getId())
                 ->findOne();
 
-            if ($document) {
+            if ($ownReaction) {
                 $pos = true;
                 $neg = true;
             } else {
@@ -515,10 +518,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
             } else {
                 $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
-                    ->filterByPObjectName('Politizr\Model\PDComment');
+                    ->filterByPObjectName($comment->getType());
                 $queryNeg = PUReputationQuery::create()
                     ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
-                    ->filterByPObjectName('Politizr\Model\PDComment');
+                    ->filterByPObjectName($comment->getType());
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
                     ->filterByPObjectId($comment->getId())
@@ -634,8 +637,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      *  Rendu d'une ligne de la timeline en fonction du type
      *
-     * @param \Politizr\Model\TimelineRow $timelineRow
-     * @param boolean debateContext     Affichage dans le contexte d'un débat ou plus général
+     * @param TimelineRow $timelineRow
+     * @param boolean debateContext
      *
      * @return string
      */

@@ -14,7 +14,6 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
@@ -125,15 +124,11 @@ class ElectedController extends Controller
         // Réactions rédigées
         $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
-        // Commentaires rédigés
-        $comments = PDCommentQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
-
         return $this->render('PolitizrFrontBundle:ProfileE:contribDashboard.html.twig', array(
             'debateDrafts' => $debateDrafts,
             'reactionDrafts' => $reactionDrafts,
             'debates' => $debates,
             'reactions' => $reactions,
-            'comments' => $comments,
             ));
     }
 

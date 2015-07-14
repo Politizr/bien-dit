@@ -1,5 +1,5 @@
 #  Réactions descendantes au débat courant
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
 	p_d_reaction.published = 1
@@ -11,7 +11,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires du débat courant des users suivis + ses propres commentaires
-( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
 FROM p_d_d_comment
 WHERE
 	p_d_d_comment.online = 1
@@ -22,7 +22,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur une des réactions descendantes du débat courant des users suivis + ses propres commentaires
-( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
+( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
 FROM p_d_r_comment
 WHERE 
 	p_d_r_comment.online = 1

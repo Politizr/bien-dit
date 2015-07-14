@@ -188,7 +188,6 @@ LAYOUT DEBATE
             {% endif %}
         </td>
         <td>{{ document.title }}</td>
-        <td>{{ document.summary | striptags | slice(0, 150) | raw }}</td>
         <td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
         <td>
             <a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': document.id }) }}">Editer</a>

@@ -2,13 +2,35 @@
 
 namespace Politizr\FrontBundle\Form\Type;
 
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Politizr\Model\PDocumentInterface;
+
 /**
- * Debate's comment type
+ * Reaction's comment type
  *
  * @author Lionel Bouzonville
  */
-class PDCommentType extends PDCommentType
+class PDRCommentType extends PDCommentType
 {
+    /**
+     *
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $builder->add('p_d_reaction_id', 'hidden', array(
+            'required' => true,
+        ));
+
+        $builder->add('type', 'hidden', array(
+            'required' => true,
+            'data' => PDocumentInterface::TYPE_REACTION_COMMENT,
+        ));
+    }
+
     /**
      *
      */

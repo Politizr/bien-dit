@@ -9,92 +9,12 @@ class PUserQuery extends BasePUserQuery
     // *****************************    RAW SQL    ************************* //
     
     /**
-     *  Construction de la requête SQL renvoyant les suggestions de users pour un user.
+     * Users' suggestion for user.
      *
-     *  @todo:
+     * @see app/sql/suggestions.sql
+     *
+     * @todo:
      *   > + suggestions depuis les users déjà suivis
-     *
-     *
-     * #  Concordance des tags suivis / tags caractérisant des users
-     * SELECT DISTINCT
-     *     id,
-     *     provider,
-     *     provider_id,
-     *     nickname,
-     *     realname,
-     *     username,
-     *     username_canonical,
-     *     email,
-     *     email_canonical,
-     *     enabled,
-     *     salt,
-     *     password,
-     *     last_login,
-     *     locked,
-     *     expired,
-     *     expires_at,
-     *     confirmation_token,
-     *     password_requested_at,
-     *     credentials_expired,
-     *     credentials_expire_at,
-     *     roles,
-     *     last_activity,
-     *     p_u_status_id,
-     *     file_name,
-     *     back_file_name,
-     *     gender,
-     *     firstname,
-     *     name,
-     *     birthday,
-     *     subtitle,
-     *     biography,
-     *     website,
-     *     twitter,
-     *     facebook,
-     *     phone,
-     *     newsletter,
-     *     last_connect,
-     *     nb_connected_days,
-     *     nb_views,
-     *     qualified,
-     *     validated,
-     *     online,
-     *     created_at,
-     *     updated_at,
-     *     slug
-     * FROM (
-     * ( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
-     * FROM p_user
-     *     LEFT JOIN p_u_tagged_t
-     *         ON p_user.id = p_u_tagged_t.p_user_id
-     * WHERE
-     *     p_u_tagged_t.p_tag_id IN (
-     *                 SELECT p_tag.id
-     *                 FROM p_tag
-     *                     LEFT JOIN p_u_follow_t
-     *                         ON p_tag.id = p_u_follow_t.p_tag_id
-     *                 WHERE
-     *                     p_tag.online = true
-     *                     AND p_u_follow_t.p_user_id = 73
-     *     )
-     *         AND p_user.online = 1
-     *         AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = 73)
-     *         AND p_user.id <> 73 )
-     *
-     * UNION DISTINCT
-     *
-     * #  Users les plus populaires
-     * ( SELECT p_user.*, COUNT(p_u_follow_u.p_user_id) as nb_users, 2 as unionsorting
-     * FROM p_user
-     *     LEFT JOIN p_u_follow_u
-     *         ON p_user.id = p_u_follow_u.p_user_id
-     * WHERE
-     *     p_user.online = 1
-     * GROUP BY p_user.id
-     * ORDER BY nb_users DESC )
-     *
-     * ORDER BY unionsorting ASC
-     * ) unionsorting
      *
      * @param  integer     $userId
      * @param  integer     $offset

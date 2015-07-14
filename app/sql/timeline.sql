@@ -1,5 +1,5 @@
 #  Réactions aux débats suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
 	p_d_reaction.published = 1
@@ -10,7 +10,7 @@ WHERE
 UNION DISTINCT
 
 # Débats des users suivis
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
 FROM p_d_debate
 WHERE
 	p_d_debate.published = 1
@@ -20,7 +20,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions des users suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -29,17 +29,8 @@ WHERE
 
 UNION DISTINCT
 
-# Commentaires des users suivis
-( SELECT p_d_comment.id as id, "commentaire" as title, p_d_comment.description as description, p_d_comment.published_at as published_at, 'Politizr\\Model\\PDComment' as type
-FROM p_d_comment
-WHERE
-	p_d_comment.online = 1
-	AND p_d_comment.p_user_id IN (6,9,60) )
-
-UNION DISTINCT
-
 # Réactions sur mes débats
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_debate
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
@@ -52,7 +43,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions sur mes réactions
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
@@ -67,8 +58,26 @@ WHERE
 
 UNION DISTINCT
 
+# Commentaires débats des users suivis
+( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id IN (6,9,60) )
+
+UNION DISTINCT
+
+# Commentaires réactions des users suivis
+( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id IN (6,9,60) )
+
+UNION DISTINCT
+
 # Commentaires sur mes débats
-( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
+( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
 	p_d_d_comment.online = 1
@@ -77,7 +86,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur mes réactions
-( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDCommentInterface' as type
+( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
