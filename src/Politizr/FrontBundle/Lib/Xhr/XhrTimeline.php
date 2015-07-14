@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -19,7 +19,7 @@ use Politizr\FrontBundle\Lib\TimelineRow;
  *
  * @author Lionel Bouzonville
  */
-class TimelineManager
+class XhrTimeline
 {
     private $sc;
 

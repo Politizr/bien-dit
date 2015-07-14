@@ -1,6 +1,6 @@
 <div id="edit-tag-zone-{{ zoneId }}">
     {# Variables #}
-    <div class="tagsAttr" tag-type-id="{{ tagTypeId }}" object-id="{{ object.id }}" new-tag="{{ newTag }}" path="{{ path(addPath) }}"></div>
+    <div class="tagsAttr" tag-type-id="{{ tagTypeId }}" subjectId="{{ object.id }}" new-tag="{{ newTag }}" path="{{ path(addPath) }}"></div>
     
     {# Sélection #}
     <input type="text" class="selectedTag" />
@@ -10,7 +10,7 @@
     {# Affichage #}
     <div class="displayTagsZone">
         {% for tag in tags %}
-            {% include 'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig' with { 'objectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
+            {% include 'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig' with { 'subjectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
         {% endfor %}
     </div>
 </div>

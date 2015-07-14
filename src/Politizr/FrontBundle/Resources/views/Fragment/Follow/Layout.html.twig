@@ -49,9 +49,9 @@ LAYOUT FOLLOW
 {% block subscribe %}
     {% if app.user %}
         {% if follower %}
-            <a class="btn btn-warning" action="follow" object-id="{{ object.id }}" type="{{ type }}" way="unfollow">Se désabonner</a>
+            <a class="btn btn-warning" action="follow" subjectId="{{ object.id }}" type="{{ type }}" way="unfollow">Se désabonner</a>
         {% else %}
-            <a class="btn btn-success" action="follow" object-id="{{ object.id }}" type="{{ type }}" way="follow">S'abonner</a>
+            <a class="btn btn-success" action="follow" subjectId="{{ object.id }}" type="{{ type }}" way="follow">S'abonner</a>
         {% endif %}
     {% else %}
         <a class="btn btn-primary btn-xs" href="{{ path('Inscription') }}">S'abonner</a>

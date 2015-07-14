@@ -21,8 +21,8 @@ class XhrTimelineController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** paginatedListAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.timeline',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.timeline',
             'timelinePaginated'
         );
 

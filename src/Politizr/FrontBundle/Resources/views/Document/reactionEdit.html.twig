@@ -24,7 +24,7 @@
             <a action="reaction-save" class="btn btn-success">Enregistrer</a>
             <a action="reaction-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
             <a action="reaction-delete" class="btn btn-danger" url="{{ urlBack }}">Supprimer</a>
-            <a action="reaction-publish" class="btn btn-warning" object-id="{{ reaction.id }}" url="{{ urlPublishBack }}">Publier</a>
+            <a action="reaction-publish" class="btn btn-warning" subjectId="{{ reaction.id }}" url="{{ urlPublishBack }}">Publier</a>
         </div>    
     </div>
 {% endblock main %}

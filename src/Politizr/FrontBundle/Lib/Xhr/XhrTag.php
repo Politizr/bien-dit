@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -22,7 +22,7 @@ use Politizr\Model\PUTaggedTQuery;
  *
  * @author Lionel Bouzonville
  */
-class TagManager
+class XhrTag
 {
     private $sc;
 
@@ -228,7 +228,7 @@ class TagManager
         $tagTitle = $request->get('tagTitle');
         $tagId = $request->get('tagId');
         $tagTypeId = $request->get('tagTypeId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
         $newTag = $request->get('newTag');
 
         if (empty($tagTypeId)) {
@@ -239,7 +239,7 @@ class TagManager
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
 
         // Association du tag au user
-        $created = PUFollowTQuery::create()->addElement($objectId, $tagId);
+        $created = PUFollowTQuery::create()->addElement($subjectId, $tagId);
 
         if (!$created) {
             $htmlTag = null;
@@ -250,7 +250,7 @@ class TagManager
             $htmlTag = $templating->render(
                 'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
                 array(
-                    'objectId' => $objectId,
+                    'subjectId' => $subjectId,
                     'tag' => $tag,
                     'deleteUrl' => $this->sc->get('router')->generate('UserFollowDeleteTag')
                 )
@@ -282,10 +282,10 @@ class TagManager
 
         // Récupération args
         $tagId = $request->get('tagId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
 
         // Suppression du tag / profil
-        $deleted = PUFollowTQuery::create()->deleteElement($objectId, $tagId);
+        $deleted = PUFollowTQuery::create()->deleteElement($subjectId, $tagId);
 
         return $deleted;
     }
@@ -310,7 +310,7 @@ class TagManager
         $tagTitle = $request->get('tagTitle');
         $tagId = $request->get('tagId');
         $tagTypeId = $request->get('tagTypeId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
         $newTag = $request->get('newTag');
 
         if (empty($tagTypeId)) {
@@ -321,7 +321,7 @@ class TagManager
         $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
 
         // Association du tag au user
-        $created = PUTaggedTQuery::create()->addElement($objectId, $tagId);
+        $created = PUTaggedTQuery::create()->addElement($subjectId, $tagId);
 
         if (!$created) {
             $htmlTag = null;
@@ -332,7 +332,7 @@ class TagManager
             $htmlTag = $templating->render(
                 'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
                 array(
-                    'objectId' => $objectId,
+                    'subjectId' => $subjectId,
                     'tag' => $tag,
                     'deleteUrl' => $this->sc->get('router')->generate('UserTaggedDeleteTag')
                 )
@@ -364,10 +364,10 @@ class TagManager
 
         // Récupération args
         $tagId = $request->get('tagId');
-        $objectId = $request->get('objectId');
+        $subjectId = $request->get('subjectId');
 
         // Suppression du tag / profil
-        $deleted = PUTaggedTQuery::create()->deleteElement($objectId, $tagId);
+        $deleted = PUTaggedTQuery::create()->deleteElement($subjectId, $tagId);
 
         return $deleted;
     }

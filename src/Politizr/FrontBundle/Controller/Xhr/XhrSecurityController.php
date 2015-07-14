@@ -22,8 +22,8 @@ class XhrSecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.security',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.security',
             'login'
         );
 
@@ -38,8 +38,8 @@ class XhrSecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** loginCheckAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.security',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.security',
             'loginCheck'
         );
 
@@ -54,8 +54,8 @@ class XhrSecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** lostPasswordCheckAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.security',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.security',
             'lostPasswordCheck'
         );
 
@@ -76,8 +76,8 @@ class XhrSecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** paymentProcessAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.security',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.security',
             'paymentProcess'
         );
 

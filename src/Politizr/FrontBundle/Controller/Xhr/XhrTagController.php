@@ -22,8 +22,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** getTagsAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.tag',
             'getTags'
         );
 
@@ -39,8 +39,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateAddTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.tag',
             'debateAddTag'
         );
 
@@ -55,8 +55,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateDeleteTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.tag',
             'debateDeleteTag'
         );
 
@@ -71,8 +71,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userFollowAddTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.tag',
             'userFollowAddTag'
         );
 
@@ -87,8 +87,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userFollowDeleteTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.tag',
             'userFollowDeleteTag'
         );
 
@@ -103,8 +103,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userTaggedAddTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.tag',
             'userTaggedAddTag'
         );
 
@@ -119,8 +119,8 @@ class XhrTagController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userTaggedDeleteTagAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.tag',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.tag',
             'userTaggedDeleteTag'
         );
 

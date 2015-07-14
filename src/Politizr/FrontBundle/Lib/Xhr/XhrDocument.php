@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -8,18 +8,14 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
-use Politizr\FrontBundle\Lib\SimpleImage;
-
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
-use Politizr\Model\PUFollowDD;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 
@@ -31,11 +27,11 @@ use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
- * Services métiers associés aux documents (débats / réactions / commentaires).
+ * XHR service for document management.
  *
  * @author Lionel Bouzonville
  */
-class DocumentManager
+class XhrDocument
 {
     private $sc;
 
@@ -49,158 +45,60 @@ class DocumentManager
 
 
     /* ######################################################################################################## */
-    /*                     SERVICES METIERS LIES AU CRUD DOCUMENT (DEBAT / REACTION)                            */
-    /* ######################################################################################################## */
-
-
-    /**
-     *  Création d'un nouveau débat
-     *
-     *  @return PDDebate  Objet débat créé
-     */
-    public function createDebate()
-    {
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Création d'un nouvel objet et redirection vers l'édition
-        $debate = new PDDebate();
-        
-        $debate->setPUserId($user->getId());
-
-        $debate->setNotePos(0);
-        $debate->setNoteNeg(0);
-
-        $debate->setOnline(true);
-        $debate->setPublished(false);
-        
-        $debate->save();
-
-        return $debate;
-    }
-
-
-    /**
-     *  Création d'une nouvelle réaction
-     *
-     *  @param  integer     $debateId       Débat associé
-     *  @param  integer     $parentId       Réaction parente associée
-     *
-     *  @return PDReaction  Objet réaction créé
-     */
-    public function createReaction($debateId, $parentId)
-    {
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération du débat sur lequel la réaction a lieu
-        $debate = PDDebateQuery::create()->findPk($debateId);
-        if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
-        }
-
-        // Récupération de la réaction parente sur laquelle la réaction a lieu
-        $parent = null;
-        if ($parentId) {
-            $parent = PDReactionQuery::create()->findPk($parentId);
-            if (!$parent) {
-                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
-            }
-        }
-
-        // Création d'un nouvel objet et redirection vers l'édition
-        $reaction = new PDReaction();
-
-        $reaction->setPDDebateId($debate->getId());
-        
-        $reaction->setPUserId($user->getId());
-
-        $reaction->setNotePos(0);
-        $reaction->setNoteNeg(0);
-        
-        $reaction->setOnline(true);
-        $reaction->setPublished(false);
-
-        if ($parent) {
-            $reaction->setParentReactionId($parentId);
-        }
-
-        $reaction->save();
-
-        return $reaction;
-    }
-
-
-
-    /* ######################################################################################################## */
-    /*                            SUIVI, NOTES, COMMENTAIRES (FONCTIONS AJAX)                                   */
+    /*                                   FOLLOWING, NOTATION, COMMENTS                                          */
     /* ######################################################################################################## */
 
     /**
-     *  Gestion du suivre / ne plus suivre un débat par le user courant
-     *
+     * Follow/Unfollow a debate by current user
      */
     public function follow()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** follow');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+        $userManager = $this->sc->get('politizr.manager.user');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $templating = $this->sc->get('templating');
 
-        $objectId = $request->get('objectId');
-        $logger->info('$objectId = ' . print_r($objectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
-        // MAJ suivre / ne plus suivre
-        if ($way == 'follow') {
-            $object = PDDebateQuery::create()->findPk($objectId);
+        // Get debate
+        $debate = PDDebateQuery::create()->findPk($id);
+        if ('follow' == $way) {
+            $userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
-            // Insertion nouvel élément
-            $pUFollowDD = new PUFollowDD();
-            $pUFollowDD->setPUserId($user->getId());
-            $pUFollowDD->setPDDebateId($object->getId());
-            $pUFollowDD->save();
+            // Events
+            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('r_debate_follow', $event);
+            $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('n_debate_follow', $event);
+        } elseif ('unfollow' == $way) {
+            $userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
 
-            // Réputation
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_follow', $event);
-
-            // Notification
-            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_debate_follow', $event);
-        } elseif ($way == 'unfollow') {
-            $object = PDDebateQuery::create()->findPk($objectId);
-
-            // Suppression élément(s)
-            $pUFollowDDList = PUFollowDDQuery::create()
-                            ->filterByPUserId($user->getId())
-                            ->filterByPDDebateId($object->getId())
-                            ->find();
-            foreach ($pUFollowDDList as $pUFollowDD) {
-                $pUFollowDD->delete();
-            }
-
-            // Réputation
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_unfollow', $event);
+            // Events
+            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('r_debate_unfollow', $event);
+        } else {
+            throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
-                'object' => $object,
+                'object' => $debate,
                 'type' => PDocumentInterface::TYPE_DEBATE
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
@@ -208,99 +106,94 @@ class DocumentManager
 
 
     /**
-     *  Gestion note +/- d'un débat / réaction / commentaire par le user courant
-     *
+     * Notation plus/minus of debate, comment or user
+     * @todo refactoring
      */
     public function note()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** note');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
-        $objectId = $request->get('objectId');
-        $logger->info('$objectId = ' . print_r($objectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $type = $request->get('type');
         $logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
+        $user = $securityContext->getToken()->getUser();
+
         // Récupération objet
         switch($type) {
             case PDocumentInterface::TYPE_DEBATE:
-                $object = PDDebateQuery::create()->findPk($objectId);
+                $object = PDDebateQuery::create()->findPk($id);
                 break;
             case PDocumentInterface::TYPE_REACTION:
-                $object = PDReactionQuery::create()->findPk($objectId);
+                $object = PDReactionQuery::create()->findPk($id);
                 break;
             case PDocumentInterface::TYPE_DEBATE_COMMENT:
-                $object = PDDCommentQuery::create()->findPk($objectId);
+                $object = PDDCommentQuery::create()->findPk($id);
                 break;
             case PDocumentInterface::TYPE_REACTION_COMMENT:
-                $object = PDRCommentQuery::create()->findPk($objectId);
+                $object = PDRCommentQuery::create()->findPk($id);
                 break;
         }
 
         // MAJ note
-        if ($way == 'up') {
+        if ('up' == $way) {
             $object->setNotePos($object->getNotePos() + 1);
             $object->save();
 
-            // Réputation
+            // Events
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_pos', $event);
-            
-            // Notification
+            $dispatcher = $eventDispatcher->dispatch('r_note_pos', $event);
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_note_pos', $event);
-
-            // Badges associés
+            $dispatcher = $eventDispatcher->dispatch('n_note_pos', $event);
             switch($type) {
                 case PDocumentInterface::TYPE_DEBATE:
                 case PDocumentInterface::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_document_note_pos', $event);
+                    $dispatcher = $eventDispatcher->dispatch('b_document_note_pos', $event);
                     break;
                 case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 case PDocumentInterface::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_note_pos', $event);
+                    $dispatcher = $eventDispatcher->dispatch('b_comment_note_pos', $event);
                     break;
             }
-        } elseif ($way == 'down') {
+        } elseif ('down' == $way) {
             $object->setNoteNeg($object->getNoteNeg() + 1);
             $object->save();
 
-            // Réputation
+            // Events
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_note_neg', $event);
-            
-            // Notification
+            $dispatcher = $eventDispatcher->dispatch('r_note_neg', $event);
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_note_neg', $event);
-
-            // Badges associés
+            $dispatcher = $eventDispatcher->dispatch('n_note_neg', $event);
             switch($type) {
                 case PDocumentInterface::TYPE_DEBATE:
                 case PDocumentInterface::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_document_note_neg', $event);
+                    $dispatcher = $eventDispatcher->dispatch('b_document_note_neg', $event);
                     break;
                 case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 case PDocumentInterface::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_note_neg', $event);
+                    $dispatcher = $eventDispatcher->dispatch('b_comment_note_neg', $event);
                     break;
             }
+        } else {
+            throw new InconsistentDataException(sprintf('Notation\'s way %s not managed', $way));
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
             array(
@@ -309,16 +202,14 @@ class DocumentManager
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html
             );
     }
 
     /* ######################################################################################################## */
-    /*                                EDITION DEBAT  (FONCTIONS AJAX)                                           */
+    /*                                              DEBATE EDITION                                              */
     /* ######################################################################################################## */
-
 
     /**
      * Debate update
@@ -328,14 +219,18 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** debateUpdate');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('debate')['id'];
+        $logger->info('$id = ' . print_r($id, true));
+
+        $user = $securityContext->getToken()->getUser();
+
+        // Function process
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -347,7 +242,7 @@ class DocumentManager
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $this->sc->get('form.factory')->create(new PDDebateType(), $debate);
+        $form = $formFactory->create(new PDDebateType(), $debate);
         $form->bind($request);
         if ($form->isValid()) {
             $debate = $form->getData();
@@ -368,14 +263,18 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** debatePhotoInfoUpdate');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
+        $templating = $this->sc->get('templating');
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('debate_photo_info')['id'];
+        $logger->info('$id = ' . print_r($id, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -387,7 +286,7 @@ class DocumentManager
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $this->sc->get('form.factory')->create(new PDDebatePhotoInfoType(), $debate);
+        $form = $formFactory->create(new PDDebatePhotoInfoType(), $debate);
 
         // Retrieve actual file name
         $oldFileName = $debate->getFileName();
@@ -410,9 +309,7 @@ class DocumentManager
             throw new FormValidationException($errors);
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-
+        // Rendering
         $path = 'bundles/politizrfront/images/default_debate.jpg';
         if ($fileName = $debate->getFileName()) {
             $path = PDDebate::UPLOAD_WEB_PATH.$fileName;
@@ -442,14 +339,21 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** debatePublish');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $documentManager = $this->sc->get('politizr.manager.document');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $session = $this->sc->get('session')->getFlashBag();
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('id');
+        $logger->info('$id = ' . print_r($id, true));
+        $redirectUrl = $request->get('url');
+        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -461,25 +365,15 @@ class DocumentManager
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        // Récupération URL redirection
-        $redirectUrl = $request->get('url');
+        $documentManager->publishDebate();
+        $session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
-        // MAJ de l'objet
-        $debate->setPublished(true);
-        $debate->setPublishedAt(time());
-        $debate->save();
-
-        $this->sc->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
-
-        // Réputation & badges
+        // Events
         $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_debate_publish', $event);
-
-        // Notification
+        $dispatcher = $eventDispatcher->dispatch('r_debate_publish', $event);
         $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_debate_publish', $event);
+        $dispatcher = $eventDispatcher->dispatch('n_debate_publish', $event);
 
-        // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
             );
@@ -493,14 +387,20 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** debateDelete');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $documentManager = $this->sc->get('politizr.manager.document');
+        $session = $this->sc->get('session')->getFlashBag();
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('id');
+        $logger->info('$id = ' . print_r($id, true));
+        $redirectUrl = $request->get('url');
+        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -512,23 +412,16 @@ class DocumentManager
             throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
         }
 
-        // Récupération URL redirection
-        $redirectUrl = $request->get('url');
+        $documentManager->deleteDebate($debate);
+        $session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 
-        // MAJ de l'objet
-        $debate = PDDebateQuery::create()->findPk($id);
-        $debate->delete();
-
-        $this->sc->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
-
-        // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $redirectUrl,
             );
     }
 
     /* ######################################################################################################## */
-    /*                                          EDITION REACTION (FONCTIONS AJAX)                               */
+    /*                                                  REACTION EDITION                                        */
     /* ######################################################################################################## */
 
     /**
@@ -539,14 +432,17 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionUpdate');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('reaction')['id'];
+        $logger->info('$id = ' . print_r($id, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -558,7 +454,7 @@ class DocumentManager
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $this->sc->get('form.factory')->create(new PDReactionType(), $reaction);
+        $form = $formFactory->create(new PDReactionType(), $reaction);
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -580,14 +476,19 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionPhotoInfoUpdate');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
+        $templating = $this->sc->get('templating');
+        $kernel = $this->sc->get('kernel');
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('reaction_photo_info')['id'];
+        $logger->info('$id = ' . print_r($id, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -599,7 +500,7 @@ class DocumentManager
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $this->sc->get('form.factory')->create(new PDReactionPhotoInfoType(), $reaction);
+        $form = $formFactory->create(new PDReactionPhotoInfoType(), $reaction);
 
         // Retrieve actual file name
         $oldFileName = $reaction->getFileName();
@@ -612,7 +513,7 @@ class DocumentManager
             // Remove old file if new upload or deletion has been done
             $fileName = $reaction->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDReaction::UPLOAD_WEB_PATH;
+                $path = $kernel->getRootDir() . '/../web' . PDReaction::UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }
@@ -622,9 +523,7 @@ class DocumentManager
             throw new FormValidationException($errors);
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
-
+        // Rendering
         $path = 'bundles/politizrfront/images/default_reaction.jpg';
         if ($fileName = $reaction->getFileName()) {
             $path = PDReaction::UPLOAD_WEB_PATH.$fileName;
@@ -654,14 +553,21 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionPublish');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $documentManager = $this->sc->get('politizr.manager.document');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $session = $this->sc->get('session');
 
-        // Récupération id objet édité
+        // Request arguments
         $id = $request->get('id');
+        $logger->info('$id = ' . print_r($id, true));
+        $redirectUrl = $request->get('url');
+        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -673,57 +579,20 @@ class DocumentManager
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        // Récupération du débat sur lequel la réaction a lieu
-        $debate = PDDebateQuery::create()->findPk($reaction->getPDDebateId());
-        if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
-        }
+        $documentManager->publishReaction($reaction);
+        $session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
-        // Récupération URL redirection
-        $redirectUrl = $request->get('url');
-
-        // Gestion nested set
-        // Récupération de la réaction parente sur laquelle la réaction a lieu
-        $parent = null;
-        $parentId = $reaction->getParentReactionId();
-        if ($parentId) {
-            $parent = PDReactionQuery::create()->findPk($parentId);
-            if (!$parent) {
-                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
-            }
-
-            $reaction->insertAsLastChildOf($parent);
-        } else {
-            $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
-            if ($nbReactions = $debate->countReactions() == 0) {
-                $reaction->insertAsFirstChildOf($rootNode); // pas de niveau 0
-            } else {
-                $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
-            }
-        }
-
-        $reaction->setPublished(true);
-        $reaction->setPublishedAt(time());
-        $reaction->save();
-
-        $this->sc->get('session')->getFlashBag()->add('success', 'Objet publié avec succès.');
-
-        // Réputation
-        $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
-   
-        // Notification
-        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_reaction_publish', $event);
-
-        // Badges associés
+        // Events
+        $parentUserId = $reaction->getDebate()->getPUserId();
         if ($reaction->getTreeLevel() > 1) {
             $parentUserId = $reaction->getParent()->getPUserId();
-        } else {
-            $parentUserId = $reaction->getDebate()->getPUserId();
         }
+        $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
+        $dispatcher = $eventDispatcher->dispatch('r_reaction_publish', $event);
+        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
+        $dispatcher = $eventDispatcher->dispatch('n_reaction_publish', $event);
         $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
-        $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_reaction_publish', $event);
+        $dispatcher = $eventDispatcher->dispatch('b_reaction_publish', $event);
 
         // Renvoi de l'url de redirection
         return array(
@@ -740,14 +609,20 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** reactionDelete');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $documentManager = $this->sc->get('politizr.manager.document');
+        $session = $this->sc->get('session');
 
-        // Récupération args
+        // Request arguments
         $request = $this->sc->get('request');
-
-        // Récupération id objet édité
         $id = $request->get('id');
+        $logger->info('$id = ' . print_r($id, true));
+        $redirectUrl = $request->get('url');
+        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -759,13 +634,8 @@ class DocumentManager
             throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
         }
 
-        // Récupération URL redirection
-        $redirectUrl = $request->get('url');
-
-        // // MAJ de l'objet
-        $reaction->delete();
-
-        $this->sc->get('session')->getFlashBag()->add('success', 'Objet supprimé avec succès.');
+        $documentManager->deleteReaction($reaction);
+        $session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 
         // Renvoi de l'url de redirection
         return array(
@@ -774,30 +644,33 @@ class DocumentManager
     }
 
     /* ######################################################################################################## */
-    /*                                          EDITION DEBAT / REACTION (FONCTIONS AJAX)                       */
+    /*                                 DEBATE & REACTION COMMON EDITION FUNCTIONS                               */
     /* ######################################################################################################## */
 
     /**
-     * Upload du bandeau photo du document (débat ou réaction)
-     *
+     * Document's photo upload
      */
     public function documentPhotoUpload()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** documentPhotoUpload');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $session = $this->sc->get('session');
+        $kernel = $this->sc->get('kernel');
         $request = $this->sc->get('request');
+        $utilsManager = $this->sc->get('politizr.utils');
+        $templating = $this->sc->get('templating');
 
+        // Request arguments
         $id = $request->get('id');
         $logger->info(print_r($id, true));
         $type = $request->get('type');
         $logger->info(print_r($type, true));
 
         // Récupération débat courant
+        $user = $securityContext->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
@@ -812,18 +685,17 @@ class DocumentManager
         }
 
         // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . $uploadWebPath;
+        $path = $kernel->getRootDir() . '/../web' . $uploadWebPath;
 
         // Appel du service d'upload ajax
-        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
+        $fileName = $utilsManager->uploadImageAjax(
             'fileName',
             $path,
             1024,
             1024
         );
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
@@ -842,9 +714,8 @@ class DocumentManager
     }
 
     /* ######################################################################################################## */
-    /*                                          COMMENTAIRE (FONCTIONS AJAX)                                    */
+    /*                                                  COMMENTS                                                */
     /* ######################################################################################################## */
-
 
     /**
      * Create a new comment
@@ -854,17 +725,18 @@ class DocumentManager
         $logger = $this->sc->get('logger');
         $logger->info('*** commentNew');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
         $request = $this->sc->get('request');
+        $formFactory = $this->sc->get('form.factory');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
+        // Request arguments
         $type = $request->get('comment')['type'];
         $logger->info('$type = ' . print_r($type, true));
 
-        // Récupération objet
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
@@ -880,64 +752,56 @@ class DocumentManager
                 throw new InconsistentDataException('Object type not managed');
         }
 
-
-        $form = $this->sc->get('form.factory')->create($formType, $comment);
+        $form = $formFactory->create($formType, $comment);
 
         $form->bind($request);
         if ($form->isValid()) {
             $comment = $form->getData();
             $comment->save();
-
-            // @todo regrouper la construction d'un seul objet GenericEvent + homogénéisation / normalisation
-            // Réputation
-            $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_comment_publish', $event);
-
-            // Badges associés
-            $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_comment_publish', $event);
-
-            // Notification
-            $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_comment_publish', $event);
-
-            // Get associated object
-            $document = $comment->getPDocument();
-            $noParagraph = $comment->getParagraphNo();
-
-            // New form creation
-            $comments = $document->getComments(true, $noParagraph);
-
-            if ($user) {
-                $commentNew->setPUserId($user->getId());
-                $commentNew->setPDocumentId($document->getId());
-                $commentNew->setParagraphNo($noParagraph);
-            }
-            $form = $this->sc->get('form.factory')->create($formType, $comment);
-
-            // Construction rendu
-            $templating = $this->sc->get('templating');
-            $html = $templating->render(
-                'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
-                array(
-                    'document' => $document,
-                    'comments' => $comments,
-                    'formComment' => $form->createView(),
-                )
-            );
-            $counter = $templating->render(
-                'PolitizrFrontBundle:Comment:_counter.html.twig',
-                array(
-                    'document' => $document,
-                    'paragraphNo' => $noParagraph,
-                )
-            );
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
         }
 
-        // Renvoi de l'ensemble des blocs HTML maj
+        // Get associated object
+        $document = $comment->getPDocument();
+        $noParagraph = $comment->getParagraphNo();
+
+        // New form creation
+        $comments = $document->getComments(true, $noParagraph);
+
+        if ($user) {
+            $commentNew->setPUserId($user->getId());
+            $commentNew->setPDocumentId($document->getId());
+            $commentNew->setParagraphNo($noParagraph);
+        }
+        $form = $formFactory->create($formType, $comment);
+
+        // Events
+        $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
+        $dispatcher = $eventDispatcher->dispatch('r_comment_publish', $event);
+        $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
+        $dispatcher = $eventDispatcher->dispatch('n_comment_publish', $event);
+        $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
+        $dispatcher = $eventDispatcher->dispatch('b_comment_publish', $event);
+
+        // Rendering
+        $html = $templating->render(
+            'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
+            array(
+                'document' => $document,
+                'comments' => $comments,
+                'formComment' => $form->createView(),
+            )
+        );
+        $counter = $templating->render(
+            'PolitizrFrontBundle:Comment:_counter.html.twig',
+            array(
+                'document' => $document,
+                'paragraphNo' => $noParagraph,
+            )
+        );
+
         return array(
             'html' => $html,
             'counter' => $counter,
@@ -945,36 +809,37 @@ class DocumentManager
     }
 
     /**
-     * Affichage des commentaires d'un paragraphe (ou globaux) d'un document (débat / réaction).
+     * Display comments & create form comment
      */
     public function comments()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** comments');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
         $request = $this->sc->get('request');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $type = $request->get('type');
         $logger->info('$type = ' . print_r($type, true));
         $noParagraph = $request->get('noParagraph');
         $logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
-        // Récupération objet
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->findPk($subjectId);
+                $document = PDDebateQuery::create()->findPk($id);
                 $comment = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
             case PDocumentInterface::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($subjectId);
+                $document = PDReactionQuery::create()->findPk($id);
                 $comment = new PDRComment();
                 $formType = new PDRCommentType();
                 break;
@@ -982,19 +847,16 @@ class DocumentManager
                 throw new InconsistentDataException('Object type not managed');
         }
 
-        // Récupération des commentaires du paragraphe
         $comments = $document->getComments(true, $noParagraph);
 
-        // Form saisie commentaire
-        if ($this->sc->get('security.context')->isGranted('ROLE_PROFILE_COMPLETED')) {
+        if ($securityContext->isGranted('ROLE_PROFILE_COMPLETED')) {
             $comment->setPUserId($user->getId());
             $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
         }
-        $formComment = $this->sc->get('form.factory')->create($formType, $comment);
+        $formComment = $formFactory->create($formType, $comment);
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
             array(
@@ -1011,7 +873,6 @@ class DocumentManager
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             'counter' => $counter,

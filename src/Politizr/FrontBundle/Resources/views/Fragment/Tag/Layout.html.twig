@@ -18,7 +18,7 @@ LAYOUT TAG
 
     <span class="tag label label-{{ twbLabel }}">
         <i class="fa fa-tag"></i>&nbsp;{{ tag.title }}
-        <a action="deleteTag" class="fa fa-close" path="{{ deleteUrl }}" tag-id="{{ tag.id }}" object-id="{{ objectId }}"></a>
+        <a action="deleteTag" class="fa fa-close" path="{{ deleteUrl }}" tag-id="{{ tag.id }}" subjectId="{{ subjectId }}"></a>
     </span>
 {% endblock listRowEdit %}
 

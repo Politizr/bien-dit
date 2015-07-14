@@ -21,8 +21,8 @@ class XhrUserPersoController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userPersoUpdateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'userPersoUpdate'
         );
 

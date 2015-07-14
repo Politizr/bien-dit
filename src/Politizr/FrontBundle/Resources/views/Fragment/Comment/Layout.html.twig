@@ -68,7 +68,7 @@ LAYOUT COMMENT
 {% endblock listRow %}
 
 {% block counter %}
-    <a class="badge alert-warning" action="comments" object-id="{{ document.id }}" no-paragraph="{{ paragraphNo }}">{{ document.countComments(true, paragraphNo) }}</a>
+    <a class="badge alert-warning" action="comments" subjectId="{{ document.id }}" no-paragraph="{{ paragraphNo }}">{{ document.countComments(true, paragraphNo) }}</a>
 {% endblock counter %}
 
 {% block form %}

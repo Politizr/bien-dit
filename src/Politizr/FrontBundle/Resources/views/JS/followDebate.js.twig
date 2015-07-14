@@ -14,7 +14,7 @@
             type: 'POST',
             url: "{{ path('FollowDebate') }}",
             context: context,
-            data: { 'objectId': $(this).attr('object-id'), 'way': $(this).attr('way') },
+            data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {

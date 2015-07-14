@@ -29,7 +29,7 @@
             <a action="debate-save" class="btn btn-success">Enregistrer</a>
             <a action="debate-list" class="btn btn-primary" url="{{ urlBack }}">Retour</a>
             <a action="debate-delete" class="btn btn-danger" url="{{ urlBack }}">Supprimer</a>
-            <a action="debate-publish" class="btn btn-warning" object-id="{{ debate.id }}" url="{{ urlPublishBack }}">Publier</a>
+            <a action="debate-publish" class="btn btn-warning" subjectId="{{ debate.id }}" url="{{ urlPublishBack }}">Publier</a>
         </div>    
     </div>
 {% endblock main %}

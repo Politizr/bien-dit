@@ -7,23 +7,23 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 /**
- * Constructions et contrôles associés aux différents types de réponses de type AJAX.
+ * Encapsulate the call of an XHR request: manage exception and call the service associated with the xhr request.
  *
- * TODO:
- *    - actions différenciées suivant le type d'exception remonté
+ * @todo
+ * - manage different actions depending of sort of throwned exceptions
  *
  * @author Lionel Bouzonville
  */
-class AjaxCreateResponse
+class XhrCreateResponse
 {
     private $sc;
 
     /**
      *
      */
-    public function __construct($serviceContainer) {
+    public function __construct($serviceContainer)
+    {
         $this->sc = $serviceContainer;
     }
 
@@ -32,14 +32,14 @@ class AjaxCreateResponse
      *    Construction d'une réponse Ajax effectuant des rendu de blocs HTML.
      *
      */
-    public function createJsonHtmlResponse($serviceName, $methodCallback) {
+    public function createJsonHtmlResponse($serviceName, $methodCallback)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonHtmlResponse');
         
         $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-
                 // Appel du service métier
                 $service = $this->sc->get($serviceName);
                 $htmlRenders = $service->$methodCallback();
@@ -68,14 +68,14 @@ class AjaxCreateResponse
      *    Construction d'une réponse Ajax effectuant un retour success simple.
      *
      */
-    public function createJsonResponse($serviceName, $methodCallback) {
+    public function createJsonResponse($serviceName, $methodCallback)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonResponse');
         
         $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-
                 // Appel du service métier
                 $service = $this->sc->get($serviceName);
                 $success = $service->$methodCallback();
@@ -102,14 +102,14 @@ class AjaxCreateResponse
      *    Construction d'une réponse Ajax effectuant un retour possédant une URL de redirection.
      *
      */
-    public function createJsonRedirectResponse($serviceName, $methodCallback) {
+    public function createJsonRedirectResponse($serviceName, $methodCallback)
+    {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonRedirectResponse');
         
         $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-
                 // Appel du service métier
                 $service = $this->sc->get($serviceName);
                 $url = $service->$methodCallback();
@@ -132,7 +132,4 @@ class AjaxCreateResponse
         $response = new Response(json_encode($jsonResponse));
         return $response;
     }
-
-
-
 }

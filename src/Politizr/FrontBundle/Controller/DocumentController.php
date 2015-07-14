@@ -125,7 +125,7 @@ class DocumentController extends Controller
         }
 
         // Service Timeline
-        $timelineManager = $this->get('politizr.service.timeline');
+        $timelineManager = $this->get('politizr.xhr.timeline');
         $timelineDateKey = $timelineManager->debateFeed($debate->getId());
 
         return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
@@ -181,7 +181,7 @@ class DocumentController extends Controller
         $logger->info('*** debateNewAction');
 
         // Service associé a la création d'une réaction
-        $debate = $this->get('politizr.service.document')->createDebate();
+        $debate = $this->get('politizr.functional.document')->createDebate();
 
         return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
     }
@@ -238,7 +238,7 @@ class DocumentController extends Controller
         $logger->info('*** reactionNewAction');
 
         // Service associé a la création d'une réaction
-        $reaction = $this->get('politizr.service.document')->createReaction($debateId, $parentId);
+        $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
     }

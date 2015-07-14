@@ -24,42 +24,74 @@ services:
 
 
     # SERVICES ROUTING
-    politizr.routing.ajax:
-        class:                              Politizr\FrontBundle\Lib\Routing\AjaxCreateResponse
+    politizr.routing.xhr:
+        class:                              Politizr\FrontBundle\Lib\Routing\XhrCreateResponse
         arguments:                          [ @service_container ]
 
 
-    # SERVICES METIERS
-    politizr.service.generic:
-        class:                              Politizr\FrontBundle\Lib\Service\GenericManager
+    # SERVICES MÉTIERS
+    politizr.functional.document:
+        class:                              Politizr\FrontBundle\Lib\Functional\DocumentService
         arguments:                          [ @service_container ]
 
-    politizr.service.modal:
-        class:                              Politizr\FrontBundle\Lib\Service\ModalManager
+
+    # XHR SERVICES
+    politizr.xhr.document:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrDocument
         arguments:                          [ @service_container ]
 
-    politizr.service.security:
-        class:                              Politizr\FrontBundle\Lib\Service\SecurityManager
+    politizr.xhr.modal:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrModal
         arguments:                          [ @service_container ]
 
-    politizr.service.user:
-        class:                              Politizr\FrontBundle\Lib\Service\UserManager
+    politizr.xhr.security:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSecurity
         arguments:                          [ @service_container ]
 
-    politizr.service.document:
-        class:                              Politizr\FrontBundle\Lib\Service\DocumentManager
+    politizr.xhr.user:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrUser
         arguments:                          [ @service_container ]
 
-    politizr.service.tag:
-        class:                              Politizr\FrontBundle\Lib\Service\TagManager
+    politizr.xhr.tag:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTag
         arguments:                          [ @service_container ]
 
-    politizr.service.timeline:
-        class:                              Politizr\FrontBundle\Lib\Service\TimelineManager
+    politizr.xhr.timeline:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTimeline
         arguments:                          [ @service_container ]
 
-    politizr.service.search:
-        class:                              Politizr\FrontBundle\Lib\Service\SearchManager
+    politizr.xhr.search:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSearch
+        arguments:                          [ @service_container ]
+
+
+    # DB MANAGER SERVICES
+    politizr.manager.user:
+        class:                              Politizr\FrontBundle\Lib\Manager\UserManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.document:
+        class:                              Politizr\FrontBundle\Lib\Manager\DocumentManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.tag:
+        class:                              Politizr\FrontBundle\Lib\Manager\TagManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.qualification:
+        class:                              Politizr\FrontBundle\Lib\Manager\QualificationManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.reputation:
+        class:                              Politizr\FrontBundle\Lib\Manager\ReputationManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.order:
+        class:                              Politizr\FrontBundle\Lib\Manager\OrderManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.notification:
+        class:                              Politizr\FrontBundle\Lib\Manager\NotificationManager
         arguments:                          [ @service_container ]
 
 

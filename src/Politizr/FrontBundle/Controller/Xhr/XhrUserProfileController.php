@@ -21,8 +21,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userProfileUpdateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'userProfileUpdate'
         );
 
@@ -38,8 +38,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userPhotoUploadAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.user',
             'userPhotoUpload'
         );
 
@@ -54,8 +54,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userPhotoDeleteAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'userPhotoDelete'
         );
 
@@ -70,8 +70,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userBackPhotoUploadAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.user',
             'userBackPhotoUpload'
         );
 
@@ -86,8 +86,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** userBackPhotoDeleteAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'userBackPhotoDelete'
         );
 
@@ -102,8 +102,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** orgaProfileUpdateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'orgaProfileUpdate'
         );
 
@@ -118,8 +118,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** affinitiesProfileUpdateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'affinitiesProfile'
         );
 
@@ -134,8 +134,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileCreateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.user',
             'mandateProfileCreate'
         );
 
@@ -150,8 +150,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileUpdateAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'mandateProfileUpdate'
         );
 
@@ -166,8 +166,8 @@ class XhrUserProfileController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** mandateProfileDeleteAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonResponse(
-            'politizr.service.user',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
             'mandateProfileDelete'
         );
 

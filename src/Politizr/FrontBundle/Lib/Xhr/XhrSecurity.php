@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -39,7 +39,7 @@ use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
  *
  * @author Lionel Bouzonville
  */
-class SecurityManager
+class XhrSecurity
 {
     private $sc;
 

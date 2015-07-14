@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -22,7 +22,7 @@ use Politizr\Model\PUserQuery;
  *
  * @author Lionel Bouzonville
  */
-class ModalManager
+class XhrModal
 {
     private $sc;
 

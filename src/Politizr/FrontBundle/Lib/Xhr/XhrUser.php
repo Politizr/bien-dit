@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Service;
+namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -40,7 +40,7 @@ use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
  *
  * @author Lionel Bouzonville
  */
-class UserManager
+class XhrUser
 {
     private $sc;
 
@@ -71,14 +71,14 @@ class UserManager
         // Récupération args
         $request = $this->sc->get('request');
 
-        $objectId = $request->get('objectId');
-        $logger->info('$objectId = ' . print_r($objectId, true));
+        $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
         // MAJ suivre / ne plus suivre
         if ($way == 'follow') {
-            $object = PUserQuery::create()->findPk($objectId);
+            $object = PUserQuery::create()->findPk($subjectId);
 
             // Insertion nouvel élément
             $pUFollowU = new PUFollowU();
@@ -98,7 +98,7 @@ class UserManager
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getId()));
             $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_user_follow', $event);
         } elseif ($way == 'unfollow') {
-            $object = PUserQuery::create()->findPk($objectId);
+            $object = PUserQuery::create()->findPk($subjectId);
 
             // Suppression élément(s)
             $pUFollowUList = PUFollowUQuery::create()

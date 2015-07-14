@@ -21,8 +21,8 @@ class XhrNotationController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** noteAction');
 
-        $jsonResponse = $this->get('politizr.routing.ajax')->createJsonHtmlResponse(
-            'politizr.service.document',
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.document',
             'note'
         );
 

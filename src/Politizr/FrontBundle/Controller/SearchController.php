@@ -47,7 +47,7 @@ class SearchController extends Controller
         );
 
         $query = $request->query->get('recherche')['query'];
-        $pager = $this->get('politizr.service.search')->pagerQuery($query);
+        $pager = $this->get('politizr.xhr.search')->pagerQuery($query);
         
         return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
                     'query' => $query,
