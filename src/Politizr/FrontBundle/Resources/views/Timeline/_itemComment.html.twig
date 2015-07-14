@@ -28,7 +28,7 @@
                 <div class="timelineItemObject">
                     <i class="iconNotifNo"></i>
                     {% if authorIsMe %}
-                        Vous avez rédigé une réaction:&nbsp;
+                        Vous avez rédigé un commentaire:&nbsp;
                     {% else %}
                         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': comment.user, 'isFollowed': authorIsFollowed } only %}
                         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': comment.user } only %} a rédigé un commentaire:&nbsp;

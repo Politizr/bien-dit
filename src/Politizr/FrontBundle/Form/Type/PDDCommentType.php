@@ -5,6 +5,8 @@ namespace Politizr\FrontBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Model\PDocumentInterface;
+
 /**
  * Debate's comment type
  *
