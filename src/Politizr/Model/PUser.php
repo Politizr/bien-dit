@@ -401,32 +401,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
 
-    /**
-     * @param Array
-     */
-    public function setOAuthData($oAuthData)
-    {
-        if (isset($oAuthData['provider'])) {
-            $this->setProvider($oAuthData['provider']);
-        }
-        if (isset($oAuthData['providerId'])) {
-            $this->setProviderId($oAuthData['providerId']);
-        }
-        if (isset($oAuthData['nickname'])) {
-            $this->setNickname($oAuthData['nickname']);
-        }
-        if (isset($oAuthData['realname'])) {
-            $this->setRealname($oAuthData['realname']);
-        }
-        if (isset($oAuthData['email'])) {
-            $this->setEmail($oAuthData['email']);
-        }
-        if (isset($oAuthData['accessToken'])) {
-            $this->setConfirmationToken($oAuthData['accessToken']);
-        }
-    }
-
-
     // ************************************************************************************ //
     //                      VALIDATION
     // ************************************************************************************ //

@@ -44,44 +44,51 @@ class SecurityService
      *
      * @param PUser $user
      */
-    public function doPublicConnection($user)
+    private function doPublicConnection($user)
     {
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+
         $providerKey = 'public';
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-        $this->sc->get('security.context')->setToken($token);
-        $this->sc->get('event_dispatcher')->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
+        $securityContext->setToken($token);
+        $eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
 
     /**
-     *  Renvoie l'URL de redirection en fonction de l'état / des rôles du user courant.
+     * Compute redirection URL depending on user role
      *
-     * @param $user    PUser object
-     * @return string   Redirect URL
+     * @param PUser $user
+     * @return string
      */
-    public function computeRedirectUrl($user)
+    private function computeRedirectUrl($user)
     {
+        // Retrieve used services
+        $router = $this->sc->get('router');
+
         $redirectUrl = null;
         if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
             $user->setLastLogin(new \DateTime());
             $user->save();
 
             if ($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
-                $redirectUrl = $this->sc->get('router')->generate('HomepageE');
+                $redirectUrl = $router->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $this->sc->get('router')->generate('HomepageC');
+                $redirectUrl = $router->generate('HomepageC');
+            } else {
+                throw new InconsistentDataException('Qualified user is not activ and has no citizen role');
             }
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
-            $redirectUrl = $this->sc->get('router')->generate('InscriptionStep2');
+            $redirectUrl = $router->generate('InscriptionStep2');
         } elseif ($user->hasRole('ROLE_ELECTED_INSCRIPTION')) {
-            $redirectUrl = $this->sc->get('router')->generate('InscriptionElectedStep2');
+            $redirectUrl = $router->generate('InscriptionElectedStep2');
+        } else {
+            throw new InconsistentDataException('No valid role for user');
         }
 
-        if ($redirectUrl) {
-            return $redirectUrl;
-        } else {
-            throw new InconsistentDataException('Aucun rôle / status / état n\'est cohérent pour l\'utilisateur');
-        }
+        return $redirectUrl;
     }
     
     /* ######################################################################################################## */
@@ -89,187 +96,171 @@ class SecurityService
     /* ######################################################################################################## */
 
     /**
-     *  Démarrage du process d'inscription
+     * Citizen inscription process start
      *
-     *  @param  PUser $user
+     * @param  PUser $user
      */
-    public function inscriptionStart(PUser $user)
+    public function inscriptionCitizenStart(PUser $user)
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionStart');
-        
-        // MAJ droits
-        $user->addRole('ROLE_CITIZEN_INSCRIPTION');
+        $logger->info('*** inscriptionCitizenStart');
 
-        $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
-        $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
-
-        // Encodage MDP
+        // Retrieve used services
+        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
         $encoderFactory = $this->sc->get('security.encoder_factory');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        if (0 !== strlen($password = $user->getPlainPassword())) {
-            $encoder = $encoderFactory->getEncoder($user);
-            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-            $user->eraseCredentials();
-        }
+        // citizen inscription roles
+        $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
 
-        // Save user
-        $user->save();
+        // update user
+        $user = $userManager->updateForInscriptionStart(
+            $user,
+            $roles,
+            $usernameCanonicalizer->canonicalize($user->getUsername()),
+            $encoder->encodePassword($user->getPlainPassword(), $user->getSalt())
+        );
 
-        // Connexion
+        // connect user
         $this->doPublicConnection($user);
     }
 
     /**
-     *  Finalisation du process d'inscription
+     * Citizen inscription process finish
      *
-     *  @param PUser $user
+     * @param PUser $user
      */
-    public function inscriptionFinish(PUser $user)
+    public function inscriptionCitizenFinish(PUser $user)
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionFinish');
+        $logger->info('*** inscriptionCitizenFinish');
+
+        // Retrieve used services
+        $userManager = $this->sc->get('politizr.manager.user');
+
+        // citizen inscription roles
+        $roles = [ 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
+
+        // update user
+        $user = $userManager->updateForInscriptionFinish($user, $roles, PUStatus::ACTIVED, false);
         
-        // MAJ objet
-        $user->setOnline(true);
-        $user->setPUStatusId(PUStatus::ACTIVED);
-        $user->setQualified(false);
-        $user->setLastLogin(new \DateTime());
-
-        // MAJ droits
-        $user->addRole('ROLE_CITIZEN');
-        $user->addRole('ROLE_PROFILE_COMPLETED');
-        $user->removeRole('ROLE_CITIZEN_INSCRIPTION');
-
-        // Save user
-        $user->save();
-
-        // (re)Connexion (/ maj droits)
+        // (re)connect user
         $this->doPublicConnection($user);
     }
 
-
     /**
-     *  Démarrage du process d'inscription débatteur
+     * Elected inscription process start
      *
-     *  @param  PUser $user
+     * @param PUser $user
      */
     public function inscriptionElectedStart(PUser $user)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionElectedStart');
         
-        // MAJ droits
-        $user->addRole('ROLE_ELECTED_INSCRIPTION');
-
-        $canonicalizeUsername = $this->sc->get('fos_user.util.username_canonicalizer');
-        $user->setUsernameCanonical($canonicalizeUsername->canonicalize($user->getUsername()));
-
-        // Encodage MDP
+        // Retrieve used services
+        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
         $encoderFactory = $this->sc->get('security.encoder_factory');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        if (0 !== strlen($password = $user->getPlainPassword())) {
-            $encoder = $encoderFactory->getEncoder($user);
-            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-            $user->eraseCredentials();
-        }
+        // elected inscription roles
+        $roles = [ 'ROLE_ELECTED_INSCRIPTION' ];
 
-        // Canonicalization
-        $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-        $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
+        // update user
+        $user = $userManager->updateForInscriptionStart(
+            $user,
+            $roles,
+            $usernameCanonicalizer->canonicalize($user->getUsername()),
+            $encoder->encodePassword($user->getPlainPassword(), $user->getSalt())
+        );
 
-        // Save user
-        $user->save();
-
-        // Connexion
+        // connect user
         $this->doPublicConnection($user);
     }
 
 
     /**
-     *  Démarrage du process de migration vers un compte débatteur
+     * Citizen to elected migration process start
      *
-     *  @param  PUser $user
+     * @param  PUser $user
      */
     public function migrationElectedStart(PUser $user)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** migrationElectedStart');
 
-        // MAJ droits
+        // update role
         $user->addRole('ROLE_ELECTED_INSCRIPTION');
         $user->save();
 
-        // Connexion
+        // connect user
         $this->doPublicConnection($user);
     }
 
 
     /**
-     *  Page d'inscription débatteur / Etape 3 / Paiement terminé
-     *
+     * Order payment completed
      */
-    public function updateOrderPaymentFinished()
+    public function updateOrderPaymentCompleted()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** updateOrderPaymentFinished');
-        
-        // Récupération de la commande en cours
-        $orderId = $this->sc->get('session')->get('p_order_id');
+        $logger->info('*** updateOrderPaymentCompleted');
 
-        // Récupération commande
+        // Retrieve used services
+        $session = $this->sc->get('session');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+
+        // Session arguments
+        $orderId = $session->get('p_order_id');
+
+        // get order
         $order = POrderQuery::create()->findPk($orderId);
         if (!$order) {
-            throw new \Exception('Order id '.$orderId.' not found.');
+            throw new \InconsistentDataException(sprintf('Order %s not found', $orderId));
         }
 
-        // MAJ statut commande en fonction du type de paiement
+        // update order & payment states
         switch($order->getPOPaymentTypeId()) {
             case POPaymentType::BANK_TRANSFER:
             case POPaymentType::CHECK:
-                // MAJ statut / état
                 $order->setPOOrderStateId(POOrderState::WAITING);
                 $order->setPOPaymentStateId(POPaymentState::WAITING);
                 $order->save();
 
-                // Email
-                $dispatcher = $this->sc->get('event_dispatcher')->dispatch('order_email', new GenericEvent($order));
+                $eventDispatcher->dispatch('order_email', new GenericEvent($order));
 
                 break;
-                        
             case POPaymentType::CREDIT_CARD:
             case POPaymentType::PAYPAL:
-                // MAJ statut / etat / maj stocks / envoi email => via listener retour ATOS / Paypal
+                // management via asynchronous apis response
                 break;
-            
             default:
                 break;
         }
     }
 
-
     /**
-     *  Page d'inscription débatteur / Etape 3 / Annulation paiement
-     *
+     * Order canceled
      */
     public function updateOrderPaymentCanceled()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** updateOrderPaymentCanceled');
-        
-        // Récupération de la commande en cours
-        $orderId = $this->sc->get('session')->get('p_order_id');
 
-        // Récupération commande
+        // Retrieve used services
+        $session = $this->sc->get('session');
+        $orderManager = $this->sc->get('politizr.manager.order');
+
+        // Session arguments
+        $orderId = $session->get('p_order_id');
+
+        // get order
         $order = POrderQuery::create()->findPk($orderId);
         if (!$order) {
-            throw new \Exception('Order id '.$orderId.' not found.');
+            throw new \InconsistentDataException(sprintf('Order %s not found', $orderId));
         }
 
-        // Suppression commande annulée
-        if ($order) {
-            $order->delete();
-        }
+        $orderManager->deleteOrder($order);
     }
 
     /**
@@ -280,110 +271,103 @@ class SecurityService
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** inscriptionFinishElected');
+
+        // Retrieve used services
+        $userManager = $this->sc->get('politizr.manager.user');
+
+        // citizen inscription roles
+        $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN' /* during waiting for validation */, 'ROLE_PROFILE_COMPLETED' ];
+
+        // update user
+        $user = $userManager->updateForInscriptionFinish($user, $roles, PUStatus::VALIDATION_PROCESS, true);
         
-        // Suppression rôle user / déconnexion
-        $user->setOnline(true);
-        $user->setPUStatusId(PUStatus::VALIDATION_PROCESS);
-
-        $user->setQualified(true);
-        $user->setLastLogin(new \DateTime());
-
-        $user->addRole('ROLE_ELECTED');
-        $user->addRole('ROLE_PROFILE_COMPLETED');
-        $user->removeRole('ROLE_ELECTED_INSCRIPTION');
-
-        $user->save();
-
-        // Droits citoyen en attendant la validation
-        if (!$user->hasRole('ROLE_CITIZEN')) {
-            $user->addRole('ROLE_CITIZEN');
-
-            // Save user
-            $user->save();
-
-            // (re)Connexion (/ maj droits)
-            $this->doPublicConnection($user);
-        }
+        $this->doPublicConnection($user);
     }
 
 
     /* ######################################################################################################## */
-    /*                         SERVICES METIERS LIES A LA CONNEXION OAUTH                                       */
+    /*                                          OAUTH CONNECTION                                                */
     /* ######################################################################################################## */
 
-
     /**
-     *  Check l'état d'un utilisateur suite à une connexion oAuth
-     *
+     * Check oAuth ok & do connection
      */
     public function oauthRegister()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** oauthRegister');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération données oAuth
-        $oAuthData = $this->sc->get('session')->getFlashBag()->get('oAuthData');
-        if (!$oAuthData || !is_array($oAuthData) || !isset($oAuthData['provider']) || !isset($oAuthData['providerId'])) {
-            return $this->sc->get('router')->generate('Homepage');
+        // Retrieve used services
+        $session = $this->sc->get('session');
+        $securityContext = $this->sc->get('security.context');
+        $router = $this->sc->get('router');
+        $userManager = $this->sc->get('politizr.manager.user');
+        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
+        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
+        $encoderFactory = $this->sc->get('security.encoder_factory');
+
+        // get user
+        $user = $securityContext->getToken()->getUser();
+
+        // get oAuth data
+        $oAuthData = $session->getFlashBag()->get('oAuthData');
+        if (!$oAuthData
+            || !is_array($oAuthData)
+            || !isset($oAuthData['provider'])
+            || !isset($oAuthData['providerId'])
+            ) {
+            // unexpected oauth data, back to homepage
+            return $router->generate('Homepage');
         }
         
-        // Récupération du user existant en base
-        $user = PUserQuery::create()->filterByProvider($oAuthData['provider'])->filterByProviderId($oAuthData['providerId'])->findOne();
+        // get db user
+        $user = PUserQuery::create()
+            ->filterByProvider($oAuthData['provider'])
+            ->filterByProviderId($oAuthData['providerId'])
+            ->findOne();
+
         if ($user) {
-            // MAJ des infos relatives à la connexion
-            $user->setOAuthData($oAuthData);
+            // update user
+            $user = $userManager->updateOAuthData($user, $oAuthData);
 
-            // Save user
-            $user->save();
-
-            // Connexion
+            // connect user
             $this->doPublicConnection($user);
 
-            // Redirection
+            // redirect
             $redirectUrl = $this->computeRedirectUrl($user);
 
             return $redirectUrl;
         } else {
-            // Création d'un utilisateur
+            // citizen inscription roles
+            $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
+
+            // create new user & update it
             $user = new PUser();
-            $user->setOAuthData($oAuthData);
+            $user = $userManager->updateOAuthData($user, $oAuthData);
 
-            // MAJ objet
-            $user->setOnline(true);
-            $user->setPUStatusId(PUStatus::ACTIVED);
-            $user->setQualified(false);
-            $user->setLastLogin(new \DateTime());
-
-            // MAJ droits
-            $user->addRole('ROLE_CITIZEN_INSCRIPTION');
-
-            if ($email = $user->getEmail()) {
-                // Canonicalization
-                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-                $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
-
-                // username = email
-                $user->setUsername($user->getEmail());
-                $user->setUsernameCanonical($user->getEmailCanonical());
-            } elseif ($nickname = $user->getNickname()) {
-                // username = nickname
-                $user->setUsername($user->getNickname());
-                $user->setUsernameCanonical($user->getNickname());
+            if ($user->getEmail()) {
+                $username = $user->getEmail();
+                $canonicalizer = $emailCanonicalizer;
+            } elseif ($user->getNickname()) {
+                $username = $user->getNickname();
+                $canonicalizer = $usernameCanonicalizer;
             } else {
-                throw new \Exception('Aucune des propriétés suivantes n\'existent: email, nickname');
+                throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
             }
 
-            // Connexion
+            // update user
+            $user = $userManager->updateForInscriptionStart(
+                $user,
+                $roles,
+                $canonicalizer->canonicalize($username),
+                null
+            );
+
+            // connect user
             $this->doPublicConnection($user);
 
-            // Save user
-            $user->save();
-
-            // Redirection process d'inscription étape 2
-            return $this->sc->get('router')->generate('InscriptionContact');
+            // redirect to inscription next step
+            return $router->generate('InscriptionContact');
         }
     }
 }

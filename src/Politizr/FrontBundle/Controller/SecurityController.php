@@ -119,8 +119,8 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // Service associé au démarrage de l'inscription
-            $this->get('politizr.functional.security')->inscriptionStart($user);
+            // load user inscription start process
+            $this->get('politizr.functional.security')->inscriptionCitizenStart($user);
 
             return $this->redirect($this->generateUrl('InscriptionContact'));
         }
@@ -161,13 +161,14 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
+            // @todo refactor migrate to postSubmit event
             // Canonicalization email
             $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
             $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
             $user->save();
 
             // Service associé à la finalisation de l'inscription
-            $this->get('politizr.functional.security')->inscriptionFinish($user);
+            $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
             return $this->redirect($this->generateUrl('HomepageC'));
         }
@@ -395,7 +396,7 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
         // Mise à jour de la commande
-        $this->get('politizr.functional.security')->updateOrderPaymentFinished();
+        $this->get('politizr.functional.security')->updateOrderPaymentCompleted();
 
         return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
     }
