@@ -262,7 +262,7 @@ class ElectedController extends Controller
         }
 
         // Mandats
-        $formMandateViews = $this->get('politizr.xhr.user')->getFormMandateViews($user->getId());
+        $formMandateViews = $this->get('politizr.utils')->getFormMandateViews($user->getId());
 
         // Form vierge pour création mandat
         $mandate = new PUMandate();

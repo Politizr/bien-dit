@@ -737,41 +737,68 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $pqMandate;
     }
 
-    // *****************************    AFFINITÉS POLITIQUES    ************************* //
+    // *****************************    ORGANIZATIONS    ************************* //
 
     /**
-     * Renvoie les organisation courantes
+     * Get current user's organizations
      *
-     * @param int $typeId       Type d'organisation
-     * @param boolean $online   En ligne
+     * @param int $typeId Organization type
+     * @param boolean $online
      * @return PropelCollection PQOrganization
      */
     public function getCurrentOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
     {
         $query = PQOrganizationQuery::create()
-                    ->filterByPQTypeId($typeId)
-                    ->filterByOnline($online)
+                    ->_if($typeId)
+                        ->filterByPQTypeId($typeId)
+                    ->_endif()
+                    ->_if(null !== $online)
+                        ->filterByOnline($online)
+                    ->_endif()
                     ->setDistinct();
 
         return parent::getPUCurrentQOPQOrganizations($query);
     }
 
     /**
-     * Renvoie les organisation courantes
+     * Get affinity user's organizations
      *
-     * @param int $typeId       Type d'organisation
-     * @param boolean $online   En ligne
+     * @param int $typeId Organization type
+     * @param boolean $online
      * @return PropelCollection PQOrganization
      */
     public function getAffinityOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
     {
         $query = PQOrganizationQuery::create()
-                    ->filterByPQTypeId($typeId)
-                    ->filterByOnline($online)
+                    ->_if($typeId)
+                        ->filterByPQTypeId($typeId)
+                    ->_endif()
+                    ->_if(null !== $online)
+                        ->filterByOnline($online)
+                    ->_endif()
                     ->setDistinct();
 
         return parent::getPUAffinityQOPQOrganizations($query);
     }
+
+    /**
+     * Get single & current linked object PUCurrentQO
+     *
+     * @param int $typeId Organization type
+     * @return PUCurrentQO
+     */
+    public function getPUCurrentQO($typeId = PQType::ID_ELECTIF)
+    {
+        $puCurrentQo = PUCurrentQOQuery::create()
+            ->filterByPUserId($this->getId())
+            ->usePUCurrentQOPQOrganizationQuery()
+                ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->endUse()
+            ->findOne();
+
+        return $puCurrentQo;
+    }
+
 
     // *****************************    TAGS   ************************* //
 

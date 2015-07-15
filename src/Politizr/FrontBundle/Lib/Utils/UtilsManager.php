@@ -6,8 +6,13 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 
+use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PQType;
+
+use Politizr\FrontBundle\Form\Type\PUMandateType;
+
 /**
- * Services métiers associés aux utilisateurs.
+ * Utils method
  *
  * @author Lionel Bouzonville
  */
@@ -25,7 +30,7 @@ class UtilsManager
 
 
     /**
-     * Upload Ajax d'une image
+     * Upload XHR d'une image
      *
      * @param  string      $inputName            nom du champ input
      * @param  string      $destPath             chemin absolu de destination
@@ -35,7 +40,7 @@ class UtilsManager
      * @param  array       $allowedExtensions    Extensions de fichier autorisées
      *
      */
-    public function uploadImageAjax($inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 5242880, $allowedExtensions = array('jpg', 'jpeg', 'png'))
+    public function uploadXhrImage($inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 5242880, $allowedExtensions = array('jpg', 'jpeg', 'png'))
     {
         // Récupération args
         $request = $this->sc->get('request');
@@ -95,5 +100,32 @@ class UtilsManager
         array_shift($paragraphs);
 
         return $paragraphs;
+    }
+
+
+    /**
+     * Create form views for each user's mandate
+     * @todo to refactor in a form construction dedicated service
+     *
+     * @param integer $userId
+     * @return array|FormViewsPUMandateType
+     */
+    public function getFormMandateViews($userId)
+    {
+        // Mandats
+        $mandates = PUMandateQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->orderByBeginAt('desc')
+            ->find();
+
+        // Création des form + vues associées pour MAJ des mandats
+        $formMandateViews = array();
+        foreach ($mandates as $mandate) {
+            $formMandate = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+            $formMandateViews[] = $formMandate->createView();
+        }
+
+        return $formMandateViews;
     }
 }

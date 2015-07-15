@@ -8,22 +8,14 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
-use Politizr\FrontBundle\Lib\SimpleImage;
-
 use Politizr\Model\PUser;
 use Politizr\Model\PDocumentInterface;
-use Politizr\Model\PUFollowU;
 use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
-use Politizr\Model\PUSubscribeEmail;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PUFollowUQuery;
-use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUNotificationQuery;
-use Politizr\Model\PUCurrentQOQuery;
-use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUMandateQuery;
 
@@ -36,7 +28,7 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 
 /**
- * Services métiers associés aux utilisateurs.
+ * XHR service for user management.
  *
  * @author Lionel Bouzonville
  */
@@ -53,121 +45,90 @@ class XhrUser
     }
 
     /* ######################################################################################################## */
-    /*                                            SUIVI (FONCTIONS AJAX)                                        */
+    /*                                                  FOLLOWING                                               */
     /* ######################################################################################################## */
 
     /**
-     *
-     *
+     * Follow/Unfollow a user by current user
      */
     public function follow()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** follow');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $templating = $this->sc->get('templating');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
-        // MAJ suivre / ne plus suivre
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         if ($way == 'follow') {
-            $object = PUserQuery::create()->findPk($subjectId);
+            $targetUser = PUserQuery::create()->findPk($id);
+            $userManager->createUserFollowUser($user->getId(), $targetUser->getId());
 
-            // Insertion nouvel élément
-            $pUFollowU = new PUFollowU();
-            $pUFollowU->setPUserId($object->getId());
-            $pUFollowU->setPUserFollowerId($user->getId());
-            $pUFollowU->save();
-
-            // Réputation
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_user_follow', $event);
-
-            // Notification
-            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('n_user_follow', $event);
-
-            // Badges associés
-            $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getId()));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('b_user_follow', $event);
+            // Events
+            $event = new GenericEvent($targetUser, array('user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('r_user_follow', $event);
+            $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('n_user_follow', $event);
+            $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(), 'target_user_id' => $targetUser->getId()));
+            $dispatcher = $eventDispatcher->dispatch('b_user_follow', $event);
         } elseif ($way == 'unfollow') {
-            $object = PUserQuery::create()->findPk($subjectId);
+            $targetUser = PUserQuery::create()->findPk($id);
+            $userManager->deleteUserFollowUser($user->getId(), $targetUser->getId());
 
-            // Suppression élément(s)
-            $pUFollowUList = PUFollowUQuery::create()
-                            ->filterByPUserId($object->getId())
-                            ->filterByPUserFollowerId($user->getId())
-                            ->find();
-            foreach ($pUFollowUList as $pUFollowU) {
-                $pUFollowU->delete();
-            }
-
-            // Réputation
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $this->sc->get('event_dispatcher')->dispatch('r_user_unfollow', $event);
+            // Events
+            $event = new GenericEvent($targetUser, array('user_id' => $user->getId(),));
+            $dispatcher = $eventDispatcher->dispatch('r_user_unfollow', $event);
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
-                'object' => $object,
-                'type' => PDocumentInterface::TYPE_USER
-            )
-        );
-        $followers = $templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:glFollowers.html.twig',
-            array(
-                'object' => $object,
+                'object' => $targetUser,
                 'type' => PDocumentInterface::TYPE_USER
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
-            'followers' => $followers
             );
     }
 
 
     /* ######################################################################################################## */
-    /*                                       EDITIONS INFO PERSO (FONCTIONS AJAX)                               */
+    /*                                                  USER EDITION                                            */
     /* ######################################################################################################## */
 
     /**
-     *  Mise à jour des informations du profil du user
-     *
+     * Profile update
      */
     public function userProfileUpdate()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userProfileUpdate');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
 
-        $form = $this->sc->get('form.factory')->create(new PUserBiographyType($user), $user);
-
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $form = $formFactory->create(new PUserBiographyType($user), $user);
         $form->bind($request);
         if ($form->isValid()) {
             $userProfile = $form->getData();
-
-            // enregistrement object user
             $userProfile->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -178,23 +139,25 @@ class XhrUser
     }
 
     /**
-     *  Upload de la photo de profil du user
-     *
+     * User's photo upload
      */
     public function userPhotoUpload()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPhotoUpload');
+        
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $kernel = $this->sc->get('kernel');
+        $politizrUtils = $this->sc->get('politizr.utils');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
-
-        // Appel du service d'upload ajax
-        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
-            'file-name',
+        // XHR upload
+        $fileName = $politizrUtils->uploadXhrImage(
+            'fileName',
             $path,
             150,
             150
@@ -210,29 +173,26 @@ class XhrUser
         $user->setFilename($fileName);
         $user->save();
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'filename' => $fileName,
             );
     }
 
     /**
-     *  Suppression de la photo de profil du user
-     *
+     * Users's photo deletion
      */
     public function userPhotoDelete()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPhotoDelete');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $kernel = $this->sc->get('kernel');
 
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getFilename();
@@ -248,23 +208,25 @@ class XhrUser
     }
 
     /**
-     *  Upload de la photo de fond du profil du user
-     *
+     * User's background photo upload
      */
     public function userBackPhotoUpload()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userBackPhotoUpload');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $kernel = $this->sc->get('kernel');
+        $politizrUtils = $this->sc->get('politizr.utils');
 
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Appel du service d'upload ajax
-        $fileName = $this->sc->get('politizr.utils')->uploadImageAjax(
-            'back-file-name',
+        $fileName = $politizrUtils->uploadXhrImage(
+            'backFileName',
             $path,
             1280,
             600
@@ -280,29 +242,26 @@ class XhrUser
         $user->setBackFilename($fileName);
         $user->save();
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'filename' => $fileName,
             );
     }
 
     /**
-     *  Suppression de la photo de fond du profil du user
-     *
+     * User's background photo deletion
      */
     public function userBackPhotoDelete()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** userBackPhotoDelete');
+        $logger->info('*** userPhotoDelete');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $kernel = $this->sc->get('kernel');
 
-        // Récupération args
-        $request = $this->sc->get('request');
-
-        // Chemin des images
-        $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getBackFilename();
@@ -318,42 +277,31 @@ class XhrUser
     }
 
     /**
-     *  Mise à jour des informations "organisation en cours" du user
-     *
+     * User's current organization update
      */
     public function orgaProfileUpdate()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** orgaProfileUpdate');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
 
-        // Récupération orga courante
-        $puCurrentQo = PUCurrentQOQuery::create()
-            ->filterByPUserId($user->getId())
-            ->usePUCurrentQOPQOrganizationQuery()
-                ->filterByPQTypeId(PQType::ID_ELECTIF)
-            ->endUse()
-            ->findOne();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
+        // get current linked user's organization
+        $puCurrentQo = $user->getPUCurrentQO();
         if (!$puCurrentQo) {
             $puCurrentQo = new PUCurrentQO();
         }
 
-        $form = $this->sc->get('form.factory')->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
-
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
+        $form = $formFactory->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();
-            $logger->info('puCurrentQo = '.print_r($puCurrentQo, true));
-
             $puCurrentQo->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -364,31 +312,24 @@ class XhrUser
     }
 
     /**
-     *  Mise à jour des informations "affinités politiques" du user
-     *
+     * User's affinities organizations update
      */
     public function affinitiesProfile()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** orgaProfileUpdate');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        $logger->info('*** affinitiesProfile');
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
 
-        // Affinités organisations
-        $form = $this->sc->get('form.factory')->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
-
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $form = $formFactory->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
         $form->bind($request);
         if ($form->isValid()) {
             $user = $form->getData();
-            // $logger->info('user = '.print_r($user, true));
-
             $user->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -399,51 +340,44 @@ class XhrUser
     }
 
     /**
-     *  Création d'un mandat pour un user
-     *
+     * User's mandate creation
      */
     public function mandateProfileCreate()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** mandateProfileCreate');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
+        $templating = $this->sc->get('templating');
+        $politizrUtils = $this->sc->get('politizr.utils');
 
-        // Mandat
-        $mandate = new PUMandate();
-        $mandate->setPUserId($user->getId());
-        $mandate->setPQTypeId(PQType::ID_ELECTIF);
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
-        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
-
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
+        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
-            $logger->info('mandate = '.print_r($mandate, true));
-
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
         }
 
-        // Création d'un nouveau formulaire vierge
+        // New empty form
         $mandate = new PUMandate();
         $mandate->setPUserId($user->getId());
         $mandate->setPQTypeId(PQType::ID_ELECTIF);
 
-        $formMandateViews = $this->getFormMandateViews($user->getId());
-        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // @todo to refactor
+        $formMandateViews = $politizrUtils->getFormMandateViews($user->getId());
+
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig',
             array(
@@ -452,40 +386,34 @@ class XhrUser
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     *  MAJ d'un mandat pour un user
-     *
+     * User's mandate update
      */
     public function mandateProfileUpdate()
     {
         $logger = $this->sc->get('logger');
-        $logger->info('*** mandateProfileUpdate');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        $logger->info('*** mandateProfileCreate');
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $formFactory = $this->sc->get('form.factory');
 
-        // Mandat
-        $mandate = PUMandateQuery::create()->findPk($request->get('mandate')['id']);
+        // Request arguments
+        $id = $request->get('mandate')['id'];
+        $logger->info('$id = ' . print_r($id, true));
 
-        $form = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        // Function process
+        $mandate = PUMandateQuery::create()->findPk($id);
 
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
+        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
-            $logger->info('mandate = '.print_r($mandate, true));
-
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -496,120 +424,90 @@ class XhrUser
     }
 
     /**
-     *  MAJ d'un mandat pour un user
-     *
+     * User's mandate deletion
      */
     public function mandateProfileDelete()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** mandateProfileDelete');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $userManager = $this->sc->get('politizr.manager.user');
 
+        // Request arguments
+        $id = $request->get('mandate')['id'];
+        $logger->info('$id = ' . print_r($id, true));
+
+        // Function process
         $mandate = PUMandateQuery::create()->findPk($id);
 
-        // TODO > contrôle objet récupéré avant suppression + exception adaptée
-        $mandate->delete();
+        // @todo valid ownership of mandate before deletion
+        $userManager->deleteMandate($mandate);
 
         return true;
     }
 
     /**
-     *  Construction des vues des formulaires associés à chaque mandat du user
-     *  Code sous forme de fonction car utilisé à plusieurs endroits.
-     *
-     *  @param  integer     $userId     ID PUser
-     *
-     *  @return     array Form views PUMandateType
-     */
-    public function getFormMandateViews($userId)
-    {
-        // Mandats
-        $mandates = PUMandateQuery::create()
-            ->filterByPUserId($userId)
-            ->filterByPQTypeId(PQType::ID_ELECTIF)
-            ->orderByBeginAt('desc')
-            ->find();
-
-        // Création des form + vues associées pour MAJ des mandats
-        $formMandateViews = array();
-        foreach ($mandates as $mandate) {
-            $formMandate = $this->sc->get('form.factory')->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
-            $formMandateViews[] = $formMandate->createView();
-        }
-
-        return $formMandateViews;
-    }
-
-    /**
-     *  Mise à jour des informations personnelles du user
-     *
+     * User's personal information update
      */
     public function userPersoUpdate()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userPersoUpdate');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $formFactory = $this->sc->get('form.factory');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
+        $encoderFactory = $this->sc->get('security.encoder_factory');
 
+        // Request arguments
         $formTypeId = $request->get('user')['form_type_id'];
         $logger->info('$formTypeId = '.print_r($formTypeId, true));
 
-        // Création du formulaire soumis
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // @todo use form type constant
         if ($formTypeId == 1) {
-            $form = $this->sc->get('form.factory')->create(new PUserIdentityType($user), $user);
+            $form = $formFactory->create(new PUserIdentityType($user), $user);
         } elseif ($formTypeId == 2) {
-            $form = $this->sc->get('form.factory')->create(new PUserEmailType(), $user);
+            $form = $formFactory->create(new PUserEmailType(), $user);
         } elseif ($formTypeId == 3) {
-            $form = $this->sc->get('form.factory')->create(new PUserConnectionType(), $user);
+            $form = $formFactory->create(new PUserConnectionType(), $user);
         } else {
-            throw new InconsistentDataException('Form invalid.');
+            throw new InconsistentDataException(sprintf('Invalid form type %s', $formTypeId));
         }
 
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
         $form->bind($request);
         if ($form->isValid()) {
             $userPerso = $form->getData();
-
-            // enregistrement object user
             $userPerso->save();
 
+            // @todo use form type constant
             if ($formTypeId == 1) {
-                // Nickname & realname
+                // @todo migrate to puser->preSave
                 $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
                 $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
                 $user->save();
             } elseif ($formTypeId == 2) {
-                // Canonicalization
-                $canonicalizeEmail = $this->sc->get('fos_user.util.email_canonicalizer');
-                $user->setEmailCanonical($canonicalizeEmail->canonicalize($userPerso->getEmail()));
+                // @todo migrate to puser->preSave
+                $user->setEmailCanonical($emailCanonicalizer->canonicalize($userPerso->getEmail()));
                 $user->save();
             } elseif ($formTypeId == 3) {
+                // @todo migrate to puser->preSave
                 $password = $userPerso->getPassword();
-                $logger->info('password = '.print_r($password, true));
                 if ($password) {
-                    // Encodage MDP
-                    $encoderFactory = $this->sc->get('security.encoder_factory');
-
                     $encoder = $encoderFactory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                    // $user->eraseCredentials();
-
                     $user->setPlainPassword($password);
                     $user->save();
 
                     // Envoi email
-                    $dispatcher = $this->sc->get('event_dispatcher')->dispatch('upd_password_email', new GenericEvent($user));
+                    $dispatcher = $eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
             }
         } else {
@@ -622,43 +520,29 @@ class XhrUser
 
 
     /* ######################################################################################################## */
-    /*                                            NOTIFICATIONS (FONCTIONS AJAX)                                */
+    /*                                                      NOTIFICATIONS                                       */
     /* ######################################################################################################## */
 
-
     /**
-     *  Notifications
-     *
+     * Notifications loading
      */
     public function notificationsLoad()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationsLoad');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Requête notifs
-        $lastWeek = new \DateTime();
-        $lastWeek->modify('-7 day');
-        $logger->info('lastWeek = '.print_r($lastWeek, true));
-
-        // Notifications de moins d'une semaine ou non checkées
-        $notifs = PUNotificationQuery::create()
-                            ->filterByPUserId($user->getId())
-                            ->filterByCreatedAt(array('min' => $lastWeek))
-                            ->_or()
-                            ->filterByChecked(false)
-                            ->orderByCreatedAt('desc')
-                            ->find();
-
-        $nbNotifs = PUNotificationQuery::create()
-                            ->filterByPUserId($user->getId())
-                            ->filterByChecked(false)
-                            ->count();
-
-        // Construction rendu
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $notificationManager = $this->sc->get('politizr.manager.notification');
         $templating = $this->sc->get('templating');
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        $notifs = $notificationManager->getUserNotifications($user->getId());
+        $nbNotifs = count($notifs);
+
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Notification:_list.html.twig',
             array(
@@ -666,7 +550,6 @@ class XhrUser
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             'nb' => $nbNotifs > 0 ? $nbNotifs:'-',
@@ -674,53 +557,51 @@ class XhrUser
     }
 
     /**
-     *  Notification checkée
-     *
+     * Notification check
      */
     public function notificationCheck()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationChek');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $notificationManager = $this->sc->get('politizr.manager.notification');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
 
-        // MAJ checked
-        $puNotif = PUNotificationQuery::create()->findPk($subjectId);
-        $puNotif->setChecked(true);
-        $puNotif->setCheckedAt(new \DateTime());
-        $puNotif->save();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        $notification = PUNotificationQuery::create()->findPk($id);
+        $notificationManager->checkUserNotification($id);
 
         return true;
     }
 
     /**
-     *  Notifications
-     *
+     * Notification check all
      */
     public function notificationsCheckAll()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notificationsLoad');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $notificationManager = $this->sc->get('politizr.manager.notification');
 
-        // Check / Uncheck all
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
         $notifs = PUNotificationQuery::create()
                             ->filterByPUserId($user->getId())
                             ->find();
-
-        foreach ($notifs as $puNotif) {
-            $puNotif->setChecked(true);
-            $puNotif->setCheckedAt(new \DateTime());
-            $puNotif->save();
+        foreach ($notifs as $notif) {
+            $notificationManager->checkUserNotification($notif);
         }
 
         return true;
@@ -728,177 +609,137 @@ class XhrUser
 
 
     /* ######################################################################################################## */
-    /*                              SOUSCRIPTIONS NOTIFICATIONS (FONCTIONS AJAX)                                */
+    /*                                      NOTIFICATIONS' SUBSCRIPTIONS                                        */
     /* ######################################################################################################## */
 
-
     /**
-     *  Souscription notif email
-     *
+     * Notification email subscription
      */
     public function notifEmailSubscribe()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifEmailSubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $notificationManager = $this->sc->get('politizr.manager.notification');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
 
-        // MAJ checked
-        $puSubscribeEmail = new PUSubscribeEmail();
-        $puSubscribeEmail->setPNotificationId($subjectId);
-        $puSubscribeEmail->setPUserId($user->getId());
-        $puSubscribeEmail->save();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        $notificationManager->createUserSubscribeEmail($user->getId(), $id);
 
         return true;
     }
 
 
     /**
-     *  Désouscription notif email
-     *
+     * Notification email unsubscription
      */
     public function notifEmailUnsubscribe()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifEmailUnsubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $notificationManager = $this->sc->get('politizr.manager.notification');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
 
-        // MAJ checked
-        try {
-            $puSubscribeEmail = PUSubscribeEmailQuery::create()
-                                    ->filterByPNotificationId($subjectId)
-                                    ->filterByPUserId($user->getId())
-                                    ->findOne();
-            $puSubscribeEmail->delete();
-        } catch (\Exception $e) {
-            throw new InconsistentDataException($user.' non inscrit à cette notification.');
-        }
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        $notificationManager->deleteUserSubscribeEmail($user->getId(), $id);
 
         return true;
     }
 
     /**
-     *  Souscrit une notification contextuelle à un profil
-     *
+     * Contextual user notification email subscription
      */
     public function notifUserContextSubscribe()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifUserContextSubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $context = $request->get('context');
         $logger->info('$context = ' . print_r($context, true));
 
-        $puFollowU = PUFollowUQuery::create()
-            ->filterByPUserId($subjectId)
-            ->filterByPUserFollowerId($user->getId())
-            ->findOne();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
-        if ($puFollowU && $context == 'debate') {
-            $puFollowU->setNotifDebate(true);
-            $puFollowU->save();
-        } elseif ($puFollowU && $context == 'reaction') {
-            $puFollowU->setNotifReaction(true);
-            $puFollowU->save();
-        } elseif ($puFollowU && $context == 'comment') {
-            $puFollowU->setNotifComment(true);
-            $puFollowU->save();
-        }
+        $userManager->updateFollowUserContextEmailNotification($user->getId(), $id, true, $context);
 
         return true;
     }
 
     /**
-     *  Désouscrit une notification contextuelle à un profil
-     *
+     * Contextual user notification email unsubscription
      */
     public function notifUserContextUnsubscribe()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifUserContextUnsubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $context = $request->get('context');
         $logger->info('$context = ' . print_r($context, true));
 
-        $puFollowU = PUFollowUQuery::create()
-            ->filterByPUserId($subjectId)
-            ->filterByPUserFollowerId($user->getId())
-            ->findOne();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
-        if ($puFollowU && $context == 'debate') {
-            $puFollowU->setNotifDebate(false);
-            $puFollowU->save();
-        } elseif ($puFollowU && $context == 'reaction') {
-            $puFollowU->setNotifReaction(false);
-            $puFollowU->save();
-        } elseif ($puFollowU && $context == 'comment') {
-            $puFollowU->setNotifComment(false);
-            $puFollowU->save();
-        }
+        $userManager->updateFollowUserContextEmailNotification($user->getId(), $id, false, $context);
 
         return true;
     }
 
     /**
-     *  Souscrit une notification contextuelle à un débat
-     *
+     * Contextual user's debate notification email subscription
      */
     public function notifDebateContextSubscribe()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** notifDebateContextSubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $context = $request->get('context');
         $logger->info('$context = ' . print_r($context, true));
 
-        $puFollowDD = PUFollowDDQuery::create()
-            ->filterByPUserId($user->getId())
-            ->filterByPDDebateId($subjectId)
-            ->findOne();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
-        if ($puFollowDD && $context == 'reaction') {
-            $puFollowDD->setNotifReaction(true);
-            $puFollowDD->save();
-        }
+        $userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, true, $context);
 
         return true;
     }
@@ -912,59 +753,54 @@ class XhrUser
         $logger = $this->sc->get('logger');
         $logger->info('*** notifDebateContextUnsubscribe');
 
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
 
-        $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        // Request arguments
+        $id = $request->get('subjectId');
+        $logger->info('$id = ' . print_r($id, true));
         $context = $request->get('context');
         $logger->info('$context = ' . print_r($context, true));
 
-        $puFollowDD = PUFollowDDQuery::create()
-            ->filterByPUserId($user->getId())
-            ->filterByPDDebateId($subjectId)
-            ->findOne();
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
-        if ($puFollowDD && $context == 'reaction') {
-            $puFollowDD->setNotifReaction(false);
-            $puFollowDD->save();
-        }
+        $userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, false, $context);
 
         return true;
     }
 
     /* ######################################################################################################## */
-    /*                                          RÉPUTATION (FONCTIONS AJAX)                                     */
+    /*                                                REPUTATION                                                */
     /* ######################################################################################################## */
 
     /**
-     * Listing de l'historique des actions
+     * User's reputation listing
      */
     public function historyActionsList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** historyActionsList');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $userManager = $this->sc->get('politizr.manager.user');
+        $templating = $this->sc->get('templating');
 
+        // Request arguments
         $offset = $request->get('offset');
         $logger->info('$offset = ' . print_r($offset, true));
-
         $order = $request->get('order');
         $logger->info('$order = ' . print_r($order, true));
         $filters = $request->get('filters');
         $logger->info('$filters = ' . print_r($filters, true));
-        $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
 
-        // Requête suivant order
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
         $historyActions = PUReputationQuery::create()
                             ->filterByPUserId($user->getId())
                             ->orderByCreatedAt(\Criteria::DESC)
@@ -972,8 +808,7 @@ class XhrUser
                             ->offset($offset)
                             ->find();
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
+        // Rendering
         $html = $templating->render(
             'PolitizrFrontBundle:Fragment\\Reputation:glListHistoryActions.html.twig',
             array(
@@ -982,7 +817,6 @@ class XhrUser
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );

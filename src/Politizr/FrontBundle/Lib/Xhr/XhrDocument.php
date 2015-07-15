@@ -59,7 +59,6 @@ class XhrDocument
         // Retrieve used services
         $request = $this->sc->get('request');
         $securityContext = $this->sc->get('security.context');
-        $user = $securityContext->getToken()->getUser();
         $userManager = $this->sc->get('politizr.manager.user');
         $eventDispatcher = $this->sc->get('event_dispatcher');
         $templating = $this->sc->get('templating');
@@ -70,7 +69,8 @@ class XhrDocument
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
-        // Get debate
+        // Function process
+        $user = $securityContext->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if ('follow' == $way) {
             $userManager->createUserFollowDebate($user->getId(), $debate->getId());
@@ -130,7 +130,7 @@ class XhrDocument
 
         $user = $securityContext->getToken()->getUser();
 
-        // Récupération objet
+        // Function process
         switch($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $object = PDDebateQuery::create()->findPk($id);
@@ -688,7 +688,7 @@ class XhrDocument
         $path = $kernel->getRootDir() . '/../web' . $uploadWebPath;
 
         // Appel du service d'upload ajax
-        $fileName = $utilsManager->uploadImageAjax(
+        $fileName = $utilsManager->uploadXhrImage(
             'fileName',
             $path,
             1024,
