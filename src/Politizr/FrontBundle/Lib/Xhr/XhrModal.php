@@ -1,20 +1,10 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-use StudioEcho\Lib\StudioEchoUtils;
-
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
-use Politizr\FrontBundle\Lib\SimpleImage;
-
-use Politizr\Model\PDDebate;
-use Politizr\Model\PDReaction;
-
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 
 /**

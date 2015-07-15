@@ -15,7 +15,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
- * Services métiers associés à la recherche.
+ * XHR service for modal management.
  *
  * @author Lionel Bouzonville
  */
