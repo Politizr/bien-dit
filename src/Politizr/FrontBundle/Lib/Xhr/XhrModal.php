@@ -18,7 +18,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 
 /**
- * Services métiers associés aux modal.
+ * XHR service for modal management.
  *
  * @author Lionel Bouzonville
  */
@@ -35,14 +35,17 @@ class XhrModal
     }
 
     /* ######################################################################################################## */
-    /*                                         FONCTIONS PRIVEES                                                */
+    /*                                         PRIVATE FUNCTIONS                                                */
     /* ######################################################################################################## */
 
     /**
-     * Retourne un tableau contenant 4 éléments: l'odonnancement, les filtres, l'offset à appliquer à la recherche
-     * et éventuellement l'id de l'objet associé
+     * Return an array with request listing information:
+     *    - order,
+     *    - filters,
+     *    - offset,
+     *    - associated object id (option),
      *
-     * @return array
+     * @return array[order,filters,offset,associatedObjectId]
      */
     private function getFiltersFromRequest()
     {
@@ -67,26 +70,30 @@ class XhrModal
     }
 
     /* ######################################################################################################## */
-    /*                                FONCTIONS MODAL GENERIQUES                                                */
+    /*                                   GENERIC MODAL FUNCTIONS                                                */
     /* ######################################################################################################## */
 
-
     /**
-     * Chargement d'une box modal contenant une liste paginée
+     * Paginated modal listing loading
      */
     public function modalPaginatedList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** modalPaginatedList');
         
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $templating = $this->sc->get('templating');
 
+        // Request arguments
         $twigTemplate = $request->get('twigTemplate');
+        $logger->info('$twigTemplate = ' . print_r($twigTemplate, true));
         $model = $request->get('model');
+        $logger->info('$model = ' . print_r($model, true));
         $slug = $request->get('slug');
+        $logger->info('$slug = ' . print_r($slug, true));
 
-        // Récupération objet associé à la modal
+        // Function process
         $subject = null;
         if ($model && $slug) {
             $queryModel = 'Politizr\Model\\' . $model . 'Query';
@@ -95,8 +102,6 @@ class XhrModal
                 ->findOne();
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
             array(
@@ -104,26 +109,28 @@ class XhrModal
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Chargement des filtres
+     * Filters loading
      */
     public function filters()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** filters');
         
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
-        $type = $request->get('type');
-
-        // Construction rendu
         $templating = $this->sc->get('templating');
+
+        // Request arguments
+        $type = $request->get('type');
+        $logger->info('$type = ' . print_r($type, true));
+
+        // @todo constant management refactor
         if ('debate' === $type) {
             $listOrder = $templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
@@ -149,25 +156,28 @@ class XhrModal
 
 
     /* ######################################################################################################## */
-    /*                                              CLASSEMENT                                                  */
+    /*                                                 RANKING                                                  */
     /* ######################################################################################################## */
 
     /**
-     * Liste des débats type "classement"
-     *
+     * Debate ranking listing
      */
     public function rankingDebateList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** rankingDebateList');
+
+        // Retrieve used services
+        $templating = $this->sc->get('templating');
         
-        // Récupération paramètres requête
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
@@ -182,8 +192,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
@@ -193,28 +201,30 @@ class XhrModal
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste des profils type "classement"
-     *
+     * Ranking user listing
      */
     public function rankingUserList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** rankingUserList');
         
-        // Récupération paramètres requête
+        // Retrieve used services
+        $templating = $this->sc->get('templating');
+        
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -229,8 +239,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
@@ -240,30 +248,32 @@ class XhrModal
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
-
     /**
-     * Liste des débats type "suggestion"
-     *
+     * Suggestion debate listing
      */
     public function suggestionDebateList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** suggestionDebateList');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
-        $offset = $request->get('offset');
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
 
-        // @todo gérer les "limit" dans une variable
+        // Request arguments
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+        
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // @todo constant management refactoring
         $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
         
         $moreResults = false;
@@ -271,8 +281,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
@@ -282,29 +290,32 @@ class XhrModal
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste des profils type "suggestion"
-     *
+     * Suggestion user listing
      */
     public function suggestionUserList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** suggestionUserList');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
-        $offset = $request->get('offset');
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
 
-        // @todo gérer les "limit" dans une variable
+        // Request arguments
+        $offset = $request->get('offset');
+        $logger->info('$offset = ' . print_r($offset, true));
+        
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // @todo constant management refactoring
         $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
         
         $moreResults = false;
@@ -312,8 +323,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
@@ -323,7 +332,6 @@ class XhrModal
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html
             );
@@ -331,31 +339,30 @@ class XhrModal
 
 
     /**
-     * Liste de débats par tag
-     *
+     * Tag debate listing
      */
     public function tagDebateList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** tagDebateList');
         
-        // Récupération paramètres requête
+        // Retrieve used services
+        $templating = $this->sc->get('templating');
+        
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
 
-        // paramètre supplémentaire
-        $request = $this->sc->get('request');
-        $tagId = $request->get('subjectId');
-        $logger->info('$tagId = ' . print_r($tagId, true));
-
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
                     ->usePDDTaggedTQuery()
-                        ->filterByPTagId($tagId)
+                        ->filterByPTagId($subjectId)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -368,8 +375,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
@@ -379,29 +384,31 @@ class XhrModal
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste de profils par tag
-     *
+     * Tag user listing
      */
     public function tagUserList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** tagUserList');
         
-        // Récupération paramètres requête
+        // Retrieve used services
+        $templating = $this->sc->get('templating');
+        
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -419,8 +426,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
@@ -430,29 +435,31 @@ class XhrModal
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste de users associé à l'organisation
-     *
+     * Organization user listing
      */
     public function organizationUserList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** organizationUserList');
         
-        // Récupération paramètres requête
+        // Retrieve used services
+        $templating = $this->sc->get('templating');
+        
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -475,8 +482,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
@@ -486,31 +491,33 @@ class XhrModal
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste des débats suivis
-     *
+     * Followed debates listing
      */
     public function followedDebateList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** followedDebateList');
+  
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération paramètres requête
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
@@ -528,8 +535,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
@@ -539,30 +544,33 @@ class XhrModal
             )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
     }
 
     /**
-     * Liste des users suivis
+     * Followed users listing
      */
     public function followedUserList()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** followedUserList');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération paramètres requête
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
+        
+        // Request arguments
         $queryParams = $this->getFiltersFromRequest();
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
-        // @todo gérer les "limit" dans une variable
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // @todo constant management refactoring
         $query = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -579,8 +587,6 @@ class XhrModal
             $moreResults = true;
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
@@ -591,7 +597,6 @@ class XhrModal
                 )
         );
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html,
             );
