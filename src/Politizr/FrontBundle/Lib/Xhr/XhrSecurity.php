@@ -10,6 +10,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Model\POPaymentType;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\POSubscriptionQuery;
 
 use Politizr\FrontBundle\Form\Type\LoginType;
