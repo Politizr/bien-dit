@@ -3,7 +3,12 @@ namespace Politizr\FrontBundle\Lib\Manager;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Model\PUser;
+use Politizr\Model\POSubscription;
 use Politizr\Model\POrder;
+use Politizr\Model\POOrderState;
+use Politizr\Model\POPaymentState;
+use Politizr\Model\POPaymentType;
 
 /**
  * DB manager service for order.
@@ -20,6 +25,56 @@ class OrderManager
     public function __construct($serviceContainer)
     {
         $this->sc = $serviceContainer;
+    }
+
+    /**
+     * Create new order
+     *
+     * @param PUser $user
+     * @param POSubscription $subscription
+     * @param integer $paymentTypeId
+     * @param string $supportingDocument
+     * @param string $electiveMandates
+     * @return POrder
+     */
+    public static function createOrder(PUSer $user, POSubscription $subscription, $paymentTypeId, $supportingDocument, $electiveMandates)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Cannot create order if user is null');
+        }
+        if (!$subscription) {
+            throw new InconsistentDataException('Cannot create order if subscription is null');
+        }
+
+        $order = new POrder();
+
+        $order->setPUserId($user->getId());
+        $order->setPOSubscriptionId($subscription->getId());
+        $order->setPOPaymentTypeId($paymentTypeId);
+
+        $order->setPOOrderStateId(POOrderState::CREATED);
+        $order->setPOOrderStateId(POPaymentState::PROCESSING);
+
+        $order->setSubscriptionTitle($subscription->getTitle());
+        $order->setSubscriptionDescription($subscription->getDescription());
+
+        $order->setGender($user->getGender());
+        $order->setFirstname($user->getFirstname());
+        $order->setName($user->getName());
+        $order->setPhone($user->getPhone());
+        $order->setEmail($user->getEmail());
+
+        $order->setElectiveMandates($electiveMandates);
+        $order->setSupportingDocument($supportingDocument);
+
+        // @todo promo
+        $order->setPrice($subscription->getPrice());
+        $order->setPromotion(0);
+        $order->setTotal($subscription->getPrice());
+
+        $order->save();
+
+        return $order;
     }
 
     /**

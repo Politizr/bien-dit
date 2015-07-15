@@ -36,7 +36,7 @@ class SecurityService
     }
 
     /* ######################################################################################################## */
-    /*                                              CONNECTION                                                  */
+    /*                                        PRIVATE FUNCTIONS                                                 */
     /* ######################################################################################################## */
 
     /**
@@ -89,6 +89,106 @@ class SecurityService
         }
 
         return $redirectUrl;
+    }
+
+    /* ######################################################################################################## */
+    /*                                              CONNECTION                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Connect & compute the redirect url
+     *
+     * @param PUser $user
+     * @return string Redirect URL
+     */
+    public function connectUser($user)
+    {
+        // connect user
+        $this->doPublicConnection($user);
+
+        // redirect user
+        $redirectUrl = $this->computeRedirectUrl($user);
+
+        return $redirectUrl;
+    }
+
+    /**
+     * OAuth connection or inscription
+     */
+    public function oauthRegister()
+    {
+        $logger = $this->sc->get('logger');
+        $logger->info('*** oauthRegister');
+
+        // Retrieve used services
+        $session = $this->sc->get('session');
+        $securityContext = $this->sc->get('security.context');
+        $router = $this->sc->get('router');
+        $userManager = $this->sc->get('politizr.manager.user');
+        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
+        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
+        $encoderFactory = $this->sc->get('security.encoder_factory');
+
+        // get user
+        $user = $securityContext->getToken()->getUser();
+
+        // get oAuth data
+        $oAuthData = $session->getFlashBag()->get('oAuthData');
+        if (!$oAuthData
+            || !is_array($oAuthData)
+            || !isset($oAuthData['provider'])
+            || !isset($oAuthData['providerId'])
+            ) {
+            // unexpected oauth data, back to homepage
+            return $router->generate('Homepage');
+        }
+        
+        // get db user
+        $user = PUserQuery::create()
+            ->filterByProvider($oAuthData['provider'])
+            ->filterByProviderId($oAuthData['providerId'])
+            ->findOne();
+
+        if ($user) {
+            // update user
+            $user = $userManager->updateOAuthData($user, $oAuthData);
+
+            // connect and redirect user
+            $redirectUrl = $this->connectUser($user);
+
+            return $redirectUrl;
+        } else {
+            // citizen inscription roles
+            $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
+
+            // create new user & update it
+            $user = new PUser();
+            $user = $userManager->updateOAuthData($user, $oAuthData);
+
+            if ($user->getEmail()) {
+                $username = $user->getEmail();
+                $canonicalizer = $emailCanonicalizer;
+            } elseif ($user->getNickname()) {
+                $username = $user->getNickname();
+                $canonicalizer = $usernameCanonicalizer;
+            } else {
+                throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
+            }
+
+            // update user
+            $user = $userManager->updateForInscriptionStart(
+                $user,
+                $roles,
+                $canonicalizer->canonicalize($username),
+                null
+            );
+
+            // connect user
+            $this->doPublicConnection($user);
+
+            // redirect to inscription next step
+            return $router->generate('InscriptionContact');
+        }
     }
     
     /* ######################################################################################################## */
@@ -282,92 +382,5 @@ class SecurityService
         $user = $userManager->updateForInscriptionFinish($user, $roles, PUStatus::VALIDATION_PROCESS, true);
         
         $this->doPublicConnection($user);
-    }
-
-
-    /* ######################################################################################################## */
-    /*                                          OAUTH CONNECTION                                                */
-    /* ######################################################################################################## */
-
-    /**
-     * Check oAuth ok & do connection
-     */
-    public function oauthRegister()
-    {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** oauthRegister');
-
-        // Retrieve used services
-        $session = $this->sc->get('session');
-        $securityContext = $this->sc->get('security.context');
-        $router = $this->sc->get('router');
-        $userManager = $this->sc->get('politizr.manager.user');
-        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
-        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
-
-        // get user
-        $user = $securityContext->getToken()->getUser();
-
-        // get oAuth data
-        $oAuthData = $session->getFlashBag()->get('oAuthData');
-        if (!$oAuthData
-            || !is_array($oAuthData)
-            || !isset($oAuthData['provider'])
-            || !isset($oAuthData['providerId'])
-            ) {
-            // unexpected oauth data, back to homepage
-            return $router->generate('Homepage');
-        }
-        
-        // get db user
-        $user = PUserQuery::create()
-            ->filterByProvider($oAuthData['provider'])
-            ->filterByProviderId($oAuthData['providerId'])
-            ->findOne();
-
-        if ($user) {
-            // update user
-            $user = $userManager->updateOAuthData($user, $oAuthData);
-
-            // connect user
-            $this->doPublicConnection($user);
-
-            // redirect
-            $redirectUrl = $this->computeRedirectUrl($user);
-
-            return $redirectUrl;
-        } else {
-            // citizen inscription roles
-            $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
-
-            // create new user & update it
-            $user = new PUser();
-            $user = $userManager->updateOAuthData($user, $oAuthData);
-
-            if ($user->getEmail()) {
-                $username = $user->getEmail();
-                $canonicalizer = $emailCanonicalizer;
-            } elseif ($user->getNickname()) {
-                $username = $user->getNickname();
-                $canonicalizer = $usernameCanonicalizer;
-            } else {
-                throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
-            }
-
-            // update user
-            $user = $userManager->updateForInscriptionStart(
-                $user,
-                $roles,
-                $canonicalizer->canonicalize($username),
-                null
-            );
-
-            // connect user
-            $this->doPublicConnection($user);
-
-            // redirect to inscription next step
-            return $router->generate('InscriptionContact');
-        }
     }
 }

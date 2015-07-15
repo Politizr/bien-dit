@@ -11,7 +11,6 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Model\POPaymentType;
 
 use Politizr\Model\POSubscriptionQuery;
-use Politizr\Model\POrderQuery;
 
 use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
@@ -38,19 +37,21 @@ class XhrSecurity
     /* ######################################################################################################## */
 
     /**
-     *  Connexion
+     *  Connection init screen
      */
     public function login()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** login');
-        
-        // Formulaire
-        $formLogin = $this->sc->get('form.factory')->create(new LoginType());
-        $formLostPassword = $this->sc->get('form.factory')->create(new LostPasswordType());
 
-        // Construction rendu
+        // Retrieve used services
+        $formFactory = $this->sc->get('form.factory');
         $templating = $this->sc->get('templating');
+
+        // Function process
+        $formLogin = $formFactory->create(new LoginType());
+        $formLostPassword = $formFactory->create(new LostPasswordType());
+
         $html = $templating->render(
             'PolitizrFrontBundle:Public:_login.html.twig',
             array(
@@ -65,8 +66,7 @@ class XhrSecurity
     }
 
     /**
-     *  Validation de la connexion
-     *
+     * Connection
      */
     public function loginCheck()
     {
@@ -74,58 +74,44 @@ class XhrSecurity
         $logger->info('*** loginCheck');
 
         // Retrieve used services
-        $securityService = $this->sc->get('politizr.functional.security');
-        
-        // Récupération args
         $request = $this->sc->get('request');
+        $securityService = $this->sc->get('politizr.functional.security');
+        $formFactory = $this->sc->get('form.factory');
+        $encoderFactory = $this->sc->get('security.encoder_factory');
 
-        // Form
-        $form = $this->sc->get('form.factory')->create(new LoginType());
+        // Function process
+        $form = $formFactory->create(new LoginType());
 
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
         $form->bind($request);
         if ($form->isValid()) {
             $login = $form->getData();
-            $logger->info('login = '.print_r($login, true));
 
-            // Récupération du user
-            $userManager = $this->sc->get('politizr.login_user_provider');
-            $user = $userManager->loadUserByUsername($login['username']);
+            // get db user
+            $user = PUserQuery::create()
+                ->filterByUsername($login['username'])
+                ->findOne();
 
+            // check user exists
             if (!$user) {
-                $logger->info('User / username not found.');
-                $message = 'Utilisateur inconnu.';
-                throw new FormValidationException($message);
-            } else {
-                // Contrôle user/password
-                $password = $user->getPassword();
-
-                $encoderService = $this->sc->get('security.encoder_factory');
-                $encoder = $encoderService->getEncoder($user);
-                $encodedPass = $encoder->encodePassword($login['password'], $user->getSalt());
-                $logger->info('encodedPass = '.print_r($encodedPass, true));
-                $logger->info('$password = '.print_r($password, true));
-
-                if ($password  != $encodedPass) {
-                    $logger->info('Incorrect password.');
-                    $message = 'Mot de passe incorrect.';
-                    throw new FormValidationException($message);
-                } else {
-                    // Connexion
-                    $redirectUrl = $securityService->doPublicConnection($user);
-
-                    // Check rôles / activ > redirection
-                    $redirectUrl = $securityService->computeRedirectUrl($user);
-
-                    // Construction de la réponse
-                    $jsonResponse = array (
-                        'success' => true,
-                        'redirectUrl' => $redirectUrl
-                    );
-                }
+                throw new FormValidationException('Utilisateur inconnu');
             }
+
+            // check user/password validity
+            $password = $user->getPassword();
+            $encoder = $encoderFactory->getEncoder($user);
+            $encodedPassword = $encoderFactory->getEncoder($user)->encodePassword($login['password'], $user->getSalt());
+            if ($password  != $encodedPassword) {
+                // @todo manage a password fail counter
+                throw new FormValidationException('Mot de passe incorrect');
+            }
+
+            // connect & redirect user
+            $redirectUrl = $securityService->connectUser($user);
+
+            $jsonResponse = array (
+                'success' => true,
+                'redirectUrl' => $redirectUrl
+            );
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
@@ -137,61 +123,48 @@ class XhrSecurity
             );
     }
 
-
     /**
-     *  Validation de la connexion
-     *
+     * Lost password
      */
     public function lostPasswordCheck()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** lostPasswordCheck');
         
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $formFactory = $this->sc->get('form.factory');
+        $encoderFactory = $this->sc->get('security.encoder_factory');
+        $eventDispatcher = $this->sc->get('event_dispatcher');
 
-        // Form
-        $form = $this->sc->get('form.factory')->create(new LostPasswordType());
+        // Function process
+        $form = $formFactory->create(new LostPasswordType());
 
-        // *********************************** //
-        //      Traitement du POST
-        // *********************************** //
         $form->bind($request);
         if ($form->isValid()) {
             $lostPassword = $form->getData();
-            $logger->info('lostPassword = '.print_r($lostPassword, true));
 
-            // Récupération du user
-            $userManager = $this->sc->get('politizr.login_user_provider');
-            $user = $userManager->loadUserByEmail($lostPassword['email']);
+            // get db user
+            $user = PUserQuery::create()
+                ->filterByEmail($login['email'])
+                ->findOne();
 
+            // check user exists
             if (!$user) {
-                $logger->info('User / email not found.');
-
-                $message = 'Utilisateur inconnu.';
-                throw new FormValidationException($message);
-            } else {
-                // Génération d'un nouveau mot de passe
-                $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
-
-                // Encodage MDP
-                $encoderFactory = $this->sc->get('security.encoder_factory');
-
-                $encoder = $encoderFactory->getEncoder($user);
-                $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                $user->eraseCredentials();
-
-                $user->setPlainPassword($password);
-                $user->save();
-
-                // Envoi email
-                $dispatcher = $this->sc->get('event_dispatcher')->dispatch('lost_password_email', new GenericEvent($user));
-
-                // Construction de la réponse
-                $jsonResponse = array (
-                    'success' => true
-                );
+                throw new FormValidationException('Utilisateur inconnu');
             }
+
+            // new random password
+            $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
+            $user->setPassword($encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
+            $user->save();
+
+            // Event
+            $dispatcher = $eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
+
+            $jsonResponse = array (
+                'success' => true
+            );
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
@@ -201,91 +174,96 @@ class XhrSecurity
     }
 
 
-
     /* ######################################################################################################## */
     /*                                                  INSCRIPTION                                             */
     /* ######################################################################################################## */
 
-
     /**
-     *      Action "Procéder au paiement":
-     *          1/  génération de la commande
-     *          2/  suivant le type de paiement > création des formulaires (ATOS. Paypal)
-     *          3/  construction de la réponse
-     *
-     *      TODO / + de contrôles exceptions
-     *
+     * Process to payment
      */
     public function paymentProcess()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** paymentProcess');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $session = $this->sc->get('session');
+        $orderManager = $this->sc->get('politizr.manager.order');
+        $router = $this->sc->get('router');
 
-        // Récupération args
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+
+        // Request arguments
         $paymentTypeId = $request->get('pOPaymentTypeId');
         $logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
         
-        // Récupération formule commandée
-        $subscription = POSubscriptionQuery::create()->findPk($this->sc->get('session')->get('p_o_subscription_id'));
+        // Session arguments
+        $subscriptionId = $session->get('p_o_subscription_id');
+        $logger->info('$subscriptionId = ' . print_r($subscriptionId, true));
+        $supportingDocument = $session->get('p_o_supporting_document');
+        $logger->info('$supportingDocument = ' . print_r($supportingDocument, true));
+        $electiveMandates = $session->get('p_o_elective_mandates');
+        $logger->info('$electiveMandates = ' . print_r($electiveMandates, true));
 
-        // Création de la commande & mise en session de son ID
-        $order = POrderQuery::create()->createOrder(
+        // get subscription
+        $subscription = POSubscriptionQuery::create()->findPk($subscriptionId);
+
+        if (!$subscription) {
+            throw new InconsistentDataException('Subscription not found');
+        }
+
+        // create order
+        $order = $orderManager->createOrder(
             $user,
             $subscription,
             $paymentTypeId,
-            $this->sc->get('session')->get('p_o_supporting_document'),
-            $this->sc->get('session')->get('p_o_elective_mandates')
+            $supportingDocument,
+            $electiveMandates
         );
-        $this->sc->get('session')->set('p_order_id', $order->getId());
 
-        // Construction de la structure
+        // put order id in session
+        $session->set('p_order_id', $order->getId());
+
+        // payment type rendering
         switch($paymentTypeId) {
             case POPaymentType::BANK_TRANSFER:
                 $htmlForm = '';
-                $redirectUrl = $this->sc->get('router')->generate('InscriptionElectedPaymentFinished');
+                $redirectUrl = $router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
-            
             case POPaymentType::CREDIT_CARD:
                 // construct the atos sips form
                 // $sipsAtosManager = $this->sc->get('studio_echo_sips_atos');
                 // $htmlForm = $sipsAtosManager->computeAtosRequest($order->getId());
 
-                $htmlForm = '<form id="atos" action="'.$this->sc->get('router')->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                $htmlForm = '<form id="atos" action="'.$router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                 $redirectUrl = '';
                 $redirect = false;
+                
                 break;
-            
             case POPaymentType::CHECK:
                 $htmlForm = '';
-                $redirectUrl = $this->sc->get('router')->generate('InscriptionElectedPaymentFinished');
+                $redirectUrl = $router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
-            
             case POPaymentType::PAYPAL:
                 // construct the paypal form
                 // $paypalManager = $this->sc->get('studio_echo_paypal');
                 // $htmlForm = $paypalManager->computePaypalRequest($order->getId());
 
-                $htmlForm = '<form id="paypal" action="'.$this->sc->get('router')->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                $htmlForm = '<form id="paypal" action="'.$router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                 $redirectUrl = '';
                 $redirect = false;
 
                 break;
-            
             default:
                 break;
         }
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'success' => true,
             'htmlForm' => $htmlForm,
