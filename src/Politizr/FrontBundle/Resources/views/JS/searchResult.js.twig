@@ -1,14 +1,13 @@
-<script type="text/javascript">
-    // clic précédent / suivant
-    $("body").on("click", "[action='paginate-next']", function(e) {
-        console.log('*** click paginate-next');
-        console.log('next-page = ' + $(this).attr('next-page'));
+<script>
+    $("body").on("click", "[action='paginateNext']", function(e) {
+        console.log('*** click paginateNext');
+        console.log('page = ' + $(this).attr('page'));
 
         e.preventDefault();
         $.ajax({
               type: 'POST',
               url: "{{ path('SearchPage') }}",
-              data: { 'query': $(this).attr('query'), 'next-page': $(this).attr('next-page') },
+              data: { 'query': $(this).attr('query'), 'page': $(this).attr('page') },
               dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:ajaxError.js.twig' %}
             success: function(data) {

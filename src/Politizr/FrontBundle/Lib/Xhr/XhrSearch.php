@@ -15,7 +15,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
- * XHR service for modal management.
+ * XHR service for search management.
  *
  * @author Lionel Bouzonville
  */
@@ -32,24 +32,23 @@ class XhrSearch
     }
 
     /* ######################################################################################################## */
-    /*                                                REQUÊTE DE RECHERCHE                                          */
+    /*                                         PRIVATE FUNCTIONS                                                */
     /* ######################################################################################################## */
 
     /**
-     *  Exécution de la requête de recherche paginée
-     *
+     * Search request w. pagination
      */
-    public function pagerQuery($query)
+    private function pagerQuery($query)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** pagerQuery');
 
-        if (!$query) {
-            throw new InconsistentDataException('Requête vide.');
-        } else {
-            // $finder = $this->container->get('fos_elastica.finder.politizr.p_document');
-            $finder = $this->sc->get('fos_elastica.finder.politizr');
+        // Retrieve used services
+        $finder = $this->sc->get('fos_elastica.finder.politizr');
 
+        if (!$query) {
+            throw new InconsistentDataException('Empty search request');
+        } else {
             // https://gist.github.com/tchapi/1ac99f757e0f336c1e1b
             $boolQuery = new \Elastica\Query\Bool();
             $queryString = new \Elastica\Query\QueryString();
@@ -71,32 +70,32 @@ class XhrSearch
 
     }
 
-
     /* ######################################################################################################## */
-    /*                                                FONCTIONS AJAX                                               */
+    /*                                                  SEARCH                                                  */
     /* ######################################################################################################## */
 
     /**
-     *  Recherche
-     *
+     * Search
      */
     public function search()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** search');
 
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
+        // Request arguments
         $query = $request->get('query');
         $logger->info('query = '.print_r($query, true));
-        $page = $request->get('next-page');
+        $page = $request->get('page');
         $logger->info('page = '.print_r($page, true));
 
-        // Exécution de la requête paginée
+        // Function process
         $pager = $this->pagerQuery($query);
 
-        // TODO > gestion plus fine des exceptions
+        // @todo refactor exception management
         try {
             $pager->setMaxPerPage(10)->setCurrentPage($page);
         } catch (NotIntegerCurrentPageException $e) {
@@ -107,8 +106,6 @@ class XhrSearch
             throw new InconsistentDataException($e->getMessage());
         }
 
-        // Construction rendu
-        $templating = $this->sc->get('templating');
         $html = $templating->render(
             'PolitizrFrontBundle:Navigation:searchResultPage.html.twig',
             array(

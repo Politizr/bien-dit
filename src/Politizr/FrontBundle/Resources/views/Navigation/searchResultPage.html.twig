@@ -16,7 +16,7 @@
 {% if pager.hasNextPage %}
     <div id="scroll-nav" class="row">
         <div class="col-sm-12 text-center">
-            <a class="btn btn-primary" action="paginate-next" query="{{ query }}" next-page="{{ pager.nextPage }}">suite</a>
+            <a class="btn btn-primary" action="paginateNext" query="{{ query }}" page="{{ pager.nextPage }}">suite</a>
         </div>
     </div>
 {% endif %}
