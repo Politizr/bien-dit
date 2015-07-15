@@ -120,7 +120,7 @@ class SecurityController extends Controller
             $user = $form->getData();
 
             // Service associé au démarrage de l'inscription
-            $this->get('politizr.xhr.security')->inscriptionStart($user);
+            $this->get('politizr.functional.security')->inscriptionStart($user);
 
             return $this->redirect($this->generateUrl('InscriptionContact'));
         }
@@ -167,7 +167,7 @@ class SecurityController extends Controller
             $user->save();
 
             // Service associé à la finalisation de l'inscription
-            $this->get('politizr.xhr.security')->inscriptionFinish($user);
+            $this->get('politizr.functional.security')->inscriptionFinish($user);
 
             return $this->redirect($this->generateUrl('HomepageC'));
         }
@@ -214,7 +214,7 @@ class SecurityController extends Controller
             $user = $form->getData();
 
             // Service associé au démarrage de l'inscription débatteur
-            $this->get('politizr.xhr.security')->inscriptionElectedStart($user);
+            $this->get('politizr.functional.security')->inscriptionElectedStart($user);
 
             // gestion upload pièce ID
             $file = $form['uploaded_supporting_document']->getData();
@@ -250,7 +250,7 @@ class SecurityController extends Controller
         // profil déjà validé => étape 2 directement
         $user = $this->getUser();
         if ($user->getValidated()) {
-            $this->get('politizr.xhr.security')->migrationElectedStart($user);
+            $this->get('politizr.functional.security')->migrationElectedStart($user);
 
             return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
@@ -280,7 +280,7 @@ class SecurityController extends Controller
             $user = $form->getData();
 
             // Service associé au démarrage de la migration vers un compte débatteur
-            $this->get('politizr.xhr.security')->migrationElectedStart($user);
+            $this->get('politizr.functional.security')->migrationElectedStart($user);
 
             // gestion upload pièce ID
             $file = $form['uploaded_supporting_document']->getData();
@@ -395,7 +395,7 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
         // Mise à jour de la commande
-        $this->get('politizr.xhr.security')->updateOrderPaymentFinished();
+        $this->get('politizr.functional.security')->updateOrderPaymentFinished();
 
         return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
     }
@@ -409,7 +409,7 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedPaymentCanceledAction');
 
         // Mise à jour de la commande
-        $this->get('politizr.xhr.security')->updateOrderPaymentCanceled();
+        $this->get('politizr.functional.security')->updateOrderPaymentCanceled();
 
         // Suppression des valeurs en session
         $this->get('session')->remove('p_order_id');
@@ -441,7 +441,7 @@ class SecurityController extends Controller
         $this->get('session')->remove('p_order_id');
         
         // Finalisation du process d'inscription débatteur
-        $this->get('politizr.xhr.security')->inscriptionFinishElected($user);
+        $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
         // Cas migration formule > MAJ du layout
         $layout = 'PolitizrFrontBundle::layout.html.twig';
@@ -484,7 +484,7 @@ class SecurityController extends Controller
         $logger->info('*** oauthRegisterAction');
 
         // Appel du service connexion oauth ou création user + connexion oauth suivant les cas
-        $redirectUrl = $this->get('politizr.xhr.security')->oauthRegister();
+        $redirectUrl = $this->get('politizr.functional.security')->oauthRegister();
 
         // Redirection
         return $this->redirect($redirectUrl);

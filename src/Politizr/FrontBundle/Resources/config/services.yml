@@ -34,6 +34,10 @@ services:
         class:                              Politizr\FrontBundle\Lib\Functional\DocumentService
         arguments:                          [ @service_container ]
 
+    politizr.functional.security:
+        class:                              Politizr\FrontBundle\Lib\Functional\SecurityService
+        arguments:                          [ @service_container ]
+
 
     # XHR SERVICES
     politizr.xhr.document:
