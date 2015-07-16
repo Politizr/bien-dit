@@ -9,16 +9,14 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
 use Politizr\Model\PTag;
-use Politizr\Model\PTagType;
 
 use Politizr\Model\PTagQuery;
-use Politizr\Model\PTagTypeQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
 /**
- * Services métiers associés aux tags
+ * XHR service for tag management.
  *
  * @author Lionel Bouzonville
  */
