@@ -1,7 +1,0 @@
-################################################################################
-#               LISTE PAGINEE
-################################################################################
-TimelinePaginated:
-    pattern:  /profil/timeline/paginated.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrTimeline:paginatedList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }

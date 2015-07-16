@@ -1,5 +1,5 @@
 ################################################################################
-#               ROUTING XHR GESTION INFOS MON PROFIL
+#               ROUTING XHR GESTION USER PROFILE
 ################################################################################
 UserProfileUpdate:
     pattern:  /profil/profile.{_format}
@@ -51,3 +51,12 @@ MandateProfileDelete:
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:mandateProfileDelete, _format: json }
     requirements: { _format: (xml|json), _method: POST }
 
+UserPersoUpdate:
+    pattern:  /profil/perso.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:userPersoUpdate, _format: json }
+    requirements: { _format: (xml|json), _method: POST }
+
+TimelinePaginated:
+    pattern:  /profil/timeline/paginated.{_format}
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrUserProfile:paginatedList, _format: json }
+    requirements: { _format: (xml|json), _method: POST }

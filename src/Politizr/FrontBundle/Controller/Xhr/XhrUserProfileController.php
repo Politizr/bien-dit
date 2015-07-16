@@ -29,7 +29,6 @@ class XhrUserProfileController extends Controller
         return $jsonResponse;
     }
 
-
     /**
      *  Upload de la photo de profil du user
      */
@@ -169,6 +168,38 @@ class XhrUserProfileController extends Controller
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
             'politizr.xhr.user',
             'mandateProfileDelete'
+        );
+
+        return $jsonResponse;
+    }
+
+    /**
+     *  Mise à jour des informations personnelles du user
+     */
+    public function userPersoUpdateAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** userPersoUpdateAction');
+
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            'politizr.xhr.user',
+            'userPersoUpdate'
+        );
+
+        return $jsonResponse;
+    }
+    
+    /**
+     * Paginated timeline
+     */
+    public function paginatedListAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** paginatedListAction');
+
+        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            'politizr.xhr.user',
+            'timelinePaginated'
         );
 
         return $jsonResponse;

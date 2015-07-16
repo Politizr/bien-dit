@@ -38,6 +38,10 @@ services:
         class:                              Politizr\FrontBundle\Lib\Functional\SecurityService
         arguments:                          [ @service_container ]
 
+    politizr.functional.timeline:
+        class:                              Politizr\FrontBundle\Lib\Functional\TimelineService
+        arguments:                          [ @service_container ]
+
 
     # XHR SERVICES
     politizr.xhr.document:
@@ -54,6 +58,10 @@ services:
 
     politizr.xhr.user:
         class:                              Politizr\FrontBundle\Lib\Xhr\XhrUser
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.notification:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrNotification
         arguments:                          [ @service_container ]
 
     politizr.xhr.tag:

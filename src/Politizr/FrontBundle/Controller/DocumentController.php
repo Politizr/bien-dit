@@ -124,9 +124,11 @@ class DocumentController extends Controller
             throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
         }
 
-        // Service Timeline
-        $timelineManager = $this->get('politizr.xhr.timeline');
-        $timelineDateKey = $timelineManager->debateFeed($debate->getId());
+        // get debate feed
+        $timelineService = $this->get('politizr.functional.timeline');
+
+        $timeline = $timelineService->generateDebateFeedTimeline($debate->getId());
+        $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
 
         return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
                     'debate' => $debate,

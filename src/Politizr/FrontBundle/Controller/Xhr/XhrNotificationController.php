@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- *  Gestion des notifications d'un user / appels XHR
+ * XHR notification
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
-class XhrUserNotificationController extends Controller
+class XhrNotificationController extends Controller
 {
     /**
      *  Liste des notifications
@@ -22,7 +22,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notificationsLoadAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notificationsLoad'
         );
 
@@ -38,7 +38,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notificationCheckAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notificationCheck'
         );
 
@@ -54,7 +54,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notificationsCheckAllAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notificationsCheckAll'
         );
 
@@ -71,7 +71,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifEmailSubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifEmailSubscribe'
         );
 
@@ -88,7 +88,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifEmailUnsubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifEmailUnsubscribe'
         );
 
@@ -104,7 +104,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifUserContextSubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifUserContextSubscribe'
         );
 
@@ -121,7 +121,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifUserContextUnsubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifUserContextUnsubscribe'
         );
 
@@ -137,7 +137,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifDebateContextSubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifDebateContextSubscribe'
         );
 
@@ -153,7 +153,7 @@ class XhrUserNotificationController extends Controller
         $logger->info('*** notifDebateContextUnsubscribeAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
-            'politizr.xhr.user',
+            'politizr.xhr.notification',
             'notifDebateContextUnsubscribe'
         );
 

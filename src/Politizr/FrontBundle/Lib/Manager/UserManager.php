@@ -35,6 +35,127 @@ class UserManager
         $this->sc = $serviceContainer;
     }
 
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * User's "My Politizr" timeline
+     *
+     * @see app/sql/timeline.sql
+     *
+     * @todo:
+     *   > + réactions sur les débats / réactions rédigés par le user courant
+     *   > + commentaires sur les débats / réactions rédigés par le user courant
+     *
+     * @param integer $userId
+     * @param array $inQueryDebateIds
+     * @param array $inQueryUserIds
+     * @param array $inQueryMyReactionIds
+     * @param array $inQueryMyDocumentIds
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function createTimelineRawSql($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyReactionIds, $inQueryMyDocumentIds, $offset, $count = 10)
+    {
+        $sql = "
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+    AND p_d_reaction.tree_level > 0 )
+
+UNION DISTINCT
+
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_debate.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_debate
+        ON p_d_reaction.p_d_debate_id = p_d_debate.id
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_debate.p_user_id = ".$userId."
+    AND p_d_reaction.tree_level > 0 )
+
+UNION DISTINCT
+
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction as p_d_reaction
+    LEFT JOIN p_d_reaction as my_reaction
+        ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND my_reaction.id IN (".$inQueryMyReactionIds.")
+    AND p_d_reaction.tree_left > my_reaction.tree_left
+    AND p_d_reaction.tree_left < my_reaction.tree_right
+    AND p_d_reaction.tree_level > my_reaction.tree_level
+    AND p_d_reaction.tree_level > 1 )
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_d_debate_id IN (".$inQueryMyDocumentIds.") )
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_d_reaction_id IN (".$inQueryMyDocumentIds.") )
+
+ORDER BY published_at DESC
+LIMIT ".$offset.", ".$count."
+        ";
+
+        return $sql;
+    }
+
+    /* ######################################################################################################## */
+    /*                                            CRUD OPERATIONS                                               */
+    /* ######################################################################################################## */
+
     /**
      * Update a user for inscription process start
      *

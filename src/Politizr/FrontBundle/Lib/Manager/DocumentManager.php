@@ -26,6 +26,76 @@ class DocumentManager
         $this->sc = $serviceContainer;
     }
 
+
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
+
+   /**
+     * Debate feed timeline
+     *
+     * @see app/sql/debateFeed.sql
+     *
+     * @todo:
+     *   > + réactions sur les débats / réactions rédigés par le user courant
+     *   > + commentaires sur les débats / réactions rédigés par le user courant
+     *
+     * @param integer $debateId
+     * @param array $inQueryUserIds
+     * @return string
+     */
+    public function createDebateFeedRawSql($debateId, $inQueryUserIds)
+    {
+        // Préparation requête SQL
+        $sql = "
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as summary, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_d_debate_id = ".$debateId."
+    AND p_d_reaction.tree_level > 0
+)
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.description as summary, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_d_debate_id = ".$debateId."
+    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.")
+)
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.description as summary, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE 
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_d_reaction_id IN (
+        # Requête \"Réactions descendantes au débat courant\"
+        SELECT p_d_reaction.id as id
+        FROM p_d_reaction
+        WHERE
+            p_d_reaction.published = 1
+            AND p_d_reaction.online = 1
+            AND p_d_reaction.p_d_debate_id = ".$debateId."
+            AND p_d_reaction.tree_level > 0
+            )
+            AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.")
+    )
+
+ORDER BY published_at ASC
+    ";
+
+        return $sql;
+    }
+
+    /* ######################################################################################################## */
+    /*                                            CRUD OPERATIONS                                               */
+    /* ######################################################################################################## */
+
     /**
      * Create a new PDDebate associated with userId
      *

@@ -55,17 +55,13 @@ XhrNotation:
 XhrTag:
     resource: "./routing/xhr/Tag.yml"
 
-# GESTION INFOS MON PROFIL
-XhrUserProfile:
-    resource: "./routing/xhr/UserProfile.yml"
+# GESTION USER
+XhrUser:
+    resource: "./routing/xhr/User.yml"
 
-# GESTION INFOS PERSOS
-XhrUserPerso:
-    resource: "./routing/xhr/UserPerso.yml"
-
-# GESTION INFOS SOUSCRIPTION NOTIFICATIONS
-XhrUserNotification:
-    resource: "./routing/xhr/UserNotification.yml"
+# GESTION NOTIFICATIONS
+XhrNotification:
+    resource: "./routing/xhr/Notification.yml"
 
 # GESTION MODAL
 XhrModal:
@@ -74,7 +70,3 @@ XhrModal:
 # DOCUMENT
 XhrDocument:
     resource: "./routing/xhr/Document.yml"
-
-# TIMELINE
-XhrTimeline:
-    resource: "./routing/xhr/Timeline.yml"
