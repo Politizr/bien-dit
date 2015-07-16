@@ -1,0 +1,24 @@
+services:
+    politzr.twig.tag:
+        class:                              Politizr\FrontBundle\Twig\PolitizrTagExtension
+        arguments:                          [ @service_container ]
+        tags:
+                                            - { name: twig.extension }
+
+    politzr.twig.document:
+        class:                              Politizr\FrontBundle\Twig\PolitizrDocumentExtension
+        arguments:                          [ @service_container ]
+        tags:
+                                            - { name: twig.extension }
+
+    politzr.twig.user:
+        class:                              Politizr\FrontBundle\Twig\PolitizrUserExtension
+        arguments:                          [ @service_container ]
+        tags:
+                                            - { name: twig.extension }
+
+    politzr.twig.reputation:
+        class:                              Politizr\FrontBundle\Twig\PolitizrReputationExtension
+        arguments:                          [ @service_container ]
+        tags:
+                                            - { name: twig.extension }

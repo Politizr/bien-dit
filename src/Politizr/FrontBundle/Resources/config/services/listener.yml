@@ -1,0 +1,59 @@
+services:
+    politzr.listener.email:
+        class:      Politizr\FrontBundle\Listener\EmailListener
+        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%noreply_email%" ]
+        tags:
+            - { name: kernel.event_listener, event: lost_password_email }
+            - { name: kernel.event_listener, event: upd_password_email }
+            - { name: kernel.event_listener, event: notification_email }
+
+    politzr.listener.notification:
+        class:      Politizr\FrontBundle\Listener\NotificationListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: n_note_pos }
+            - { name: kernel.event_listener, event: n_note_neg }
+            - { name: kernel.event_listener, event: n_debate_publish }
+            - { name: kernel.event_listener, event: n_reaction_publish }
+            - { name: kernel.event_listener, event: n_comment_publish }
+            - { name: kernel.event_listener, event: n_debate_follow }
+            - { name: kernel.event_listener, event: n_user_follow }
+            - { name: kernel.event_listener, event: n_badge_win }
+
+    politzr.listener.notification_email:
+        class:      Politizr\FrontBundle\Listener\NotificationEmailListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: n_e_check }
+
+    politzr.listener.reputation:
+        class:      Politizr\FrontBundle\Listener\ReputationListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: r_debate_publish }
+            - { name: kernel.event_listener, event: r_reaction_publish }
+            - { name: kernel.event_listener, event: r_comment_publish }
+            - { name: kernel.event_listener, event: r_note_pos }
+            - { name: kernel.event_listener, event: r_note_neg }
+            - { name: kernel.event_listener, event: r_debate_follow }
+            - { name: kernel.event_listener, event: r_debate_unfollow }
+            - { name: kernel.event_listener, event: r_user_follow }
+            - { name: kernel.event_listener, event: r_user_unfollow }
+
+    politzr.listener.badge:
+        class:      Politizr\FrontBundle\Listener\BadgeListener
+        arguments:  [ @logger, @event_dispatcher ]
+        tags:
+            - { name: kernel.event_listener, event: b_reaction_publish }
+            - { name: kernel.event_listener, event: b_document_note_pos }
+            - { name: kernel.event_listener, event: b_document_note_neg }
+            - { name: kernel.event_listener, event: b_comment_publish }
+            - { name: kernel.event_listener, event: b_comment_note_pos }
+            - { name: kernel.event_listener, event: b_comment_note_neg }
+            - { name: kernel.event_listener, event: b_user_follow }
+
+    politizr.user.activity:
+        class:      Politizr\FrontBundle\Listener\ActivityListener
+        arguments:  [ @security.context ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }

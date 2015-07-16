@@ -1,0 +1,6 @@
+services:
+    # SERVICES UTILITAIRES
+    politizr.tools.global:
+        class:                              Politizr\FrontBundle\Lib\Utils\GlobalTools
+        arguments:                          [ @service_container ]
+

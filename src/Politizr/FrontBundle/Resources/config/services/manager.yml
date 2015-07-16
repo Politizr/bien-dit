@@ -1,0 +1,28 @@
+services:
+    politizr.manager.user:
+        class:                              Politizr\FrontBundle\Lib\Manager\UserManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.document:
+        class:                              Politizr\FrontBundle\Lib\Manager\DocumentManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.tag:
+        class:                              Politizr\FrontBundle\Lib\Manager\TagManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.qualification:
+        class:                              Politizr\FrontBundle\Lib\Manager\QualificationManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.reputation:
+        class:                              Politizr\FrontBundle\Lib\Manager\ReputationManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.order:
+        class:                              Politizr\FrontBundle\Lib\Manager\OrderManager
+        arguments:                          [ @service_container ]
+
+    politizr.manager.notification:
+        class:                              Politizr\FrontBundle\Lib\Manager\NotificationManager
+        arguments:                          [ @service_container ]

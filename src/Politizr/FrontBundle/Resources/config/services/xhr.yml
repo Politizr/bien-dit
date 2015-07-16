@@ -1,0 +1,33 @@
+services:
+    politizr.xhr.document:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrDocument
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.modal:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrModal
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.security:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSecurity
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.user:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrUser
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.notification:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrNotification
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.tag:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTag
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.timeline:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTimeline
+        arguments:                          [ @service_container ]
+
+    politizr.xhr.search:
+        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSearch
+        arguments:                          [ @service_container ]
+

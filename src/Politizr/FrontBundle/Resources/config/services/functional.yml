@@ -1,0 +1,12 @@
+services:
+    politizr.functional.document:
+        class:                              Politizr\FrontBundle\Lib\Functional\DocumentService
+        arguments:                          [ @service_container ]
+
+    politizr.functional.security:
+        class:                              Politizr\FrontBundle\Lib\Functional\SecurityService
+        arguments:                          [ @service_container ]
+
+    politizr.functional.timeline:
+        class:                              Politizr\FrontBundle\Lib\Functional\TimelineService
+        arguments:                          [ @service_container ]
