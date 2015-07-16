@@ -35,80 +35,72 @@ class XhrTag
     }
 
     /* ######################################################################################################## */
-    /*                                               FONCTIONS PRIVÉES                                          */
+    /*                                               PRIVATE FUNCTIONS                                          */
     /* ######################################################################################################## */
 
     /**
-     *  Gestion des différents cas de figure suite à l'ajout d'un tag: tag sélectionné depuis la liste, tag existant mais non sélectionné, tag non existant.
+     * Useful method which manage differents scenarios for retrieving or creating a tag.
      *
-     *  @param $tagId       integer
-     *  @param $tagtTitle   string
-     *  @param $tagTypeId   integer
-     *  @param $newTag      boolean     création de tag autorisée ou pas
+     * @todo: delete UNIQUE constraint on "slug" to manage same slug for different type => /!\ problèmes en vue sur liste déroulante multi-type
      *
-     *  @return integer     id du tag sélectionné / retrouvé / créé
+     * @param integer $tagId
+     * @param string $tagTitle
+     * @param integer $tagTypeId
+     * @param integer $userId
+     * @param boolean $newTag
+     * @param TagManager $tagManager
+     * @return PTag
+     * @throws FormValidationException
      */
-    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId = null, $newTag = false)
+    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $userId, $newTag, $tagManager)
     {
-        if (!$tagId) {
-            // Récupération via slug
-            $slug = StudioEchoUtils::generateSlug($tagTitle);
-            $tag = PTagQuery::create()
-                        ->_if($tagTypeId)
-                            ->filterByPTTagTypeId($tagTypeId)
-                        ->_endif()
-                        ->filterBySlug($slug)
-                        ->findOne();
-
-            if ($tag) {
-                $tagId = $tag->getId();
-            } elseif ($newTag) {
-                // Récupération user
-                $user = $this->sc->get('security.context')->getToken()->getUser();
-
-                $tagId = PTagQuery::create()->addTag($tagTitle, $tagTypeId, $user->getId(), true);
-            } else {
-                throw new \Exception('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
-            }
+        if ($tagId) {
+            $tag = PTagQuery::create()->findPk($tagId);
+            return $tag;
         }
 
-        return $tagId;
+        $slug = StudioEchoUtils::generateSlug($tagTitle);
+        $tag = PTagQuery::create()
+                    // ->filterByPTTagTypeId($tagTypeId)
+                    ->filterBySlug($slug)
+                    ->findOne();
+
+        if ($tag) {
+            return $tag;
+        }
+
+        if ($newTag) {
+            $tag = $tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
+            return $tag;
+        }
+
+        throw new FormValidationException('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
     }
 
-
     /* ######################################################################################################## */
-    /*                                               TAGS COMMUNS (FONCTIONS AJAX)                              */
+    /*                                               GENERIC TAG FUNCTIONS                                      */
     /* ######################################################################################################## */
 
     /**
-     *  Renseigne et retourne un tableau contenant les tags
-     *
+     * Get tags
      */
     public function getTags()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** getTags');
-        
-        // Récupération args
-        $request = $this->sc->get('request');
 
-        // Récupération args
+        // Retrieve used services
+        $request = $this->sc->get('request');
+        $tagManager = $this->sc->get('politizr.manager.tag');
+
+        // Request arguments
         $tagTypeId = $request->get('tagTypeId');
         $logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $zoneId = $request->get('zoneId');
         $logger->info('$zoneId = ' . print_r($zoneId, true));
 
-        // Récupération des tags
-        $tags = PTagQuery::create()
-            ->select(array('id', 'title'))
-            ->filterByOnline(true)
-            ->_if($tagTypeId)
-                ->filterByPTTagTypeId($tagTypeId)
-            ->_endif()
-            ->orderByTitle()
-            ->find()
-            ->toArray();
-        // $logger->info('$pTags = ' . print_r($pTags, true));
+        // Function process
+        $tags = $tagManager->getArrayTags($tagTypeId, true);
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
@@ -118,141 +110,158 @@ class XhrTag
     }
 
 
-
     /* ######################################################################################################## */
-    /*                                               TAGS DEBATS (FONCTIONS AJAX)                               */
+    /*                                                      DEBATE                                              */
     /* ######################################################################################################## */
 
     /**
-     *  Association d'un tag à un débat
-     *
+     * Debate's tag creation
      */
     public function debateAddTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateAddTag');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $tagManager = $this->sc->get('politizr.manager.tag');
+        $router = $this->sc->get('router');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
+        // Request arguments
         $tagTitle = $request->get('tagTitle');
+        $logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $tagTypeId = $request->get('tagTypeId');
+        $logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
         $newTag = $request->get('newTag');
+        $logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        // Gestion tag non existant
-        $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag, $tagManager);
 
-        // Association du tag au debat
-        $created = PDDTaggedTQuery::create()->addElement($subjectId, $tagId);
+        // associate tag to debate
+        $pddTaggedT = PDDTaggedTQuery::create()
+            ->filterByPDDebateId($subjectId)
+            ->filterByPTagId($tag->getId())
+            ->findOne();
 
-        if (!$created) {
+        if ($pddTaggedT) {
+            $created = false;
             $htmlTag = null;
         } else {
-            // Construction du rendu du tag
-            $tag = PTagQuery::create()->findPk($tagId);
-            $templating = $this->sc->get('templating');
+            $created = true;
+            $tagManager->createDebateTag($subjectId, $tag->getId());
+
             $htmlTag = $templating->render(
                 'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->sc->get('router')->generate('DebateDeleteTag')
+                    'deleteUrl' => $router->generate('DebateDeleteTag')
                 )
             );
         }
 
-        // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'created' => $created,
             'htmlTag' => $htmlTag
             );
     }
 
-
     /**
-     *  Suppression de l'association d'un tag à un débat
-     *
+     * Debate's tag deletion
      */
     public function debateDeleteTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** debateDeleteTag');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $tagManager = $this->sc->get('politizr.manager.tag');
 
-        // Récupération args
+        // Request arguments
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
 
-        // Suppression du tag / profil
-        $deleted = PDDTaggedTQuery::create()->deleteElement($subjectId, $tagId);
+        // Function process
+        $tagManager->deleteDebateTag($subjectId, $tagId);
 
         return true;
     }
 
     /* ######################################################################################################## */
-    /*                                               TAGS USERS (FONCTIONS AJAX)                                */
+    /*                                                     USER                                                 */
     /* ######################################################################################################## */
 
-
     /**
-     *  Association d'un tag suivi d'un user
-     *
+     * User's follow tag creation
      */
     public function userFollowAddTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userFollowAddTag');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $tagManager = $this->sc->get('politizr.manager.tag');
+        $router = $this->sc->get('router');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
+        // Request arguments
         $tagTitle = $request->get('tagTitle');
+        $logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $tagTypeId = $request->get('tagTypeId');
+        $logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
         $newTag = $request->get('newTag');
+        $logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        // Gestion tag non existant
-        $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag, $tagManager);
 
-        // Association du tag au user
-        $created = PUFollowTQuery::create()->addElement($subjectId, $tagId);
+        // associate tag to user's following
+        $puFollowT = PUFollowTQuery::create()
+            ->filterByPUserId($subjectId)
+            ->filterByPTagId($tag->getId())
+            ->findOne();
 
-        if (!$created) {
+        if ($puFollowT) {
+            $created = false;
             $htmlTag = null;
         } else {
-            // Construction du rendu du tag
-            $tag = PTagQuery::create()->findPk($tagId);
-            $templating = $this->sc->get('templating');
+            $created = true;
+            $tagManager->createUserFollowTag($subjectId, $tag->getId());
+
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
+                'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->sc->get('router')->generate('UserFollowDeleteTag')
+                    'deleteUrl' => $router->generate('UserFollowDeleteTag')
                 )
             );
         }
@@ -264,77 +273,85 @@ class XhrTag
             );
     }
 
-
     /**
-     *  Suppression de l'association d'un tag suivi d'un user
-     *
+     * User's follow tag deletion
      */
     public function userFollowDeleteTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userFollowDeleteTag');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $tagManager = $this->sc->get('politizr.manager.tag');
 
-        // Récupération args
+        // Request arguments
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
 
-        // Suppression du tag / profil
-        $deleted = PUFollowTQuery::create()->deleteElement($subjectId, $tagId);
+        // Function process
+        $tagManager->deleteUserFollowTag($subjectId, $tagId);
 
         return $deleted;
     }
 
-
     /**
-     *  Association d'un tag caractérisant un user
-     *
+     * User's tagged tag creation
      */
     public function userTaggedAddTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userTaggedAddTag');
-        
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
 
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $securityContext = $this->sc->get('security.context');
+        $tagManager = $this->sc->get('politizr.manager.tag');
+        $router = $this->sc->get('router');
+        $templating = $this->sc->get('templating');
 
-        // Récupération args
+        // Request arguments
         $tagTitle = $request->get('tagTitle');
+        $logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $tagTypeId = $request->get('tagTypeId');
+        $logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
         $newTag = $request->get('newTag');
+        $logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        // Gestion tag non existant
-        $tagId = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag, $tagManager);
 
-        // Association du tag au user
-        $created = PUTaggedTQuery::create()->addElement($subjectId, $tagId);
+        // associate tag to user's tagging
+        $puTaggedT = PUTaggedTQuery::create()
+            ->filterByPUserId($subjectId)
+            ->filterByPTagId($tag->getId())
+            ->findOne();
 
-        if (!$created) {
+        if ($puTaggedT) {
+            $created = false;
             $htmlTag = null;
         } else {
-            // Construction du rendu du tag
-            $tag = PTagQuery::create()->findPk($tagId);
-            $templating = $this->sc->get('templating');
+            $created = true;
+            $tagManager->createUserTaggedTag($subjectId, $tag->getId());
+
             $htmlTag = $templating->render(
-                'PolitizrFrontBundle:Fragment\\Tag:ListRowEdit.html.twig',
+                'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->sc->get('router')->generate('UserTaggedDeleteTag')
+                    'deleteUrl' => $router->generate('UserTaggedDeleteTag')
                 )
             );
         }
@@ -346,28 +363,26 @@ class XhrTag
             );
     }
 
-
     /**
-     *  Suppression de l'association d'un tag suivi d'un user
-     *
+     * User's tagged tag deletion
      */
     public function userTaggedDeleteTag()
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** userTaggedDeleteTag');
         
-        // Récupération user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
-
-        // Récupération args
+        // Retrieve used services
         $request = $this->sc->get('request');
+        $tagManager = $this->sc->get('politizr.manager.tag');
 
-        // Récupération args
+        // Request arguments
         $tagId = $request->get('tagId');
+        $logger->info('$tagId = ' . print_r($tagId, true));
         $subjectId = $request->get('subjectId');
+        $logger->info('$subjectId = ' . print_r($subjectId, true));
 
-        // Suppression du tag / profil
-        $deleted = PUTaggedTQuery::create()->deleteElement($subjectId, $tagId);
+        // Function process
+        $tagManager->deleteUserTaggedTag($subjectId, $tagId);
 
         return $deleted;
     }

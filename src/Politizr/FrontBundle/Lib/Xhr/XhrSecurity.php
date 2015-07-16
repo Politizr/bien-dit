@@ -210,7 +210,6 @@ class XhrSecurity
 
         // get subscription
         $subscription = POSubscriptionQuery::create()->findPk($subscriptionId);
-
         if (!$subscription) {
             throw new InconsistentDataException('Subscription not found');
         }
