@@ -1,5 +1,5 @@
 <?php
-namespace Politizr\FrontBundle\Lib\Utils;
+namespace Politizr\FrontBundle\Lib\Tools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
@@ -12,11 +12,11 @@ use Politizr\Model\PQType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
- * Utils method
+ * Various tools methods
  *
  * @author Lionel Bouzonville
  */
-class UtilsManager
+class GlobalTools
 {
     private $sc;
 

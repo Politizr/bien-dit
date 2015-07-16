@@ -58,7 +58,7 @@ class DocumentController extends Controller
         $debate->save();
 
         // Paragraphs explode
-        $utilsManager = $this->get('politizr.utils');
+        $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
@@ -97,7 +97,7 @@ class DocumentController extends Controller
         $reaction->save();
 
         // Paragraphs explode
-        $utilsManager = $this->get('politizr.utils');
+        $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
@@ -277,7 +277,7 @@ class DocumentController extends Controller
         }
 
         // Paragraphs explode
-        $utilsManager = $this->get('politizr.utils');
+        $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($parent->getDescription());
 
         // forms

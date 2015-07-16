@@ -19,7 +19,7 @@ use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
 /**
- * Extension Twig / Gestion des users
+ * User's twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -30,6 +30,7 @@ class PolitizrUserExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityContext;
 
     private $user;
 
@@ -43,9 +44,10 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -303,11 +305,10 @@ class PolitizrUserExtension extends \Twig_Extension
 
 
     /**
-     * Construit la structure texte + liens associé à une notification.
-     * @todo dead code?
+     * Notification HTML rendering
      *
-     * @param $notification         PUNotification
-     * @param $absolute             boolean                 URL absolu pour les liens
+     * @param PUNotification $notification
+     * @param boolean $absolute render absolute URL link
      * @return html
      */
     public function linkedNotification(PUNotification $notification, $absolute = false)
@@ -386,7 +387,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glNotification.html.twig',
+            'PolitizrFrontBundle:Notification:_notification.html.twig',
             array(
                 'id' => $notification->getPNotificationId(),
                 'puId' => $notification->getId(),
@@ -416,7 +417,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
 
         // elected profile can react
-        if ($this->sc->get('security.context')->isGranted('ROLE_ELECTED')) {
+        if ($this->securityContext->isGranted('ROLE_ELECTED')) {
             return true;
         }
 
@@ -448,7 +449,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedC');
 
-        if ($this->sc->get('security.context')->isGranted('ROLE_CITIZEN') &&
+        if ($this->securityContext->isGranted('ROLE_CITIZEN') &&
             $this->user &&
             $this->user->getOnline()) {
             return true;
@@ -469,7 +470,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedE');
 
-        if ($this->sc->get('security.context')->isGranted('ROLE_ELECTED') &&
+        if ($this->securityContext->isGranted('ROLE_ELECTED') &&
             $this->user &&
             $this->user->getPUStatusId() == PUStatus::ACTIVED &&
             $this->user->getOnline()) {

@@ -19,7 +19,7 @@ use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\Exception\InconsistentDataException;
 
 /**
- * Extension Twig / Gestion des documents
+ * Document's twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -30,6 +30,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityContext;
+    private $timelineService;
 
     private $user;
 
@@ -43,9 +45,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
+        $this->timelineService = $serviceContainer->get('politizr.functional.timeline');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -628,18 +632,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
-
-
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
     /* ######################################################################################################## */
 
     /**
-     *  Rendu d'une ligne de la timeline en fonction du type
+     * Render an item timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean debateContext
-     *
+     * @param boolean $debateContext
      * @return string
      */
     public function timelineRow(TimelineRow $timelineRow, $debateContext = false)
@@ -651,128 +652,25 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         switch ($timelineRow->getType()) {
             case PDocumentInterface::TYPE_DEBATE:
-                $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
-
-                // contexte
-                $authorIsMe = false;
-                $authorIsFollowed = false;
-                $debateIsFollowed = false;
-                if ($this->user) {
-                    $authorIsMe = $debate->isUserId($this->user->getId());
-                    if (!$authorIsMe) {
-                        $author = $debate->getUser();
-                        if ($author) {
-                            $authorIsFollowed = $author->isFollowedByUserId($author->getId());
-                        }
-                        $debateIsFollowed = $debate->isFollowedByUserId($this->user->getId());
-                    }
-                }
-
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Timeline:_itemDebate.html.twig',
-                    array(
-                        'debate' => $debate,
-                        'debateContext' => $debateContext,
-                        'authorIsMe' => $authorIsMe,
-                        'authorIsFollowed' => $authorIsFollowed,
-                        'debateIsFollowed' => $debateIsFollowed,
-                    )
-                );
+                $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
 
                 break;
             case PDocumentInterface::TYPE_REACTION:
-                $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
+                $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $debateContext);
 
-                $parentReaction = null;
-                if ($reaction->getLevel() > 1) {
-                    $parentReaction = $reaction->getParent();
-                }
-                $parentDebate = $reaction->getDebate();
-
-                // contexte
-                $authorIsMe = false;
-                $authorIsFollowed = false;
-                $debateIsFollowed = false;
-                if ($this->user) {
-                    $debateIsFollowed = $parentDebate->isFollowedByUserId($this->user->getId());
-                    $authorIsMe = $reaction->isUserId($this->user->getId());
-                    if (!$authorIsMe) {
-                        $author = $reaction->getUser();
-                        if ($author) {
-                            $authorIsFollowed = $author->isFollowedByUserId($this->user->getId());
-                        }
-                    }
-                }
-
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Timeline:_itemReaction.html.twig',
-                    array(
-                        'reaction' => $reaction,
-                        'debateContext' => $debateContext,
-                        'parentDebate' => $parentDebate,
-                        'parentReaction' => $parentReaction,
-                        'authorIsMe' => $authorIsMe,
-                        'authorIsFollowed' => $authorIsFollowed,
-                        'debateIsFollowed' => $debateIsFollowed,
-                    )
-                );
                 break;
             case PDocumentInterface::TYPE_DEBATE_COMMENT:
+                $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $debateContext);
+
+                break;
             case PDocumentInterface::TYPE_REACTION_COMMENT:
+                $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
 
-                if (PDocumentInterface::TYPE_DEBATE_COMMENT == $timelineRow->getType()) {
-                    $comment = PDDCommentQuery::create()->findPk($timelineRow->getId());
-                } else {
-                    $comment = PDRCommentQuery::create()->findPk($timelineRow->getId());
-                }
-
-                $parentType = $comment->getPDocumentType();
-                $parentDebate = null;
-                $parentReaction = null;
-                switch ($parentType) {
-                    case PDocumentInterface::TYPE_DEBATE:
-                        $parentDebate = $comment->getPDocument();
-                        break;
-                    case PDocumentInterface::TYPE_REACTION:
-                        $parentReaction = $comment->getPDocument();
-                        $parentDebate = $parentReaction->getDebate();
-                        break;
-                }
-
-                // contexte
-                $authorIsMe = false;
-                $authorIsFollowed = false;
-                $debateIsFollowed = false;
-                if ($this->user) {
-                    $debateIsFollowed = $parentDebate->isFollowedByUserId($this->user->getId());
-                    $authorIsMe = $comment->isUserId($this->user->getId());
-                    if (!$authorIsMe) {
-                        $author = $comment->getUser();
-                        if ($author) {
-                            $authorIsFollowed = $author->isFollowedByUserId($this->user->getId());
-                        }
-                    }
-                }
-
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
-                    array(
-                        'comment' => $comment,
-                        'debateContext' => $debateContext,
-                        'parentDebate' => $parentDebate,
-                        'parentReaction' => $parentReaction,
-                        'authorIsMe' => $authorIsMe,
-                        'authorIsFollowed' => $authorIsFollowed,
-                        'debateIsFollowed' => $debateIsFollowed,
-                    )
-                );
                 break;
         }
 
         return $html;
     }
-
-
 
     public function getName()
     {

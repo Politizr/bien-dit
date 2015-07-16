@@ -660,7 +660,7 @@ class XhrDocument
         $session = $this->sc->get('session');
         $kernel = $this->sc->get('kernel');
         $request = $this->sc->get('request');
-        $utilsManager = $this->sc->get('politizr.utils');
+        $utilsManager = $this->sc->get('politizr.tools.global');
         $templating = $this->sc->get('templating');
 
         // Request arguments

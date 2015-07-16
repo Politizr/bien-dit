@@ -6,7 +6,10 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 
@@ -312,5 +315,205 @@ class TimelineService
         $timeline = $this->hydrateTimelineRows($sql);
 
         return $timeline;
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                             RENDERING FUNCTIONS                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * Generate the rendering of an item debate timeline row
+     *
+     * @param integer $debateId
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemDebate($debateId, $debateContext)
+    {
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $debate = PDDebateQuery::create()->findPk($debateId);
+
+        $authorIsMe = false;
+        $authorIsFollowed = false;
+        $debateIsFollowed = false;
+        if ($user) {
+            $authorIsMe = $debate->isUserId($user->getId());
+            if (!$authorIsMe) {
+                $author = $debate->getUser();
+                if ($author) {
+                    $authorIsFollowed = $author->isFollowedByUserId($author->getId());
+                }
+                $debateIsFollowed = $debate->isFollowedByUserId($user->getId());
+            }
+        }
+
+        $html = $templating->render(
+            'PolitizrFrontBundle:Timeline:_itemDebate.html.twig',
+            array(
+                'debate' => $debate,
+                'debateContext' => $debateContext,
+                'authorIsMe' => $authorIsMe,
+                'authorIsFollowed' => $authorIsFollowed,
+                'debateIsFollowed' => $debateIsFollowed,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item reaction timeline row
+     *
+     * @param integer $reactionId
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemReaction($reactionId, $debateContext)
+    {
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $reaction = PDReactionQuery::create()->findPk($reactionId);
+
+        $parentReaction = null;
+        if ($reaction->getLevel() > 1) {
+            $parentReaction = $reaction->getParent();
+        }
+        $parentDebate = $reaction->getDebate();
+
+        $authorIsMe = false;
+        $authorIsFollowed = false;
+        $debateIsFollowed = false;
+        if ($user) {
+            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $authorIsMe = $reaction->isUserId($user->getId());
+            if (!$authorIsMe) {
+                $author = $reaction->getUser();
+                if ($author) {
+                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                }
+            }
+        }
+
+        $html = $templating->render(
+            'PolitizrFrontBundle:Timeline:_itemReaction.html.twig',
+            array(
+                'reaction' => $reaction,
+                'debateContext' => $debateContext,
+                'parentDebate' => $parentDebate,
+                'parentReaction' => $parentReaction,
+                'authorIsMe' => $authorIsMe,
+                'authorIsFollowed' => $authorIsFollowed,
+                'debateIsFollowed' => $debateIsFollowed,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item debate comment timeline row
+     *
+     * @param integer $commentId
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemDebateComment($commentId, $debateContext)
+    {
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $comment = PDDCommentQuery::create()->findPk($commentId);
+        $parentDebate = $comment->getPDocument();
+
+        $authorIsMe = false;
+        $authorIsFollowed = false;
+        $debateIsFollowed = false;
+        if ($user) {
+            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $authorIsMe = $comment->isUserId($user->getId());
+            if (!$authorIsMe) {
+                $author = $comment->getUser();
+                if ($author) {
+                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                }
+            }
+        }
+
+        $html = $templating->render(
+            'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
+            array(
+                'comment' => $comment,
+                'debateContext' => $debateContext,
+                'parentDebate' => $parentDebate,
+                'parentReaction' => null,
+                'authorIsMe' => $authorIsMe,
+                'authorIsFollowed' => $authorIsFollowed,
+                'debateIsFollowed' => $debateIsFollowed,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item reaction comment timeline row
+     *
+     * @param integer $commentId
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemReactionComment($commentId, $debateContext)
+    {
+        // Retrieve used services
+        $securityContext = $this->sc->get('security.context');
+        $templating = $this->sc->get('templating');
+
+        // Function process
+        $user = $securityContext->getToken()->getUser();
+        $comment = PDRCommentQuery::create()->findPk($commentId);
+        $parentReaction = $comment->getPDocument();
+        $parentDebate = $parentReaction->getDebate();
+
+        $authorIsMe = false;
+        $authorIsFollowed = false;
+        $debateIsFollowed = false;
+        if ($user) {
+            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $authorIsMe = $comment->isUserId($user->getId());
+            if (!$authorIsMe) {
+                $author = $comment->getUser();
+                if ($author) {
+                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                }
+            }
+        }
+
+        $html = $templating->render(
+            'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
+            array(
+                'comment' => $comment,
+                'debateContext' => $debateContext,
+                'parentDebate' => $parentDebate,
+                'parentReaction' => $parentReaction,
+                'authorIsMe' => $authorIsMe,
+                'authorIsFollowed' => $authorIsFollowed,
+                'debateIsFollowed' => $debateIsFollowed,
+            )
+        );
+
+        return $html;
     }
 }

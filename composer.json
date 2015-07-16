@@ -47,6 +47,7 @@
         "willdurand/propel-typehintable-behavior": "1.0.4",
         "craftyshadow/propel-equalnest-behavior": "~1.2",
         "glorpen/propel-bundle": "@dev",
+
         "willdurand/geocoder-bundle": "3.0.*",
 
         "phing/phing": "2.4.14",

@@ -148,7 +148,7 @@ class XhrUser
         // Retrieve used services
         $securityContext = $this->sc->get('security.context');
         $kernel = $this->sc->get('kernel');
-        $politizrUtils = $this->sc->get('politizr.utils');
+        $politizrUtils = $this->sc->get('politizr.tools.global');
 
         // Function process
         $user = $securityContext->getToken()->getUser();
@@ -217,7 +217,7 @@ class XhrUser
         // Retrieve used services
         $securityContext = $this->sc->get('security.context');
         $kernel = $this->sc->get('kernel');
-        $politizrUtils = $this->sc->get('politizr.utils');
+        $politizrUtils = $this->sc->get('politizr.tools.global');
 
         // Function process
         $user = $securityContext->getToken()->getUser();
@@ -351,7 +351,7 @@ class XhrUser
         $securityContext = $this->sc->get('security.context');
         $formFactory = $this->sc->get('form.factory');
         $templating = $this->sc->get('templating');
-        $politizrUtils = $this->sc->get('politizr.utils');
+        $politizrUtils = $this->sc->get('politizr.tools.global');
 
         // Function process
         $user = $securityContext->getToken()->getUser();

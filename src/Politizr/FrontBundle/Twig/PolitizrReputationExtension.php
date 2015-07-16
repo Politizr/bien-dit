@@ -13,7 +13,7 @@ use Politizr\Model\PUReputation;
 use Politizr\Model\PDocumentInterface;
 
 /**
- * Extension Twig / Gestion réputation
+ * User's reputation twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -24,6 +24,7 @@ class PolitizrReputationExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityContext;
 
     private $user;
 
@@ -37,9 +38,10 @@ class PolitizrReputationExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
