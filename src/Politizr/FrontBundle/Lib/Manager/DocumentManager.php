@@ -203,11 +203,15 @@ ORDER BY published_at ASC
                 }
                 $reaction->insertAsLastChildOf($parent);
             } else {
-                $rootNode = PDReactionQuery::create()->findOrCreateRoot($debate->getId());
+                $rootNode = PDReactionQuery::create()->findRoot($debate->getId());
+                if (!$rootNode) {
+                    $this->createReactionRootNode($debate->getId());
+                }
+
                 if ($nbReactions = $debate->countReactions() == 0) {
                     $reaction->insertAsFirstChildOf($rootNode);
                 } else {
-                    $reaction->insertAsNextSiblingOf($debate->getLastReaction(1));
+                    $reaction->insertAsNextSiblingOf($debate->getLastPublishedReaction(1));
                 }
             }
 
@@ -217,6 +221,27 @@ ORDER BY published_at ASC
         }
 
         return $debate;
+    }
+
+    /**
+     * Reaction nested set root node
+     *
+     * @param integer $debateId
+     * @return PDReaction
+     */
+    public function createReactionRootNode($debateId)
+    {
+        $rootNode = new PDReaction();
+
+        $rootNode->setPDDebateId($debateId);
+        $rootNode->setTitle('ROOT NODE');
+        $rootNode->setOnline(false);
+        $rootNode->setPublished(false);
+
+        $rootNode->makeRoot();
+        $rootNode->save();
+
+        return $rootNode;
     }
 
     /**

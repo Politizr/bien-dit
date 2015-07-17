@@ -290,4 +290,46 @@ LIMIT ".$offset.", ".$count."
     public function filterByGeolocalization(Geocoded $geocoded)
     {
     }
+
+    /* ######################################################################################################## */
+    /*                                              FILTERBY IF                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     * @param boolean $online
+     */
+    public function filterIfOnline($online = null)
+    {
+        return $this
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $qualified
+     */
+    public function filterIfQualified($qualified = null)
+    {
+        return $this
+            ->_if(null !== $qualified)
+                ->filterByQualified($qualified)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $notifReaction
+     */
+    public function filterIfNotifReaction($notifReaction = null)
+    {
+        return $this
+            ->_if(null !== $notifReaction)
+                ->usePuFollowDdPUserQuery()
+                    ->filterByNotifReaction($notifReaction)
+                ->endUse()
+            ->_endif();
+    }
 }

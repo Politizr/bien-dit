@@ -6,9 +6,16 @@ use Politizr\Model\om\BasePDDebateQuery;
 
 use Geocoder\Result\Geocoded;
 
+/**
+ * Debate query
+ *
+ * @author Lionel Bouzonville
+ */
 class PDDebateQuery extends BasePDDebateQuery
 {
-    // *****************************    RAW SQL    ************************* //
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
     
     /**
      * Debates' suggestion for user.
@@ -89,7 +96,7 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Hydrate des objets PDDebate suite à une requête.
+     * PDDebate objects hydratation from raw sql
      *
      * @param string $sql
      * @return PropelCollection
@@ -119,12 +126,12 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
+     * Find debates by user's suggestion
      *
      * @param integer $userId
      * @param integer $offset
      * @param integer $limit
-     * @return  PropelCollection
+     * @return PropelCollection
      */
     public function findBySuggestion($userId, $offset = 0, $limit = 10)
     {
@@ -134,12 +141,13 @@ LIMIT ".$offset.", ".$limit."
         return $debates;
     }
 
-    // *****************************    AGGREGATIONS / UTILES    ************************* //
+    /* ######################################################################################################## */
+    /*                                             AGGREGATIONS                                                 */
+    /* ######################################################################################################## */
     
     /**
-     * Cumule les contraintes associés à un objet en ligne
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function online()
     {
@@ -147,27 +155,28 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Ordonne suivant un mot clef défini sur la vue.
+     * Order by keyword
+     * @todo refactor keyword to constant
      *
-     * @param string $keyword      Mot clef pour l'ordonnancement issu du html
-     *
-     * @return  Query
+     * @param string $keyword
+     * @return PDDebateQuery
      */
     public function orderWithKeyword($keyword = 'last')
     {
-        return $this->_if('mostFollowed' === $keyword)
-                        ->orderByMostFollowed()
-                    ->_elseif('bestNote' === $keyword)
-                        ->orderByNote()
-                    ->_elseif('last' === $keyword)
-                        ->orderByLast()
-                    ->_endif();
+        return $this
+            ->_if('mostFollowed' === $keyword)
+                ->orderByMostFollowed()
+            ->_elseif('bestNote' === $keyword)
+                ->orderByNote()
+            ->_elseif('last' === $keyword)
+                ->orderByLast()
+            ->_endif();
     }
 
     /**
-     * Ordonne les objets par meilleur note
+     * Order by note pos
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function orderByNote()
     {
@@ -175,22 +184,23 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Ordonne les objets par nombre de followers
+     * Order by number of followers
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function orderByMostFollowed()
     {
-        return $this->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
-                ->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
-                ->groupBy('Id')
-                ->orderBy('NbFollowers', 'desc')
-                ;
+        return $this
+            ->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
+            ->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
+            ->groupBy('Id')
+            ->orderBy('NbFollowers', 'desc');
     }
 
     /**
-     * Ordonne les objets par derniers débats publiés
+     * Order by last published
      *
+     * @return PDDebateQuery
      */
     public function orderByLast()
     {
@@ -198,35 +208,35 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Filtre suivant le mot(s) clef(s) défini sur la vue
+     * Filter by keyword
      *
-     * @param array $keywords
-     * @return Query
+     * @param array[string] $keywords
+     * @return PDDebateQuery
      */
     public function filterByKeywords($keywords = null)
     {
-        return $this->_if($keywords && (in_array('lastDay', $keywords)))
-                        ->filterByLastDay()
-                    ->_endif()
-                    ->_if($keywords && (in_array('lastWeek', $keywords)))
-                        ->filterByLastWeek()
-                    ->_endif()
-                    ->_if($keywords && (in_array('lastMonth', $keywords)))
-                        ->filterByLastMonth()
-                    ->_endif()
-                    ->_if($keywords && in_array('qualified', $keywords))
-                        ->filterByQualified()
-                    ->_endif()
-                    ->_if($keywords && in_array('citizen', $keywords))
-                        ->filterByCitizen()
-                    ->_endif()
-                    ;
+        return $this
+            ->_if($keywords && (in_array('lastDay', $keywords)))
+                ->filterByLastDay()
+            ->_endif()
+            ->_if($keywords && (in_array('lastWeek', $keywords)))
+                ->filterByLastWeek()
+            ->_endif()
+            ->_if($keywords && (in_array('lastMonth', $keywords)))
+                ->filterByLastMonth()
+            ->_endif()
+            ->_if($keywords && in_array('qualified', $keywords))
+                ->filterByQualified()
+            ->_endif()
+            ->_if($keywords && in_array('citizen', $keywords))
+                ->filterByCitizen()
+            ->_endif();
     }
 
     /**
-     * Filtre les objets publiés durant les dernières 24h
+     * Filter by published during last 24h
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function filterByLastDay()
     {
@@ -239,9 +249,9 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Filtre les objets publiés durant la dernière semaine
+     * Filter by published during last week
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function filterByLastWeek()
     {
@@ -254,9 +264,9 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Filtre les objets publiés durant le mois dernier
+     * Filter by published during last month
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function filterByLastMonth()
     {
@@ -269,37 +279,36 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
-     * Filtre les objets uniquement rédigés par des profils débatteurs
+     * Filter by qualified
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function filterByQualified()
     {
-        return $this->usePUserQuery()
-                        ->filterByQualified(true)
-                    ->endUse()
-                    ;
+        return $this
+            ->usePUserQuery()
+                ->filterByQualified(true)
+            ->endUse();
     }
 
     /**
-     * Filtre les objets uniquement rédigés par des profils citoyens
+     * Filter by not qualified
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function filterByCitizen()
     {
-        return $this->usePUserQuery()
-                        ->filterByQualified(false)
-                    ->endUse()
-                    ;
+        return $this
+            ->usePUserQuery()
+                ->filterByQualified(false)
+            ->endUse();
     }
 
     /**
-     * Filtre les objets par géolocalisation
-     * @todo requête géoloc / tags
+     * Filter by geolocalization
      *
-     * @param   Geocoder\Result\Geocoded    $geocoded
-     * @return  Query
+     * @param Geocoded $geocoded
+     * @return PDDebateQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {

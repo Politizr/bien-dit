@@ -5,7 +5,7 @@ namespace Politizr\FrontBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Politizr\Model\PDocumentInterface;
+use Politizr\Constant\ObjectTypeConstants;
 
 /**
  * Reaction's comment type
@@ -27,7 +27,7 @@ class PDRCommentType extends PDCommentType
 
         $builder->add('type', 'hidden', array(
             'required' => true,
-            'data' => PDocumentInterface::TYPE_REACTION_COMMENT,
+            'data' => ObjectTypeConstants::TYPE_REACTION_COMMENT,
         ));
     }
 

@@ -9,8 +9,9 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Politizr\Model\PUser;
-use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
@@ -137,7 +138,7 @@ class XhrUser
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $targetUser,
-                'type' => PDocumentInterface::TYPE_USER
+                'type' => ObjectTypeConstants::TYPE_USER
             )
         );
 
@@ -518,7 +519,7 @@ class XhrUser
 
         $historyActions = PUReputationQuery::create()
                             ->filterByPUserId($user->getId())
-                            ->orderByCreatedAt(\Criteria::DESC)
+                            ->orderByCreatedAt('desc')
                             ->limit(10)
                             ->offset($offset)
                             ->find();

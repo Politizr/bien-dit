@@ -33,7 +33,7 @@ interface PDCommentInterface
     /**
      * Get associated document
      *
-     * @return PDocumentInterface
+     * @return ObjectTypeConstants
      */
     public function getPDocument();
 }

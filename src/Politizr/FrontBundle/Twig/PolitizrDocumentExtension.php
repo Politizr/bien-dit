@@ -1,6 +1,9 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -172,10 +175,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $path = 'bundles/politizrfront/images/default_debate.jpg';
         if ($fileName = $document->getFileName()) {
             switch ($document->getType()) {
-                case PDocumentInterface::TYPE_DEBATE:
-                    $uploadWebPath = PDDebate::UPLOAD_WEB_PATH;
+                case ObjectTypeConstants::TYPE_DEBATE:
+                    $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
                     break;
-                case PDocumentInterface::TYPE_REACTION:
+                case ObjectTypeConstants::TYPE_REACTION:
                     $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
                     break;
             }
@@ -213,10 +216,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $nbReactions = 0;
         switch ($document->getType()) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $nbReactions = $document->countReactions(true, true);
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $nbReactions = $document->countChildrenReactions(true, true);
                 break;
         }
@@ -410,7 +413,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocumentInterface::TYPE_DEBATE,
+                'type' => ObjectTypeConstants::TYPE_DEBATE,
                 'pos' => $pos,
                 'neg' => $neg,
             )
@@ -473,7 +476,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $reaction,
-                'type' => PDocumentInterface::TYPE_REACTION,
+                'type' => ObjectTypeConstants::TYPE_REACTION,
                 'pos' => $pos,
                 'neg' => $neg,
             )
@@ -500,12 +503,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         if ($this->user) {
             switch ($comment->getType()) {
-                case PDocumentInterface::TYPE_DEBATE_COMMENT:
-                    $type = PDocumentInterface::TYPE_DEBATE_COMMENT;
+                case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                    $type = ObjectTypeConstants::TYPE_DEBATE_COMMENT;
                     $query = PDDCommentQuery::create();
                     break;
-                case PDocumentInterface::TYPE_REACTION_COMMENT:
-                    $type = PDocumentInterface::TYPE_REACTION_COMMENT;
+                case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                    $type = ObjectTypeConstants::TYPE_REACTION_COMMENT;
                     $query = PDRCommentQuery::create();
                     break;
                 default:
@@ -651,19 +654,19 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = '';
 
         switch ($timelineRow->getType()) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
 
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $debateContext);
 
                 break;
-            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $debateContext);
 
                 break;
-            case PDocumentInterface::TYPE_REACTION_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
 
                 break;

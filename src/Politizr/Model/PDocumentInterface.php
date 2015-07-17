@@ -16,17 +16,6 @@ use Politizr\Exception\InconsistentDataException;
  */
 interface PDocumentInterface
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-    // @todo > migrer le stockage des types sur un objet dédié
-    const TYPE_DEBATE = 'Politizr\Model\PDDebate';
-    const TYPE_REACTION = 'Politizr\Model\PDReaction';
-    const TYPE_DEBATE_COMMENT = 'Politizr\Model\PDDComment';
-    const TYPE_REACTION_COMMENT = 'Politizr\Model\PDRComment';
-    const TYPE_USER = 'Politizr\Model\PUser';
-    const TYPE_BADGE = 'Politizr\Model\PRBadge';
-
     /**
      * Test if the document is owned by the parameter's userId
      *
@@ -60,18 +49,4 @@ interface PDocumentInterface
      * @return int
      */
     public function countComments($online = true, $paragraphNo = null);
-
-//     // *****************************    COMMENTAIRES   ************************* //
-// 
-// 
-// 
-//     /**
-//      * Renvoit les commentaires généraux au débat (non associés à un paragraphe en particulier)
-//      *
-//      * @return PropelCollection d'objets PDDComment
-//      */
-//     public function getGlobalComments($online = true, $orderBy = null)
-//     {
-//         return $this->getComments($online, 0, $orderBy);
-//     }
 }

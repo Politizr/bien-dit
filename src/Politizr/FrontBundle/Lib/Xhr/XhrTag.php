@@ -116,6 +116,10 @@ class XhrTag
         $this->logger->info('$zoneId = ' . print_r($zoneId, true));
 
         // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
         $tags = $this->tagManager->getArrayTags($tagTypeId, true);
 
         // Renvoi de l'ensemble des blocs HTML maj

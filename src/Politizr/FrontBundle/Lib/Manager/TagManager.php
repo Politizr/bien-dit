@@ -46,8 +46,10 @@ class TagManager
     {
         $tags = PTagQuery::create()
             ->select(array('id', 'title'))
-            ->filterByOnline($online)
-            ->_if($tagTypeId)
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif()
+            ->_if(null !== $tagTypeId)
                 ->filterByPTTagTypeId($tagTypeId)
             ->_endif()
             ->orderByTitle()

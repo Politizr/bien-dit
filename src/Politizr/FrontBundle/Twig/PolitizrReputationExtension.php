@@ -10,7 +10,8 @@ use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PUReputation;
-use Politizr\Model\PDocumentInterface;
+
+use Politizr\Constant\ObjectTypeConstants;
 
 /**
  * User's reputation twig extension
@@ -116,7 +117,7 @@ class PolitizrReputationExtension extends \Twig_Extension
         $title = 'Action inconnue';
 
         switch ($reputation->getPObjectName()) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -126,7 +127,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -136,7 +137,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $subject = PDDCommentQuery::create()->findPk($reputation->getPObjectId());
 
                 if ($subject) {
@@ -148,7 +149,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocumentInterface::TYPE_REACTION_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $subject = PDRCommentQuery::create()->findPk($reputation->getPObjectId());
 
                 if ($subject) {
@@ -160,7 +161,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocumentInterface::TYPE_USER:
+            case ObjectTypeConstants::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();

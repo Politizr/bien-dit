@@ -4,30 +4,26 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePDRComment;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 class PDRComment extends BasePDRComment implements PDCommentInterface
 {
     /**
-     * Manage published information
+     * Manage publisher information
      *
      * @param \PropelPDO $con
      */
-    public function save(\PropelPDO $con = null)
+    public function preInsert(\PropelPDO $con = null)
     {
-        // Date publication
-        if ($this->isNew()) {
-            $this->setPublishedAt(time());
+        $this->setPublishedAt(time());
 
-            // User associé
-            // @todo: /!\ chaine en dur
-            $publisher = $this->getPUser();
-            if ($publisher) {
-                $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
-            } else {
-                $this->setPublishedBy('Auteur inconnu');
-            }
+        $publisher = $this->getPUser();
+        if ($publisher) {
+            $this->setPublishedBy($publisher->getFullName());
+        } else {
+            // @todo label in constant
+            $this->setPublishedBy('Auteur inconnu');
         }
-        
-        parent::save($con);
     }
     
     /**
@@ -35,7 +31,7 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
      */
     public function getType()
     {
-        return PDocumentInterface::TYPE_REACTION_COMMENT;
+        return ObjectTypeConstants::TYPE_REACTION_COMMENT;
     }
 
     /**
@@ -51,7 +47,7 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
      */
     public function getPDocumentType()
     {
-        return PDocumentInterface::TYPE_REACTION;
+        return ObjectTypeConstants::TYPE_REACTION;
     }
 
     /**
@@ -67,35 +63,8 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
      *
      * @return     PUser     Objet user
      */
-    public function getAuthor()
-    {
-        return parent::getPUser();
-    }
-
-    /**
-     * Renvoit le user associé à la réaction
-     *
-     * @return     PUser     Objet user
-     */
     public function getUser()
     {
         return parent::getPUser();
-    }
-
-    /**
-     * Check si le <user id> passé en argument est l'auteur du commentaire courant.
-     *
-     * @param integer $userId
-     * @return boolean
-     */
-    public function isUserId($userId)
-    {
-        $user = $this->getUser();
-
-        if ($user && $userId === $user->getId()) {
-            return true;
-        }
-
-        return false;
     }
 }

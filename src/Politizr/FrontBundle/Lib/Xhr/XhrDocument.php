@@ -9,7 +9,9 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
-use Politizr\Model\PDocumentInterface;
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDDComment;
@@ -136,7 +138,7 @@ class XhrDocument
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocumentInterface::TYPE_DEBATE
+                'type' => ObjectTypeConstants::TYPE_DEBATE
             )
         );
 
@@ -166,16 +168,16 @@ class XhrDocument
 
         // Function process
         switch($type) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $object = PDDebateQuery::create()->findPk($id);
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $object = PDReactionQuery::create()->findPk($id);
                 break;
-            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $object = PDDCommentQuery::create()->findPk($id);
                 break;
-            case PDocumentInterface::TYPE_REACTION_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $object = PDRCommentQuery::create()->findPk($id);
                 break;
         }
@@ -191,13 +193,13 @@ class XhrDocument
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('n_note_pos', $event);
             switch($type) {
-                case PDocumentInterface::TYPE_DEBATE:
-                case PDocumentInterface::TYPE_REACTION:
+                case ObjectTypeConstants::TYPE_DEBATE:
+                case ObjectTypeConstants::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
                     break;
-                case PDocumentInterface::TYPE_DEBATE_COMMENT:
-                case PDocumentInterface::TYPE_REACTION_COMMENT:
+                case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_pos', $event);
                     break;
@@ -212,13 +214,13 @@ class XhrDocument
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('n_note_neg', $event);
             switch($type) {
-                case PDocumentInterface::TYPE_DEBATE:
-                case PDocumentInterface::TYPE_REACTION:
+                case ObjectTypeConstants::TYPE_DEBATE:
+                case ObjectTypeConstants::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_document_note_neg', $event);
                     break;
-                case PDocumentInterface::TYPE_DEBATE_COMMENT:
-                case PDocumentInterface::TYPE_REACTION_COMMENT:
+                case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_neg', $event);
                     break;
@@ -320,7 +322,7 @@ class XhrDocument
             // Remove old file if new upload or deletion has been done
             $fileName = $debate->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PDDebate::UPLOAD_WEB_PATH;
+                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }
@@ -333,7 +335,7 @@ class XhrDocument
         // Rendering
         $path = 'bundles/politizrfront/images/default_debate.jpg';
         if ($fileName = $debate->getFileName()) {
-            $path = PDDebate::UPLOAD_WEB_PATH.$fileName;
+            $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$fileName;
         }
         $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
@@ -640,11 +642,11 @@ class XhrDocument
         // Récupération débat courant
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
-                $uploadWebPath = PDDebate::UPLOAD_WEB_PATH;
+                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $document = PDReactionQuery::create()->findPk($id);
                 $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
                 break;
@@ -700,12 +702,12 @@ class XhrDocument
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
-            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
                 $commentNew = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
-            case PDocumentInterface::TYPE_REACTION_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $comment = new PDRComment();
                 $commentNew = new PDRComment();
                 $formType = new PDRCommentType();
@@ -788,12 +790,12 @@ class XhrDocument
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
                 $comment = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $document = PDReactionQuery::create()->findPk($id);
                 $comment = new PDRComment();
                 $formType = new PDRCommentType();

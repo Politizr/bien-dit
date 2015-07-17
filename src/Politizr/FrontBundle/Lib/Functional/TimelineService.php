@@ -351,8 +351,8 @@ class TimelineService
         $authorIsFollowed = false;
         $debateIsFollowed = false;
         if ($user) {
-            $authorIsMe = $debate->isUserId($user->getId());
-            if (!$authorIsMe) {
+            $authorIsMe = ($debate->getPUserId() === $user->getId());
+            if ($authorIsMe) {
                 $author = $debate->getUser();
                 if ($author) {
                     $authorIsFollowed = $author->isFollowedByUserId($author->getId());
@@ -398,7 +398,7 @@ class TimelineService
         $debateIsFollowed = false;
         if ($user) {
             $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
-            $authorIsMe = $reaction->isUserId($user->getId());
+            $authorIsMe = ($reaction->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $reaction->getUser();
                 if ($author) {
@@ -441,7 +441,7 @@ class TimelineService
         $debateIsFollowed = false;
         if ($user) {
             $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
-            $authorIsMe = $comment->isUserId($user->getId());
+            $authorIsMe = ($comment->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $comment->getUser();
                 if ($author) {
@@ -485,7 +485,7 @@ class TimelineService
         $debateIsFollowed = false;
         if ($user) {
             $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
-            $authorIsMe = $comment->isUserId($user->getId());
+            $authorIsMe = ($comment->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $comment->getUser();
                 if ($author) {

@@ -31,7 +31,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
                 $this->elasticaPersister->replaceOne($user);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
@@ -47,7 +47,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
                 $this->elasticaPersister->replaceOne($user);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
@@ -63,7 +63,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
                 $this->elasticaPersister->replaceOne($user);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 

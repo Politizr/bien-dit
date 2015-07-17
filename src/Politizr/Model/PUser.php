@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 class PUser extends BasePUser implements UserInterface, ContainerAwareInterface, HighlightableModelInterface
@@ -84,7 +86,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                 $this->elasticaPersister->insertOne($this);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
@@ -99,7 +101,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                 $this->elasticaPersister->insertOne($this);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
@@ -112,7 +114,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         if ($this->elasticaPersister) {
             $this->elasticaPersister->deleteOne($this);
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
 
         // + gestion de l'upload
@@ -436,7 +438,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public function getType()
     {
-        return PDocumentInterface::TYPE_USER;
+        return ObjectTypeConstants::TYPE_USER;
     }
 
 
@@ -687,7 +689,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     public function getMandates()
     {
         $query = PUMandateQuery::create()
-            ->orderByBeginAt(\Criteria::DESC);
+            ->orderByBeginAt('desc');
 
         return parent::getPUMandates($query);
     }
@@ -835,7 +837,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                     ->filterByPUserId($this->getId())
                     ->filterByOnline($online)
                     ->filterByPublished($published)
-                    ->orderByCreatedAt(\Criteria::DESC);
+                    ->orderByCreatedAt('desc');
 
         return $query->find();
     }
@@ -864,7 +866,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                     ->filterByPUserId($this->getId())
                     ->filterByOnline($online)
                     ->filterByPublished($published)
-                    ->orderByCreatedAt(\Criteria::DESC);
+                    ->orderByCreatedAt('desc');
 
         return $query->find();
     }
@@ -894,7 +896,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                     ->endIf()
                     ->filterByOnline($online)
                     ->filterByPublished($published)
-                    ->orderByCreatedAt(\Criteria::DESC);
+                    ->orderByCreatedAt('desc');
 
         return $query->find();
     }

@@ -1,8 +1,8 @@
 {# Gestion Twig des notations #}
-{% if type == constant('Politizr\\Model\\PDocumentInterface::TYPE_DEBATE') %} 
+{% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
     {{ object | linkNoteDebate }}
-{% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_REACTION') %} 
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
     {{ object | linkNoteReaction }}
-{% elseif type == constant('Politizr\\Model\\PDocumentInterface::TYPE_COMMENT') %} 
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_COMMENT') %} 
     {{ object | linkNoteComment }}
 {% endif %}

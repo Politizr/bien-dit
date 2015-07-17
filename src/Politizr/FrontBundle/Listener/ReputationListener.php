@@ -4,9 +4,10 @@ namespace Politizr\FrontBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
-use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUReputation;
 
 /**
@@ -115,11 +116,11 @@ class ReputationListener
         $targetUserId = $document->getPUserId();
 
         switch ($document->getType()) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $prActionId = PRAction::ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $prActionId = PRAction::ID_D_TARGET_REACTION_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;

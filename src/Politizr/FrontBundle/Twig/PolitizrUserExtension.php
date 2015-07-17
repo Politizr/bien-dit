@@ -2,8 +2,8 @@
 namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
-use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PUStatus;
 use Politizr\Model\PNotification;
@@ -323,12 +323,12 @@ class PolitizrUserExtension extends \Twig_Extension
         $reactionParentTitle = null;
         $reactionParentUrl = null;
         switch ($notification->getPObjectName()) {
-            case PDocumentInterface::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
                 break;
-            case PDocumentInterface::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
@@ -347,7 +347,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 }
 
                 break;
-            case PDocumentInterface::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
                 
                 $title = $subject->getDescription();
@@ -356,7 +356,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
 
                 break;
-            case PDocumentInterface::TYPE_REACTION_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
                 
                 $title = $subject->getDescription();
@@ -365,13 +365,13 @@ class PolitizrUserExtension extends \Twig_Extension
                 $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
 
                 break;
-            case PDocumentInterface::TYPE_USER:
+            case ObjectTypeConstants::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getFirstname().' '.$subject->getName();
                 $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
                 
                 break;
-            case PDocumentInterface::TYPE_BADGE:
+            case ObjectTypeConstants::TYPE_BADGE:
                 $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
 
