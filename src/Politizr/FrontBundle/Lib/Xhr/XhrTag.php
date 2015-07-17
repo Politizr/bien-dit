@@ -122,7 +122,7 @@ class XhrTag
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $tagManager = $this->sc->get('politizr.manager.tag');
         $router = $this->sc->get('router');
         $templating = $this->sc->get('templating');
@@ -140,7 +140,7 @@ class XhrTag
         $logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;
@@ -215,7 +215,7 @@ class XhrTag
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $tagManager = $this->sc->get('politizr.manager.tag');
         $router = $this->sc->get('router');
         $templating = $this->sc->get('templating');
@@ -233,7 +233,7 @@ class XhrTag
         $logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;
@@ -305,7 +305,7 @@ class XhrTag
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $tagManager = $this->sc->get('politizr.manager.tag');
         $router = $this->sc->get('router');
         $templating = $this->sc->get('templating');
@@ -323,7 +323,7 @@ class XhrTag
         $logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         if (empty($tagTypeId)) {
             $tagTypeId = null;

@@ -35,7 +35,7 @@ class DocumentService
     public function createDebate()
     {
         // Get current user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        $user = $this->sc->get('security.token_storage')->getToken()->getUser();
 
         // Get document manager
         $documentManager = $this->sc->get('politizr.manager.document');
@@ -57,7 +57,7 @@ class DocumentService
     public function createReaction($debateId, $parentId)
     {
         // Get current user
-        $user = $this->sc->get('security.context')->getToken()->getUser();
+        $user = $this->sc->get('security.token_storage')->getToken()->getUser();
 
         // Get document manager
         $documentManager = $this->sc->get('politizr.manager.document');

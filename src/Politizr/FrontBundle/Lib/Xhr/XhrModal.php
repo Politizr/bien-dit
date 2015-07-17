@@ -253,7 +253,7 @@ class XhrModal
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Request arguments
@@ -261,7 +261,7 @@ class XhrModal
         $logger->info('$offset = ' . print_r($offset, true));
         
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -295,7 +295,7 @@ class XhrModal
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Request arguments
@@ -303,7 +303,7 @@ class XhrModal
         $logger->info('$offset = ' . print_r($offset, true));
         
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -495,7 +495,7 @@ class XhrModal
         $logger->info('*** followedDebateList');
   
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
         
         // Request arguments
@@ -505,7 +505,7 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $debates = PDDebateQuery::create()
@@ -548,7 +548,7 @@ class XhrModal
         $logger->info('*** followedUserList');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
         
         // Request arguments
@@ -558,7 +558,7 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $query = PUserQuery::create()

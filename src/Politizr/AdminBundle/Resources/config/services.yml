@@ -9,7 +9,7 @@ services:
 
     politzr_admin.listener.pdf:
         class:      Politizr\AdminBundle\Listener\PDFListener
-        arguments:  [ @kernel, @mailer, @templating, @html2pdf, @logger ]
+        arguments:  [ @kernel, @mailer, @templating, @html2pdf_factory, @logger ]
         tags:
             - { name: kernel.event_listener, event: order_pdf }
 

@@ -30,7 +30,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
-    private $securityContext;
+    private $securityTokenStorage;
     private $timelineService;
 
     private $user;

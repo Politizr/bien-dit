@@ -36,12 +36,12 @@ class XhrNotification
         $logger->info('*** notificationsLoad');
 
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $notificationManager = $this->sc->get('politizr.manager.notification');
         $templating = $this->sc->get('templating');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $notifs = $notificationManager->getUserNotifications($user->getId());
         $nbNotifs = count($notifs);
@@ -70,7 +70,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $notificationManager = $this->sc->get('politizr.manager.notification');
 
         // Request arguments
@@ -78,7 +78,7 @@ class XhrNotification
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $notification = PUNotificationQuery::create()->findPk($id);
         $notificationManager->checkUserNotification($id);
@@ -95,11 +95,11 @@ class XhrNotification
         $logger->info('*** notificationsLoad');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $notificationManager = $this->sc->get('politizr.manager.notification');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $notifs = PUNotificationQuery::create()
                             ->filterByPUserId($user->getId())
@@ -126,7 +126,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $notificationManager = $this->sc->get('politizr.manager.notification');
 
         // Request arguments
@@ -134,7 +134,7 @@ class XhrNotification
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $notificationManager->createUserSubscribeEmail($user->getId(), $id);
 
@@ -152,7 +152,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $notificationManager = $this->sc->get('politizr.manager.notification');
 
         // Request arguments
@@ -160,7 +160,7 @@ class XhrNotification
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $notificationManager->deleteUserSubscribeEmail($user->getId(), $id);
 
@@ -177,7 +177,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
 
         // Request arguments
@@ -187,7 +187,7 @@ class XhrNotification
         $logger->info('$context = ' . print_r($context, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $userManager->updateFollowUserContextEmailNotification($user->getId(), $id, true, $context);
 
@@ -204,7 +204,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
 
         // Request arguments
@@ -214,7 +214,7 @@ class XhrNotification
         $logger->info('$context = ' . print_r($context, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $userManager->updateFollowUserContextEmailNotification($user->getId(), $id, false, $context);
 
@@ -231,7 +231,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
 
         // Request arguments
@@ -241,7 +241,7 @@ class XhrNotification
         $logger->info('$context = ' . print_r($context, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, true, $context);
 
@@ -259,7 +259,7 @@ class XhrNotification
 
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
 
         // Request arguments
@@ -269,7 +269,7 @@ class XhrNotification
         $logger->info('$context = ' . print_r($context, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         $userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, false, $context);
 

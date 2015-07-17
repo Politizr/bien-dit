@@ -30,7 +30,8 @@ class PolitizrUserExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
-    private $securityContext;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
 
     private $user;
 
@@ -45,6 +46,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
         $this->securityContext = $serviceContainer->get('security.context');
+        $this->securityAuthorizationChecker =$serviceContainer->get('security.authorization_checker');
 
         // get connected user
         $token = $this->securityContext->getToken();
@@ -417,7 +419,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
 
         // elected profile can react
-        if ($this->securityContext->isGranted('ROLE_ELECTED')) {
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
             return true;
         }
 
@@ -449,7 +451,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedC');
 
-        if ($this->securityContext->isGranted('ROLE_CITIZEN') &&
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
             $this->user &&
             $this->user->getOnline()) {
             return true;
@@ -470,7 +472,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedE');
 
-        if ($this->securityContext->isGranted('ROLE_ELECTED') &&
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
             $this->user &&
             $this->user->getPUStatusId() == PUStatus::ACTIVED &&
             $this->user->getOnline()) {

@@ -47,13 +47,13 @@ class SecurityService
     private function doPublicConnection($user)
     {
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $eventDispatcher = $this->sc->get('event_dispatcher');
 
         $providerKey = 'public';
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-        $securityContext->setToken($token);
+        $securityTokenStorage->setToken($token);
         $eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
 
@@ -122,7 +122,7 @@ class SecurityService
 
         // Retrieve used services
         $session = $this->sc->get('session');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $router = $this->sc->get('router');
         $userManager = $this->sc->get('politizr.manager.user');
         $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
@@ -130,7 +130,7 @@ class SecurityService
         $encoderFactory = $this->sc->get('security.encoder_factory');
 
         // get user
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // get oAuth data
         $oAuthData = $session->getFlashBag()->get('oAuthData');

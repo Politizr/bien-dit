@@ -194,7 +194,7 @@ class XhrSecurity
         $router = $this->sc->get('router');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // Request arguments
         $paymentTypeId = $request->get('pOPaymentTypeId');

@@ -106,11 +106,11 @@ class TimelineService
         $logger->info('*** generateTimelineRawSql');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // Récupération user
         $userId = $user->getId();
@@ -179,12 +179,13 @@ class TimelineService
         $logger->info('*** getSql');
 
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
+        $securityAuthorizationChecker =$this->get('security.authorization_checker');
         $documentManager = $this->sc->get('politizr.manager.document');
 
         // Function process
-        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $securityContext->getToken()->getUser();
+        if ($securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $securityTokenStorage->getToken()->getUser();
             $userId = $user->getId();
             $logger->info('userId = '.print_r($userId, true));
 
@@ -332,11 +333,11 @@ class TimelineService
     public function generateRenderingItemDebate($debateId, $debateContext)
     {
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($debateId);
 
         $authorIsMe = false;
@@ -377,11 +378,11 @@ class TimelineService
     public function generateRenderingItemReaction($reactionId, $debateContext)
     {
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($reactionId);
 
         $parentReaction = null;
@@ -430,11 +431,11 @@ class TimelineService
     public function generateRenderingItemDebateComment($commentId, $debateContext)
     {
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $comment = PDDCommentQuery::create()->findPk($commentId);
         $parentDebate = $comment->getPDocument();
 
@@ -478,11 +479,11 @@ class TimelineService
     public function generateRenderingItemReactionComment($commentId, $debateContext)
     {
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $templating = $this->sc->get('templating');
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $comment = PDRCommentQuery::create()->findPk($commentId);
         $parentReaction = $comment->getPDocument();
         $parentDebate = $parentReaction->getDebate();

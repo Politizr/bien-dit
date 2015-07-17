@@ -54,6 +54,6 @@ services:
 
     politizr.user.activity:
         class:      Politizr\FrontBundle\Listener\ActivityListener
-        arguments:  [ @security.context ]
+        arguments:  [ @security.token_storage ]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }

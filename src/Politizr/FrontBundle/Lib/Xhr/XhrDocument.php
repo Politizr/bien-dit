@@ -58,7 +58,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $userManager = $this->sc->get('politizr.manager.user');
         $eventDispatcher = $this->sc->get('event_dispatcher');
         $templating = $this->sc->get('templating');
@@ -70,7 +70,7 @@ class XhrDocument
         $logger->info('$way = ' . print_r($way, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if ('follow' == $way) {
             $userManager->createUserFollowDebate($user->getId(), $debate->getId());
@@ -116,7 +116,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $eventDispatcher = $this->sc->get('event_dispatcher');
         $templating = $this->sc->get('templating');
 
@@ -128,7 +128,7 @@ class XhrDocument
         $way = $request->get('way');
         $logger->info('$way = ' . print_r($way, true));
 
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // Function process
         switch($type) {
@@ -221,14 +221,14 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $formFactory = $this->sc->get('form.factory');
 
         // Request arguments
         $id = $request->get('debate')['id'];
         $logger->info('$id = ' . print_r($id, true));
 
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
 
         // Function process
         $debate = PDDebateQuery::create()->findPk($id);
@@ -265,7 +265,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $formFactory = $this->sc->get('form.factory');
         $templating = $this->sc->get('templating');
 
@@ -274,7 +274,7 @@ class XhrDocument
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -341,7 +341,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $documentManager = $this->sc->get('politizr.manager.document');
         $eventDispatcher = $this->sc->get('event_dispatcher');
         $session = $this->sc->get('session')->getFlashBag();
@@ -353,7 +353,7 @@ class XhrDocument
         $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -389,7 +389,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $documentManager = $this->sc->get('politizr.manager.document');
         $session = $this->sc->get('session')->getFlashBag();
 
@@ -400,7 +400,7 @@ class XhrDocument
         $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -434,7 +434,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $formFactory = $this->sc->get('form.factory');
 
         // Request arguments
@@ -442,7 +442,7 @@ class XhrDocument
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -478,7 +478,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $formFactory = $this->sc->get('form.factory');
         $templating = $this->sc->get('templating');
         $kernel = $this->sc->get('kernel');
@@ -488,7 +488,7 @@ class XhrDocument
         $logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -555,7 +555,7 @@ class XhrDocument
         
         // Retrieve used services
         $request = $this->sc->get('request');
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $documentManager = $this->sc->get('politizr.manager.document');
         $eventDispatcher = $this->sc->get('event_dispatcher');
         $session = $this->sc->get('session');
@@ -567,7 +567,7 @@ class XhrDocument
         $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -610,7 +610,7 @@ class XhrDocument
         $logger->info('*** reactionDelete');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $documentManager = $this->sc->get('politizr.manager.document');
         $session = $this->sc->get('session');
 
@@ -622,7 +622,7 @@ class XhrDocument
         $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -656,7 +656,7 @@ class XhrDocument
         $logger->info('*** documentPhotoUpload');
 
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $session = $this->sc->get('session');
         $kernel = $this->sc->get('kernel');
         $request = $this->sc->get('request');
@@ -670,7 +670,7 @@ class XhrDocument
         $logger->info(print_r($type, true));
 
         // Récupération débat courant
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
@@ -726,7 +726,7 @@ class XhrDocument
         $logger->info('*** commentNew');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
         $request = $this->sc->get('request');
         $formFactory = $this->sc->get('form.factory');
         $templating = $this->sc->get('templating');
@@ -736,7 +736,7 @@ class XhrDocument
         $logger->info('$type = ' . print_r($type, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
@@ -817,7 +817,8 @@ class XhrDocument
         $logger->info('*** comments');
         
         // Retrieve used services
-        $securityContext = $this->sc->get('security.context');
+        $securityTokenStorage = $this->sc->get('security.token_storage');
+        $securityAuthorizationChecker =$this->get('security.authorization_checker');
         $formFactory = $this->sc->get('form.factory');
         $request = $this->sc->get('request');
         $templating = $this->sc->get('templating');
@@ -831,7 +832,7 @@ class XhrDocument
         $logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
         // Function process
-        $user = $securityContext->getToken()->getUser();
+        $user = $securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
@@ -849,7 +850,7 @@ class XhrDocument
 
         $comments = $document->getComments(true, $noParagraph);
 
-        if ($securityContext->isGranted('ROLE_PROFILE_COMPLETED')) {
+        if ($securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
             $comment->setPUserId($user->getId());
             $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
