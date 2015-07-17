@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
@@ -14,14 +16,26 @@ use Politizr\Model\PUserQuery;
  */
 class XhrModal
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $templating;
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @templating
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $securityTokenStorage,
+        $templating,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+
+        $this->templating = $templating;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -37,21 +51,18 @@ class XhrModal
      *
      * @return array[order,filters,offset,associatedObjectId]
      */
-    private function getFiltersFromRequest()
+    private function getFiltersFromRequest(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $request = $this->sc->get('request');
-
         $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
+        $this->logger->info('$order = ' . print_r($order, true));
         $filtersDate = $request->get('filtersDate');
-        $logger->info('$filtersDate = ' . print_r($filtersDate, true));
+        $this->logger->info('$filtersDate = ' . print_r($filtersDate, true));
         $filtersUserType = $request->get('filtersUserType');
-        $logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
+        $this->logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
         $subjectId = $request->get('subjectId');
-        $logger->info('$subjectId = ' . print_r($subjectId, true));
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
 
         // regroupement des filtres
         $filters = array_merge($filtersDate, $filtersUserType);
@@ -66,22 +77,17 @@ class XhrModal
     /**
      * Paginated modal listing loading
      */
-    public function modalPaginatedList()
+    public function modalPaginatedList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** modalPaginatedList');
+        $this->logger->info('*** modalPaginatedList');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $twigTemplate = $request->get('twigTemplate');
-        $logger->info('$twigTemplate = ' . print_r($twigTemplate, true));
+        $this->logger->info('$twigTemplate = ' . print_r($twigTemplate, true));
         $model = $request->get('model');
-        $logger->info('$model = ' . print_r($model, true));
+        $this->logger->info('$model = ' . print_r($model, true));
         $slug = $request->get('slug');
-        $logger->info('$slug = ' . print_r($slug, true));
+        $this->logger->info('$slug = ' . print_r($slug, true));
 
         // Function process
         $subject = null;
@@ -92,7 +98,7 @@ class XhrModal
                 ->findOne();
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
             array(
                 'subject' => $subject
@@ -107,32 +113,27 @@ class XhrModal
     /**
      * Filters loading
      */
-    public function filters()
+    public function filters(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** filters');
+        $this->logger->info('*** filters');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $type = $request->get('type');
-        $logger->info('$type = ' . print_r($type, true));
+        $this->logger->info('$type = ' . print_r($type, true));
 
         // @todo constant management refactor
         if ('debate' === $type) {
-            $listOrder = $templating->render(
+            $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
             );
-            $listFilter = $templating->render(
+            $listFilter = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
             );
         } elseif ('user' === $type) {
-            $listOrder = $templating->render(
+            $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig'
             );
-            $listFilter = $templating->render(
+            $listFilter = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig'
             );
         }
@@ -152,16 +153,12 @@ class XhrModal
     /**
      * Debate ranking listing
      */
-    public function rankingDebateList()
+    public function rankingDebateList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** rankingDebateList');
+        $this->logger->info('*** rankingDebateList');
 
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
-        
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
@@ -182,7 +179,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
@@ -199,16 +196,12 @@ class XhrModal
     /**
      * Ranking user listing
      */
-    public function rankingUserList()
+    public function rankingUserList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** rankingUserList');
-        
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** rankingUserList');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
@@ -229,7 +222,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
@@ -246,22 +239,16 @@ class XhrModal
     /**
      * Suggestion debate listing
      */
-    public function suggestionDebateList()
+    public function suggestionDebateList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** suggestionDebateList');
+        $this->logger->info('*** suggestionDebateList');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
         
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -271,7 +258,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
@@ -288,22 +275,16 @@ class XhrModal
     /**
      * Suggestion user listing
      */
-    public function suggestionUserList()
+    public function suggestionUserList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** suggestionUserList');
+        $this->logger->info('*** suggestionUserList');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
         
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
@@ -313,7 +294,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
@@ -331,16 +312,12 @@ class XhrModal
     /**
      * Tag debate listing
      */
-    public function tagDebateList()
+    public function tagDebateList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** tagDebateList');
-        
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** tagDebateList');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
@@ -365,7 +342,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
@@ -382,16 +359,12 @@ class XhrModal
     /**
      * Tag user listing
      */
-    public function tagUserList()
+    public function tagUserList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** tagUserList');
-        
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** tagUserList');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
@@ -416,7 +389,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
@@ -433,16 +406,12 @@ class XhrModal
     /**
      * Organization user listing
      */
-    public function organizationUserList()
+    public function organizationUserList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** organizationUserList');
-        
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** organizationUserList');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
@@ -472,7 +441,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
@@ -489,23 +458,18 @@ class XhrModal
     /**
      * Followed debates listing
      */
-    public function followedDebateList()
+    public function followedDebateList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** followedDebateList');
+        $this->logger->info('*** followedDebateList');
   
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-        
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $debates = PDDebateQuery::create()
@@ -525,7 +489,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
@@ -542,23 +506,18 @@ class XhrModal
     /**
      * Followed users listing
      */
-    public function followedUserList()
+    public function followedUserList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** followedUserList');
-        
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** followedUserList');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest();
+        $queryParams = $this->getFiltersFromRequest($request);
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // @todo constant management refactoring
         $query = PUserQuery::create()
@@ -577,7 +536,7 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,

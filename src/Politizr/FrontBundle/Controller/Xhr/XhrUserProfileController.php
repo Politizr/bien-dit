@@ -22,6 +22,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userProfileUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'userProfileUpdate'
         );
@@ -38,6 +39,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userPhotoUploadAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.user',
             'userPhotoUpload'
         );
@@ -54,6 +56,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userPhotoDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'userPhotoDelete'
         );
@@ -70,6 +73,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userBackPhotoUploadAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.user',
             'userBackPhotoUpload'
         );
@@ -86,6 +90,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userBackPhotoDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'userBackPhotoDelete'
         );
@@ -102,6 +107,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** orgaProfileUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'orgaProfileUpdate'
         );
@@ -118,6 +124,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** affinitiesProfileUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'affinitiesProfile'
         );
@@ -134,6 +141,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** mandateProfileCreateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.user',
             'mandateProfileCreate'
         );
@@ -150,6 +158,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** mandateProfileUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'mandateProfileUpdate'
         );
@@ -166,6 +175,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** mandateProfileDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'mandateProfileDelete'
         );
@@ -182,6 +192,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** userPersoUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.user',
             'userPersoUpdate'
         );
@@ -198,6 +209,7 @@ class XhrUserProfileController extends Controller
         $logger->info('*** paginatedListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.user',
             'timelinePaginated'
         );

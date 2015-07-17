@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Tools;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
@@ -18,14 +20,14 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
  */
 class GlobalTools
 {
-    private $sc;
+    private $logger;
 
     /**
      *
      */
-    public function __construct($serviceContainer)
+    public function __construct($logger)
     {
-        $this->sc = $serviceContainer;
+        $this->logger = $logger;
     }
 
 
@@ -40,13 +42,11 @@ class GlobalTools
      * @param  array       $allowedExtensions    Extensions de fichier autorisées
      *
      */
-    public function uploadXhrImage($inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 5242880, $allowedExtensions = array('jpg', 'jpeg', 'png'))
+    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 5242880, $allowedExtensions = array('jpg', 'jpeg', 'png'))
     {
-        // Récupération args
-        $request = $this->sc->get('request');
+        $this->logger->info('*** uploadXhrImage');
 
         $myRequestedFile = $request->files->get($inputName);
-
         if ($myRequestedFile == null) {
             throw new FormValidationException('Fichier non existant.');
         } else if ($myRequestedFile->getError() > 0) {

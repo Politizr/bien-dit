@@ -23,6 +23,7 @@ class XhrSearchController extends Controller
         $logger->info('*** searchPageAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.search',
             'search'
         );

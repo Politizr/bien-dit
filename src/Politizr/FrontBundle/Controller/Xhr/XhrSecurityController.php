@@ -17,12 +17,13 @@ class XhrSecurityController extends Controller
     /**
      * Connexion
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.security',
             'login'
         );
@@ -39,6 +40,7 @@ class XhrSecurityController extends Controller
         $logger->info('*** loginCheckAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.security',
             'loginCheck'
         );
@@ -55,6 +57,7 @@ class XhrSecurityController extends Controller
         $logger->info('*** lostPasswordCheckAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.security',
             'lostPasswordCheck'
         );
@@ -77,6 +80,7 @@ class XhrSecurityController extends Controller
         $logger->info('*** paymentProcessAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.security',
             'paymentProcess'
         );

@@ -1,12 +1,31 @@
 services:
     politizr.functional.document:
-        class:                              Politizr\FrontBundle\Lib\Functional\DocumentService
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Functional\DocumentService
+        arguments:
+            - @security.token_storage
+            - @politizr.manager.document
+            - @logger
 
     politizr.functional.security:
-        class:                              Politizr\FrontBundle\Lib\Functional\SecurityService
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Functional\SecurityService
+        arguments:
+            - @security.token_storage
+            - @security.encoder_factory
+            - @session
+            - @router
+            - @event_dispatcher
+            - @fos_user.util.username_canonicalizer
+            - @fos_user.util.email_canonicalizer
+            - @politizr.manager.user
+            - @politizr.manager.order
+            - @logger
 
     politizr.functional.timeline:
-        class:                              Politizr\FrontBundle\Lib\Functional\TimelineService
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Functional\TimelineService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @templating
+            - @politizr.manager.user
+            - @politizr.manager.document
+            - @logger

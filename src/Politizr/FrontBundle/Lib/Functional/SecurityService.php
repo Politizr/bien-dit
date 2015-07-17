@@ -25,14 +25,64 @@ use Politizr\Model\PUserQuery;
  */
 class SecurityService
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $encoderFactory;
+    
+    private $session;
+    
+    private $router;
+    
+    private $eventDispatcher;
+    
+    private $usernameCanonicalizer;
+    private $emailCanonicalizer;
+    
+    private $userManager;
+    private $orderManager;
+
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @security.encoder_factory
+     * @param @session
+     * @param @router
+     * @param @event_dispatcher
+     * @param @fos_user.util.username_canonicalizer
+     * @param @fos_user.util.email_canonicalizer
+     * @param @politizr.manager.user
+     * @param @politizr.manager.order
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $securityTokenStorage,
+        $encoderFactory,
+        $session,
+        $router,
+        $eventDispatcher,
+        $usernameCanonicalizer,
+        $emailCanonicalizer,
+        $userManager,
+        $orderManager,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->encoderFactory = $encoderFactory;
+
+        $this->session = $session;
+
+        $this->router = $router;
+
+        $this->eventDispatcher = $eventDispatcher;
+
+        $this->usernameCanonicalizer = $usernameCanonicalizer;
+        $this->emailCanonicalizer = $emailCanonicalizer;
+
+        $this->userManager = $userManager;
+        $this->orderManager = $orderManager;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -46,15 +96,11 @@ class SecurityService
      */
     private function doPublicConnection($user)
     {
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-
         $providerKey = 'public';
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-        $securityTokenStorage->setToken($token);
-        $eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
+        $this->securityTokenStorage->setToken($token);
+        $this->eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
 
     /**
@@ -65,25 +111,22 @@ class SecurityService
      */
     private function computeRedirectUrl($user)
     {
-        // Retrieve used services
-        $router = $this->sc->get('router');
-
         $redirectUrl = null;
         if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
             $user->setLastLogin(new \DateTime());
             $user->save();
 
             if ($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
-                $redirectUrl = $router->generate('HomepageE');
+                $redirectUrl = $this->router->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
-                $redirectUrl = $router->generate('HomepageC');
+                $redirectUrl = $this->router->generate('HomepageC');
             } else {
                 throw new InconsistentDataException('Qualified user is not activ and has no citizen role');
             }
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
-            $redirectUrl = $router->generate('InscriptionStep2');
+            $redirectUrl = $this->router->generate('InscriptionStep2');
         } elseif ($user->hasRole('ROLE_ELECTED_INSCRIPTION')) {
-            $redirectUrl = $router->generate('InscriptionElectedStep2');
+            $redirectUrl = $this->router->generate('InscriptionElectedStep2');
         } else {
             throw new InconsistentDataException('No valid role for user');
         }
@@ -117,30 +160,20 @@ class SecurityService
      */
     public function oauthRegister()
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** oauthRegister');
-
-        // Retrieve used services
-        $session = $this->sc->get('session');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $router = $this->sc->get('router');
-        $userManager = $this->sc->get('politizr.manager.user');
-        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
-        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
+        $this->logger->info('*** oauthRegister');
 
         // get user
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get oAuth data
-        $oAuthData = $session->getFlashBag()->get('oAuthData');
+        $oAuthData = $this->session->getFlashBag()->get('oAuthData');
         if (!$oAuthData
             || !is_array($oAuthData)
             || !isset($oAuthData['provider'])
             || !isset($oAuthData['providerId'])
             ) {
             // unexpected oauth data, back to homepage
-            return $router->generate('Homepage');
+            return $this->router->generate('Homepage');
         }
         
         // get db user
@@ -151,7 +184,7 @@ class SecurityService
 
         if ($user) {
             // update user
-            $user = $userManager->updateOAuthData($user, $oAuthData);
+            $user = $this->userManager->updateOAuthData($user, $oAuthData);
 
             // connect and redirect user
             $redirectUrl = $this->connectUser($user);
@@ -163,20 +196,20 @@ class SecurityService
 
             // create new user & update it
             $user = new PUser();
-            $user = $userManager->updateOAuthData($user, $oAuthData);
+            $user = $this->userManager->updateOAuthData($user, $oAuthData);
 
             if ($user->getEmail()) {
                 $username = $user->getEmail();
-                $canonicalizer = $emailCanonicalizer;
+                $canonicalizer = $this->emailCanonicalizer;
             } elseif ($user->getNickname()) {
                 $username = $user->getNickname();
-                $canonicalizer = $usernameCanonicalizer;
+                $canonicalizer = $this->usernameCanonicalizer;
             } else {
                 throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
             }
 
             // update user
-            $user = $userManager->updateForInscriptionStart(
+            $user = $this->userManager->updateForInscriptionStart(
                 $user,
                 $roles,
                 $canonicalizer->canonicalize($username),
@@ -187,7 +220,7 @@ class SecurityService
             $this->doPublicConnection($user);
 
             // redirect to inscription next step
-            return $router->generate('InscriptionContact');
+            return $this->router->generate('InscriptionContact');
         }
     }
     
@@ -202,23 +235,17 @@ class SecurityService
      */
     public function inscriptionCitizenStart(PUser $user)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionCitizenStart');
-
-        // Retrieve used services
-        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
-        $userManager = $this->sc->get('politizr.manager.user');
+        $this->logger->info('*** inscriptionCitizenStart');
 
         // citizen inscription roles
         $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
 
         // update user
-        $user = $userManager->updateForInscriptionStart(
+        $user = $this->userManager->updateForInscriptionStart(
             $user,
             $roles,
-            $usernameCanonicalizer->canonicalize($user->getUsername()),
-            $encoder->encodePassword($user->getPlainPassword(), $user->getSalt())
+            $this->usernameCanonicalizer->canonicalize($user->getUsername()),
+            $this->encoderFactory->getEncoder($user)->encodePassword($user->getPlainPassword(), $user->getSalt())
         );
 
         // connect user
@@ -232,17 +259,13 @@ class SecurityService
      */
     public function inscriptionCitizenFinish(PUser $user)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionCitizenFinish');
-
-        // Retrieve used services
-        $userManager = $this->sc->get('politizr.manager.user');
+        $this->logger->info('*** inscriptionCitizenFinish');
 
         // citizen inscription roles
         $roles = [ 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
 
         // update user
-        $user = $userManager->updateForInscriptionFinish($user, $roles, PUStatus::ACTIVED, false);
+        $user = $this->userManager->updateForInscriptionFinish($user, $roles, PUStatus::ACTIVED, false);
         
         // (re)connect user
         $this->doPublicConnection($user);
@@ -255,23 +278,17 @@ class SecurityService
      */
     public function inscriptionElectedStart(PUser $user)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionElectedStart');
+        $this->logger->info('*** inscriptionElectedStart');
         
-        // Retrieve used services
-        $usernameCanonicalizer = $this->sc->get('fos_user.util.username_canonicalizer');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
-        $userManager = $this->sc->get('politizr.manager.user');
-
         // elected inscription roles
         $roles = [ 'ROLE_ELECTED_INSCRIPTION' ];
 
         // update user
-        $user = $userManager->updateForInscriptionStart(
+        $user = $this->userManager->updateForInscriptionStart(
             $user,
             $roles,
-            $usernameCanonicalizer->canonicalize($user->getUsername()),
-            $encoder->encodePassword($user->getPlainPassword(), $user->getSalt())
+            $this->usernameCanonicalizer->canonicalize($user->getUsername()),
+            $this->encoderFactory->getEncoder($user)->encodePassword($user->getPlainPassword(), $user->getSalt())
         );
 
         // connect user
@@ -286,8 +303,7 @@ class SecurityService
      */
     public function migrationElectedStart(PUser $user)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** migrationElectedStart');
+        $this->logger->info('*** migrationElectedStart');
 
         // update role
         $user->addRole('ROLE_ELECTED_INSCRIPTION');
@@ -303,15 +319,10 @@ class SecurityService
      */
     public function updateOrderPaymentCompleted()
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** updateOrderPaymentCompleted');
-
-        // Retrieve used services
-        $session = $this->sc->get('session');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
+        $this->logger->info('*** updateOrderPaymentCompleted');
 
         // Session arguments
-        $orderId = $session->get('p_order_id');
+        $orderId = $this->session->get('p_order_id');
 
         // get order
         $order = POrderQuery::create()->findPk($orderId);
@@ -327,7 +338,7 @@ class SecurityService
                 $order->setPOPaymentStateId(POPaymentState::WAITING);
                 $order->save();
 
-                $eventDispatcher->dispatch('order_email', new GenericEvent($order));
+                $this->eventDispatcher->dispatch('order_email', new GenericEvent($order));
 
                 break;
             case POPaymentType::CREDIT_CARD:
@@ -344,15 +355,10 @@ class SecurityService
      */
     public function updateOrderPaymentCanceled()
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** updateOrderPaymentCanceled');
-
-        // Retrieve used services
-        $session = $this->sc->get('session');
-        $orderManager = $this->sc->get('politizr.manager.order');
+        $this->logger->info('*** updateOrderPaymentCanceled');
 
         // Session arguments
-        $orderId = $session->get('p_order_id');
+        $orderId = $this->session->get('p_order_id');
 
         // get order
         $order = POrderQuery::create()->findPk($orderId);
@@ -360,7 +366,7 @@ class SecurityService
             throw new \InconsistentDataException(sprintf('Order %s not found', $orderId));
         }
 
-        $orderManager->deleteOrder($order);
+        $this->orderManager->deleteOrder($order);
     }
 
     /**
@@ -369,17 +375,13 @@ class SecurityService
      */
     public function inscriptionFinishElected(PUser $user)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** inscriptionFinishElected');
-
-        // Retrieve used services
-        $userManager = $this->sc->get('politizr.manager.user');
+        $this->logger->info('*** inscriptionFinishElected');
 
         // citizen inscription roles
         $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN' /* during waiting for validation */, 'ROLE_PROFILE_COMPLETED' ];
 
         // update user
-        $user = $userManager->updateForInscriptionFinish($user, $roles, PUStatus::VALIDATION_PROCESS, true);
+        $user = $this->userManager->updateForInscriptionFinish($user, $roles, PUStatus::VALIDATION_PROCESS, true);
         
         $this->doPublicConnection($user);
     }

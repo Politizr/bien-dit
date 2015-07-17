@@ -3,8 +3,12 @@ namespace Politizr\FrontBundle\Lib\Functional;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
+
+use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -16,14 +20,26 @@ use Politizr\Model\PDReactionQuery;
  */
 class DocumentService
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $documentManager;
+
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @politizr.manager.document
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        TokenStorage $securityTokenStorage,
+        DocumentManager $documentManager,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->documentManager = $documentManager;
+
+        $this->logger = $logger;
     }
 
 
@@ -34,14 +50,10 @@ class DocumentService
      */
     public function createDebate()
     {
-        // Get current user
-        $user = $this->sc->get('security.token_storage')->getToken()->getUser();
+        $this->logger->info('*** createDebate');
 
-        // Get document manager
-        $documentManager = $this->sc->get('politizr.manager.document');
-
-        // Create debate for user
-        $debate = $documentManager->createDebate($user->getId());
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $debate = $this->documentManager->createDebate($user->getId());
 
         return $debate;
     }
@@ -56,29 +68,27 @@ class DocumentService
      */
     public function createReaction($debateId, $parentId)
     {
-        // Get current user
-        $user = $this->sc->get('security.token_storage')->getToken()->getUser();
+        $this->logger->info('*** createReaction');
 
-        // Get document manager
-        $documentManager = $this->sc->get('politizr.manager.document');
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
-        // Récupération du débat sur lequel la réaction a lieu
+        // get reaction's associated debate
         $debate = PDDebateQuery::create()->findPk($debateId);
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
+            throw new InconsistentDataException(sprintf('Debate "%s" not found', $debateId));
         }
 
-        // Récupération de la réaction parente sur laquelle la réaction a lieu
+        // get parent's reaction
         $parent = null;
         if ($parentId) {
             $parent = PDReactionQuery::create()->findPk($parentId);
             if (!$parent) {
-                throw new InconsistentDataException('Parent reaction n°'.$parentId.' not found.');
+                throw new InconsistentDataException(sprintf('Parent reaction "%s" not found', $parentId));
             }
         }
 
         // Create debate for user
-        $reaction = $documentManager->createReaction($user->getId(), $debate->getId(), $parentId);
+        $reaction = $this->documentManager->createReaction($user->getId(), $debate->getId(), $parentId);
 
         return $reaction;
     }

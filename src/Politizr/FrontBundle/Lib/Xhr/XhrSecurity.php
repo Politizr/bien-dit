@@ -1,6 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\InconsistentDataException;
@@ -23,14 +24,53 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
  */
 class XhrSecurity
 {
-    private $sc;
+    private $encoderFactory;
+    private $session;
+    private $eventDispatcher;
+    private $templating;
+    private $formFactory;
+    private $router;
+    private $securityService;
+    private $orderManager;
+    private $logger;
 
     /**
      *
+     * @param @security.encoder_factory
+     * @param @session
+     * @param @event_dispatcher
+     * @param @templating
+     * @param @form.factory
+     * @param @router
+     * @param @politizr.functional.security
+     * @param @politizr.manager.order
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $encoderFactory,
+        $session,
+        $eventDispatcher,
+        $templating,
+        $formFactory,
+        $router,
+        $securityService,
+        $orderManager,
+        $logger
+    ) {
+        $this->encoderFactory = $encoderFactory;
+
+        $this->session = $session;
+
+        $this->eventDispatcher = $eventDispatcher;
+
+        $this->templating = $templating;
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+
+        $this->securityService = $securityService;
+        $this->orderManager = $orderManager;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -38,22 +78,17 @@ class XhrSecurity
     /* ######################################################################################################## */
 
     /**
-     *  Connection init screen
+     * Connection init screen
      */
-    public function login()
+    public function login(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** login');
-
-        // Retrieve used services
-        $formFactory = $this->sc->get('form.factory');
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** login');
 
         // Function process
-        $formLogin = $formFactory->create(new LoginType());
-        $formLostPassword = $formFactory->create(new LostPasswordType());
+        $formLogin = $this->formFactory->create(new LoginType());
+        $formLostPassword = $this->formFactory->create(new LostPasswordType());
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Public:_login.html.twig',
             array(
                 'formLogin' => $formLogin->createView(),
@@ -69,19 +104,12 @@ class XhrSecurity
     /**
      * Connection
      */
-    public function loginCheck()
+    public function loginCheck(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** loginCheck');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityService = $this->sc->get('politizr.functional.security');
-        $formFactory = $this->sc->get('form.factory');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
+        $this->logger->info('*** loginCheck');
 
         // Function process
-        $form = $formFactory->create(new LoginType());
+        $form = $this->formFactory->create(new LoginType());
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -99,15 +127,15 @@ class XhrSecurity
 
             // check user/password validity
             $password = $user->getPassword();
-            $encoder = $encoderFactory->getEncoder($user);
-            $encodedPassword = $encoderFactory->getEncoder($user)->encodePassword($login['password'], $user->getSalt());
+            $encoder = $this->encoderFactory->getEncoder($user);
+            $encodedPassword = $this->encoderFactory->getEncoder($user)->encodePassword($login['password'], $user->getSalt());
             if ($password  != $encodedPassword) {
                 // @todo manage a password fail counter
                 throw new FormValidationException('Mot de passe incorrect');
             }
 
             // connect & redirect user
-            $redirectUrl = $securityService->connectUser($user);
+            $redirectUrl = $this->securityService->connectUser($user);
 
             $jsonResponse = array (
                 'success' => true,
@@ -127,19 +155,12 @@ class XhrSecurity
     /**
      * Lost password
      */
-    public function lostPasswordCheck()
+    public function lostPasswordCheck(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** lostPasswordCheck');
+        $this->logger->info('*** lostPasswordCheck');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $formFactory = $this->sc->get('form.factory');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-
         // Function process
-        $form = $formFactory->create(new LostPasswordType());
+        $form = $this->formFactory->create(new LostPasswordType());
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -157,11 +178,11 @@ class XhrSecurity
 
             // new random password
             $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
-            $user->setPassword($encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
+            $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
             $user->save();
 
             // Event
-            $dispatcher = $eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
+            $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
 
             $jsonResponse = array (
                 'success' => true
@@ -182,31 +203,24 @@ class XhrSecurity
     /**
      * Process to payment
      */
-    public function paymentProcess()
+    public function paymentProcess(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** paymentProcess');
+        $this->logger->info('*** paymentProcess');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $session = $this->sc->get('session');
-        $orderManager = $this->sc->get('politizr.manager.order');
-        $router = $this->sc->get('router');
-
         // Function process
         $user = $securityTokenStorage->getToken()->getUser();
 
         // Request arguments
         $paymentTypeId = $request->get('pOPaymentTypeId');
-        $logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
+        $this->logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
         
         // Session arguments
-        $subscriptionId = $session->get('p_o_subscription_id');
-        $logger->info('$subscriptionId = ' . print_r($subscriptionId, true));
-        $supportingDocument = $session->get('p_o_supporting_document');
-        $logger->info('$supportingDocument = ' . print_r($supportingDocument, true));
-        $electiveMandates = $session->get('p_o_elective_mandates');
-        $logger->info('$electiveMandates = ' . print_r($electiveMandates, true));
+        $subscriptionId = $this->session->get('p_o_subscription_id');
+        $this->logger->info('$subscriptionId = ' . print_r($subscriptionId, true));
+        $supportingDocument = $this->session->get('p_o_supporting_document');
+        $this->logger->info('$supportingDocument = ' . print_r($supportingDocument, true));
+        $electiveMandates = $this->session->get('p_o_elective_mandates');
+        $this->logger->info('$electiveMandates = ' . print_r($electiveMandates, true));
 
         // get subscription
         $subscription = POSubscriptionQuery::create()->findPk($subscriptionId);
@@ -215,7 +229,7 @@ class XhrSecurity
         }
 
         // create order
-        $order = $orderManager->createOrder(
+        $order = $this->orderManager->createOrder(
             $user,
             $subscription,
             $paymentTypeId,
@@ -224,13 +238,13 @@ class XhrSecurity
         );
 
         // put order id in session
-        $session->set('p_order_id', $order->getId());
+        $this->session->set('p_order_id', $order->getId());
 
         // payment type rendering
         switch($paymentTypeId) {
             case POPaymentType::BANK_TRANSFER:
                 $htmlForm = '';
-                $redirectUrl = $router->generate('InscriptionElectedPaymentFinished');
+                $redirectUrl = $this->router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
@@ -239,14 +253,14 @@ class XhrSecurity
                 // $sipsAtosManager = $this->sc->get('studio_echo_sips_atos');
                 // $htmlForm = $sipsAtosManager->computeAtosRequest($order->getId());
 
-                $htmlForm = '<form id="atos" action="'.$router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                $htmlForm = '<form id="atos" action="'.$this->router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                 $redirectUrl = '';
                 $redirect = false;
                 
                 break;
             case POPaymentType::CHECK:
                 $htmlForm = '';
-                $redirectUrl = $router->generate('InscriptionElectedPaymentFinished');
+                $redirectUrl = $this->router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
@@ -255,7 +269,7 @@ class XhrSecurity
                 // $paypalManager = $this->sc->get('studio_echo_paypal');
                 // $htmlForm = $paypalManager->computePaypalRequest($order->getId());
 
-                $htmlForm = '<form id="paypal" action="'.$router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
+                $htmlForm = '<form id="paypal" action="'.$this->router->generate('InscriptionElectedPaymentFinished').'">Formulaire ATOS<br/><input type="submit" value="Valider"></form>';
                 $redirectUrl = '';
                 $redirect = false;
 

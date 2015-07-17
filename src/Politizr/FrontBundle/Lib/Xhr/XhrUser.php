@@ -1,6 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
@@ -33,14 +34,63 @@ use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
  */
 class XhrUser
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $encoderFactory;
+    private $kernel;
+    private $eventDispatcher;
+    private $templating;
+    private $formFactory;
+    private $emailCanonicalizer;
+    private $userManager;
+    private $timelineService;
+    private $globalTools;
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @security.encoder_factory
+     * @param @kernel
+     * @param @event_dispatcher
+     * @param @templating
+     * @param @form.factory
+     * @param @fos_user.util.email_canonicalizer
+     * @param @politizr.manager.user
+     * @param @politizr.functional.timeline
+     * @param @politizr.tools.global
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $securityTokenStorage,
+        $encoderFactory,
+        $kernel,
+        $eventDispatcher,
+        $templating,
+        $formFactory,
+        $emailCanonicalizer,
+        $userManager,
+        $timelineService,
+        $globalTools,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->encoderFactory = $encoderFactory;
+
+        $this->kernel = $kernel;
+
+        $this->eventDispatcher = $eventDispatcher;
+
+        $this->templating = $templating;
+        $this->formFactory = $formFactory;
+
+        $this->emailCanonicalizer = $emailCanonicalizer;
+
+        $this->userManager = $userManager;
+        $this->timelineService = $timelineService;
+
+        $this->globalTools = $globalTools;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -50,48 +100,40 @@ class XhrUser
     /**
      * Follow/Unfollow a user by current user
      */
-    public function follow()
+    public function follow(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** follow');
+        $this->logger->info('*** follow');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $userManager = $this->sc->get('politizr.manager.user');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $id = $request->get('subjectId');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $way = $request->get('way');
-        $logger->info('$way = ' . print_r($way, true));
+        $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         if ($way == 'follow') {
             $targetUser = PUserQuery::create()->findPk($id);
-            $userManager->createUserFollowUser($user->getId(), $targetUser->getId());
+            $this->userManager->createUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events
             $event = new GenericEvent($targetUser, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_user_follow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_user_follow', $event);
             $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('n_user_follow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('n_user_follow', $event);
             $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(), 'target_user_id' => $targetUser->getId()));
-            $dispatcher = $eventDispatcher->dispatch('b_user_follow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('b_user_follow', $event);
         } elseif ($way == 'unfollow') {
             $targetUser = PUserQuery::create()->findPk($id);
-            $userManager->deleteUserFollowUser($user->getId(), $targetUser->getId());
+            $this->userManager->deleteUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events
             $event = new GenericEvent($targetUser, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_user_unfollow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_user_unfollow', $event);
         }
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $targetUser,
@@ -112,19 +154,13 @@ class XhrUser
     /**
      * Profile update
      */
-    public function userProfileUpdate()
+    public function userProfileUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userProfileUpdate');
+        $this->logger->info('*** userProfileUpdate');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $form = $formFactory->create(new PUserBiographyType($user), $user);
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $form = $this->formFactory->create(new PUserBiographyType($user), $user);
         $form->bind($request);
         if ($form->isValid()) {
             $userProfile = $form->getData();
@@ -140,22 +176,17 @@ class XhrUser
     /**
      * User's photo upload
      */
-    public function userPhotoUpload()
+    public function userPhotoUpload(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userPhotoUpload');
+        $this->logger->info('*** userPhotoUpload');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $kernel = $this->sc->get('kernel');
-        $politizrUtils = $this->sc->get('politizr.tools.global');
-
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // XHR upload
-        $fileName = $politizrUtils->uploadXhrImage(
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
             'fileName',
             $path,
             150,
@@ -180,18 +211,13 @@ class XhrUser
     /**
      * Users's photo deletion
      */
-    public function userPhotoDelete()
+    public function userPhotoDelete(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userPhotoDelete');
+        $this->logger->info('*** userPhotoDelete');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $kernel = $this->sc->get('kernel');
-
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getFilename();
@@ -209,22 +235,17 @@ class XhrUser
     /**
      * User's background photo upload
      */
-    public function userBackPhotoUpload()
+    public function userBackPhotoUpload(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userBackPhotoUpload');
+        $this->logger->info('*** userBackPhotoUpload');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $kernel = $this->sc->get('kernel');
-        $politizrUtils = $this->sc->get('politizr.tools.global');
-
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Appel du service d'upload ajax
-        $fileName = $politizrUtils->uploadXhrImage(
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
             'backFileName',
             $path,
             1280,
@@ -249,18 +270,13 @@ class XhrUser
     /**
      * User's background photo deletion
      */
-    public function userBackPhotoDelete()
+    public function userBackPhotoDelete(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userPhotoDelete');
+        $this->logger->info('*** userPhotoDelete');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $kernel = $this->sc->get('kernel');
-
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $path = $kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getBackFilename();
@@ -278,18 +294,12 @@ class XhrUser
     /**
      * User's current organization update
      */
-    public function orgaProfileUpdate()
+    public function orgaProfileUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** orgaProfileUpdate');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
+        $this->logger->info('*** orgaProfileUpdate');
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get current linked user's organization
         $puCurrentQo = $user->getPUCurrentQO();
@@ -297,7 +307,7 @@ class XhrUser
             $puCurrentQo = new PUCurrentQO();
         }
 
-        $form = $formFactory->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
+        $form = $this->formFactory->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();
@@ -313,19 +323,13 @@ class XhrUser
     /**
      * User's affinities organizations update
      */
-    public function affinitiesProfile()
+    public function affinitiesProfile(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** affinitiesProfile');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
+        $this->logger->info('*** affinitiesProfile');
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
-        $form = $formFactory->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $form = $this->formFactory->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
         $form->bind($request);
         if ($form->isValid()) {
             $user = $form->getData();
@@ -341,22 +345,14 @@ class XhrUser
     /**
      * User's mandate creation
      */
-    public function mandateProfileCreate()
+    public function mandateProfileCreate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** mandateProfileCreate');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-        $templating = $this->sc->get('templating');
-        $politizrUtils = $this->sc->get('politizr.tools.global');
+        $this->logger->info('*** mandateProfileCreate');
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
+        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
@@ -371,13 +367,13 @@ class XhrUser
         $mandate->setPUserId($user->getId());
         $mandate->setPQTypeId(PQType::ID_ELECTIF);
 
-        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
 
         // @todo to refactor
-        $formMandateViews = $politizrUtils->getFormMandateViews($user->getId());
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig',
             array(
                 'formMandate' => $form->createView(),
@@ -393,23 +389,18 @@ class XhrUser
     /**
      * User's mandate update
      */
-    public function mandateProfileUpdate()
+    public function mandateProfileUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** mandateProfileCreate');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $formFactory = $this->sc->get('form.factory');
+        $this->logger->info('*** mandateProfileCreate');
 
         // Request arguments
         $id = $request->get('mandate')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
         $mandate = PUMandateQuery::create()->findPk($id);
 
-        $form = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
@@ -425,24 +416,19 @@ class XhrUser
     /**
      * User's mandate deletion
      */
-    public function mandateProfileDelete()
+    public function mandateProfileDelete(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** mandateProfileDelete');
+        $this->logger->info('*** mandateProfileDelete');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $userManager = $this->sc->get('politizr.manager.user');
-
         // Request arguments
         $id = $request->get('mandate')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
         $mandate = PUMandateQuery::create()->findPk($id);
 
         // @todo valid ownership of mandate before deletion
-        $userManager->deleteMandate($mandate);
+        $this->userManager->deleteMandate($mandate);
 
         return true;
     }
@@ -450,33 +436,24 @@ class XhrUser
     /**
      * User's personal information update
      */
-    public function userPersoUpdate()
+    public function userPersoUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** userPersoUpdate');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $emailCanonicalizer = $this->sc->get('fos_user.util.email_canonicalizer');
-        $encoderFactory = $this->sc->get('security.encoder_factory');
+        $this->logger->info('*** userPersoUpdate');
 
         // Request arguments
         $formTypeId = $request->get('user')['form_type_id'];
-        $logger->info('$formTypeId = '.print_r($formTypeId, true));
+        $this->logger->info('$formTypeId = '.print_r($formTypeId, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // @todo use form type constant
         if ($formTypeId == 1) {
-            $form = $formFactory->create(new PUserIdentityType($user), $user);
+            $form = $this->formFactory->create(new PUserIdentityType($user), $user);
         } elseif ($formTypeId == 2) {
-            $form = $formFactory->create(new PUserEmailType(), $user);
+            $form = $this->formFactory->create(new PUserEmailType(), $user);
         } elseif ($formTypeId == 3) {
-            $form = $formFactory->create(new PUserConnectionType(), $user);
+            $form = $this->formFactory->create(new PUserConnectionType(), $user);
         } else {
             throw new InconsistentDataException(sprintf('Invalid form type %s', $formTypeId));
         }
@@ -494,19 +471,19 @@ class XhrUser
                 $user->save();
             } elseif ($formTypeId == 2) {
                 // @todo migrate to puser->preSave
-                $user->setEmailCanonical($emailCanonicalizer->canonicalize($userPerso->getEmail()));
+                $user->setEmailCanonical($this->emailCanonicalizer->canonicalize($userPerso->getEmail()));
                 $user->save();
             } elseif ($formTypeId == 3) {
                 // @todo migrate to puser->preSave
                 $password = $userPerso->getPassword();
                 if ($password) {
-                    $encoder = $encoderFactory->getEncoder($user);
+                    $encoder = $this->encoderFactory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
                     $user->setPlainPassword($password);
                     $user->save();
 
                     // Envoi email
-                    $dispatcher = $eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
+                    $dispatcher = $this->eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
             }
         } else {
@@ -524,27 +501,20 @@ class XhrUser
     /**
      * User's reputation listing
      */
-    public function historyActionsList()
+    public function historyActionsList(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** historyActionsList');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $userManager = $this->sc->get('politizr.manager.user');
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** historyActionsList');
 
         // Request arguments
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
         $order = $request->get('order');
-        $logger->info('$order = ' . print_r($order, true));
+        $this->logger->info('$order = ' . print_r($order, true));
         $filters = $request->get('filters');
-        $logger->info('$filters = ' . print_r($filters, true));
+        $this->logger->info('$filters = ' . print_r($filters, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         $historyActions = PUReputationQuery::create()
                             ->filterByPUserId($user->getId())
@@ -554,7 +524,7 @@ class XhrUser
                             ->find();
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Fragment\\Reputation:glListHistoryActions.html.twig',
             array(
                 'historyActions' => $historyActions,
@@ -574,25 +544,18 @@ class XhrUser
     /**
      * User's timeline "My Politizr"
      */
-    public function timelinePaginated()
+    public function timelinePaginated(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** timelinePaginated');
-
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $timelineService = $this->sc->get('politizr.functional.timeline');
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** timelinePaginated');
 
         // Request arguments
         $offset = $request->get('offset');
-        $logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         
-        $timeline = $timelineService->generateMyPolitizrTimeline($offset);
+        $timeline = $this->timelineService->generateMyPolitizrTimeline($offset);
 
         // @todo use constant for "limit"
         $moreResults = false;
@@ -600,9 +563,9 @@ class XhrUser
             $moreResults = true;
         }
 
-        $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
+        $timelineDateKey = $this->timelineService->generateTimelineDateKey($timeline);
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_paginatedTimeline.html.twig',
             array(
                 'timelineDateKey' => $timelineDateKey,

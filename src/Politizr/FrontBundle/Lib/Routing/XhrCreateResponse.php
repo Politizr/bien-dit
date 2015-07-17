@@ -29,22 +29,19 @@ class XhrCreateResponse
 
 
     /**
-     *    Construction d'une réponse Ajax effectuant des rendu de blocs HTML.
-     *
+     * XHR request rendering html blocks
      */
-    public function createJsonHtmlResponse($serviceName, $methodCallback)
+    public function createJsonHtmlResponse(Request $request, $serviceName, $methodCallback)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonHtmlResponse');
         
-        $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-                // Appel du service métier
+                // service call
                 $service = $this->sc->get($serviceName);
-                $htmlRenders = $service->$methodCallback();
+                $htmlRenders = $service->$methodCallback($request);
 
-                // Construction de la réponse
                 $jsonSuccess = array (
                     'success' => true
                 );
@@ -65,22 +62,19 @@ class XhrCreateResponse
 
 
     /**
-     *    Construction d'une réponse Ajax effectuant un retour success simple.
-     *
+     * XHR request rendering true/false response
      */
-    public function createJsonResponse($serviceName, $methodCallback)
+    public function createJsonResponse(Request $request, $serviceName, $methodCallback)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonResponse');
         
-        $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-                // Appel du service métier
+                // service call
                 $service = $this->sc->get($serviceName);
-                $success = $service->$methodCallback();
+                $success = $service->$methodCallback($request);
 
-                // Construction de la réponse
                 $jsonResponse = array (
                     'success' => true
                 );
@@ -99,22 +93,19 @@ class XhrCreateResponse
 
 
     /**
-     *    Construction d'une réponse Ajax effectuant un retour possédant une URL de redirection.
-     *
+     * XHR request rendering redirection URL
      */
-    public function createJsonRedirectResponse($serviceName, $methodCallback)
+    public function createJsonRedirectResponse(Request $request, $serviceName, $methodCallback)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** createJsonRedirectResponse');
         
-        $request = $this->sc->get('request');
         try {
             if ($request->isXmlHttpRequest()) {
-                // Appel du service métier
+                // service call
                 $service = $this->sc->get($serviceName);
-                $url = $service->$methodCallback();
+                $url = $service->$methodCallback($request);
 
-                // Construction de la réponse
                 $jsonSuccess = array (
                     'success' => true
                 );

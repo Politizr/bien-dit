@@ -34,8 +34,8 @@ class AppKernel extends Kernel
             new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
             
             // Admin Generator & dependencies
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
     

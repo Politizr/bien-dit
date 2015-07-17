@@ -22,6 +22,7 @@ class XhrModalController extends Controller
         $logger->info('*** modalPaginatedListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'modalPaginatedList'
         );
@@ -38,6 +39,7 @@ class XhrModalController extends Controller
         $logger->info('*** filtersAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'filters'
         );
@@ -54,6 +56,7 @@ class XhrModalController extends Controller
         $logger->info('*** rankingDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'rankingDebateList'
         );
@@ -70,6 +73,7 @@ class XhrModalController extends Controller
         $logger->info('*** rankingUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'rankingUserList'
         );
@@ -86,6 +90,7 @@ class XhrModalController extends Controller
         $logger->info('*** suggestionDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'suggestionDebateList'
         );
@@ -102,6 +107,7 @@ class XhrModalController extends Controller
         $logger->info('*** suggestionUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'suggestionUserList'
         );
@@ -118,6 +124,7 @@ class XhrModalController extends Controller
         $logger->info('*** tagDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'tagDebateList'
         );
@@ -134,6 +141,7 @@ class XhrModalController extends Controller
         $logger->info('*** tagUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'tagUserList'
         );
@@ -150,6 +158,7 @@ class XhrModalController extends Controller
         $logger->info('*** organizationUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'organizationUserList'
         );
@@ -166,6 +175,7 @@ class XhrModalController extends Controller
         $logger->info('*** followedDebateListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'followedDebateList'
         );
@@ -182,24 +192,9 @@ class XhrModalController extends Controller
         $logger->info('*** followedUserListAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'followedUserList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement d'une liste type "timeline"
-     */
-    public function timelinePaginatedAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** timelinePaginatedAction');
-
-        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            'politizr.xhr.timeline',
-            'timelinePaginated'
         );
 
         return $jsonResponse;
@@ -214,6 +209,7 @@ class XhrModalController extends Controller
         $logger->info('*** historyActionsList');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.modal',
             'historyActionsList'
         );

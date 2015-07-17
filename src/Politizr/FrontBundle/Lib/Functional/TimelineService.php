@@ -22,14 +22,42 @@ use Politizr\FrontBundle\Lib\TimelineRow;
  */
 class TimelineService
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
+
+    private $templating;
+
+    private $userManager;
+    private $documentManager;
+
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @security.authorization_checker
+     * @param @templating
+     * @param @politizr.manager.user
+     * @param @politizr.manager.document
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $templating,
+        $userManager,
+        $documentManager,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
+
+        $this->templating = $templating;
+
+        $this->userManager = $userManager;
+        $this->documentManager = $documentManager;
+        
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -102,19 +130,13 @@ class TimelineService
      */
     private function generateTimelineRawSql($offset, $count = 10)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** generateTimelineRawSql');
+        $this->logger->info('*** generateTimelineRawSql');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $userManager = $this->sc->get('politizr.manager.user');
-
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Récupération user
         $userId = $user->getId();
-        $logger->info('userId = '.print_r($userId, true));
+        $this->logger->info('userId = '.print_r($userId, true));
 
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
@@ -122,7 +144,7 @@ class TimelineService
         if (empty($inQueryDebateIds)) {
             $inQueryDebateIds = 0;
         }
-        $logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
+        $this->logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
 
         // Récupération d'un tableau des ids des users suivis
         $userIds = $this->getFollowedUsersIdsArray($user->getId());
@@ -130,7 +152,7 @@ class TimelineService
         if (empty($inQueryUserIds)) {
             $inQueryUserIds = 0;
         }
-        $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
+        $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
         // Récupération d'un tableau des ids de mes réactions
         $myReactionIds = $this->getMyReactionIdsArray($user->getId());
@@ -138,7 +160,7 @@ class TimelineService
         if (empty($inQueryMyReactionIds)) {
             $inQueryMyReactionIds = 0;
         }
-        $logger->info('inQueryMyReactionIds = '.print_r($inQueryMyReactionIds, true));
+        $this->logger->info('inQueryMyReactionIds = '.print_r($inQueryMyReactionIds, true));
 
         // Récupération d'un tableau des ids de mes documents
         $myDocumentIds = $this->getMyReactionIdsArray($user->getId());
@@ -146,9 +168,9 @@ class TimelineService
         if (empty($inQueryMyDocumentIds)) {
             $inQueryMyDocumentIds = 0;
         }
-        $logger->info('inQueryMyDocumentIds = '.print_r($inQueryMyDocumentIds, true));
+        $this->logger->info('inQueryMyDocumentIds = '.print_r($inQueryMyDocumentIds, true));
 
-        $sql = $userManager->createTimelineRawSql(
+        $sql = $this->userManager->createTimelineRawSql(
             $userId,
             $inQueryDebateIds,
             $inQueryUserIds,
@@ -175,19 +197,12 @@ class TimelineService
      */
     private function generateDebateFeedRawSql($debateId)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** getSql');
+        $this->logger->info('*** getSql');
 
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $securityAuthorizationChecker =$this->get('security.authorization_checker');
-        $documentManager = $this->sc->get('politizr.manager.document');
-
-        // Function process
-        if ($securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $securityTokenStorage->getToken()->getUser();
+        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $this->securityTokenStorage->getToken()->getUser();
             $userId = $user->getId();
-            $logger->info('userId = '.print_r($userId, true));
+            $this->logger->info('userId = '.print_r($userId, true));
 
             // Récupération d'un tableau des ids des users suivis
             $userIds = $this->getFollowedUsersIdsArray($user->getId());
@@ -202,8 +217,8 @@ class TimelineService
             $inQueryUserIds = 0;
         }
 
-        $logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
-        $sql = $documentManager->createDebateFeedRawSql(
+        $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
+        $sql = $this->documentManager->createDebateFeedRawSql(
             $debateId,
             $inQueryUserIds
         );
@@ -219,8 +234,7 @@ class TimelineService
      */
     private function hydrateTimelineRows($sql)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** hydrateTimelineRows');
+        $this->logger->info('*** hydrateTimelineRows');
 
         $timeline = array();
 
@@ -288,8 +302,7 @@ class TimelineService
      */
     public function generateMyPolitizrTimeline($offset = 0)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** generateMyPolitizrTimeline');
+        $this->logger->info('*** generateMyPolitizrTimeline');
         
         $sql = $this->generateTimelineRawSql($offset);
         $timeline = $this->hydrateTimelineRows($sql);
@@ -309,8 +322,7 @@ class TimelineService
      */
     public function generateDebateFeedTimeline($debateId)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** generateDebateFeedTimeline');
+        $this->logger->info('*** generateDebateFeedTimeline');
         
         $sql = $this->generateDebateFeedRawSql($debateId);
         $timeline = $this->hydrateTimelineRows($sql);
@@ -332,12 +344,7 @@ class TimelineService
      */
     public function generateRenderingItemDebate($debateId, $debateContext)
     {
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($debateId);
 
         $authorIsMe = false;
@@ -354,7 +361,7 @@ class TimelineService
             }
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemDebate.html.twig',
             array(
                 'debate' => $debate,
@@ -377,12 +384,7 @@ class TimelineService
      */
     public function generateRenderingItemReaction($reactionId, $debateContext)
     {
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($reactionId);
 
         $parentReaction = null;
@@ -405,7 +407,7 @@ class TimelineService
             }
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemReaction.html.twig',
             array(
                 'reaction' => $reaction,
@@ -430,12 +432,7 @@ class TimelineService
      */
     public function generateRenderingItemDebateComment($commentId, $debateContext)
     {
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDDCommentQuery::create()->findPk($commentId);
         $parentDebate = $comment->getPDocument();
 
@@ -453,7 +450,7 @@ class TimelineService
             }
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
             array(
                 'comment' => $comment,
@@ -478,12 +475,7 @@ class TimelineService
      */
     public function generateRenderingItemReactionComment($commentId, $debateContext)
     {
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $templating = $this->sc->get('templating');
-
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDRCommentQuery::create()->findPk($commentId);
         $parentReaction = $comment->getPDocument();
         $parentDebate = $parentReaction->getDebate();
@@ -502,7 +494,7 @@ class TimelineService
             }
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
             array(
                 'comment' => $comment,

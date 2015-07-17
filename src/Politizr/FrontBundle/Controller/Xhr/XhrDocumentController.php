@@ -26,6 +26,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** documentPhotoUploadAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'documentPhotoUpload'
         );
@@ -42,6 +43,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** documentPhotoDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'documentPhotoDelete'
         );
@@ -62,6 +64,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** debateUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.document',
             'debateUpdate'
         );
@@ -78,6 +81,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** debatePhotoInfoUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'debatePhotoInfoUpdate'
         );
@@ -94,6 +98,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** debatePublishAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonRedirectResponse(
+            $request,
             'politizr.xhr.document',
             'debatePublish'
         );
@@ -110,6 +115,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** debateDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonRedirectResponse(
+            $request,
             'politizr.xhr.document',
             'debateDelete'
         );
@@ -130,6 +136,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** reactionUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.document',
             'reactionUpdate'
         );
@@ -146,6 +153,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** reactionPhotoInfoUpdateAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'reactionPhotoInfoUpdate'
         );
@@ -162,6 +170,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** reactionPublishAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonRedirectResponse(
+            $request,
             'politizr.xhr.document',
             'reactionPublish'
         );
@@ -179,6 +188,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** reactionDeleteAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonRedirectResponse(
+            $request,
             'politizr.xhr.document',
             'reactionDelete'
         );
@@ -199,6 +209,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** commentNewAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'commentNew'
         );
@@ -215,6 +226,7 @@ class XhrDocumentController extends Controller
         $logger->info('*** commentsAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'comments'
         );

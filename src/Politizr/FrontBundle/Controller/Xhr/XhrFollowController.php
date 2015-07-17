@@ -22,6 +22,7 @@ class XhrFollowController extends Controller
         $logger->info('*** followAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.user',
             'follow'
         );
@@ -38,6 +39,7 @@ class XhrFollowController extends Controller
         $logger->info('*** followAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.document',
             'follow'
         );

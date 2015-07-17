@@ -25,14 +25,15 @@ use Politizr\Model\PDRCommentQuery;
  */
 class UserManager
 {
-    private $sc;
+    private $logger;
 
     /**
      *
+     * @param @logger
      */
-    public function __construct($serviceContainer)
+    public function __construct($logger)
     {
-        $this->sc = $serviceContainer;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */

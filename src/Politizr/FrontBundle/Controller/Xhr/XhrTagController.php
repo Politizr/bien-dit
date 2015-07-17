@@ -23,6 +23,7 @@ class XhrTagController extends Controller
         $logger->info('*** getTagsAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.tag',
             'getTags'
         );
@@ -40,6 +41,7 @@ class XhrTagController extends Controller
         $logger->info('*** debateAddTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.tag',
             'debateAddTag'
         );
@@ -56,6 +58,7 @@ class XhrTagController extends Controller
         $logger->info('*** debateDeleteTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.tag',
             'debateDeleteTag'
         );
@@ -72,6 +75,7 @@ class XhrTagController extends Controller
         $logger->info('*** userFollowAddTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.tag',
             'userFollowAddTag'
         );
@@ -88,6 +92,7 @@ class XhrTagController extends Controller
         $logger->info('*** userFollowDeleteTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.tag',
             'userFollowDeleteTag'
         );
@@ -104,6 +109,7 @@ class XhrTagController extends Controller
         $logger->info('*** userTaggedAddTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
+            $request,
             'politizr.xhr.tag',
             'userTaggedAddTag'
         );
@@ -120,6 +126,7 @@ class XhrTagController extends Controller
         $logger->info('*** userTaggedDeleteTagAction');
 
         $jsonResponse = $this->get('politizr.routing.xhr')->createJsonResponse(
+            $request,
             'politizr.xhr.tag',
             'userTaggedDeleteTag'
         );

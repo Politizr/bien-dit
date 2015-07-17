@@ -1,6 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
@@ -16,6 +17,7 @@ use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
  * XHR service for search management.
+ * @todo code outdated
  *
  * @author Lionel Bouzonville
  */
@@ -77,13 +79,12 @@ class XhrSearch
     /**
      * Search
      */
-    public function search()
+    public function search(Request $request)
     {
         $logger = $this->sc->get('logger');
         $logger->info('*** search');
 
         // Retrieve used services
-        $request = $this->sc->get('request');
         $templating = $this->sc->get('templating');
 
         // Request arguments

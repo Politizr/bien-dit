@@ -1,33 +1,74 @@
 services:
     politizr.xhr.document:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrDocument
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Xhr\XhrDocument
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @kernel
+            - @session
+            - @event_dispatcher
+            - @templating
+            - @form.factory
+            - @politizr.manager.user
+            - @politizr.manager.document
+            - @politizr.tools.global
+            - @logger
 
     politizr.xhr.modal:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrModal
-        arguments:                          [ @service_container ]
-
-    politizr.xhr.security:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSecurity
-        arguments:                          [ @service_container ]
-
-    politizr.xhr.user:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrUser
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Xhr\XhrModal
+        arguments:
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @logger
 
     politizr.xhr.notification:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrNotification
-        arguments:                          [ @service_container ]
-
-    politizr.xhr.tag:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTag
-        arguments:                          [ @service_container ]
-
-    politizr.xhr.timeline:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrTimeline
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Xhr\XhrNotification
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @politizr.manager.user
+            - @politizr.manager.notification
+            - @logger
 
     politizr.xhr.search:
-        class:                              Politizr\FrontBundle\Lib\Xhr\XhrSearch
-        arguments:                          [ @service_container ]
+        class: Politizr\FrontBundle\Lib\Xhr\XhrSearch
+        arguments: [ @service_container ]
+
+    politizr.xhr.security:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrSecurity
+        arguments:
+            - @security.encoder_factory
+            - @session
+            - @event_dispatcher
+            - @templating
+            - @form.factory
+            - @router
+            - @politizr.functional.security
+            - @politizr.manager.order
+            - @logger
+
+    politizr.xhr.tag:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrTag
+        arguments:
+            - @security.token_storage
+            - @router
+            - @templating
+            - @politizr.manager.tag
+            - @logger
+
+    politizr.xhr.user:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrUser
+        arguments:
+            - @security.token_storage
+            - @security.encoder_factory
+            - @kernel
+            - @event_dispatcher
+            - @templating
+            - @form.factory
+            - @fos_user.util.email_canonicalizer
+            - @politizr.manager.user
+            - @politizr.functional.timeline
+            - @politizr.tools.global
+            - @logger
 

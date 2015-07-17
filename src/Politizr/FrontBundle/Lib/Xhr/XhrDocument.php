@@ -1,6 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Xhr;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
@@ -33,14 +34,62 @@ use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
  */
 class XhrDocument
 {
-    private $sc;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
+    private $kernel;
+    private $session;
+    private $eventDispatcher;
+    private $templating;
+    private $formFactory;
+    private $userManager;
+    private $documentManager;
+    private $globalTools;
+    private $logger;
 
     /**
      *
+     * @param @security.token_storage
+     * @param @security.authorization_checker
+     * @param @kernel
+     * @param @session
+     * @param @event_dispatcher
+     * @param @templating
+     * @param @form.factory
+     * @param @politizr.manager.user
+     * @param @politizr.manager.document
+     * @param @politizr.tools.global
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $kernel,
+        $session,
+        $eventDispatcher,
+        $templating,
+        $formFactory,
+        $userManager,
+        $documentManager,
+        $globalTools,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker = $securityAuthorizationChecker;
+
+        $this->kernel = $kernel;
+        $this->session = $session;
+
+        $this->eventDispatcher = $eventDispatcher;
+
+        $this->templating = $templating;
+        $this->formFactory = $formFactory;
+
+        $this->userManager = $userManager;
+        $this->documentManager = $documentManager;
+
+        $this->globalTools = $globalTools;
+
+        $this->logger = $logger;
     }
 
 
@@ -51,47 +100,39 @@ class XhrDocument
     /**
      * Follow/Unfollow a debate by current user
      */
-    public function follow()
+    public function follow(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** follow');
+        $this->logger->info('*** follow');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $userManager = $this->sc->get('politizr.manager.user');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $id = $request->get('subjectId');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $way = $request->get('way');
-        $logger->info('$way = ' . print_r($way, true));
+        $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if ('follow' == $way) {
-            $userManager->createUserFollowDebate($user->getId(), $debate->getId());
+            $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_debate_follow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
             $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('n_debate_follow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
         } elseif ('unfollow' == $way) {
-            $userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
+            $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_debate_unfollow', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
         } else {
             throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
         }
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribe.html.twig',
             array(
                 'object' => $debate,
@@ -109,26 +150,19 @@ class XhrDocument
      * Notation plus/minus of debate, comment or user
      * @todo refactoring
      */
-    public function note()
+    public function note(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** note');
+        $this->logger->info('*** note');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $id = $request->get('subjectId');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $type = $request->get('type');
-        $logger->info('$type = ' . print_r($type, true));
+        $this->logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
-        $logger->info('$way = ' . print_r($way, true));
+        $this->logger->info('$way = ' . print_r($way, true));
 
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Function process
         switch($type) {
@@ -153,19 +187,19 @@ class XhrDocument
 
             // Events
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_note_pos', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_note_pos', $event);
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('n_note_pos', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('n_note_pos', $event);
             switch($type) {
                 case PDocumentInterface::TYPE_DEBATE:
                 case PDocumentInterface::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $eventDispatcher->dispatch('b_document_note_pos', $event);
+                    $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
                     break;
                 case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 case PDocumentInterface::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $eventDispatcher->dispatch('b_comment_note_pos', $event);
+                    $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_pos', $event);
                     break;
             }
         } elseif ('down' == $way) {
@@ -174,19 +208,19 @@ class XhrDocument
 
             // Events
             $event = new GenericEvent($object, array('user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('r_note_neg', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('r_note_neg', $event);
             $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
-            $dispatcher = $eventDispatcher->dispatch('n_note_neg', $event);
+            $dispatcher = $this->eventDispatcher->dispatch('n_note_neg', $event);
             switch($type) {
                 case PDocumentInterface::TYPE_DEBATE:
                 case PDocumentInterface::TYPE_REACTION:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $eventDispatcher->dispatch('b_document_note_neg', $event);
+                    $dispatcher = $this->eventDispatcher->dispatch('b_document_note_neg', $event);
                     break;
                 case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 case PDocumentInterface::TYPE_REACTION_COMMENT:
                     $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
-                    $dispatcher = $eventDispatcher->dispatch('b_comment_note_neg', $event);
+                    $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_neg', $event);
                     break;
             }
         } else {
@@ -194,7 +228,7 @@ class XhrDocument
         }
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
             array(
                 'object' => $object,
@@ -214,21 +248,15 @@ class XhrDocument
     /**
      * Debate update
      */
-    public function debateUpdate()
+    public function debateUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** debateUpdate');
+        $this->logger->info('*** debateUpdate');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-
         // Request arguments
         $id = $request->get('debate')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Function process
         $debate = PDDebateQuery::create()->findPk($id);
@@ -242,7 +270,7 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $formFactory->create(new PDDebateType(), $debate);
+        $form = $this->formFactory->create(new PDDebateType(), $debate);
         $form->bind($request);
         if ($form->isValid()) {
             $debate = $form->getData();
@@ -258,23 +286,16 @@ class XhrDocument
     /**
      * Update debate photo info
      */
-    public function debatePhotoInfoUpdate()
+    public function debatePhotoInfoUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** debatePhotoInfoUpdate');
+        $this->logger->info('*** debatePhotoInfoUpdate');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $id = $request->get('debate_photo_info')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -286,7 +307,7 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $formFactory->create(new PDDebatePhotoInfoType(), $debate);
+        $form = $this->formFactory->create(new PDDebatePhotoInfoType(), $debate);
 
         // Retrieve actual file name
         $oldFileName = $debate->getFileName();
@@ -314,7 +335,7 @@ class XhrDocument
         if ($fileName = $debate->getFileName()) {
             $path = PDDebate::UPLOAD_WEB_PATH.$fileName;
         }
-        $imageHeader = $templating->render(
+        $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
                 'withShadow' => $debate->getWithShadow(),
@@ -334,26 +355,18 @@ class XhrDocument
     /**
      * Debate publication
      */
-    public function debatePublish()
+    public function debatePublish(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** debatePublish');
+        $this->logger->info('*** debatePublish');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $documentManager = $this->sc->get('politizr.manager.document');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $session = $this->sc->get('session')->getFlashBag();
-
         // Request arguments
         $id = $request->get('id');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $redirectUrl = $request->get('url');
-        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -365,14 +378,14 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $documentManager->publishDebate();
-        $session->getFlashBag()->add('success', 'Objet publié avec succès.');
+        $this->documentManager->publishDebate();
+        $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
         // Events
         $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('r_debate_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('r_debate_publish', $event);
         $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('n_debate_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
 
         return array(
             'redirectUrl' => $redirectUrl,
@@ -382,25 +395,18 @@ class XhrDocument
     /**
      * Debate deletion
      */
-    public function debateDelete()
+    public function debateDelete(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** debateDelete');
+        $this->logger->info('*** debateDelete');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $documentManager = $this->sc->get('politizr.manager.document');
-        $session = $this->sc->get('session')->getFlashBag();
-
         // Request arguments
         $id = $request->get('id');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $redirectUrl = $request->get('url');
-        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -412,8 +418,8 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
         }
 
-        $documentManager->deleteDebate($debate);
-        $session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
+        $this->documentManager->deleteDebate($debate);
+        $this->session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 
         return array(
             'redirectUrl' => $redirectUrl,
@@ -427,22 +433,16 @@ class XhrDocument
     /**
      * Reaction update
      */
-    public function reactionUpdate()
+    public function reactionUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** reactionUpdate');
+        $this->logger->info('*** reactionUpdate');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-
         // Request arguments
         $id = $request->get('reaction')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -454,7 +454,7 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $formFactory->create(new PDReactionType(), $reaction);
+        $form = $this->formFactory->create(new PDReactionType(), $reaction);
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -471,24 +471,16 @@ class XhrDocument
     /**
      * Update reaction photo info
      */
-    public function reactionPhotoInfoUpdate()
+    public function reactionPhotoInfoUpdate(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** reactionPhotoInfoUpdate');
+        $this->logger->info('*** reactionPhotoInfoUpdate');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $formFactory = $this->sc->get('form.factory');
-        $templating = $this->sc->get('templating');
-        $kernel = $this->sc->get('kernel');
-
         // Request arguments
         $id = $request->get('reaction_photo_info')['id'];
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -500,7 +492,7 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $form = $formFactory->create(new PDReactionPhotoInfoType(), $reaction);
+        $form = $this->formFactory->create(new PDReactionPhotoInfoType(), $reaction);
 
         // Retrieve actual file name
         $oldFileName = $reaction->getFileName();
@@ -513,7 +505,7 @@ class XhrDocument
             // Remove old file if new upload or deletion has been done
             $fileName = $reaction->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $kernel->getRootDir() . '/../web' . PDReaction::UPLOAD_WEB_PATH;
+                $path = $this->kernel->getRootDir() . '/../web' . PDReaction::UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }
@@ -528,7 +520,7 @@ class XhrDocument
         if ($fileName = $reaction->getFileName()) {
             $path = PDReaction::UPLOAD_WEB_PATH.$fileName;
         }
-        $imageHeader = $templating->render(
+        $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
                 'withShadow' => $reaction->getWithShadow(),
@@ -548,26 +540,18 @@ class XhrDocument
     /**
      * Reaction publication
      */
-    public function reactionPublish()
+    public function reactionPublish(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** reactionPublish');
+        $this->logger->info('*** reactionPublish');
         
-        // Retrieve used services
-        $request = $this->sc->get('request');
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $documentManager = $this->sc->get('politizr.manager.document');
-        $eventDispatcher = $this->sc->get('event_dispatcher');
-        $session = $this->sc->get('session');
-
         // Request arguments
         $id = $request->get('id');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $redirectUrl = $request->get('url');
-        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -579,8 +563,8 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $documentManager->publishReaction($reaction);
-        $session->getFlashBag()->add('success', 'Objet publié avec succès.');
+        $this->documentManager->publishReaction($reaction);
+        $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
         // Events
         $parentUserId = $reaction->getDebate()->getPUserId();
@@ -588,11 +572,11 @@ class XhrDocument
             $parentUserId = $reaction->getParent()->getPUserId();
         }
         $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('r_reaction_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('r_reaction_publish', $event);
         $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('n_reaction_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('n_reaction_publish', $event);
         $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
-        $dispatcher = $eventDispatcher->dispatch('b_reaction_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);
 
         // Renvoi de l'url de redirection
         return array(
@@ -604,25 +588,18 @@ class XhrDocument
     /**
      * Reaction deletion
      */
-    public function reactionDelete()
+    public function reactionDelete(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** reactionDelete');
+        $this->logger->info('*** reactionDelete');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $documentManager = $this->sc->get('politizr.manager.document');
-        $session = $this->sc->get('session');
-
         // Request arguments
-        $request = $this->sc->get('request');
         $id = $request->get('id');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $redirectUrl = $request->get('url');
-        $logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
+        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($id);
         if (!$reaction) {
             throw new InconsistentDataException('Reaction n°'.$id.' not found.');
@@ -634,8 +611,8 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
         }
 
-        $documentManager->deleteReaction($reaction);
-        $session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
+        $this->documentManager->deleteReaction($reaction);
+        $this->session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 
         // Renvoi de l'url de redirection
         return array(
@@ -650,27 +627,18 @@ class XhrDocument
     /**
      * Document's photo upload
      */
-    public function documentPhotoUpload()
+    public function documentPhotoUpload(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** documentPhotoUpload');
-
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $session = $this->sc->get('session');
-        $kernel = $this->sc->get('kernel');
-        $request = $this->sc->get('request');
-        $utilsManager = $this->sc->get('politizr.tools.global');
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** documentPhotoUpload');
 
         // Request arguments
         $id = $request->get('id');
-        $logger->info(print_r($id, true));
+        $this->logger->info(print_r($id, true));
         $type = $request->get('type');
-        $logger->info(print_r($type, true));
+        $this->logger->info(print_r($type, true));
 
         // Récupération débat courant
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
@@ -685,10 +653,11 @@ class XhrDocument
         }
 
         // Chemin des images
-        $path = $kernel->getRootDir() . '/../web' . $uploadWebPath;
+        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
 
         // Appel du service d'upload ajax
-        $fileName = $utilsManager->uploadXhrImage(
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
             'fileName',
             $path,
             1024,
@@ -696,7 +665,7 @@ class XhrDocument
         );
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
                 'withShadow' => $document->getWithShadow(),
@@ -720,23 +689,16 @@ class XhrDocument
     /**
      * Create a new comment
      */
-    public function commentNew()
+    public function commentNew(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** commentNew');
+        $this->logger->info('*** commentNew');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $request = $this->sc->get('request');
-        $formFactory = $this->sc->get('form.factory');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $type = $request->get('comment')['type'];
-        $logger->info('$type = ' . print_r($type, true));
+        $this->logger->info('$type = ' . print_r($type, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
@@ -752,7 +714,7 @@ class XhrDocument
                 throw new InconsistentDataException('Object type not managed');
         }
 
-        $form = $formFactory->create($formType, $comment);
+        $form = $this->formFactory->create($formType, $comment);
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -775,18 +737,18 @@ class XhrDocument
             $commentNew->setPDocumentId($document->getId());
             $commentNew->setParagraphNo($noParagraph);
         }
-        $form = $formFactory->create($formType, $comment);
+        $form = $this->formFactory->create($formType, $comment);
 
         // Events
         $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('r_comment_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('r_comment_publish', $event);
         $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
-        $dispatcher = $eventDispatcher->dispatch('n_comment_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('n_comment_publish', $event);
         $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
-        $dispatcher = $eventDispatcher->dispatch('b_comment_publish', $event);
+        $dispatcher = $this->eventDispatcher->dispatch('b_comment_publish', $event);
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
             array(
                 'document' => $document,
@@ -794,7 +756,7 @@ class XhrDocument
                 'formComment' => $form->createView(),
             )
         );
-        $counter = $templating->render(
+        $counter = $this->templating->render(
             'PolitizrFrontBundle:Comment:_counter.html.twig',
             array(
                 'document' => $document,
@@ -811,28 +773,20 @@ class XhrDocument
     /**
      * Display comments & create form comment
      */
-    public function comments()
+    public function comments(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** comments');
+        $this->logger->info('*** comments');
         
-        // Retrieve used services
-        $securityTokenStorage = $this->sc->get('security.token_storage');
-        $securityAuthorizationChecker =$this->get('security.authorization_checker');
-        $formFactory = $this->sc->get('form.factory');
-        $request = $this->sc->get('request');
-        $templating = $this->sc->get('templating');
-
         // Request arguments
         $id = $request->get('subjectId');
-        $logger->info('$id = ' . print_r($id, true));
+        $this->logger->info('$id = ' . print_r($id, true));
         $type = $request->get('type');
-        $logger->info('$type = ' . print_r($type, true));
+        $this->logger->info('$type = ' . print_r($type, true));
         $noParagraph = $request->get('noParagraph');
-        $logger->info('$noParagraph = ' . print_r($noParagraph, true));
+        $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
         // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case PDocumentInterface::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->findPk($id);
@@ -850,15 +804,15 @@ class XhrDocument
 
         $comments = $document->getComments(true, $noParagraph);
 
-        if ($securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
             $comment->setPUserId($user->getId());
             $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
         }
-        $formComment = $formFactory->create($formType, $comment);
+        $formComment = $this->formFactory->create($formType, $comment);
 
         // Rendering
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Comment:_paragraphComments.html.twig',
             array(
                 'document' => $document,
@@ -866,7 +820,7 @@ class XhrDocument
                 'formComment' => $formComment->createView(),
             )
         );
-        $counter = $templating->render(
+        $counter = $this->templating->render(
             'PolitizrFrontBundle:Comment:_counter.html.twig',
             array(
                 'document' => $document,
