@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "72c4db4cf8e52b733ae98f79a7b5265e",
+    "hash": "2e158118ae5668ecee93cde5271ced90",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -502,26 +502,23 @@
         },
         {
             "name": "ensepar/html2pdf",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OwlyCode/html2pdf.git",
-                "reference": "6f502f26caf96f39af5ba7b31adddade9c3c5ff2"
+                "reference": "b53a27430cc35b29bbe2faaa55ed4a7d5c156cd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OwlyCode/html2pdf/zipball/6f502f26caf96f39af5ba7b31adddade9c3c5ff2",
-                "reference": "6f502f26caf96f39af5ba7b31adddade9c3c5ff2",
+                "url": "https://api.github.com/repos/OwlyCode/html2pdf/zipball/b53a27430cc35b29bbe2faaa55ed4a7d5c156cd3",
+                "reference": "b53a27430cc35b29bbe2faaa55ed4a7d5c156cd3",
                 "shasum": ""
             },
             "require": {
-                "ensepar/tcpdf": "5.0.002",
+                "ensepar/tcpdf": "5.0.003",
                 "php": ">=5.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": []
-            },
             "autoload": {
                 "psr-0": {
                     "HTML2PDF": "."
@@ -538,8 +535,8 @@
                     "role": "Developer"
                 },
                 {
-                    "name": "tmaindron",
-                    "homepage": "http://www.github.com/tmaindron",
+                    "name": "OwlyCode",
+                    "homepage": "http://www.github.com/OwlyCode",
                     "role": "Developer"
                 }
             ],
@@ -550,27 +547,30 @@
                 "html2pdf",
                 "pdf"
             ],
-            "time": "2013-06-13 08:20:16"
+            "time": "2013-09-13 12:23:43"
         },
         {
             "name": "ensepar/html2pdf-bundle",
-            "version": "1.0.0",
+            "version": "v2.0.0",
             "target-dir": "Ensepar/Html2pdfBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OwlyCode/EnseparHtml2pdfBundle.git",
-                "reference": "7b6f24dd5619f692a475383791b707e6233bb759"
+                "reference": "25666fa8349b55acb2f958f45eb96fd74f9f058b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OwlyCode/EnseparHtml2pdfBundle/zipball/7b6f24dd5619f692a475383791b707e6233bb759",
-                "reference": "7b6f24dd5619f692a475383791b707e6233bb759",
+                "url": "https://api.github.com/repos/OwlyCode/EnseparHtml2pdfBundle/zipball/25666fa8349b55acb2f958f45eb96fd74f9f058b",
+                "reference": "25666fa8349b55acb2f958f45eb96fd74f9f058b",
                 "shasum": ""
             },
             "require": {
-                "ensepar/html2pdf": "1.0.0",
+                "ensepar/html2pdf": "1.0.1",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.0"
+                "symfony/symfony": ">=2.0"
+            },
+            "require-dev": {
+                "sensio/framework-extra-bundle": "~3.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -579,34 +579,36 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Tristan Maindron",
-                    "email": "tmaindron@gmail.com",
-                    "homepage": "http://www.github.com/OwlyCode"
+                    "email": "tmaindron@gmail.com"
                 }
             ],
             "description": "Use HTML2PDF as a Symfony2 Service",
-            "homepage": "https://github.com/tmaindron/EnseparHtml2pdfBundle",
+            "homepage": "https://github.com/OwlyCode/EnseparHtml2pdfBundle",
             "keywords": [
                 "TCPDF",
                 "html2pdf",
                 "pdf"
             ],
-            "time": "2013-06-13 08:26:01"
+            "time": "2014-10-25 18:03:13"
         },
         {
             "name": "ensepar/tcpdf",
-            "version": "5.0.002",
+            "version": "5.0.003",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OwlyCode/tcpdf.git",
-                "reference": "b9e6c9441f0477964d6dc7a68cdabd2f749fe1fb"
+                "reference": "ae578409e9454fdf6c794cce6f063b0c95bfa518"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OwlyCode/tcpdf/zipball/b9e6c9441f0477964d6dc7a68cdabd2f749fe1fb",
-                "reference": "b9e6c9441f0477964d6dc7a68cdabd2f749fe1fb",
+                "url": "https://api.github.com/repos/OwlyCode/tcpdf/zipball/ae578409e9454fdf6c794cce6f063b0c95bfa518",
+                "reference": "ae578409e9454fdf6c794cce6f063b0c95bfa518",
                 "shasum": ""
             },
             "require": {
@@ -648,7 +650,7 @@
                 "TCPDF",
                 "pdf"
             ],
-            "time": "2012-10-08 17:59:49"
+            "time": "2013-09-12 17:00:40"
         },
         {
             "name": "facebook/php-sdk-v4",
@@ -656,12 +658,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "2483917ccb94513b74135425722da425ea243d21"
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
-                "reference": "2483917ccb94513b74135425722da425ea243d21",
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
                 "shasum": ""
             },
             "require": {
@@ -703,7 +705,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-07-08 06:29:23"
+            "time": "2015-07-08 19:08:57"
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
@@ -788,30 +790,30 @@
         },
         {
             "name": "friendsofsymfony/user-bundle",
-            "version": "v1.3.6",
-            "target-dir": "FOS/UserBundle",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "2022ac8463a8c50dd631f93a17064bd41795fff2"
+                "reference": "3efbc08a97f218d0a4524dee926fc4381e3d0947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/2022ac8463a8c50dd631f93a17064bd41795fff2",
-                "reference": "2022ac8463a8c50dd631f93a17064bd41795fff2",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/3efbc08a97f218d0a4524dee926fc4381e3d0947",
+                "reference": "3efbc08a97f218d0a4524dee926fc4381e3d0947",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.1",
-                "symfony/security-bundle": "~2.1"
+                "symfony/form": "~2.3",
+                "symfony/framework-bundle": "~2.3",
+                "symfony/security-bundle": "~2.3",
+                "symfony/twig-bundle": "~2.3"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.3",
                 "swiftmailer/swiftmailer": "~4.3|~5",
-                "symfony/validator": "~2.1",
-                "symfony/yaml": "~2.1",
-                "twig/twig": "~1.5",
+                "symfony/validator": "~2.3",
+                "symfony/yaml": "~2.3",
                 "willdurand/propel-typehintable-behavior": "~1.0"
             },
             "suggest": {
@@ -824,8 +826,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "FOS\\UserBundle": ""
+                "psr-4": {
+                    "FOS\\UserBundle\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -851,7 +853,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2015-06-01 00:57:03"
+            "time": "2015-06-10 08:27:05"
         },
         {
             "name": "fzaninotto/faker",
@@ -1799,16 +1801,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc"
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b287fbbe1ca27847064beff2bad7fb6920bf08cc",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
                 "shasum": ""
             },
             "require": {
@@ -1845,7 +1847,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14.x-dev"
+                    "dev-master": "1.15.x-dev"
                 }
             },
             "autoload": {
@@ -1871,7 +1873,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 13:29:54"
+            "time": "2015-07-12 13:54:09"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -1942,25 +1944,62 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.4.14",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "41075d93ca254f1c90c79ec7ce81be2b2629e138"
+                "reference": "a185fef6df7241e540466b67486a4c4b552260e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/41075d93ca254f1c90c79ec7ce81be2b2629e138",
-                "reference": "41075d93ca254f1c90c79ec7ce81be2b2629e138",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a185fef6df7241e540466b67486a4c4b552260e1",
+                "reference": "a185fef6df7241e540466b67486a4c4b552260e1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
             },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "lastcraft/simpletest": "@dev",
+                "pdepend/pdepend": "2.x",
+                "pear-pear.php.net/http_request2": "2.2.x",
+                "pear-pear.php.net/net_growl": "2.7.x",
+                "pear-pear.php.net/pear_packagefilemanager": "1.7.x",
+                "pear-pear.php.net/pear_packagefilemanager2": "1.0.x",
+                "pear-pear.php.net/xml_serializer": "0.20.x",
+                "pear/pear_exception": "~1.0",
+                "pear/versioncontrol_git": "@dev",
+                "pear/versioncontrol_svn": "~0.5",
+                "phpdocumentor/phpdocumentor": "2.x",
+                "phploc/phploc": "2.x",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": ">=3.7",
+                "sebastian/phpcpd": "2.x",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "suggest": {
+                "pdepend/pdepend": "PHP version of JDepend",
+                "pear/archive_tar": "Tar file management class",
+                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
+                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
+                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
+                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
+                "phpmd/phpmd": "PHP version of PMD tool",
+                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
+                "phpunit/phpunit": "The PHP Unit Testing Framework",
+                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "tedivm/jshrink": "Javascript Minifier built in PHP"
+            },
             "bin": [
                 "bin/phing"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.11.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "classes/phing/"
@@ -1971,27 +2010,27 @@
                 "classes"
             ],
             "license": [
-                "LGPL3"
+                "LGPL-3.0"
             ],
             "authors": [
                 {
                     "name": "Michiel Rook",
-                    "email": "mrook@php.net",
-                    "role": "Lead"
+                    "email": "mrook@php.net"
                 },
                 {
                     "name": "Phing Community",
-                    "homepage": "http://www.phing.info/trac/wiki/Development/Contributors"
+                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
                 }
             ],
             "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
-            "homepage": "http://www.phing.info/",
+            "homepage": "https://www.phing.info/",
             "keywords": [
                 "build",
+                "phing",
                 "task",
                 "tool"
             ],
-            "time": "2012-11-29 21:23:47"
+            "time": "2015-05-20 13:04:38"
         },
         {
             "name": "phpoption/phpoption",
@@ -2637,7 +2676,7 @@
         },
         {
             "name": "symfony/propel1-bridge",
-            "version": "v2.6.9",
+            "version": "v2.6.10",
             "target-dir": "Symfony/Bridge/Propel1",
             "source": {
                 "type": "git",
@@ -2750,16 +2789,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "932b6e7499c670f4db6d0b871477a4a3ca161e74"
+                "reference": "969d709ad428076bf1084e386dc26dd904d9fb84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/932b6e7499c670f4db6d0b871477a4a3ca161e74",
-                "reference": "932b6e7499c670f4db6d0b871477a4a3ca161e74",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/969d709ad428076bf1084e386dc26dd904d9fb84",
+                "reference": "969d709ad428076bf1084e386dc26dd904d9fb84",
                 "shasum": ""
             },
             "require": {
@@ -2868,7 +2907,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-06-11 21:15:28"
+            "time": "2015-07-13 19:27:49"
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
@@ -3369,6 +3408,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "glorpen/propel-bundle": 20,
+        "friendsofsymfony/user-bundle": 20,
         "symfony2admingenerator/generator-bundle": 10,
         "fzaninotto/faker": 20,
         "willdurand/faker-bundle": 0,

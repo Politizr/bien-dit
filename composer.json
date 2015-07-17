@@ -50,9 +50,9 @@
 
         "willdurand/geocoder-bundle": "3.0.*",
 
-        "phing/phing": "2.4.14",
+        "phing/phing": "2.*",
 
-        "friendsofsymfony/user-bundle": "*",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
 
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
         
@@ -62,9 +62,9 @@
         "hwi/oauth-bundle": "0.4.*@dev",
         "facebook/php-sdk-v4": "dev-master",
         
-        "white-october/pagerfanta-bundle": "1.0.*",
+        "white-october/pagerfanta-bundle": "~1.0",
         
-        "ensepar/html2pdf-bundle": "1.0.0",
+        "ensepar/html2pdf-bundle": "~2.0",
         
         "elao/web-profiler-extra-bundle" : "~2.3@dev",
 
