@@ -272,7 +272,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             ->filterIfOnline($online)
             ->filterIfParagraphNo($paragraphNo);
         
-        return parent::countPDDComments($query);
+        return parent::countPDRComments($query);
     }
 
     /**
@@ -289,7 +289,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
                 ->orderBy('p_d_r_comment.created_at', 'desc')
             ->_endif();
 
-        return parent::getPDDComments($query);
+        return parent::getPDRComments($query);
     }
     
     /* ######################################################################################################## */
