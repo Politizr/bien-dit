@@ -1,9 +1,12 @@
+{# @todo refactor layout management for profile screens #}
 {% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
 {% if (isGrantedE()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+    {% set profileSuffix = 'E' %}
     {% set reactionPath = 'ReactionDraftNewE' %}
 {% elseif (isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %} 
+    {% set profileSuffix = 'C' %}
     {% set reactionPath = 'ReactionDraftNewC' %}
 {% endif %}
 {% extends layout %}
