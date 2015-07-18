@@ -2,5 +2,8 @@ services:
     # SERVICES UTILITAIRES
     politizr.tools.global:
         class: Politizr\FrontBundle\Lib\Tools\GlobalTools
-        arguments: [ @logger ]
+        arguments:
+            - @security.authorization_checker
+            - @security.context
+            - @logger
 

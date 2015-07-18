@@ -27,7 +27,7 @@ use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
  *
  * @author Lionel Bouzonville
  */
-class DocumentController extends Controller
+class DocumentController extends ConnectedController
 {
 
     /* ######################################################################################################## */
@@ -182,10 +182,15 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateNewAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Service associé a la création d'une réaction
         $debate = $this->get('politizr.functional.document')->createDebate();
 
-        return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
+        return $this->redirect($this->generateUrl('DebateDraftEdit', array(
+            'profileSuffix' => $this->profileSuffix,
+            'id' => $debate->getId()
+        )));
     }
 
     /**
@@ -197,6 +202,8 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateEditAction');
         $logger->info('$id = '.print_r($id, true));
+
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
 
         // Récupération user courant
         $user = $this->getUser();
@@ -221,6 +228,7 @@ class DocumentController extends Controller
         $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
+            'profileSuffix' => $this->profileSuffix,
             'debate' => $debate,
             'form' => $form->createView(),
             'formPhotoInfo' => $formPhotoInfo->createView(),
@@ -239,10 +247,15 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Service associé a la création d'une réaction
         $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
 
-        return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
+        return $this->redirect($this->generateUrl('ReactionDraftEdit', array(
+            'profileSuffix' => $this->profileSuffix,
+            'id' => $reaction->getId()
+        )));
     }
 
     /**
@@ -254,6 +267,8 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** reactionEditAction');
         $logger->info('$id = '.print_r($id, true));
+
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
 
         // Récupération user courant
         $user = $this->getUser();
@@ -286,6 +301,7 @@ class DocumentController extends Controller
         $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
+            'profileSuffix' => $this->profileSuffix,
             'reaction' => $reaction,
             'parent' => $parent,
             'paragraphs' => $paragraphs,

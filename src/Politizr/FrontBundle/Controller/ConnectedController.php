@@ -16,31 +16,32 @@ use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
-use Politizr\Model\PUAffinityQOQuery;
+use Politizr\Model\PUCurrentQOQuery;
+
+use Politizr\Model\PUCurrentQO;
+use Politizr\Model\PUMandate;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
-use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
+use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
- * Gestion profil citoyen
- *
- * TODO:
- *  - gestion des erreurs / levés d'exceptions à revoir/blindés pour les appels Ajax
- *  - refactorisation pour réduire les doublons de code entre les tables PUTaggedT et PUFollowT
- *  - refactoring gestion des tags > gestion des doublons / admin + externalisation logique métier dans les *Query class
- *  - refactoring > à renommer en CitizenController > contient les fonctions spécifiques au profil citoyen, sinon utiliser ProfileController
+ * Common "connected" (citizen + elected) controller
  *
  * @author Lionel Bouzonville
  */
-class CitizenController extends Controller
+class ConnectedController extends Controller
 {
+    // add C (for citizen) / E (for elected) to the template name
+    protected $profileSuffix;
 
     /* ######################################################################################################## */
     /*                                                    ACTUALITES                                            */
@@ -53,8 +54,10 @@ class CitizenController extends Controller
     {
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
-        
-        return $this->redirect($this->generateUrl('TimelineC'));
+
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
+        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $this->profileSuffix)));
     }
 
     /**
@@ -65,31 +68,9 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** timelineAction');
 
-        return $this->render('PolitizrFrontBundle:ProfileC:timeline.html.twig', array(
-            ));
-    }
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
 
-    /**
-     *  Trouver des débats
-     */
-    public function findDebatesAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** findDebatesAction');
-
-        return $this->render('PolitizrFrontBundle:ProfileC:findDebates.html.twig', array(
-            ));
-    }
-
-    /**
-     *  Trouver des users
-     */
-    public function findUsersAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** findUsersAction');
-
-        return $this->render('PolitizrFrontBundle:ProfileC:findUsers.html.twig', array(
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:timeline.html.twig', $this->profileSuffix), array(
             ));
     }
 
@@ -100,26 +81,36 @@ class CitizenController extends Controller
 
 
     /**
-     *  Mes contributions - Accueil
+     *  Mes contributions - Tableau de bord
      */
     public function contribDashboardAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** contribDashboardAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Récupération user courant
-        $user = $this->getUser();
+        $pUser = $this->getUser();
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
+
+        // Réactions brouillons en attente de finalisation
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->orderByCreatedAt('desc')->find();
 
         // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
+        $debates = PDDebateQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
 
-        return $this->render('PolitizrFrontBundle:ProfileC:contribDashboard.html.twig', array(
-            'drafts' => $drafts,
-            'debates' => $debates
-            ));
+        // Réactions rédigées
+        $reactions = PDReactionQuery::create()->filterByPUserId($pUser->getId())->online()->orderByPublishedAt('desc')->find();
+
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:contribDashboard.html.twig', $this->profileSuffix), array(
+            'debateDrafts' => $debateDrafts,
+            'reactionDrafts' => $reactionDrafts,
+            'debates' => $debates,
+            'reactions' => $reactions,
+        ));
     }
 
     /**
@@ -130,15 +121,21 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myDraftsAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Récupération user courant
         $pUser = $this->getUser();
 
         // Débats brouillons en attente de finalisation
-        $drafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
 
-        return $this->render('PolitizrFrontBundle:ProfileC:myDrafts.html.twig', array(
-            'drafts' => $drafts,
-            ));
+        // Réactions brouillons en attente de finalisation
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($pUser->getId())->filterByPublished(false)->find();
+
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myDrafts.html.twig', $this->profileSuffix), array(
+            'debateDrafts' => $debateDrafts,
+            'reactionDrafts' => $reactionDrafts,
+        ));
     }
 
 
@@ -154,12 +151,14 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myTagsAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Récupération user courant
         $pUser = $this->getUser();
 
-        return $this->render('PolitizrFrontBundle:ProfileC:myTags.html.twig', array(
-                'pUser' => $pUser,
-            ));
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myTags.html.twig', $this->profileSuffix), array(
+            'pUser' => $pUser,
+        ));
     }
 
 
@@ -170,6 +169,8 @@ class CitizenController extends Controller
     {
         $logger = $this->get('logger');
         $logger->info('*** myReputationAction');
+
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
 
         // Récupération user courant
         $user = $this->getUser();
@@ -209,13 +210,13 @@ class CitizenController extends Controller
         $badgeIds = array_keys($badgeIds);
 
         // Affichage de la vue
-        return $this->render('PolitizrFrontBundle:ProfileC:myReputation.html.twig', array(
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myReputation.html.twig', $this->profileSuffix), array(
             'reputationScore' => $reputationScore,
             'badgesGold' => $badgesGold,
             'badgesSilver' => $badgesSilver,
             'badgesBronze' => $badgesBronze,
             'badgeIds' => $badgeIds,
-            ));
+        ));
     }
 
 
@@ -227,26 +228,50 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myProfileAction');
 
-        // Récupération user courant
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
+        // User courant
         $user = $this->getUser();
 
-        // Récupération photos profil
+        // Photos profil
         $backFileName = $user->getBackFileName();
         $fileName = $user->getFileName();
 
+        // Organisation courante
+        $puCurrentQo = PUCurrentQOQuery::create()
+            ->filterByPUserId($user->getId())
+            ->usePUCurrentQOPQOrganizationQuery()
+                ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
+            ->endUse()
+            ->findOne();
+
+        if (!$puCurrentQo) {
+            $puCurrentQo = new PUCurrentQO();
+            $puCurrentQo->setPUserId($user->getId());
+        }
+
+        // Mandats
+        $formMandateViews = $this->get('politizr.tools.global')->getFormMandateViews($user->getId());
+
+        // Form vierge pour création mandat
+        $mandate = new PUMandate();
+        $mandate->setPUserId($user->getId());
+        $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
+
         // Formulaire
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
+        $formOrga = $this->createForm(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
+        $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
 
-        // Affinités organisations
-        $formAffinities = $this->createForm(new PUserAffinitiesType(QualificationConstants::TYPE_ELECTIV), $user);
-
-        return $this->render('PolitizrFrontBundle:ProfileC:myProfile.html.twig', array(
-                        'user' => $user,
-                        'formBio' => $formBio->createView(),
-                        'formAffinities' => $formAffinities->createView(),
-                        'backFileName' => $backFileName,
-                        'fileName' => $fileName,
-            ));
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myProfile.html.twig', $this->profileSuffix), array(
+            'user' => $user,
+            'backFileName' => $backFileName,
+            'fileName' => $fileName,
+            'formBio' => $formBio->createView(),
+            'formOrga' => $formOrga->createView(),
+            'formMandate' => $formMandate->createView(),
+            'formMandateViews' => $formMandateViews,
+        ));
     }
 
     /**
@@ -257,6 +282,8 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myPersoAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+
         // Récupération user courant
         $user = $this->getUser();
 
@@ -265,12 +292,12 @@ class CitizenController extends Controller
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
-        return $this->render('PolitizrFrontBundle:ProfileC:myPerso.html.twig', array(
-                        'user' => $user,
-                        'formPerso1' => $formPerso1->createView(),
-                        'formPerso2' => $formPerso2->createView(),
-                        'formPerso3' => $formPerso3->createView()
-            ));
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myPerso.html.twig', $this->profileSuffix), array(
+            'user' => $user,
+            'formPerso1' => $formPerso1->createView(),
+            'formPerso2' => $formPerso2->createView(),
+            'formPerso3' => $formPerso3->createView()
+        ));
     }
 
     /**
@@ -281,6 +308,7 @@ class CitizenController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** myNotificationsAction');
 
+        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
 
         // Récupération user courant
         $user = $this->getUser();
@@ -298,36 +326,9 @@ class CitizenController extends Controller
                         ->filterByPUserId($user->getId())
                         ->find();
 
-        return $this->render('PolitizrFrontBundle:ProfileC:myNotifications.html.twig', array(
-                        'notifications' => $notifications,
-                        'emailNotifIds' => $emailNotifIds,
-            ));
-
-    }
-
-    /**
-     *  Gestion des débats suivis
-     */
-    public function myFollowedDebatesAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myFollowedDebatesAction');
-
-        return $this->render('PolitizrFrontBundle:ProfileC:myFollowedDebates.html.twig', array(
-            ));
-
-    }
-
-    /**
-     *  Gestion des profils suivis
-     */
-    public function myFollowedUsersAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myFollowedUsersAction');
-
-        return $this->render('PolitizrFrontBundle:ProfileC:myFollowedUsers.html.twig', array(
-            ));
-
+        return $this->render(sprintf('PolitizrFrontBundle:Profile%s:myNotifications.html.twig', $this->profileSuffix), array(
+            'notifications' => $notifications,
+            'emailNotifIds' => $emailNotifIds,
+        ));
     }
 }

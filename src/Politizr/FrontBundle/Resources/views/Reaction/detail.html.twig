@@ -1,8 +1,10 @@
 {% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
 {% if (isGrantedE()) %}
     {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
+    {% set reactionPath = 'ReactionDraftNewE' %}
 {% elseif (isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+    {% set reactionPath = 'ReactionDraftNewC' %}
 {% endif %}
 {% extends layout %}
 
@@ -15,7 +17,7 @@
 {% block fixedActions %}
     <div id="fixedActions">
         {% if app.user and app.user | isAuthorizedToReact(debate) %}
-            <a class="actionReact" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': reaction.id }) }}">
+            <a class="actionReact" href="{{ path(reactionPath, { 'debateId': debate.id, 'parentId': reaction.id }) }}">
                 <i class="iconReaction"></i>réagir
             </a>
         {% endif %}

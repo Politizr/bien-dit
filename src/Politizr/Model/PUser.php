@@ -536,7 +536,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     public function getSubscribers(\Criteria $query = null, \PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         }
 
         $sql = "

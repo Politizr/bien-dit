@@ -1,10 +1,4 @@
-{# @todo manage not granted case #}
-{% if (isGrantedE()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
-{% elseif (isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
-{% endif %}
-{% extends layout %}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -21,12 +15,7 @@
 {% endblock javascriptHeader %}
 
 {% block header %}
-    {% if (isGrantedE()) %}
-        {% set header = 'PolitizrFrontBundle:Navigation:headerE.html.twig' %}
-    {% elseif (isGrantedC()) %}
-        {% set header = 'PolitizrFrontBundle:Navigation:headerC.html.twig' %} 
-    {% endif %}
-    {% embed header %}
+    {% embed 'PolitizrFrontBundle:Navigation:_header'~profileSuffix~'.html.twig' %}
         {% block socialLinks %}{% endblock socialLinks %}
     {% endembed %}
 {% endblock header %}

@@ -25,18 +25,45 @@ UserDetail:
     requirements:
         _method:        GET
 
-DebateDraftNew:
-    pattern:  /profil/mes-contributions/nouveau
+
+DebateDraftNewC:
+    pattern:  /citoyen/mes-contributions/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
-DebateDraftEdit:
-    pattern:  /profil/mes-contributions/{id}/edition
+DebateDraftEditC:
+    pattern:  /citoyen/mes-contributions/{id}/edition
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
         id:             \d+
 
-ReactionDraftNew:
+DebateDraftNewE:
+    pattern:  /elu/mes-contributions/nouveau
+    defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
+
+DebateDraftEditE:
+    pattern:  /elu/mes-contributions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+ReactionDraftNewC:
+    pattern:  /citoyen/{debateId}/{parentId}/mes-reactions/nouvelle
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
+    requirements:
+        _method:        GET
+        debateId:       \d+
+        parentId:       \d*
+
+ReactionDraftEditC:
+    pattern:  /citoyen/mes-reactions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
+ReactionDraftNewE:
     pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
     requirements:
@@ -44,12 +71,14 @@ ReactionDraftNew:
         debateId:       \d+
         parentId:       \d*
 
-ReactionDraftEdit:
+ReactionDraftEditE:
     pattern:  /elu/mes-reactions/{id}/edition
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
         id:             \d+
+
+
 
 Organization:
     pattern:  /parti-politique/{slug}

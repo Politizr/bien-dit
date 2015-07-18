@@ -1,7 +1,27 @@
+{# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% block title %}Politizr - Espace Citoyen{% endblock title %}
-{% block description %}Politizr Espace Citoyen{% endblock description %}
+{% if (isGrantedE()) %}
+    {% set role = 'ROLE_ELECTED' %}
+{% elseif (isGrantedC()) %}
+    {% set role = 'ROLE_ELECTED' %}
+{% endif %}
+
+{% block title %}
+    {% if (isGrantedE()) %}
+        Politizr - Espace Débatteur
+    {% elseif (isGrantedC()) %}
+        Politizr - Espace Citoyen
+    {% endif %}
+{% endblock title %}
+
+{% block description %}
+    {% if (isGrantedE()) %}
+        Politizr Espace Débatteur
+    {% elseif (isGrantedC()) %}
+        Politizr Espace Citoyen
+    {% endif %}
+{% endblock description %}
 
 {% block metaopengraph %}
     {% block ogImage %}{% render controller("PolitizrFrontBundle:SocialNetworks:ogImage") %}{% endblock ogImage %}
@@ -14,37 +34,35 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    {# @todo html/css fixer les incompatibilités de style entre styleUser.css & stylePublic.css #}
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
 {% block wrapper %}
     <div class="wrapper">
         {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation:headerC.html.twig' %}
+            {% include 'PolitizrFrontBundle:Navigation:_header'~profileSuffix~'.html.twig' %}
         {% endblock %}
 
-        {% block fixedActions %}
-            <div id="fixedActions">
-            </div>
-        {% endblock fixedActions %}
-        {% block goUp %}
-            <div id="goUpHolder">
-                <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
-            </div>
-        {% endblock goUp %}
-
         {% block content %}
+            {% block fixedActions %}
+                <div id="fixedActions">
+                </div>
+            {% endblock fixedActions %}
+            {% block goUp %}
+                <div id="goUpHolder">
+                    <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
+                </div>
+            {% endblock goUp %}
             <div id="content">
                 {% block notifications %}
-                    {% include 'PolitizrFrontBundle:Notification:list.html.twig' %}
+                    {% include 'PolitizrFrontBundle:Notification:_notifications.html.twig' %}
                 {% endblock notifications %}
 
                 {% block main %}
                 {% endblock main %}
 
                 {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation:footer.html.twig' %}
+                    {% include 'PolitizrFrontBundle:Navigation:_footer.html.twig' %}
                 {% endblock %}
             </div>
         {% endblock content %}
@@ -53,6 +71,7 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
+
     {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:globalConnected.js.twig' %}
     {% include 'PolitizrFrontBundle:JS:modalOpening.js.twig' %}

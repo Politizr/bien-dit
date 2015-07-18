@@ -3,64 +3,64 @@
 ################################################################################
 HomepageC:
     pattern:  /citoyen
-    defaults: { _controller: PolitizrFrontBundle:Citizen:homepage }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:homepage }
 
 TimelineC:
     pattern:  /citoyen/timeline
-    defaults: { _controller: PolitizrFrontBundle:Citizen:timeline }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:timeline }
 
 FindDebatesC:
     pattern:  /citoyen/debats-du-jour
-    defaults: { _controller: PolitizrFrontBundle:Citizen:findDebates }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:findDebates }
 
 FindUsersC:
     pattern:  /citoyen/debatteurs-du-jour
-    defaults: { _controller: PolitizrFrontBundle:Citizen:findUsers }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:findUsers }
 
 
 ContribDashboardC:
     pattern:  /citoyen/mes-contributions
-    defaults: { _controller: PolitizrFrontBundle:Citizen:contribDashboard }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:contribDashboard }
 
 MyDraftsC:
     pattern:  /citoyen/mes-contributions/brouillons
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myDrafts }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myDrafts }
 
 
 MyDebatesC:
     pattern:  /citoyen/mes-contributions/debats
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myDebates }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myDebates }
 
 MyCommentsC:
     pattern:  /citoyen/mes-contributions/commentaires
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myComments }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myComments }
 
 
 MyTagsC:
     pattern:  /citoyen/mon-compte/mes-tags
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myTags }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myTags }
 
 MyReputationC:
     pattern:  /citoyen/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myReputation }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myReputation }
 
 MyProfileC:
     pattern:  /citoyen/mon-compte/mon-profil
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myProfile }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myProfile }
 
 MyPersoC:
     pattern:  /citoyen/mon-compte/mes-informations-personnelles
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myPerso }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myPerso }
 
 MyNotificationsC:
     pattern:  /citoyen/mon-compte/mes-notifications
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myNotifications }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myNotifications }
 
 MyFollowedDebatesC:
     pattern:  /citoyen/mon-compte/mes-debats-suivis
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myFollowedDebates }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myFollowedDebates }
 
 MyFollowedUsersC:
     pattern:  /citoyen/mon-compte/mes-profils-suivis
-    defaults: { _controller: PolitizrFrontBundle:Citizen:myFollowedUsers }
+    defaults: { _controller: PolitizrFrontBundle:ConnectedCitizen:myFollowedUsers }
 

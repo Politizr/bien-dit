@@ -116,7 +116,7 @@ LAYOUT DEBATE
             {% if isGrantedE() %}
                 {# TODO / message indiquant si des réactions courantes sont déjà en cours de réaction pour ce débat par le user courant #}
                 <div class="row text-center">
-                    <a class="btn btn-danger" href="{{ path('ReactionDraftNew', { 'debateId': debate.id, 'parentId': null }) }}">Réagir</a>
+                    <a class="btn btn-danger" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateId': debate.id, 'parentId': null }) }}">Réagir</a>
                 </div>
                 <hr>
             {% endif %}
@@ -190,7 +190,7 @@ LAYOUT DEBATE
         <td>{{ document.title }}</td>
         <td>{{ document.createdAt | date('d/m/Y H:i') }}</td>
         <td>
-            <a class="btn btn-primary" href="{{ path('DebateDraftEdit', { 'id': document.id }) }}">Editer</a>
+            <a class="btn btn-primary" href="{{ path('DebateDraftEdit'~profileSuffix, { 'id': document.id }) }}">Editer</a>
         </td>
     </tr>
 {% endblock draftTableRow %}

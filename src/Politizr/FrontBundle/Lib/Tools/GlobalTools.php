@@ -21,13 +21,22 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
  */
 class GlobalTools
 {
+    private $securityAuthorizationChecker;
+    private $securityContext;
+
     private $logger;
 
     /**
      *
+     * @param @security.authorization_checker
+     * @param @security.context
+     * @param @logger
      */
-    public function __construct($logger)
+    public function __construct($securityAuthorizationChecker, $securityContext, $logger)
     {
+        $this->securityAuthorizationChecker = $securityAuthorizationChecker;
+        $this->securityContext = $securityContext;
+
         $this->logger = $logger;
     }
 
@@ -128,5 +137,27 @@ class GlobalTools
         }
 
         return $formMandateViews;
+    }
+
+    /**
+     * Compute "C" or "E" suffix depending on connected user role
+     *
+     * @return string
+     */
+    public function computeProfileSuffix()
+    {
+        $user = $this->securityContext->getToken()->getUser();
+
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
+            $user &&
+            $user->getOnline()) {
+            return 'E';
+        } elseif ($securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
+            $user &&
+            $user->getOnline()) {
+            return 'C';
+        } else {
+            throw new InconsistentDataException('Uner not online or with an unexpected role');
+        }
     }
 }

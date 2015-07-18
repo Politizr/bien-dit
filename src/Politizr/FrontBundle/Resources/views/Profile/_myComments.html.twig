@@ -1,0 +1,19 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block main %}
+    <div id="main">
+        <h3>Mes commentaires</h3>
+        {% for comment in comments %}
+            {% include 'PolitizrFrontBundle:Fragment\\Comment:ListRowUser.html.twig' with { 'comment': comment, 'docLink': true } %}
+            <hr>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('Timeline'~profileSuffix) }}">Vous n'avez rédigé aucun commentaire pour le moment</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+{% endblock javascriptFooter %}
