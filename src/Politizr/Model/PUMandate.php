@@ -5,7 +5,7 @@ namespace Politizr\Model;
 use Politizr\Model\om\BasePUMandate;
 
 /**
- * Mandat d'un user
+ * User's mandate object model
  *
  * @author Lionel Bouzonville
  */
@@ -13,10 +13,11 @@ class PUMandate extends BasePUMandate
 {
     /**
      *
+     * @return string
      */
     public function __toString()
     {
-        $mandate =  $this->getPQMandate() . "     (" . $this->getOrganizationInitials() . ")";
+        $mandate =  $this->getPQMandate() . " (" . $this->getOrganizationInitials() . ")";
 
         if ($this->getBeginAt() && $this->getEndAt()) {
             $mandate .= " du " . $this->getBeginAt('d/m/Y') . " au " . $this->getEndAt('d/m/Y');
@@ -27,17 +28,10 @@ class PUMandate extends BasePUMandate
         return $mandate;
     }
 
-    // ************************************************************************************ //
-    //                      METHODES PUBLIQUES
-    // ************************************************************************************ //
-
-    // *****************************    RACCOURCIS    ************************* //
-
     /**
-     *    Vérifie si l'objet courant est le mandat courant ou pas en se basant sur la date de fin, qui
-     *    doit être null ou > à la date du jour si c'est le cas.
+     * Check if object is current user's mandate
      *
-     *    @return     boolean
+     * @return boolean
      */
     public function isCurrent()
     {
@@ -45,22 +39,24 @@ class PUMandate extends BasePUMandate
 
         if ($this->getEndAt() == null || $this->getEndAt() > $now) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    // *****************************    RACCOURCIS PARTIS / MANDATS    ************************* //
-
+    /* ######################################################################################################## */
+    /*                                             ORGANIZATIONS                                                */
+    /* ######################################################################################################## */
+    
     /**
-     *    Renvoie les initiales du parti associé à la qualification
      *
-     *  @return     string
+     * @return string
      */
     public function getOrganizationInitials()
     {
         $pqOrganization = $this->getPQOrganization();
 
+        // @todo label constant
         $initials = "Non défini";
         if ($pqOrganization) {
             $initials = $pqOrganization->getInitials();
@@ -70,14 +66,14 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     *    Renvoie le titre du parti associé à la qualification
      *
-     *  @return     string
+     * @return string
      */
     public function getOrganizationTitle()
     {
         $pqOrganization = $this->getPQOrganization();
 
+        // @todo label constant
         $title = "Non défini";
         if ($pqOrganization) {
             $title = $pqOrganization->getTitle();
@@ -87,9 +83,8 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     *    Renvoie le logo du parti associé à la qualification
      *
-     *  @return     string         Nom du fichier image
+     * @return string file name
      */
     public function getOrganizationLogo()
     {
@@ -104,9 +99,8 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * Renvoie l'url du parti associé à la qualification
      *
-     * @return     string
+     * @return string
      */
     public function getOrganizationUrl()
     {
@@ -121,9 +115,8 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * Renvoie le slug du parti associé à la qualification
      *
-     * @return     string
+     * @return string
      */
     public function getOrganizationSlug()
     {
@@ -137,17 +130,19 @@ class PUMandate extends BasePUMandate
         return $slug;
     }
 
-
+    /* ######################################################################################################## */
+    /*                                                  MANDATES                                                */
+    /* ######################################################################################################## */
 
     /**
-     *    Renvoie le nom du mandat associé à la qualification
      *
-     *  @return     string
+     * @return string
      */
-    public function getMandateTypeTitle()
+    public function getMandateNaming()
     {
         $pqMandate = $this->getPQMandate();
 
+        // @todo label constant
         $title = "Non défini";
         if ($pqMandate) {
             $title = $pqMandate->getTitle();

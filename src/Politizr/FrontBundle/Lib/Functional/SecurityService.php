@@ -9,11 +9,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Constant\OrderConstants;
+use Politizr\Constant\UserConstants;
+
 use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
 use Politizr\Model\POPaymentType;
-use Politizr\Model\POOrderState;
-use Politizr\Model\POPaymentState;
 
 use Politizr\Model\POrderQuery;
 use Politizr\Model\PUserQuery;
@@ -116,7 +116,7 @@ class SecurityService
             $user->setLastLogin(new \DateTime());
             $user->save();
 
-            if ($user->getQualified() && $user->getPUStatusId() == PUStatus::ACTIVED) {
+            if ($user->getQualified() && $user->getPUStatusId() == UserConstants::STATUS_ACTIVED) {
                 $redirectUrl = $this->router->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
                 $redirectUrl = $this->router->generate('HomepageC');
@@ -265,7 +265,7 @@ class SecurityService
         $roles = [ 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
 
         // update user
-        $user = $this->userManager->updateForInscriptionFinish($user, $roles, PUStatus::ACTIVED, false);
+        $user = $this->userManager->updateForInscriptionFinish($user, $roles, UserConstants::STATUS_ACTIVED, false);
         
         // (re)connect user
         $this->doPublicConnection($user);
@@ -332,17 +332,17 @@ class SecurityService
 
         // update order & payment states
         switch($order->getPOPaymentTypeId()) {
-            case POPaymentType::BANK_TRANSFER:
-            case POPaymentType::CHECK:
-                $order->setPOOrderStateId(POOrderState::WAITING);
-                $order->setPOPaymentStateId(POPaymentState::WAITING);
+            case OrderConstants::PAYMENT_TYPE_BANK_TRANSFER:
+            case OrderConstants::PAYMENT_TYPE_CHECK:
+                $order->setPOOrderStateId(OrderConstants::ORDER_WAITING);
+                $order->setPOPaymentStateId(OrderConstants::PAYMENT_WAITING);
                 $order->save();
 
                 $this->eventDispatcher->dispatch('order_email', new GenericEvent($order));
 
                 break;
-            case POPaymentType::CREDIT_CARD:
-            case POPaymentType::PAYPAL:
+            case OrderConstants::PAYMENT_TYPE_CREDIT_CARD:
+            case OrderConstants::PAYMENT_TYPE_PAYPAL:
                 // management via asynchronous apis response
                 break;
             default:
@@ -381,7 +381,7 @@ class SecurityService
         $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN' /* during waiting for validation */, 'ROLE_PROFILE_COMPLETED' ];
 
         // update user
-        $user = $this->userManager->updateForInscriptionFinish($user, $roles, PUStatus::VALIDATION_PROCESS, true);
+        $user = $this->userManager->updateForInscriptionFinish($user, $roles, UserConstants::STATUS_VALIDATION_PROCESS, true);
         
         $this->doPublicConnection($user);
     }

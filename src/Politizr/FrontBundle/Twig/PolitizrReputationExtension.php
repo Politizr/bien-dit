@@ -8,10 +8,10 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
-use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PUReputation;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ReputationConstants;
 
 /**
  * User's reputation twig extension
@@ -229,11 +229,11 @@ class PolitizrReputationExtension extends \Twig_Extension
         // $this->logger->info('$badgeMetalId = '.print_r($badgeMetalId, true));
 
         $twClass = 'label-info';
-        if ($badgeMetalId == PRBadgeMetal::GOLD) {
+        if ($badgeMetalId == ReputationConstants::BADGE_METAL_GOLD) {
             $twClass = 'label-warning';
-        } elseif ($badgeMetalId == PRBadgeMetal::SILVER) {
+        } elseif ($badgeMetalId == ReputationConstants::BADGE_METAL_SILVER) {
             $twClass = 'label-default';
-        } elseif ($badgeMetalId == PRBadgeMetal::BRONZE) {
+        } elseif ($badgeMetalId == ReputationConstants::BADGE_METAL_BRONZE) {
             $twClass = 'label-danger';
         }
 

@@ -4,31 +4,41 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePTag;
 
+use StudioEcho\Lib\StudioEchoUtils;
+
+/**
+ * Tag object model
+ *
+ * @author Lionel Bouzonville
+ */
 class PTag extends BasePTag
 {
     /**
      *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getTitle();
     }
 
-     /**
+    /**
      * Override to manage accented characters
      * @return string
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug = StudioEchoUtils::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
     
-
-    /******************************************************************************/
-
+    /* ######################################################################################################## */
+    /*                                                   USERS                                                  */
+    /* ######################################################################################################## */
+    
     /**
-     *     Surcharge simplification du nom de la méthode
+     * @see parent::countPuTaggedTPTags
      */
     public function countPUsers(\PropelPDO $con = null, $doQuery = true)
     {
@@ -36,11 +46,10 @@ class PTag extends BasePTag
     }
 
     /**
-     *     Surcharge simplification du nom de la méthode
+     * @see parent::getPuTaggedTPTags
      */
     public function getPUsers(\PropelPDO $con = null, $doQuery = true)
     {
         return parent::getPuTaggedTPTags($con, $doQuery);
     }
-
 }

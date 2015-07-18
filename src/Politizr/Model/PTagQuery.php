@@ -11,7 +11,6 @@ use Politizr\Model\om\BasePTagQuery;
  */
 class PTagQuery extends BasePTagQuery
 {
-
     /* ######################################################################################################## */
     /*                                              FILTERBY IF                                                 */
     /* ######################################################################################################## */
@@ -19,12 +18,28 @@ class PTagQuery extends BasePTagQuery
     /**
      *
      * @param boolean $online
+     * @return PTagQuery
      */
     public function filterIfOnline($online = null)
     {
         return $this
             ->_if(null !== $online)
                 ->filterByOnline($online)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $typeId
+     * @return PTagQuery
+     */
+    public function filterIfTypeId($typeId = null)
+    {
+        return $this
+            ->_if(null !== $typeId)
+                ->filterByPTTagTypeId($typeId)
+            ->_else()
+                ->orderByPTTagTypeId()
             ->_endif();
     }
 }

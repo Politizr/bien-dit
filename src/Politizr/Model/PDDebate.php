@@ -31,6 +31,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
 
     /**
      *
+     * @return string
      */
     public function __toString()
     {
@@ -214,7 +215,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         }
 
         // file name
-        $fileName = 'politizr-debat-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'politizr-debat-' . StudioEchoUtils::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::DEBATE_UPLOAD_PATH, $fileName);
@@ -259,11 +260,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
     {
         $query = PTagQuery::create()
             ->select('Title')
-            ->_if(null !== $tagTypeId)
-                ->filterByPTTagTypeId($tagTypeId)
-            ->_else()
-                ->orderByPTTagTypeId()
-            ->_endif()
+            ->filterIfTypeId($tagTypeId)
             ->filterIfOnline($online)
             ->orderByTitle()
             ->setDistinct();
@@ -279,11 +276,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
     public function getTags($tagTypeId = null, $online = true)
     {
         $query = PTagQuery::create()
-            ->_if(null !== $tagTypeId)
-                ->filterByPTTagTypeId($tagTypeId)
-            ->_else()
-                ->orderByPTTagTypeId()
-            ->_endif()
+            ->filterIfTypeId($tagTypeId)
             ->filterIfOnline($online)
             ->orderByTitle()
             ->setDistinct();
@@ -443,7 +436,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
      * @param integer $userId
      * @return boolean
      */
-    public function isFollowedByUserId($userId)
+    public function isFollowedBy($userId)
     {
         $followers = PUFollowDDQuery::create()
             ->filterByPUserId($userId)
@@ -464,18 +457,18 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
     /**
      * Check if follower $userId wants to be notified of debate update in the scope of $context
      *
-     * @param integer $userFollowerId
+     * @param integer $userId
      * @param string $context   @todo refactor migrate constant
      * @return boolean
      */
     public function isNotified($userId, $context = 'reaction')
     {
-        $puFollowU = PUFollowDDQuery::create()
+        $puFollowDD = PUFollowDDQuery::create()
             ->filterByPUserId($userId)
             ->filterByPDDebateId($this->getId())
             ->findOne();
 
-        if ($context == 'reaction' && $puFollowU && $puFollowU->getNotifReaction()) {
+        if ($context == 'reaction' && $puFollowDD && $puFollowDD->getNotifReaction()) {
             return true;
         }
 

@@ -12,15 +12,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUAffinityQOQuery;
-
-use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PQType;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -179,21 +179,21 @@ class CitizenController extends Controller
 
         // badges
         $badgesGold = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::GOLD)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_GOLD)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesSilver = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::SILVER)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_SILVER)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesBronze = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::BRONZE)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_BRONZE)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
@@ -238,7 +238,7 @@ class CitizenController extends Controller
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
 
         // Affinités organisations
-        $formAffinities = $this->createForm(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
+        $formAffinities = $this->createForm(new PUserAffinitiesType(QualificationConstants::TYPE_ELECTIV), $user);
 
         return $this->render('PolitizrFrontBundle:ProfileC:myProfile.html.twig', array(
                         'user' => $user,

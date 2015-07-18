@@ -8,9 +8,9 @@ LAYOUT TAG
 
 {# Bloc détail d'un tag éditable #}
 {% block listRowEdit %}
-    {% if (tag.ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) %}
+    {% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
         {% set twbLabel = "success" %}
-    {% elseif (tag.ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'))%}
+    {% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
         {% set twbLabel = "primary" %}
     {% else %}
         {% set twbLabel = "default" %}
@@ -24,9 +24,9 @@ LAYOUT TAG
 
 {# Bloc détail d'un tag lecture seule #}
 {% block listRowRead %}
-    {% if (tag.ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) %}
+    {% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
         {% set twbLabel = "success" %}
-    {% elseif (tag.ptTagTypeId == constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'))%}
+    {% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
         {% set twbLabel = "primary" %}
     {% else %}
         {% set twbLabel = "default" %}

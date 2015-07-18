@@ -4,10 +4,19 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUserQuery;
 
+use Politizr\Constant\UserConstants;
+
+/**
+ * User query
+ *
+ * @author Lionel Bouzonville
+ */
 class PUserQuery extends BasePUserQuery
 {
-    // *****************************    RAW SQL    ************************* //
-    
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
+        
     /**
      * Users' suggestion for user.
      *
@@ -113,7 +122,7 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Hydrate des objets PUsers suite à une requête.
+     * PUsers objects hydratation from raw sql
      *
      * @param string $sql
      * @return PropelCollection
@@ -143,12 +152,12 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
+     * Find users by user's suggestion
      *
      * @param integer $userId
      * @param integer $offset
      * @param integer $limit
-     * @return  PropelCollection
+     * @return PropelCollection[PUser]
      */
     public function findBySuggestion($userId, $offset = 0, $limit = 10)
     {
@@ -158,51 +167,52 @@ LIMIT ".$offset.", ".$count."
         return $users;
     }
 
-    // *****************************    AGGREGATIONS / UTILES    ************************* //
+    /* ######################################################################################################## */
+    /*                                             AGGREGATIONS                                                 */
+    /* ######################################################################################################## */
     
     /**
-     * Cumule les contraintes associés à un objet en ligne
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function online()
     {
-        return $this->filterByOnline(true)->filterByPUStatusId(PUStatus::ACTIVED);
+        return $this
+            ->filterByOnline(true)
+            ->filterByPUStatusId(UserConstants::STATUS_ACTIVED);
     }
 
     /**
-     * Ordonne suivant un mot clef défini sur la vue.
      *
-     * @param string $keyword      Mot clef pour l'ordonnancement issu du html
-     *
-     * @return  Query
+     * @param string $keyword
+     * @return PUserQuery
      */
     public function orderWithKeyword($keyword = 'last')
     {
-        return $this->_if('mostFollowed' === $keyword)
-                        ->orderByMostFollowed()
-                    ->_elseif('last' === $keyword)
-                        ->orderByLast()
-                    ->_endif();
+        return $this
+            ->_if('mostFollowed' === $keyword)
+                ->orderByMostFollowed()
+            ->_elseif('last' === $keyword)
+                ->orderByLast()
+            ->_endif();
     }
 
     /**
-     * Ordonne les objets par nombre de followers
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function orderByMostFollowed()
     {
-        return $this->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
-                ->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
-                ->groupBy('Id')
-                ->orderBy('NbFollowers', 'desc')
-                ;
+        return $this
+            ->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
+            ->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
+            ->groupBy('Id')
+            ->orderBy('NbFollowers', 'desc');
     }
 
     /**
-     * Ordonne les objets par derniers créées
      *
+     * @return PUserQuery
      */
     public function orderByLast()
     {
@@ -210,35 +220,33 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Filtre suivant le mot(s) clef(s) défini sur la vue
      *
-     * @param array $keywords
-     * @return Query
+     * @param array[string] $keywords
+     * @return PUserQuery
      */
     public function filterByKeywords($keywords = null)
     {
-        return $this->_if($keywords && (in_array('lastDay', $keywords)))
-                        ->filterByLastDay()
-                    ->_endif()
-                    ->_if($keywords && (in_array('lastWeek', $keywords)))
-                        ->filterByLastWeek()
-                    ->_endif()
-                    ->_if($keywords && (in_array('lastMonth', $keywords)))
-                        ->filterByLastMonth()
-                    ->_endif()
-                    ->_if($keywords && in_array('qualified', $keywords))
-                        ->filterByQualified(true)
-                    ->_endif()
-                    ->_if($keywords && in_array('citizen', $keywords))
-                        ->filterByQualified(false)
-                    ->_endif()
-                    ;
+        return $this
+            ->_if($keywords && (in_array('lastDay', $keywords)))
+                ->filterByLastDay()
+            ->_endif()
+            ->_if($keywords && (in_array('lastWeek', $keywords)))
+                ->filterByLastWeek()
+            ->_endif()
+            ->_if($keywords && (in_array('lastMonth', $keywords)))
+                ->filterByLastMonth()
+            ->_endif()
+            ->_if($keywords && in_array('qualified', $keywords))
+                ->filterByQualified(true)
+            ->_endif()
+            ->_if($keywords && in_array('citizen', $keywords))
+                ->filterByQualified(false)
+            ->_endif();
     }
 
     /**
-     * Filtre les objets publiés durant les dernières 24h
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function filterByLastDay()
     {
@@ -251,9 +259,8 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Filtre les objets publiés durant la dernière semaine
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function filterByLastWeek()
     {
@@ -266,9 +273,8 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Filtre les objets publiés durant le mois dernier
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function filterByLastMonth()
     {
@@ -281,11 +287,10 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Filtre les objets par géolocalisation
-     * @todo requête géoloc / tags
+     * Filter by geolocalization
      *
-     * @param   Geocoder\Result\Geocoded    $geocoded
-     * @return  Query
+     * @param Geocoded $geocoded
+     * @return PDDebateQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {
@@ -298,6 +303,7 @@ LIMIT ".$offset.", ".$count."
     /**
      *
      * @param boolean $online
+     * @return PUserQuery
      */
     public function filterIfOnline($online = null)
     {
@@ -310,6 +316,7 @@ LIMIT ".$offset.", ".$count."
     /**
      *
      * @param boolean $qualified
+     * @return PUserQuery
      */
     public function filterIfQualified($qualified = null)
     {
@@ -322,6 +329,7 @@ LIMIT ".$offset.", ".$count."
     /**
      *
      * @param boolean $notifReaction
+     * @return PUserQuery
      */
     public function filterIfNotifReaction($notifReaction = null)
     {

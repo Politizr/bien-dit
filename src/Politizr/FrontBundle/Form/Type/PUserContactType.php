@@ -11,8 +11,9 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Constant\UserConstants;
+
 use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
 
 /**
  * Inscription user citoyen étape 2
@@ -32,7 +33,7 @@ class PUserContactType extends AbstractType
         ));
 
         $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => PUStatus::ACTIVED )
+            'attr'     => array( 'value' => UserConstants::STATUS_ACTIVED )
         ));
 
         $builder->add('online', 'hidden', array(

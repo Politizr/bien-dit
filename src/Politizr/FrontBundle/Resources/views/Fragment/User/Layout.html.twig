@@ -107,7 +107,7 @@ LAYOUT USER
                     <hr>
                     <div class="row text-center">
                         <div class="col-sm-12">
-                            {{ user | tags(constant('\\Politizr\\Model\\PTTagType::TYPE_GEO')) }}
+                            {{ user | tags(constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) }}
                         </div>
                     </div>
                 {% endblock %}
@@ -184,7 +184,7 @@ LAYOUT USER
                                             <span class="label label-info">Du {{ mandate.beginAt | date('d/m/Y') }} au {{ mandate.endAt | date('d/m/Y') }}</span>
                                         {% endif %}
                                     </td>
-                                    <td><span class="label label-danger">{{ mandate.mandateTypeTitle }}</span></td>
+                                    <td><span class="label label-danger">{{ mandate.mandateNaming }}</span></td>
                                     <td>{{ mandate.localization | raw  }}</td>
                                     <td>
                                         {% if (mandate.organizationUrl) %}

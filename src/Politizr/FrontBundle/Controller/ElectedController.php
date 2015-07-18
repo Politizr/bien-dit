@@ -12,6 +12,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PRBadgeQuery;
@@ -20,8 +23,6 @@ use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUCurrentQOQuery;
 
-use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 
@@ -193,21 +194,21 @@ class ElectedController extends Controller
 
         // badges
         $badgesGold = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::GOLD)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_GOLD)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesSilver = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::SILVER)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_SILVER)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
                         ->endUse()
                         ->find();
         $badgesBronze = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(PRBadgeMetal::BRONZE)
+                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_BRONZE)
                         ->filterByOnline(true)
                         ->usePRBadgeTypeQuery()
                             ->orderByRank()
@@ -252,7 +253,7 @@ class ElectedController extends Controller
         $puCurrentQo = PUCurrentQOQuery::create()
             ->filterByPUserId($user->getId())
             ->usePUCurrentQOPQOrganizationQuery()
-                ->filterByPQTypeId(PQType::ID_ELECTIF)
+                ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
             ->endUse()
             ->findOne();
 
@@ -267,12 +268,12 @@ class ElectedController extends Controller
         // Form vierge pour création mandat
         $mandate = new PUMandate();
         $mandate->setPUserId($user->getId());
-        $mandate->setPQTypeId(PQType::ID_ELECTIF);
+        $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
         // Formulaire
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
-        $formOrga = $this->createForm(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
-        $formMandate = $this->createForm(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $formOrga = $this->createForm(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
+        $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
 
         return $this->render('PolitizrFrontBundle:ProfileE:myProfile.html.twig', array(
                         'user' => $user,

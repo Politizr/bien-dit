@@ -1,14 +1,14 @@
 <p>{{ user.gender }} {{ user.firstname | capitalize }} {{ user.name | capitalize }},</p>
 
-{% if order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CREATED')  %}
+{% if order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_CREATED')  %}
     <p>Votre commande chez Politizr vient d'être créée.</p>
-{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::WAITING') %}
+{% elseif order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_WAITING') %}
     <p>Votre commande chez Politizr est en attente de traitement.</p>
-{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::OPEN') %}
+{% elseif order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_OPEN') %}
     <p>Votre commande chez Politizr est ouverte.</p>
-{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::HANDLED') %}
+{% elseif order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_HANDLED') %}
     <p>Votre commande chez Politizr est en cours de traitement.</p>
-{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CANCELED') %}
+{% elseif order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_CANCELED') %}
     <p>Votre commande chez Politizr a été annulée.</p>
 {% endif %}
 
@@ -20,11 +20,11 @@
     <li>Type de paiement: {{ order.POPaymentType }}</li>
 </ul>
 
-{% if order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::CANCELED') %}
+{% if order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_CANCELED') %}
     <p>
         Votre commande a été annulée. Vous pouvez toujours profiter de Politizr uniquement avec les <b>droits citoyens</b>.
     </p>
-{% elseif order.pOOrderStateId == constant('Politizr\\Model\\POOrderState::HANDLED') %}
+{% elseif order.pOOrderStateId == constant('Politizr\\Constant\\OrderConstants::ORDER_HANDLED') %}
     <p>
         Votre commande a été traitée: vous pouvez vous connecter sur Politizr avec votre profil "débatteur".
     </p>
@@ -34,7 +34,7 @@
     </p>
 {% endif %}
 
-{% if order.pOPaymentStateId == constant('Politizr\\Model\\POPaymentState::WAITING')  %}
+{% if order.pOPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_WAITING')  %}
     <p>
         N'oubliez pas d'envoyer votre paiement pour que nous puissions activer votre compte.
     </p>

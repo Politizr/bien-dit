@@ -355,9 +355,9 @@ class TimelineService
             if ($authorIsMe) {
                 $author = $debate->getUser();
                 if ($author) {
-                    $authorIsFollowed = $author->isFollowedByUserId($author->getId());
+                    $authorIsFollowed = $author->isFollowedBy($author->getId());
                 }
-                $debateIsFollowed = $debate->isFollowedByUserId($user->getId());
+                $debateIsFollowed = $debate->isFollowedBy($user->getId());
             }
         }
 
@@ -397,12 +397,12 @@ class TimelineService
         $authorIsFollowed = false;
         $debateIsFollowed = false;
         if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
             $authorIsMe = ($reaction->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $reaction->getUser();
                 if ($author) {
-                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                    $authorIsFollowed = $author->isFollowedBy($user->getId());
                 }
             }
         }
@@ -440,12 +440,12 @@ class TimelineService
         $authorIsFollowed = false;
         $debateIsFollowed = false;
         if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
             $authorIsMe = ($comment->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $comment->getUser();
                 if ($author) {
-                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                    $authorIsFollowed = $author->isFollowedBy($user->getId());
                 }
             }
         }
@@ -484,12 +484,12 @@ class TimelineService
         $authorIsFollowed = false;
         $debateIsFollowed = false;
         if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedByUserId($user->getId());
+            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
             $authorIsMe = ($comment->getPUserId() === $user->getId());
             if (!$authorIsMe) {
                 $author = $comment->getUser();
                 if ($author) {
-                    $authorIsFollowed = $author->isFollowedByUserId($user->getId());
+                    $authorIsFollowed = $author->isFollowedBy($user->getId());
                 }
             }
         }

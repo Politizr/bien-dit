@@ -4,7 +4,8 @@ namespace Politizr\AdminBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use Politizr\Model\POOrderState;
+use Politizr\Constant\OrderConstants;
+
 use Politizr\Model\POEmail;
 
 /**
@@ -48,28 +49,28 @@ class EmailListener
         $order = $event->getSubject();
         $subject = 'Politizr - ';
         switch ($order->getPOOrderStateId()) {
-            case POOrderState::CREATED:
+            case OrderConstants::ORDER_CREATED:
                 $template = 'order';
                 $subject .= 'Commande créée';
                 $pj = null;
                 break;
-            case POOrderState::WAITING:
+            case OrderConstants::ORDER_WAITING:
                 $template = 'order';
                 $subject .= 'Commande en attente';
                 $pj = null;
                 break;
-            case POOrderState::OPEN:
+            case OrderConstants::ORDER_OPEN:
                 $template = 'order';
                 $subject .= 'Commande ouverte';
                 $pj = null;
                 break;
-            case POOrderState::HANDLED:
+            case OrderConstants::ORDER_HANDLED:
                 $template = 'order';
                 $subject .= 'Commande traitée';
                 $pj = null;
                 $pj = $order->getInvoiceFilename();
                 break;
-            case POOrderState::CANCELED:
+            case OrderConstants::ORDER_CANCELED:
                 $template = 'order';
                 $subject .= 'Commande annulée';
                 $pj = null;

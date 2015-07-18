@@ -35,11 +35,11 @@
 
 {# Blocs tags #}
 {% block show_column_block_tags_geo %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'show') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), 1, 'show') }}
 {% endblock %}
 
 {% block show_column_block_tags_theme %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'show') }}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 2, 'show') }}
 {% endblock %}
 
 {# Bloc followers qualifiés #}

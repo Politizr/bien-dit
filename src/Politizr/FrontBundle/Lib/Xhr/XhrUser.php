@@ -10,9 +10,9 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PQType;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 
@@ -308,7 +308,7 @@ class XhrUser
             $puCurrentQo = new PUCurrentQO();
         }
 
-        $form = $this->formFactory->create(new PUCurrentQOType(PQType::ID_ELECTIF), $puCurrentQo);
+        $form = $this->formFactory->create(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();
@@ -330,7 +330,7 @@ class XhrUser
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $form = $this->formFactory->create(new PUserAffinitiesType(PQType::ID_ELECTIF), $user);
+        $form = $this->formFactory->create(new PUserAffinitiesType(QualificationConstants::TYPE_ELECTIV), $user);
         $form->bind($request);
         if ($form->isValid()) {
             $user = $form->getData();
@@ -353,7 +353,7 @@ class XhrUser
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), new PUMandate());
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), new PUMandate());
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
@@ -366,9 +366,9 @@ class XhrUser
         // New empty form
         $mandate = new PUMandate();
         $mandate->setPUserId($user->getId());
-        $mandate->setPQTypeId(PQType::ID_ELECTIF);
+        $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
-        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
 
         // @todo to refactor
         $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
@@ -401,7 +401,7 @@ class XhrUser
         // Function process
         $mandate = PUMandateQuery::create()->findPk($id);
 
-        $form = $this->formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();

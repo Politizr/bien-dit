@@ -8,8 +8,9 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 
+use Politizr\Constant\QualificationConstants;
+
 use Politizr\Model\PUMandateQuery;
-use Politizr\Model\PQType;
 
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
@@ -115,14 +116,14 @@ class GlobalTools
         // Mandats
         $mandates = PUMandateQuery::create()
             ->filterByPUserId($userId)
-            ->filterByPQTypeId(PQType::ID_ELECTIF)
+            ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
             ->orderByBeginAt('desc')
             ->find();
 
         // Création des form + vues associées pour MAJ des mandats
         $formMandateViews = array();
         foreach ($mandates as $mandate) {
-            $formMandate = $formFactory->create(new PUMandateType(PQType::ID_ELECTIF), $mandate);
+            $formMandate = $formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
             $formMandateViews[] = $formMandate->createView();
         }
 

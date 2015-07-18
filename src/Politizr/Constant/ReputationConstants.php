@@ -3,17 +3,138 @@
 namespace Politizr\Constant;
 
 /**
- * Classe stockant les constantes associés à la gestion de la réputation
- * cf https://docs.google.com/document/d/1TJtr-a17c4e2mlHyCizBCC-UKGPsFYrsD59PeN2Uiks/edit#heading=h.lgtqz6a76v9q
+ * https://docs.google.com/document/d/1TJtr-a17c4e2mlHyCizBCC-UKGPsFYrsD59PeN2Uiks/edit#heading=h.lgtqz6a76v9q
  *
  * @author Lionel Bouzonville
  */
 class ReputationConstants
 {
-    /* ######################################################################################################## */
-    /*                    NOTES MINIMALES A POSSÉDER POUR LES ACTIONS CITOYENS                                  */
-    /* ######################################################################################################## */
+    // ******************************************************** //
+    //            PRBADGEMETAL OBJECT ID CONSTANTS
+    // ******************************************************** //
 
+    const BADGE_METAL_GOLD = 1;
+    const BADGE_METAL_SILVER = 2;
+    const BADGE_METAL_BRONZE = 3;
+
+
+    // ******************************************************** //
+    //            PRBADGETYPE OBJECT ID CONSTANTS
+    // ******************************************************** //
+
+    const BADGE_TYPE_DEBATE = 1;
+    const BADGE_TYPE_COMMENT = 2;
+    const BADGE_TYPE_PARTICIPATION = 3;
+    const BADGE_TYPE_MODERATION = 4;
+    const BADGE_TYPE_OTHER = 5;
+
+
+    // ******************************************************** //
+    //            PRACTION OBJECT ID CONSTANTS
+    // ******************************************************** //
+
+
+    // ******************************************************** //
+    //              DEBATES / REACTIONS / COMMENTS
+    // ******************************************************** //
+    const ACTION_ID_D_DEBATE_PUBLISH = 1;
+    const ACTION_ID_D_REACTION_PUBLISH = 2;
+    const ACTION_ID_D_COMMENT_PUBLISH = 3;
+    
+    const ACTION_ID_D_TARGET_DEBATE_REACTION_PUBLISH = 4;
+    const ACTION_ID_D_TARGET_REACTION_REACTION_PUBLISH = 5;
+
+    const ACTION_ID_D_TARGET_DEBATE_COMMENT_PUBLISH = 6;
+    const ACTION_ID_D_TARGET_REACTION_COMMENT_PUBLISH = 7;
+
+    // ******************************************************** //
+    //                      NOTATIONS
+    // ******************************************************** //
+    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS = 8;
+    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG = 9;
+
+    const ACTION_ID_D_AUTHOR_REACTION_NOTE_POS = 10;
+    const ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG = 11;
+
+    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS = 12;
+    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG = 13;
+
+    const ACTION_ID_D_TARGET_DEBATE_NOTE_POS = 14;
+    const ACTION_ID_D_TARGET_DEBATE_NOTE_NEG = 15;
+
+    const ACTION_ID_D_TARGET_REACTION_NOTE_POS = 16;
+    const ACTION_ID_D_TARGET_REACTION_NOTE_NEG = 17;
+
+    const ACTION_ID_D_TARGET_COMMENT_NOTE_POS = 18;
+    const ACTION_ID_D_TARGET_COMMENT_NOTE_NEG = 19;
+
+    // ******************************************************** //
+    //                      FOLLOWING
+    // ******************************************************** //
+    const ACTION_ID_D_AUTHOR_DEBATE_FOLLOW = 20;
+    const ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW = 21;
+
+    const ACTION_ID_U_AUTHOR_USER_FOLLOW = 22;
+    const ACTION_ID_U_AUTHOR_USER_UNFOLLOW = 23;
+
+    const ACTION_ID_D_TARGET_DEBATE_FOLLOW = 24;
+    const ACTION_ID_D_TARGET_DEBATE_UNFOLLOW = 25;
+
+    const ACTION_ID_U_TARGET_USER_FOLLOW = 26;
+    const ACTION_ID_U_TARGET_USER_UNFOLLOW = 27;
+
+    // ******************************************************** //
+    //                      SOCIAL NETWORK
+    // ******************************************************** //
+    const ACTION_ID_D_SHARE= 28;
+    
+
+
+    // ******************************************************** //
+    //            PRBADGE OBJECT ID CONSTANTS
+    // ******************************************************** //
+    const BADGE_ID_QUERELLE = 1;
+    const BADGE_ID_CONTROVERSE = 2;
+    const BADGE_ID_POLEMIQUE = 3;
+    const BADGE_ID_REDACTEUR = 4;
+    const BADGE_ID_AUTEUR = 5;
+    const BADGE_ID_ECRIVAIN = 6;
+    const BADGE_ID_ECLAIREUR = 7;
+    const BADGE_ID_AVANT_GARDE = 8;
+    const BADGE_ID_GUIDE = 9;
+    const BADGE_ID_ANNOTATEUR = 10;
+    const BADGE_ID_GLOSSATEUR = 11;
+    const BADGE_ID_COMMENTATEUR = 12;
+    const BADGE_ID_EFFRONTE = 13;
+    const BADGE_ID_IMPERTINENT = 14;
+    const BADGE_ID_AUDACIEUX = 15;
+    const BADGE_ID_STUDIEUX = 16;
+    const BADGE_ID_TAGUEUR = 17;
+    const BADGE_ID_SURVEILLANT = 18;
+    const BADGE_ID_FOUGUEUX = 19;
+    const BADGE_ID_ENTHOUSIASTE = 20;
+    const BADGE_ID_PASSIONNE = 21;
+    const BADGE_ID_PERSIFLEUR = 22;
+    const BADGE_ID_REPROBATEUR = 23;
+    const BADGE_ID_CRITIQUE = 24;
+    const BADGE_ID_ATTENTIF = 25;
+    const BADGE_ID_ASSIDU = 26;
+    const BADGE_ID_FIDELE = 27;
+    const BADGE_ID_SUIVEUR = 28;
+    const BADGE_ID_DISCIPLE = 29;
+    const BADGE_ID_INCONDITIONNEL = 30;
+    const BADGE_ID_IMPORTANT = 31;
+    const BADGE_ID_INFLUENT = 32;
+    const BADGE_ID_INCONTOURNABLE = 33;
+    const BADGE_ID_PORTE_VOIX = 34;
+    const BADGE_ID_FAN = 35;
+    const BADGE_ID_AMBASSADEUR = 36;
+
+
+    // ******************************************************** //
+    //             ACTIONS' FUNCTIONAL CONSTANTS
+    //            MINIMAL REPUTATION TO REACH FOR ACTION
+    // ******************************************************** //
     const ACTION_COMMENT_NOTE_POS = 5;
     const ACTION_REACTION_NOTE_POS = 10;
     const ACTION_DEBATE_NOTE_POS = 10;
@@ -25,4 +146,59 @@ class ReputationConstants
     const ACTION_COMMENT_WRITE = 5;
     const ACTION_DEBATE_WRITE = 100;
     const ACTION_REACTION_WRITE = 250;
+
+
+
+    // ******************************************************** //
+    //             BADGES' FUNCTIONAL CONSTANTS
+    // ******************************************************** //
+    const QUERELLE_NB_REACTIONS = 3;
+    const CONTROVERSE_NB_REACTIONS = 5;
+    const POLEMIQUE_NB_REACTIONS = 10;
+
+    const REDACTEUR_NB_DOCUMENTS = 3;
+    const REDACTEUR_NB_NOTEPOS = 3;
+    const AUTEUR_NB_DOCUMENTS = 5;
+    const AUTEUR_NB_NOTEPOS = 5;
+    const ECRIVAIN_NB_DOCUMENTS = 10;
+    const ECRIVAIN_NB_NOTEPOS = 10;
+
+    const ECLAIREUR_NB_DEBATES = 3;
+    const AVANT_GARDE_NB_DEBATES = 10;
+    const GUIDE_NB_DEBATES = 50;
+
+    const ANNOTATEUR_NB_COMMENTS = 5;
+    const GLOSSATEUR_NB_COMMENTS = 20;
+    const COMMENTATEUR_NB_COMMENTS = 50;
+
+    const EFFRONTE_NOTEPOS = 5;
+    const IMPERTINENT_NOTEPOS = 20;
+    const AUDACIEUX_NOTEPOS = 50;
+
+    const TAGUEUR_NB_TAGS = 50;
+    const SURVEILLANT_NB_MODERATIONS = 50;
+    
+    const FOUGUEUX_NB_NOTEPOS = 25;
+    const ENTHOUSIASTE_NB_NOTEPOS = 100;
+    const PASSIONNE_NB_NOTEPOS = 250;
+
+    const PERSIFLEUR_NB_NOTENEG = 25;
+    const REPROBATEUR_NB_NOTENEG = 100;
+    const CRITIQUE_NB_NOTENEG = 250;
+
+    const ATTENTIF_NB_DAYS = 5;
+    const ASSIDU_NB_DAYS = 15;
+    const FIDELE_NB_DAYS = 30;
+
+    const SUIVEUR_NB_SUBSCRIBES = 5;
+    const DISCIPLE_NB_SUBSCRIBES = 20;
+    const INCONDITIONNEL_NB_SUBSCRIBES = 50;
+
+    const IMPORTANT_NB_FOLLOWERS = 5;
+    const INFLUENT_NB_FOLLOWERS = 20;
+    const INCONTOURNABLE_NB_FOLLOWERS = 50;
+
+    const PORTE_VOIX_NB_SHARE = 5;
+    const FAN_NB_SHARE = 20;
+    const AMBASSADEUR_NB_SHARE = 50;
 }

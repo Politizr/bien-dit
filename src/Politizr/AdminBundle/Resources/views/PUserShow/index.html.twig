@@ -23,28 +23,28 @@
 
 {# Bloc tags #}
 {% block show_column_block_tags_geo %}
-    {{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, 'show') }}
+    {{ adminUserTags(PUser, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), 2, 'show') }}
 {% endblock %}
 
 {# Blocs badges #}
 {% block show_column_block_badges_debat %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_DEBATE'), 1) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_DEBATE'), 1) }}
 {% endblock %}
 
 {% block show_column_block_badges_comment %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_COMMENT'), 2) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_COMMENT'), 2) }}
 {% endblock %}
 
 {% block show_column_block_badges_participation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_PARTICIPATION'), 3) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_PARTICIPATION'), 3) }}
 {% endblock %}
 
 {% block show_column_block_badges_moderation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_MODERATION'), 4) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_MODERATION'), 4) }}
 {% endblock %}
 
 {% block show_column_block_badges_autre %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_OTHER'), 5) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_OTHER'), 5) }}
 {% endblock %}
 
 

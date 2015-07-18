@@ -5,8 +5,8 @@ namespace Politizr\FrontBundle\Listener;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ReputationConstants;
 
-use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PUReputation;
 
@@ -42,7 +42,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_D_DEBATE_PUBLISH;
+        $prActionId = ReputationConstants::ACTION_ID_D_DEBATE_PUBLISH;
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
@@ -62,7 +62,7 @@ class ReputationListener
         $subject = $event->getSubject();
 
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_D_REACTION_PUBLISH;
+        $prActionId = ReputationConstants::ACTION_ID_D_REACTION_PUBLISH;
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
@@ -72,7 +72,7 @@ class ReputationListener
         $debate = $subject->getPDDebate();
 
         $debateUserId = $debate->getPUserId();
-        $prActionId = PRAction::ID_D_TARGET_DEBATE_REACTION_PUBLISH;
+        $prActionId = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_REACTION_PUBLISH;
         $objectName = get_class($debate);
         $objectId = $debate->getId();
 
@@ -84,7 +84,7 @@ class ReputationListener
             $parent = $subject->getParent();
 
             $parentUserId = $parent->getPUserId();
-            $prActionId = PRAction::ID_D_TARGET_REACTION_REACTION_PUBLISH;
+            $prActionId = ReputationConstants::ACTION_ID_D_TARGET_REACTION_REACTION_PUBLISH;
             $objectName = get_class($parent);
             $objectId = $parent->getId();
 
@@ -105,7 +105,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_D_COMMENT_PUBLISH;
+        $prActionId = ReputationConstants::ACTION_ID_D_COMMENT_PUBLISH;
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
@@ -117,11 +117,11 @@ class ReputationListener
 
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $prActionId = PRAction::ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
+                $prActionId = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $prActionId = PRAction::ID_D_TARGET_REACTION_COMMENT_PUBLISH;
+                $prActionId = ReputationConstants::ACTION_ID_D_TARGET_REACTION_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
         }
@@ -145,22 +145,22 @@ class ReputationListener
 
         switch($objectName) {
             case 'Politizr\Model\PDDebate':
-                $prActionId = PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_POS;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDReaction':
-                $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_POS;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_POS;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
@@ -168,11 +168,11 @@ class ReputationListener
                 break;
             case 'Politizr\Model\PDDComment':
             case 'Politizr\Model\PDRComment':
-                $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_POS;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
@@ -198,22 +198,22 @@ class ReputationListener
 
         switch(get_class($subject)) {
             case 'Politizr\Model\PDDebate':
-                $prActionId = PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_DEBATE_NOTE_NEG;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
             case 'Politizr\Model\PDReaction':
-                $prActionId = PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_REACTION_NOTE_NEG;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
@@ -221,11 +221,11 @@ class ReputationListener
                 break;
             case 'Politizr\Model\PDDComment':
             case 'Politizr\Model\PDRComment':
-                $prActionId = PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG;
+                $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG;
 
                 // Auteur associé
                 $userIdAuthor = $subject->getPUserId();
-                $prActionIdAuthor = PRAction::ID_D_TARGET_COMMENT_NOTE_NEG;
+                $prActionIdAuthor = ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG;
 
                 $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
@@ -246,7 +246,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_D_AUTHOR_DEBATE_FOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW;
 
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -255,7 +255,7 @@ class ReputationListener
 
         // Auteur du débat
         $userId = $subject->getPUserId();
-        $prActionId = PRAction::ID_D_TARGET_DEBATE_FOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_FOLLOW;
 
         $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
@@ -272,7 +272,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_U_AUTHOR_USER_FOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW;
         
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -281,7 +281,7 @@ class ReputationListener
 
         // User suivi
         $userId = $subject->getId();
-        $prActionId = PRAction::ID_U_TARGET_USER_FOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW;
 
         $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
     }
@@ -297,7 +297,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_D_AUTHOR_DEBATE_UNFOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW;
 
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -306,7 +306,7 @@ class ReputationListener
 
         // Auteur du débat
         $userId = $subject->getPUserId();
-        $prActionId = PRAction::ID_D_TARGET_DEBATE_UNFOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_D_TARGET_DEBATE_UNFOLLOW;
 
         $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
@@ -323,7 +323,7 @@ class ReputationListener
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
-        $prActionId = PRAction::ID_U_AUTHOR_USER_UNFOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_U_AUTHOR_USER_UNFOLLOW;
         
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -332,7 +332,7 @@ class ReputationListener
 
         // User suivi
         $userId = $subject->getId();
-        $prActionId = PRAction::ID_U_TARGET_USER_UNFOLLOW;
+        $prActionId = ReputationConstants::ACTION_ID_U_TARGET_USER_UNFOLLOW;
 
         $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
     }

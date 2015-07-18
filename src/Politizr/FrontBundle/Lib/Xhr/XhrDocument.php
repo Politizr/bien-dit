@@ -720,9 +720,11 @@ class XhrDocument
 
         $form->bind($request);
         if ($form->isValid()) {
+            $this->logger->info('*** isValid');
             $comment = $form->getData();
             $comment->save();
         } else {
+            $this->logger->info('*** not valid');
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
         }

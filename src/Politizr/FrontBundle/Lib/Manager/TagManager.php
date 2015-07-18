@@ -6,7 +6,8 @@ use Politizr\Exception\FormValidationException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
-use Politizr\Model\PTTagType;
+use Politizr\Constant\TagConstants;
+
 use Politizr\Model\PTag;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PUFollowT;
@@ -74,7 +75,7 @@ class TagManager
 
         $tag = new PTag();
         if (null === $typeId) {
-            $typeId = PTTagType::TYPE_THEME;
+            $typeId = TagConstants::TAG_TYPE_THEME;
         }
         $tag->setTitle($title);
         $tag->setPTTagTypeId($typeId);

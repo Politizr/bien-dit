@@ -5,8 +5,9 @@ namespace Politizr\FrontBundle\Listener;
 // use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Model\PRBadge;
-use Politizr\Model\PRAction;
 use Politizr\Model\PUBadge;
 
 use Politizr\Model\PUBadgeQuery;
@@ -51,14 +52,14 @@ class BadgeListener
         $parentUserId = $event->getArgument('parent_user_id');
 
         // Badges Querellé / Controversé / Polémiqué
-        $this->checkQuerelle($parentUserId, PRBadge::ID_QUERELLE, PRBadge::QUERELLE_NB_REACTIONS);
-        $this->checkQuerelle($parentUserId, PRBadge::ID_CONTROVERSE, PRBadge::CONTROVERSE_NB_REACTIONS);
-        $this->checkQuerelle($parentUserId, PRBadge::ID_POLEMIQUE, PRBadge::POLEMIQUE_NB_REACTIONS);
+        $this->checkQuerelle($parentUserId, ReputationConstants::BADGE_ID_QUERELLE, ReputationConstants::QUERELLE_NB_REACTIONS);
+        $this->checkQuerelle($parentUserId, ReputationConstants::BADGE_ID_CONTROVERSE, ReputationConstants::CONTROVERSE_NB_REACTIONS);
+        $this->checkQuerelle($parentUserId, ReputationConstants::BADGE_ID_POLEMIQUE, ReputationConstants::POLEMIQUE_NB_REACTIONS);
 
         // Badges Eclaireur / Avant Garde / Guide
-        $this->checkEclaireur($subject, $authorUserId, PRBadge::ID_ECLAIREUR, PRBadge::ECLAIREUR_NB_DEBATES);
-        $this->checkEclaireur($subject, $authorUserId, PRBadge::ID_AVANT_GARDE, PRBadge::AVANT_GARDE_NB_DEBATES);
-        $this->checkEclaireur($subject, $authorUserId, PRBadge::ID_GUIDE, PRBadge::GUIDE_NB_DEBATES);
+        $this->checkEclaireur($subject, $authorUserId, ReputationConstants::BADGE_ID_ECLAIREUR, ReputationConstants::ECLAIREUR_NB_DEBATES);
+        $this->checkEclaireur($subject, $authorUserId, ReputationConstants::BADGE_ID_AVANT_GARDE, ReputationConstants::AVANT_GARDE_NB_DEBATES);
+        $this->checkEclaireur($subject, $authorUserId, ReputationConstants::BADGE_ID_GUIDE, ReputationConstants::GUIDE_NB_DEBATES);
 
     }
 
@@ -76,14 +77,14 @@ class BadgeListener
         $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Rédacteur / Auteur / Ecrivain
-        $this->checkRedacteur($targetUserId, PRBadge::ID_REDACTEUR, PRBadge::REDACTEUR_NB_DOCUMENTS, PRBadge::REDACTEUR_NB_NOTEPOS);
-        $this->checkRedacteur($targetUserId, PRBadge::ID_AUTEUR, PRBadge::AUTEUR_NB_DOCUMENTS, PRBadge::AUTEUR_NB_NOTEPOS);
-        $this->checkRedacteur($targetUserId, PRBadge::ID_ECRIVAIN, PRBadge::ECRIVAIN_NB_DOCUMENTS, PRBadge::ECRIVAIN_NB_NOTEPOS);
+        $this->checkRedacteur($targetUserId, ReputationConstants::BADGE_ID_REDACTEUR, ReputationConstants::REDACTEUR_NB_DOCUMENTS, ReputationConstants::REDACTEUR_NB_NOTEPOS);
+        $this->checkRedacteur($targetUserId, ReputationConstants::BADGE_ID_AUTEUR, ReputationConstants::AUTEUR_NB_DOCUMENTS, ReputationConstants::AUTEUR_NB_NOTEPOS);
+        $this->checkRedacteur($targetUserId, ReputationConstants::BADGE_ID_ECRIVAIN, ReputationConstants::ECRIVAIN_NB_DOCUMENTS, ReputationConstants::ECRIVAIN_NB_NOTEPOS);
 
         // Badges Fougueux / Enthousiaste / Passionné
-        $this->checkFougueux($authorUserId, PRBadge::ID_FOUGUEUX, PRBadge::FOUGUEUX_NB_NOTEPOS);
-        $this->checkFougueux($authorUserId, PRBadge::ID_ENTHOUSIASTE, PRBadge::ENTHOUSIASTE_NB_NOTEPOS);
-        $this->checkFougueux($authorUserId, PRBadge::ID_PASSIONNE, PRBadge::PASSIONNE_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_FOUGUEUX, ReputationConstants::FOUGUEUX_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_ENTHOUSIASTE, ReputationConstants::ENTHOUSIASTE_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_PASSIONNE, ReputationConstants::PASSIONNE_NB_NOTEPOS);
     }
 
     /**
@@ -99,9 +100,9 @@ class BadgeListener
         $authorUserId = $event->getArgument('author_user_id');
 
         // Badges Persifleur / Réprobateur / Critique
-        $this->checkPersifleur($authorUserId, PRBadge::ID_PERSIFLEUR, PRBadge::PERSIFLEUR_NB_NOTENEG);
-        $this->checkPersifleur($authorUserId, PRBadge::ID_REPROBATEUR, PRBadge::REPROBATEUR_NB_NOTENEG);
-        $this->checkPersifleur($authorUserId, PRBadge::ID_CRITIQUE, PRBadge::CRITIQUE_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_PERSIFLEUR, ReputationConstants::PERSIFLEUR_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_REPROBATEUR, ReputationConstants::REPROBATEUR_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_CRITIQUE, ReputationConstants::CRITIQUE_NB_NOTENEG);
     }
 
 
@@ -118,9 +119,9 @@ class BadgeListener
         $authorUserId = $event->getArgument('author_user_id');
 
         // Badges Rédacteur / Auteur / Ecrivain
-        $this->checkAnnotateur($authorUserId, PRBadge::ID_ANNOTATEUR, PRBadge::ANNOTATEUR_NB_COMMENTS);
-        $this->checkAnnotateur($authorUserId, PRBadge::ID_GLOSSATEUR, PRBadge::GLOSSATEUR_NB_COMMENTS);
-        $this->checkAnnotateur($authorUserId, PRBadge::ID_COMMENTATEUR, PRBadge::COMMENTATEUR_NB_COMMENTS);
+        $this->checkAnnotateur($authorUserId, ReputationConstants::BADGE_ID_ANNOTATEUR, ReputationConstants::ANNOTATEUR_NB_COMMENTS);
+        $this->checkAnnotateur($authorUserId, ReputationConstants::BADGE_ID_GLOSSATEUR, ReputationConstants::GLOSSATEUR_NB_COMMENTS);
+        $this->checkAnnotateur($authorUserId, ReputationConstants::BADGE_ID_COMMENTATEUR, ReputationConstants::COMMENTATEUR_NB_COMMENTS);
     }
 
 
@@ -138,14 +139,14 @@ class BadgeListener
         $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Effronté / Impertinent / Audacieux
-        $this->checkEffronte($targetUserId, PRBadge::ID_EFFRONTE, PRBadge::EFFRONTE_NOTEPOS);
-        $this->checkEffronte($targetUserId, PRBadge::ID_IMPERTINENT, PRBadge::IMPERTINENT_NOTEPOS);
-        $this->checkEffronte($targetUserId, PRBadge::ID_AUDACIEUX, PRBadge::AUDACIEUX_NOTEPOS);
+        $this->checkEffronte($targetUserId, ReputationConstants::BADGE_ID_EFFRONTE, ReputationConstants::EFFRONTE_NOTEPOS);
+        $this->checkEffronte($targetUserId, ReputationConstants::BADGE_ID_IMPERTINENT, ReputationConstants::IMPERTINENT_NOTEPOS);
+        $this->checkEffronte($targetUserId, ReputationConstants::BADGE_ID_AUDACIEUX, ReputationConstants::AUDACIEUX_NOTEPOS);
 
         // Badges Fougueux / Enthousiaste / Passionné
-        $this->checkFougueux($authorUserId, PRBadge::ID_FOUGUEUX, PRBadge::FOUGUEUX_NB_NOTEPOS);
-        $this->checkFougueux($authorUserId, PRBadge::ID_ENTHOUSIASTE, PRBadge::ENTHOUSIASTE_NB_NOTEPOS);
-        $this->checkFougueux($authorUserId, PRBadge::ID_PASSIONNE, PRBadge::PASSIONNE_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_FOUGUEUX, ReputationConstants::FOUGUEUX_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_ENTHOUSIASTE, ReputationConstants::ENTHOUSIASTE_NB_NOTEPOS);
+        $this->checkFougueux($authorUserId, ReputationConstants::BADGE_ID_PASSIONNE, ReputationConstants::PASSIONNE_NB_NOTEPOS);
     }
 
     /**
@@ -161,9 +162,9 @@ class BadgeListener
         $authorUserId = $event->getArgument('author_user_id');
 
         // Badges Persifleur / Réprobateur / Critique
-        $this->checkPersifleur($authorUserId, PRBadge::ID_PERSIFLEUR, PRBadge::PERSIFLEUR_NB_NOTENEG);
-        $this->checkPersifleur($authorUserId, PRBadge::ID_REPROBATEUR, PRBadge::REPROBATEUR_NB_NOTENEG);
-        $this->checkPersifleur($authorUserId, PRBadge::ID_CRITIQUE, PRBadge::CRITIQUE_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_PERSIFLEUR, ReputationConstants::PERSIFLEUR_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_REPROBATEUR, ReputationConstants::REPROBATEUR_NB_NOTENEG);
+        $this->checkPersifleur($authorUserId, ReputationConstants::BADGE_ID_CRITIQUE, ReputationConstants::CRITIQUE_NB_NOTENEG);
     }
 
 
@@ -182,14 +183,14 @@ class BadgeListener
         $targetUserId = $event->getArgument('target_user_id');
 
         // Badges Suiveur / Disciple / Inconditionnel
-        $this->checkSuiveur($authorUserId, PRBadge::ID_SUIVEUR, PRBadge::SUIVEUR_NB_SUBSCRIBES);
-        $this->checkSuiveur($authorUserId, PRBadge::ID_DISCIPLE, PRBadge::DISCIPLE_NB_SUBSCRIBES);
-        $this->checkSuiveur($authorUserId, PRBadge::ID_INCONDITIONNEL, PRBadge::INCONDITIONNEL_NB_SUBSCRIBES);
+        $this->checkSuiveur($authorUserId, ReputationConstants::BADGE_ID_SUIVEUR, ReputationConstants::SUIVEUR_NB_SUBSCRIBES);
+        $this->checkSuiveur($authorUserId, ReputationConstants::BADGE_ID_DISCIPLE, ReputationConstants::DISCIPLE_NB_SUBSCRIBES);
+        $this->checkSuiveur($authorUserId, ReputationConstants::BADGE_ID_INCONDITIONNEL, ReputationConstants::INCONDITIONNEL_NB_SUBSCRIBES);
 
         // Badges Important / Influent / Incontournable
-        $this->checkImportant($targetUserId, PRBadge::ID_IMPORTANT, PRBadge::IMPORTANT_NB_FOLLOWERS);
-        $this->checkImportant($targetUserId, PRBadge::ID_INFLUENT, PRBadge::INFLUENT_NB_FOLLOWERS);
-        $this->checkImportant($targetUserId, PRBadge::ID_INCONTOURNABLE, PRBadge::INCONTOURNABLE_NB_FOLLOWERS);
+        $this->checkImportant($targetUserId, ReputationConstants::BADGE_ID_IMPORTANT, ReputationConstants::IMPORTANT_NB_FOLLOWERS);
+        $this->checkImportant($targetUserId, ReputationConstants::BADGE_ID_INFLUENT, ReputationConstants::INFLUENT_NB_FOLLOWERS);
+        $this->checkImportant($targetUserId, ReputationConstants::BADGE_ID_INCONTOURNABLE, ReputationConstants::INCONTOURNABLE_NB_FOLLOWERS);
 
     }
 
@@ -420,7 +421,7 @@ GROUP BY p_d_debate_id
         if (!$this->hasBadge($userId, $badgeId)) {
             $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
-                        ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS, PRAction::ID_D_AUTHOR_REACTION_NOTE_POS, PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS))
+                        ->filterByPRActionId(array(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS, ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS, ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS))
                         ->count();
 
             if ($nb >= $nbNotePos) {
@@ -442,7 +443,7 @@ GROUP BY p_d_debate_id
         if (!$this->hasBadge($userId, $badgeId)) {
             $nb = PUReputationQuery::create()
                         ->filterByPUserId($userId)
-                        ->filterByPRActionId(array(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG, PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG, PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG))
+                        ->filterByPRActionId(array(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG, ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG, ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG))
                         ->count();
 
             if ($nb >= $nbNoteNeg) {

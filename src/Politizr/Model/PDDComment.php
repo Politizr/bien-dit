@@ -28,6 +28,8 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
             // @todo label in constant
             $this->setPublishedBy('Auteur inconnu');
         }
+
+        return parent::preInsert($con);
     }
 
     /**

@@ -4,37 +4,31 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePRBadgeMetal;
 
+/**
+ *
+ * @author Lionel Bouzonville
+ */
 class PRBadgeMetal extends BasePRBadgeMetal
 {
-
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-    const GOLD = 1;
-    const SILVER = 2;
-    const BRONZE = 3;
-
-    // *****************************  OBJET / STRING  ****************** //
-
     /**
      *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getTitle();
     }
 
-
-    // *****************************  BADGES  ****************** //
-
     /**
      *
+     * @param boolean $online
+     * @return PropelCollection[PRBadge]
      */
-    public function getBadges($online = true) {
+    public function getBadges($online = true)
+    {
         $query = PRBadgeQuery::create()
-                ->_if($online)
-                    ->filterByOnline($online)
-                ->_endif()
-                ->orderByTitle();
+            ->filterIfOnline($online)
+            ->orderByTitle();
 
         return parent::getPRBadges($query);
     }

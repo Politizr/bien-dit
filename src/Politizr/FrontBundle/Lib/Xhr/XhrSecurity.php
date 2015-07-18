@@ -9,7 +9,7 @@ use Politizr\Exception\FormValidationException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
-use Politizr\Model\POPaymentType;
+use Politizr\Constant\OrderConstants;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POSubscriptionQuery;
@@ -242,13 +242,13 @@ class XhrSecurity
 
         // payment type rendering
         switch($paymentTypeId) {
-            case POPaymentType::BANK_TRANSFER:
+            case OrderConstants::PAYMENT_TYPE_BANK_TRANSFER:
                 $htmlForm = '';
                 $redirectUrl = $this->router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
-            case POPaymentType::CREDIT_CARD:
+            case OrderConstants::PAYMENT_TYPE_CREDIT_CARD:
                 // construct the atos sips form
                 // $sipsAtosManager = $this->sc->get('studio_echo_sips_atos');
                 // $htmlForm = $sipsAtosManager->computeAtosRequest($order->getId());
@@ -258,13 +258,13 @@ class XhrSecurity
                 $redirect = false;
                 
                 break;
-            case POPaymentType::CHECK:
+            case OrderConstants::PAYMENT_TYPE_CHECK:
                 $htmlForm = '';
                 $redirectUrl = $this->router->generate('InscriptionElectedPaymentFinished');
                 $redirect = true;
 
                 break;
-            case POPaymentType::PAYPAL:
+            case OrderConstants::PAYMENT_TYPE_PAYPAL:
                 // construct the paypal form
                 // $paypalManager = $this->sc->get('studio_echo_paypal');
                 // $htmlForm = $paypalManager->computePaypalRequest($order->getId());

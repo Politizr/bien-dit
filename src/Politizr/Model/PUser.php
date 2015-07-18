@@ -2,52 +2,88 @@
 
 namespace Politizr\Model;
 
+use Politizr\Model\om\BasePUser;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
-use Politizr\Model\om\BasePUser;
+use StudioEcho\Lib\StudioEchoUtils;
 
-use \PDO;
-use \Propel;
-use \PropelPDO;
-use \Criteria;
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\UserConstants;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-use Politizr\Constant\ObjectTypeConstants;
-
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 
+/**
+ * User object model
+ *
+ * @author Lionel Bouzonville
+ */
 class PUser extends BasePUser implements UserInterface, ContainerAwareInterface, HighlightableModelInterface
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/users/';
-      const UPLOAD_WEB_PATH = '/uploads/users/';
+    // simple upload management
+    public $uploadedFileName;
 
+    // elastica search
+    private $elasticaPersister;
+    private $highlights;
 
-    // *****************************  OBJET / STRING  ****************** //
+    // security
+    protected $plainPassword;
 
     /**
      *
+     * @return string
      */
     public function __toString()
     {
         return $this->getFullName();
     }
 
-
-    // *****************************  ELASTIC SEARCH  ****************** //
-    private $elasticaPersister;
-    private $highlights;
+    /**
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return ObjectTypeConstants::TYPE_USER;
+    }
 
     /**
      *
+     */
+    public function getFullName()
+    {
+        return trim($this->getFirstname().' '.$this->getName());
+    }
+
+    /**
+     * Test if activity less than 10mn
+     *
+     * @return boolean
+     */
+    public function isActiveNow()
+    {
+        $delay = new \DateTime();
+        $delay->modify('-10 minute');
+
+        if ($this->getLastActivity() >= $delay) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -58,7 +94,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
     /**
      *
-     */
+      */
     public function getHighlights()
     {
         return $this->highlights;
@@ -73,7 +109,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     {
         $this->highlights = $highlights;
     }
-
 
     /**
      * @todo: gestion d'une exception spécifique à ES
@@ -117,45 +152,19 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
             throw new \Exception('Indexation service not found');
         }
 
-        // + gestion de l'upload
+        // @todo refactor to command
         $this->removeUpload();
     }
 
-
     /**
+     * Indexation process call to know if object is indexable
      *
-     */
-    public function getFullName()
-    {
-        return trim($this->getFirstname().' '.$this->getName());
-    }
-
-    /**
-     *  Renvoit la liste des tags qualifiant le user sous forme de tableau de chaines.
-     *
-     *  @return string
-     */
-    public function getArrayTags($tagTypeId = null, $online = true)
-    {
-        $query = PTagQuery::create()
-                    ->select('Title')
-                    ->filterByOnline(true)
-                    ->setDistinct()
-                    ;
-
-        $tags = parent::getPuTaggedTPTags($query)->toArray();
-        return $tags;
-    }
-
-    /**
-     *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
-     *
-     *  @return boolean
+     * @return boolean
      */
     public function isIndexable()
     {
         $statusId = $this->getPUStatusId();
-        if ($statusId == PUStatus::ACTIVED or $statusId == PUStatus::VALIDATION_PROCESS) {
+        if ($statusId == UserConstants::STATUS_ACTIVED or $statusId == UserConstants::STATUS_VALIDATION_PROCESS) {
             $status = true;
         } else {
             $status = false;
@@ -166,19 +175,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
                 ;
     }
 
-
-    // *****************************  FIN ES  ****************** //
-
-    /**
-     *
-     */
-    public function getBirthdayText()
-    {
-        return $this->getBirthday('d/m/Y');
-    }
-
-
-
     /**
      * Override to manage accented characters
      *
@@ -186,14 +182,12 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      */
     public function createRawSlug()
     {
-
-
         if ($this->getFirstname() && $this->getName()) {
-            $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getFirstname() . '-' . $this->getName());
+            $toSlug =  StudioEchoUtils::transliterateString($this->getFirstname() . '-' . $this->getName());
 
             $slug = $this->cleanupSlugPart($toSlug);
         } elseif ($realname = $this->getRealname()) {
-            $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($realname);
+            $toSlug =  StudioEchoUtils::transliterateString($realname);
 
             $slug = $this->cleanupSlugPart($toSlug);
         } else {
@@ -203,35 +197,14 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $slug;
     }
 
+    /* ######################################################################################################## */
+    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
+    /* ######################################################################################################## */
+
     /**
-     * Utilisateur en ligne si dernière activité enregistré il y a moins de 10 minutes.
      *
-     * @return boolean
+     * @param string $uploadedFileName
      */
-    public function isActiveNow()
-    {
-        $delay = new \DateTime();
-        $delay->modify('-10 minute');
-
-        if ($this->getLastActivity() >= $delay) {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    // ************************************************************************************ //
-    //                                        METHODES ADMIN GENERATOR
-    // ************************************************************************************ //
-
-
-
-    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
-
-    // Colonnes virtuelles / fichiers
-    public $uploadedFileName;
     public function setUploadedFileName($uploadedFileName)
     {
         $this->uploadedFileName = $uploadedFileName;
@@ -239,21 +212,23 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
     /**
      *
+     * @return string
      */
     public function getUploadedFileNameWebPath()
     {
-        return PUser::UPLOAD_WEB_PATH . $this->file_name;
+        return PathConstants::USER_UPLOAD_WEB_PATH . $this->file_name;
     }
     
     /**
      *
+     * @return File
      */
     public function getUploadedFileName()
     {
         // inject file into property (if uploaded)
         if ($this->file_name) {
-            return new \Symfony\Component\HttpFoundation\File\File(
-                __DIR__ . PUser::UPLOAD_PATH . $this->file_name
+            return new File(
+                __DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name
             );
         }
 
@@ -261,7 +236,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     *  Gestion physique de l'upload
+     *
+     * @param File $file
+     * @return string file name
      */
     public function upload($file = null)
     {
@@ -269,57 +246,52 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
               return;
         }
 
-        // Extension et nom de fichier
+        // extension
         $extension = $file->guessExtension();
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'p-u-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+
+        // file name
+        $fileName = 'politizr-user-' . StudioEchoUtils::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PUser::UPLOAD_PATH, $fileName);
+        $fileUploaded = $file->move(__DIR__ . PathConstants::USER_UPLOAD_PATH, $fileName);
 
-        // file_name
+        // file name
         return $fileName;
     }
 
     /**
-     *    Surcharge pour gérer la suppression physique.
+     * @todo migrate physical deletion in special command instead of save
      */
-    public function setFileName($v)
+    public function setFileName($fileName)
     {
-        if (!$v) {
+        if (null !== $fileName) {
             $this->removeUpload();
         }
-        parent::setFileName($v);
+        parent::setFileName($fileName);
     }
 
     /**
-     *     Suppression physique des fichiers.
+     *
+     * @param $uploadedFileName
      */
     public function removeUpload($uploadedFileName = true)
     {
-        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PUser::UPLOAD_PATH . $this->file_name)) {
-            unlink(__DIR__ . PUser::UPLOAD_PATH . $this->file_name);
+        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name)) {
+            unlink(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name);
         }
     }
 
-
     // ************************************************************************************ //
-    //                      METHODES SECURITE / INSCRIPTION / LOGIN
+    //                                          SECURITY
     // ************************************************************************************ //
-
 
     /**
-     * Plain password. Used when changing the password.
+     * @todo which functionality use serialization/deserialization & for what? oauth?
      *
-     * @var string
-     */
-    protected $plainPassword;
-
-
-    /**
-     * {@inheritDoc}
+     * @return array
      */
     public function serialize()
     {
@@ -346,7 +318,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @todo which functionality use serialization/deserialization & for what? oauth?
+     *
+     * @param array
      */
     public function unserialize($serialized)
     {
@@ -377,7 +351,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @see UserInterface::eraseCredentials
      */
     public function eraseCredentials()
     {
@@ -385,7 +359,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * {@inheritDoc}
+     *
+     * @param string
+     * @return PUser
      */
     public function setPlainPassword($plainPassword)
     {
@@ -395,26 +371,27 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * {@inheritDoc}
+     *
+     * @return string
      */
     public function getPlainPassword()
     {
         return $this->plainPassword;
     }
 
-
     // ************************************************************************************ //
-    //                      VALIDATION
+    //                                      VALIDATION
     // ************************************************************************************ //
-
 
     /**
-     *  Email est un identifiant unique
+     *
+     * @param ClassMetadata
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         // @todo /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
 
+        // @todo label constant
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',
             'message' => 'Cet email est déjà utilisé.',
@@ -426,37 +403,21 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         )));
     }
 
-
     // ************************************************************************************ //
-    //                      METHODES PUBLIQUES
+    //                                      FOLLOWERS / SUBSCRIBERS
     // ************************************************************************************ //
 
     /**
-     * Get the object type
+     * Users' subscribers
+     * Equal nest management
      *
-     * @return string
+     * @param \Criteria $query
+     * @param string $andWhere
+     * @return PropelObjectCollection[PUser]
      */
-    public function getType()
+    public function getFollowers(\Criteria $query = null, $andWhere = '')
     {
-        return ObjectTypeConstants::TYPE_USER;
-    }
-
-
-
-    // *****************************    FOLLOWERS / SUBSCRIBERS    ************************* //
-
-
-    /**
-     * Renvoie les followers
-     *
-     * @param       Criteria                $query
-     * @param       $andWhere               string
-     *
-     * @return      PropelObjectCollection  PUser[]
-     */
-    public function getFollowers(Criteria $query = null, $andWhere = '')
-    {
-        $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
         $sql = "
     SELECT DISTINCT p_user.id
@@ -475,23 +436,23 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         $sql = sprintf($sql, $andWhere);
 
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(1, $this->getPrimaryKey(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $this->getPrimaryKey(), PDO::PARAM_INT);
+        $stmt->bindValue(1, $this->getPrimaryKey(), \PDO::PARAM_INT);
+        $stmt->bindValue(2, $this->getPrimaryKey(), \PDO::PARAM_INT);
         $stmt->execute();
 
-        $listPKs = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $listPKs = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
         $users = PUserQuery::create(null, $query)
-            ->addUsingAlias(PUserPeer::ID, $listPKs, Criteria::IN)
+            ->addUsingAlias(PUserPeer::ID, $listPKs, \Criteria::IN)
             ->find($con);
 
         return $users;
     }
 
     /**
-     * Renvoie les followers du user abonné aux notifications "publication d'un débat"
+     * User's debate's notification of user's followers
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelObjectCollection[PUser]
      */
     public function getNotifDebateFollowers()
     {
@@ -499,9 +460,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Renvoie les followers du user abonné aux notifications "publication d'une réaction"
+     * User's reaction's notification of user's followers
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelObjectCollection[PUser]
      */
     public function getNotifReactionFollowers()
     {
@@ -509,9 +470,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Renvoie les followers du user abonné aux notifications "publication d'un commentaire"
+     * User's comment's notification of user's followers
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelObjectCollection[PUser]
      */
     public function getNotifCommentFollowers()
     {
@@ -519,63 +480,60 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Renvoie les followers qualifiés (élus)
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelObjectCollection[PUser]
      */
     public function getFollowersQ()
     {
-        $query = PUserQuery::create()->filterByQualified(true);
-        $pUsers = $this->getFollowers($query);
+        $query = PUserQuery::create()
+            ->filterByQualified(true);
+        
+        $users = $this->getFollowers($query);
 
-        return $pUsers;
+        return $users;
     }
 
     /**
-     * Nombre de followers qualifiés (élus)
      *
-     * @return     integer
+     * @return integer
      */
     public function countFollowersQ()
     {
-        $pUsers = $this->getFollowersQ();
+        $users = $this->getFollowersQ();
 
-        return count($pUsers);
+        return count($users);
     }
 
     /**
-     * Renvoie les followers citoyens
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelObjectCollection[PUser]
      */
     public function getFollowersC()
     {
         $query = PUserQuery::create()->filterByQualified(false);
-        $pUsers = $this->getFollowers($query);
+        $users = $this->getFollowers($query);
 
-        return $pUsers;
+        return $users;
     }
 
     /**
-     * Nombre de followers citoyens
      *
-     * @return     integer
+     * @return integer
      */
     public function countFollowersC()
     {
-        $pUsers = $this->getFollowersC();
+        $users = $this->getFollowersC();
 
-        return count($pUsers);
+        return count($users);
     }
 
-
-
     /**
-     * Renvoie les profils d'abonnements de l'utilisateur courant.
+     * Users' subscribers
+     * Equal nest management
      *
-     * @return     PropelCollection PUser
+     * @return PropelCollection[PUser]
      */
-    public function getSubscribers(Criteria $query = null, PropelPDO $con = null)
+    public function getSubscribers(\Criteria $query = null, \PropelPDO $con = null)
     {
         if ($con === null) {
             $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -596,76 +554,70 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     )";
 
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(1, $this->getPrimaryKey(), PDO::PARAM_INT);
-        // $stmt->bindValue(2, $this->getPrimaryKey(), PDO::PARAM_INT);
+        $stmt->bindValue(1, $this->getPrimaryKey(), \PDO::PARAM_INT);
         $stmt->execute();
 
-        $listPKs = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $listPKs = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
-        $pUsers = PUserQuery::create(null, $query)
-            ->addUsingAlias(PUserPeer::ID, $listPKs, Criteria::IN)
+        $users = PUserQuery::create(null, $query)
+            ->addUsingAlias(PUserPeer::ID, $listPKs, \Criteria::IN)
             ->find($con);
 
-        return $pUsers;
+        return $users;
     }
 
     /**
-     * Renvoie les abonnements qualifiés (élus)
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelCollection[PUser]
      */
     public function getSubscribersQ()
     {
         $query = PUserQuery::create()->filterByQualified(true);
-        $pUsers = $this->getSubscribers($query);
+        $users = $this->getSubscribers($query);
 
-        return $pUsers;
+        return $users;
     }
 
     /**
-     * Nombre d'abonnements qualifiés (élus)
      *
-     * @return     integer
+     * @return integer
      */
     public function countPUserSubscribersQ()
     {
-        $pUsers = $this->getSubscribersQ();
+        $users = $this->getSubscribersQ();
 
-        return count($pUsers);
+        return count($users);
     }
 
     /**
-     * Renvoie les abonnements citoyens
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return PropelCollection[PUser]
      */
     public function getSubscribersC()
     {
         $query = PUserQuery::create()->filterByQualified(false);
-        $pUsers = $this->getSubscribers($query);
+        $users = $this->getSubscribers($query);
 
-        return $pUsers;
+        return $users;
     }
 
     /**
-     * Nombre d'abonnements citoyens
      *
-     * @return     integer
+     * @return integer
      */
     public function countPUserSubscribersC()
     {
-        $pUsers = $this->getSubscribersC();
+        $users = $this->getSubscribersC();
 
-        return count($pUsers);
+        return count($users);
     }
 
     /**
-     * Le <user id> passé en argument est-il abonné au profil courant
      *
      * @param integer $userId
      * @return boolean
      */
-    public function isFollowedByUserId($userId)
+    public function isFollowedBy($userId)
     {
         $followers = PUFollowUQuery::create()
             ->filterByPUserId($this->getId())
@@ -679,12 +631,14 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return false;
     }
 
-    // *****************************    QUALIFICATION    ************************* //
+    // ************************************************************************************ //
+    //                                          QUALIFICATION
+    // ************************************************************************************ //
 
     /**
-     *  Renvoie les mandats par ordre décroissant
+     * User's user mandates
      *
-     * @return array PUMandate
+     * @return PropelCollection[PUMandate]
      */
     public function getMandates()
     {
@@ -695,9 +649,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     *  Renvoie les mandats courants
+     * User's current mandates
      *
-     * @return array    PQMandate
+     * @return PropelCollection[PQMandate]
      */
     public function getCurrentMandates()
     {
@@ -713,216 +667,224 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $pqMandate;
     }
 
-    // *****************************    ORGANIZATIONS    ************************* //
+    // ************************************************************************************ //
+    //                                          ORGANIZATIONS
+    // ************************************************************************************ //
 
     /**
-     * Get current user's organizations
+     * User's current organizations
      *
      * @param int $typeId Organization type
      * @param boolean $online
-     * @return PropelCollection PQOrganization
+     * @return PropelCollection[PQOrganization]
      */
-    public function getCurrentOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
+    public function getCurrentOrganizations($typeId = QualificationConstants::TYPE_ELECTIV, $online = true)
     {
         $query = PQOrganizationQuery::create()
-                    ->_if($typeId)
-                        ->filterByPQTypeId($typeId)
-                    ->_endif()
-                    ->_if(null !== $online)
-                        ->filterByOnline($online)
-                    ->_endif()
-                    ->setDistinct();
+            ->filterIfPQTypeId($typeId)
+            ->filterIfOnline($online)
+            ->setDistinct();
 
         return parent::getPUCurrentQOPQOrganizations($query);
     }
 
     /**
-     * Get affinity user's organizations
+     * User's affinity organizations
      *
      * @param int $typeId Organization type
      * @param boolean $online
-     * @return PropelCollection PQOrganization
+     * @return PropelCollection[PQOrganization]
      */
-    public function getAffinityOrganizations($typeId = PQType::ID_ELECTIF, $online = true)
+    public function getAffinityOrganizations($typeId = QualificationConstants::TYPE_ELECTIV, $online = true)
     {
         $query = PQOrganizationQuery::create()
-                    ->_if($typeId)
-                        ->filterByPQTypeId($typeId)
-                    ->_endif()
-                    ->_if(null !== $online)
-                        ->filterByOnline($online)
-                    ->_endif()
-                    ->setDistinct();
+            ->filterIfPQTypeId($typeId)
+            ->filterIfOnline($online)
+            ->setDistinct();
 
         return parent::getPUAffinityQOPQOrganizations($query);
     }
 
     /**
-     * Get single & current linked object PUCurrentQO
+     * User's PUCurrentQO
+     * /!\ functionaly limited to one single & current linked object
      *
      * @param int $typeId Organization type
      * @return PUCurrentQO
      */
-    public function getPUCurrentQO($typeId = PQType::ID_ELECTIF)
+    public function getPUCurrentQO($typeId = QualificationConstants::TYPE_ELECTIV)
     {
         $puCurrentQo = PUCurrentQOQuery::create()
             ->filterByPUserId($this->getId())
             ->usePUCurrentQOPQOrganizationQuery()
-                ->filterByPQTypeId(PQType::ID_ELECTIF)
+                ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
             ->endUse()
             ->findOne();
 
         return $puCurrentQo;
     }
 
-
-    // *****************************    TAGS   ************************* //
+    // ************************************************************************************ //
+    //                                          TAGS
+    // ************************************************************************************ //
 
     /**
-     * Renvoie les tags taggant l'utilisateur
+     * User's array tags
+     * /!\ used by elastica indexation
      *
-     *
-     * @return PTag PropelCollection
+     * @param integer $tagTypeId
+     * @param boolean $online
+     * @return PropelCollection[PTag]
      */
-    public function getTaggedTags($ptTagTypeId = null, $online = true)
+    public function getArrayTags($tagTypeId = null, $online = true)
     {
         $query = PTagQuery::create()
-                    ->_if($ptTagTypeId)
-                        ->filterByPTTagTypeId($ptTagTypeId)
-                    ->_endif()
-                    ->filterByOnline($online)
-                    ->_if(null === $ptTagTypeId)
-                        ->orderByPTTagTypeId()
-                    ->_endif()
-                    ->orderByTitle()
-                    ->setDistinct()
-                    ;
+            ->select('Title')
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->setDistinct();
+
+        return parent::getPuTaggedTPTags($query)->toArray();
+    }
+
+    /**
+     * User's tagged tags
+     *
+     * @param integer $tagTypeId
+     * @param boolean $online
+     * @return PropelCollection[PTag]
+     */
+    public function getTaggedTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
 
         return parent::getPuTaggedTPTags($query);
     }
 
     /**
-     * Renvoie les tags suivis par l'utilisateur
+     * User's following tags
      *
-     *
-     * @return PTag PropelCollection
+     * @param integer $tagTypeId
+     * @param boolean $online
+     * @return PropelCollection[PTag]
      */
-    public function getFollowTags($ptTagTypeId = null, $online = true)
+    public function getFollowTags($tagTypeId = null, $online = true)
     {
         $query = PTagQuery::create()
-                    ->_if($ptTagTypeId)
-                        ->filterByPTTagTypeId($ptTagTypeId)
-                    ->_endif()
-                    ->filterByOnline($online)
-                    ->_if(null === $ptTagTypeId)
-                        ->orderByPTTagTypeId()
-                    ->_endif()
-                    ->orderByTitle()
-                    ->setDistinct()
-                    ;
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
 
         return parent::getPuFollowTPTags($query);
     }
 
-    // *****************************    DEBATES, REACTIONS    ************************* //
+    // ************************************************************************************ //
+    //                                          DOCUMENTS
+    // ************************************************************************************ //
 
     /**
-     * Renvoie les débats associés à l'utilisateur
+     * User's debates
      *
-     * @return PropelCollection PDDebate
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDDebate]
      */
     public function getDebates($online = true, $published = true)
     {
-        $query = PDDebateQuery::create()
-                    ->filterByPUserId($this->getId())
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
-                    ->orderByCreatedAt('desc');
+        $debates = PDDebateQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByCreatedAt('desc')
+            ->find();
 
-        return $query->find();
+        return $debates;
     }
 
     /**
-     * Renvoie le nombre de débats associés à l'utilisateur
+     * User's debates count
      *
-     * @return     integer
+     * @param boolean $online
+     * @param boolean $published
+     * @return integer
      */
     public function countDebates($online = true, $published = true)
     {
-        $debates = $this->getDebates($online, $published);
+        $nbDebates = PDDebateQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->count();
 
-        return count($debates);
+        return $nbDebates;
     }
 
-
     /**
-     * Renvoie les réactions associé à l'utilisateur
+     * User's reactions
      *
-     * @return PropelCollection PDDebate
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDReaction]
      */
     public function getReactions($online = true, $published = true)
     {
-        $query = PDReactionQuery::create()
-                    ->filterByPUserId($this->getId())
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
-                    ->orderByCreatedAt('desc');
+        $reactions = PDReactionQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByCreatedAt('desc')
+            ->find();
 
-        return $query->find();
+        return $reactions;
     }
 
     /**
-     * Renvoie le nombre de réactions associé à l'utilisateur
+     * User's reactions count
      *
-     * @return     integer
+     * @param boolean $online
+     * @param boolean $published
+     * @return integer
      */
     public function countReactions($online = true, $published = true)
     {
-        $reactions = $this->getReactions($online, $published);
+        $nbReactions = PDReactionQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->count();
 
-        return count($reactions);
+        return $nbReactions;
     }
 
     /**
-     * Renvoie les débats suivis par l'utilisateur
+     * User's followed debates
      *
-     * @return PropelCollection PDDebate
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDDebate]
      */
     public function getFollowedDebates($online = true, $published = true)
     {
-        $query = PDDebateQuery::create()
-                    ->usePUFollowDDQuery()
-                        ->filterByPUserId($this->getId())
-                    ->endIf()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
-                    ->orderByCreatedAt('desc');
+        $debates = PDDebateQuery::create()
+            ->usePUFollowDDQuery()
+                ->filterByPUserId($this->getId())
+            ->endIf()
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByCreatedAt('desc')
+            ->find();
 
-        return $query->find();
+        return $debates;
     }
 
-    // *****************************    BADGES / REPUTATION    ************************* //
-
-    /**
-     *  Renvoie les badges
-     *
-     * @param $pRBadgeTypeId    integer     ID type de badge
-     *
-     * @return PRBadge PropelCollection
-     */
-    public function getBadges($prBadgeTypeId = null, $online = true)
-    {
-        $query = PRBadgeQuery::create()
-            ->filterByOnline($online)
-            ->_if($prBadgeTypeId)
-                ->filterByPRBadgeTypeId($prBadgeTypeId)
-            ->_endif()
-            ->orderByPRBadgeTypeId()
-            ->orderByTitle()
-            ;
-
-        return parent::getPRBadges($query);
-    }
+    // ************************************************************************************ //
+    //                                          REPUTATION
+    // ************************************************************************************ //
 
     /**
      * @see addPuReputationRbPRBadge
@@ -941,15 +903,31 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     *  Renvoie le "score" de réputation: somme des "score_evolution" associé à toutes les actions effectuées
-     *  par l'utilisateur courant.
+     * User's badges
+     *
+     * @param integer $badgeTypeId
+     * @param boolean $online
+     * @return PropelCollection[PRBadge]
+     */
+    public function getBadges($badgeTypeId = null, $online = true)
+    {
+        $query = PRBadgeQuery::create()
+            ->filterIfOnline($online)
+            ->filterIfTypeId($badgeTypeId)
+            ->orderByTitle();
+
+        return parent::getPRBadges($query);
+    }
+
+    /**
+     * Sum user's "score_evolution" in PUReputation
      *
      * @return integer
      */
-    public function getReputationScore(PropelPDO $con = null)
+    public function getReputationScore(\PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         }
 
         $sql = "
@@ -960,7 +938,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     ";
 
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(1, $this->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(1, $this->getId(), \PDO::PARAM_INT);
         $stmt->execute();
 
         $result = $stmt->fetchAll();
@@ -974,22 +952,22 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
 
-    // *****************************    NOTIFICATIONS    ************************* //
+    // ************************************************************************************ //
+    //                                          NOTIFICATIONS
+    // ************************************************************************************ //
 
     /**
-     * Renvoit vrai / faux si le follower en argument veut être notifié des MAJ du user courant
-     * suivant le contexte entré en argument.
+     * Check if follower $userId wants to be notified of user update in the scope of $context
      *
-     * @param $userFollowerId   integer
-     * @param $context          string
-     *
+     * @param integer $userId
+     * @param string $context   @todo refactor migrate constant
      * @return boolean
      */
-    public function isNotified($userFollowerId, $context = 'debate')
+    public function isNotified($userId, $context = 'reaction')
     {
         $puFollowU = PUFollowUQuery::create()
-            ->filterByPUserId($this->getId())
-            ->filterByPUserFollowerId($userFollowerId)
+            ->filterByPUserId($userId)
+            ->filterByPUserFollowerId($this->getId())
             ->findOne();
 
         if ($context == 'debate' && $puFollowU && $puFollowU->getNotifDebate()) {

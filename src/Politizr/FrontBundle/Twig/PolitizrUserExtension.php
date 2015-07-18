@@ -3,9 +3,9 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\UserConstants;
 
 use Politizr\Model\PDDebate;
-use Politizr\Model\PUStatus;
 use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
@@ -308,6 +308,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
     /**
      * Notification HTML rendering
+     * @todo add test on returning objects + throw InconsistentDataException (InconsistentDataEventException?)
      *
      * @param PUNotification $notification
      * @param boolean $absolute render absolute URL link
@@ -315,8 +316,8 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function linkedNotification(PUNotification $notification, $absolute = false)
     {
-        // $this->logger->info('*** linkedNotification');
-        // $this->logger->info('$notification = '.print_r($notification, true));
+        $this->logger->info('*** linkedNotification');
+        $this->logger->info('$notification = '.print_r($notification, true));
 
         // Récupération de l'objet d'interaction
         $commentDoc = '';
@@ -474,7 +475,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
             $this->user &&
-            $this->user->getPUStatusId() == PUStatus::ACTIVED &&
+            $this->user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
             $this->user->getOnline()) {
             return true;
         }

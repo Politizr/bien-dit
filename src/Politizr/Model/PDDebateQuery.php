@@ -131,7 +131,7 @@ LIMIT ".$offset.", ".$limit."
      * @param integer $userId
      * @param integer $offset
      * @param integer $limit
-     * @return PropelCollection
+     * @return PropelCollection[PDDebate]
      */
     public function findBySuggestion($userId, $offset = 0, $limit = 10)
     {
@@ -312,5 +312,33 @@ LIMIT ".$offset.", ".$limit."
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {
+    }
+    
+    /* ######################################################################################################## */
+    /*                                              FILTERBY IF                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     * @param boolean $online
+     */
+    public function filterIfOnline($online = null)
+    {
+        return $this
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $published
+     */
+    public function filterIfPublished($published = null)
+    {
+        return $this
+            ->_if(null !== $published)
+                ->filterByPublished($published)
+            ->_endif();
     }
 }

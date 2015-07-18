@@ -3,12 +3,12 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDCommentInterface;
-use Politizr\Model\PRAction;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -386,10 +386,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $neg = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
@@ -449,10 +449,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $neg = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
@@ -524,10 +524,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $neg = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS)
                     ->filterByPObjectName($comment->getType());
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG)
                     ->filterByPObjectName($comment->getType());
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())

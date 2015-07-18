@@ -3,11 +3,11 @@ namespace Politizr\FrontBundle\Lib\Manager;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Constant\OrderConstants;
+
 use Politizr\Model\PUser;
 use Politizr\Model\POSubscription;
 use Politizr\Model\POrder;
-use Politizr\Model\POOrderState;
-use Politizr\Model\POPaymentState;
 use Politizr\Model\POPaymentType;
 
 /**
@@ -53,8 +53,8 @@ class OrderManager
         $order->setPOSubscriptionId($subscription->getId());
         $order->setPOPaymentTypeId($paymentTypeId);
 
-        $order->setPOOrderStateId(POOrderState::CREATED);
-        $order->setPOOrderStateId(POPaymentState::PROCESSING);
+        $order->setPOOrderStateId(OrderConstants::ORDER_CREATED);
+        $order->setPOOrderStateId(OrderConstants::PAYMENT_PROCESSING);
 
         $order->setSubscriptionTitle($subscription->getTitle());
         $order->setSubscriptionDescription($subscription->getDescription());
