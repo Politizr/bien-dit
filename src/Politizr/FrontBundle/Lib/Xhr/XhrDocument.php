@@ -507,7 +507,7 @@ class XhrDocument
             // Remove old file if new upload or deletion has been done
             $fileName = $reaction->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $this->kernel->getRootDir() . '/../web' . PDReaction::UPLOAD_WEB_PATH;
+                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::REACTION_UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }
@@ -520,7 +520,7 @@ class XhrDocument
         // Rendering
         $path = 'bundles/politizrfront/images/default_reaction.jpg';
         if ($fileName = $reaction->getFileName()) {
-            $path = PDReaction::UPLOAD_WEB_PATH.$fileName;
+            $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
         }
         $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
@@ -648,7 +648,7 @@ class XhrDocument
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $document = PDReactionQuery::create()->findPk($id);
-                $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
+                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
                 break;
             default:
                 throw new InconsistentDataException('Object type not managed');
