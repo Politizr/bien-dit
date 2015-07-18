@@ -179,7 +179,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
                     break;
                 case ObjectTypeConstants::TYPE_REACTION:
-                    $uploadWebPath = PDReaction::UPLOAD_WEB_PATH;
+                    $uploadWebPath = PDReaction::REACTION_UPLOAD_WEB_PATH;
                     break;
             }
 
