@@ -1,0 +1,135 @@
+<script>
+
+    $("body").on("click", "[action='show-mandate-create']", function(e) {
+        $('#mandate-create').slideDown("slow");
+    });
+
+    $("body").on("click", "[action='hide-mandate-create']", function(e) {
+        $('#mandate-create').slideUp("slow");
+    });
+
+    // MAJ du parti politique en cours
+    $("body").on("change", "select[action='orga-save']", function(e) {
+        console.log('*** change select');
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : "{{ path('OrgaProfileUpdate') }}",
+            data: $("#form-orga-update").serialize(),
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Organisation bien enregistrée.');
+                    $('#infoBoxHolder .boxSuccess').show();
+                }
+            }
+        });
+    });
+
+    // MAJ des affinités politiques
+    $("body").on("click", "[action='affinities-update']", function(e) {
+        console.log('*** click affinities-update');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('AffinitiesProfileUpdate') }}",
+            data: $('#form-affinities-update').serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Affinités mises à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
+                }
+            }
+        });
+    });
+
+    // Création d'un mandat
+    $("body").on("click", "[action='mandate-add']", function(e) {
+        console.log('*** click mandate-add');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('MandateProfileCreate') }}",
+            data: $("#form-mandate-create").serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat bien enregistré.');
+                    $('#infoBoxHolder .boxSuccess').show();
+
+                    $('#mandates').html(data['html']);
+                }
+            }
+        });
+    });
+
+    // MAJ d'un mandat
+    $("body").on("click", "[action='mandate-update']", function(e) {
+        console.log('*** click mandate-update');
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('MandateProfileUpdate') }}",
+            data: $(this).parent().prev('.form-mandate-update').serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat mis à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
+                }
+            }
+        });
+    });
+
+    // Suppression d'un mandat
+    $("body").on("click", "[action='mandate-delete']", function(e) {
+        console.log('*** click mandate-delete');
+        var subjectId = $(this).attr('subject-id');
+        bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('MandateProfileDelete') }}",
+                    data: { 'id': subjectId },
+                    context: $(this),
+                    dataType: 'json',
+                    {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+                    success: function(data) {
+                        $('#ajaxGlobalLoader').hide();
+                        if (data['error']) {
+                            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                            $('#infoBoxHolder .boxError').show();
+                        } else {
+                            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat supprimé.');
+                            $('#infoBoxHolder .boxSuccess').show();
+
+                            $(this).closest('.mandate').slideUp();
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+</script>

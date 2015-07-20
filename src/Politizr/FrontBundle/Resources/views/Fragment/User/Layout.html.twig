@@ -40,7 +40,7 @@ LAYOUT USER
                                 {# Organisations en cours #}
                                 {% set organizations = user.currentOrganizations %}
                                 {% for organization in organizations %}
-                                    <a href="{{ path('Organization', { 'slug': organization.slug }) }}"><img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}"></a>
+                                    <a href=""><img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}"></a>
                                 {% endfor %}
                             </h3>
                         </div>
@@ -119,7 +119,7 @@ LAYOUT USER
                         <div class="row text-center">
                             <div class="col-sm-12">
                                 {% for organization in user.affinityOrganizations %}
-                                    <a href="{{ path('Organization', { 'slug': organization.slug }) }}">
+                                    <a href="">
                                         <img src="{{ asset('uploads/organizations/'~organization.fileName) | imagine_filter('organization_mini') }}" alt="{{ organization.initials }}">
                                     </a>
                                 {% endfor %}
@@ -188,7 +188,7 @@ LAYOUT USER
                                     <td>{{ mandate.localization | raw  }}</td>
                                     <td>
                                         {% if (mandate.organizationUrl) %}
-                                            <a href="{{ path('Organization', { 'slug': mandate.organizationSlug }) }}">
+                                            <a href="">
                                         {% endif %}
                                             {% if (mandate.organizationLogo) %}
                                                 <img class="img-rounded" src="{{ asset('uploads/organizations/'~mandate.organizationLogo) | imagine_filter('organization_mini') }}" alt="{{ mandate.organizationInitials }}">

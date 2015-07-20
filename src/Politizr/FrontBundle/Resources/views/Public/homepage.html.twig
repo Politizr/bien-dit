@@ -1,4 +1,4 @@
-{% extends 'PolitizrFrontBundle::layout_homepage.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutHomepage.html.twig' %}
 
 {% block content %}
     <div id="homeClaim">
@@ -109,16 +109,20 @@
     <div id="homeLive">
         <div class="wrapper">
             <div class="pltzrHeader"><i class="iconPltzrLogoAlt"></i></div>
-            <div class="liveItem">
-                <h1>débat le plus actif aujourd’hui</h1>
-                {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': activeDebate} only %}
-            </div>
-            <div class="separator"></div>
-            <div class="liveItem">
-                <h1>débat le plus suivi aujourd’hui</h1>
-                {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': followedDebate} only %}
-            </div>
-            <div class="separator"></div>
+            {% if activeDebate %}
+                <div class="liveItem">
+                    <h1>débat le plus actif aujourd’hui</h1>
+                    {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': activeDebate} only %}
+                </div>
+                <div class="separator"></div>
+            {% endif %}
+            {% if followedDebate %}
+                <div class="liveItem">
+                    <h1>débat le plus suivi aujourd’hui</h1>
+                    {% include 'PolitizrFrontBundle:Debate:_homepageDebate.html.twig' with {'debate': followedDebate} only %}
+                </div>
+                <div class="separator"></div>
+            {% endif %}
             <div class="liveItem">
                 <h1>les plus populaires aujourd’hui</h1>
                 {% if citizenUser %}
@@ -132,23 +136,23 @@
                             <div class="authorName">
                                 {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': citizenUser} only %}
                             </div>
-                            <div class="authorInAFewWords">@todo</div>
+                            <div class="authorInAFewWords">{{ citizenUser.subtitle }}</div>
                         </div>
                     </div>
                 {% endif %}
-                {% if qualifiedUser %}
+                {% if electedUser %}
                     <div class="liveItemRight">
                         <div class="avatar60">
-                            <a href="{{ path('UserDetail', { 'slug': qualifiedUser.slug }) }}">
-                                {{ qualifiedUser | photo('user_60') }}
+                            <a href="{{ path('UserDetail', { 'slug': electedUser.slug }) }}">
+                                {{ electedUser | photo('user_60') }}
                             </a>
                         </div>
                         <div class="listProfileRight">
                             <div class="authorName">
-                                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': qualifiedUser} only %}
-                                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with {'user': qualifiedUser} only %}
+                                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': electedUser} only %}
+                                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with {'user': electedUser} only %}
                             </div>
-                            <div class="authorInAFewWords">@todo</div>
+                            <div class="authorInAFewWords">{{ electedUser.subtitle }}</div>
                         </div>
                     </div>
                 {% endif %}

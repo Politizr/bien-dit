@@ -1,0 +1,28 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block main %}
+    <div id="main">
+        <h1>Mes débats publiés</h1>
+        {% for debate in debates %}
+            {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowUser.html.twig' with { 'debate': debate } %}
+            <hr>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('Drafts'~profileSuffix) }}">Vous n'avez aucun débat en ligne pour le moment</a>
+            </div>
+        {% endfor %}
+        <h1>Mes réactions publiés</h1>
+        {% for reaction in reactions %}
+            {% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowUser.html.twig' with { 'reaction': reaction } %}
+            <hr>
+        {% else %}
+            <div class="no-results">
+                <a class="btn btn-primary" href="{{ path('Drafts'~profileSuffix) }}">Vous n'avez aucune réaction en ligne pour le moment</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+{% endblock javascriptFooter %}

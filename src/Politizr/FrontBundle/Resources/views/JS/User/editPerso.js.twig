@@ -1,0 +1,26 @@
+<script>
+    // user profile perso update
+    $("body").on("click", "button[action='btn-submit-perso']", function(e) {
+        console.log('click btn-submit-perso');
+        console.log($(this).attr("form-id-name"));
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('UserPersoUpdate') }}",
+            data: $("#" + $(this).attr("form-id-name")).serialize(),
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Les données modifiées ont bien été mises à jour.');
+                    $('#infoBoxHolder .boxSuccess').show();
+                }
+            }
+        });
+    });
+
+</script>

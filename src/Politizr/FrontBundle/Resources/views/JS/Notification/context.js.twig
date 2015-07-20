@@ -1,0 +1,98 @@
+<script>
+    // Context email notification debate subscribe
+    $("body").on("click", "span[action='notif-subscribe']", function(e) {
+        console.log('*** click notif-subscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationDebateContextSubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id'), 'context': $(this).attr('context') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-check-square-o');
+                    $(this).attr('action', 'notif-unsubscribe');
+                }
+            }
+        });
+    });
+
+    // Context email notification debate unsubscribe
+    $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
+        console.log('*** click notif-unsubscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationDebateContextUnsubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id'), 'context': $(this).attr('context') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-square-o');
+                    $(this).attr('action', 'notif-subscribe');
+                }
+            }
+        });
+    });
+
+    // Context email notification user subscribe
+    $("body").on("click", "span[action='notif-subscribe']", function(e) {
+        console.log('*** click notif-subscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationUserContextSubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id'), 'context': $(this).attr('context') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-check-square-o');
+                    $(this).attr('action', 'notif-unsubscribe');
+                }
+            }
+        });
+    });
+
+    // Context email notification user unsubscribe
+    $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
+        console.log('*** click notif-unsubscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationUserContextUnsubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id'), 'context': $(this).attr('context') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-square-o');
+                    $(this).attr('action', 'notif-subscribe');
+                }
+            }
+        });
+    });
+
+</script>

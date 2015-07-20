@@ -151,9 +151,15 @@ LIMIT ".$offset.", ".$limit."
      */
     public function online()
     {
-        return $this->filterByOnline(true)->filterByPublished(true);
+        return $this
+            ->filterByOnline(true)
+            ->filterByPublished(true);
     }
 
+    /* ######################################################################################################## */
+    /*                                         CUSTOM FILTERS / ORDERS                                          */
+    /* ######################################################################################################## */
+    
     /**
      * Order by keyword
      * @todo refactor keyword to constant

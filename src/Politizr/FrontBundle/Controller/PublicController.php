@@ -36,6 +36,7 @@ class PublicController extends Controller
         // most "followed" debate today
         $followedDebate = PDDebateQuery::create()
             ->online()
+            ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
             ->filterByLastDay()
             ->orderByMostFollowed()
             ->orderByLast()
@@ -45,6 +46,7 @@ class PublicController extends Controller
         if (null === $followedDebate) {
             $followedDebate = PDDebateQuery::create()
                 ->online()
+                ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                 ->filterByLastWeek()
                 ->orderByMostFollowed()
                 ->orderByLast()
@@ -52,6 +54,7 @@ class PublicController extends Controller
             if (null === $followedDebate) {
                 $followedDebate = PDDebateQuery::create()
                     ->online()
+                    ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                     ->filterByLastMonth()
                     ->orderByMostFollowed()
                     ->orderByLast()
@@ -59,6 +62,7 @@ class PublicController extends Controller
                 if (null === $followedDebate) {
                     $followedDebate = PDDebateQuery::create()
                         ->online()
+                        ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                         ->orderByLast()
                         ->findOne();
                 }
@@ -99,7 +103,7 @@ class PublicController extends Controller
         }
 
         // profil débatteur le plus populaire
-        $qualifiedUser = PUserQuery::create()
+        $electedUser = PUserQuery::create()
             ->online()
             ->filterByLastDay()
             ->filterByQualified(true)
@@ -107,22 +111,22 @@ class PublicController extends Controller
             ->findOne();
         
         // search oldest users if none found
-        if (null === $qualifiedUser) {
-            $qualifiedUser = PUserQuery::create()
+        if (null === $electedUser) {
+            $electedUser = PUserQuery::create()
                 ->online()
                 ->filterByLastWeek()
                 ->filterByQualified(true)
                 ->orderByMostFollowed()
                 ->findOne();
-            if (null === $qualifiedUser) {
-                $qualifiedUser = PUserQuery::create()
+            if (null === $electedUser) {
+                $electedUser = PUserQuery::create()
                     ->online()
                     ->filterByLastMonth()
                     ->filterByQualified(true)
                     ->orderByMostFollowed()
                     ->findOne();
-                if (null === $qualifiedUser) {
-                    $qualifiedUser = PUserQuery::create()
+                if (null === $electedUser) {
+                    $electedUser = PUserQuery::create()
                         ->online()
                         ->filterByQualified(true)
                         ->orderByMostFollowed()
@@ -135,7 +139,7 @@ class PublicController extends Controller
             'activeDebate' => $activeDebate,
             'followedDebate' => $followedDebate,
             'citizenUser' => $citizenUser,
-            'qualifiedUser' => $qualifiedUser,
+            'electedUser' => $electedUser,
         ));
     }
 

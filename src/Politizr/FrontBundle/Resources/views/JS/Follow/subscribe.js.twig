@@ -1,0 +1,56 @@
+<script>
+    // follow / unfollow debate
+    $("body").on("click", "[action='followDebate']", function(e) {
+        console.log('*** click followDebate');
+        
+        var context = $(this).closest('.subscribe');
+        var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('FollowDebate') }}",
+            context: context,
+            data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
+            success: function(data) {
+                localLoader.hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    // MAJ du bouton suivre / Se désabonner
+                    $(this).html(data['html']);
+                }
+            }
+        });
+    });
+
+    // follow / unfollow user
+    $("body").on("click", "[action='followUser']", function(e) {
+        console.log('*** click followUser');
+
+        var context = $(this).closest('.subscribe');
+        var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('FollowUser') }}",
+            context: context,
+            data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
+            success: function(data) {
+                localLoader.hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    // MAJ du bouton suivre / Se désabonner
+                    $(this).html(data['html']);
+                }
+            }
+        });
+
+    });
+</script>

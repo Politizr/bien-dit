@@ -11,6 +11,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\FrontBundle\Form\Type\SearchType;
 
+/**
+ * Search controller
+ *
+ * @author Lionel Bouzonville
+ */
 class SearchController extends Controller
 {
     /**

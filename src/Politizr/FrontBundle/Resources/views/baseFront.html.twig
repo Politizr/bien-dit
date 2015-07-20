@@ -2,7 +2,7 @@
 <html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
     <head>
         <title>{% block title %}{% endblock title %}</title>
-        {% include 'PolitizrFrontBundle:Navigation:favicon.html.twig' %}
+        {% include 'PolitizrFrontBundle:Navigation\\Social:_favicon.html.twig' %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -38,7 +38,7 @@
     </head>
     {% block body %}
         <body>
-            {% include 'PolitizrFrontBundle:Navigation:analytics.html.twig' %}
+            {% include 'PolitizrFrontBundle:Navigation\\Social:_analytics.html.twig' %}
             <noscript>
                 <div id="noJsBox">
                     Désolé, vous devez activer Javascript pour naviguer sur ce site.
@@ -73,7 +73,7 @@
             {% endblock genericBoxes %}
 
             {% block modalBox %}
-                {% include 'PolitizrFrontBundle:Navigation:modalBox.html.twig' %}
+                {% include 'PolitizrFrontBundle:Navigation:_modalBox.html.twig' %}
             {% endblock modalBox %}
             
             {% block wrapper %}

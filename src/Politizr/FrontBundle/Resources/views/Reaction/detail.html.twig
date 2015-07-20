@@ -1,5 +1,5 @@
 {# @todo refactor layout management for profile screens #}
-{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 {% if (isGrantedE()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
     {% set profileSuffix = 'E' %}
@@ -95,7 +95,7 @@
                 {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': reaction.user } only %}
             </div>
             <div id="postInfos">
-                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
             </div>
         </div>
 
@@ -131,9 +131,8 @@
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Reputation:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:comments.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
 {% endblock javascriptFooter %}

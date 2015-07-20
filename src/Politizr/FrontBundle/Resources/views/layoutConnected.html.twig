@@ -1,12 +1,6 @@
 {# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% if (isGrantedE()) %}
-    {% set role = 'ROLE_ELECTED' %}
-{% elseif (isGrantedC()) %}
-    {% set role = 'ROLE_ELECTED' %}
-{% endif %}
-
 {% block title %}
     {% if (isGrantedE()) %}
         Politizr - Espace Débatteur
@@ -24,7 +18,7 @@
 {% endblock description %}
 
 {% block metaopengraph %}
-    {% block ogImage %}{% render controller("PolitizrFrontBundle:SocialNetworks:ogImage") %}{% endblock ogImage %}
+    {% block ogImage %}{% render controller("PolitizrFrontBundle:Social:ogImage") %}{% endblock ogImage %}
     <meta property="og:site_name" content="Politizr" /> 
     <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
     <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
@@ -40,7 +34,7 @@
 {% block wrapper %}
     <div class="wrapper">
         {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation:_header'~profileSuffix~'.html.twig' %}
+            {% include 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
         {% endblock %}
 
         {% block content %}
@@ -62,7 +56,7 @@
                 {% endblock main %}
 
                 {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation:_footer.html.twig' %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footer.html.twig' %}
                 {% endblock %}
             </div>
         {% endblock content %}
@@ -73,22 +67,10 @@
     {{ parent() }}
 
     {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:globalConnected.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:modalOpening.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:onSuccessImgLiquid.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:onSuccessSticky.js.twig' %}
     
-    {% include 'PolitizrFrontBundle:JS:share.js.twig' %}
-    
-    {% include 'PolitizrFrontBundle:JS:notifications.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Notification:display.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Follow:subscribe.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\PaginatedList:opening.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\PaginatedList:loading.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS:followDebate.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:followUser.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:listingPaginated.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:helper.js.twig' %}
-
-    {% include 'PolitizrFrontBundle:JS:globalDocumentReady.js.twig' %}    
 {% endblock javascriptFooter %}

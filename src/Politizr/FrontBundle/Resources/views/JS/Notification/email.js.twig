@@ -1,0 +1,51 @@
+<script>
+    // Souscription email
+    $("body").on("click", "span[action='email-subscribe']", function(e) {
+        console.log('*** click email-subscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationEmailSubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-check-square-o');
+                    $(this).attr('action', 'email-unsubscribe');
+                }
+            }
+        });
+    });
+
+    // Désouscription email
+    $("body").on("click", "span[action='email-unsubscribe']", function(e) {
+        console.log('*** click email-unsubscribe');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('NotificationEmailUnsubscribe') }}",
+            context: this,
+            data: { 'subjectId': $(this).attr('subject-id') },
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $(this).attr('class', 'fa fa-square-o');
+                    $(this).attr('action', 'email-subscribe');
+                }
+            }
+        });
+    });
+
+
+</script>

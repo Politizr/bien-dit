@@ -24,18 +24,23 @@ class GlobalTools
     private $securityAuthorizationChecker;
     private $securityContext;
 
+    private $formFactory;
+
     private $logger;
 
     /**
      *
      * @param @security.authorization_checker
      * @param @security.context
+     * @param @form.factory
      * @param @logger
      */
-    public function __construct($securityAuthorizationChecker, $securityContext, $logger)
+    public function __construct($securityAuthorizationChecker, $securityContext, $formFactory, $logger)
     {
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
         $this->securityContext = $securityContext;
+        
+        $this->formFactory = $formFactory;
 
         $this->logger = $logger;
     }
@@ -132,7 +137,7 @@ class GlobalTools
         // Création des form + vues associées pour MAJ des mandats
         $formMandateViews = array();
         foreach ($mandates as $mandate) {
-            $formMandate = $formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
+            $formMandate = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
             $formMandateViews[] = $formMandate->createView();
         }
 
@@ -152,12 +157,12 @@ class GlobalTools
             $user &&
             $user->getOnline()) {
             return 'E';
-        } elseif ($securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
+        } elseif ($this->securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
             $user &&
             $user->getOnline()) {
             return 'C';
-        } else {
-            throw new InconsistentDataException('Uner not online or with an unexpected role');
         }
+
+        return null;
     }
 }

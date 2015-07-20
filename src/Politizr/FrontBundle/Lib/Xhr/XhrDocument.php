@@ -43,6 +43,7 @@ class XhrDocument
     private $eventDispatcher;
     private $templating;
     private $formFactory;
+    private $router;
     private $userManager;
     private $documentManager;
     private $globalTools;
@@ -57,6 +58,7 @@ class XhrDocument
      * @param @event_dispatcher
      * @param @templating
      * @param @form.factory
+     * @param @router
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.tools.global
@@ -70,6 +72,7 @@ class XhrDocument
         $eventDispatcher,
         $templating,
         $formFactory,
+        $router,
         $userManager,
         $documentManager,
         $globalTools,
@@ -85,6 +88,7 @@ class XhrDocument
 
         $this->templating = $templating;
         $this->formFactory = $formFactory;
+        $this->router = $router;
 
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
@@ -322,7 +326,7 @@ class XhrDocument
             // Remove old file if new upload or deletion has been done
             $fileName = $debate->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $this->sc->get('kernel')->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                $path = $kernel->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }
@@ -364,8 +368,6 @@ class XhrDocument
         // Request arguments
         $id = $request->get('id');
         $this->logger->info('$id = ' . print_r($id, true));
-        $redirectUrl = $request->get('url');
-        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -380,7 +382,7 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        $this->documentManager->publishDebate();
+        $this->documentManager->publishDebate($debate);
         $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
         // Events
@@ -390,8 +392,8 @@ class XhrDocument
         $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
 
         return array(
-            'redirectUrl' => $redirectUrl,
-            );
+            'redirectUrl' => $this->router->generate('Contribution'.$this->globalTools->computeProfileSuffix()),
+        );
     }
 
     /**
@@ -404,8 +406,6 @@ class XhrDocument
         // Request arguments
         $id = $request->get('id');
         $this->logger->info('$id = ' . print_r($id, true));
-        $redirectUrl = $request->get('url');
-        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -424,8 +424,8 @@ class XhrDocument
         $this->session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
 
         return array(
-            'redirectUrl' => $redirectUrl,
-            );
+            'redirectUrl' => $this->router->generate('Drafts'.$this->globalTools->computeProfileSuffix()),
+        );
     }
 
     /* ######################################################################################################## */
@@ -549,8 +549,6 @@ class XhrDocument
         // Request arguments
         $id = $request->get('id');
         $this->logger->info('$id = ' . print_r($id, true));
-        $redirectUrl = $request->get('url');
-        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -582,8 +580,8 @@ class XhrDocument
 
         // Renvoi de l'url de redirection
         return array(
-            'redirectUrl' => $redirectUrl,
-            );
+            'redirectUrl' => $this->router->generate('Contribution'.$this->globalTools->computeProfileSuffix()),
+        );
     }
 
 
@@ -597,8 +595,6 @@ class XhrDocument
         // Request arguments
         $id = $request->get('id');
         $this->logger->info('$id = ' . print_r($id, true));
-        $redirectUrl = $request->get('url');
-        $this->logger->info('$redirectUrl = ' . print_r($redirectUrl, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -618,8 +614,8 @@ class XhrDocument
 
         // Renvoi de l'url de redirection
         return array(
-            'redirectUrl' => $redirectUrl,
-            );
+            'redirectUrl' => $this->router->generate('Drafts'.$this->globalTools->computeProfileSuffix()),
+        );
     }
 
     /* ######################################################################################################## */

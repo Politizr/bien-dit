@@ -7,6 +7,10 @@ OAuth:
     resource: "./routing/SecurityOAuth.yml"
     prefix:   /oauth/
 
+# Security
+Security:
+    resource: "./routing/Security.yml"
+
 # PUBLIQUE
 Public:
     resource: "./routing/Public.yml"
@@ -15,21 +19,13 @@ Public:
 Search:
     resource: "./routing/Search.yml"
 
-# LOGIN & INSCRIPTION & ACCOUNT
-User:
-    resource: "./routing/Inscription.yml"
-
 # DOCUMENT
 Document:
     resource: "./routing/Document.yml"
 
-# CITOYEN
-Citizen:
-    resource: "./routing/Citizen.yml"
-
-# ELU
-Elected:
-    resource: "./routing/Elected.yml"
+# DOCUMENT
+User:
+    resource: "./routing/User.yml"
 
 ################################################################################
 #				ROUTING XHR 

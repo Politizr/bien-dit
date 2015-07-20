@@ -3,7 +3,7 @@
     {% for reaction in document.childrenReactions(true, true) %}
         <div class="reactionsToPostItem">
             <div class="reactionsToPostItemHeader">
-                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
                 <div class="reactionsToPostItemSummary">
                     <i class="iconNotifYes"></i>
                     {% spaceless %}

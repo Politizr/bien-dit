@@ -9,6 +9,7 @@ services:
             - @event_dispatcher
             - @templating
             - @form.factory
+            - @router
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.tools.global

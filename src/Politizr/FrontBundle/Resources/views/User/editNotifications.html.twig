@@ -1,0 +1,31 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block main %}
+    <div id="main" class="container">
+        <h3>Mes notifications</h3>
+        <h4>Par email</h4>
+
+        <table class="table table-hover">
+            {% for notification in notifications %}
+                <tr>
+                    <td>
+                        <span>{{ notification.title }}</span>
+                    </td>
+                    <td>
+                        {% if notification.id in emailNotifIds %}
+                            <span class="fa fa-check-square-o" subject-id="{{ notification.id }}" action="email-unsubscribe"></span>
+                        {% else %}
+                            <span class="fa fa-square-o" subject-id="{{ notification.id }}" action="email-subscribe"></span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:JS\\Notification:email.js.twig' %}
+{% endblock javascriptFooter %}

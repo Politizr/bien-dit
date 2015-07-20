@@ -1,8 +1,6 @@
-{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
-{% if (isGrantedE()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutE.html.twig' %}
-{% elseif (isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutC.html.twig' %} 
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 {% endif %}
 {% extends layout %}
 
@@ -46,7 +44,7 @@
                         <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
                     </div>
                     <div class="postSummaryPublishedAt">
-                        {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %},
+                        {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %},
                     </div>                    
                     <div class="postSummaryAuthor">
                         {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
@@ -87,7 +85,7 @@
                     <select action="goToDate">
                         <option>sélectionnez une date</option>
                         {% for dateTimeAt, timeline in timelineDateKey %}
-                            <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
+                            <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:Navigation\\DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -100,5 +98,5 @@
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS:feed.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:feed.js.twig' %}
 {% endblock javascriptFooter %}

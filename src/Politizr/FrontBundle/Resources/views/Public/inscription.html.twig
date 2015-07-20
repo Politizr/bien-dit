@@ -1,4 +1,4 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block connexionBox %}
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
@@ -43,5 +43,5 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
 {% endblock javascriptFooter %}

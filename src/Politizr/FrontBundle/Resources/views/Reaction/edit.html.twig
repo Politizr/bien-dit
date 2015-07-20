@@ -15,7 +15,7 @@
 {% endblock javascriptHeader %}
 
 {% block header %}
-    {% embed 'PolitizrFrontBundle:Navigation:_header'~profileSuffix~'.html.twig' %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
         {% block socialLinks %}{% endblock socialLinks %}
     {% endembed %}
 {% endblock header %}
@@ -30,12 +30,6 @@
 {% block fixedActions %}
     <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
     <div id="fixedActions">
-        {% set urlPublishBack = path('ContribDashboardC') %}
-        {% set urlDeleteBack = path('MyDraftsC') %}
-        {% if isGrantedE() %}
-            {% set urlPublishBack = path('ContribDashboardE') %}
-            {% set urlDeleteBack = path('MyDraftsE') %}
-        {% endif %}
         <div class="ajaxLoader" style="display: none;">
             <i class="iconSpin5 animateSpin"></i>
             <div class="ajaxLoaderBg"></div>
@@ -44,11 +38,11 @@
             <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>sauvegarder</a>
         </div>
         <div class="actionPublish">
-            <a action="reactionPublish" subjectId="{{ reaction.id }}" url="{{ urlPublishBack }}"><i class="iconPublish"></i>publier</a>
+            <a action="reactionPublish" subjectId="{{ reaction.id }}"><i class="iconPublish"></i>publier</a>
         </div>
         <div class="actionDelete">
             <!-- @todo html/css à prévoir & styler -->
-            <a action="reactionDelete" subjectId="{{ reaction.id }}" url="{{ urlDeleteBack }}"><i class="iconDelete"></i>supprimer</a>
+            <a action="reactionDelete" subjectId="{{ reaction.id }}"><i class="iconDelete"></i>supprimer</a>
         </div>
     </div>
 {% endblock fixedActions %}
@@ -107,7 +101,7 @@
                         <i class="iconArrowUp"></i>
                         <i class="iconCross" action="hideHelper"></i>
                         <h4>éditer un champ texte</h4>
-                        {% include 'PolitizrFrontBundle:Helper:edition.html.twig' %}
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
                     </div>
                     <div class="editable description">
                         {{ reaction.description | raw }}
@@ -145,8 +139,7 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
 
-    {% include 'PolitizrFrontBundle:JS:documentMediumEditor.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:documentEdit.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:documentEditXhr.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:documentEditPhoto.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:medium.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:edit.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:editPhoto.js.twig' %}
 {% endblock javascriptFooter %}

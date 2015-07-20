@@ -1,13 +1,6 @@
-{# @todo refactor layout management for profile screens #}
-{% set layout = 'PolitizrFrontBundle::layout.html.twig' %}
-{% if (isGrantedE()) %}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
-    {% set profileSuffix = 'E' %}
-    {% set reactionPath = 'ReactionDraftNewE' %}
-{% elseif (isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %} 
-    {% set profileSuffix = 'C' %}
-    {% set reactionPath = 'ReactionDraftNewC' %}
 {% endif %}
 {% extends layout %}
 
@@ -20,7 +13,7 @@
 {% block fixedActions %}
     <div id="fixedActions">
         {% if app.user and app.user | isAuthorizedToReact(debate) %}
-            <a class="actionReact" href="{{ path(reactionPath, { 'debateId': debate.id, 'parentId': null }) }}">
+            <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateId': debate.id, 'parentId': null }) }}">
                 <i class="iconReaction"></i>réagir
             </a>
         {% endif %}
@@ -92,7 +85,7 @@
                 {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
             </div>
             <div id="postInfos">
-                {% include 'PolitizrFrontBundle:DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
+                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
             </div>
         </div>
 
@@ -128,9 +121,8 @@
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS:followers.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:notation.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS:comments.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Reputation:notation.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Document:comments.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
 {% endblock javascriptFooter %}

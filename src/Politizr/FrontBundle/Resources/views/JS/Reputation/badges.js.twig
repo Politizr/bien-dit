@@ -1,0 +1,33 @@
+<script>
+    // on document ready
+    $(function() {
+        $("[action='bronze']").tab('show');
+
+        $("#silver-tab-content").hide();
+        $("#gold-tab-content").hide();
+    });
+
+    // tabulations
+    $("body").on("click", "[action='bronze']", function(e) {
+        $(this).tab('show');
+
+        $("#gold-tab-content").hide();
+        $("#silver-tab-content").hide();
+        $("#bronze-tab-content").show();
+    });
+    $("body").on("click", "[action='silver']", function(e) {
+        $(this).tab('show');
+
+        $("#gold-tab-content").hide();
+        $("#silver-tab-content").show();
+        $("#bronze-tab-content").hide();
+    });
+    $("body").on("click", "[action='gold']", function(e) {
+        $(this).tab('show');
+        
+        $("#gold-tab-content").show();
+        $("#silver-tab-content").hide();
+        $("#bronze-tab-content").hide();
+    });
+
+</script>

@@ -23,11 +23,11 @@ use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
- * Gestion des documents: débats, réactions, commentaires.
+ * Document controller: debates, reactions, comments
  *
  * @author Lionel Bouzonville
  */
-class DocumentController extends ConnectedController
+class DocumentController extends Controller
 {
 
     /* ######################################################################################################## */
@@ -62,8 +62,9 @@ class DocumentController extends ConnectedController
         $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'debate' => $debate,
+            'paragraphs' => $paragraphs,
         ));
     }
 
@@ -101,9 +102,10 @@ class DocumentController extends ConnectedController
         $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
-                    'reaction' => $reaction,
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'reaction' => $reaction,
+            'debate' => $debate,
+            'paragraphs' => $paragraphs,
         ));
     }
 
@@ -131,44 +133,12 @@ class DocumentController extends ConnectedController
         $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
 
         return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
-                    'debate' => $debate,
-                    'timelineDateKey' => $timelineDateKey
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'debate' => $debate,
+            'timelineDateKey' => $timelineDateKey
         ));
     }
 
-
-    /**
-     * Détail auteur
-     */
-    public function userDetailAction($slug)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** userDetailAction');
-        $logger->info('$slug = '.print_r($slug, true));
-
-        $user = PUserQuery::create()->filterBySlug($slug)->findOne();
-        if (!$user) {
-            throw new NotFoundHttpException('User "'.$slug.'" not found.');
-        }
-        if (!$user->getOnline()) {
-            throw new NotFoundHttpException('User "'.$slug.'" not online.');
-        }
-
-        $user->setNbViews($user->getNbViews() + 1);
-        $user->save();
-
-        // PDDebate (collection)
-        $debates = $user->getDebates();
-
-        // PDReaction (collection)
-        $reactions = $user->getReactions();
-
-        return $this->render('PolitizrFrontBundle:Document:userDetail.html.twig', array(
-                    'user' => $user,
-                    'debates' => $debates,
-                    'reactions' => $reactions
-            ));
-    }
 
     /* ######################################################################################################## */
     /*                                              ÉDITION DEBAT                                               */
@@ -182,13 +152,10 @@ class DocumentController extends ConnectedController
         $logger = $this->get('logger');
         $logger->info('*** debateNewAction');
 
-        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-
         // Service associé a la création d'une réaction
         $debate = $this->get('politizr.functional.document')->createDebate();
 
-        return $this->redirect($this->generateUrl('DebateDraftEdit', array(
-            'profileSuffix' => $this->profileSuffix,
+        return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
             'id' => $debate->getId()
         )));
     }
@@ -203,14 +170,8 @@ class DocumentController extends ConnectedController
         $logger->info('*** debateEditAction');
         $logger->info('$id = '.print_r($id, true));
 
-        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-
-        // Récupération user courant
         $user = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
         $debate = PDDebateQuery::create()->findPk($id);
         if (!$debate) {
             throw new InconsistentDataException('Debate n°'.$id.' not found.');
@@ -221,14 +182,12 @@ class DocumentController extends ConnectedController
         if ($debate->getPublished()) {
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
-
         
-        // forms
         $form = $this->createForm(new PDDebateType(), $debate);
         $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
-            'profileSuffix' => $this->profileSuffix,
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'form' => $form->createView(),
             'formPhotoInfo' => $formPhotoInfo->createView(),
@@ -247,13 +206,10 @@ class DocumentController extends ConnectedController
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
 
-        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-
         // Service associé a la création d'une réaction
         $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
 
-        return $this->redirect($this->generateUrl('ReactionDraftEdit', array(
-            'profileSuffix' => $this->profileSuffix,
+        return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
             'id' => $reaction->getId()
         )));
     }
@@ -268,9 +224,6 @@ class DocumentController extends ConnectedController
         $logger->info('*** reactionEditAction');
         $logger->info('$id = '.print_r($id, true));
 
-        $this->profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-
-        // Récupération user courant
         $user = $this->getUser();
 
         $reaction = PDReactionQuery::create()->findPk($id);
@@ -301,7 +254,7 @@ class DocumentController extends ConnectedController
         $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
-            'profileSuffix' => $this->profileSuffix,
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'reaction' => $reaction,
             'parent' => $parent,
             'paragraphs' => $paragraphs,
@@ -311,54 +264,30 @@ class DocumentController extends ConnectedController
     }
 
     /* ######################################################################################################## */
-    /*                             PAGE ORGANISATION / PARTI POLITIQUE                                          */
+    /*                                                  DRAFTS                                                  */
     /* ######################################################################################################## */
 
     /**
-     *  Détail d'une organisation
+     * Drafts
      */
-    public function organizationAction($slug)
+    public function draftsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** organizationAction');
-        $logger->info('$slug = '.print_r($slug, true));
+        $logger->info('*** draftsAction');
 
-        $organization = PQOrganizationQuery::create()->filterBySlug($slug)->findOne();
-        if (!$organization) {
-            throw new NotFoundHttpException('Organization "'.$slug.'" not found.');
-        }
-        if (!$organization->getOnline()) {
-            throw new NotFoundHttpException('Organization "'.$slug.'" not online.');
-        }
+        // Récupération user courant
+        $user = $this->getUser();
 
-        return $this->render('PolitizrFrontBundle:Document:organization.html.twig', array(
-            'organization' => $organization,
-            ));
-    }
+        // Débats brouillons en attente de finalisation
+        $debateDrafts = PDDebateQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->find();
 
-    /* ######################################################################################################## */
-    /*                                              PAGE TAG                                                    */
-    /* ######################################################################################################## */
+        // Réactions brouillons en attente de finalisation
+        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->find();
 
-    /**
-     *  Détail d'un tag
-     */
-    public function tagAction($slug)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** tagAction');
-        $logger->info('$slug = '.print_r($slug, true));
-
-        $tag = PTagQuery::create()->filterBySlug($slug)->findOne();
-        if (!$tag) {
-            throw new NotFoundHttpException('Tag "'.$slug.'" not found.');
-        }
-        if (!$tag->getOnline()) {
-            throw new NotFoundHttpException('Tag "'.$slug.'" not online.');
-        }
-
-        return $this->render('PolitizrFrontBundle:Document:tag.html.twig', array(
-            'tag' => $tag,
-            ));
+        return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'debateDrafts' => $debateDrafts,
+            'reactionDrafts' => $reactionDrafts,
+        ));
     }
 }

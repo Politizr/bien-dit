@@ -32,5 +32,5 @@ LAYOUT TAG
         {% set twbLabel = "default" %}
     {% endif %}
 
-    <a class="tag label label-{{ twbLabel }}" href="{{ path('Tag', { 'slug': tag.slug }) }}"><i class="fa fa-tag"></i>&nbsp;{{ tag.title }}</a>
+    <a class="tag label label-{{ twbLabel }}" href=""><i class="fa fa-tag"></i>&nbsp;{{ tag.title }}</a>
 {% endblock listRowRead %}

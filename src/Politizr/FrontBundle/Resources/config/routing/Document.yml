@@ -1,5 +1,5 @@
 ################################################################################
-#               ROUTING DOCUMENT
+#               PUBLIC
 ################################################################################
 DebateFeed:
     pattern:  /fil-du-debat/{slug}
@@ -19,30 +19,15 @@ ReactionDetail:
     requirements:
         _method:        GET
 
-UserDetail:
-    pattern:  /auteur/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:userDetail }
-    requirements:
-        _method:        GET
-
-
+################################################################################
+#               CITIZEN
+################################################################################
 DebateDraftNewC:
     pattern:  /citoyen/mes-contributions/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
 DebateDraftEditC:
     pattern:  /citoyen/mes-contributions/{id}/edition
-    defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
-    requirements:
-        _method:        GET
-        id:             \d+
-
-DebateDraftNewE:
-    pattern:  /elu/mes-contributions/nouveau
-    defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
-
-DebateDraftEditE:
-    pattern:  /elu/mes-contributions/{id}/edition
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
@@ -63,6 +48,25 @@ ReactionDraftEditC:
         _method:        GET
         id:             \d+
 
+DraftsC:
+    pattern:  /citoyen/mes-contributions/brouillons
+    defaults: { _controller: PolitizrFrontBundle:Document:drafts }
+
+
+################################################################################
+#               ELECTED
+################################################################################
+DebateDraftNewE:
+    pattern:  /elu/mes-contributions/nouveau
+    defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
+
+DebateDraftEditE:
+    pattern:  /elu/mes-contributions/{id}/edition
+    defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
+    requirements:
+        _method:        GET
+        id:             \d+
+
 ReactionDraftNewE:
     pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
@@ -78,17 +82,7 @@ ReactionDraftEditE:
         _method:        GET
         id:             \d+
 
-
-
-Organization:
-    pattern:  /parti-politique/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:organization }
-    requirements:
-        _method:        GET
-
-Tag:
-    pattern:  /tag/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:tag }
-    requirements:
-        _method:        GET
+DraftsE:
+    pattern:  /elu/mes-contributions/brouillons
+    defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
