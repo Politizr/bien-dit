@@ -4,9 +4,14 @@ namespace Politizr\AdminBundle\Menu;
 use Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder;
 use Knp\Menu\FactoryInterface;
 
+/**
+ *
+ * @author Lionel Bouzonville
+ */
 class AdminMenu extends AdmingeneratorMenuBuilder
 {
     protected $translation_domain = 'Admin';
+   
     
     /**
      * @param Request $requestaddNavLinkURI
@@ -19,7 +24,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
 
         if ($dashboardRoute = $this->container->getParameter('admingenerator.dashboard_route')) {
             $this
-                ->addLinkRoute($menu, 'admingenerator.dashboard', $dashboardRoute)
+                ->addLinkRoute($menu, 'Accueil', $dashboardRoute)
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 

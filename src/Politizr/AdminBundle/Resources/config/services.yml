@@ -17,7 +17,7 @@ services:
 
     # EXTENSIONS TWIG
     politzr_admin.twig.admin_ajax_extension:
-        class:                              Politizr\AdminBundle\Twig\AdminAjaxExtension
-        arguments:                          [ @service_container ]
+        class: Politizr\AdminBundle\Twig\PolitizrAdminExtension
+        arguments: [ @service_container ]
         tags:
-                                            - { name: twig.extension }
+            - { name: twig.extension }

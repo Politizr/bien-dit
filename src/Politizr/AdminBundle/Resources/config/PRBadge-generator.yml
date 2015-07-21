@@ -36,7 +36,9 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_type, p_r_badge_metal, description, nb_users, online ]
+            display:                            [ title, p_r_badge_type_id, p_r_badge_metal_id, description, nb_users, online ]
+            # filtersMode:                        top
+            filters:                            [ title, p_r_badge_metal_id, p_r_badge_type_id, online, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -49,18 +51,11 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ title, p_r_badge_metal, p_r_badge_type, online, created_at ]
-            fields:
-                p_r_badge_type:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
     new:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_type, p_r_badge_metal ], [ title ] ]
+                "Champs principaux":            [ [ p_r_badge_type_id, p_r_badge_metal_id ], [ title ] ]
                 "Champs complémentaires":       [ [ description ] ]
             fields:
                 p_r_badge_type:
@@ -74,7 +69,7 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_type , p_r_badge_metal ], [ title ], [ description ] ]
+                    "Texte":                    [ [ p_r_badge_type_id , p_r_badge_metal_id ], [ title ], [ description ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:

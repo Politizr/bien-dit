@@ -6,13 +6,15 @@ use Politizr\Constant\ReputationConstants;
 use Politizr\Model\PUFollowDDQuery;
 
 /**
- * Gestion des liens proposés à l'utilisateur en fonction de:
- *  - ses droits (citoyen / élu)
- *  - sa réputation
+ * Specific admin twig extension
+ *
+ * @todo
+ * - split extension in several: PolitizrAdminDocumentExtension, PolitizrAdminUserExtension, etc.
+ * - delete duplicate function from front
  *
  * @author Lionel Bouzonville
  */
-class AdminAjaxExtension extends \Twig_Extension
+class PolitizrAdminExtension extends \Twig_Extension
 {
     private $logger;
 

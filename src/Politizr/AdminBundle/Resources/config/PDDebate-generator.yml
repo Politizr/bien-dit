@@ -8,14 +8,20 @@ params:
     fields:
         id:
             label:          ID
+            filterable:     1
         p_user_id:
-            label:          ID Utilisateur
+            label:          Utilisateur
+            filterable:     1
         p_user:
             label:          Utilisateur
+            filterable:     1
+            addFormOptions:
+                query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
         file_name:
             label:          Image
         title:
             label:          Titre
+            filterable:     1
         description:
             label:          Description
         note_pos:
@@ -24,14 +30,18 @@ params:
             label:          Notes -
         published:
             label:          Publié
+            filterable:     1
         published_at:
             label:          Publication
+            filterable:     1
         published_by:
             label:          Auteur
         online:
             label:          En ligne
+            filterable:     1
         created_at:
             label:          Création
+            filterable:     1
         updated_at:
             label:          Mis à jour
     object_actions:
@@ -54,7 +64,9 @@ builders:
                     "Brouillons":
                         filters:
                             filterByPublished:  false
-            display:                            [ file_name, id, p_user, title, count_reactions, online, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
+            # filtersMode:                        top
+            filters:                            [ id, p_user_id, published, published_at, online, created_at ]
             fields:
                 count_reactions:
                     label:                      Réactions
@@ -68,13 +80,6 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ id, p_user_id, published, published_at, online, created_at ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
     new:
         params:
             title:                              "Création d'un contenu débat"
@@ -111,10 +116,9 @@ builders:
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        # nameable:               fileName
-                        deleteable:             fileName
+                        # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user_id:
                     label:                      Utilisateur
@@ -165,7 +169,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ file_name, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
+                    "Utilisateur":              [ [ p_user_id ] ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":

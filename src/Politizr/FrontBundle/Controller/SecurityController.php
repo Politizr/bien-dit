@@ -307,9 +307,9 @@ class SecurityController extends Controller
         $form = $this->createForm(new POrderSubscriptionType());
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
@@ -342,9 +342,9 @@ class SecurityController extends Controller
         }
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
@@ -368,9 +368,9 @@ class SecurityController extends Controller
         $payments = POPaymentTypeQuery::create()->filterByOnline(true)->orderByRank()->find();
         
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedPayment.html.twig', array(
@@ -437,9 +437,9 @@ class SecurityController extends Controller
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', array(

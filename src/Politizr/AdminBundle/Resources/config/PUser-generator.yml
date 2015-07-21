@@ -13,12 +13,8 @@ params:
     fields:
         id:
             label:          ID
-        qualified_id:
-            label:          Type
         p_u_status_id:
             label:          Statut
-        qualified:
-            label:          Type
         p_u_status:
             label:          Statut
         file_name:
@@ -29,6 +25,8 @@ params:
             label:          Prénom
         name:
             label:          Nom
+        subtitle:
+            label:          En quelques mots
         biography:
             label:          Biographie
         website:
@@ -88,7 +86,9 @@ builders:
                     "Citoyens":
                         filters: 
                             filterByQualified:  false
-            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_connect ]
+            display:                            [ file_name, name, firstname, qualified, p_u_status_id, online, last_connect ]
+            # filtersMode:                        top
+            filters:                            [ name, firstname, qualified, p_u_status_id, online, last_connect ]
             actions:
                 new:                            ~
             object_actions:
@@ -99,19 +99,21 @@ builders:
         params:                                 ~
         filename:                               ~
         filetype:                               ~
-    filters:
-        params:
-            display:                            [ name, firstname, qualified, p_u_status, online, last_connect ]
     new:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ qualified, p_u_status ], [ gender ], [ firstname, name ] ]
+                "Champs principaux":            [ [ qualified, p_u_status_id ], [ gender ], [ firstname, name ] ]
                 "Champs complémentaires":       [ biography ]
             fields:
                 biography:
                     addFormOptions:
                         attr:                   { class : tinymce }
+                p_u_status_id:
+                    label:          Statut
+                    formType:       choice
+                    addFormOptions:
+                        choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
             actions:
               save:                             ~
               list:                             ~
@@ -124,13 +126,13 @@ builders:
                     "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
-                    "Informations":             [ biography ]
+                    "Informations":             [ subtitle, biography ]
                 "Tag":
                     "Tags du profil":           [ block_tags_geo ]
                 "Réputation":
                     "Badges":                   [ badges ]
                 "Statut":
-                    "Actuel":                   [ [ p_u_status ] ]
+                    "Actuel":                   [ [ p_u_status_id ] ]
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
@@ -141,11 +143,15 @@ builders:
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        # nameable:               fileName
-                        deleteable:             fileName
+                        # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
+                p_u_status_id:
+                    label:          Statut
+                    formType:       choice
+                    addFormOptions:
+                        choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
                 badges:
                     dbType:                     model
                     formType:                   model
@@ -200,7 +206,7 @@ builders:
                     "Followers":                [ block_followers_q, block_followers_c ]
                     "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
                 "Statut":
-                    "Actuel":                   [ [ p_u_status ] ]
+                    "Actuel":                   [ [ p_u_status_id ] ]
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]

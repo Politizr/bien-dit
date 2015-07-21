@@ -37,9 +37,6 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ title, created_at ]
     new:
         params:
             title:                              "Création d'un type de tag"

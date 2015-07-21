@@ -40,7 +40,9 @@ builders:
                         default:                        true
                         filters:
                             filterByPTTagTypeId:        2
-            display:                            [ title, p_t_tag_type, countPDDebates, countPUsers, online ]
+            display:                            [ title, p_t_tag_type_id, countPDDebates, countPUsers, online ]
+            # filtersMode:                        top
+            filters:                            [ title, p_t_tag_type_id, online, created_at ]
             fields:
                 countPDDebates:
                     label:                      Débats taggés
@@ -56,19 +58,12 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ title, p_t_tag_type, online, created_at ]
-            fields:
-                p_t_tag_type:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
     new:
         # TODO: contrôle d'univité du champs titre sur le type donné
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ [ p_t_tag_type ], [ title ] ]
+                "Champs principaux":            [ [ p_t_tag_type_id ], [ title ] ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
@@ -81,7 +76,7 @@ builders:
             title:                              "Edition du tag '{{ PTag.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
+                    "Texte":                    [ [ p_t_tag_type_id ], [ title ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:

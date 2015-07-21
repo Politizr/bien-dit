@@ -51,6 +51,7 @@ class AppKernel extends Kernel
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),
+            new Politizr\CommandBundle\PolitizrCommandBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'stage'))) {
