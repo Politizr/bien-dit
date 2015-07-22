@@ -49,11 +49,14 @@ params:
     batch_actions:
         delete:             ~
 builders:
+    # list not used directly, we have to used the debate listing first
     list:
         params:
             title:                              Liste des réactions
-            # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
-            display:                            [ id, tree_level, parent, p_user, title, note_pos, note_neg, online, published, published_at ]
+            # @todo @toremember not used, cf. Fragment/DebateReactions
+            display:                            [ id, tree_level, parent, p_user_id, title, note_pos, note_neg, online, published, published_at ]
+            # filtersMode:                        top
+            filters:                            [ id, p_user_id, p_d_debate_id, published, published_at, online, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -66,13 +69,6 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ id, p_user, p_d_debate, published, published_at, online, created_at ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
     new:
         params:
             title:                              "Création d'un contenu réaction"
@@ -117,10 +113,9 @@ builders:
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        # nameable:               fileName
-                        deleteable:             fileName
+                        # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user_id:
                     label:                      Utilisateur
@@ -151,10 +146,10 @@ builders:
             title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, summary, description ]
+                    "Texte":                    [ file_name, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
-                    "Débat":                    [ [ p_d_debate ] ]
+                    "Utilisateur":              [ [ p_user_id ] ]
+                    "Débat":                    [ [ p_d_debate_id ] ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
                 "Statut":

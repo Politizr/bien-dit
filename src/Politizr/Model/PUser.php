@@ -6,6 +6,7 @@ use Politizr\Model\om\BasePUser;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 

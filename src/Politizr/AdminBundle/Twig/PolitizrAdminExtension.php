@@ -497,7 +497,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             'PolitizrAdminBundle:Fragment:'.$template,
             array(
                 'pdDebate' => $pdDebate,
-                'PDReactions' => $pdDebate->getTreeReactions(false, false),
+                'PDReactions' => $pdDebate->getTreeReactions(),
             )
         );
 
@@ -533,13 +533,13 @@ class PolitizrAdminExtension extends \Twig_Extension
      *  Gestion des tags d'un débat
      *
      * @param $pdDebate     PDDebate    PDDebate
-     * @param $ptTagTypeId  integer     ID type de tag
+     * @param $tagTypeId  integer     ID type de tag
      * @param $zoneId       integer     ID de la zone CSS
      * @param $mode         string      edit (default) / show
      *
      * @return string
      */
-    public function adminDebateTags($pdDebate, $ptTagTypeId, $zoneId = 1, $mode = 'edit')
+    public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminDebateTags');
         // $this->logger->info('$pdDebate = '.print_r($pdDebate, true));
@@ -559,10 +559,13 @@ class PolitizrAdminExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrAdminBundle:Fragment:'.$template,
             array(
-                'pdDebate' => $pdDebate,
-                'ptTagTypeId' => $ptTagTypeId,
+                'object' => $debate,
+                'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
-                'pTags' => $pdDebate->getTags($ptTagTypeId)
+                'newTag' => $newTag,
+                'tags' => $debate->getTags($tagTypeId),
+                'addPath' => 'DebateAddTag',
+                'deletePath' => 'DebateDeleteTag',
             )
         );
 

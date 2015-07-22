@@ -8,7 +8,6 @@
             <th class="list_thead_column">En réaction à</th>
             <th class="list_thead_column">Auteur</th>
             <th class="list_thead_column">Titre</th>
-            <th class="list_thead_column">Résumé</th>
             <th class="list_thead_column">Note +</th>
             <th class="list_thead_column">Note -</th>
             <th class="list_thead_column">En ligne</th>
@@ -22,16 +21,6 @@
             {% for PDReaction in PDReactions %}
                 {% include "PolitizrAdminBundle:PDReactionList:row.html.twig" with {  } %}
             {% endfor %}
-            {% block object_actions_script %}
-                <script src="{{ asset("bundles/admingeneratorgenerator/js/admingenerator/object-actions.js") }}"></script>
-                <script type="text/javascript">
-                    ;(function(window, $, undefined){
-                       $(".object-actions-PDReaction").agen$objectActions({
-                           actionsSelector: '.object_actions a'
-                       });
-                   })(this, jQuery);
-               </script>
-           {% endblock object_actions_script %}
         {% else %}
             <tr class="list_trow no_results_row">
                 <td colspan="12">{% trans from "Admingenerator" %}list.no.results{% endtrans %}</td>

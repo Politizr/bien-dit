@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-
 /**
  * EditType
  */
@@ -22,13 +21,11 @@ class EditType extends BaseEditType
 
 
         // http://symfony.com/doc/2.3/cookbook/form/dynamic_form_modification.html
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event)
-        {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
             $pdReaction = $event->getData();
 
-            // ID débat associé
-            $formOptions = $this->getFormOption('p_d_debate_id', array( 'data' => $pdReaction->getPDDebateId(), 'label' => 'ID Débat',  'translation_domain' => 'Admin',));
+            $form->add('p_d_debate_id', $this->getTypePDDebateId(), array_merge(['data' => $pdReaction->getPDDebateId()], $this->getOptionsPDDebateId($options)));
         });
 
     }

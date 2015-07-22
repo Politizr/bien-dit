@@ -1,7 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:POrderEdit:form.html.twig" %}
 
 {# Bloc génération facture PDF #}
-{% block form_block_invoice %}
+{% block form_col_block_invoice %}
     {% if POrder.invoiceRef and POrder.invoiceAt and POrder.invoiceFilename %}
         La <a href="{{ asset("uploads/invoices/"~POrder.invoiceFilename) }}" target="_blank">facture n°{{ POrder.invoiceRef }}</a> a été générée la dernière fois le {{ POrder.invoiceAt | date("d/m/Y \\à H\\hi") }}.<br/><br/>
     {% else %}
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {# Bloc génération facture PDF #}
-{% block form_block_mail %}
+{% block form_col_block_mail %}
     <label for="edit_order_block_invoice" class="control-label required">Liste des emails envoyés au client</label>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -48,7 +48,7 @@
 {% endblock %}
 
 {# Bloc justificatif #}
-{% block form_uploadedSupportingDocument %}
+{% block form_col_uploadedSupportingDocument %}
     {% if POrder.supportingDocument %}
         <p><b>Télécharger <a href="/uploads/supporting/{{ POrder.supportingDocument }}" target="_blank">{{ POrder.supportingDocument }}</a></b></p>
     {% endif %}

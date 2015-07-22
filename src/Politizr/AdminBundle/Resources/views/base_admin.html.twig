@@ -2,6 +2,17 @@
 
 {% block title %}Module d'administration Politizr{% endblock %}
 
+{% block header %}
+    {% embed 'AdmingeneratorGeneratorBundle::header.html.twig' %}
+        {% block logo %}
+            {% set brand_path = (admingenerator_config('dashboard_route') is not null) ? path(admingenerator_config('dashboard_route')) : '#' %}
+            <a class="logo" href="{{ brand_path }}">
+                <img src="{{ asset('bundles/politizradmin/images/logo.jpg') }}" alt="Administration Politizr" />
+            </a>
+        {% endblock %}
+    {% endembed %}    
+{% endblock %}
+
 {% block sidebar %}
     <aside class="main-sidebar sidebar-offcanvas">
         {% embed 'AdmingeneratorGeneratorBundle:Sidebar:layout.html.twig' %}

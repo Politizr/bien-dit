@@ -1,38 +1,22 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:index.html.twig" %}
 
-{% block scripts_head %}
-    {{ parent() }}
-
-    <!-- TinyMCE -->
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
-{% endblock %}
-
-{# Autocomplete CSS #}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
 
-    <!-- nested set jquery plugin style -->
-    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/nested.css') }}">
+    {# Autocomplete #}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery-ui.min.css') }}">
 {% endblock %}
 
+{% block javascripts_head %}
+    {{ parent() }}
+
+    {# Autocomplete #}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
-    {# TODO > gestion JS du nested set des réactions #}
-    <script src="{{ asset("bundles/politizradmin/js/jquery-sortable.js") }}"></script>
-
-    <script>
-        $(function () {
-            $('.table-sortable').sortable({
-              containerSelector: 'table',
-              itemPath: '> tbody',
-              itemSelector: 'tr',
-              placeholder: '<tr class="placeholder"/>'
-            })
-        })
-    </script>
-
+    {# TinyMCE #}
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
-  

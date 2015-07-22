@@ -1,19 +1,19 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:form.html.twig" %}
 
 {# Blocs tags #}
-{% block form_block_tags_geo %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), 1, 'edit') }}
+{% block form_col_block_tags_geo %}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), 1, true, 'edit') }}
 {% endblock %}
 
-{% block form_block_tags_theme %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 2, 'edit') }}
+{% block form_col_block_tags_theme %}
+    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 2, true, 'edit') }}
 {% endblock %}
 
 {# Bloc réactions #}
-{% block form_block_reactions %}
+{% block form_col_block_reactions %}
     {{ adminDebateReactions(PDDebate, 'edit') }}
 {% endblock %}
 
-{% block generic_actions_script %}
-    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
+{% block generic_actions_script_container %}
+    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2 } %}
 {% endblock %}
