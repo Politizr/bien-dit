@@ -1,7 +1,7 @@
 <script>
     // on document ready
     $(function() {
-        notificationsCheck();
+        notificationsLoading();
     })
 
     // ouverture/fermeture box notifications
@@ -17,11 +17,18 @@
     });
     
     // Regular function with arguments
-    function notificationsCheck(){
+    function notificationsLoading(){
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_NOTIF_LOADING',
+            'xhrService': 'notification',
+            'xhrMethod': 'notificationsLoad',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('NotificationsLoad') }}",
+            url : xhrPath,
             {% include 'PolitizrFrontBundle:JS:_ajaxErrorNoLoader.js.twig' %}
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
@@ -36,7 +43,7 @@
 
         // Rappel toutes les 60 secondes
         setTimeout(function(){
-            notificationsCheck();
+            notificationsLoading();
         }, 60000);
     }
 
@@ -45,10 +52,18 @@
         console.log('*** click i notificationCheck');
 
         e.preventDefault();
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_NOTIF_CHECK',
+            'xhrService': 'notification',
+            'xhrMethod': 'notificationCheck',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('NotificationCheck') }}",
+            url : xhrPath,
             context: $(this).closest('.notifItem'),
             data: { 'subjectId': $(this).attr('subjectId') },
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -67,11 +82,18 @@
     $("body").on("click", "a[action='notificationCheck']", function(e) {
         console.log('*** click a notificationCheck');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_NOTIF_CHECK',
+            'xhrService': 'notification',
+            'xhrMethod': 'notificationCheck',
+            'xhrType': 'RETURN_URL',
+            } only %}
+
         e.preventDefault();
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('NotificationCheck') }}",
+            url : xhrPath,
             context: this,
             data: { 'subjectId': $(this).closest('span').attr('subjectId') },
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -82,14 +104,21 @@
 
     })
     
-    // check / uncheck toutes les notifications
+    // check toutes les notifications
     $("body").on("click", "div[action='notificationCheckAll']", function(e) {
         console.log('*** click notificationCheckAll');
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_NOTIF_CHECK_ALL',
+            'xhrService': 'notification',
+            'xhrMethod': 'notificationsCheckAll',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
 
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('NotificationsCheckAll') }}",
+            url : xhrPath,
             context: $(this).closest('table'),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {

@@ -31,21 +31,18 @@ User:
 #				ROUTING XHR 
 ################################################################################
 
-# RECHERCHE
-XhrSearch:
-    resource: "./routing/xhr/Search.yml"
+# GENERIC
+XhrGeneric:
+    pattern:  /{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
+    requirements:
+        _method:        POST
+        xhrRoute:       ".+"
+        xhrType:        \d
 
 # LOGIN & INSCRIPTION & ACCOUNT
 XhrInscription:
     resource: "./routing/xhr/Inscription.yml"
-
-# SUIVI DEBAT / USER
-XhrFollow:
-    resource: "./routing/xhr/Follow.yml"
-
-# NOTATION DEBAT / REACTION / COMMENTAIRE
-XhrNotation:
-    resource: "./routing/xhr/Notation.yml"
 
 # GESTION TAGS
 XhrTag:
@@ -55,14 +52,6 @@ XhrTag:
 XhrUser:
     resource: "./routing/xhr/User.yml"
 
-# GESTION NOTIFICATIONS
-XhrNotification:
-    resource: "./routing/xhr/Notification.yml"
-
 # GESTION MODAL
 XhrModal:
     resource: "./routing/xhr/Modal.yml"
-
-# DOCUMENT
-XhrDocument:
-    resource: "./routing/xhr/Document.yml"

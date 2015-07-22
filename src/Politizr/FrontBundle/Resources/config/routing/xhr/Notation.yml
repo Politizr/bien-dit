@@ -1,8 +1,0 @@
-################################################################################
-# NOTATION DEBAT / REACTION / COMMENTAIRE
-################################################################################
-Note:
-    pattern:  /note.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrNotation:note, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-

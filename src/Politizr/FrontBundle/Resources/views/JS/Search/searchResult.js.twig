@@ -5,9 +5,17 @@
         console.log('page = ' + $(this).attr('page'));
 
         e.preventDefault();
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_SEARCH',
+            'xhrService': 'search',
+            'xhrMethod': 'search',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
               type: 'POST',
-              url: "{{ path('SearchPage') }}",
+              url: xhrPath,
               data: { 'query': $(this).attr('query'), 'page': $(this).attr('page') },
               dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

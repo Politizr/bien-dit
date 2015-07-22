@@ -105,10 +105,17 @@
             // initialisation de la liste
             listing();
         } else {
+            {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+                'xhrRoute': 'ROUTE_MODAL_FILTERS',
+                'xhrService': 'modal',
+                'xhrMethod': 'filters',
+                'xhrType': 'RETURN_HTML',
+                } only %}
+
             // chargement des filtres associé au type + initialisation de la liste
             $.ajax({
                 type: 'POST',
-                url: "{{ path('Filters') }}",
+                url: xhrPath,
                 data: { 'type': type },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

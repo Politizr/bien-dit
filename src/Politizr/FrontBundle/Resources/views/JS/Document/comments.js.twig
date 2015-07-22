@@ -26,9 +26,16 @@
         context = $('.comments').slideUp().html('');
 
         var context = $(this).closest('.paragraph');
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_COMMENTS',
+            'xhrService': 'document',
+            'xhrMethod': 'comments',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('Comments') }}",
+            url: xhrPath,
             context: context,
             data: { 'subjectId': $(this).attr('subjectId'), 'type':  $(this).attr('type'), 'noParagraph': $(this).attr('noParagraph') },
             dataType: 'json',
@@ -52,10 +59,16 @@
         
         var context = $(this).closest('.paragraph');
         var localLoader = $(this).prev('.ajaxLoader');
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_COMMENT_CREATE',
+            'xhrService': 'document',
+            'xhrMethod': 'commentNew',
+            'xhrType': 'RETURN_HTML',
+            } only %}
 
         $.ajax({
             type: 'POST',
-            url: "{{ path('CommentNew') }}",
+            url: xhrPath,
             context: context,
             data: $("#formCommentNew").serialize(),
             dataType: 'json',

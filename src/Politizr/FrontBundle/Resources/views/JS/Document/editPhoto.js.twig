@@ -124,10 +124,17 @@
             $('#debate_photo_info_with_shadow').val(1);
         }
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_DEBATE_PHOTO_INFO_UPDATE',
+            'xhrService': 'document',
+            'xhrMethod': 'debatePhotoInfoUpdate',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('DebatePhotoInfoUpdate') }}",
+            url : xhrPath,
             data: $("#formDebatePhotoInfoUpdate").serialize(),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -168,10 +175,17 @@
             $('#reaction_photo_info_with_shadow').val(1);
         }
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_REACTION_PHOTO_INFO_UPDATE',
+            'xhrService': 'document',
+            'xhrMethod': 'reactionPhotoInfoUpdate',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('ReactionPhotoInfoUpdate') }}",
+            url : xhrPath,
             data: $("#formReactionPhotoInfoUpdate").serialize(),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {

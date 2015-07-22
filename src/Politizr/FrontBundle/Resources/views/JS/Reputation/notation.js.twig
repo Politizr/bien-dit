@@ -5,9 +5,16 @@
         
         e.preventDefault();
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_NOTE',
+            'xhrService': 'document',
+            'xhrMethod': 'note',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('Note') }}",
+            url: xhrPath,
             context: $(this).closest('.notes'),
             data: { 'subjectId': $(this).attr('subjectId'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
             dataType: 'json',

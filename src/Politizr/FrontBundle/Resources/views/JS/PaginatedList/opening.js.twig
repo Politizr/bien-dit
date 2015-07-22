@@ -76,9 +76,16 @@
         }
         withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_PAGINATED_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'modalPaginatedList',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('ModalPaginatedList') }}",
+            url: xhrPath,
             data: { 'twigTemplate': twigTemplate, 'model': model, 'slug': slug },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

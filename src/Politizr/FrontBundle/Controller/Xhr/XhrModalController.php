@@ -14,40 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 class XhrModalController extends Controller
 {
     /**
-     *  Chargement d'une box modal
-     */
-    public function modalPaginatedListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** modalPaginatedListAction');
-
-        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            $request,
-            'politizr.xhr.modal',
-            'modalPaginatedList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Chargement des filtres du classement
-     */
-    public function filtersAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** filtersAction');
-
-        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            $request,
-            'politizr.xhr.modal',
-            'filters'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
      * Liste des débats type "classement"
      */
     public function rankingDebateListAction(Request $request)
@@ -195,23 +161,6 @@ class XhrModalController extends Controller
             $request,
             'politizr.xhr.modal',
             'followedUserList'
-        );
-
-        return $jsonResponse;
-    }
-
-    /**
-     *  Historique des actions
-     */
-    public function historyActionsListAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** historyActionsList');
-
-        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            $request,
-            'politizr.xhr.modal',
-            'historyActionsList'
         );
 
         return $jsonResponse;

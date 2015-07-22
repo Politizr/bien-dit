@@ -61,20 +61,25 @@
         console.log('*** click debate save');
         console.log(mode);
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_DEBATE_UPDATE',
+            'xhrService': 'document',
+            'xhrMethod': 'debateUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
         var description = descriptionEditor.serialize();
-
         console.log(description['element-0']['value']);
 
         $('#debate_description').val(description['element-0']['value']);
-     
+
         if (mode === 'silence') {
             // sauvegarde silencieuse
-            $.ajax({type: 'POST', url : "{{ path('DebateUpdate') }}", data: $("#formDebateUpdate").serialize() });
+            $.ajax({type: 'POST', url: xhrPath, data: $("#formDebateUpdate").serialize() });
         } else {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('DebateUpdate') }}",
+                url : path,
                 data: $("#formDebateUpdate").serialize(),
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                 success: function(data) {
@@ -98,20 +103,25 @@
         console.log('*** click reaction save');
         console.log(mode);
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_REACTION_UPDATE',
+            'xhrService': 'document',
+            'xhrMethod': 'reactionUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
         var description = descriptionEditor.serialize();
-
         console.log(description['element-0']['value']);
 
         $('#reaction_description').val(description['element-0']['value']);
      
         if (mode === 'silence') {
             // sauvegarde silencieuse
-            $.ajax({type: 'POST', url : "{{ path('ReactionUpdate') }}", data: $("#formReactionUpdate").serialize() });
+            $.ajax({type: 'POST', url: path, data: $("#formReactionUpdate").serialize() });
         } else {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('ReactionUpdate') }}",
+                url : xhrPath,
                 data: $("#formReactionUpdate").serialize(),
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                 success: function(data) {
@@ -133,12 +143,19 @@
     // Publish debate
     $('body').on('click', "[action='debatePublish']", function(e){
         console.log('*** click publish debate');
-        
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_DEBATE_PUBLISH',
+            'xhrService': 'document',
+            'xhrMethod': 'debatePublish',
+            'xhrType': 'RETURN_URL',
+            } only %}
+
         if (confirm('Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?')) {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('DebatePublish') }}",
+                url : xhrPath,
                 data: { 'id': $(this).attr('subjectId') },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -159,12 +176,19 @@
     // Publish reaction
     $('body').on('click', "[action='reactionPublish']", function(e){
         console.log('*** click publish reaction');
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_REACTION_PUBLISH',
+            'xhrService': 'document',
+            'xhrMethod': 'reactionPublish',
+            'xhrType': 'RETURN_URL',
+            } only %}
         
         if (confirm('Une fois publié, vous ne pourrez plus modifier votre réaction. Voulez-vous publier votre réaction?')) {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('ReactionPublish') }}",
+                url : xhrPath,
                 data: { 'id': $(this).attr('subjectId') },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -186,11 +210,18 @@
     $('body').on('click', "[action='debateDelete']", function(e){
         console.log('*** click delete debate');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_DEBATE_DELETE',
+            'xhrService': 'document',
+            'xhrMethod': 'debateDelete',
+            'xhrType': 'RETURN_URL',
+            } only %}
+
         if (confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?')) {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('DebateDelete') }}",
+                url : xhrPath,
                 data: { 'id': $('#debate_id').val() },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -212,11 +243,18 @@
     $('body').on('click', "[action='reactionDelete']", function(e){
         console.log('*** click delete reaction');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_REACTION_DELETE',
+            'xhrService': 'document',
+            'xhrMethod': 'reactionDelete',
+            'xhrType': 'RETURN_URL',
+            } only %}
+
         if (confirm('Êtes-vous sûr de vouloir supprimer votre brouillon?')) {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('ReactionDelete') }}",
+                url : xhrPath,
                 data: { 'id': $('#reaction_id').val() },
                 dataType: 'json',
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

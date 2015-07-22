@@ -5,6 +5,6 @@
     <strong>{{ notif | linkedNotification(true) }}</strong>
 </p>
 <p>
-    <i>Réglez vos paramètres de notifications depuis le menu <a href="{% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}">"mes notifications"</a> de votre compte.</i>
+    <i>Réglez vos paramètres de notifications depuis le menu <a href="{% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}">"mes notifications"</a> de votre compte.</i>
 </p>
 {% include 'PolitizrFrontBundle:Email:signature.html.twig' %}

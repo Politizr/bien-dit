@@ -5,10 +5,16 @@
         
         var context = $(this).closest('.subscribe');
         var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_FOLLOW_DEBATE',
+            'xhrService': 'document',
+            'xhrMethod': 'follow',
+            'xhrType': 'RETURN_HTML',
+            } only %}
 
         $.ajax({
             type: 'POST',
-            url: "{{ path('FollowDebate') }}",
+            url: xhrPath,
             context: context,
             data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
             dataType: 'json',
@@ -32,10 +38,16 @@
 
         var context = $(this).closest('.subscribe');
         var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_FOLLOW_USER',
+            'xhrService': 'user',
+            'xhrMethod': 'follow',
+            'xhrType': 'RETURN_HTML',
+            } only %}
         
         $.ajax({
             type: 'POST',
-            url: "{{ path('FollowUser') }}",
+            url: xhrPath,
             context: context,
             data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
             dataType: 'json',

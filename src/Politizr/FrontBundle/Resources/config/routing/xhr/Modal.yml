@@ -1,17 +1,4 @@
 ################################################################################
-#               MODAL
-################################################################################
-ModalPaginatedList:
-    pattern:  /modal/paginated.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:modalPaginatedList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-Filters:
-    pattern:  /classement/filtres.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:filters, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
 #               CLASSEMENTS
 ################################################################################
 RankingDebateList:
@@ -70,12 +57,3 @@ FollowedUserList:
     pattern:  /profil/user/suivis.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:followedUserList, _format: json }
     requirements: { _format: (xml|json), _method: POST }
-
-################################################################################
-#               REPUTATION
-################################################################################
-HistoryActionsList:
-    pattern:  /profil/reputation/historique.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrModal:historyActionsList, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-

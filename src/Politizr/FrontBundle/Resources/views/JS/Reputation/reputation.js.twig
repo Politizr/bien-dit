@@ -15,9 +15,17 @@
     // Chargement paginé de la liste
     function historyActionsList (offset) {
         offset = (typeof offset === "undefined") ? 0 : offset;
+
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_LIST_ACTIONS',
+            'xhrService': 'modal',
+            'xhrMethod': 'historyActionsList',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('HistoryActionsList') }}",
+            url: xhrPath,
             data: { 'offset': offset },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

@@ -2,6 +2,6 @@ Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', a
 
 {{ notif | linkedNotification(true) }}
 
-Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}.
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
 
 {% include 'PolitizrFrontBundle:Email:signature.txt.twig' %}
