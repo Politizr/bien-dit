@@ -18,9 +18,16 @@
         init = (typeof init === "undefined") ? true : init;
         offset = (typeof offset === "undefined") ? 0 : offset;
         
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_TIMELINE',
+            'xhrService': 'user',
+            'xhrMethod': 'timelinePaginated',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('TimelinePaginated') }}",
+            url: xhrPath,
             data: { 'offset': offset },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

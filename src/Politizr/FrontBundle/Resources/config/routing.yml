@@ -40,17 +40,9 @@ XhrGeneric:
         xhrRoute:       ".+"
         xhrType:        \d
 
-# LOGIN & INSCRIPTION & ACCOUNT
-XhrInscription:
-    resource: "./routing/xhr/Inscription.yml"
-
 # GESTION TAGS
 XhrTag:
     resource: "./routing/xhr/Tag.yml"
-
-# GESTION USER
-XhrUser:
-    resource: "./routing/xhr/User.yml"
 
 # GESTION MODAL
 XhrModal:

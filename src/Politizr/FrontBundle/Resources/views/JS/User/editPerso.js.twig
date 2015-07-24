@@ -4,9 +4,16 @@
         console.log('click btn-submit-perso');
         console.log($(this).attr("form-id-name"));
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_PERSO_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'userPersoUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('UserPersoUpdate') }}",
+            url: xhrPath,
             data: $("#" + $(this).attr("form-id-name")).serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

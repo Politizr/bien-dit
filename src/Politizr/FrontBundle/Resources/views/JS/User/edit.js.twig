@@ -23,14 +23,21 @@
 
         $('#user_biography').val(bio['element-0']['value']);
      
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_PROFILE_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'userProfileUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         if (mode === 'silence') {
             // sauvegarde silencieuse
-            $.ajax({type: 'POST', url : "{{ path('UserProfileUpdate') }}", data: $("#form-user-update").serialize() });
+            $.ajax({type: 'POST', url : xhrPath, data: $("#form-user-update").serialize() });
         } else {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : "{{ path('UserProfileUpdate') }}",
+                url : xhrPath,
                 data: $("#form-user-update").serialize(),
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                 success: function(data) {

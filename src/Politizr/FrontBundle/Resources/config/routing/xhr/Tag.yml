@@ -1,11 +1,6 @@
 ################################################################################
 #               ROUTING XHR GESTION TAGS
 ################################################################################
-GetTags:
-    pattern:  /getTags.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrTag:getTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
-
 DebateAddTag:
     pattern:  /debat/addtag.{_format}
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrTag:debateAddTag, _format: json }

@@ -16,9 +16,16 @@
     $("body").on("click", "[action='payment-process']", function(e) {
         console.log('*** payment-process');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_SECURITY_PAYMENT_PROCESS',
+            'xhrService': 'security',
+            'xhrMethod': 'paymentProcess',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('PaymentProcess') }}",
+            url: xhrPath,
             context: this,
             data: { 'pOPaymentTypeId': $(this).attr('pOPaymentTypeId') },
             dataType: 'json',

@@ -108,9 +108,16 @@
     function loadConnectionBox() {
         console.log('*** loadConnectionBox');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_SECURITY_LOGIN',
+            'xhrService': 'security',
+            'xhrMethod': 'login',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('Login') }}",
+            url: xhrPath,
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {

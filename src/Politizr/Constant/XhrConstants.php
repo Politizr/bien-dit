@@ -56,10 +56,31 @@ class XhrConstants
     const ROUTE_MODAL_PAGINATED_LIST = 'liste';
     const ROUTE_MODAL_FILTERS = 'filtres';
     const ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
+    const ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';
 
     // RECHERCHE
-    const ROUTE_SEARCH = 'recherche'
+    const ROUTE_SEARCH = 'recherche';
+
+    // SECURITY
+    const ROUTE_SECURITY_LOGIN = 'login';
+    const ROUTE_SECURITY_LOGIN_CHECK = 'login/check';
+    const ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
+    const ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
+
+    // TAGS
+    const ROUTE_TAG_LISTING = 'tags/listing';
+
+    // USER
+    const ROUTE_USER_TIMELINE = 'profil/timeline';
+    const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
+    const ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
+    const ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
+    const ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
+    const ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
+    const ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
+    const ROUTE_USER_BACK_PHOTO_DELETE = 'profil/backphoto/delete';
+    const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 }

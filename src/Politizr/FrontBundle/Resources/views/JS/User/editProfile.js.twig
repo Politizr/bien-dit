@@ -12,10 +12,17 @@
     $("body").on("change", "select[action='orga-save']", function(e) {
         console.log('*** change select');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_ORGA_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'orgaProfileUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('OrgaProfileUpdate') }}",
+            url : xhrPath,
             data: $("#form-orga-update").serialize(),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -35,9 +42,16 @@
     $("body").on("click", "[action='affinities-update']", function(e) {
         console.log('*** click affinities-update');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_AFFINITIES_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'affinitiesProfile',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('AffinitiesProfileUpdate') }}",
+            url: xhrPath,
             data: $('#form-affinities-update').serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -58,9 +72,16 @@
     $("body").on("click", "[action='mandate-add']", function(e) {
         console.log('*** click mandate-add');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_MANDATE_CREATE',
+            'xhrService': 'user',
+            'xhrMethod': 'mandateProfileCreate',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('MandateProfileCreate') }}",
+            url: xhrPath,
             data: $("#form-mandate-create").serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -83,9 +104,16 @@
     $("body").on("click", "[action='mandate-update']", function(e) {
         console.log('*** click mandate-update');
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_MANDATE_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'mandateProfileUpdate',
+            'xhrType': 'RETURN_HTML',
+            } only %}
+
         $.ajax({
             type: 'POST',
-            url: "{{ path('MandateProfileUpdate') }}",
+            url: xhrPath,
             data: $(this).parent().prev('.form-mandate-update').serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -108,9 +136,17 @@
         var subjectId = $(this).attr('subject-id');
         bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {
             if (result) {
+
+                {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+                    'xhrRoute': 'ROUTE_USER_MANDATE_DELETE',
+                    'xhrService': 'user',
+                    'xhrMethod': 'mandateProfileDelete',
+                    'xhrType': 'RETURN_HTML',
+                    } only %}
+
                 $.ajax({
                     type: 'POST',
-                    url: "{{ path('MandateProfileDelete') }}",
+                    url: xhrPath,
                     data: { 'id': subjectId },
                     context: $(this),
                     dataType: 'json',

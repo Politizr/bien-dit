@@ -13,25 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class XhrTagController extends Controller
 {
-
-    /**
-     *  Renseigne un tableau contenant les tags
-     */
-    public function getTagsAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** getTagsAction');
-
-        $jsonResponse = $this->get('politizr.routing.xhr')->createJsonHtmlResponse(
-            $request,
-            'politizr.xhr.tag',
-            'getTags'
-        );
-
-        return $jsonResponse;
-    }
-
-
     /**
      *  Association d'un tag à un débat
      */

@@ -121,10 +121,17 @@
 
         e.preventDefault();
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_BACK_PHOTO_DELETE',
+            'xhrService': 'user',
+            'xhrMethod': 'userBackPhotoDelete',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('UserBackPhotoDelete') }}",
+            url : xhrPath,
             data: $("#form-user-back-photo").serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
@@ -146,10 +153,17 @@
 
         e.preventDefault();
 
+        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            'xhrRoute': 'ROUTE_USER_PHOTO_DELETE',
+            'xhrService': 'user',
+            'xhrMethod': 'userPhotoDelete',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url : "{{ path('UserPhotoDelete') }}",
+            url : xhrPath,
             data: $("#form-user-photo").serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}

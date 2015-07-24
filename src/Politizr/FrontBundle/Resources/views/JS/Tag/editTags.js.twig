@@ -20,9 +20,16 @@
             var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
             console.log('tagTypeId = '+tagTypeId);
 
+            {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+                'xhrRoute': 'ROUTE_TAG_LISTING',
+                'xhrService': 'tag',
+                'xhrMethod': 'getTags',
+                'xhrType': 'RETURN_HTML',
+                } only %}
+
             $.ajax({
                 type: 'POST',
-                url: "{{ path('GetTags') }}",
+                url: xhrPath,
                 data: { 'tagTypeId': tagTypeId, 'zoneId': i },
                 dataType: 'json',
                 // context: $('#editTagZone-'+i),

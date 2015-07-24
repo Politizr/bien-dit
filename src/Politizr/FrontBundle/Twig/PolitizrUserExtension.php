@@ -320,65 +320,78 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger->info('$notification = '.print_r($notification, true));
 
         // Récupération de l'objet d'interaction
+        $title = '';
+        $url = '#';
         $commentDoc = '';
         $reactionParentTitle = null;
         $reactionParentUrl = null;
         switch ($notification->getPObjectName()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
+                }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
                 $title = $subject->getTitle();
                 $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
                 
-                // Document parent associée à la réaction
-                if ($subject->getTreeLevel() > 1) {
-                    // Réaction parente
-                    $parent = $subject->getParent();
-                    $reactionParentTitle = $parent->getTitle();
-                    $reactionParentUrl = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()), $absolute);
-                } else {
-                    // Débat
-                    $debate = $subject->getDebate();
-                    $reactionParentTitle = $debate->getTitle();
-                    $reactionParentUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()), $absolute);
+                if ($subject) {
+                    // Document parent associée à la réaction
+                    if ($subject->getTreeLevel() > 1) {
+                        // Réaction parente
+                        $parent = $subject->getParent();
+                        $reactionParentTitle = $parent->getTitle();
+                        $reactionParentUrl = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()), $absolute);
+                    } else {
+                        // Débat
+                        $debate = $subject->getDebate();
+                        $reactionParentTitle = $debate->getTitle();
+                        $reactionParentUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()), $absolute);
+                    }
                 }
 
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
                 
-                $title = $subject->getDescription();
-                $document = $subject->getPDocument();
-                $commentDoc = $document->getTitle();
-                $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
-
+                if ($subject) {
+                    $title = $subject->getDescription();
+                    $document = $subject->getPDocument();
+                    $commentDoc = $document->getTitle();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
                 
-                $title = $subject->getDescription();
-                $document = $subject->getPDocument();
-                $commentDoc = $document->getTitle();
-                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
-
+                if ($subject) {
+                    $title = $subject->getDescription();
+                    $document = $subject->getPDocument();
+                    $commentDoc = $document->getTitle();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                }
                 break;
             case ObjectTypeConstants::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getFirstname().' '.$subject->getName();
-                $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
-                
+
+                if ($subject) {
+                    $title = $subject->getFirstname().' '.$subject->getName();
+                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
+                }
                 break;
             case ObjectTypeConstants::TYPE_BADGE:
                 $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
 
-                $url = $this->router->generate('MyReputationC', array(), $absolute);
-                if ($this->isGrantedE()) {
-                    $url = $this->router->generate('MyReputationE', array(), $absolute);
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('MyReputationC', array(), $absolute);
+                    if ($this->isGrantedE()) {
+                        $url = $this->router->generate('MyReputationE', array(), $absolute);
+                    }
                 }
                 
                 break;
@@ -386,7 +399,11 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Récupération de l'auteur de l'interaction
         $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
-        $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+
+        $authorUrl = null;
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+        }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
