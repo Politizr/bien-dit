@@ -3,12 +3,12 @@
     $("body").on("click", "span[action='notif-subscribe']", function(e) {
         console.log('*** click notif-subscribe');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifDebateContextSubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
         
         $.ajax({
             type: 'POST',
@@ -34,12 +34,12 @@
     $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
         console.log('*** click notif-unsubscribe');
         
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifDebateContextUnsubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
         
         $.ajax({
             type: 'POST',
@@ -65,12 +65,12 @@
     $("body").on("click", "span[action='notif-subscribe']", function(e) {
         console.log('*** click notif-subscribe');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifUserContextSubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
                 
         $.ajax({
             type: 'POST',
@@ -96,12 +96,12 @@
     $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
         console.log('*** click notif-unsubscribe');
         
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifUserContextSubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
                 
         $.ajax({
             type: 'POST',

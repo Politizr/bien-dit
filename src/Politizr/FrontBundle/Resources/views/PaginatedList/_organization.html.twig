@@ -13,10 +13,17 @@
     <a href="{{ subject.url }}" target="_blank">afficher la suite sur wikipédia</a>
 </div>
 <h1>Profils correspondants</h1>
-<div id="paginatedList" class="listContainer" url="{{ path('OrganizationUserList') }}" withFilters="true" data-subject-id="{{ subject.id }}">
+{% spaceless %}
+<div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_ORGANIZATION_USER_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'organizationUserList',
+        'xhrType': 'RETURN_HTML',
+    } only %}" withFilters="true" data-subject-id="{{ subject.id }}">
     <div class="listCriteria criteriaSidebar">
         <form id="listOrder"></form>
         <form id="listFilter"></form>
     </div>
     <div id="listContent" class="modalList withSidebar"></div>
 </div>
+{% endspaceless %}

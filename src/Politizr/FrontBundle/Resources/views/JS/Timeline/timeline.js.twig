@@ -18,12 +18,12 @@
         init = (typeof init === "undefined") ? true : init;
         offset = (typeof offset === "undefined") ? 0 : offset;
         
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_TIMELINE',
             'xhrService': 'user',
             'xhrMethod': 'timelinePaginated',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

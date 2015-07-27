@@ -105,12 +105,12 @@
             // initialisation de la liste
             listing();
         } else {
-            {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
                 'xhrRoute': 'ROUTE_MODAL_FILTERS',
                 'xhrService': 'modal',
                 'xhrMethod': 'filters',
                 'xhrType': 'RETURN_HTML',
-                } only %}
+                } only %}";
 
             // chargement des filtres associé au type + initialisation de la liste
             $.ajax({

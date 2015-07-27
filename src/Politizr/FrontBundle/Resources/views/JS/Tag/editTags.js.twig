@@ -20,12 +20,12 @@
             var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
             console.log('tagTypeId = '+tagTypeId);
 
-            {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+            var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
                 'xhrRoute': 'ROUTE_TAG_LISTING',
                 'xhrService': 'tag',
                 'xhrMethod': 'getTags',
                 'xhrType': 'RETURN_HTML',
-                } only %}
+                } only %}";
 
             $.ajax({
                 type: 'POST',

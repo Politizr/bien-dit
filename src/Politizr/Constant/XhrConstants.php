@@ -9,7 +9,10 @@ namespace Politizr\Constant;
  */
 class XhrConstants
 {
-    // XHR RETURN RESPONSE TYPE
+    // ******************************************************** //
+    //                  XHR RETURN RESPONSE TYPE
+    // ******************************************************** //
+
     const RETURN_BOOLEAN = 1;
     const RETURN_HTML = 2;
     const RETURN_URL = 3;
@@ -57,6 +60,14 @@ class XhrConstants
     const ROUTE_MODAL_FILTERS = 'filtres';
     const ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
     const ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
+    const ROUTE_MODAL_RANKING_USER_LIST = 'profil/liste/classement/utilisateur';
+    const ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
+    const ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
+    const ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
+    const ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
+    const ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
+    const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
+    const ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';
@@ -72,6 +83,12 @@ class XhrConstants
 
     // TAGS
     const ROUTE_TAG_LISTING = 'tags/listing';
+    const ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
+    const ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
+    const ROUTE_TAG_USER_FOLLOW_CREATE = 'profil/utilisateur/follow/tag/create';
+    const ROUTE_TAG_USER_FOLLOW_DELETE = 'profil/utilisateur/follow/tag/delete';
+    const ROUTE_TAG_USER_TAGGED_CREATE = 'profil/utilisateur/tagged/tag/create';
+    const ROUTE_TAG_USER_TAGGED_DELETE = 'profil/utilisateur/tagged/tag/delete';
 
     // USER
     const ROUTE_USER_TIMELINE = 'profil/timeline';

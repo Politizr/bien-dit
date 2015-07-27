@@ -3,12 +3,12 @@
     $("body").on("click", "span[action='email-subscribe']", function(e) {
         console.log('*** click email-subscribe');
         
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_EMAIL_SUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifEmailSubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -34,12 +34,12 @@
     $("body").on("click", "span[action='email-unsubscribe']", function(e) {
         console.log('*** click email-unsubscribe');
         
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_EMAIL_UNSUBSCRIBE',
             'xhrService': 'notification',
             'xhrMethod': 'notifEmailUnsubscribe',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
                 
         $.ajax({
             type: 'POST',

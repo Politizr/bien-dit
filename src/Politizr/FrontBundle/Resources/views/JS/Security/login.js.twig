@@ -19,12 +19,12 @@
         console.log('*** click login');
 
         {# @todo return type = url #}
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_SECURITY_LOGIN_CHECK',
             'xhrService': 'security',
             'xhrMethod': 'loginCheck',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -49,12 +49,12 @@
     $("body").on("click", "[action='reinitPassword']", function(e) {
         console.log('*** click reinitPassword');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_SECURITY_LOST_PASSWORD_CHECK',
             'xhrService': 'security',
             'xhrMethod': 'lostPasswordCheck',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

@@ -5,12 +5,12 @@
         
         var context = $(this).closest('.subscribe');
         var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_FOLLOW_DEBATE',
             'xhrService': 'document',
             'xhrMethod': 'follow',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -38,12 +38,12 @@
 
         var context = $(this).closest('.subscribe');
         var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_FOLLOW_USER',
             'xhrService': 'user',
             'xhrMethod': 'follow',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
         
         $.ajax({
             type: 'POST',

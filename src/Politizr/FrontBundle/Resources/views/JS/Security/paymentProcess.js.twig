@@ -16,12 +16,12 @@
     $("body").on("click", "[action='payment-process']", function(e) {
         console.log('*** payment-process');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_SECURITY_PAYMENT_PROCESS',
             'xhrService': 'security',
             'xhrMethod': 'paymentProcess',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

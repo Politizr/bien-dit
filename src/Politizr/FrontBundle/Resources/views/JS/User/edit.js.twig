@@ -23,12 +23,12 @@
 
         $('#user_biography').val(bio['element-0']['value']);
      
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_PROFILE_UPDATE',
             'xhrService': 'user',
             'xhrMethod': 'userProfileUpdate',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         if (mode === 'silence') {
             // sauvegarde silencieuse

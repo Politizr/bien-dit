@@ -4,12 +4,12 @@
         console.log('click btn-submit-perso');
         console.log($(this).attr("form-id-name"));
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_PERSO_UPDATE',
             'xhrService': 'user',
             'xhrMethod': 'userPersoUpdate',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

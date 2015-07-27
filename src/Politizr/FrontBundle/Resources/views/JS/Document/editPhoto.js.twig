@@ -124,12 +124,12 @@
             $('#debate_photo_info_with_shadow').val(1);
         }
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_DEBATE_PHOTO_INFO_UPDATE',
             'xhrService': 'document',
             'xhrMethod': 'debatePhotoInfoUpdate',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -175,12 +175,12 @@
             $('#reaction_photo_info_with_shadow').val(1);
         }
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_REACTION_PHOTO_INFO_UPDATE',
             'xhrService': 'document',
             'xhrMethod': 'reactionPhotoInfoUpdate',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

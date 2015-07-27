@@ -76,12 +76,12 @@
         }
         withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_MODAL_PAGINATED_LIST',
             'xhrService': 'modal',
             'xhrMethod': 'modalPaginatedList',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -108,12 +108,12 @@
     function loadConnectionBox() {
         console.log('*** loadConnectionBox');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_SECURITY_LOGIN',
             'xhrService': 'security',
             'xhrMethod': 'login',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

@@ -175,12 +175,22 @@ class XhrTag
             $created = true;
             $this->tagManager->createDebateTag($subjectId, $tag->getId());
 
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'debateDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
             $htmlTag = $this->templating->render(
                 'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->router->generate('DebateDeleteTag')
+                    'path' => $xhrPathDelete
                 )
             );
         }
@@ -255,12 +265,22 @@ class XhrTag
             $created = true;
             $this->tagManager->createUserFollowTag($subjectId, $tag->getId());
 
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_DELETE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'userFollowDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
             $htmlTag = $this->templating->render(
                 'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->router->generate('UserFollowDeleteTag')
+                    'path' => $xhrPathDelete
                 )
             );
         }
@@ -332,12 +352,22 @@ class XhrTag
             $created = true;
             $this->tagManager->createUserTaggedTag($subjectId, $tag->getId());
 
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_DELETE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'userTaggedDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
             $htmlTag = $this->templating->render(
                 'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
                 array(
                     'subjectId' => $subjectId,
                     'tag' => $tag,
-                    'deleteUrl' => $this->router->generate('UserTaggedDeleteTag')
+                    'path' => $xhrPathDelete
                 )
             );
         }

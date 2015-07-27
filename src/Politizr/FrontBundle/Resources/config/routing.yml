@@ -27,11 +27,7 @@ Document:
 User:
     resource: "./routing/User.yml"
 
-################################################################################
-#				ROUTING XHR 
-################################################################################
-
-# GENERIC
+# GENERIC XHR
 XhrGeneric:
     pattern:  /{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
@@ -39,11 +35,3 @@ XhrGeneric:
         _method:        POST
         xhrRoute:       ".+"
         xhrType:        \d
-
-# GESTION TAGS
-XhrTag:
-    resource: "./routing/xhr/Tag.yml"
-
-# GESTION MODAL
-XhrModal:
-    resource: "./routing/xhr/Modal.yml"

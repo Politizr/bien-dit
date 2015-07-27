@@ -26,12 +26,12 @@
         context = $('.comments').slideUp().html('');
 
         var context = $(this).closest('.paragraph');
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_COMMENTS',
             'xhrService': 'document',
             'xhrMethod': 'comments',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -59,12 +59,12 @@
         
         var context = $(this).closest('.paragraph');
         var localLoader = $(this).prev('.ajaxLoader');
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_COMMENT_CREATE',
             'xhrService': 'document',
             'xhrMethod': 'commentNew',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',

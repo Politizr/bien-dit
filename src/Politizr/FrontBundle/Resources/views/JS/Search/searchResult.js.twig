@@ -6,12 +6,12 @@
 
         e.preventDefault();
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_SEARCH',
             'xhrService': 'search',
             'xhrMethod': 'search',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
               type: 'POST',

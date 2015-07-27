@@ -18,12 +18,12 @@
     
     // Regular function with arguments
     function notificationsLoading(){
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_LOADING',
             'xhrService': 'notification',
             'xhrMethod': 'notificationsLoad',
             'xhrType': 'RETURN_HTML',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -53,12 +53,12 @@
 
         e.preventDefault();
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CHECK',
             'xhrService': 'notification',
             'xhrMethod': 'notificationCheck',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
@@ -82,12 +82,12 @@
     $("body").on("click", "a[action='notificationCheck']", function(e) {
         console.log('*** click a notificationCheck');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CHECK',
             'xhrService': 'notification',
             'xhrMethod': 'notificationCheck',
             'xhrType': 'RETURN_URL',
-            } only %}
+            } only %}";
 
         e.preventDefault();
         $.ajax({
@@ -108,12 +108,12 @@
     $("body").on("click", "div[action='notificationCheckAll']", function(e) {
         console.log('*** click notificationCheckAll');
 
-        {% include 'PolitizrFrontBundle:JS:_xhrPath.js.twig' with {
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CHECK_ALL',
             'xhrService': 'notification',
             'xhrMethod': 'notificationsCheckAll',
             'xhrType': 'RETURN_BOOLEAN',
-            } only %}
+            } only %}";
 
         $.ajax({
             type: 'POST',
