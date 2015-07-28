@@ -1,15 +1,17 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 {% if app.user %}
-    {% if follower %}
-        <a action="followUser" subjectId="{{ object.id }}" way="unfollow">
-            <i class="iconCross"></i>
-            Se désabonner
-        </a>
-    {% else %}
-        <a action="followUser" subjectId="{{ object.id }}" way="follow">
-            <i class="iconCheckInSquare"></i>
-            S'abonner
-        </a>
+    {% if app.user.id != object.id %}
+        {% if follower %}
+            <a action="followUser" subjectId="{{ object.id }}" way="unfollow">
+                <i class="iconCross"></i>
+                Se désabonner
+            </a>
+        {% else %}
+            <a action="followUser" subjectId="{{ object.id }}" way="follow">
+                <i class="iconCheckInSquare"></i>
+                S'abonner
+            </a>
+        {% endif %}
     {% endif %}
 {% else %}
     <a href="{{ path('Inscription') }}">S'abonner</a>

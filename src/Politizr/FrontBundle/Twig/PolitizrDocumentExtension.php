@@ -573,15 +573,20 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
 
+        $owner = false;
         $follower = false;
         if ($this->user) {
-            $follow = PUFollowDDQuery::create()
-                ->filterByPUserId($this->user->getId())
-                ->filterByPDDebateId($debate->getId())
-                ->findOne();
-            
-            if ($follow) {
-                $follower = true;
+            if ($debate->isOwner($this->user->getId())) {
+                $owner = true;
+            } else {
+                $follow = PUFollowDDQuery::create()
+                    ->filterByPUserId($this->user->getId())
+                    ->filterByPDDebateId($debate->getId())
+                    ->findOne();
+                
+                if ($follow) {
+                    $follower = true;
+                }
             }
         }
 
@@ -590,6 +595,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
             array(
                 'object' => $debate,
+                'owner' => $owner,
                 'follower' => $follower
             )
         );
