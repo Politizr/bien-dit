@@ -35,6 +35,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $templating;
     private $securityTokenStorage;
     private $timelineService;
+    private $globalTools;
 
     private $user;
 
@@ -50,6 +51,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->templating = $serviceContainer->get('templating');
         $this->securityContext = $serviceContainer->get('security.context');
         $this->timelineService = $serviceContainer->get('politizr.functional.timeline');
+        $this->globalTools = $serviceContainer->get('politizr.tools.global');
 
         // get connected user
         $token = $this->securityContext->getToken();
@@ -90,6 +92,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'nbComments',
                 array($this, 'nbComments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'readingTime',
+                array($this, 'readingTime'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -156,7 +163,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /* ######################################################################################################## */
-    /*                                             FILTRES                                                      */
+    /*                                             FILTERS                                                      */
     /* ######################################################################################################## */
 
     /**
@@ -270,6 +277,32 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * Reading time of a document
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function readingTime(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** readingTime');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbWords = $this->globalTools->countWords($document->getDescription());
+
+        // average reading time = 275WPM
+        $minutes = round($nbWords/275);
+
+        if (0 == $minutes) {
+            $html = '< 1 minute';
+        } elseif (1 == $minutes) {
+            $html = '1 minute';
+        } else {
+            $html = sprintf('%d minutes', $minutes);
+        }
+
+        return $html;
+    }
 
     /**
      * Tags d'un débat

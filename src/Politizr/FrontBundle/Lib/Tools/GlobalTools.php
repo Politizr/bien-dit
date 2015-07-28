@@ -165,4 +165,18 @@ class GlobalTools
 
         return null;
     }
+
+    /**
+     * Count the number of words in in given HTML text
+     *
+     * @param $html
+     * @return integer
+     */
+    public function countWords($html)
+    {
+        $text = strip_tags($html, '<br><br/>');
+        $nbWords = str_word_count($text);
+
+        return $nbWords;
+    }
 }
