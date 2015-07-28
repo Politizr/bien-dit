@@ -254,7 +254,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         }
 
         // file name
-        $fileName = $this->computeFileName($extension);
+        $fileName = $this->computeFileName() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::USER_UPLOAD_PATH, $fileName);
@@ -286,14 +286,13 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Compute a debate file name
+     * Compute a user file name
      *
-     * @param string $extension
      * @return string
      */
-    public function computeFileName($extension)
+    public function computeFileName()
     {
-        $fileName = 'politizr-user-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'politizr-user-' . StudioEchoUtils::randomString();
 
         return $fileName;
     }

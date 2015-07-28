@@ -594,8 +594,14 @@ hwi_oauth:
             client_id:                  %facebook_client_id%
             client_secret:              %facebook_client_secret%
             scope:                      %facebook_scope%
+            infos_url:                  "https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(square)"
+            paths:
+                email:                  email
+                birthday:               birthday
+                profilepicture:         picture.data.url
             options:        
                 display:                popup               #dialog is optimized for popup window
+
         twitter:
             type:                       twitter
             client_id:                  %twitter_api_key%

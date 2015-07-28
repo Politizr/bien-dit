@@ -15,6 +15,9 @@ class OAuthUser extends BaseOAuthUser
     
     protected $data;
     
+    /**
+     *
+     */
     public function __construct(UserResponseInterface $response)
     {
         parent::__construct($response->getUsername());

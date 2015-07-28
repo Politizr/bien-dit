@@ -158,13 +158,12 @@ class SecurityService
             $lastDotPos = strrpos($oAuthFileUrl, '.');
             if ($lastDotPos) {
                 $extension = substr($oAuthFileUrl, ($lastDotPos + 1));
-                $fileName = $user->computeFileName($extension);
-                $downloaded = $this->globalTools->downloadFileFromUrl(
+                $fileName = $this->globalTools->downloadFileFromUrl(
                     $oAuthFileUrl,
                     $this->kernel->getRootDir() . PathConstants::KERNEL_PATH_TO_WEB . PathConstants::USER_UPLOAD_WEB_PATH,
-                    $fileName
+                    $user->computeFileName()
                 );
-                if ($downloaded) {
+                if ($fileName) {
                     $user->setFileName($fileName);
 
                     return true;
@@ -251,12 +250,12 @@ class SecurityService
             $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture']);
 
             // manage username
-            if ($user->getEmail()) {
-                $username = $user->getEmail();
-                $canonicalizer = $this->emailCanonicalizer;
-            } elseif ($user->getNickname()) {
+            if ($user->getNickname()) {
                 $username = $user->getNickname();
                 $canonicalizer = $this->usernameCanonicalizer;
+            } elseif ($user->getEmail()) {
+                $username = $user->getEmail();
+                $canonicalizer = $this->emailCanonicalizer;
             } else {
                 throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
             }

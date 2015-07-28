@@ -215,7 +215,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         }
 
         // file name
-        $fileName = $this->computeFileName($extension);
+        $fileName = $this->computeFileName() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::REACTION_UPLOAD_PATH, $fileName);
@@ -249,12 +249,11 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     /**
      * Compute a reaction file name
      *
-     * @param string $extension
      * @return string
      */
-    public function computeFileName($extension)
+    public function computeFileName()
     {
-        $fileName = 'politizr-reaction-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'politizr-reaction-' . StudioEchoUtils::randomString();
 
         return $fileName;
     }
