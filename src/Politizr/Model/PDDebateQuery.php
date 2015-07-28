@@ -68,22 +68,24 @@ WHERE
                     p_tag.online = true
                     AND p_u_follow_t.p_user_id = ".$userId."
     )
-        AND p_d_debate.online = 1
-        AND p_d_debate.published = 1
-        AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ".$userId.")
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ".$userId.")
+    AND p_d_debate.p_user_id <> ".$userId."
 )
 
 UNION DISTINCT
 
 ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
-            FROM p_d_debate
-                LEFT JOIN p_u_follow_d_d
-                    ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
-                WHERE
-                    p_d_debate.online = 1
-                    AND p_d_debate.published = 1
-                GROUP BY p_d_debate.id
-                ORDER BY nb_users DESC
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.p_user_id <> ".$userId."
+GROUP BY p_d_debate.id
+ORDER BY nb_users DESC
 )
 
 ORDER BY unionsorting ASC

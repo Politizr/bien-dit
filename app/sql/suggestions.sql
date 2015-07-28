@@ -28,31 +28,33 @@ FROM p_d_debate
         ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
 	p_d_d_tagged_t.p_tag_id IN (
-                SELECT p_tag.id
-                FROM p_tag
-                    LEFT JOIN p_u_follow_t
-                        ON p_tag.id = p_u_follow_t.p_tag_id
-                WHERE
-                    p_tag.online = true
-                    AND p_u_follow_t.p_user_id = 73
+        SELECT p_tag.id
+        FROM p_tag
+            LEFT JOIN p_u_follow_t
+                ON p_tag.id = p_u_follow_t.p_tag_id
+        WHERE
+            p_tag.online = true
+            AND p_u_follow_t.p_user_id = 73
 	)
-        AND p_d_debate.online = 1
-        AND p_d_debate.published = 1
-        AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = 73)
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = 73)
+    AND p_d_debate.p_user_id <> 73
 )
 
 UNION DISTINCT
 
 #  Débats les plus populaires
 ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
-            FROM p_d_debate
-                LEFT JOIN p_u_follow_d_d
-                    ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
-                WHERE
-                    p_d_debate.online = 1
-                    AND p_d_debate.published = 1
-                GROUP BY p_d_debate.id
-                ORDER BY nb_users DESC
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.p_user_id <> 73
+GROUP BY p_d_debate.id
+ORDER BY nb_users DESC
 )
 
 ORDER BY unionsorting ASC
@@ -125,9 +127,10 @@ WHERE
                     p_tag.online = true
                     AND p_u_follow_t.p_user_id = 73
 	)
-        AND p_user.online = 1
-        AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = 73)
-        AND p_user.id <> 73 )
+    AND p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = 73)
+    AND p_user.id <> 73
+)
 
 UNION DISTINCT
 
@@ -138,8 +141,10 @@ FROM p_user
         ON p_user.id = p_u_follow_u.p_user_id
 WHERE
     p_user.online = 1
+    AND p_user.id <> 73
 GROUP BY p_user.id
-ORDER BY nb_users DESC )
+ORDER BY nb_users DESC
+)
 
 ORDER BY unionsorting ASC
 ) unionsorting

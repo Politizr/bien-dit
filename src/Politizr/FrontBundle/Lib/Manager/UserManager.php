@@ -45,13 +45,13 @@ class UserManager
      * @param integer $userId
      * @param array $inQueryDebateIds
      * @param array $inQueryUserIds
+     * @param array $inQueryMyDebateIds
      * @param array $inQueryMyReactionIds
-     * @param array $inQueryMyDocumentIds
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    public function createTimelineRawSql($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyReactionIds, $inQueryMyDocumentIds, $offset, $count = 10)
+    public function createTimelineRawSql($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $offset, $count = 10)
     {
         $sql = "
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
@@ -129,7 +129,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_d_debate_id IN (".$inQueryMyDocumentIds.") )
+    AND p_d_d_comment.p_d_debate_id IN (".$inQueryMyDebateIds.") )
 
 UNION DISTINCT
 
@@ -137,7 +137,7 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_d_reaction_id IN (".$inQueryMyDocumentIds.") )
+    AND p_d_r_comment.p_d_reaction_id IN (".$inQueryMyReactionIds.") )
 
 ORDER BY published_at DESC
 LIMIT ".$offset.", ".$count."

@@ -99,6 +99,23 @@ class TimelineService
     }
 
     /**
+     * Get array of user's PDDebate's ids
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getMyDebateIdsArray($userId)
+    {
+        $myDebateIds = PDDebateQuery::create()
+            ->select('Id')
+            ->filterByPUserId($userId)
+            ->find()
+            ->toArray();
+
+        return $myDebateIds;
+    }
+
+    /**
      * Get array of user's PDReaction's ids
      *
      * @param integer $userId
@@ -154,6 +171,14 @@ class TimelineService
         }
         $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
+        // Récupération d'un tableau des ids de mes débats
+        $myDebateIds = $this->getMyDebateIdsArray($user->getId());
+        $inQueryMyDebateIds = implode(',', $myDebateIds);
+        if (empty($inQueryMyDebateIds)) {
+            $inQueryMyDebateIds = 0;
+        }
+        $this->logger->info('inQueryMyDebateIds = '.print_r($inQueryMyDebateIds, true));
+
         // Récupération d'un tableau des ids de mes réactions
         $myReactionIds = $this->getMyReactionIdsArray($user->getId());
         $inQueryMyReactionIds = implode(',', $myReactionIds);
@@ -162,20 +187,12 @@ class TimelineService
         }
         $this->logger->info('inQueryMyReactionIds = '.print_r($inQueryMyReactionIds, true));
 
-        // Récupération d'un tableau des ids de mes documents
-        $myDocumentIds = $this->getMyReactionIdsArray($user->getId());
-        $inQueryMyDocumentIds = implode(',', $myDocumentIds);
-        if (empty($inQueryMyDocumentIds)) {
-            $inQueryMyDocumentIds = 0;
-        }
-        $this->logger->info('inQueryMyDocumentIds = '.print_r($inQueryMyDocumentIds, true));
-
         $sql = $this->userManager->createTimelineRawSql(
             $userId,
             $inQueryDebateIds,
             $inQueryUserIds,
+            $inQueryMyDebateIds,
             $inQueryMyReactionIds,
-            $inQueryMyDocumentIds,
             $offset,
             $count
         );
