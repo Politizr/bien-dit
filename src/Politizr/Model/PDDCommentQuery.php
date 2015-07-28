@@ -68,7 +68,7 @@ class PDDCommentQuery extends BasePDDCommentQuery
         return $this
             ->_if($paragraphNo)
                 ->filterByParagraphNo($paragraphNo)
-            ->_else()
+            ->_elseif(0 === $paragraphNo)
                 ->filterByParagraphNo(0)
                     ->_or()
                 ->filterByParagraphNo(null)
