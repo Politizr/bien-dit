@@ -254,7 +254,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         }
 
         // file name
-        $fileName = 'politizr-user-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = $this->computeFileName($extension);
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::USER_UPLOAD_PATH, $fileName);
@@ -283,6 +283,19 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name)) {
             unlink(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name);
         }
+    }
+
+    /**
+     * Compute a debate file name
+     *
+     * @param string $extension
+     * @return string
+     */
+    public function computeFileName($extension)
+    {
+        $fileName = 'politizr-user-' . StudioEchoUtils::randomString() . '.' . $extension;
+
+        return $fileName;
     }
 
     // ************************************************************************************ //

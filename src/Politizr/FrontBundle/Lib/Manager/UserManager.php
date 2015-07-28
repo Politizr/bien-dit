@@ -169,8 +169,6 @@ LIMIT ".$offset.", ".$count."
             $user->setPassword($encodedPassword);
             
             $user->eraseCredentials();
-
-            $user->save();
         }
 
         return $user;
@@ -199,8 +197,6 @@ LIMIT ".$offset.", ".$count."
 
             $user->removeRole('ROLE_CITIZEN_INSCRIPTION');
             $user->removeRole('ROLE_ELECTED_INSCRIPTION');
-
-            $user->save();
         }
 
         return $user;
@@ -234,8 +230,6 @@ LIMIT ".$offset.", ".$count."
             if (isset($oAuthData['accessToken'])) {
                 $user->setConfirmationToken($oAuthData['accessToken']);
             }
-
-            $user->save();
         }
 
         return $user;

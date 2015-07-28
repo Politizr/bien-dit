@@ -12,12 +12,14 @@ services:
             - @security.token_storage
             - @security.encoder_factory
             - @session
+            - @kernel
             - @router
             - @event_dispatcher
             - @fos_user.util.username_canonicalizer
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user
             - @politizr.manager.order
+            - @politizr.tools.global
             - @logger
 
     politizr.functional.timeline:

@@ -215,7 +215,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         }
 
         // file name
-        $fileName = 'politizr-debat-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = $this->computeFileName($extension);
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::DEBATE_UPLOAD_PATH, $fileName);
@@ -244,6 +244,19 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::DEBATE_UPLOAD_PATH . $this->file_name)) {
             unlink(__DIR__ . PathConstants::DEBATE_UPLOAD_PATH . $this->file_name);
         }
+    }
+
+    /**
+     * Compute a debate file name
+     *
+     * @param string $extension
+     * @return string
+     */
+    public function computeFileName($extension)
+    {
+        $fileName = 'politizr-debat-' . StudioEchoUtils::randomString() . '.' . $extension;
+
+        return $fileName;
     }
     
     /* ######################################################################################################## */

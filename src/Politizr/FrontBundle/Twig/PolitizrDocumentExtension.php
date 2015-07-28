@@ -290,6 +290,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $nbWords = $this->globalTools->countWords($document->getDescription());
 
+        // https://medium.com/the-story/read-time-and-you-bc2048ab620c
         // average reading time = 275WPM
         $minutes = round($nbWords/275);
 

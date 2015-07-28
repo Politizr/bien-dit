@@ -37,7 +37,7 @@ class PUserContactType extends AbstractType
         ));
 
         $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => true )
+            'attr'     => array( 'value' => false )
         ));
 
 

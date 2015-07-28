@@ -215,7 +215,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         }
 
         // file name
-        $fileName = 'politizr-reaction-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = $this->computeFileName($extension);
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::REACTION_UPLOAD_PATH, $fileName);
@@ -245,7 +245,20 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             unlink(__DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name);
         }
     }
-    
+   
+    /**
+     * Compute a reaction file name
+     *
+     * @param string $extension
+     * @return string
+     */
+    public function computeFileName($extension)
+    {
+        $fileName = 'politizr-reaction-' . StudioEchoUtils::randomString() . '.' . $extension;
+
+        return $fileName;
+    }
+ 
     /* ######################################################################################################## */
     /*                                                  DEBATE                                                  */
     /* ######################################################################################################## */

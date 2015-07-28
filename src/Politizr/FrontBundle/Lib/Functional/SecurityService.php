@@ -11,6 +11,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\OrderConstants;
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\POPaymentType;
@@ -29,6 +30,7 @@ class SecurityService
     private $encoderFactory;
     
     private $session;
+    private $kernel;
     
     private $router;
     
@@ -40,6 +42,8 @@ class SecurityService
     private $userManager;
     private $orderManager;
 
+    private $globalTools;
+
     private $logger;
 
     /**
@@ -47,30 +51,35 @@ class SecurityService
      * @param @security.token_storage
      * @param @security.encoder_factory
      * @param @session
+     * @param @kernel
      * @param @router
      * @param @event_dispatcher
      * @param @fos_user.util.username_canonicalizer
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
      * @param @politizr.manager.order
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $encoderFactory,
         $session,
+        $kernel,
         $router,
         $eventDispatcher,
         $usernameCanonicalizer,
         $emailCanonicalizer,
         $userManager,
         $orderManager,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->encoderFactory = $encoderFactory;
 
         $this->session = $session;
+        $this->kernel = $kernel;
 
         $this->router = $router;
 
@@ -81,6 +90,8 @@ class SecurityService
 
         $this->userManager = $userManager;
         $this->orderManager = $orderManager;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -132,6 +143,36 @@ class SecurityService
         }
 
         return $redirectUrl;
+    }
+
+    /**
+     * Manage download & update user with an oAuth profile photo
+     *
+     * @param PUser $user
+     * @param string $oAuthFileUrl
+     * @return boolean
+     */
+    private function manageOAuthProfilePhoto($user, $oAuthFileUrl)
+    {
+        if ($oAuthFileUrl) {
+            $lastDotPos = strrpos($oAuthFileUrl, '.');
+            if ($lastDotPos) {
+                $extension = substr($oAuthFileUrl, ($lastDotPos + 1));
+                $fileName = $user->computeFileName($extension);
+                $downloaded = $this->globalTools->downloadFileFromUrl(
+                    $oAuthFileUrl,
+                    $this->kernel->getRootDir() . PathConstants::KERNEL_PATH_TO_WEB . PathConstants::USER_UPLOAD_WEB_PATH,
+                    $fileName
+                );
+                if ($downloaded) {
+                    $user->setFileName($fileName);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /* ######################################################################################################## */
@@ -186,6 +227,9 @@ class SecurityService
             // update user
             $user = $this->userManager->updateOAuthData($user, $oAuthData);
 
+            // save user
+            $user->save();
+
             // connect and redirect user
             $redirectUrl = $this->connectUser($user);
 
@@ -196,8 +240,17 @@ class SecurityService
 
             // create new user & update it
             $user = new PUser();
+
+            $user->setPUStatusId(UserConstants::STATUS_ACTIVED);
+            $user->setQualified(false);
+            $user->setOnline(false);
+
             $user = $this->userManager->updateOAuthData($user, $oAuthData);
 
+            // manage download photo profile
+            $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture']);
+
+            // manage username
             if ($user->getEmail()) {
                 $username = $user->getEmail();
                 $canonicalizer = $this->emailCanonicalizer;
@@ -207,14 +260,18 @@ class SecurityService
             } else {
                 throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
             }
+            $user->setUsername($username);
 
-            // update user
+            // manage canonicalization & roles
             $user = $this->userManager->updateForInscriptionStart(
                 $user,
                 $roles,
                 $canonicalizer->canonicalize($username),
                 null
             );
+
+            // save user
+            $user->save();
 
             // connect user
             $this->doPublicConnection($user);
@@ -248,6 +305,9 @@ class SecurityService
             $this->encoderFactory->getEncoder($user)->encodePassword($user->getPlainPassword(), $user->getSalt())
         );
 
+        // save user
+        $user->save();
+
         // connect user
         $this->doPublicConnection($user);
     }
@@ -267,6 +327,9 @@ class SecurityService
         // update user
         $user = $this->userManager->updateForInscriptionFinish($user, $roles, UserConstants::STATUS_ACTIVED, false);
         
+        // save user
+        $user->save();
+
         // (re)connect user
         $this->doPublicConnection($user);
     }
@@ -382,6 +445,9 @@ class SecurityService
 
         // update user
         $user = $this->userManager->updateForInscriptionFinish($user, $roles, UserConstants::STATUS_VALIDATION_PROCESS, true);
+
+        // save user
+        $user->save();
         
         $this->doPublicConnection($user);
     }

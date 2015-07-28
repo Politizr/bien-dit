@@ -2,9 +2,12 @@
 namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
+
+use GuzzleHttp;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 
@@ -178,5 +181,28 @@ class GlobalTools
         $nbWords = str_word_count($text);
 
         return $nbWords;
+    }
+
+    /**
+     * Download a file from url a paste it in the destPath with the destFileName
+     *
+     * @param string $url
+     * @param string $destPath
+     * @param string $destFileName
+     * @return boolean
+     */
+    public function downloadFileFromUrl($url, $destPath, $destFileName)
+    {
+        $guzzleClient = new GuzzleHttp\Client();
+        $fileSystem = new FileSystem();
+
+        $image = $guzzleClient->get($url);
+        if (!$fileSystem->exists($destPath . $destFileName)) {
+            $fileSystem->dumpFile($destPath . $destFileName, $image->getBody());
+
+            return true;
+        }
+
+        return false;
     }
 }
