@@ -1,6 +1,8 @@
 <div class="listTab profileTab">
     {% for user in users %}
-        {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } only %}
+        {% if user and user.slug %}
+            {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } only %}
+        {% endif %}
     {% endfor %}
 </div>
 {% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset } %}
