@@ -11,6 +11,8 @@ use Facebook;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 
+use TwitterAPIExchange;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\OrderConstants;
@@ -165,9 +167,9 @@ class SecurityService
                 throw new InconsistentDataException('Qualified user is not activ and has no citizen role');
             }
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
-            $redirectUrl = $this->router->generate('InscriptionStep2');
+            $redirectUrl = $this->router->generate('InscriptionContact');
         } elseif ($user->hasRole('ROLE_ELECTED_INSCRIPTION')) {
-            $redirectUrl = $this->router->generate('InscriptionElectedStep2');
+            $redirectUrl = $this->router->generate('InscriptionElectedOrder');
         } else {
             throw new InconsistentDataException('No valid role for user');
         }
@@ -242,7 +244,6 @@ class SecurityService
         }
 
         $graphUser = $response->getGraphUser();
-        // dump($graphUser);
 
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
@@ -290,6 +291,75 @@ class SecurityService
         if (null !== $isVerified) {
             $user->setValidated($isVerified);
         }
+
+        return true;
+    }
+
+    /**
+     * Retrieve Twitter API data to update user object.
+     * https://dev.twitter.com/rest/reference/get/users/show
+     * @todo how to get the twitter page url?
+     *
+     * @param integer $providerId
+     * @param string $accessToken
+     * @param string $tokenSecret
+     * @param PUser $user
+     * @return boolean
+     */
+    private function manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user)
+    {
+        https://api.twitter.com/1.1/users/show.json?screen_name=lionel09
+
+        $url = 'https://api.twitter.com/1.1/users/show.json';
+        $getfield = sprintf('?user_id=%s', $providerId);
+        $requestMethod = 'GET';
+
+        $settings = array(
+            'oauth_access_token' => $accessToken,
+            'oauth_access_token_secret' => $tokenSecret,
+            'consumer_key' => $this->twitterApiKey,
+            'consumer_secret' => $this->twitterApiSecret
+        );
+
+        try {
+            $twitterClient = new TwitterAPIExchange($settings);
+            $twitterResult =  $twitterClient->setGetfield($getfield)
+                ->buildOauth($url, $requestMethod)
+                ->performRequest();
+            $twitterResult = json_decode($twitterResult);
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Exception - msg = %s', $e->getMessage()));
+            return false;
+        }
+
+        // dump($twitterResult);
+        if (isset($twitterResult->error)) {
+            return false;
+        }
+
+        if (isset($twitterResult->name) && null !== $twitterResult->name) {
+            $names = explode(' ', $twitterResult->name);
+            if (isset($names[0])) {
+                $user->setFirstName($names[0]);
+            }
+            if (isset($names[1])) {
+                $user->setName($names[1]);
+            }
+        }
+
+        if (isset($twitterResult->description) && null !== $twitterResult->description) {
+            $user->setSubtitle($twitterResult->description);
+        }
+
+        if (isset($twitterResult->url) && null !== $twitterResult->url) {
+            $user->setWebsite($twitterResult->url);
+        }
+
+        if (isset($twitterResult->verified) && null !== $twitterResult->verified) {
+            $user->setValidated($twitterResult->verified);
+        }
+
+        return true;
     }
 
     /* ######################################################################################################## */
@@ -395,12 +465,14 @@ class SecurityService
             //  - user's profile verified attribute > validated
             $provider = $user->getProvider();
             $providerId = $user->getProviderId();
-            $accessToken = $user->getConfirmationToken();
+            $accessToken = $oAuthData['accessToken'];
+            $tokenSecret = $oAuthData['tokenSecret'];
             switch ($provider) {
                 case 'facebook':
                     $this->manageFacebookApiExtraData($providerId, $accessToken, $user);
                     break;
                 case 'twitter':
+                    $this->manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user);
                     break;
                 case 'google':
                     break;
