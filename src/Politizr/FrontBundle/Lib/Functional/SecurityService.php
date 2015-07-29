@@ -7,6 +7,10 @@ use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Facebook;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\OrderConstants;
@@ -44,6 +48,13 @@ class SecurityService
 
     private $globalTools;
 
+    private $facebookClientId;
+    private $facebookClientSecret;
+    private $twitterApiKey;
+    private $twitterApiSecret;
+    private $googleClientId;
+    private $googleClientSecret;
+
     private $logger;
 
     /**
@@ -59,6 +70,12 @@ class SecurityService
      * @param @politizr.manager.user
      * @param @politizr.manager.order
      * @param @politizr.tools.global
+     * @param "%facebook_client_id%"
+     * @param "%facebook_client_secret%"
+     * @param "%twitter_api_key%"
+     * @param "%twitter_api_secret%"
+     * @param "%google_client_id%"
+     * @param "%google_client_secret%"
      * @param @logger
      */
     public function __construct(
@@ -73,6 +90,12 @@ class SecurityService
         $userManager,
         $orderManager,
         $globalTools,
+        $facebookClientId,
+        $facebookClientSecret,
+        $twitterApiKey,
+        $twitterApiSecret,
+        $googleClientId,
+        $googleClientSecret,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -92,6 +115,13 @@ class SecurityService
         $this->orderManager = $orderManager;
 
         $this->globalTools = $globalTools;
+
+        $this->facebookClientId = $facebookClientId;
+        $this->facebookClientSecret = $facebookClientSecret;
+        $this->twitterApiKey = $twitterApiKey;
+        $this->twitterApiSecret = $twitterApiSecret;
+        $this->googleClientId = $googleClientId;
+        $this->googleClientSecret = $googleClientSecret;
 
         $this->logger = $logger;
     }
@@ -174,6 +204,94 @@ class SecurityService
         return false;
     }
 
+    /**
+     * Retrieve Facebook API data to update user object.
+     * https://developers.facebook.com/docs/php/gettingstarted/5.0.0
+     * @todo how to get the facebook page url?
+     *
+     * @param integer $providerId
+     * @param string $accessToken
+     * @param PUser $user
+     * @return boolean
+     */
+    private function manageFacebookApiExtraData($providerId, $accessToken, $user)
+    {
+        $facebookClient = new Facebook\Facebook([
+          'app_id' => $this->facebookClientId,
+          'app_secret' => $this->facebookClientSecret,
+          'default_graph_version' => 'v2.4',
+          'default_access_token' => $accessToken, // optional
+        ]);
+
+        try {
+            // Get the Facebook\GraphNodes\GraphUser object for the current user.
+            // If you provided a 'default_access_token', the '{access-token}' is optional.
+
+            // ?fields=email,about,address,birthday,bio
+            $response = $facebookClient->get(
+                sprintf('/%s?fields=gender,first_name,last_name,birthday,about,bio,address,location,website,is_verified', $providerId)
+            );
+        } catch (FacebookResponseException $e) {
+            // When Graph returns an error
+            $this->logger->error(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
+            return false;
+        } catch (FacebookSDKException $e) {
+            // When validation fails or other local issues
+            $this->logger->error(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
+            return false;
+        }
+
+        $graphUser = $response->getGraphUser();
+        // dump($graphUser);
+
+        $gender = $graphUser->getField('gender');
+        $firstName = $graphUser->getField('first_name');
+        $lastName = $graphUser->getField('last_name');
+        $birthday = $graphUser->getField('birthday');
+        $about = $graphUser->getField('about');
+        $bio = $graphUser->getField('bio');
+        $address = $graphUser->getField('address');
+        $location = $graphUser->getField('location');
+        $website = $graphUser->getField('website');
+        $isVerified = $graphUser->getField('is_verified');
+
+        if (null !== $gender) {
+            if ('male' === $gender) {
+                $user->setGender('Monsieur');
+            } elseif ('female' === $gender) {
+                $user->setGender('Madame');
+            }
+        }
+
+        if (null !== $firstName) {
+            $user->setFirstName($firstName);
+        }
+
+        if (null !== $lastName) {
+            $user->setName($lastName);
+        }
+
+        if (null !== $birthday) {
+            $user->setBirthday($birthday);
+        }
+
+        if (null !== $about) {
+            $user->setSubtitle($about);
+        }
+
+        if (null !== $bio) {
+            $user->setBiography($bio);
+        }
+
+        if (null !== $website) {
+            $user->setWebsite($website);
+        }
+
+        if (null !== $isVerified) {
+            $user->setValidated($isVerified);
+        }
+    }
+
     /* ######################################################################################################## */
     /*                                              CONNECTION                                                  */
     /* ######################################################################################################## */
@@ -223,8 +341,10 @@ class SecurityService
             ->findOne();
 
         if ($user) {
-            // update user
-            $user = $this->userManager->updateOAuthData($user, $oAuthData);
+            // update confirmation token
+            if (isset($oAuthData['accessToken'])) {
+                $user->setConfirmationToken($oAuthData['accessToken']);
+            }
 
             // save user
             $user->save();
@@ -268,6 +388,25 @@ class SecurityService
                 $canonicalizer->canonicalize($username),
                 null
             );
+
+            // @todo api connections fb / tw / g+ to retrieve:
+            //  - user's description > summary & biography
+            //  - users's coord > website, facebook, twitter, phone
+            //  - user's profile verified attribute > validated
+            $provider = $user->getProvider();
+            $providerId = $user->getProviderId();
+            $accessToken = $user->getConfirmationToken();
+            switch ($provider) {
+                case 'facebook':
+                    $this->manageFacebookApiExtraData($providerId, $accessToken, $user);
+                    break;
+                case 'twitter':
+                    break;
+                case 'google':
+                    break;
+                default:
+                    break;
+            }
 
             // save user
             $user->save();

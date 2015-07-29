@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96462f559c510ff517acc7516de7a2eb",
+    "hash": "bf059e99a33c84eafbf9d6a194d1fa47",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -654,16 +654,16 @@
         },
         {
             "name": "facebook/php-sdk-v4",
-            "version": "dev-master",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "c792f9d3da1fb41c9af7e951fc710625d4d5527f"
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/c792f9d3da1fb41c9af7e951fc710625d4d5527f",
-                "reference": "c792f9d3da1fb41c9af7e951fc710625d4d5527f",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
                 "shasum": ""
             },
             "require": {
@@ -705,7 +705,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-07-23 22:10:17"
+            "time": "2015-07-08 19:08:57"
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
@@ -1327,6 +1327,56 @@
                 "parameters management"
             ],
             "time": "2015-06-03 08:27:03"
+        },
+        {
+            "name": "j7mbo/twitter-api-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/J7mbo/twitter-api-php.git",
+                "reference": "7e7aefc2e443ea5fd797cdc4138a0013f8b68774"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/J7mbo/twitter-api-php/zipball/7e7aefc2e443ea5fd797cdc4138a0013f8b68774",
+                "reference": "7e7aefc2e443ea5fd797cdc4138a0013f8b68774",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5,>=4.5.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "TwitterAPIExchange.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GNU Public License"
+            ],
+            "authors": [
+                {
+                    "name": "James Mallison",
+                    "homepage": "https://github.com/j7mbo/twitter-api-php"
+                }
+            ],
+            "description": "Simple PHP Wrapper for Twitter API v1.1 calls",
+            "homepage": "https://github.com/j7mbo/twitter-api-php",
+            "keywords": [
+                "api",
+                "php",
+                "twitter"
+            ],
+            "time": "2015-06-23 20:17:44"
         },
         {
             "name": "jms/aop-bundle",
@@ -3616,7 +3666,7 @@
         "fzaninotto/faker": 20,
         "willdurand/faker-bundle": 0,
         "hwi/oauth-bundle": 20,
-        "facebook/php-sdk-v4": 20,
+        "j7mbo/twitter-api-php": 20,
         "elao/web-profiler-extra-bundle": 20
     },
     "prefer-stable": false,
