@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bf059e99a33c84eafbf9d6a194d1fa47",
+    "hash": "cf3f37e4ceedba133437e6c3090c3c19",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -943,6 +943,51 @@
             ],
             "description": "Propel events and model extending for Symfony2.",
             "time": "2014-10-10 22:12:57"
+        },
+        {
+            "name": "google/apiclient",
+            "version": "1.0.6-beta",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/google-api-php-client.git",
+                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/a41a9dc0662e36420030eaab802dbb1f85459479",
+                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Client library for Google APIs",
+            "homepage": "http://developers.google.com/api-client-library/php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2014-09-30 19:33:59"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3667,6 +3712,7 @@
         "willdurand/faker-bundle": 0,
         "hwi/oauth-bundle": 20,
         "j7mbo/twitter-api-php": 20,
+        "google/apiclient": 10,
         "elao/web-profiler-extra-bundle": 20
     },
     "prefer-stable": false,

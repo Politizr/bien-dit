@@ -10,8 +10,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Facebook;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
-
 use TwitterAPIExchange;
+use Google_Client;
+use Google_Service_Plus;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -362,6 +363,39 @@ class SecurityService
         return true;
     }
 
+    /**
+     * Retrieve Google API data to update user object.
+     * https://github.com/google/google-api-php-client
+     * https://developers.google.com/api-client-library/php/
+     * https://developers.google.com/+/api/latest/people/get
+     *
+     * @todo how to get the twitter page url?
+     *
+     * @param integer $providerId
+     * @param string $accessToken
+     * @param string $refreshToken
+     * @param string $expiresIn
+     * @param PUser $user
+     * @return boolean
+     */
+    private function manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user)
+    {
+        $client = new Google_Client();
+
+        $client->setClientId($this->googleClientId);
+        $client->setClientSecret($this->googleClientSecret);
+
+        $client->setAccessToken(json_encode([
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
+            'expires_in' => $expiresIn,
+        ]));
+
+        $googlePlus = new Google_Service_Plus($client);
+        $userProfile = $googlePlus->people->get($providerId);
+        var_dump($userProfile);
+    }
+
     /* ######################################################################################################## */
     /*                                              CONNECTION                                                  */
     /* ######################################################################################################## */
@@ -467,6 +501,9 @@ class SecurityService
             $providerId = $user->getProviderId();
             $accessToken = $oAuthData['accessToken'];
             $tokenSecret = $oAuthData['tokenSecret'];
+            $refreshToken = $oAuthData['refreshToken'];
+            $expiresIn = $oAuthData['expiresIn'];
+
             switch ($provider) {
                 case 'facebook':
                     $this->manageFacebookApiExtraData($providerId, $accessToken, $user);
@@ -475,6 +512,7 @@ class SecurityService
                     $this->manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user);
                     break;
                 case 'google':
+                    $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
                     break;
                 default:
                     break;
