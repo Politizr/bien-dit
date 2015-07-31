@@ -27,6 +27,11 @@ class PublicController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
 
+        // redirect if connected
+        if ($profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix()) {
+            return $this->redirect($this->generateUrl(sprintf('Timeline%s', $profileSuffix)));
+        }
+
         // @todo most "active" debate today
         $activeDebate = PDDebateQuery::create()
             ->online()

@@ -13,6 +13,7 @@ use Facebook\Exceptions\FacebookSDKException;
 use TwitterAPIExchange;
 use Google_Client;
 use Google_Service_Plus;
+use Google_Service_Oauth2;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -387,12 +388,21 @@ class SecurityService
 
         $client->setAccessToken(json_encode([
             'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-            'expires_in' => $expiresIn,
+//            'refresh_token' => $refreshToken,
+//            'expires_in' => $expiresIn,
         ]));
 
-        $googlePlus = new Google_Service_Plus($client);
-        $userProfile = $googlePlus->people->get($providerId);
+        // http://stackoverflow.com/questions/13506930/how-to-get-oauth2-access-token-with-google-api-php-client
+        //$client->setAssertionCredentials(new Google_AssertionCredentials(
+        //    SERVICE_ACCOUNT_NAME,
+        //    array('https://www.googleapis.com/auth/fusiontables'),
+        //    $key)
+        //);
+
+        // http://stackoverflow.com/questions/22117243/getting-user-info-google-php-client-issue
+        // $googlePlus = new Google_Service_Plus($client);
+        $googlePlus = new Google_Service_Oauth2($client);
+        $userProfile = $googlePlus->userinfo->get();
         var_dump($userProfile);
     }
 
@@ -503,6 +513,12 @@ class SecurityService
             $tokenSecret = $oAuthData['tokenSecret'];
             $refreshToken = $oAuthData['refreshToken'];
             $expiresIn = $oAuthData['expiresIn'];
+
+            $this->logger->info('*** token & co');
+            $this->logger->info(print_r($accessToken, true));
+            $this->logger->info(print_r($tokenSecret, true));
+            $this->logger->info(print_r($refreshToken, true));
+            $this->logger->info(print_r($expiresIn, true));
 
             switch ($provider) {
                 case 'facebook':
