@@ -6,6 +6,8 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
@@ -470,6 +472,7 @@ class TimelineService
         $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
             array(
+                'type' => ObjectTypeConstants::TYPE_DEBATE_COMMENT,
                 'comment' => $comment,
                 'debateContext' => $debateContext,
                 'parentDebate' => $parentDebate,
@@ -514,6 +517,7 @@ class TimelineService
         $html = $this->templating->render(
             'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
             array(
+                'type' => ObjectTypeConstants::TYPE_REACTION_COMMENT,
                 'comment' => $comment,
                 'debateContext' => $debateContext,
                 'parentDebate' => $parentDebate,

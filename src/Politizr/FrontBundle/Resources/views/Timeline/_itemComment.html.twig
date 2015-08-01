@@ -38,8 +38,15 @@
                     <div class="avatar40">
                         {{ comment.user | photo('user_40') }}
                     </div>
-                    <!-- @todo html/css pas de lien sur un commentaire -->
-                    <p>{{ comment.description | raw }}</p>
+                    {% if (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) %}
+                        <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}#p-{{ comment.paragraphNo }}">
+                    {% elseif (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}
+                        <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}#p-{{ comment.paragraphNo }}">
+                    {% else %}
+                        <a href="#">
+                    {% endif %}
+                        <p>{{ comment.description | raw }}</p>
+                    </a>
                 </div>
                 <div class="timelineItemContentFooter">
                     <div class="commentsNote">
