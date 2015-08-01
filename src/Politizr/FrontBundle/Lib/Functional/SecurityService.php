@@ -528,7 +528,8 @@ class SecurityService
                     $this->manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user);
                     break;
                 case 'google':
-                    $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
+                    // https://github.com/hwi/HWIOAuthBundle/issues/833
+                    // $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
                     break;
                 default:
                     break;
