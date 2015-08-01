@@ -5,7 +5,7 @@ services:
 
     politizr.manager.document:
         class: Politizr\FrontBundle\Lib\Manager\DocumentManager
-        arguments: [ @logger ]
+        arguments: [ @politizr.tools.global, @logger ]
 
     politizr.manager.tag:
         class: Politizr\FrontBundle\Lib\Manager\TagManager

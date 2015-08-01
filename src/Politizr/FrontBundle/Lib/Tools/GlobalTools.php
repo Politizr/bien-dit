@@ -279,4 +279,21 @@ class GlobalTools
 
         return false;
     }
+
+    /**
+     * Remove empty <p></p> in the html text
+     *
+     * @param string $html
+     * @return string
+     */
+    public function removeEmptyParagraphs($html)
+    {
+        $pattern = "/<p[^>]*><\\/p[^>]*>/";
+        $html = preg_replace($pattern, '', $html);
+
+        $pattern = "/<p[^>]*><br><\\/p[^>]*>/";
+        $html = preg_replace($pattern, '', $html);
+
+        return $html;
+    }
 }

@@ -16,14 +16,19 @@ use Politizr\Model\PDReactionQuery;
  */
 class DocumentManager
 {
+    private $globalTools;
+
     private $logger;
 
     /**
      *
+     * @param politizr.tools.global
      * @param @logger
      */
-    public function __construct($logger)
+    public function __construct($globalTools, $logger)
     {
+        $this->globalTools = $globalTools;
+        
         $this->logger = $logger;
     }
 
@@ -129,6 +134,9 @@ ORDER BY published_at ASC
     public function publishDebate(PDDebate $debate)
     {
         if ($debate) {
+            $description = $this->globalTools->removeEmptyParagraphs($debate->getDescription());
+
+            $debate->setDescription($description);
             $debate->setPublished(true);
             $debate->setPublishedAt(time());
 
@@ -183,8 +191,8 @@ ORDER BY published_at ASC
     /**
      * Publish reaction w. relative nested set update
      *
-     * @param PDDebate $debate
-     * @return PDDebate
+     * @param PDReaction $reaction
+     * @return PDReaction
      */
     public function publishReaction(PDReaction $reaction)
     {
@@ -215,12 +223,16 @@ ORDER BY published_at ASC
                 }
             }
 
+            $description = $this->globalTools->removeEmptyParagraphs($reaction->getDescription());
+
+            $reaction->setDescription($description);
+
             $reaction->setPublished(true);
             $reaction->setPublishedAt(time());
             $reaction->save();
         }
 
-        return $debate;
+        return $reaction;
     }
 
     /**
