@@ -79,7 +79,7 @@
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : path,
+                url : xhrPath,
                 data: $("#formDebateUpdate").serialize(),
                 {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                 success: function(data) {
@@ -116,7 +116,7 @@
      
         if (mode === 'silence') {
             // sauvegarde silencieuse
-            $.ajax({type: 'POST', url: path, data: $("#formReactionUpdate").serialize() });
+            $.ajax({type: 'POST', url: xhrPath, data: $("#formReactionUpdate").serialize() });
         } else {
             $.ajax({
                 type: 'POST',

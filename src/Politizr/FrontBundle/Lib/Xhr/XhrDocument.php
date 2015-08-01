@@ -326,7 +326,7 @@ class XhrDocument
             // Remove old file if new upload or deletion has been done
             $fileName = $debate->getFileName();
             if ($fileName != $oldFileName) {
-                $path = $kernel->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
                 if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
                     unlink($path . $oldFileName);
                 }

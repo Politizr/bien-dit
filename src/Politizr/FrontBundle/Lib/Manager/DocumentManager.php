@@ -205,7 +205,7 @@ ORDER BY published_at ASC
             } else {
                 $rootNode = PDReactionQuery::create()->findRoot($debate->getId());
                 if (!$rootNode) {
-                    $this->createReactionRootNode($debate->getId());
+                    $rootNode = $this->createReactionRootNode($debate->getId());
                 }
 
                 if ($nbReactions = $debate->countReactions() == 0) {
