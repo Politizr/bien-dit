@@ -11,6 +11,12 @@ $(function(){
         horizontalAlign: "center",
         verticalAlign: "center"
     }); 
+    // full size image in profile summary 
+    $("#profileHeaderIllustration").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    }); 
     // full size image in debate summary 
     $(".postSummary").imgLiquid({
         fill: true,

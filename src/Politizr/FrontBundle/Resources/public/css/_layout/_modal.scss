@@ -79,6 +79,11 @@ body.noscroll {
 	clear: both;
 }
 
+.modal .followers h1 { margin-bottom: 60px;}
+.modal .myfollowers h1 { margin-top: 0; margin-bottom: 60px;}
+.modal .reputation h1 { margin-bottom: 40px;}
+
+
 // no results
 
 .noResults {
@@ -257,3 +262,279 @@ body.noscroll {
 
 .wikiLink a:hover {color: $highlight;}
 .organizationSheet .listCriteria.criteriaSidebar, .organizationSheet #listContent {padding-top: 60px;}
+
+// reputation et badges
+
+#reputationPoints, #modalReputationChart, #modalBadges {
+	width: 700px;
+	clear: both;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#reputationPoints {
+	font-size: 40px;
+	text-align: center;	
+    font-family: 'nerisblack';
+    margin-bottom: 60px;
+    line-height: 100%;
+}
+
+#modalBadges { margin-bottom: 80px;}
+
+.modalBadgeItem {
+	width: calc(700px - 80px);
+	padding: 40px;
+	clear: both;
+	background: $lightGrey;
+	margin-bottom: 30px;
+}
+.modalBadgeItem:last-child {margin-bottom: 0;}
+
+.modalBadgeItem h3 {
+    font-family: 'nerissemibold';
+	font-weight: normal;
+	font-size: 10px;
+	text-transform: uppercase;
+	margin: 0 0 20px 0;
+	padding: 0 0 5px 0;
+	border-bottom: solid 1px $semiDarkGrey;
+}
+
+.badgeDescription {
+	float: left;
+	width: 100%;
+	clear: both;
+	font-style: italic;
+	font-family: 'Merriweather Italic';	
+	margin-bottom: 8px;
+}
+
+.badgeProgressBar {
+	width: 100%;
+	clear: both;
+	height: 20px;
+	background-color: $semilightGrey;
+	margin-bottom: 30px;
+}
+.badgeProgressBar:last-child {margin-bottom: 0;}
+
+.badgeAcquired {
+	float: left;
+    font-family: 'nerissemibold';
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 100%;
+	text-transform: uppercase;
+	color: #fff;
+	background-color: $highlight;
+	padding: 5px;
+	border-right: solid 1px $semilightGrey;
+}
+
+.badgeAcquired.badgeStepOne, .badgeAcquired.badgeStepTwo {width: calc(33.3% - 11px); }
+.badgeAcquired.badgeStepThree {width: calc(33.2% - 10px); border-color: $highlight; }
+.badgeAcquired.badgeOneStep {width: calc(100% - 10px);  border: none;}
+
+
+// reputation
+
+#modalReputationChart {
+	margin-bottom: 80px;
+}
+#modalReputationChart .modalChartLegend {
+	width: calc(100% - 80px);
+	padding: 0 40px;
+}
+#modalReputationChart .chartNavPrev {	left: 45px;}
+#modalReputationChart .chartNavNext {	right: 30px;}
+
+.chartReputationLine {
+	width: calc(100% - 80px);
+	padding: 0 40px;
+	position: relative;
+}
+
+canvas#reputationLine {
+	height: 300px;
+	height: 620px;
+	font-size: 8px;
+}
+
+// my followers
+
+#modalMyFollowersChart {
+	width: 700px;
+	clear: both;
+	margin: 0 auto 60px auto;
+	padding-top: 60px;
+}
+
+#statsHeader {
+	width: 100%;
+	display: inline-block;
+}
+
+// my followers counters
+
+#statsCounters {
+	float: left;
+	width: 165px;
+	padding: 20px 40px 20px 0;
+	border-right: solid 1px $semiGrey;
+	text-align: center;
+	font-family: 'nerisblack';	
+}
+
+#followersCounter { font-size: 40px; }
+
+#followersCounter span {
+	clear: both;
+   	display: inline-block;
+   	width: 100%;
+	font-size: 12px;
+    font-family: 'nerislight';
+    margin: 15px 0 30px 0;
+}
+
+#visitsCounter {
+	width: 100%;
+	position: relative
+}
+
+#visitsCounterPrev, #visitsCounterNext {
+	position: absolute;
+	top:0;
+	height: 44px;
+	font-size: 6px;
+	z-index: 4000;
+	cursor: pointer;
+	width: 49%;
+}
+#visitsCounterPrev i, #visitsCounterNext i { position: absolute; top: 15px;}
+#visitsCounterPrev, #visitsCounterPrev i {left: 0;}
+#visitsCounterNext, #visitsCounterNext i {right: 0;}
+#visitsCounterPrev:hover, #visitsCounterNext:hover {color: $highlight;}
+
+.visitsCounterItem {
+	font-size: 20px;
+	width: 100%;
+}
+
+.visitsCounterItem span {
+	clear: both;
+   	display: inline-block;
+   	width: 100%;
+	font-size: 12px;
+    font-family: 'nerislight';
+    margin: 5px 0 0 0;
+}
+
+// my followers gender
+
+.noStats {
+	float: left;
+	font-size: 12px;
+    font-family: 'nerislight';
+    padding: 70px 0 0 40px;
+}
+
+#visitsGender {
+	width: 90px;
+	padding: 13px 40px;
+	float: left; 
+	font-size: 10px;
+    font-family: 'nerissemibold';
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 100%;
+}
+
+#visitsGender span:first-child {color: #94b1b4;}
+#visitsGender span:last-child {color: #b99abf;}
+
+canvas#myFollowersGender {
+	width: 90px;
+	height: 90px;
+	margin: 5px 0;
+}
+
+// my followers age
+
+#visitsAge {
+	width: calc(100% - 376px);
+	float: right;}
+
+canvas#myFollowersAge {
+	width: 100%;
+	height: 135px;	
+}
+
+// my followers line
+
+#modalMyFollowersChart .modalChartLegend {
+	width: 100%;
+	padding: 0;
+}
+#modalMyFollowersChart .chartNavPrev {	left: 0;}
+#modalMyFollowersChart .chartNavNext {	right: 0;}
+
+#modalMyFollowersChart h2 {
+	text-align: center;
+	font-family: 'nerisblack';
+	font-weight: normal;
+	font-size: 10px;
+	margin: 0 0 40px 0;
+	text-transform: uppercase;
+}
+
+#myFollowersStats {
+	width: 620px;
+	padding: 40px 40px 35px 40px;
+	margin-top: 60px;
+	background: $lightGrey;
+	clear: both;
+	margin-left: auto;
+	margin-right: auto;
+}	
+
+.chartMyFollowersLine {
+	width: 100%;
+	position: relative;
+}
+
+canvas#myFollowersLine {
+	height: 300px;
+	height: 620px;
+}
+
+#modalMyFollowersChart .chartDotHighlight:last-child { color: #cb8f7a;}
+
+// charts generics
+
+.chartNavPrev, .chartNavNext {
+	position: absolute;
+	bottom: 10px;
+	cursor: pointer;
+	color: $anotherGrey;
+	font-size: 6px;
+}
+.chartNavPrev:hover, .chartNavNext:hover {
+	color: $darkGrey;
+}
+ 
+.modalChartLegend {
+    font-family: 'nerissemibold';
+	font-size: 10px;
+	color: $darkGrey;
+	margin-bottom: 20px;
+	float: left;
+}
+
+.chartTitle {float: left;}
+.chartDotHighlight {
+	float: left;
+	color: $highlight;
+	margin-left: 20px;
+}
+.chartDotHighlight i { font-size: 6px; margin-right: 2px;}

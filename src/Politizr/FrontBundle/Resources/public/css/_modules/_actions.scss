@@ -26,6 +26,7 @@
 }
 
 #fixedActions .actionFollow,
+#fixedActions .actionEdit,
 #fixedActions .actionUnfollow,
 #fixedActions .actionPublish,
 #fixedActions .actionCosign {
@@ -45,7 +46,8 @@
 #fixedActions a.actionReact i {font-size: 13px;}
 #fixedActions .actionCosign i {font-size: 14px;}
 
-#fixedActions .actionFollow a, 
+#fixedActions .actionFollow a,
+#fixedActions .actionEdit a, 
 #fixedActions .actionPublish a,
 #fixedActions .actionCosign {
 	background-color: $highlight;
@@ -64,6 +66,7 @@
 }
 
 #fixedActions .actionFollow a:hover, 
+#fixedActions .actionEdit a:hover, 
 #fixedActions .actionUnfollow a:hover, 
 #fixedActions .actionGotoDebate:hover, 
 #fixedActions .actionPublish a:hover, 

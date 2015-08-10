@@ -13,6 +13,5 @@ $(function() {
 	$('body.css1000 .timelineDayContainer').stickyDay1000({stickyClass : 'timelineDay'});
 	// sticky timeline dates for css 760
 	$('body.css760 .timelineDayContainer').stickyDay760({stickyClass : 'timelineDay'});
-	
 });
 

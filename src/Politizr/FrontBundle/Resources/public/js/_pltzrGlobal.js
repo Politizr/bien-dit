@@ -51,7 +51,7 @@ $(function(){
 		$('#headerCenter, #menu').hide();
 	});
 									
-	// open classement + suggestion + listbytag + organization sheet + signal abuse + search
+	// open classement + suggestion + listbytag + organization sheet + signal abuse + search + followers
 	$("body").on("click", "[action='modalOpen']", function() {
 		$('#modalBox').fadeIn('fast');
 		$('body').addClass('noscroll');
@@ -117,5 +117,13 @@ $(function(){
 	// toggle image copyright
 	$("body").on("click", "[action='showCopyright']", function() {
 		$('#copyrightBox').toggle();		
+	});
+		
+	// toggle confidential info text
+	$("body").on("mouseover", "[action='confidentialToggle']", function() {
+		$(this).next('.confidentialInfo').show();
+	});
+	$("body").on("mouseout", "[action='confidentialToggle']", function() {
+		$(this).next('.confidentialInfo').hide();	
 	});
 });
