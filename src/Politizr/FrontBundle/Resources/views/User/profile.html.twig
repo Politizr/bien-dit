@@ -1,19 +1,16 @@
-{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
-{% if (isGrantedE() or isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
-{% endif %}
-{% extends layout %}
-
-{% block connexionBox %}
-    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
-        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-    {% endif %}
-{% endblock %}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block fixedActions %}
     <div id="fixedActions">
-        <div class="subscribe actionFollow withLoaderInside">
-            {{ user | linkSubscribeUser }}
+        <div class="subscribe actionEdit withLoaderInside"> 
+            <div class="ajaxLoader" style="display: none;">
+                <i class="iconSpin5 animateSpin"></i>
+                <div class="ajaxLoaderBg"></div>
+            </div>
+            <a href="#">                  
+                <i class="iconEdit"></i>
+                éditer
+            </a>
         </div>
     </div>
 {% endblock fixedActions %}
@@ -27,6 +24,8 @@
                         <i class="iconCup"></i>
                         {{ user.reputationScore }} points de réputation
                     </div>
+                    <i class="iconInfo" action="confidentialToggle"></i>
+                    <div class="confidentialInfo" style="display: none;">Cette information est privée</div>
                     <div id="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
                         {{ user.countFollowers }} abonnés
                     </div>
@@ -61,6 +60,15 @@
         
         <div id="profilePublicTagList">
             {{ user | userTags }}
+        </div>
+
+        <div id="profilePrivateTagList">
+            <div id="privateTagTitle">
+                <span>mes thématiques privées</span>
+                <i class="iconInfo" action="confidentialToggle"></i>
+                <div class="confidentialInfo" style="display: none;">Cette information est privée</div>
+            </div>
+            {{ user | followTags }}
         </div>
 
         <div id="profileBio">

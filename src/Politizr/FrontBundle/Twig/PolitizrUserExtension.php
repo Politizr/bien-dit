@@ -4,6 +4,7 @@ namespace Politizr\FrontBundle\Twig;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PNotification;
@@ -90,8 +91,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'tags',
-                array($this, 'tags'),
+                'userTags',
+                array($this, 'userTags'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -163,7 +164,7 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Photo de profil d'un user
+     * Load an <img> html tag with the back profile photo of user and apply it a filter.
      *
      * @param PUser $user
      * @return html
@@ -175,61 +176,74 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $path = '/bundles/politizrfront/images/default_user_back.jpg';
         if ($user && $fileName = $user->getBackFileName()) {
-            $path = '/uploads/users/'.$fileName;
+            $uploadWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
+            $path = $uploadWebPath.$fileName;
         }
 
-        return $path;
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_imageHeader.html.twig',
+            array(
+                'title' => $user->getFullName(),
+                'path' => $path,
+                'filterName' => $filterName,
+            )
+        );
+
+        return $html;
     }
 
 
    /**
-     *  Affiche les tags suivis par un user suivant le type fourni
+     * Display user's following tags
      *
      * @param PUser $user
-     * @param $tagTypeId    integer     ID type de tag
+     * @param integer $tagTypeId
      * @return string
      */
-    public function followTags(PUser $user, $tagTypeId)
+    public function followTags(PUser $user, $tagTypeId = null)
     {
         $this->logger->info('*** followTags');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
+        $tags = $user->getFollowTags($tagTypeId);
+ 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $user->getFollowTags($tagTypeId)
+                'tags' => $tags
             )
         );
 
         return $html;
-
     }
 
    /**
-     *  Affiche les tags associés à un user suivant le type fourni
+     * Display user's tags
      *
      * @param PUser $user
-     * @param $tagTypeId    integer     ID type de tag
+     * @param integer $tagTypeId
      * @return string
      */
-    public function tags(PUser $user, $tagTypeId)
+    public function userTags(PUser $user, $tagTypeId = null)
     {
-        $this->logger->info('*** tags');
+        $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
+        $tags = $user->getTaggedTags($tagTypeId);
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $user->getTaggedTags($tagTypeId),
+                'tags' => $tags
             )
         );
 
         return $html;
-
     }
 
 

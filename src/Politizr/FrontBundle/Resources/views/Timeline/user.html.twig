@@ -14,5 +14,5 @@
 {% block javascriptFooter %}
     {{ parent() }}
     
-    {% include 'PolitizrFrontBundle:JS\\Timeline:timeline.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Timeline:timeline.js.twig' with { 'route': constant('Politizr\\Constant\\XhrConstants::ROUTE_TIMELINE_MINE') } %}
 {% endblock javascriptFooter %}

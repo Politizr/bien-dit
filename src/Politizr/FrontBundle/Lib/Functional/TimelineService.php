@@ -137,12 +137,6 @@ class TimelineService
     /**
      * User's "My Politizr" timeline
      *
-     * @see app/sql/timeline.sql
-     *
-     * @todo:
-     *   > + réactions sur les débats / réactions rédigés par le user courant
-     *   > + commentaires sur les débats / réactions rédigés par le user courant
-     *
      * @param integer $offset
      * @param integer $count
      * @return string
@@ -205,12 +199,6 @@ class TimelineService
    /**
      * Debate feed timeline
      *
-     * @see app/sql/debateFeed.sql
-     *
-     * @todo:
-     *   > + réactions sur les débats / réactions rédigés par le user courant
-     *   > + commentaires sur les débats / réactions rédigés par le user courant
-     *
      * @param integer $debateId
      * @return string
      */
@@ -240,6 +228,35 @@ class TimelineService
         $sql = $this->documentManager->createDebateFeedRawSql(
             $debateId,
             $inQueryUserIds
+        );
+
+        return $sql;
+    }
+
+   /**
+     * User's detail timeline
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    private function generateUserDetailTimelineRawSql($userId, $offset, $count = 10)
+    {
+        $this->logger->info('*** getSql');
+
+        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $this->securityTokenStorage->getToken()->getUser();
+            $currentUserId = $user->getId();
+            $this->logger->info('currentUserId = '.print_r($currentUserId, true));
+        } else {
+            $inQueryUserIds = 0;
+        }
+
+        $sql = $this->userManager->createUserDetailTimelineRawSql(
+            $userId,
+            $offset,
+            $count
         );
 
         return $sql;
@@ -344,6 +361,27 @@ class TimelineService
         $this->logger->info('*** generateDebateFeedTimeline');
         
         $sql = $this->generateDebateFeedRawSql($debateId);
+        $timeline = $this->hydrateTimelineRows($sql);
+
+        return $timeline;
+    }
+
+    /* ######################################################################################################## */
+    /*                                            USER DETAIL TIMELINE                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * Get the user detail timeline
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @return array[TimelineRow]
+     */
+    public function generateUserDetailTimeline($userId, $offset = 0)
+    {
+        $this->logger->info('*** generateUserDetailTimeline');
+        
+        $sql = $this->generateUserDetailTimelineRawSql($userId, $offset);
         $timeline = $this->hydrateTimelineRows($sql);
 
         return $timeline;

@@ -66,17 +66,25 @@ class UserController extends Controller
         $user->setNbViews($user->getNbViews() + 1);
         $user->save();
 
-        // PDDebate (collection)
-        $debates = $user->getDebates();
-
-        // PDReaction (collection)
-        $reactions = $user->getReactions();
-
         return $this->render('PolitizrFrontBundle:User:detail.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'user' => $user,
-            'debates' => $debates,
-            'reactions' => $reactions
+        ));
+    }
+
+    /**
+     * Profile
+     */
+    public function profileAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** profileAction');
+
+        $user = $this->getUser();
+
+        return $this->render('PolitizrFrontBundle:User:profile.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'user' => $user,
         ));
     }
 

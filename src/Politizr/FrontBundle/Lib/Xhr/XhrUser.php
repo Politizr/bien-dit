@@ -543,7 +543,7 @@ class XhrUser
     /* ######################################################################################################## */
 
     /**
-     * User's timeline "My Politizr"
+     * Personal's user timeline "My Politizr"
      */
     public function timelinePaginated(Request $request)
     {
@@ -577,6 +577,44 @@ class XhrUser
 
         return array(
             'html' => $html,
-            );
+        );
+    }
+
+    /**
+     * User's timeline (user's detail)
+     */
+    public function timelineUserPaginated(Request $request)
+    {
+        $this->logger->info('*** timelineUserPaginated');
+
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $userId = $request->get('userId');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+
+        $timeline = $this->timelineService->generateUserDetailTimeline($userId, $offset);
+
+        // @todo use constant for "limit"
+        $moreResults = false;
+        if (sizeof($timeline) == 10) {
+            $moreResults = true;
+        }
+
+        $timelineDateKey = $this->timelineService->generateTimelineDateKey($timeline);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Timeline:_paginatedUserTimeline.html.twig',
+            array(
+                'timelineDateKey' => $timelineDateKey,
+                'offset' => intval($offset) + 10,
+                'userId' => $userId,
+                'moreResults' => $moreResults,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
     }
 }

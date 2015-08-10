@@ -50,6 +50,18 @@ class PUMandate extends BasePUMandate
     
     /**
      *
+     * @return PQOrganization
+     */
+    public function getOrganization()
+    {
+        $pqOrganization = $this->getPQOrganization();
+
+        return $pqOrganization;
+    }
+
+    /**
+     * @todo dead code?
+     *
      * @return string
      */
     public function getOrganizationInitials()
@@ -66,6 +78,7 @@ class PUMandate extends BasePUMandate
     }
 
     /**
+     * @todo dead code?
      *
      * @return string
      */
@@ -83,6 +96,7 @@ class PUMandate extends BasePUMandate
     }
 
     /**
+     * @todo dead code?
      *
      * @return string file name
      */
@@ -99,6 +113,7 @@ class PUMandate extends BasePUMandate
     }
 
     /**
+     * @todo dead code?
      *
      * @return string
      */
@@ -115,6 +130,7 @@ class PUMandate extends BasePUMandate
     }
 
     /**
+     * @todo dead code?
      *
      * @return string
      */

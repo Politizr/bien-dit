@@ -306,7 +306,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Tags d'un débat
+     * Debate's tags
      *
      * @param PDDebate $debate
      * @param integer $tagTypeId

@@ -550,4 +550,53 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /**
+     * Follower listing
+     */
+    public function followerList(Request $request)
+    {
+        $this->logger->info('*** followerList');
+        
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
+
+        // Function process
+        $user = PUserQuery::create()->findPk($subjectId);
+
+        // @todo constant management refactoring
+        $query = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ;
+
+        $users = $user->getFollowers($query);
+
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'order' => $order,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+                )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
 }

@@ -26,7 +26,7 @@
 
     // modal organisation
     $("body").on("click", "[action='modalOrganization']", function() {
-        console.log('*** modalTagged');
+        console.log('*** modalOrganization');
         $('#modalBoxContent').removeClass().addClass('organizationSheet');
         modalLoading();
 
@@ -35,12 +35,22 @@
 
     // modal subscriptions
     $("body").on("click", "[action='modalSubscriptions']", function() {
-        console.log('*** modalTagged');
+        console.log('*** modalSubscriptions');
         $('#modalBoxContent').removeClass().addClass('subscriptions');
         modalLoading();
 
         loadPaginatedList('_subscriptions.html.twig', 'true');
     });
+
+    // modal followers
+    $("body").on("click", "[action='modalFollowers']", function() {
+        console.log('*** modalFollowers');
+        $('#modalBoxContent').removeClass().addClass('followers');
+        modalLoading();
+
+        loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
+    });
+
 
     // modal connection
     $("body").on("click", "[action='modalConnection']", function() {

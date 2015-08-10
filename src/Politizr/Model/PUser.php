@@ -451,6 +451,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         $stmt = $con->prepare($sql);
         $stmt->bindValue(1, $this->getPrimaryKey(), \PDO::PARAM_INT);
         $stmt->bindValue(2, $this->getPrimaryKey(), \PDO::PARAM_INT);
+
         $stmt->execute();
 
         $listPKs = $stmt->fetchAll(\PDO::FETCH_COLUMN);
@@ -460,6 +461,17 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
             ->find($con);
 
         return $users;
+    }
+
+    /**
+     *
+     * @return integer
+     */
+    public function countFollowers()
+    {
+        $users = $this->getFollowers();
+
+        return count($users);
     }
 
     /**

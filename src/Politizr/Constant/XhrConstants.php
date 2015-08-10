@@ -68,6 +68,7 @@ class XhrConstants
     const ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
     const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
     const ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
+    const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';
@@ -91,7 +92,6 @@ class XhrConstants
     const ROUTE_TAG_USER_TAGGED_DELETE = 'profil/utilisateur/tagged/tag/delete';
 
     // USER
-    const ROUTE_USER_TIMELINE = 'profil/timeline';
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
     const ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
     const ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
@@ -100,4 +100,8 @@ class XhrConstants
     const ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
     const ROUTE_USER_BACK_PHOTO_DELETE = 'profil/backphoto/delete';
     const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
+
+    // TIMELINE
+    const ROUTE_TIMELINE_MINE = 'profil/timeline';
+    const ROUTE_TIMELINE_USER = 'user/timeline';
 }
