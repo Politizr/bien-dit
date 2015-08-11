@@ -41,7 +41,7 @@ Politizr\Model\PQType:
             Mandat syndical
 
 # LISTE DES PRINCIPAUX PARTIS POLITIQUES
-# http://www.france-politique.fr/partis-politiques.htm
+# https://www.france-politique.fr/partis-politiques.htm
 Politizr\Model\PQOrganization:
     parti0:
         online:             true
@@ -58,7 +58,7 @@ Politizr\Model\PQOrganization:
         initials:           PCF
         file_name:          pcf.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Parti_communiste_fran%C3%A7ais
+        url:                https://fr.wikipedia.org/wiki/Parti_communiste_fran%C3%A7ais
     parti2:
         online:             true
         p_q_type_id:        electif
@@ -66,7 +66,7 @@ Politizr\Model\PQOrganization:
         initials:           PG
         file_name:          pg.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Parti_de_gauche_%28France%29
+        url:                https://fr.wikipedia.org/wiki/Parti_de_gauche_%28France%29
     parti3:
         online:             true
         p_q_type_id:        electif
@@ -74,7 +74,7 @@ Politizr\Model\PQOrganization:
         initials:           PS
         file_name:          ps.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Parti_socialiste_%28France%29
+        url:                https://fr.wikipedia.org/wiki/Parti_socialiste_%28France%29
     parti4:
         online:             true
         p_q_type_id:        electif
@@ -82,7 +82,7 @@ Politizr\Model\PQOrganization:
         initials:           PRG
         file_name:          prg.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Parti_radical_de_gauche
+        url:                https://fr.wikipedia.org/wiki/Parti_radical_de_gauche
     parti5:
         online:             true
         p_q_type_id:        electif
@@ -90,7 +90,7 @@ Politizr\Model\PQOrganization:
         initials:           EELV
         file_name:          eelv.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Europe_%C3%89cologie_Les_Verts
+        url:                https://fr.wikipedia.org/wiki/Europe_%C3%89cologie_Les_Verts
     parti6:
         online:             true
         p_q_type_id:        electif
@@ -98,7 +98,7 @@ Politizr\Model\PQOrganization:
         initials:           DVG
         file_name:          dvg.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Divers_gauche
+        url:                https://fr.wikipedia.org/wiki/Divers_gauche
     parti7:
         online:             true
         p_q_type_id:        electif
@@ -106,7 +106,7 @@ Politizr\Model\PQOrganization:
         initials:           MODEM
         file_name:          modem.gif
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Mouvement_d%C3%A9mocrate_%28France%29
+        url:                https://fr.wikipedia.org/wiki/Mouvement_d%C3%A9mocrate_%28France%29
     parti8:
         online:             true
         p_q_type_id:        electif
@@ -114,7 +114,7 @@ Politizr\Model\PQOrganization:
         initials:           UDI
         file_name:          udi.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Union_des_d%C3%A9mocrates_et_ind%C3%A9pendants
+        url:                https://fr.wikipedia.org/wiki/Union_des_d%C3%A9mocrates_et_ind%C3%A9pendants
     parti9:
         online:             true
         p_q_type_id:        electif
@@ -122,15 +122,15 @@ Politizr\Model\PQOrganization:
         initials:           DVD
         file_name:          dvd.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Divers_droite
+        url:                https://fr.wikipedia.org/wiki/Divers_droite
     parti10:
         online:             true
         p_q_type_id:        electif
-        title:              Union pour un Mouvement Populaire
-        initials:           UMP
-        file_name:          ump.gif
+        title:              Les Républicains
+        initials:           LR
+        file_name:          lr.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Union_pour_un_mouvement_populaire
+        url:                https://fr.wikipedia.org/wiki/Les_R%C3%A9publicains_%28parti_fran%C3%A7ais%29
     parti11:
         online:             true
         p_q_type_id:        electif
@@ -138,7 +138,7 @@ Politizr\Model\PQOrganization:
         initials:           DLF
         file_name:          dlf.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Debout_la_France
+        url:                https://fr.wikipedia.org/wiki/Debout_la_France
     parti12:
         online:             true
         p_q_type_id:        electif
@@ -147,7 +147,7 @@ Politizr\Model\PQOrganization:
         initials:           FN
         file_name:          fn.png
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                http://fr.wikipedia.org/wiki/Front_national_%28parti_fran%C3%A7ais%29
+        url:                https://fr.wikipedia.org/wiki/Front_national_%28parti_fran%C3%A7ais%29
 
 
 # LISTE DE TOUS LES MANDATS EXISTANTS
