@@ -2,7 +2,7 @@
 @import "_global/presets";
 @import "_global/colors";
 @import "_global/loader";
-@import "_global/form_p";
+@import "_global/form_public";
 @import "_layout/modal";
 
 @import "_modules/list";
@@ -13,5 +13,5 @@
 
 @import "_public/home";
 
-@import "_global/restive1000_p";
-@import "_global/restive760_p";
+@import "stylePublic760";
+@import "stylePublic1000";

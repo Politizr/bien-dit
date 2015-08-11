@@ -1,0 +1,42 @@
+@import "../_global/_colors";
+
+//////modal
+body.css1000 .modalHeader {
+	width: calc(100% - 60px); 
+	left: 0; 
+	margin: 0 30px;
+	padding: 0;
+}
+body.css1000 .modalHeader .headerLogo { margin-left: -5px;}
+body.css1000 .modalHeader .modalClose {margin-right: 15px;}
+
+body.css1000 .modalList {	width: 100%;}
+
+body.css1000 .postSummary, body.css1000 .illustrationShadow {	height: 440px;}
+body.css1000 .postSummary .pad40 {	height: 360px;}
+
+body.css1000 .listProfileRight {	width: calc(100% - 50px);}
+
+body.css1000 .wikiSample {	width: calc(100% - 60px); padding: 0 30px;}
+body.css1000 .wikiSampleMask {	width: calc(100% - 60px); padding: 0 30px;}
+
+//////list
+body.css1000 .listContainer {
+width: calc(100% - 60px); padding: 0 30px;
+
+}
+
+//////list with filters in sidebar
+body.css1000 .modalList.withSidebar { 	width: 70%; padding: 0;}
+
+body.css1000 .listCriteria.criteriaSidebar {
+	width: calc(30% - 40px);
+	padding: 0;
+	margin: 0;
+}
+
+body.css1000 .modalList.withSidebar .modalItem.listProfile,
+body.css1000 .modalList.withSidebar .listTab .modalItem.listProfile,
+body.css1000 .modalList.withSidebar .modalItem.listPost {	
+	width: 100%;
+}

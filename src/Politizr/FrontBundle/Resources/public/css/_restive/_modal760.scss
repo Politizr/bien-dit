@@ -1,0 +1,95 @@
+@import "../_global/_colors";
+
+/// modal
+
+body.css760 .modalHeader {	
+	width: calc(100% - 50px); 
+	left: 0; 
+	padding: 0 38px 0 12px;
+	margin: 0;
+}
+body.css760 .modalHeader .headerLogo {background-color: #fff;}
+body.css760 .modalHeader .headerLogo a { margin : 0; background-color: #fff; padding-bottom: 12px}
+body.css760 .modalClose {margin-top : 15px;}
+
+body.css760 .listCriteria input { display: none; }
+
+body.css760 .modalList {	width: 100%; float: left; margin: 0 0 40px 0; padding: 0;}
+body.css760 .modal h1 { margin: 50px 0 0 0;}
+
+body.css760 .listPost {	
+	width: calc(100% - 40px);
+	padding: 0 20px;
+	margin-bottom: 50px;
+}
+body.css760 .postSummary, body.css760 .illustrationShadow {	height: 440px;}
+body.css760 .postSummaryTitle {	font-size: 34px; max-height: 5em;}
+body.css760 .postSummary .pad40 {	height: 360px;}
+body.css760 .listProfileRight {	width: calc(100% - 50px);}
+body.css760 .modalItem.listProfile {margin-bottom: 50px;}
+
+body.css760 .listPostFollow {margin-left: 20px;}
+
+body.css760 .wikiSample {	width: calc(100% - 40px); padding: 0 20px;}
+body.css760 .wikiSampleMask {	width: calc(100% - 40px); padding: 0 20px;}
+
+//////list
+
+body.css760 .listContainer {width: calc(100% - 40px); padding: 0 20px;}
+
+//////list with filters in sidebar
+
+body.css760 .modalList.withSidebar { float: left; width: 100%;}
+
+body.css760 .listCriteria.criteriaSidebar {
+	clear: none;
+	width: 100%;
+	padding: 0;
+	margin: 0 0 40px 0;
+	float: left;
+	text-align: center;
+}
+
+body.css760 .listCriteria.criteriaSidebar form, body.css760 .listCriteriaFormSubLevel {
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+}
+
+body.css760 .listCriteria.criteriaSidebar form:last-child , body.css760 .listCriteriaFormSubLevel:last-child {margin-bottom: 0;}
+
+body.css760 .listCriteria.criteriaSidebar form label {
+	clear: none;
+	float: none;
+	display: inline-block;
+	margin: 0 10px 10px 10px;
+}
+
+body.css760 .modalList.withSidebar .listTab, body.css760 .modalList.withSidebar .modalItem {
+	width: 100%;
+	float: none;
+	padding: 0;
+}
+
+body.css760 .modalList.withSidebar .modalItem.listProfile {
+	margin: 0 0 50px 0;
+	width: calc(100% - 40px);
+}
+
+// actions box error, succes, alert
+
+body.css760 #infoBoxHolder {
+	right: 0;
+	left: auto;
+}
+
+body.css760 .boxSuccess, body.css760 .boxError, body.css760 .boxAlert {
+	width: 190px;
+	right: 20px;
+	left:  auto;
+}
+
+body.css760 .notifBoxText {	
+	width: 160px;
+	-webkit-text-size-adjust: 100%;
+}
+

@@ -160,7 +160,8 @@
 }
 
 #profileBio {
-	padding: 20px 0;
+	padding: 40px 40px 20px 40px;
+	width: calc(100% - 80px);
 	background-color: $lightGrey;
 	float: left;
 	position: relative;
@@ -168,18 +169,75 @@
 	height: 360px;
 }
 
-#profileBio .paragraph {
-	padding: 20px 40px;
+#profileBio p {
+	padding: 0;
+	margin: 0 0 40px 0;
+	width: 100%;
+	font-size: 15px;
+	line-height: 200%;
+	display: inline-block;
+}
+
+#profileBio p a { color: $darkHighlight;}
+#profileBio p a:hover {color: $darkGrey;}
+
+#profileBio h1 {
+	padding: 0;
+	margin: 0 0 40px 0;
+	font-size: 20px;
+    line-height: 140%;
+    width: 100%;
+}
+#profileBio h1, #profileBio h1 b, #profileBio h1 i {
+    font-family: 'nerisblack';
+    font-style: normal;
+    font-weight: normal;
+}
+#profileBio h2 {
+	line-height: 200%;
+	font-size: 15px;
+	font-weight: normal;
+	font-style: italic;
+	margin: 0 0 40px 0;
+	padding: 0 0 0 16px;
+	border-left: solid 4px $highlight;
 	float: left;
-	width: 620px;
-	position: relative;
+}
+
+#profileBio blockquote {
+	font-family: 'Merriweather Bold';
+	font-weight: normal;	
+	line-height: 200%;
+	margin: 0 0 40px 0;
+	padding: 0;
+	font-size: 15px;
+	clear: both;
+	width: 100%;
+	display: inline-block;
+}
+
+#profileBio blockquote:before {
+	font-family: 'fontello';
+	content: "\e810";
+	float: left;
+	width: 100%;
+	color: $highlight;
+	font-size: 18px;
+}
+
+#profileBio ul {
+	margin: 0;
+	padding: 0 0 0 18px;
+	font-size: 15px;
+	line-height: 200%;
+	width: 100%;
 }
 
 #showCompleteBio {
 	position: absolute;
 	z-index: 1;
 	bottom: 0;
-	width: 100%;
+	width: calc(100% - 80px);
 	padding: 140px 0 40px 0;
 	text-align: center;
 	font-size: 10px;
@@ -200,7 +258,7 @@
 	display: none;
 	width: 100%;
 	float:left;
-	padding: 40px 0 20px 0;
+	padding: 20px 0;
 	text-align: center;
 	font-size: 10px;
 	font-family: 'nerisblack';	

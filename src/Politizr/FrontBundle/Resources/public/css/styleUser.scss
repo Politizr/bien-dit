@@ -2,7 +2,7 @@
 @import "_global/presets";
 @import "_global/colors";
 @import "_global/loader";
-@import "_global/form_u";
+@import "_global/form_user";
 @import "_global/notifications";
 
 @import "_layout/header";
@@ -20,5 +20,5 @@
 @import "_modules/helpers";
 @import "_modules/customEditor";
 
-@import "_global/restive1000_u";
-@import "_global/restive760_u";
+@import "styleUser760";
+@import "styleUser1000";
