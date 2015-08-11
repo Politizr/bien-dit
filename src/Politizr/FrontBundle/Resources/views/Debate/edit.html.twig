@@ -27,7 +27,6 @@
 
 
 {% block fixedActions %}
-    <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
     <div id="fixedActions">
         <div class="ajaxLoader" style="display: none;">
             <i class="iconSpin5 animateSpin"></i>
@@ -40,7 +39,6 @@
             <a action="debatePublish" subjectId="{{ debate.id }}"><i class="iconPublish"></i>publier</a>
         </div>
         <div class="actionDelete">
-            <!-- @todo html/css à prévoir & styler -->
             <a action="debateDelete" subjectId="{{ debate.id }}"><i class="iconCross"></i>supprimer</a>
         </div>
     </div>

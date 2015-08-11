@@ -7,15 +7,15 @@
     {% endif %}
     
     {{ form_rest(formComment) }}
-</form>
-<div class="actionsButtons withLoaderInside">
-    <div class="ajaxLoader" style="display: none;">
-        <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
+    <div class="actionsButtons withLoaderInside">
+        <div class="ajaxLoader" style="display: none;">
+            <i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div>
+        </div>
+        {% if app.user %}
+            <input type="button" action="createComment" value="&#xe82c; Publier">
+        {% else %}
+            <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
+        {% endif %}
+        <div class="cancel" action="closeComments">Annuler</div>
     </div>
-    {% if app.user %}
-        <input type="button" action="createComment" value="Publier">
-    {% else %}
-        <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
-    {% endif %}
-    <div class="cancel" action="closeComments">Annuler</div>
-</div>
+</form>
