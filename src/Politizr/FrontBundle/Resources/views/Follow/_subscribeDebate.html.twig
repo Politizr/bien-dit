@@ -1,18 +1,10 @@
-{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-{% if app.user %}
-    {% if not owner %}
-        {% if follower %}
-            <a action="followDebate" subjectId="{{ object.id }}" way="unfollow">
-                <i class="iconCross"></i>
-                Se désabonner
-            </a>
-        {% else %}
-            <a action="followDebate" subjectId="{{ object.id }}" way="follow">
-                <i class="iconCheckInSquare"></i>
-                S'abonner
-            </a>
-        {% endif %}
-    {% endif %}    
-{% else %}
-    <a href="{{ path('Inscription') }}">S'abonner</a>
+{% if context == 'list' %}
+    <div class="listPostFollow">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
+    </div>
+{% elseif context == 'detail' %}
+    <div class="{% if follower %}actionUnfollow{% else %}actionFollow{% endif %} withLoaderInside">
+        {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
+    </div>
 {% endif %}

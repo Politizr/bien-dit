@@ -629,16 +629,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     * Follow / unfollow debate
      *
-     *  @param $debate       PDDebate
-     *
-     *  @return string
+     * @param PDDebate $debate
+     * @param string $context list | detail
+     * @return string
      */
-    public function linkSubscribeDebate(PDDebate $debate)
+    public function linkSubscribeDebate(PDDebate $debate, $context = 'list')
     {
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$context = '.print_r($context, true));
 
         $owner = false;
         $follower = false;
@@ -661,6 +662,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
             array(
+                'context' => $context,
                 'object' => $debate,
                 'owner' => $owner,
                 'follower' => $follower
@@ -668,7 +670,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
         );
 
         return $html;
-
     }
 
     /**

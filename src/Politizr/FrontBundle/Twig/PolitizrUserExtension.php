@@ -248,15 +248,17 @@ class PolitizrUserExtension extends \Twig_Extension
 
 
     /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     * Follow / unfollow user
      *
      * @param PUser $user
+     * @param string $context list | detail
      * @return string
      */
-    public function linkSubscribeUser(PUser $user)
+    public function linkSubscribeUser(PUser $user, $context = 'list')
     {
-        // $this->logger->info('*** linkSubscribeDebate');
+        // $this->logger->info('*** linkSubscribeUser');
         // $this->logger->info('$debate = '.print_r($user, true));
+        // $this->logger->info('$context = '.print_r($context, true));
 
         $follower = false;
         if ($this->user) {
@@ -274,13 +276,13 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribeUser.html.twig',
             array(
+                'context' => $context,
                 'object' => $user,
                 'follower' => $follower
             )
         );
 
         return $html;
-
     }
 
     /**
