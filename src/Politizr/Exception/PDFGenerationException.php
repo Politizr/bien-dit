@@ -2,7 +2,11 @@
 
 namespace Politizr\Exception;
 
-class PDFGenerationException extends \Exception implements PDFGenerationExceptionInterface
+/**
+ *
+ * @author Lionel Bouzonville
+ */
+class PDFGenerationException extends PolitizrException implements PDFGenerationExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {

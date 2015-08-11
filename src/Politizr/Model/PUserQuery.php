@@ -61,6 +61,8 @@ SELECT DISTINCT
     p_u_status_id,
     file_name,
     back_file_name,
+    copyright,
+    with_shadow,
     gender,
     firstname,
     name,

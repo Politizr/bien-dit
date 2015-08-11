@@ -67,6 +67,8 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('p_u_status_id', 'PUStatusId', 'INTEGER', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('back_file_name', 'BackFileName', 'VARCHAR', false, 150, null);
+        $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
         $this->addColumn('gender', 'Gender', 'ENUM', false, null, null);
         $this->getColumn('gender', false)->setValueSet(array (
   0 => 'Madame',

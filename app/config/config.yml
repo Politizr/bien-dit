@@ -402,6 +402,9 @@ bazinga_faker:
             custom_formatters:
                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
+                WithShadow:             { method: boolean, parameters: [ 80 ] }
+                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 

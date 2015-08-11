@@ -67,6 +67,8 @@ class PUserTableMap extends TableMap
         $this->addForeignKey('p_u_status_id', 'PUStatusId', 'INTEGER', 'p_u_status', 'id', true, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('back_file_name', 'BackFileName', 'VARCHAR', false, 150, null);
+        $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
         $this->addColumn('gender', 'Gender', 'ENUM', false, null, null);
         $this->getColumn('gender', false)->setValueSet(array (
   0 => 'Madame',
@@ -118,6 +120,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDDComments');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDRComments');
+        $this->addRelation('PMAbuseReporting', 'Politizr\\Model\\PMAbuseReporting', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAbuseReportings');
         $this->addRelation('PUFollowURelatedByPUserId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserId');
         $this->addRelation('PUFollowURelatedByPUserFollowerId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_follower_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserFollowerId');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');

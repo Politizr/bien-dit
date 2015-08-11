@@ -541,6 +541,8 @@ CREATE TABLE `p_user`
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `back_file_name` VARCHAR(150),
+    `copyright` TEXT,
+    `with_shadow` TINYINT(1),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
@@ -1158,6 +1160,48 @@ CREATE TABLE `p_d_d_tagged_t`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- p_m_abuse_reporting
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_abuse_reporting`;
+
+CREATE TABLE `p_m_abuse_reporting`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_abuse_reporting_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_abuse_reporting_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_app_exception
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_app_exception`;
+
+CREATE TABLE `p_m_app_exception`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `file` VARCHAR(250),
+    `line` INTEGER,
+    `code` INTEGER,
+    `message` VARCHAR(250),
+    `stack_trace` LONGTEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- p_tag_archive
 -- ---------------------------------------------------------------------
 
@@ -1280,6 +1324,8 @@ CREATE TABLE `p_user_archive`
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `back_file_name` VARCHAR(150),
+    `copyright` TEXT,
+    `with_shadow` TINYINT(1),
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
@@ -1473,6 +1519,25 @@ CREATE TABLE `p_d_d_tagged_t_archive`
     PRIMARY KEY (`id`),
     INDEX `p_d_d_tagged_t_archive_I_1` (`p_d_debate_id`),
     INDEX `p_d_d_tagged_t_archive_I_2` (`p_tag_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_abuse_reporting_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_abuse_reporting_archive`;
+
+CREATE TABLE `p_m_abuse_reporting_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_abuse_reporting_archive_I_1` (`p_user_id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

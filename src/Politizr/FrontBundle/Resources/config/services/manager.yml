@@ -26,3 +26,8 @@ services:
     politizr.manager.notification:
         class: Politizr\FrontBundle\Lib\Manager\NotificationManager
         arguments: [ @logger ]
+
+    politizr.manager.monitoring:
+        class: Politizr\FrontBundle\Lib\Manager\MonitoringManager
+        arguments: [ @logger ]
+

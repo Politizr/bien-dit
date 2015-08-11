@@ -3,11 +3,11 @@
 namespace Politizr\Exception;
 
 /**
- * @todo refactoring rename to ~ BoxErrorException
+ * Politizr exception
  *
  * @author Lionel Bouzonville
  */
-class FormValidationException extends PolitizrException implements FormValidationExceptionInterface
+class PolitizrException extends \Exception implements PolitizrExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {

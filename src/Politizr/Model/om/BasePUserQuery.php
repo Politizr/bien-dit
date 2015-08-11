@@ -19,6 +19,7 @@ use Politizr\Model\PDDComment;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
 use Politizr\Model\PQOrganization;
@@ -70,6 +71,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
+ * @method PUserQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
+ * @method PUserQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -116,6 +119,8 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByBackFileName() Group by the back_file_name column
+ * @method PUserQuery groupByCopyright() Group by the copyright column
+ * @method PUserQuery groupByWithShadow() Group by the with_shadow column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
  * @method PUserQuery groupByName() Group by the name column
@@ -217,6 +222,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
  *
+ * @method PUserQuery leftJoinPMAbuseReporting($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAbuseReporting relation
+ * @method PUserQuery rightJoinPMAbuseReporting($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAbuseReporting relation
+ * @method PUserQuery innerJoinPMAbuseReporting($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAbuseReporting relation
+ *
  * @method PUserQuery leftJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserId relation
  * @method PUserQuery innerJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a INNER JOIN clause to the query using the PUFollowURelatedByPUserId relation
@@ -252,6 +261,8 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
+ * @method PUser findOneByCopyright(string $copyright) Return the first PUser filtered by the copyright column
+ * @method PUser findOneByWithShadow(boolean $with_shadow) Return the first PUser filtered by the with_shadow column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
  * @method PUser findOneByName(string $name) Return the first PUser filtered by the name column
@@ -298,6 +309,8 @@ use Politizr\Model\PUserQuery;
  * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
+ * @method array findByCopyright(string $copyright) Return PUser objects filtered by the copyright column
+ * @method array findByWithShadow(boolean $with_shadow) Return PUser objects filtered by the with_shadow column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
  * @method array findByName(string $name) Return PUser objects filtered by the name column
@@ -430,7 +443,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `with_shadow`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1385,6 +1398,62 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::BACK_FILE_NAME, $backFileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the copyright column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCopyright('fooValue');   // WHERE copyright = 'fooValue'
+     * $query->filterByCopyright('%fooValue%'); // WHERE copyright LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $copyright The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByCopyright($copyright = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($copyright)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $copyright)) {
+                $copyright = str_replace('*', '%', $copyright);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::COPYRIGHT, $copyright, $comparison);
+    }
+
+    /**
+     * Filter the query on the with_shadow column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWithShadow(true); // WHERE with_shadow = true
+     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
+     * </code>
+     *
+     * @param     boolean|string $withShadow The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByWithShadow($withShadow = null, $comparison = null)
+    {
+        if (is_string($withShadow)) {
+            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**
@@ -3445,6 +3514,80 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPDRComment($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRComment', '\Politizr\Model\PDRCommentQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAbuseReporting object
+     *
+     * @param   PMAbuseReporting|PropelObjectCollection $pMAbuseReporting  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAbuseReporting($pMAbuseReporting, $comparison = null)
+    {
+        if ($pMAbuseReporting instanceof PMAbuseReporting) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAbuseReporting->getPUserId(), $comparison);
+        } elseif ($pMAbuseReporting instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAbuseReportingQuery()
+                ->filterByPrimaryKeys($pMAbuseReporting->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAbuseReporting() only accepts arguments of type PMAbuseReporting or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAbuseReporting relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAbuseReporting($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAbuseReporting');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAbuseReporting');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAbuseReporting relation PMAbuseReporting object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAbuseReportingQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAbuseReportingQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAbuseReporting($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAbuseReporting', '\Politizr\Model\PMAbuseReportingQuery');
     }
 
     /**

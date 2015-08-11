@@ -3,10 +3,10 @@
 namespace Politizr\Exception;
 
 /**
- * Interface for my bundle exceptions.
+ * Interface for my Politizr exceptions.
  *
  * @author Lionel Bouzonville
  */
-interface FormValidationExceptionInterface
+interface PolitizrExceptionInterface
 {
 }

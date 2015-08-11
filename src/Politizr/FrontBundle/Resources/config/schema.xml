@@ -391,7 +391,11 @@
         <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
+
         <column name="back_file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
+        <column name="with_shadow" type="boolean" />
+
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="firstname" type="varchar" size="150" />
         <column name="name" type="varchar" size="150" />
@@ -830,5 +834,38 @@
         </foreign-key>
     </table>
 
+
+
+
+    <table name="p_m_abuse_reporting">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+
+        <column name="message" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+    <table name="p_m_app_exception">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="file" type="varchar" size="250" />
+        <column name="line" type="integer" />
+
+        <column name="code" type="integer" />
+        <column name="message" type="varchar" size="250" />
+
+        <column name="stack_trace" type="clob" />      
+    </table>
 
 </database>
