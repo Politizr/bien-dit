@@ -92,7 +92,7 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notification = PUNotificationQuery::create()->findPk($id);
-        $this->notificationManager->checkUserNotification($id);
+        $this->notificationManager->checkUserNotification($notification);
 
         return true;
     }
