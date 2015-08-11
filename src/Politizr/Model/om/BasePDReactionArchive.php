@@ -157,6 +157,30 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * The value for the slug field.
+     * @var        string
+     */
+    protected $slug;
+
+    /**
+     * The value for the tree_left field.
+     * @var        int
+     */
+    protected $tree_left;
+
+    /**
+     * The value for the tree_right field.
+     * @var        int
+     */
+    protected $tree_right;
+
+    /**
+     * The value for the tree_level field.
+     * @var        int
+     */
+    protected $tree_level;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -499,6 +523,50 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
 
         return $dt->format($format);
 
+    }
+
+    /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+
+        return $this->slug;
+    }
+
+    /**
+     * Get the [tree_left] column value.
+     *
+     * @return int
+     */
+    public function getTreeLeft()
+    {
+
+        return $this->tree_left;
+    }
+
+    /**
+     * Get the [tree_right] column value.
+     *
+     * @return int
+     */
+    public function getTreeRight()
+    {
+
+        return $this->tree_right;
+    }
+
+    /**
+     * Get the [tree_level] column value.
+     *
+     * @return int
+     */
+    public function getTreeLevel()
+    {
+
+        return $this->tree_level;
     }
 
     /**
@@ -979,6 +1047,90 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
+     * Set the value of [slug] column.
+     *
+     * @param  string $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
+     * Set the value of [tree_left] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeLeft($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_left !== $v) {
+            $this->tree_left = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEFT;
+        }
+
+
+        return $this;
+    } // setTreeLeft()
+
+    /**
+     * Set the value of [tree_right] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeRight($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_right !== $v) {
+            $this->tree_right = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_RIGHT;
+        }
+
+
+        return $this;
+    } // setTreeRight()
+
+    /**
+     * Set the value of [tree_level] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeLevel($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_level !== $v) {
+            $this->tree_level = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEVEL;
+        }
+
+
+        return $this;
+    } // setTreeLevel()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1060,7 +1212,11 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
             $this->created_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->updated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->archived_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->slug = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->tree_left = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
+            $this->tree_right = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->tree_level = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->archived_at = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1070,7 +1226,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 20; // 20 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 24; // 24 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReactionArchive object", $e);
@@ -1350,6 +1506,18 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
+        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_left`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_right`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_level`';
+        }
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -1420,6 +1588,18 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`tree_left`':
+                        $stmt->bindValue($identifier, $this->tree_left, PDO::PARAM_INT);
+                        break;
+                    case '`tree_right`':
+                        $stmt->bindValue($identifier, $this->tree_right, PDO::PARAM_INT);
+                        break;
+                    case '`tree_level`':
+                        $stmt->bindValue($identifier, $this->tree_level, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1609,6 +1789,18 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 return $this->getUpdatedAt();
                 break;
             case 19:
+                return $this->getSlug();
+                break;
+            case 20:
+                return $this->getTreeLeft();
+                break;
+            case 21:
+                return $this->getTreeRight();
+                break;
+            case 22:
+                return $this->getTreeLevel();
+                break;
+            case 23:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1658,7 +1850,11 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[16] => $this->getOnline(),
             $keys[17] => $this->getCreatedAt(),
             $keys[18] => $this->getUpdatedAt(),
-            $keys[19] => $this->getArchivedAt(),
+            $keys[19] => $this->getSlug(),
+            $keys[20] => $this->getTreeLeft(),
+            $keys[21] => $this->getTreeRight(),
+            $keys[22] => $this->getTreeLevel(),
+            $keys[23] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1756,6 +1952,18 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->setUpdatedAt($value);
                 break;
             case 19:
+                $this->setSlug($value);
+                break;
+            case 20:
+                $this->setTreeLeft($value);
+                break;
+            case 21:
+                $this->setTreeRight($value);
+                break;
+            case 22:
+                $this->setTreeLevel($value);
+                break;
+            case 23:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1801,7 +2009,11 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
         if (array_key_exists($keys[17], $arr)) $this->setCreatedAt($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setUpdatedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setArchivedAt($arr[$keys[19]]);
+        if (array_key_exists($keys[19], $arr)) $this->setSlug($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setTreeLeft($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setTreeRight($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setTreeLevel($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setArchivedAt($arr[$keys[23]]);
     }
 
     /**
@@ -1832,6 +2044,10 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) $criteria->add(PDReactionArchivePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) $criteria->add(PDReactionArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) $criteria->add(PDReactionArchivePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) $criteria->add(PDReactionArchivePeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) $criteria->add(PDReactionArchivePeer::TREE_LEFT, $this->tree_left);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) $criteria->add(PDReactionArchivePeer::TREE_RIGHT, $this->tree_right);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) $criteria->add(PDReactionArchivePeer::TREE_LEVEL, $this->tree_level);
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) $criteria->add(PDReactionArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1914,6 +2130,10 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
+        $copyObj->setTreeLeft($this->getTreeLeft());
+        $copyObj->setTreeRight($this->getTreeRight());
+        $copyObj->setTreeLevel($this->getTreeLevel());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1985,6 +2205,10 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->online = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->slug = null;
+        $this->tree_left = null;
+        $this->tree_right = null;
+        $this->tree_level = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

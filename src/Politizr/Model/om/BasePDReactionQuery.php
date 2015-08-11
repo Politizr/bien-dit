@@ -1680,89 +1680,6 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $stmt;
     }
 
-    // archivable behavior
-
-    /**
-     * Copy the data of the objects satisfying the query into PDReactionArchive archive objects.
-     * The archived objects are then saved.
-     * If any of the objects has already been archived, the archived object
-     * is updated and not duplicated.
-     * Warning: This termination methods issues 2n+1 queries.
-     *
-     * @param      PropelPDO $con	Connection to use.
-     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
-     *               Set to false if the identity map matters.
-     *               Set to true (default) to use less memory.
-     *
-     * @return     int the number of archived objects
-     * @throws     PropelException
-     */
-    public function archive($con = null, $useLittleMemory = true)
-    {
-        $totalArchivedObjects = 0;
-        $criteria = clone $this;
-        // prepare the query
-        $criteria->setWith(array());
-        if ($useLittleMemory) {
-            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
-        }
-        $con->beginTransaction();
-        try {
-            // archive all results one by one
-            foreach ($criteria->find($con) as $object) {
-                $object->archive($con);
-                $totalArchivedObjects++;
-            }
-            $con->commit();
-        } catch (Exception $e) {
-            $con->rollBack();
-            throw $e;
-        }
-
-        return $totalArchivedObjects;
-    }
-
-    /**
-     * Enable/disable auto-archiving on delete for the next query.
-     *
-     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
-     */
-    public function setArchiveOnDelete($archiveOnDelete)
-    {
-        $this->archiveOnDelete = $archiveOnDelete;
-    }
-
-    /**
-     * Delete records matching the current query without archiving them.
-     *
-     * @param      PropelPDO $con	Connection to use.
-     *
-     * @return integer the number of deleted rows
-     */
-    public function deleteWithoutArchive($con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
-    /**
-     * Delete all records without archiving them.
-     *
-     * @param      PropelPDO $con	Connection to use.
-     *
-     * @return integer the number of deleted rows
-     */
-    public function deleteAllWithoutArchive($con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->deleteAll($con);
-    }
-
     // nested_set behavior
 
     /**
@@ -1964,6 +1881,89 @@ abstract class BasePDReactionQuery extends ModelCriteria
             ->inTree($scope)
             ->orderByBranch()
             ->find($con);
+    }
+
+    // archivable behavior
+
+    /**
+     * Copy the data of the objects satisfying the query into PDReactionArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
+     *
+     * @return     int the number of archived objects
+     * @throws     PropelException
+     */
+    public function archive($con = null, $useLittleMemory = true)
+    {
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PDReactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
     }
 
     // extend behavior

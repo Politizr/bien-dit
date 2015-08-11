@@ -34,6 +34,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PDDebateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDebateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PDDebateArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PDDebateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDDebateArchiveQuery groupById() Group by the id column
@@ -53,6 +54,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByOnline() Group by the online column
  * @method PDDebateArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDDebateArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PDDebateArchiveQuery groupBySlug() Group by the slug column
  * @method PDDebateArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDDebateArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -78,6 +80,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByOnline(boolean $online) Return the first PDDebateArchive filtered by the online column
  * @method PDDebateArchive findOneByCreatedAt(string $created_at) Return the first PDDebateArchive filtered by the created_at column
  * @method PDDebateArchive findOneByUpdatedAt(string $updated_at) Return the first PDDebateArchive filtered by the updated_at column
+ * @method PDDebateArchive findOneBySlug(string $slug) Return the first PDDebateArchive filtered by the slug column
  * @method PDDebateArchive findOneByArchivedAt(string $archived_at) Return the first PDDebateArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
@@ -97,6 +100,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByOnline(boolean $online) Return PDDebateArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PDDebateArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDebateArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PDDebateArchive objects filtered by the slug column
  * @method array findByArchivedAt(string $archived_at) Return PDDebateArchive objects filtered by the archived_at column
  */
 abstract class BasePDDebateArchiveQuery extends ModelCriteria
@@ -204,7 +208,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -884,6 +888,35 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::SLUG, $slug, $comparison);
     }
 
     /**

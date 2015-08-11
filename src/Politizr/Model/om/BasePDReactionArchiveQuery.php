@@ -36,6 +36,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PDReactionArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PDReactionArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PDReactionArchiveQuery orderByTreeLeft($order = Criteria::ASC) Order by the tree_left column
+ * @method PDReactionArchiveQuery orderByTreeRight($order = Criteria::ASC) Order by the tree_right column
+ * @method PDReactionArchiveQuery orderByTreeLevel($order = Criteria::ASC) Order by the tree_level column
  * @method PDReactionArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDReactionArchiveQuery groupById() Group by the id column
@@ -57,6 +61,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByOnline() Group by the online column
  * @method PDReactionArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PDReactionArchiveQuery groupBySlug() Group by the slug column
+ * @method PDReactionArchiveQuery groupByTreeLeft() Group by the tree_left column
+ * @method PDReactionArchiveQuery groupByTreeRight() Group by the tree_right column
+ * @method PDReactionArchiveQuery groupByTreeLevel() Group by the tree_level column
  * @method PDReactionArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PDReactionArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -84,6 +92,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByOnline(boolean $online) Return the first PDReactionArchive filtered by the online column
  * @method PDReactionArchive findOneByCreatedAt(string $created_at) Return the first PDReactionArchive filtered by the created_at column
  * @method PDReactionArchive findOneByUpdatedAt(string $updated_at) Return the first PDReactionArchive filtered by the updated_at column
+ * @method PDReactionArchive findOneBySlug(string $slug) Return the first PDReactionArchive filtered by the slug column
+ * @method PDReactionArchive findOneByTreeLeft(int $tree_left) Return the first PDReactionArchive filtered by the tree_left column
+ * @method PDReactionArchive findOneByTreeRight(int $tree_right) Return the first PDReactionArchive filtered by the tree_right column
+ * @method PDReactionArchive findOneByTreeLevel(int $tree_level) Return the first PDReactionArchive filtered by the tree_level column
  * @method PDReactionArchive findOneByArchivedAt(string $archived_at) Return the first PDReactionArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDReactionArchive objects filtered by the id column
@@ -105,6 +117,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByOnline(boolean $online) Return PDReactionArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PDReactionArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReactionArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PDReactionArchive objects filtered by the slug column
+ * @method array findByTreeLeft(int $tree_left) Return PDReactionArchive objects filtered by the tree_left column
+ * @method array findByTreeRight(int $tree_right) Return PDReactionArchive objects filtered by the tree_right column
+ * @method array findByTreeLevel(int $tree_level) Return PDReactionArchive objects filtered by the tree_level column
  * @method array findByArchivedAt(string $archived_at) Return PDReactionArchive objects filtered by the archived_at column
  */
 abstract class BasePDReactionArchiveQuery extends ModelCriteria
@@ -212,7 +228,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -976,6 +992,161 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query on the tree_left column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTreeLeft(1234); // WHERE tree_left = 1234
+     * $query->filterByTreeLeft(array(12, 34)); // WHERE tree_left IN (12, 34)
+     * $query->filterByTreeLeft(array('min' => 12)); // WHERE tree_left >= 12
+     * $query->filterByTreeLeft(array('max' => 12)); // WHERE tree_left <= 12
+     * </code>
+     *
+     * @param     mixed $treeLeft The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByTreeLeft($treeLeft = null, $comparison = null)
+    {
+        if (is_array($treeLeft)) {
+            $useMinMax = false;
+            if (isset($treeLeft['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_LEFT, $treeLeft['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($treeLeft['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_LEFT, $treeLeft['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::TREE_LEFT, $treeLeft, $comparison);
+    }
+
+    /**
+     * Filter the query on the tree_right column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTreeRight(1234); // WHERE tree_right = 1234
+     * $query->filterByTreeRight(array(12, 34)); // WHERE tree_right IN (12, 34)
+     * $query->filterByTreeRight(array('min' => 12)); // WHERE tree_right >= 12
+     * $query->filterByTreeRight(array('max' => 12)); // WHERE tree_right <= 12
+     * </code>
+     *
+     * @param     mixed $treeRight The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByTreeRight($treeRight = null, $comparison = null)
+    {
+        if (is_array($treeRight)) {
+            $useMinMax = false;
+            if (isset($treeRight['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_RIGHT, $treeRight['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($treeRight['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_RIGHT, $treeRight['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::TREE_RIGHT, $treeRight, $comparison);
+    }
+
+    /**
+     * Filter the query on the tree_level column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTreeLevel(1234); // WHERE tree_level = 1234
+     * $query->filterByTreeLevel(array(12, 34)); // WHERE tree_level IN (12, 34)
+     * $query->filterByTreeLevel(array('min' => 12)); // WHERE tree_level >= 12
+     * $query->filterByTreeLevel(array('max' => 12)); // WHERE tree_level <= 12
+     * </code>
+     *
+     * @param     mixed $treeLevel The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByTreeLevel($treeLevel = null, $comparison = null)
+    {
+        if (is_array($treeLevel)) {
+            $useMinMax = false;
+            if (isset($treeLevel['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_LEVEL, $treeLevel['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($treeLevel['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::TREE_LEVEL, $treeLevel['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::TREE_LEVEL, $treeLevel, $comparison);
     }
 
     /**

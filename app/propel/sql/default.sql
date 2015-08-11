@@ -1172,10 +1172,12 @@ CREATE TABLE `p_tag_archive`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_tag_archive_I_1` (`p_t_tag_type_id`),
-    INDEX `p_tag_archive_I_2` (`p_user_id`)
+    INDEX `p_tag_archive_I_2` (`p_user_id`),
+    INDEX `p_tag_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1194,10 +1196,12 @@ CREATE TABLE `p_r_badge_archive`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_r_badge_archive_I_1` (`p_r_badge_type_id`),
-    INDEX `p_r_badge_archive_I_2` (`p_r_badge_metal_id`)
+    INDEX `p_r_badge_archive_I_2` (`p_r_badge_metal_id`),
+    INDEX `p_r_badge_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1355,9 +1359,11 @@ CREATE TABLE `p_d_debate_archive`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_d_debate_archive_I_1` (`p_user_id`)
+    INDEX `p_d_debate_archive_I_1` (`p_user_id`),
+    INDEX `p_d_debate_archive_I_2` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1387,10 +1393,15 @@ CREATE TABLE `p_d_reaction_archive`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `tree_left` INTEGER,
+    `tree_right` INTEGER,
+    `tree_level` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_d_reaction_archive_I_1` (`p_user_id`),
-    INDEX `p_d_reaction_archive_I_2` (`p_d_debate_id`)
+    INDEX `p_d_reaction_archive_I_2` (`p_d_debate_id`),
+    INDEX `p_d_reaction_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

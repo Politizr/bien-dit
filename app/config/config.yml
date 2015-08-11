@@ -406,7 +406,7 @@ bazinga_faker:
                 Name:                   { method: lastname }
 
                 Subtitle:               { method: realText, parameters: [ 75 ] }
-                Biography:              { method: paragraphs, parameters: [ 4, true ] }
+                Biography:              { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
 
                 Website:                { method: url }
                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }

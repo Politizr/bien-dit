@@ -24,6 +24,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PTagArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PTagArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PTagArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PTagArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PTagArchiveQuery groupById() Group by the id column
@@ -33,6 +34,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery groupByOnline() Group by the online column
  * @method PTagArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PTagArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PTagArchiveQuery groupBySlug() Group by the slug column
  * @method PTagArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PTagArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -48,6 +50,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOneByOnline(boolean $online) Return the first PTagArchive filtered by the online column
  * @method PTagArchive findOneByCreatedAt(string $created_at) Return the first PTagArchive filtered by the created_at column
  * @method PTagArchive findOneByUpdatedAt(string $updated_at) Return the first PTagArchive filtered by the updated_at column
+ * @method PTagArchive findOneBySlug(string $slug) Return the first PTagArchive filtered by the slug column
  * @method PTagArchive findOneByArchivedAt(string $archived_at) Return the first PTagArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PTagArchive objects filtered by the id column
@@ -57,6 +60,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method array findByOnline(boolean $online) Return PTagArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PTagArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PTagArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PTagArchive objects filtered by the slug column
  * @method array findByArchivedAt(string $archived_at) Return PTagArchive objects filtered by the archived_at column
  */
 abstract class BasePTagArchiveQuery extends ModelCriteria
@@ -164,7 +168,7 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -520,6 +524,35 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::SLUG, $slug, $comparison);
     }
 
     /**

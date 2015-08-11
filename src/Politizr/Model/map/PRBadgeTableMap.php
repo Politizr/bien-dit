@@ -83,16 +83,6 @@ class PRBadgeTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
-            'archivable' =>  array (
-  'archive_table' => '',
-  'archive_phpname' => NULL,
-  'archive_class' => '',
-  'log_archived_at' => 'true',
-  'archived_at_column' => 'archived_at',
-  'archive_on_insert' => 'false',
-  'archive_on_update' => 'false',
-  'archive_on_delete' => 'true',
-),
             'sluggable' =>  array (
   'add_cleanup' => 'true',
   'slug_column' => 'slug',
@@ -102,6 +92,16 @@ class PRBadgeTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
 ),
             'event' =>  array (
 ),

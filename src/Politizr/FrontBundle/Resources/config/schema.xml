@@ -4,10 +4,10 @@
     <table name="p_tag">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
@@ -40,10 +40,10 @@
     <table name="p_r_badge">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_r_badge_type_id" type="integer" required="true" />
@@ -678,10 +678,10 @@
     <table name="p_d_debate">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="archivable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />
@@ -714,7 +714,6 @@
     <table name="p_d_reaction">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
@@ -722,6 +721,7 @@
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_d_debate_id" />
         </behavior>
+        <behavior name="archivable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />

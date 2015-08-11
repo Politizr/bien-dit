@@ -25,7 +25,7 @@ Politizr\Model\PUser:
         birthday:               1954-08-12
 
         subtitle:               Président de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -59,7 +59,7 @@ Politizr\Model\PUser:
         birthday:               1955-01-28
 
         subtitle:               Ex-Président de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -96,7 +96,7 @@ Politizr\Model\PUser:
         name:                   Abad
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -122,7 +122,7 @@ Politizr\Model\PUser:
         name:                   Abeille
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -148,7 +148,7 @@ Politizr\Model\PUser:
         name:                   Aboucar
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -174,7 +174,7 @@ Politizr\Model\PUser:
         name:                   Aboud
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -200,7 +200,7 @@ Politizr\Model\PUser:
         name:                   Accoyer
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -226,7 +226,7 @@ Politizr\Model\PUser:
         name:                   Adam
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -249,7 +249,7 @@ Politizr\Model\PUser:
         name:                   Alaux
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -275,7 +275,7 @@ Politizr\Model\PUser:
         name:                   Alauzet
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -301,7 +301,7 @@ Politizr\Model\PUser:
         name:                   Albarello
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -327,7 +327,7 @@ Politizr\Model\PUser:
         name:                   Allain
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -352,7 +352,7 @@ Politizr\Model\PUser:
         name:                   Allossery
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -377,7 +377,7 @@ Politizr\Model\PUser:
         name:                   Ameline
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -402,7 +402,7 @@ Politizr\Model\PUser:
         name:                   Amirshahi
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -427,7 +427,7 @@ Politizr\Model\PUser:
         name:                   André
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -452,7 +452,7 @@ Politizr\Model\PUser:
         name:                   Andrieux
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -477,7 +477,7 @@ Politizr\Model\PUser:
         name:                   Apparu
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -502,7 +502,7 @@ Politizr\Model\PUser:
         name:                   Appéré
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -527,7 +527,7 @@ Politizr\Model\PUser:
         name:                   Arribagé
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -552,7 +552,7 @@ Politizr\Model\PUser:
         name:                   Asensi
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>
@@ -577,7 +577,7 @@ Politizr\Model\PUser:
         name:                   Assaf
 
         subtitle:               Député de la République Française
-        biography:              <?php $faker('paragraphs', 4, true); ?>
+        biography:              <?php $faker('lorem', 50, 10, 5, 2, 2, 0, 0, 0, 0) ?>
 
         website:                <?php $faker('url'); ?>
         twitter:                <?php $faker('lexify', 'https://twitter.com/??????'); ?>

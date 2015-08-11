@@ -227,9 +227,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     protected $alreadyInClearAllReferencesDeep = false;
 
-    // archivable behavior
-    protected $archiveOnDelete = true;
-
     // nested_set behavior
 
     /**
@@ -250,6 +247,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     protected $aNestedSetParent = null;
 
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1322,6 +1322,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $deleteQuery = PDReactionQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // nested_set behavior
+            if ($this->isRoot()) {
+                throw new PropelException('Deletion of a root node is disabled for nested sets. Use PDReactionPeer::deleteTree($scope) instead to delete an entire tree');
+            }
+
+            if ($this->isInTree()) {
+                $this->deleteDescendants($con);
+            }
+
             // archivable behavior
             if ($ret) {
                 if ($this->archiveOnDelete) {
@@ -1330,15 +1339,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     $deleteQuery->setArchiveOnDelete(false);
                     $this->archiveOnDelete = true;
                 }
-            }
-
-            // nested_set behavior
-            if ($this->isRoot()) {
-                throw new PropelException('Deletion of a root node is disabled for nested sets. Use PDReactionPeer::deleteTree($scope) instead to delete an entire tree');
-            }
-
-            if ($this->isInTree()) {
-                $this->deleteDescendants($con);
             }
 
             if ($ret) {
@@ -2811,128 +2811,6 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         return $this;
     }
 
-    // archivable behavior
-
-    /**
-     * Get an archived version of the current object.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PDReactionArchive An archive object, or null if the current object was never archived
-     */
-    public function getArchive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            return null;
-        }
-        $archive = PDReactionArchiveQuery::create()
-            ->filterByPrimaryKey($this->getPrimaryKey())
-            ->findOne($con);
-
-        return $archive;
-    }
-    /**
-     * Copy the data of the current object into a $archiveTablePhpName archive object.
-     * The archived object is then saved.
-     * If the current object has already been archived, the archived object
-     * is updated and not duplicated.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object is new
-     *
-     * @return     PDReactionArchive The archive object based on this object
-     */
-    public function archive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
-        }
-        if (!$archive = $this->getArchive($con)) {
-            $archive = new PDReactionArchive();
-            $archive->setPrimaryKey($this->getPrimaryKey());
-        }
-        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
-        $archive->setArchivedAt(time());
-        $archive->save($con);
-
-        return $archive;
-    }
-
-    /**
-     * Revert the the current object to the state it had when it was last archived.
-     * The object must be saved afterwards if the changes must persist.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object has no corresponding archive.
-     *
-     * @return PDReaction The current object (for fluent API support)
-     */
-    public function restoreFromArchive(PropelPDO $con = null)
-    {
-        if (!$archive = $this->getArchive($con)) {
-            throw new PropelException('The current object has never been archived and cannot be restored');
-        }
-        $this->populateFromArchive($archive);
-
-        return $this;
-    }
-
-    /**
-     * Populates the the current object based on a $archiveTablePhpName archive object.
-     *
-     * @param      PDReactionArchive $archive An archived object based on the same class
-      * @param      Boolean $populateAutoIncrementPrimaryKeys
-     *               If true, autoincrement columns are copied from the archive object.
-     *               If false, autoincrement columns are left intact.
-      *
-     * @return     PDReaction The current object (for fluent API support)
-     */
-    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
-        if ($populateAutoIncrementPrimaryKeys) {
-            $this->setId($archive->getId());
-        }
-        $this->setPUserId($archive->getPUserId());
-        $this->setPDDebateId($archive->getPDDebateId());
-        $this->setParentReactionId($archive->getParentReactionId());
-        $this->setTitle($archive->getTitle());
-        $this->setFileName($archive->getFileName());
-        $this->setCopyright($archive->getCopyright());
-        $this->setWithShadow($archive->getWithShadow());
-        $this->setDescription($archive->getDescription());
-        $this->setNotePos($archive->getNotePos());
-        $this->setNoteNeg($archive->getNoteNeg());
-        $this->setNbViews($archive->getNbViews());
-        $this->setPublished($archive->getPublished());
-        $this->setPublishedAt($archive->getPublishedAt());
-        $this->setPublishedBy($archive->getPublishedBy());
-        $this->setFavorite($archive->getFavorite());
-        $this->setOnline($archive->getOnline());
-        $this->setCreatedAt($archive->getCreatedAt());
-        $this->setUpdatedAt($archive->getUpdatedAt());
-        $this->setSlug($archive->getSlug());
-        $this->setTreeLeft($archive->getTreeLeft());
-        $this->setTreeRight($archive->getTreeRight());
-        $this->setTreeLevel($archive->getTreeLevel());
-
-        return $this;
-    }
-
-    /**
-     * Removes the object from the database without archiving it.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PDReaction The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
     // sluggable behavior
 
     /**
@@ -3972,6 +3850,128 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     public function getIterator()
     {
         return new NestedSetRecursiveIterator($this);
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PDReactionArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PDReactionArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PDReactionArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PDReactionArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      PDReactionArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setPUserId($archive->getPUserId());
+        $this->setPDDebateId($archive->getPDDebateId());
+        $this->setParentReactionId($archive->getParentReactionId());
+        $this->setTitle($archive->getTitle());
+        $this->setFileName($archive->getFileName());
+        $this->setCopyright($archive->getCopyright());
+        $this->setWithShadow($archive->getWithShadow());
+        $this->setDescription($archive->getDescription());
+        $this->setNotePos($archive->getNotePos());
+        $this->setNoteNeg($archive->getNoteNeg());
+        $this->setNbViews($archive->getNbViews());
+        $this->setPublished($archive->getPublished());
+        $this->setPublishedAt($archive->getPublishedAt());
+        $this->setPublishedBy($archive->getPublishedBy());
+        $this->setFavorite($archive->getFavorite());
+        $this->setOnline($archive->getOnline());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSlug($archive->getSlug());
+        $this->setTreeLeft($archive->getTreeLeft());
+        $this->setTreeRight($archive->getTreeRight());
+        $this->setTreeLevel($archive->getTreeLevel());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PDReaction The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
     // event behavior

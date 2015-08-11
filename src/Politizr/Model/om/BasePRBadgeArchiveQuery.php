@@ -25,6 +25,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PRBadgeArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PRBadgeArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PRBadgeArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PRBadgeArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PRBadgeArchiveQuery groupById() Group by the id column
@@ -35,6 +36,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchiveQuery groupByOnline() Group by the online column
  * @method PRBadgeArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PRBadgeArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PRBadgeArchiveQuery groupBySlug() Group by the slug column
  * @method PRBadgeArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PRBadgeArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -51,6 +53,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOneByOnline(boolean $online) Return the first PRBadgeArchive filtered by the online column
  * @method PRBadgeArchive findOneByCreatedAt(string $created_at) Return the first PRBadgeArchive filtered by the created_at column
  * @method PRBadgeArchive findOneByUpdatedAt(string $updated_at) Return the first PRBadgeArchive filtered by the updated_at column
+ * @method PRBadgeArchive findOneBySlug(string $slug) Return the first PRBadgeArchive filtered by the slug column
  * @method PRBadgeArchive findOneByArchivedAt(string $archived_at) Return the first PRBadgeArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PRBadgeArchive objects filtered by the id column
@@ -61,6 +64,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method array findByOnline(boolean $online) Return PRBadgeArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PRBadgeArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PRBadgeArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PRBadgeArchive objects filtered by the slug column
  * @method array findByArchivedAt(string $archived_at) Return PRBadgeArchive objects filtered by the archived_at column
  */
 abstract class BasePRBadgeArchiveQuery extends ModelCriteria
@@ -168,7 +172,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_r_badge_type_id`, `p_r_badge_metal_id`, `title`, `description`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_r_badge_type_id`, `p_r_badge_metal_id`, `title`, `description`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -553,6 +557,35 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::SLUG, $slug, $comparison);
     }
 
     /**
