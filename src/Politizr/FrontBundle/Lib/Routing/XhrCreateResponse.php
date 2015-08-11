@@ -53,6 +53,7 @@ class XhrCreateResponse
         } catch (\Exception $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
+            throw $e;
         }
 
         // JSON formatted success/error message
@@ -84,6 +85,7 @@ class XhrCreateResponse
         } catch (\Exception $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
+            throw $e;
         }
 
         // JSON formatted success/error message
@@ -117,6 +119,7 @@ class XhrCreateResponse
         } catch (\Exception $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
+            throw $e;
         }
 
         // JSON formatted success/error message

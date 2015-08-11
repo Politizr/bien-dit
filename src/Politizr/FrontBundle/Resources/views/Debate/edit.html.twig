@@ -5,6 +5,8 @@
 
     {# @todo html/css jqueryui (w. only autocomplete widget) > à styler / thème UI (?) #}
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery-ui.min.css') }}">
+    
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/smoke.css') }}">
 {% endblock stylesheets %}
 
 {% block javascriptHeader %}
@@ -124,6 +126,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/smoke.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
 
