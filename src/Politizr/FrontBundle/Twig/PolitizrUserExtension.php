@@ -76,6 +76,11 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'icon',
+                array($this, 'icon'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'photo',
                 array($this, 'photo'),
                 array('is_safe' => array('html'))
@@ -135,17 +140,31 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     * Photo de profil d'un user
+     * User's profile default icon
      *
      * @param PUser $user
      * @return html
      */
-    public function photo(PUser $user, $filterName = 'user_bio')
+    public function icon(PUser $user)
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $path = 'bundles/politizrfront/images/profil_default.png';
+        return $this->photo($user, 'user_15', 'profil15_default.png');
+    }
+
+    /**
+     * User's profile photo
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function photo(PUser $user, $filterName = 'user_bio', $default = 'profil_default.png')
+    {
+        // $this->logger->info('*** photo');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $path = 'bundles/politizrfront/images/'.$default;
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
         }
