@@ -105,6 +105,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'excerpt',
+                array($this, 'excerpt'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbViewsFormat',
                 array($this, 'nbViewsFormat'),
                 array('is_safe' => array('html'))
@@ -327,6 +332,34 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'tags' => $tags
             )
         );
+
+        return $html;
+    }
+
+    /**
+     * Document's excerpt of X first paragraphs
+     *
+     * @param PDocumentInterface $document
+     * @param integer $nbParagraph
+     * @return string
+     */
+    public function excerpt(PDocumentInterface $document, $nbParagraph = 1)
+    {
+        // $this->logger->info('*** excerpt');
+        // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+
+        // Paragraphs explode
+        $paragraphs = $this->globalTools->explodeParagraphs($document->getDescription());
+
+        // Extract the first nbParagrpah
+        $paragraphs = array_slice($paragraphs, 0, $nbParagraph);
+
+        // Paragraphs to string reconstruction
+        $html = '';
+        foreach ($paragraphs as $paragraph) {
+            $html .= sprintf('<p>%s</p>', $paragraph);
+        }
 
         return $html;
     }
