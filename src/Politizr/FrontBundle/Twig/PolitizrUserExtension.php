@@ -402,9 +402,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('MyReputationC', array(), $absolute);
+                    $url = $this->router->generate('ReputationC', array(), $absolute);
                     if ($this->isGrantedE()) {
-                        $url = $this->router->generate('MyReputationE', array(), $absolute);
+                        $url = $this->router->generate('ReputationE', array(), $absolute);
                     }
                 }
                 
