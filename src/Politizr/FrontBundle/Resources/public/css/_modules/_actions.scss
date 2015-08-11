@@ -12,19 +12,8 @@
     font-family: 'nerissemibold';
 }
 
-#fixedActions a, 
-#fixedActions .actionFollow a, 
-#fixedActions .actionUnfollow a,
-#fixedActions .actionPublish a {
-	width: 100%;
-	float: left;
-	margin-top: 3px;
-	padding: 13px 0;
-	cursor: pointer;
-	font-size: 12px;
-    font-family: 'nerissemibold';
-}
-
+#fixedActions .actionSave,
+#fixedActions .actionPublish,
 #fixedActions .actionFollow,
 #fixedActions .actionEdit,
 #fixedActions .actionUnfollow,
@@ -32,6 +21,19 @@
 #fixedActions .actionCosign {
 	width: 100%;
 	float: left;
+	margin-top: 3px;
+}
+
+#fixedActions a, 
+#fixedActions .actionFollow a, 
+#fixedActions .actionUnfollow a,
+#fixedActions .actionPublish a {
+	width: 100%;
+	float: left;
+	padding: 13px 0;
+	cursor: pointer;
+	font-size: 12px;
+    font-family: 'nerissemibold';
 }
 
 #fixedActions i {
@@ -83,3 +85,21 @@
 
 #fixedActions a.actionReact:hover {background-color: $highlight;}
 
+#fixedActions .actionDelete {
+	text-transform: none;
+	text-align: right;
+	padding: 0;
+}
+#fixedActions .actionDelete a {
+	width: auto;
+	float: right;
+	padding: 0;
+	margin-top: 10px;
+    font-family: 'nerissemibold';
+    color: $highlight;
+}
+#fixedActions .actionDelete a i {
+	font-size: 8px;
+	padding-right: 2px;
+}
+#fixedActions .actionDelete a:hover {color: $darkGrey;}

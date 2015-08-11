@@ -2,6 +2,8 @@
 
 //////presets
 
+body.css760 { overflow-x: hidden;}
+
 body.css760 .pad40 {	padding: 20px;}
 body.css760 #content {	padding-top: 0;	width: calc(100% - 40px); padding-right: 0;}
 body.css760 #footer {	padding-top: 30px;	width: calc(100% - 40px); padding-right: 0;}
@@ -30,15 +32,20 @@ body.css760 h1 {
  
 //////modal + list
 
-body.css760 .modalHeader {	width: 100%;}
+body.css760 .modalHeader {	
+	width: calc(100% - 50px); 
+	left: 0; 
+	padding: 0 38px 0 12px;
+	margin: 0;
+}
 body.css760 .modalHeader .headerLogo {background-color: #fff;}
-body.css760 .modalHeader .headerLogo a { margin : 10px 0 0 12px; background-color: #fff;}
-body.css760 .modalClose {margin : 25px 20px 0 0;}
+body.css760 .modalHeader .headerLogo a { margin : 0; background-color: #fff; padding-bottom: 12px}
+body.css760 .modalClose {margin-top : 15px;}
 
 body.css760 .listCriteria input { display: none; }
 
 body.css760 .modalList {	width: 100%; float: left; margin: 0 0 40px 0; padding: 0;}
-body.css760 .modal h1 { margin: 40px 0 0 0;}
+body.css760 .modal h1 { margin: 50px 0 0 0;}
 
 body.css760 .listPost {	
 	width: calc(100% - 40px);
@@ -522,6 +529,11 @@ body.css760 .reactionsToPostItemContent .reactionsToPostItemPostTitle {
 	-webkit-text-size-adjust: 90%; 
 	font-size: 13px;
 	line-height: 180%;
+}
+
+body.css760 .reactionsToPostItemContent .reactionsToPostItemPostTitle a span {
+	font-size: 20px;	
+	line-height: 140%;
 }
 
 body.css760 .reactionsToPostItemFooter {

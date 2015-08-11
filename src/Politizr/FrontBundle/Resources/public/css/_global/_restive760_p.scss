@@ -242,11 +242,15 @@ body.css760 #homeLive .liveItem .authorInAFewWords {
 
 ////// modal + list
 
-body.css760 .modalHeader {	width: 100%;}
+body.css760 .modalHeader {	
+	width: calc(100% - 50px); 
+	left: 0; 
+	padding: 0 38px 0 12px;
+	margin: 0;
+}
 body.css760 .modalHeader .headerLogo {background-color: #fff;}
-body.css760 .modalHeader .headerLogo a { margin : 0 0 0 12px; background-color: #fff;}
-body.css760 #modalBox #modalHeaderRight { display: none;}
-body.css760 .modalClose {margin : 24px 20px 0 0;}
+body.css760 .modalHeader .headerLogo a { margin : 0; background-color: #fff; padding-bottom: 12px}
+body.css760 .modalClose {margin-top : 15px;}
 
 body.css760 .listCriteria input { display: none; }
 

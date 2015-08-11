@@ -63,7 +63,7 @@
 .timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
 .timelineMarkAllAsRead:hover {color: #fff;}
 
-#timeline {	padding-bottom: 20px; }
+#timeline {	padding-bottom: 20px;}
 
 #emptyTimeline {
 	background-color: $lightGrey;
@@ -82,8 +82,7 @@
 	border-bottom: solid 4px $highlight;
 	display: inline-block;
 }
-
-.timelineDayContainer:last-child { border: none; }
+#listContent .timelineDayContainer:last-child { border: none; }
 
 .timelineDay {
 	background-color: #fff;

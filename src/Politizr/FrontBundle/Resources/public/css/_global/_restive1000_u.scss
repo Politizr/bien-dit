@@ -24,11 +24,16 @@ body.css1000 h1 {
  
 //////modal
 
-body.css1000 .modalHeader {	width: 100%;}
-body.css1000 .modalList {	width: 100%;}
+body.css1000 .modalHeader {
+	width: calc(100% - 60px); 
+	left: 0; 
+	margin: 0 30px;
+	padding: 0;
+}
+body.css1000 .modalHeader .headerLogo { margin-left: -5px;}
+body.css1000 .modalHeader .modalClose {margin-right: 15px;}
 
-body.css1000 .modalHeader .headerLogo a { margin-left: 25px;}
-body.css1000 .modalClose {margin-right: 30px;}
+body.css1000 .modalList {	width: 100%;}
 
 body.css1000 .postSummary, body.css1000 .illustrationShadow {	height: 440px;}
 body.css1000 .postSummary .pad40 {	height: 360px;}

@@ -11,7 +11,9 @@ $(function(){
             'quote': '<i class="iconQuote"></i>',
             'anchor': '<i class="iconLink"></i>'
         },
-	    placeholder: 'Cliquez ici pour saisir l\'accroche de votre publication.',
+        placeholder: {
+       		text: 'Cliquez ici pour saisir l\'accroche de votre publication.'
+		},
 	    anchor: {
             placeholderText: 'Saississez une adresse internet'
         },
@@ -31,7 +33,9 @@ $(function(){
             'quote': '<i class="iconQuote"></i>',
             'anchor': '<i class="iconLink"></i>'
         },
-	    placeholder: 'Cliquez ici pour saisir le texte de votre publication.',
+        placeholder: {
+       		text: 'Cliquez ici pour saisir le texte de votre publication.'
+		},
 	    anchor: {
             placeholderText: 'Saississez une adresse internet'
         },
@@ -47,7 +51,9 @@ $(function(){
             'italic': '<span style=\"font-family: \'Merriweather Bold Italic\'\">i</span>',
             'anchor': '<i class="iconLink"></i>'
         },
-	    placeholder: 'Crédits photo',
+        placeholder: {
+       		text: 'Crédits photo'
+		},
 	    anchor: {
             placeholderText: 'Saississez une adresse internet'
         },
@@ -115,9 +121,4 @@ $(function(){
 		$('.iconQuestion').css("color", "#b8b9bc");
 	});	
 });	
-
-
-
-
-
 

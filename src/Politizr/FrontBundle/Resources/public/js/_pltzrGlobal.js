@@ -55,9 +55,7 @@ $(function(){
 	$("body").on("click", "[action='modalOpen']", function() {
 		$('#modalBox').fadeIn('fast');
 		$('body').addClass('noscroll');
-		$('html, body').animate({
-			scrollTop: $("body").offset().top
-		}, 0);
+		$("html, body").scrollTop( 0 );
 		$(".modalRightCol").addClass('activeMobileModal'); // for mobile purpose 
 		$('#searchInput').focus();// force text cursor to appear in search input on modal opening
 	});
@@ -65,7 +63,8 @@ $(function(){
 	// close modal 
 	$("body").on("click", "[action='modalClose']", function() {
 		$('body').removeClass('noscroll');
-		$('#modalBox').hide();	
+		$(".wrapper").scrollTop( 0 );
+		$('#modalBox').hide();
 		$(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
 	});
 	

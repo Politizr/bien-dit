@@ -14,6 +14,15 @@
 	width: 540px;
 	position: relative;
 }
+//trick for anchor on paragraph (: fixed header hide top of paragraph)
+#postText div[id^="p-"]  { //especially for id starting with p- because of an edition related bug
+	border-top: 80px solid transparent;
+	margin-top: -80px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+//end trick	
 
 .paragraph p {
 	font-size: 15px;
@@ -32,6 +41,7 @@
 	color: $darkHighlight;
 }
 .paragraph.summary .editable.summary p::before  {display: none;}
+.paragraph.summary .editable.summary { border: none;}
 
 .paragraph h1 {
 	padding: 0;
