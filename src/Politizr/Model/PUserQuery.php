@@ -97,7 +97,7 @@ WHERE
                     AND p_u_follow_t.p_user_id = ".$userId."
     )
     AND p_user.online = 1
-    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ".$userId.")
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = ".$userId.")
     AND p_user.id <> ".$userId." 
 )
 
@@ -110,6 +110,7 @@ FROM p_user
         ON p_user.id = p_u_follow_u.p_user_id
 WHERE
     p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = ".$userId.")
     AND p_user.id <> ".$userId."
 GROUP BY p_user.id
 ORDER BY nb_users DESC

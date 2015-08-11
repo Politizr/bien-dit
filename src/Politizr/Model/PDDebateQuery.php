@@ -83,6 +83,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.online = 1
     AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ".$userId.")
     AND p_d_debate.p_user_id <> ".$userId."
 GROUP BY p_d_debate.id
 ORDER BY nb_users DESC
