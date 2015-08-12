@@ -17,22 +17,21 @@ body.css760 #timelineHeaderRight {
 	margin-top: 19px;
 }
 
-body.css760 .timelineDayContainer {
+body.css760 .timelineItem {
 	width: calc(100% - 40px);
 	margin: 0 20px;
 }
 
 body.css760 .timelineDay { 
 	top:0 !important; 
-	padding:16px 20px 0 0;	
-	width: calc(100% + 20px);
-	margin-left: -20px;
+	padding: 16px 0 0 0;
 }
+
 body.css760 .timelineDay h4 { 
-	width: calc(100% - 48px);
-	margin: 0;
-	padding: 0 20px 15px 48px;
 	font-size: 16px;
+	padding: 0 0 15px 45px;
+	width: calc(100% - 45px);
+	margin: 0;
 }
 
 body.css760 .timelineDay i {	left: 15px;}

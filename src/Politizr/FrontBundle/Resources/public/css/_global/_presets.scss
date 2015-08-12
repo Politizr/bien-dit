@@ -144,15 +144,15 @@ body {
 
 #illustration_l, #illustration_r {
 	background-color: $lightGrey;
+	width: 700px;
 	height: 360px;
 	position: fixed;
 	top: 60px;
-	width: calc(50% - 480px);
 	z-index: -1;
 }
 
-#illustration_l {	left: 0;}
-#illustration_r {	right: 0;}
+#illustration_l {	right: calc(50% + 480px);}
+#illustration_r {	left: calc(50% + 480px);}
 
 #copyrightHolder {
 	position: fixed;

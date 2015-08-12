@@ -77,26 +77,24 @@
 #emptyTimeline span:hover {color: $highlight;}
 
 .timelineDayContainer {
-	width: calc(100% - 80px);
-	margin: 0 40px;
+	width: 100%;
 	border-bottom: solid 4px $highlight;
 	display: inline-block;
 }
-#listContent .timelineDayContainer:last-child { border: none; }
+.timelineDayContainer:last-child { border: none !important; }
 
 .timelineDay {
 	background-color: #fff;
-	width: calc(100% + 40px);
-	margin-left: -40px;
-	padding: 35px 0 0 40px;	
+	width: 100%;
+	padding: 35px 0 0 0;	
 	z-index: 1;
 }
  
 .timelineDay h4 {
     position: relative;
 	padding: 0 0 20px 28px;
-	width: 592px;
-	margin: 0;
+	width: calc(100% - 108px);
+	margin: 0 40px;
     font-family: 'nerisblack';
     font-size: 18px;
     color: $highlight;
@@ -112,6 +110,8 @@
 }
 
 .timelineItem {
+	width: calc(100% - 80px);
+	margin: 0 40px;
 	padding: 20px 0;
 	border-bottom: solid 1px $semiDarkGrey;
 }

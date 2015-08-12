@@ -50,8 +50,8 @@ $(function(){
 	});		
 	// end reputation chart
 	
-	// my followers chart	
-	$("body").on("click", "#profileMyFollowersCounter", function() {	
+		// my followers chart	
+		$("body").on("click", "#profileMyFollowersCounter", function() {	
 		// for html demo
 		$('#modalBoxContent, #modalBoxContent.ranking, #modalBoxContent.suggestions, #modalBoxContent.listByTag, #modalBoxContent.organizationSheet, #modalBoxContent.formAbuse, #modalBoxContent.search, #modalBoxContent.cosigners, #modalBoxContent.subscriptions, #modalBoxContent.followers, #modalBoxContent.reputation').hide();
 		$('#modalBoxContent.myfollowers').fadeIn('fast');

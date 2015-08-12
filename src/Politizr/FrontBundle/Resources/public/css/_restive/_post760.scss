@@ -7,10 +7,13 @@ body.css760 #postText {		padding: 20px 0;}
 body.css760 .postSummary { 		height: 480px; width: 100%;}
 
 body.css760 .postSummary .pad40 { 
-	height: 440px;
-	width: calc(100% - 20px);
+	height: 400px;
+	width: calc(100% - 40px);
 	padding: 20px;
 }
+
+body.css760 .postSummary, body.css760 .illustrationShadow {	height: 440px;}
+body.css760 .postSummaryTitle {	font-size: 34px; max-height: 5em;}
 
 body.css760 .postSummary .illustrationShadow {	height: 480px; width: 100%;}
 body.css760 .postSummaryFooter { width: calc(100% - 60px); bottom: 20px;}
@@ -55,11 +58,23 @@ body.css760 .paragraph {
 	padding: 10px 20px 10px 40px;
 	width: calc(100% - 60px);	
 	-webkit-text-size-adjust: 80%;
+	font-size: 13px;
+}
+
+body.css760 .paragraph p, body.css760 .paragraph ul, body.css760 .paragraph h2,  body.css760 .paragraph blockquote {
+	font-size: 13px;
+}
+
+body.css760 .paragraph h1 {
+	font-size: 18px;
+	padding: 0;
+	width: 100%;
 }
 
 body.css760 .paragraph h2 {
 	border-left-width: 3px;
 	padding: 0 0 0 10px;
+	width: calc(100% - 10px);
 }
 
 body.css760 #reactionsToPost {
@@ -105,7 +120,7 @@ body.css760 .reactionsToPostItemFooter {
 
 body.css760 .paragraph .commentsCounter {
     padding: 0 12px 0 0;
-    top: 14px;
+    top: 16px;
     width: 20px;
    	font-size: 9px;
     -webkit-text-size-adjust: 100%;

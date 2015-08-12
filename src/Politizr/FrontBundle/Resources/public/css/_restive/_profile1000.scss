@@ -6,5 +6,9 @@ body.css1000 #profileHeader, body.css1000 #profileHeader .illustrationShadow, bo
 body.css1000 #profileHeader .pad40 {	height: 360px;}
 body.css1000 #profileBio .paragraph {width: calc(100% - 80px);}
 
+body.css1000 .mandateDetail {padding-bottom: 0;}
 body.css1000 .mandateLocalization { display: inline-block; clear: both; margin: 5px 0 0 0; width: 100%;}
 body.css1000 .mandateItem {padding: 20px;}
+
+// no profile edition for now
+body.css1000 .actionEdit {display: none;}

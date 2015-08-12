@@ -1,6 +1,7 @@
 @import "_global/colors";
 @import "_restive/timeline760";
 @import "_restive/post760";
+@import "_restive/profile760";
 @import "_restive/form760";
 @import "_restive/modal760";
 @import "_restive/actions760";
@@ -31,6 +32,14 @@ body.css760 h1 {
 	width: calc(100% - 40px); 
 	padding: 0 20px;	
 }
+
+////// edit
+// no "new debate" or "draft" link in menu
+body.css760 #menu .pad40 a {display: none;}
+body.css760 #menu .pad40 a.linkMyPolitizr, body.css760 #menu .pad40 a.miniLink {display: block;}
+
+// no help
+body.css760 i.iconQuestion {display: none;}
 
 //////notifications
 body.css760 .notifMarkAllAsRead {	margin-right: 0;}
@@ -287,6 +296,3 @@ body.css760 #footerRight {
 	clear: both;
 	margin-top: 10px;
 }
-
-////// edit
-body.css760 i.iconQuestion {display: none;}

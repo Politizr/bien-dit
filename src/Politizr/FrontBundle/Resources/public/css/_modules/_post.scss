@@ -65,7 +65,7 @@
 	margin: 0;
 	padding: 0 0 0 16px;
 	border-left: solid 4px $highlight;
-    width: 100%;
+    width: calc(100% - 16px);
 }
 .paragraph .editable h2 {margin: 0 0 40px 0; float: left; clear: both;}
 
@@ -97,7 +97,7 @@
 	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
-	width: 100%;
+	width: calc(100% - 18px);
 }
 
 // give note

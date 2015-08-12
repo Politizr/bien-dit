@@ -202,6 +202,7 @@
 	padding: 0 0 0 16px;
 	border-left: solid 4px $highlight;
 	float: left;
+	width: calc(100% - 16px);
 }
 
 #profileBio blockquote {
@@ -230,7 +231,7 @@
 	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
-	width: 100%;
+	width: calc(100% - 18px);
 }
 
 #showCompleteBio {
@@ -306,19 +307,20 @@
 .mandateItem:last-child {margin-bottom: 0;}
 
 .mandatePeriod {
-	width: 100px;
+	width: 80px;
 	float: left;
 	font-family: 'nerissemibold';
 	font-size: 10px;
-	padding-bottom: 20px;
-	border-right: solid 1px $semiGrey;
 }
 
 .mandateDetail {
-	width: calc(100% - 120px);
+	width: calc(100% - 109px);
 	float: right;
 	font-family: 'nerisblack';
 	font-size: 10px;
+	border-left: solid 1px $semiGrey;
+	padding-bottom: 20px;
+	padding-left: 20px;
 }
 
 .mandateLocalization {
@@ -328,6 +330,7 @@
 	font-style: italic;
 	font-family: 'Merriweather Italic';
 	margin-left: 10px;
+	line-height: 140%;
 }
 
 //////in listing

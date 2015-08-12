@@ -114,15 +114,15 @@ $(function(){
 	});
 
 	// toggle image copyright
-	$("body").on("click", "[action='showCopyright']", function() {
+	$("body").on("click touchstart", "[action='showCopyright']", function() {
 		$('#copyrightBox').toggle();		
 	});
 		
 	// toggle confidential info text
-	$("body").on("mouseover", "[action='confidentialToggle']", function() {
+	$("body").on("mouseover touchstart", "[action='confidentialToggle']", function() {
 		$(this).next('.confidentialInfo').show();
 	});
-	$("body").on("mouseout", "[action='confidentialToggle']", function() {
+	$("body").on("mouseout touchstart", "[action='confidentialToggle']", function() {
 		$(this).next('.confidentialInfo').hide();	
 	});
 });

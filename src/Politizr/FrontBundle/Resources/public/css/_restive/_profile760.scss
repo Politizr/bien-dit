@@ -1,0 +1,70 @@
+@import "../_global/_colors";
+
+// no profile edition for now
+body.css760 .actionEdit {display: none;}
+
+//////profile
+
+body.css760 #profileHeader, 
+body.css760 #profileHeader .illustrationShadow, 
+body.css760 #profileHeader #profileHeaderIllustration { 
+	width: 100%; height: 440px;
+}
+body.css760 #profileHeader .pad40 {	height: 400px; width: calc(100% - 40px);}
+body.css760 #profileHeader #profileSummaryFooter {bottom: 20px; width: calc(100% - 40px);}
+body.css760 #profileHeader #profileInAFewWords {line-height: 140%;}
+body.css760 #profileNameHolder {width: 100%; float: left; clear: both; }
+body.css760 #profileNameBottom {position: relative; margin-top: 10px;}
+body.css760 #profileName {	font-size: 34px; max-height: 5em;}
+
+body.css760 #profilePublicTagList { padding: 20px;}
+body.css760 #profilePrivateTagList { padding: 0 20px 20px 20px;}
+
+body.css760 #profileBio {width: calc(100% - 40px); padding: 20px;}
+#showCompleteBio {width: calc(100% - 40px);}
+
+#profileBio p {
+	margin: 0 0 20px 0;
+	font-size: 13px;
+	-webkit-text-size-adjust: 80%;
+}
+body.css760 #profileBio p, body.css760 #profileBio ul, body.css760 #profileBio h1, body.css760 #profileBio h2, body.css760 #profileBio blockquote {
+	font-size: 13px;
+}
+body.css760 #profileBio h1 {
+	font-size: 18px;
+	margin: 0 0 20px 0;}
+
+body.css760 #profileBio h2 {
+	margin: 0 0 20px 0;
+	border-left-width: 3px;
+	padding: 0 0 0 10px;
+	width: calc(100% - 10px);
+}
+
+body.css760 #profileBio blockquote {margin: 0 0 20px 0;}
+body.css760 #profileBio blockquote:before {
+	font-family: 'fontello';
+	content: "\e810";
+	float: left;
+	width: 100%;
+	color: $highlight;
+	font-size: 18px;
+}
+
+body.css760 #profileBio ul { margin: 0 0 20px 0;}
+
+body.css760 #profileMandate {
+	width: calc(100% - 40px);
+	padding: 20px;
+}
+body.css760 #profileMandate span { margin-bottom: 10px; }
+body.css760 .mandateDetail {padding-bottom: 0;}
+body.css760 .mandateLocalization { display: inline-block; clear: both; margin: 5px 0 0 0; width: 100%;}
+body.css760 .mandateItem {padding: 20px;}
+
+body.css760 #recentActivity {
+	padding: 60px 0 20px 20px;
+	width: calc(100% - 20px);
+	margin: 0;
+}

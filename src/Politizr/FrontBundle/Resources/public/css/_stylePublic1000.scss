@@ -1,5 +1,6 @@
 @import "_global/colors";
 @import "_restive/modal1000";
+@import "_restive/actions1000";
 @import "_restive/post1000";
 @import "_restive/timeline1000";
 @import "_restive/profile1000";
@@ -7,6 +8,14 @@
 
 //////presets
 body.css1000 .wrapper {	width: 96%; }
+
+////// edit
+// no "new debate" or "draft" link in menu
+body.css1000 #menu .pad40 a {display: none;}
+body.css1000 #menu .pad40 a.linkMyPolitizr, body.css1000 #menu .pad40 a.miniLink {display: block;}
+
+// no help
+body.css760 i.iconQuestion {display: none;}
 
 //home light bg color slide
 body.css1000 #homeFollow, body.css1000 #homeMyPolitizr { height: auto; }
@@ -55,3 +64,4 @@ body.css1000 #homeStats .homeText {
 	width: calc(100% - 440px);
 	margin: 60px 20px 0 0;
 }
+
