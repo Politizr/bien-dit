@@ -47,7 +47,7 @@
         }, 60000);
     }
 
-    // check une notification
+    // check notification
     $("body").on("click", "i[action='notificationCheck']", function(e) {
         console.log('*** click i notificationCheck');
 
@@ -86,7 +86,7 @@
             'xhrRoute': 'ROUTE_NOTIF_CHECK',
             'xhrService': 'notification',
             'xhrMethod': 'notificationCheck',
-            'xhrType': 'RETURN_URL',
+            'xhrType': 'RETURN_BOOLEAN',
             } only %}";
 
         e.preventDefault();
