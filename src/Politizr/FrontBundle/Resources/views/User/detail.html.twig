@@ -57,7 +57,7 @@
             {{ user | photoBack('user_bio_back') }}
         </div>
 
-        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': '@todo' } %}
+        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': user.copyright } %}
         
         <div id="profilePublicTagList">
             {{ user | userTags }}
@@ -65,7 +65,6 @@
 
         <div id="profileBio">
             <div id="showCompleteBio"><span action="showCompleteBio">afficher la suite</span></div>
-            <!-- @todo html/css pas de class paragraph sur la bio d'un auteur, uniquement des <p> classiques -->
             {{ user.biography | raw }}
             <div id="hideCompleteBio"><span action="hideCompleteBio">masquer</span></div>
         </div>
