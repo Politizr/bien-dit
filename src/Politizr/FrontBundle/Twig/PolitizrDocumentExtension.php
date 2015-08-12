@@ -337,20 +337,20 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Document's excerpt of X first paragraphs
+     * HTML text excerpt of X first paragraphs
      *
-     * @param PDocumentInterface $document
+     * @param string $text
      * @param integer $nbParagraph
      * @return string
      */
-    public function excerpt(PDocumentInterface $document, $nbParagraph = 1)
+    public function excerpt($text, $nbParagraph = 1)
     {
         // $this->logger->info('*** excerpt');
-        // $this->logger->info('$document = '.print_r($document, true));
-        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$document = '.print_r($text, true));
+        // $this->logger->info('$nbParagraph = '.print_r($nbParagraph, true));
 
         // Paragraphs explode
-        $paragraphs = $this->globalTools->explodeParagraphs($document->getDescription());
+        $paragraphs = $this->globalTools->explodeParagraphs($text);
 
         // Extract the first nbParagrpah
         $paragraphs = array_slice($paragraphs, 0, $nbParagraph);

@@ -1,7 +1,6 @@
 <div class="commentsItem commentsPostAuthor">
-    <div class="signalAbuse" action="modalOpen">
-        <i class="iconAlert"></i>
-    </div>
+    {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': comment.id, 'type': comment.type } only %}
+
     <div class="avatar40">
         {{ comment.user | photo('user_40') }}
     </div>

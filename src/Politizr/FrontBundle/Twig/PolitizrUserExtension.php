@@ -120,6 +120,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array($this, 'isAuthorizedToReact'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToReportAbuse',
+                array($this, 'isAuthorizedToReportAbuse'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -470,6 +475,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         // $this->logger->info('*** isAuthorizedToReact');
         // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
         // elected profile can react
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
@@ -482,6 +488,25 @@ class PolitizrUserExtension extends \Twig_Extension
         $id = $user->getId();
         $score = $user->getReputationScore();
         if ($debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Test if the user can report an abuse
+     *
+     * @param PUser $user
+     * @return boolean
+     */
+    public function isAuthorizedToReportAbuse(PUser $user)
+    {
+        // $this->logger->info('*** isAuthorizedToReportAbuse');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_ABUSE_REPORT) {
             return true;
         }
 

@@ -846,6 +846,7 @@
         <column name="p_user_id" type="integer" required="false" />  
         
         <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
 
         <column name="message" type="longvarchar" />
 

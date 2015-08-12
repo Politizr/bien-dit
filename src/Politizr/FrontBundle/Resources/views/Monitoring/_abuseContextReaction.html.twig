@@ -1,0 +1,10 @@
+<div class="contextImage">
+    {{ reaction | image('debate_abuse', false) }}
+</div>
+<div class="contextTitle">
+    {{ reaction.title }}
+    {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': reaction.user } only %}
+</div>
+<div class="contextDescription">
+    {{ reaction.description | excerpt }}
+</div>

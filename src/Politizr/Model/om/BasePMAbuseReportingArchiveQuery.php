@@ -20,6 +20,7 @@ use Politizr\Model\PMAbuseReportingArchiveQuery;
  * @method PMAbuseReportingArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PMAbuseReportingArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PMAbuseReportingArchiveQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
+ * @method PMAbuseReportingArchiveQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
  * @method PMAbuseReportingArchiveQuery orderByMessage($order = Criteria::ASC) Order by the message column
  * @method PMAbuseReportingArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PMAbuseReportingArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -28,6 +29,7 @@ use Politizr\Model\PMAbuseReportingArchiveQuery;
  * @method PMAbuseReportingArchiveQuery groupById() Group by the id column
  * @method PMAbuseReportingArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PMAbuseReportingArchiveQuery groupByPObjectName() Group by the p_object_name column
+ * @method PMAbuseReportingArchiveQuery groupByPObjectId() Group by the p_object_id column
  * @method PMAbuseReportingArchiveQuery groupByMessage() Group by the message column
  * @method PMAbuseReportingArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PMAbuseReportingArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -42,6 +44,7 @@ use Politizr\Model\PMAbuseReportingArchiveQuery;
  *
  * @method PMAbuseReportingArchive findOneByPUserId(int $p_user_id) Return the first PMAbuseReportingArchive filtered by the p_user_id column
  * @method PMAbuseReportingArchive findOneByPObjectName(string $p_object_name) Return the first PMAbuseReportingArchive filtered by the p_object_name column
+ * @method PMAbuseReportingArchive findOneByPObjectId(int $p_object_id) Return the first PMAbuseReportingArchive filtered by the p_object_id column
  * @method PMAbuseReportingArchive findOneByMessage(string $message) Return the first PMAbuseReportingArchive filtered by the message column
  * @method PMAbuseReportingArchive findOneByCreatedAt(string $created_at) Return the first PMAbuseReportingArchive filtered by the created_at column
  * @method PMAbuseReportingArchive findOneByUpdatedAt(string $updated_at) Return the first PMAbuseReportingArchive filtered by the updated_at column
@@ -50,6 +53,7 @@ use Politizr\Model\PMAbuseReportingArchiveQuery;
  * @method array findById(int $id) Return PMAbuseReportingArchive objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PMAbuseReportingArchive objects filtered by the p_user_id column
  * @method array findByPObjectName(string $p_object_name) Return PMAbuseReportingArchive objects filtered by the p_object_name column
+ * @method array findByPObjectId(int $p_object_id) Return PMAbuseReportingArchive objects filtered by the p_object_id column
  * @method array findByMessage(string $message) Return PMAbuseReportingArchive objects filtered by the message column
  * @method array findByCreatedAt(string $created_at) Return PMAbuseReportingArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PMAbuseReportingArchive objects filtered by the updated_at column
@@ -160,7 +164,7 @@ abstract class BasePMAbuseReportingArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_object_name`, `message`, `created_at`, `updated_at`, `archived_at` FROM `p_m_abuse_reporting_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_object_name`, `p_object_id`, `message`, `created_at`, `updated_at`, `archived_at` FROM `p_m_abuse_reporting_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -361,6 +365,48 @@ abstract class BasePMAbuseReportingArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PMAbuseReportingArchivePeer::P_OBJECT_NAME, $pObjectName, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_object_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPObjectId(1234); // WHERE p_object_id = 1234
+     * $query->filterByPObjectId(array(12, 34)); // WHERE p_object_id IN (12, 34)
+     * $query->filterByPObjectId(array('min' => 12)); // WHERE p_object_id >= 12
+     * $query->filterByPObjectId(array('max' => 12)); // WHERE p_object_id <= 12
+     * </code>
+     *
+     * @param     mixed $pObjectId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PMAbuseReportingArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPObjectId($pObjectId = null, $comparison = null)
+    {
+        if (is_array($pObjectId)) {
+            $useMinMax = false;
+            if (isset($pObjectId['min'])) {
+                $this->addUsingAlias(PMAbuseReportingArchivePeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pObjectId['max'])) {
+                $this->addUsingAlias(PMAbuseReportingArchivePeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PMAbuseReportingArchivePeer::P_OBJECT_ID, $pObjectId, $comparison);
     }
 
     /**

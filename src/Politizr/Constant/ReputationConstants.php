@@ -147,6 +147,7 @@ class ReputationConstants
     const ACTION_DEBATE_WRITE = 100;
     const ACTION_REACTION_WRITE = 250;
 
+    const ACTION_ABUSE_REPORT = 0;
 
 
     // ******************************************************** //

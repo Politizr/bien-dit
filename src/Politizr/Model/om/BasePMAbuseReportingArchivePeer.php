@@ -32,13 +32,13 @@ abstract class BasePMAbuseReportingArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PMAbuseReportingArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_m_abuse_reporting_archive.id';
@@ -48,6 +48,9 @@ abstract class BasePMAbuseReportingArchivePeer
 
     /** the column name for the p_object_name field */
     const P_OBJECT_NAME = 'p_m_abuse_reporting_archive.p_object_name';
+
+    /** the column name for the p_object_id field */
+    const P_OBJECT_ID = 'p_m_abuse_reporting_archive.p_object_id';
 
     /** the column name for the message field */
     const MESSAGE = 'p_m_abuse_reporting_archive.message';
@@ -80,12 +83,12 @@ abstract class BasePMAbuseReportingArchivePeer
      * e.g. PMAbuseReportingArchivePeer::$fieldNames[PMAbuseReportingArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PObjectName', 'Message', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pObjectName', 'message', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PMAbuseReportingArchivePeer::ID, PMAbuseReportingArchivePeer::P_USER_ID, PMAbuseReportingArchivePeer::P_OBJECT_NAME, PMAbuseReportingArchivePeer::MESSAGE, PMAbuseReportingArchivePeer::CREATED_AT, PMAbuseReportingArchivePeer::UPDATED_AT, PMAbuseReportingArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_OBJECT_NAME', 'MESSAGE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_object_name', 'message', 'created_at', 'updated_at', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PObjectName', 'PObjectId', 'Message', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pObjectName', 'pObjectId', 'message', 'createdAt', 'updatedAt', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PMAbuseReportingArchivePeer::ID, PMAbuseReportingArchivePeer::P_USER_ID, PMAbuseReportingArchivePeer::P_OBJECT_NAME, PMAbuseReportingArchivePeer::P_OBJECT_ID, PMAbuseReportingArchivePeer::MESSAGE, PMAbuseReportingArchivePeer::CREATED_AT, PMAbuseReportingArchivePeer::UPDATED_AT, PMAbuseReportingArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'MESSAGE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_object_name', 'p_object_id', 'message', 'created_at', 'updated_at', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -95,12 +98,12 @@ abstract class BasePMAbuseReportingArchivePeer
      * e.g. PMAbuseReportingArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PObjectName' => 2, 'Message' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'ArchivedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pObjectName' => 2, 'message' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'archivedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PMAbuseReportingArchivePeer::ID => 0, PMAbuseReportingArchivePeer::P_USER_ID => 1, PMAbuseReportingArchivePeer::P_OBJECT_NAME => 2, PMAbuseReportingArchivePeer::MESSAGE => 3, PMAbuseReportingArchivePeer::CREATED_AT => 4, PMAbuseReportingArchivePeer::UPDATED_AT => 5, PMAbuseReportingArchivePeer::ARCHIVED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_OBJECT_NAME' => 2, 'MESSAGE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'ARCHIVED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_object_name' => 2, 'message' => 3, 'created_at' => 4, 'updated_at' => 5, 'archived_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PObjectName' => 2, 'PObjectId' => 3, 'Message' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'ArchivedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pObjectName' => 2, 'pObjectId' => 3, 'message' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'archivedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PMAbuseReportingArchivePeer::ID => 0, PMAbuseReportingArchivePeer::P_USER_ID => 1, PMAbuseReportingArchivePeer::P_OBJECT_NAME => 2, PMAbuseReportingArchivePeer::P_OBJECT_ID => 3, PMAbuseReportingArchivePeer::MESSAGE => 4, PMAbuseReportingArchivePeer::CREATED_AT => 5, PMAbuseReportingArchivePeer::UPDATED_AT => 6, PMAbuseReportingArchivePeer::ARCHIVED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_OBJECT_NAME' => 2, 'P_OBJECT_ID' => 3, 'MESSAGE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'ARCHIVED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_object_name' => 2, 'p_object_id' => 3, 'message' => 4, 'created_at' => 5, 'updated_at' => 6, 'archived_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -177,6 +180,7 @@ abstract class BasePMAbuseReportingArchivePeer
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::ID);
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::P_USER_ID);
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::P_OBJECT_NAME);
+            $criteria->addSelectColumn(PMAbuseReportingArchivePeer::P_OBJECT_ID);
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::MESSAGE);
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PMAbuseReportingArchivePeer::UPDATED_AT);
@@ -185,6 +189,7 @@ abstract class BasePMAbuseReportingArchivePeer
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_object_name');
+            $criteria->addSelectColumn($alias . '.p_object_id');
             $criteria->addSelectColumn($alias . '.message');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');

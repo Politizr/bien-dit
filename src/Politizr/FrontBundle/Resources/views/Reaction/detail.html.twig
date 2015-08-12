@@ -11,6 +11,18 @@
 {% endif %}
 {% extends layout %}
 
+{% block header %}
+    {% if app.user and app.user | isAuthorizedToReportAbuse %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block abuse %}
+                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': reaction.id, 'type': reaction.type } only %}
+            {% endblock abuse %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {% block connexionBox %}
     {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
         {{ render(controller('PolitizrFrontBundle:Security:login')) }}

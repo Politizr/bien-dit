@@ -341,6 +341,11 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 600 }
 
+        debate_abuse:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 200 }
+
         user_bio_back:
             quality:              100
             filters:

@@ -104,4 +104,8 @@ class XhrConstants
     // TIMELINE
     const ROUTE_TIMELINE_MINE = 'profil/timeline';
     const ROUTE_TIMELINE_USER = 'user/timeline';
+
+    // MONITORING
+    const ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
+    const ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
 }

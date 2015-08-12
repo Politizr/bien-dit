@@ -44,11 +44,15 @@
             {% include 'PolitizrFrontBundle:Navigation\\Menu:_menu.html.twig' %}
         </div>
     </div>
-    {% block socialLinks %}
+    {% block contextLinks %}
         <div id="social">
             <div class="pad40">
-                {% include 'PolitizrFrontBundle:Navigation\\Social:_share.html.twig' with { 'uri': app.request.uri } %}
+                {% block social %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Social:_share.html.twig' with { 'uri': app.request.uri } %}
+                {% endblock social %}
+                {% block abuse %}
+                {% endblock abuse %}
             </div>
         </div>
-    {% endblock socialLinks %}
+    {% endblock contextLinks %}
 </div>

@@ -19,6 +19,11 @@
         $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
     });
 
+    // Cancel in modal
+    $("body").on("click", "[action='cancelModal']", function() {
+        $("[action='modalClose']").trigger("click");
+    });
+
     // Scroll haut de page
     $("body").on("click", "[action='goUp']", function() {
         $('html, body').animate({

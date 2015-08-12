@@ -45,6 +45,7 @@ class PMAbuseReportingArchiveTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
+        $this->addColumn('p_object_id', 'PObjectId', 'INTEGER', false, null, null);
         $this->addColumn('message', 'Message', 'LONGVARCHAR', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

@@ -52,16 +52,23 @@
     });
 
 
-    // modal connection
-    $("body").on("click", "[action='modalConnection']", function() {
-        console.log('*** modalConnection');
-        $('#modalBoxContent').removeClass().addClass('connection');
+    // modal abuse
+    $("body").on("click", "[action='modalAbuse']", function() {
+        console.log('*** modalAbuse');
+        $('#modalBoxContent').removeClass().addClass('formAbuse');
         modalLoading();
-        loadConnectionBox();
+
+        var subjectId = $(this).attr('subjectId');
+        var type = $(this).attr('type');
+
+        console.log(subjectId);
+        console.log(type);
+
+        loadAbuseBox(subjectId, type);
     });
 
 
-    // code générique de chargement d'une modal
+    // generic modal loading
     function modalLoading() {
         $('#modalBox').fadeIn('fast');
         $('body').addClass('noscroll');
@@ -72,7 +79,7 @@
     };
 
     /**
-     * Chargement d'une liste paginée
+     * Load paginated list
      *
      * @param string twigTemplate
      * @param string withFilters  true | false
@@ -113,21 +120,28 @@
     }
 
     /**
-     * Connection box loading
+     * Abuse box loading
      */
-    function loadConnectionBox() {
-        console.log('*** loadConnectionBox');
+    function loadAbuseBox(subjectId, type) {
+        console.log('*** loadAbuseBox');
+        subjectId = (typeof subjectId === "undefined") ? null : subjectId;
+        type = (typeof type === "undefined") ? null : type;
+
+        if (subjectId == null || type == null) {
+            return false;
+        }
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_SECURITY_LOGIN',
-            'xhrService': 'security',
-            'xhrMethod': 'login',
+            'xhrRoute': 'ROUTE_MONITORING_ABUSE',
+            'xhrService': 'monitoring',
+            'xhrMethod': 'abuse',
             'xhrType': 'RETURN_HTML',
             } only %}";
 
         $.ajax({
             type: 'POST',
             url: xhrPath,
+            data: { 'subjectId': subjectId, 'type': type },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
