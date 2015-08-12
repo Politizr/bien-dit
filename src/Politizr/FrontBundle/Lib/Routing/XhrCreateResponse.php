@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Exception\FormValidationException;
+
 /**
  * Encapsulate the call of an XHR request: manage exception and call the service associated with the xhr request.
  *
@@ -50,9 +52,10 @@ class XhrCreateResponse
             } else {
                 throw new NotFoundHttpException('Not a XHR request');
             }
-        } catch (\Exception $e) {
+        } catch (FormValidationException $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
             throw $e;
         }
 
@@ -82,9 +85,10 @@ class XhrCreateResponse
             } else {
                 throw new NotFoundHttpException('Not a XHR request');
             }
-        } catch (\Exception $e) {
+        } catch (FormValidationException $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
+        } catch (\Exception $e) {
             throw $e;
         }
 
@@ -116,6 +120,9 @@ class XhrCreateResponse
             } else {
                 throw new NotFoundHttpException('Not a XHR request');
             }
+        } catch (FormValidationException $e) {
+            $logger->info('Exception = ' . print_r($e->getMessage(), true));
+            $jsonResponse = array('error' => $e->getMessage());
         } catch (\Exception $e) {
             $logger->info('Exception = ' . print_r($e->getMessage(), true));
             $jsonResponse = array('error' => $e->getMessage());
