@@ -7,7 +7,7 @@ namespace Politizr\Exception;
  *
  * @author Lionel Bouzonville
  */
-class FormValidationException extends PolitizrException implements FormValidationExceptionInterface
+class FormValidationException extends \Exception implements FormValidationExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {
