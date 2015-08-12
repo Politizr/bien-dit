@@ -4,3 +4,4 @@
 Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
+

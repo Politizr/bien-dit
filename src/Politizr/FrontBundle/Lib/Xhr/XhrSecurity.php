@@ -78,30 +78,6 @@ class XhrSecurity
     /* ######################################################################################################## */
 
     /**
-     * Connection init screen
-     */
-    public function login(Request $request)
-    {
-        $this->logger->info('*** login');
-
-        // Function process
-        $formLogin = $this->formFactory->create(new LoginType());
-        $formLostPassword = $this->formFactory->create(new LostPasswordType());
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Public:_login.html.twig',
-            array(
-                'formLogin' => $formLogin->createView(),
-                'formLostPassword' => $formLostPassword->createView(),
-            )
-        );
-
-        return array(
-            'html' => $html,
-            );
-    }
-
-    /**
      * Connection
      */
     public function loginCheck(Request $request)

@@ -20,7 +20,7 @@ use Politizr\Model\PUserQuery;
 class PublicController extends Controller
 {
     /**
-     *  Accueil
+     * Homepage
      */
     public function homepageAction()
     {
@@ -146,17 +146,5 @@ class PublicController extends Controller
             'citizenUser' => $citizenUser,
             'electedUser' => $electedUser,
         ));
-    }
-
-    /**
-     *  Présentation
-     */
-    public function presentationAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** presentationAction');
-
-        return $this->render('PolitizrFrontBundle:Public:presentation.html.twig', array(
-            ));
     }
 }

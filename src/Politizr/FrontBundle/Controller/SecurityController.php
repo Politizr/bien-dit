@@ -47,7 +47,25 @@ class SecurityController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Déconnexion
+     * Login
+     */
+    public function loginAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** loginAction');
+
+        // Function process
+        $formLogin = $this->createForm(new LoginType());
+        $formLostPassword = $this->createForm(new LostPasswordType());
+
+        return $this->render('PolitizrFrontBundle:Security:login.html.twig', array(
+            'formLogin' => $formLogin->createView(),
+            'formLostPassword' => $formLostPassword->createView(),
+        ));
+    }
+
+    /**
+     * Logout
      */
     public function logoutAction()
     {
@@ -58,7 +76,7 @@ class SecurityController extends Controller
     }
 
     /**
-     *  Annulation inscription
+     * Cancel inscription
      */
     public function cancelInscriptionAction()
     {

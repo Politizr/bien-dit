@@ -1,6 +1,10 @@
 ################################################################################
 #               ROUTING CONNEXION
 ################################################################################
+Login:
+    pattern:  /connexion
+    defaults: { _controller: PolitizrFrontBundle:Security:login }
+
 Logout:
     pattern:  /deconnexion
     defaults: { _controller: PolitizrFrontBundle:Security:logout }
