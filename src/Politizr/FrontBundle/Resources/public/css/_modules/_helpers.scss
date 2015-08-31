@@ -10,7 +10,7 @@
 	position: absolute;
 	cursor: pointer;
 	right: 0;
-	top: 0;	
+	top: 60px;	
 }
 
 #postText .paragraph i.iconQuestion {
@@ -92,12 +92,13 @@
 	-o-box-shadow: 0px 0px 20px 0px #656565;
 	box-shadow: 0px 0px 20px 0px #656565;
 }
+.fieldsetHeader .helperSlider {top: 84px;}
 
 .helperSliderLeft {left: 23px; top:50px;}
-.helperSliderLeft i.iconArrowUp {left: 18px;}
+.helperSliderLeft i.iconArrowUp {left: 19px;}
 
 .helperSliderRight {right: -18px; top:25px;	}
-.helperSliderRight i.iconArrowUp {	right: 18px;}
+.helperSliderRight i.iconArrowUp {	right: 19px;}
 
 .helperSlider i.iconArrowUp {
 	position: absolute;

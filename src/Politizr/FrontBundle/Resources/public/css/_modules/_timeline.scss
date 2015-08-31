@@ -139,7 +139,7 @@
 span.timelineItemContextHighlight {
 	clear: both;
 	display: inline-block;
-	font-family: nerisblack;
+	font-family: 'nerisblack';
 }
 
 .timelineItemContent {
@@ -159,7 +159,7 @@ span.timelineItemContextHighlight {
 
 .timelineItemObject {
 	padding: 10px 0 0 0;
-	font-family: nerisblack;
+	font-family: 'nerisblack';
 	line-height: 140%;
 }
 
@@ -241,6 +241,7 @@ span.timelineItemContextHighlight {
 	text-align: right;
 	clear: none;
     font-family: 'nerisblack';
+    font-style: normal;
 	font-size: 10px;
 }
 

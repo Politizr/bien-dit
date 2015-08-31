@@ -21,6 +21,7 @@ $(function(){
         firstHeader:'h1',
         secondHeader:'h2'
     });
+	
 	// edit paragraph
 	var descriptionEditor = new MediumEditor('.editable.description', {    
 		buttons: ['bold', 'italic', 'header1', 'header2', 'unorderedlist', 'quote', 'anchor'],
@@ -42,7 +43,8 @@ $(function(){
         anchorPreview: false,
         firstHeader:'h1',
         secondHeader:'h2'
-    });	    
+    });	 
+	   
 	// edit copyright photo
 	var copyrightEditor = new MediumEditor('.editable.copyright', {
 		buttons: ['bold', 'italic', 'anchor'],
@@ -57,9 +59,23 @@ $(function(){
 	    anchor: {
             placeholderText: 'Saississez une adresse internet'
         },
-        anchorPreview: false,
-        firstHeader:'h1',
-        secondHeader:'h2'
+        anchorPreview: false
+    });
+	
+	// edit in a few words
+	var copyrightEditor = new MediumEditor('.editable.inAFewWords', {
+		buttons: ['bold', 'anchor'],
+        buttonLabels: {
+	        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
+            'anchor': '<i class="iconLink"></i>'
+        },
+        placeholder: {
+       		text: 'Cliquez ici pour saisir votre texte de présentation en quelques mots'
+		},
+	    anchor: {
+            placeholderText: 'Saississez une adresse internet'
+        },
+        anchorPreview: false
     });
     
     // compared mode

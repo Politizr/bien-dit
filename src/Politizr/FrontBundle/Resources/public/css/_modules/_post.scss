@@ -14,6 +14,8 @@
 	width: 540px;
 	position: relative;
 }
+.paragraph:last-child, .paragraph:last-child blockquote {padding-bottom: 0; margin-bottom: 0;}
+
 //trick for anchor on paragraph (: fixed header hide top of paragraph)
 #postText div[id^="p-"]  { //especially for id starting with p- because of an edition related bug
 	border-top: 80px solid transparent;
@@ -65,7 +67,7 @@
 	margin: 0;
 	padding: 0 0 0 16px;
 	border-left: solid 4px $highlight;
-    width: calc(100% - 16px);
+    width: calc(100% - 20px);
 }
 .paragraph .editable h2 {margin: 0 0 40px 0; float: left; clear: both;}
 
@@ -94,7 +96,7 @@
 
 .paragraph ul {
 	margin: 0;
-	padding: 0 0 0 18px;
+	padding: 0 0 40px 18px;
 	font-size: 15px;
 	line-height: 200%;
 	width: calc(100% - 18px);
@@ -103,10 +105,11 @@
 // give note
 
 #giveNote {
-	background-color: $semiDarkGrey;
+	background-color: $highlight;
 	float: left;
 	width: calc(100% - 80px);
 	padding: 20px 40px;	
+	color: #fff;
 }
 
 #giveNote span {
@@ -118,13 +121,14 @@
 
 #giveNote .postNote {
 	clear: none;
-	margin: 0 0 0 20px;
+	margin: 0 0 0 10px;
 }
 #giveNote .notePlus, #giveNote .noteMinus {
 	font-size: 12px;
-	font-family: 'Merriweather Heavy Italic';	
+	cursor: pointer;
 }
-#giveNote .notePlus:hover, #giveNote .noteMinus:hover {color: #fff; }
+#giveNote .notePlus {margin-right: 20px; }
+#giveNote .notePlus:hover, #giveNote .noteMinus:hover {color: $darkGrey; }
 
 // reaction to post
 
@@ -182,7 +186,6 @@
 
 .reactionsToPostItemSummary a, .reactionsToPostItemPostTitle a {color: $darkGrey;}
 .reactionsToPostItemSummary a:hover, .reactionsToPostItemPostTitle a:hover {color: $highlight;}
-.reactionsToPostItemSummary .organization:hover {background-color: $highlight; cursor: pointer;}
 
 .reactionsToPostItemContent {
 	float: right;
@@ -380,6 +383,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-family: 'nerisblack';
 	font-size: 13px;
 	color: $darkGrey;
+	font-style: normal;
 }
 .commentsContentHeader a:hover {color: $highlight;}
 
@@ -387,6 +391,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-size: 9px;
 	color: #fff;
 	background-color: $anotherGrey;
+	font-style: normal;
 }
 .commentsContentHeader .organization:hover {background-color: $highlight; cursor: pointer;}
 
@@ -541,10 +546,11 @@ a.linkToPost:hover {color: $darkGrey;}
 	text-transform: none;
 	font-size: 40px;
 	font-family: nerissemibold;
-	line-height: 100%;
+	line-height: 110%;
 	color: $highlight;
 	max-height: 3em;
 	overflow: hidden;
+	padding-bottom: 6px;
 }
 
 .postSummaryTitle a {	color: $highlight;}
@@ -608,7 +614,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .tag:hover {color: $highlight;}
 
 .postSummaryActivity {
-	margin-top: 15px;
+	margin-top: 10px;
 	float: left;
 	clear: both;
 }
