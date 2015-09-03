@@ -49,8 +49,16 @@ ReactionDraftEditC:
         id:             \d+
 
 DraftsC:
-    pattern:  /citoyen/mes-contributions/brouillons
+    pattern:  /citoyen/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
+
+MyDebatesC:
+    pattern:  /citoyen/mes-debats
+    defaults: { _controller: PolitizrFrontBundle:Document:myDebates }
+
+MyReactionsC:
+    pattern:  /citoyen/mes-reactions
+    defaults: { _controller: PolitizrFrontBundle:Document:myReactions }
 
 
 ################################################################################
@@ -85,4 +93,12 @@ ReactionDraftEditE:
 DraftsE:
     pattern:  /elu/mes-contributions/brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
+
+MyDebatesE:
+    pattern:  /elu/mes-debats
+    defaults: { _controller: PolitizrFrontBundle:Document:myDebates }
+
+MyReactionsE:
+    pattern:  /elu/mes-reactions
+    defaults: { _controller: PolitizrFrontBundle:Document:myReactions }
 

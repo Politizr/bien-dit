@@ -1,46 +1,5 @@
 {% for debate in debates %}
-    <div class="publicationsListItem withLoaderInside">
-        <div class="ajaxLoader" style="display: none;">
-            <i class="iconSpin5 animateSpin"></i>
-            <div class="ajaxLoaderBg"></div>
-        </div>
-        <div class="publicationsListItemHeader">
-            <span>débat</span>publié {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
-        </div>
-        <div class="publicationsListItemTitle">
-            <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
-                {{ debate.title }}
-            </a>
-        </div>
-        <div class="publicationsListItemStats">
-            <div class="publicationsListItemStatsLeft">
-                <div class="postSummaryActivity">
-                    <div class="reactionsCounter">
-                        <i class="iconReaction"></i>
-                        {{ debate | nbReactions }}
-                    </div>
-                    <div class="commentsCounter" action="paragraphCommentsCounter">
-                        <i class="iconComment"></i>
-                        {{ debate | nbComments }}
-                    </div>
-                </div>
-            </div>
-            <div class="publicationsListItemStatsRight">
-                <div class="postNote">
-                    <div class="notePlus">
-                        {{ debate.notePos }}<i class="iconNotePlus"></i>
-                    </div>
-                    <div class="noteMinus">
-                        <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="publicationsListItemActions">
-            <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
-        </div>
-        <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
-    </div>
+    {% include 'PolitizrFrontBundle:Debate:_myDebate.html.twig' with { 'debate': debate } %}
 {% endfor %}
 
 <div id="timelineScrollNav">

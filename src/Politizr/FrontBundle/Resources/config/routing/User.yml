@@ -18,14 +18,6 @@ TimelineC:
     pattern:  /citoyen/timeline
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
-MyDebatesC:
-    pattern:  /citoyen/mes-debats
-    defaults: { _controller: PolitizrFrontBundle:User:myDebates }
-
-MyReactionsC:
-    pattern:  /citoyen/mes-reactions
-    defaults: { _controller: PolitizrFrontBundle:User:myReactions }
-
 ReputationC:
     pattern:  /citoyen/mon-compte/ma-reputation
     defaults: { _controller: PolitizrFrontBundle:User:reputation }
@@ -57,14 +49,6 @@ HomepageE:
 TimelineE:
     pattern:  /elu/timeline
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
-
-MyDebatesE:
-    pattern:  /elu/mes-debats
-    defaults: { _controller: PolitizrFrontBundle:User:myDebates }
-
-MyReactionsE:
-    pattern:  /elu/mes-reactions
-    defaults: { _controller: PolitizrFrontBundle:User:myReactions }
 
 ReputationE:
     pattern:  /elu/mon-compte/ma-reputation

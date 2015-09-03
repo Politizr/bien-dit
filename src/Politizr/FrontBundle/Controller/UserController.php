@@ -119,54 +119,6 @@ class UserController extends Controller
 
 
     /* ######################################################################################################## */
-    /*                                                 CONTRIBUTIONS                                            */
-    /* ######################################################################################################## */
-
-    /**
-     * Debates
-     */
-    public function myDebatesAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myDebatesAction');
-
-        $user = $this->getUser();
-        
-        $nbDebates = PDDebateQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->count();
-
-        return $this->render('PolitizrFrontBundle:Debate:myDebates.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'nbDebates' => $nbDebates,
-        ));
-    }
-
-    /**
-     * Reactions
-     */
-    public function myReactionsAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myReactionsAction');
-
-        $user = $this->getUser();
-        
-        $nbReactions = PDReactionQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->count();
-
-        return $this->render('PolitizrFrontBundle:Reaction:myReactions.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'nbReactions' => $nbReactions,
-        ));
-    }
-
-    /* ######################################################################################################## */
     /*                                                    REPUTATION                                            */
     /* ######################################################################################################## */
 
