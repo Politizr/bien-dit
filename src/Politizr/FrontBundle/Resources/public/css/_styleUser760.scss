@@ -5,6 +5,7 @@
 @import "_restive/form760";
 @import "_restive/modal760";
 @import "_restive/actions760";
+@import "_restive/drafts-published760";
 
 //////presets
 body.css760 { overflow-x: hidden;}
@@ -295,4 +296,22 @@ body.css760 #footerRight {
 	text-align: left;
 	clear: both;
 	margin-top: 10px;
+}
+
+
+/// drafts list
+body.css760 .publicationsListItemTitle {
+	font-size: 34px;
+}
+
+body.css760 .publicationsListItemDuplicate, body.css760 .publicationsListItemDelete {
+	float: left;
+	clear: both;
+	margin: 10px 0 0 0;
+}
+
+body.css760 .publicationsListItemActions a {
+	float: left;
+	clear: both;
+	margin: 0;	
 }

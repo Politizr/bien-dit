@@ -12,6 +12,25 @@
     font-family: 'nerissemibold';
 }
 
+
+.actionFollow, .actionUnfollow {
+	float: right;
+	margin-top: 20px;
+	margin-right: 40px;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 14px;
+	cursor: pointer;
+}
+
+.actionFollow:hover, .actionUnfollow:hover {color: $darkGrey;}
+.actionFollow i, .actionUnfollow i {position: absolute; left: 0; font-size: 9px;}
+
+
+
+/// go to update under
+
 #fixedActions .actionSave,
 #fixedActions .actionPublish,
 #fixedActions .actionFollow,
@@ -60,6 +79,7 @@
 	background-color: $anotherGrey;
 	color: #fff;
 }
+
 
 #fixedActions .actionGotoDebate, 
 #fixedActions .actionSave a {

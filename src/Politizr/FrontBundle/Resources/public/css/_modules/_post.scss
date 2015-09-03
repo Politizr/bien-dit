@@ -94,7 +94,7 @@
 	font-size: 18px;
 }
 
-.paragraph ul {
+.paragraph ul, .paragraph ol {
 	margin: 0;
 	padding: 0 0 40px 18px;
 	font-size: 15px;
@@ -618,17 +618,3 @@ a.linkToPost:hover {color: $darkGrey;}
 	float: left;
 	clear: both;
 }
-
-.listPostFollow, .listPostUnfollow, .listDebateUnfollow {
-	float: right;
-	margin-top: 20px;
-	margin-right: 40px;
-	color: $highlight;
-	font-family: nerissemibold;
-	position: relative;
-	padding-left: 14px;
-	cursor: pointer;
-}
-
-.listPostFollow:hover, .listPostUnfollow:hover, .listDebateUnfollow:hover {color: $darkGrey;}
-.listPostFollow i, .listPostUnfollow i, .listDebateUnfollow i {position: absolute; left: 0; font-size: 9px;}
