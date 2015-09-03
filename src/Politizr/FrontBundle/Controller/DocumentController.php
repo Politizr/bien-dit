@@ -275,19 +275,25 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** draftsAction');
 
-        // Récupération user courant
         $user = $this->getUser();
 
-        // Débats brouillons en attente de finalisation
-        $debateDrafts = PDDebateQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->find();
+        // Nb debate's drafts
+        $nbDebateDrafts = PDDebateQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPublished(false)
+            ->count();
 
-        // Réactions brouillons en attente de finalisation
-        $reactionDrafts = PDReactionQuery::create()->filterByPUserId($user->getId())->filterByPublished(false)->find();
+        // Nb reaction's drafts
+        $nbReactionDrafts = PDReactionQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPublished(false)
+            ->count();
+
+        $nbDrafts = $nbDebateDrafts + $nbReactionDrafts;
 
         return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'debateDrafts' => $debateDrafts,
-            'reactionDrafts' => $reactionDrafts,
+            'nbDrafts' => $nbDrafts,
         ));
     }
 

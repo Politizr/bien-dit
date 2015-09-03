@@ -1,60 +1,22 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block main %}
-    <div id="main">
-        <h1>Mes brouillons de débats</h1>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Bandeau</th>
-                        <th>Titre</th>
-                        <th>Résumé</th>
-                        <th>Date de création</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                  </thead>                
-                {% for draft in debateDrafts %}
-                    {% include 'PolitizrFrontBundle:Fragment\\Debate:DraftTableRow.html.twig' with { 'document': draft } %}
-                {% else %}
-                    <tr>
-                        <td colspan="5">
-                            Aucun brouillon rédigé pour le moment
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <a class="btn btn-primary" href="{{ path('DebateDraftNew'~profileSuffix) }}">Nouveau</a>
-        <h1>Mes brouillons de réactions</h1>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Bandeau</th>
-                        <th>Débat</th>
-                        <th>Réaction</th>
-                        <th>Titre</th>
-                        <th>Résumé</th>
-                        <th>Date de création</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                  </thead>                
-                {% for draft in reactionDrafts %}
-                    {% include 'PolitizrFrontBundle:Fragment\\Reaction:DraftTableRow.html.twig' with { 'document': draft } %}
-                {% else %}
-                    <tr>
-                        <td colspan="5">
-                            Aucun brouillon rédigé pour le moment
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <p class="bg-info">Pour rédiger une réaction, naviguez sur le détail du débat ou de la réaction, et cliquez sur "Réagir"</p> 
+    <div id="publicationsList">
+        <h1>Brouillons</h1>
+
+        {% if nbDrafts == 0 %}
+            <div id="noPublications">Vous n'avez publié aucun brouillon.</div>
+        {% else %}
+            <div id="listContent">
+            </div>
+        {% endif %}
     </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
+    
+    {% if nbDrafts > 0 %}
+        {% include 'PolitizrFrontBundle:JS\\Document:myContributions.js.twig' with { 'xhrRoute': 'ROUTE_DOCUMENT_DRAFTS', 'xhrMethod': 'draftsPaginated' } %}
+    {% endif %}
 {% endblock javascriptFooter %}

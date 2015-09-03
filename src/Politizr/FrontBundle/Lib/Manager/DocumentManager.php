@@ -98,6 +98,50 @@ ORDER BY published_at ASC
         return $sql;
     }
 
+   /**
+     * Documents drafts
+     *
+     * @see app/sql/drafts.sql
+     *
+     * @todo:
+     *   > + réactions sur les débats / réactions rédigés par le user courant
+     *   > + commentaires sur les débats / réactions rédigés par le user courant
+     *
+     * @param integer $debateId
+     * @param array $inQueryUserIds
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function createDraftsRawSql($userId, $offset, $count = 10)
+    {
+        // Préparation requête SQL
+        $sql = "
+#  Brouillons de réactions
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_user_id = ".$userId."
+    AND p_d_reaction.published = 0
+)
+
+UNION DISTINCT
+
+#  Brouillons de débats
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_user_id = ".$userId."
+    AND p_d_debate.published = 0
+)
+
+ORDER BY updated_at DESC
+LIMIT ".$offset.", ".$count."
+    ";
+
+        return $sql;
+    }
+
     /* ######################################################################################################## */
     /*                                            CRUD OPERATIONS                                               */
     /* ######################################################################################################## */

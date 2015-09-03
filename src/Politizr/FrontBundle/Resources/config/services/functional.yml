@@ -3,6 +3,7 @@ services:
         class: Politizr\FrontBundle\Lib\Functional\DocumentService
         arguments:
             - @security.token_storage
+            - @security.authorization_checker
             - @politizr.manager.document
             - @logger
 

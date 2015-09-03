@@ -31,6 +31,7 @@ class XhrConstants
 
     // DEBATES + REACTIONS
     const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
+    const ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
 
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';

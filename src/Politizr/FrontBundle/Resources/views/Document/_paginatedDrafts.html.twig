@@ -1,0 +1,13 @@
+{% for document in documents %}
+    {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+        {% include 'PolitizrFrontBundle:Debate:_draft.html.twig' with { 'debate': document } %}
+    {% else %}
+        {% include 'PolitizrFrontBundle:Reaction:_draft.html.twig' with { 'reaction': document } %}
+    {% endif %}
+{% endfor %}
+
+<div id="timelineScrollNav">
+    {% if moreResults %}
+        <a id="moreResults" action="listingPaginatedNext" offset="{{ offset }}">suite</a>
+    {% endif %}
+</div>

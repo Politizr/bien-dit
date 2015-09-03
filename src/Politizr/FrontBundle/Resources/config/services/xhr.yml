@@ -12,6 +12,7 @@ services:
             - @router
             - @politizr.manager.user
             - @politizr.manager.document
+            - @politizr.functional.document
             - @politizr.tools.global
             - @logger
 

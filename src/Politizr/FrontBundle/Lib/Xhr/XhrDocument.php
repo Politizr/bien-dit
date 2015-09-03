@@ -46,6 +46,7 @@ class XhrDocument
     private $router;
     private $userManager;
     private $documentManager;
+    private $documentService;
     private $globalTools;
     private $logger;
 
@@ -61,6 +62,7 @@ class XhrDocument
      * @param @router
      * @param @politizr.manager.user
      * @param @politizr.manager.document
+     * @param @politizr.functional.document
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -75,6 +77,7 @@ class XhrDocument
         $router,
         $userManager,
         $documentManager,
+        $documentService,
         $globalTools,
         $logger
     ) {
@@ -92,6 +95,7 @@ class XhrDocument
 
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
+        $this->documentService = $documentService;
 
         $this->globalTools = $globalTools;
 
@@ -826,6 +830,45 @@ class XhrDocument
             'html' => $html,
             'counter' => $counter,
             );
+    }
+
+    /* ######################################################################################################## */
+    /*                                                  DRAFTS                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * User's drafts
+     */
+    public function draftsPaginated(Request $request)
+    {
+        $this->logger->info('*** draftsPaginated');
+
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Function process
+        $documents = $this->documentService->generateDraftsListing($offset);
+
+        // @todo use constant for "limit"
+        $moreResults = false;
+        if (sizeof($documents) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_paginatedDrafts.html.twig',
+            array(
+                'profileSuffix' => $this->globalTools->computeProfileSuffix(),
+                'documents' => $documents,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
     }
 
     /* ######################################################################################################## */
