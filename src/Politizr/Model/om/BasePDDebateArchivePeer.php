@@ -32,13 +32,13 @@ abstract class BasePDDebateArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDDebateArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 18;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 18;
 
     /** the column name for the id field */
     const ID = 'p_d_debate_archive.id';
@@ -54,9 +54,6 @@ abstract class BasePDDebateArchivePeer
 
     /** the column name for the copyright field */
     const COPYRIGHT = 'p_d_debate_archive.copyright';
-
-    /** the column name for the with_shadow field */
-    const WITH_SHADOW = 'p_d_debate_archive.with_shadow';
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_d_debate_archive.description';
@@ -116,12 +113,12 @@ abstract class BasePDDebateArchivePeer
      * e.g. PDDebateArchivePeer::$fieldNames[PDDebateArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'FileName', 'Copyright', 'WithShadow', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'fileName', 'copyright', 'withShadow', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::ID, PDDebateArchivePeer::P_USER_ID, PDDebateArchivePeer::TITLE, PDDebateArchivePeer::FILE_NAME, PDDebateArchivePeer::COPYRIGHT, PDDebateArchivePeer::WITH_SHADOW, PDDebateArchivePeer::DESCRIPTION, PDDebateArchivePeer::NOTE_POS, PDDebateArchivePeer::NOTE_NEG, PDDebateArchivePeer::NB_VIEWS, PDDebateArchivePeer::PUBLISHED, PDDebateArchivePeer::PUBLISHED_AT, PDDebateArchivePeer::PUBLISHED_BY, PDDebateArchivePeer::FAVORITE, PDDebateArchivePeer::ONLINE, PDDebateArchivePeer::CREATED_AT, PDDebateArchivePeer::UPDATED_AT, PDDebateArchivePeer::SLUG, PDDebateArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'WITH_SHADOW', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'file_name', 'copyright', 'with_shadow', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'created_at', 'updated_at', 'slug', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::ID, PDDebateArchivePeer::P_USER_ID, PDDebateArchivePeer::TITLE, PDDebateArchivePeer::FILE_NAME, PDDebateArchivePeer::COPYRIGHT, PDDebateArchivePeer::DESCRIPTION, PDDebateArchivePeer::NOTE_POS, PDDebateArchivePeer::NOTE_NEG, PDDebateArchivePeer::NB_VIEWS, PDDebateArchivePeer::PUBLISHED, PDDebateArchivePeer::PUBLISHED_AT, PDDebateArchivePeer::PUBLISHED_BY, PDDebateArchivePeer::FAVORITE, PDDebateArchivePeer::ONLINE, PDDebateArchivePeer::CREATED_AT, PDDebateArchivePeer::UPDATED_AT, PDDebateArchivePeer::SLUG, PDDebateArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'created_at', 'updated_at', 'slug', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -131,12 +128,12 @@ abstract class BasePDDebateArchivePeer
      * e.g. PDDebateArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'FileName' => 3, 'Copyright' => 4, 'WithShadow' => 5, 'Description' => 6, 'NotePos' => 7, 'NoteNeg' => 8, 'NbViews' => 9, 'Published' => 10, 'PublishedAt' => 11, 'PublishedBy' => 12, 'Favorite' => 13, 'Online' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, 'Slug' => 17, 'ArchivedAt' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'fileName' => 3, 'copyright' => 4, 'withShadow' => 5, 'description' => 6, 'notePos' => 7, 'noteNeg' => 8, 'nbViews' => 9, 'published' => 10, 'publishedAt' => 11, 'publishedBy' => 12, 'favorite' => 13, 'online' => 14, 'createdAt' => 15, 'updatedAt' => 16, 'slug' => 17, 'archivedAt' => 18, ),
-        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::ID => 0, PDDebateArchivePeer::P_USER_ID => 1, PDDebateArchivePeer::TITLE => 2, PDDebateArchivePeer::FILE_NAME => 3, PDDebateArchivePeer::COPYRIGHT => 4, PDDebateArchivePeer::WITH_SHADOW => 5, PDDebateArchivePeer::DESCRIPTION => 6, PDDebateArchivePeer::NOTE_POS => 7, PDDebateArchivePeer::NOTE_NEG => 8, PDDebateArchivePeer::NB_VIEWS => 9, PDDebateArchivePeer::PUBLISHED => 10, PDDebateArchivePeer::PUBLISHED_AT => 11, PDDebateArchivePeer::PUBLISHED_BY => 12, PDDebateArchivePeer::FAVORITE => 13, PDDebateArchivePeer::ONLINE => 14, PDDebateArchivePeer::CREATED_AT => 15, PDDebateArchivePeer::UPDATED_AT => 16, PDDebateArchivePeer::SLUG => 17, PDDebateArchivePeer::ARCHIVED_AT => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'FILE_NAME' => 3, 'COPYRIGHT' => 4, 'WITH_SHADOW' => 5, 'DESCRIPTION' => 6, 'NOTE_POS' => 7, 'NOTE_NEG' => 8, 'NB_VIEWS' => 9, 'PUBLISHED' => 10, 'PUBLISHED_AT' => 11, 'PUBLISHED_BY' => 12, 'FAVORITE' => 13, 'ONLINE' => 14, 'CREATED_AT' => 15, 'UPDATED_AT' => 16, 'SLUG' => 17, 'ARCHIVED_AT' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'file_name' => 3, 'copyright' => 4, 'with_shadow' => 5, 'description' => 6, 'note_pos' => 7, 'note_neg' => 8, 'nb_views' => 9, 'published' => 10, 'published_at' => 11, 'published_by' => 12, 'favorite' => 13, 'online' => 14, 'created_at' => 15, 'updated_at' => 16, 'slug' => 17, 'archived_at' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'Title' => 2, 'FileName' => 3, 'Copyright' => 4, 'Description' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'NbViews' => 8, 'Published' => 9, 'PublishedAt' => 10, 'PublishedBy' => 11, 'Favorite' => 12, 'Online' => 13, 'CreatedAt' => 14, 'UpdatedAt' => 15, 'Slug' => 16, 'ArchivedAt' => 17, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'title' => 2, 'fileName' => 3, 'copyright' => 4, 'description' => 5, 'notePos' => 6, 'noteNeg' => 7, 'nbViews' => 8, 'published' => 9, 'publishedAt' => 10, 'publishedBy' => 11, 'favorite' => 12, 'online' => 13, 'createdAt' => 14, 'updatedAt' => 15, 'slug' => 16, 'archivedAt' => 17, ),
+        BasePeer::TYPE_COLNAME => array (PDDebateArchivePeer::ID => 0, PDDebateArchivePeer::P_USER_ID => 1, PDDebateArchivePeer::TITLE => 2, PDDebateArchivePeer::FILE_NAME => 3, PDDebateArchivePeer::COPYRIGHT => 4, PDDebateArchivePeer::DESCRIPTION => 5, PDDebateArchivePeer::NOTE_POS => 6, PDDebateArchivePeer::NOTE_NEG => 7, PDDebateArchivePeer::NB_VIEWS => 8, PDDebateArchivePeer::PUBLISHED => 9, PDDebateArchivePeer::PUBLISHED_AT => 10, PDDebateArchivePeer::PUBLISHED_BY => 11, PDDebateArchivePeer::FAVORITE => 12, PDDebateArchivePeer::ONLINE => 13, PDDebateArchivePeer::CREATED_AT => 14, PDDebateArchivePeer::UPDATED_AT => 15, PDDebateArchivePeer::SLUG => 16, PDDebateArchivePeer::ARCHIVED_AT => 17, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'TITLE' => 2, 'FILE_NAME' => 3, 'COPYRIGHT' => 4, 'DESCRIPTION' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'NB_VIEWS' => 8, 'PUBLISHED' => 9, 'PUBLISHED_AT' => 10, 'PUBLISHED_BY' => 11, 'FAVORITE' => 12, 'ONLINE' => 13, 'CREATED_AT' => 14, 'UPDATED_AT' => 15, 'SLUG' => 16, 'ARCHIVED_AT' => 17, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'title' => 2, 'file_name' => 3, 'copyright' => 4, 'description' => 5, 'note_pos' => 6, 'note_neg' => 7, 'nb_views' => 8, 'published' => 9, 'published_at' => 10, 'published_by' => 11, 'favorite' => 12, 'online' => 13, 'created_at' => 14, 'updated_at' => 15, 'slug' => 16, 'archived_at' => 17, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -215,7 +212,6 @@ abstract class BasePDDebateArchivePeer
             $criteria->addSelectColumn(PDDebateArchivePeer::TITLE);
             $criteria->addSelectColumn(PDDebateArchivePeer::FILE_NAME);
             $criteria->addSelectColumn(PDDebateArchivePeer::COPYRIGHT);
-            $criteria->addSelectColumn(PDDebateArchivePeer::WITH_SHADOW);
             $criteria->addSelectColumn(PDDebateArchivePeer::DESCRIPTION);
             $criteria->addSelectColumn(PDDebateArchivePeer::NOTE_POS);
             $criteria->addSelectColumn(PDDebateArchivePeer::NOTE_NEG);
@@ -235,7 +231,6 @@ abstract class BasePDDebateArchivePeer
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.copyright');
-            $criteria->addSelectColumn($alias . '.with_shadow');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');

@@ -93,12 +93,16 @@ class XhrConstants
 
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
+    const ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
+    const ROUTE_USER_MANDATE_DELETE = 'profil/utilisateur/mandat/delete';
     const ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
     const ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
     const ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
-    const ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
     const ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
-    const ROUTE_USER_BACK_PHOTO_DELETE = 'profil/backphoto/delete';
+    
+    const ROUTE_USER_BACK_PHOTO_INFO_UPDATE = 'profil/user/infos/photoback/update';
+    const ROUTE_USER_BACK_PHOTO_UPLOAD = 'profil/backphoto/upload';
+    const ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 
     // TIMELINE

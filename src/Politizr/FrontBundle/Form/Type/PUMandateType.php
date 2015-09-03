@@ -15,8 +15,8 @@ use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PQMandateQuery;
 
 /**
- * Mandat
- * 
+ * User mandate edit form
+ *
  * @author Lionel Bouzonville
  */
 class PUMandateType extends AbstractType
@@ -24,7 +24,8 @@ class PUMandateType extends AbstractType
     // Permet de filtrer sur le type d'organisation
     private $pqTypeId;
 
-    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV) {
+    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV)
+    {
         $this->pqTypeId = $pqTypeId;
     }
 
@@ -34,7 +35,7 @@ class PUMandateType extends AbstractType
         $builder->add('p_user_id', 'hidden');
         $builder->add('p_q_type_id', 'hidden');
 
-        // Liste des organisations politiques
+        // Mandates type list
         $builder->add('p_q_mandate', 'model', array(
                 'required' => true,
                 'label' => 'Type de mandat',
@@ -46,7 +47,7 @@ class PUMandateType extends AbstractType
                 'constraints' => new NotBlank(array('message' => 'Choix d\'un mandat obligatoire.')),
             ));
 
-        // Date de début
+        // Localization
         $builder->add('localization', 'text', array(
                 'required' => true,
                 'label' => 'Localisation',
@@ -54,16 +55,16 @@ class PUMandateType extends AbstractType
                 'attr' => array('placeholder' => 'Ville, circonscriptrion, etc...')
             ));
         
-        // Liste des organisations politiques
-        $builder->add('p_q_organization', 'model', array(
-                'required' => false,
-                'label' => 'Parti Politique',
-                'class' => 'Politizr\\Model\\PQOrganization',
-                'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
-                'property' => 'title',
-                'multiple' => false,
-                'expanded' => false,
-            ));
+        // // Liste des organisations politiques
+        // $builder->add('p_q_organization', 'model', array(
+        //         'required' => false,
+        //         'label' => 'Parti Politique',
+        //         'class' => 'Politizr\\Model\\PQOrganization',
+        //         'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
+        //         'property' => 'title',
+        //         'multiple' => false,
+        //         'expanded' => false,
+        //     ));
 
         // Date de début
         $builder->add('begin_at', 'date', array(
@@ -89,16 +90,16 @@ class PUMandateType extends AbstractType
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'mandate';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -106,5 +107,4 @@ class PUMandateType extends AbstractType
             'data_class' => 'Politizr\Model\PUMandate',
         ));
     }
-
 }

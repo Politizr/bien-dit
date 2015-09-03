@@ -123,7 +123,7 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_debate.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $debate,
                 'tagTypeId' => $tagTypeId,
@@ -179,7 +179,7 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_debate.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $user,
                 'tagTypeId' => $tagTypeId,
@@ -235,7 +235,7 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_debate.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $user,
                 'tagTypeId' => $tagTypeId,

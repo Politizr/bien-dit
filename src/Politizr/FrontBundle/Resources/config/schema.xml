@@ -394,7 +394,6 @@
 
         <column name="back_file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
-        <column name="with_shadow" type="boolean" />
 
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="firstname" type="varchar" size="150" />
@@ -694,7 +693,6 @@
 
         <column name="file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
-        <column name="with_shadow" type="boolean" />
 
         <column name="description" type="clob" />
 
@@ -736,7 +734,6 @@
 
         <column name="file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
-        <column name="with_shadow" type="boolean" />
 
         <column name="description" type="clob" />
 

@@ -89,7 +89,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -118,7 +117,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -147,7 +145,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -176,7 +173,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -205,7 +201,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -234,7 +229,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -286,7 +280,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -315,7 +308,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -344,7 +336,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -372,7 +363,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -400,7 +390,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -428,7 +417,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -456,7 +444,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -484,7 +471,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -512,7 +498,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -540,7 +525,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -568,7 +552,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -596,7 +579,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
@@ -624,7 +606,6 @@ Politizr\Model\PUser:
         p_u_status_id:          activ
 
         back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
-        with_shadow:            1
         copyright:              <p>&copy; Politizr</p>
 
         file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>

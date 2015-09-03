@@ -1,16 +1,60 @@
 <script>
-
-    $("body").on("click", "[action='show-mandate-create']", function(e) {
-        $('#mandate-create').slideDown("slow");
+    // JCF forms styling
+    $(function() {
+        jcf.replaceAll();
     });
 
-    $("body").on("click", "[action='hide-mandate-create']", function(e) {
-        $('#mandate-create').slideUp("slow");
+    // Update user
+    $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
+        console.log('*** click user profile update');
+        console.log(mode);
+
+        var subtitle = subtitleEditor.serialize();
+        var biography = biographyEditor.serialize();
+
+        console.log(subtitle['element-0']['value']);
+        console.log(biography['element-0']['value']);
+
+        $('#user_subtitle').val(subtitle['element-0']['value']);
+        $('#user_biography').val(biography['element-0']['value']);
+     
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_USER_PROFILE_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'userProfileUpdate',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}";
+
+        if (mode === 'silence') {
+            // sauvegarde silencieuse
+            $.ajax({type: 'POST', url : xhrPath, data: $("#formUserProfileUpdate").serialize() });
+        } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : xhrPath,
+                data: $("#formUserProfileUpdate").serialize(),
+                {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+                success: function(data) {
+                    $('#ajaxGlobalLoader').hide();
+                    if (data['error']) {
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                        $('#infoBoxHolder .boxError').show();
+                    } else {
+                        $('#infoBoxHolder .boxSuccess .notifBoxText').html('Objet bien enregistré!');
+                        $('#infoBoxHolder .boxSuccess').show();
+                    }
+                }
+            });
+        }
+
+        return false;
     });
 
-    // MAJ du parti politique en cours
-    $("body").on("change", "select[action='orga-save']", function(e) {
-        console.log('*** change select');
+
+    // Update current organization
+    $("body").on("change", "select[action='organizationUpdate']", function(e) {
+        console.log('*** change select organization');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_ORGA_UPDATE',
@@ -23,7 +67,7 @@
             type: 'POST',
             dataType: 'json',
             url : xhrPath,
-            data: $("#form-orga-update").serialize(),
+            data: $("#formUserOrganizationUpdate").serialize(),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
@@ -39,6 +83,7 @@
     });
 
     // MAJ des affinités politiques
+    // @todo dead code / relancer rossier sur le sujet
     $("body").on("click", "[action='affinities-update']", function(e) {
         console.log('*** click affinities-update');
 
@@ -68,9 +113,17 @@
         });
     });
 
-    // Création d'un mandat
-    $("body").on("click", "[action='mandate-add']", function(e) {
-        console.log('*** click mandate-add');
+    // Mandate creation
+    $("body").on("click", "[action='addNewMandate']", function(e) {
+        $('#newMandate').slideDown("slow");
+    });
+
+    $("body").on("click", "[action='cancelNewMandate']", function(e) {
+        $('#newMandate').slideUp("slow");
+    });
+
+    $("body").on("click", "[action='mandateCreate']", function(e) {
+        console.log('*** click mandateCreate');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_MANDATE_CREATE',
@@ -82,7 +135,7 @@
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: $("#form-mandate-create").serialize(),
+            data: $("#formMandateCreate").serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -94,15 +147,22 @@
                     $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat bien enregistré.');
                     $('#infoBoxHolder .boxSuccess').show();
 
-                    $('#mandates').html(data['html']);
+                    $('#myMandate').html(data['html']);
+                    
+                    // JCF forms styling
+                    jcf.replaceAll();
+
+                    // clear form & slide up
+                    $('#formMandateCreate')[0].reset();
+                    $('#newMandate').slideUp("slow");
                 }
             }
         });
     });
 
-    // MAJ d'un mandat
-    $("body").on("click", "[action='mandate-update']", function(e) {
-        console.log('*** click mandate-update');
+    // Mandate update
+    $("body").on("click", "[action='mandateUpdate']", function(e) {
+        console.log('*** click mandateUpdate');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_MANDATE_UPDATE',
@@ -114,7 +174,7 @@
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: $(this).parent().prev('.form-mandate-update').serialize(),
+            data: $(this).closest('#formMandateUpdate').serialize(),
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -130,25 +190,27 @@
         });
     });
 
-    // Suppression d'un mandat
-    $("body").on("click", "[action='mandate-delete']", function(e) {
-        console.log('*** click mandate-delete');
-        var subjectId = $(this).attr('subject-id');
-        bootbox.confirm('Êtes-vous sûr de vouloir supprimer ce mandat?', function(result) {
-            if (result) {
+    // Mandate deletion
+    $("body").on("click", "[action='mandateDelete']", function(e) {
+        console.log('*** click mandateDelete');
 
-                var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-                    'xhrRoute': 'ROUTE_USER_MANDATE_DELETE',
-                    'xhrService': 'user',
-                    'xhrMethod': 'mandateProfileDelete',
-                    'xhrType': 'RETURN_HTML',
-                    } only %}";
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_USER_MANDATE_DELETE',
+            'xhrService': 'user',
+            'xhrMethod': 'mandateProfileDelete',
+            'xhrType': 'RETURN_BOOLEAN',
+            } only %}";
+        var subjectId = $(this).attr('subjectId');
+        console.log('subjectId = ' + subjectId);
 
+        var confirmMsg = "Êtes-vous sûr de vouloir supprimer ce mandat?";
+        smoke.confirm(confirmMsg, function(e) {
+            if (e) {
                 $.ajax({
                     type: 'POST',
                     url: xhrPath,
                     data: { 'id': subjectId },
-                    context: $(this),
+                    context: $(this).closest('.editMandateItem'),
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                     success: function(data) {
@@ -160,11 +222,16 @@
                             $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat supprimé.');
                             $('#infoBoxHolder .boxSuccess').show();
 
-                            $(this).closest('.mandate').slideUp();
+                            $(this).closest('.editMandateItem').hide();
                         }
                     }
                 });
             }
+        }, {
+            ok: "Supprimer",
+            cancel: "Annuler"
+            // classname: "custom-class",
+            // reverseButtons: true
         });
     });
 

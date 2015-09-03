@@ -83,12 +83,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $copyright;
 
     /**
-     * The value for the with_shadow field.
-     * @var        boolean
-     */
-    protected $with_shadow;
-
-    /**
      * The value for the description field.
      * @var        string
      */
@@ -304,17 +298,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
 
         return $this->copyright;
-    }
-
-    /**
-     * Get the [with_shadow] column value.
-     *
-     * @return boolean
-     */
-    public function getWithShadow()
-    {
-
-        return $this->with_shadow;
     }
 
     /**
@@ -757,35 +740,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setCopyright()
 
     /**
-     * Sets the value of the [with_shadow] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setWithShadow($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->with_shadow !== $v) {
-            $this->with_shadow = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::WITH_SHADOW;
-        }
-
-
-        return $this;
-    } // setWithShadow()
-
-    /**
      * Set the value of [description] column.
      *
      * @param  string $v new value
@@ -1200,23 +1154,22 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->file_name = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->copyright = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->with_shadow = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->description = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->note_pos = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->note_neg = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->nb_views = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->published = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->published_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->published_by = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->favorite = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->created_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->updated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->slug = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->tree_left = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
-            $this->tree_right = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
-            $this->tree_level = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
-            $this->archived_at = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->note_pos = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->note_neg = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->nb_views = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->published = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->published_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->published_by = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->favorite = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->online = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->slug = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->tree_left = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
+            $this->tree_right = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
+            $this->tree_level = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->archived_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1226,7 +1179,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 24; // 24 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReactionArchive object", $e);
@@ -1470,9 +1423,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::COPYRIGHT)) {
             $modifiedColumns[':p' . $index++]  = '`copyright`';
         }
-        if ($this->isColumnModified(PDReactionArchivePeer::WITH_SHADOW)) {
-            $modifiedColumns[':p' . $index++]  = '`with_shadow`';
-        }
         if ($this->isColumnModified(PDReactionArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
@@ -1552,9 +1502,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`copyright`':
                         $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
-                        break;
-                    case '`with_shadow`':
-                        $stmt->bindValue($identifier, (int) $this->with_shadow, PDO::PARAM_INT);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -1753,54 +1700,51 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 return $this->getCopyright();
                 break;
             case 7:
-                return $this->getWithShadow();
-                break;
-            case 8:
                 return $this->getDescription();
                 break;
-            case 9:
+            case 8:
                 return $this->getNotePos();
                 break;
-            case 10:
+            case 9:
                 return $this->getNoteNeg();
                 break;
-            case 11:
+            case 10:
                 return $this->getNbViews();
                 break;
-            case 12:
+            case 11:
                 return $this->getPublished();
                 break;
-            case 13:
+            case 12:
                 return $this->getPublishedAt();
                 break;
-            case 14:
+            case 13:
                 return $this->getPublishedBy();
                 break;
-            case 15:
+            case 14:
                 return $this->getFavorite();
                 break;
-            case 16:
+            case 15:
                 return $this->getOnline();
                 break;
-            case 17:
+            case 16:
                 return $this->getCreatedAt();
                 break;
-            case 18:
+            case 17:
                 return $this->getUpdatedAt();
                 break;
-            case 19:
+            case 18:
                 return $this->getSlug();
                 break;
-            case 20:
+            case 19:
                 return $this->getTreeLeft();
                 break;
-            case 21:
+            case 20:
                 return $this->getTreeRight();
                 break;
-            case 22:
+            case 21:
                 return $this->getTreeLevel();
                 break;
-            case 23:
+            case 22:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1838,23 +1782,22 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[4] => $this->getTitle(),
             $keys[5] => $this->getFileName(),
             $keys[6] => $this->getCopyright(),
-            $keys[7] => $this->getWithShadow(),
-            $keys[8] => $this->getDescription(),
-            $keys[9] => $this->getNotePos(),
-            $keys[10] => $this->getNoteNeg(),
-            $keys[11] => $this->getNbViews(),
-            $keys[12] => $this->getPublished(),
-            $keys[13] => $this->getPublishedAt(),
-            $keys[14] => $this->getPublishedBy(),
-            $keys[15] => $this->getFavorite(),
-            $keys[16] => $this->getOnline(),
-            $keys[17] => $this->getCreatedAt(),
-            $keys[18] => $this->getUpdatedAt(),
-            $keys[19] => $this->getSlug(),
-            $keys[20] => $this->getTreeLeft(),
-            $keys[21] => $this->getTreeRight(),
-            $keys[22] => $this->getTreeLevel(),
-            $keys[23] => $this->getArchivedAt(),
+            $keys[7] => $this->getDescription(),
+            $keys[8] => $this->getNotePos(),
+            $keys[9] => $this->getNoteNeg(),
+            $keys[10] => $this->getNbViews(),
+            $keys[11] => $this->getPublished(),
+            $keys[12] => $this->getPublishedAt(),
+            $keys[13] => $this->getPublishedBy(),
+            $keys[14] => $this->getFavorite(),
+            $keys[15] => $this->getOnline(),
+            $keys[16] => $this->getCreatedAt(),
+            $keys[17] => $this->getUpdatedAt(),
+            $keys[18] => $this->getSlug(),
+            $keys[19] => $this->getTreeLeft(),
+            $keys[20] => $this->getTreeRight(),
+            $keys[21] => $this->getTreeLevel(),
+            $keys[22] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1916,54 +1859,51 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->setCopyright($value);
                 break;
             case 7:
-                $this->setWithShadow($value);
-                break;
-            case 8:
                 $this->setDescription($value);
                 break;
-            case 9:
+            case 8:
                 $this->setNotePos($value);
                 break;
-            case 10:
+            case 9:
                 $this->setNoteNeg($value);
                 break;
-            case 11:
+            case 10:
                 $this->setNbViews($value);
                 break;
-            case 12:
+            case 11:
                 $this->setPublished($value);
                 break;
-            case 13:
+            case 12:
                 $this->setPublishedAt($value);
                 break;
-            case 14:
+            case 13:
                 $this->setPublishedBy($value);
                 break;
-            case 15:
+            case 14:
                 $this->setFavorite($value);
                 break;
-            case 16:
+            case 15:
                 $this->setOnline($value);
                 break;
-            case 17:
+            case 16:
                 $this->setCreatedAt($value);
                 break;
-            case 18:
+            case 17:
                 $this->setUpdatedAt($value);
                 break;
-            case 19:
+            case 18:
                 $this->setSlug($value);
                 break;
-            case 20:
+            case 19:
                 $this->setTreeLeft($value);
                 break;
-            case 21:
+            case 20:
                 $this->setTreeRight($value);
                 break;
-            case 22:
+            case 21:
                 $this->setTreeLevel($value);
                 break;
-            case 23:
+            case 22:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1997,23 +1937,22 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setCopyright($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setWithShadow($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setNotePos($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setNoteNeg($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setNbViews($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublished($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setPublishedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPublishedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setFavorite($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setCreatedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setUpdatedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setSlug($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setTreeLeft($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setTreeRight($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setTreeLevel($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setArchivedAt($arr[$keys[23]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNotePos($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setNoteNeg($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setNbViews($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublished($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPublishedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setPublishedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setFavorite($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setOnline($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setSlug($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setTreeLeft($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setTreeRight($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setTreeLevel($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setArchivedAt($arr[$keys[22]]);
     }
 
     /**
@@ -2032,7 +1971,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::TITLE)) $criteria->add(PDReactionArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionArchivePeer::FILE_NAME)) $criteria->add(PDReactionArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDReactionArchivePeer::COPYRIGHT)) $criteria->add(PDReactionArchivePeer::COPYRIGHT, $this->copyright);
-        if ($this->isColumnModified(PDReactionArchivePeer::WITH_SHADOW)) $criteria->add(PDReactionArchivePeer::WITH_SHADOW, $this->with_shadow);
         if ($this->isColumnModified(PDReactionArchivePeer::DESCRIPTION)) $criteria->add(PDReactionArchivePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDReactionArchivePeer::NOTE_POS)) $criteria->add(PDReactionArchivePeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDReactionArchivePeer::NOTE_NEG)) $criteria->add(PDReactionArchivePeer::NOTE_NEG, $this->note_neg);
@@ -2118,7 +2056,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setCopyright($this->getCopyright());
-        $copyObj->setWithShadow($this->getWithShadow());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
@@ -2193,7 +2130,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->title = null;
         $this->file_name = null;
         $this->copyright = null;
-        $this->with_shadow = null;
         $this->description = null;
         $this->note_pos = null;
         $this->note_neg = null;

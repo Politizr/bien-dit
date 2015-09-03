@@ -40,7 +40,6 @@ SELECT DISTINCT
     title,
     file_name,
     copyright,
-    with_shadow,
     description,
     note_pos,
     note_neg,

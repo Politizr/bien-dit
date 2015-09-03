@@ -24,7 +24,6 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
- * @method PDReactionArchiveQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PDReactionArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDReactionArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDReactionArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
@@ -49,7 +48,6 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByTitle() Group by the title column
  * @method PDReactionArchiveQuery groupByFileName() Group by the file_name column
  * @method PDReactionArchiveQuery groupByCopyright() Group by the copyright column
- * @method PDReactionArchiveQuery groupByWithShadow() Group by the with_shadow column
  * @method PDReactionArchiveQuery groupByDescription() Group by the description column
  * @method PDReactionArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDReactionArchiveQuery groupByNoteNeg() Group by the note_neg column
@@ -80,7 +78,6 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByTitle(string $title) Return the first PDReactionArchive filtered by the title column
  * @method PDReactionArchive findOneByFileName(string $file_name) Return the first PDReactionArchive filtered by the file_name column
  * @method PDReactionArchive findOneByCopyright(string $copyright) Return the first PDReactionArchive filtered by the copyright column
- * @method PDReactionArchive findOneByWithShadow(boolean $with_shadow) Return the first PDReactionArchive filtered by the with_shadow column
  * @method PDReactionArchive findOneByDescription(string $description) Return the first PDReactionArchive filtered by the description column
  * @method PDReactionArchive findOneByNotePos(int $note_pos) Return the first PDReactionArchive filtered by the note_pos column
  * @method PDReactionArchive findOneByNoteNeg(int $note_neg) Return the first PDReactionArchive filtered by the note_neg column
@@ -105,7 +102,6 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByTitle(string $title) Return PDReactionArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReactionArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReactionArchive objects filtered by the copyright column
- * @method array findByWithShadow(boolean $with_shadow) Return PDReactionArchive objects filtered by the with_shadow column
  * @method array findByDescription(string $description) Return PDReactionArchive objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDReactionArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDReactionArchive objects filtered by the note_neg column
@@ -228,7 +224,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -571,33 +567,6 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::COPYRIGHT, $copyright, $comparison);
-    }
-
-    /**
-     * Filter the query on the with_shadow column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByWithShadow(true); // WHERE with_shadow = true
-     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
-     * </code>
-     *
-     * @param     boolean|string $withShadow The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDReactionArchiveQuery The current query, for fluid interface
-     */
-    public function filterByWithShadow($withShadow = null, $comparison = null)
-    {
-        if (is_string($withShadow)) {
-            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PDReactionArchivePeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

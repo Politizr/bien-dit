@@ -200,8 +200,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $path = '/bundles/politizrfront/images/default_user_back.jpg';
         if ($user && $fileName = $user->getBackFileName()) {
-            $uploadWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
-            $path = $uploadWebPath.$fileName;
+            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
         }
 
         // Construction du rendu du tag
@@ -275,14 +274,12 @@ class PolitizrUserExtension extends \Twig_Extension
      * Follow / unfollow user
      *
      * @param PUser $user
-     * @param string $context list | detail
      * @return string
      */
-    public function linkSubscribeUser(PUser $user, $context = 'list')
+    public function linkSubscribeUser(PUser $user)
     {
         // $this->logger->info('*** linkSubscribeUser');
         // $this->logger->info('$debate = '.print_r($user, true));
-        // $this->logger->info('$context = '.print_r($context, true));
 
         $follower = false;
         if ($this->user) {
@@ -300,7 +297,6 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribeUser.html.twig',
             array(
-                'context' => $context,
                 'object' => $user,
                 'follower' => $follower
             )

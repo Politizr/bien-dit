@@ -176,10 +176,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param PDocumentInterface $document
      * @param string $filterName
-     * @param boolean $testShadow
      * @return html
      */
-    public function image(PDocumentInterface $document, $filterName = 'debate_header', $testShadow = true)
+    public function image(PDocumentInterface $document, $filterName = 'debate_header')
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -202,11 +201,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'withShadow' => $document->getWithShadow(),
                 'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,
-                'testShadow' => $testShadow,
             )
         );
 
@@ -632,14 +629,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Follow / unfollow debate
      *
      * @param PDDebate $debate
-     * @param string $context list | detail
      * @return string
      */
-    public function linkSubscribeDebate(PDDebate $debate, $context = 'list')
+    public function linkSubscribeDebate(PDDebate $debate)
     {
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
-        // $this->logger->info('$context = '.print_r($context, true));
 
         $owner = false;
         $follower = false;
@@ -662,7 +657,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
             array(
-                'context' => $context,
                 'object' => $debate,
                 'owner' => $owner,
                 'follower' => $follower

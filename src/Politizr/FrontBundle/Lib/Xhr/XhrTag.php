@@ -306,7 +306,7 @@ class XhrTag
         $this->logger->info('$subjectId = ' . print_r($subjectId, true));
 
         // Function process
-        $this->tagManager->deleteUserFollowTag($subjectId, $tagId);
+        $deleted = $this->tagManager->deleteUserFollowTag($subjectId, $tagId);
 
         return $deleted;
     }
@@ -393,7 +393,7 @@ class XhrTag
         $this->logger->info('$subjectId = ' . print_r($subjectId, true));
 
         // Function process
-        $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
+        $deleted = $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
 
         return $deleted;
     }

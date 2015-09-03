@@ -11,6 +11,7 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -27,6 +28,7 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
+use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
 
 /**
  * XHR service for user management.
@@ -175,6 +177,60 @@ class XhrUser
     }
 
     /**
+     * Update user back photo info
+     */
+    public function userBackPhotoInfoUpdate(Request $request)
+    {
+        $this->logger->info('*** userBackPhotoInfoUpdate');
+        
+        // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $form = $this->formFactory->create(new PUserBackPhotoInfoType(), $user);
+
+        // Retrieve actual file name
+        $oldFileName = $user->getBackFileName();
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+            $user->save();
+
+            // Remove old file if new upload or deletion has been done
+            $fileName = $user->getBackFileName();
+            if ($fileName != $oldFileName) {
+                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
+                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
+                    unlink($path . $oldFileName);
+                }
+            }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Rendering
+        $path = '/bundles/politizrfront/images/default_user_back.jpg';
+        if ($user && $fileName = $user->getBackFileName()) {
+            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
+        }
+        $imageHeader = $this->templating->render(
+            'PolitizrFrontBundle:User:_imageHeader.html.twig',
+            array(
+                'title' => $user->__toString(),
+                'path' => $path,
+                'filterName' => 'user_bio_back',
+            )
+        );
+
+        return array(
+            'imageHeader' => $imageHeader,
+            'copyright' => $user->getCopyright(),
+            );
+    }
+
+
+    /**
      * User's photo upload
      */
     public function userPhotoUpload(Request $request)
@@ -183,7 +239,7 @@ class XhrUser
         
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // XHR upload
         $fileName = $this->globalTools->uploadXhrImage(
@@ -204,8 +260,24 @@ class XhrUser
         $user->setFilename($fileName);
         $user->save();
 
+        $path = 'bundles/politizrfront/images/profil_default.png';
+        if ($user && $fileName = $user->getFileName()) {
+            $path = 'uploads/users/'.$fileName;
+        }
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_photo.html.twig',
+            array(
+                'user' => $user,
+                'path' => $path,
+                'filterName' => 'user_bio',
+            )
+        );
+
         return array(
-            'filename' => $fileName,
+            'fileName' => $fileName,
+            'html' => $html,
             );
     }
 
@@ -218,7 +290,7 @@ class XhrUser
         
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getFilename();
@@ -230,7 +302,20 @@ class XhrUser
         $user->setFilename(null);
         $user->save();
 
-        return true;
+        // Rendering
+        $path = 'bundles/politizrfront/images/profil_default.png';
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_photo.html.twig',
+            array(
+                'user' => $user,
+                'path' => $path,
+                'filterName' => 'user_bio',
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
     }
 
     /**
@@ -239,32 +324,40 @@ class XhrUser
     public function userBackPhotoUpload(Request $request)
     {
         $this->logger->info('*** userBackPhotoUpload');
-        
-        // Function process
+
+        // Request arguments
+        $id = $request->get('id');
+        $this->logger->info(print_r($id, true));
+
+        // get current user & args
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $uploadWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
+
+        // Chemin des images
+        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
 
         // Appel du service d'upload ajax
         $fileName = $this->globalTools->uploadXhrImage(
             $request,
             'backFileName',
             $path,
-            1280,
-            600
+            1024,
+            1024
         );
 
-        // Suppression photo déjà uploadée
-        $oldFilename = $user->getBackFilename();
-        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
-            unlink($path . $oldFilename);
-        }
-
-        // MAJ du modèle
-        $user->setBackFilename($fileName);
-        $user->save();
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_imageHeader.html.twig',
+            array(
+                'path' => $uploadWebPath . $fileName,
+                'filterName' => 'user_bio_back',
+                'title' => $user->__toString(),
+            )
+        );
 
         return array(
-            'filename' => $fileName,
+            'fileName' => $fileName,
+            'html' => $html,
             );
     }
 
@@ -277,7 +370,7 @@ class XhrUser
         
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $path = $this->kernel->getRootDir() . '/../web' . PUser::UPLOAD_WEB_PATH;
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
         $filename = $user->getBackFilename();
@@ -375,7 +468,7 @@ class XhrUser
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glMandateEdit.html.twig',
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
             array(
                 'formMandate' => $form->createView(),
                 'formMandateViews' => $formMandateViews
@@ -422,7 +515,7 @@ class XhrUser
         $this->logger->info('*** mandateProfileDelete');
         
         // Request arguments
-        $id = $request->get('mandate')['id'];
+        $id = $request->get('id');
         $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process

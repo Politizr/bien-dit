@@ -2,13 +2,7 @@
     // on document ready
     $(function() {
         $("#formDocumentPhoto").ajaxForm(options);
-
-        // Shadow or no on photo init
-        if ($(".maskIllustrationShadow").attr('withShadow')) {
-            $('.showIllustrationShadow').hide();
-        } else {
-            $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
-        }
+        $('.showIllustrationShadow').hide();
     });
 
     // open upload modal
@@ -116,13 +110,6 @@
         console.log(copyright['element-0']['value']);
 
         $('#debate_photo_info_copyright').val(copyright['element-0']['value']);
-     
-        // check visibility for "with_shadow" argument pour transmettre la valeur shadow associé à l'image
-        if ($('.showIllustrationShadow').is(':visible')) {
-            $('#debate_photo_info_with_shadow').val(0);
-        } else {
-            $('#debate_photo_info_with_shadow').val(1);
-        }
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_DEBATE_PHOTO_INFO_UPDATE',
@@ -165,15 +152,6 @@
 
         var copyright = copyrightEditor.serialize();
         console.log(copyright['element-0']['value']);
-
-        $('#reaction_photo_info_copyright').val(copyright['element-0']['value']);
-     
-        // check visibility for "with_shadow" argument pour transmettre la valeur shadow associé à l'image
-        if ($('.showIllustrationShadow').is(':visible')) {
-            $('#reaction_photo_info_with_shadow').val(0);
-        } else {
-            $('#reaction_photo_info_with_shadow').val(1);
-        }
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_REACTION_PHOTO_INFO_UPDATE',

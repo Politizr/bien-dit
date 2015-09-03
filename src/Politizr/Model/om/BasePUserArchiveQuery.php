@@ -43,7 +43,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserArchiveQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
- * @method PUserArchiveQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PUserArchiveQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserArchiveQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserArchiveQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -92,7 +91,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByFileName() Group by the file_name column
  * @method PUserArchiveQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserArchiveQuery groupByCopyright() Group by the copyright column
- * @method PUserArchiveQuery groupByWithShadow() Group by the with_shadow column
  * @method PUserArchiveQuery groupByGender() Group by the gender column
  * @method PUserArchiveQuery groupByFirstname() Group by the firstname column
  * @method PUserArchiveQuery groupByName() Group by the name column
@@ -147,7 +145,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByFileName(string $file_name) Return the first PUserArchive filtered by the file_name column
  * @method PUserArchive findOneByBackFileName(string $back_file_name) Return the first PUserArchive filtered by the back_file_name column
  * @method PUserArchive findOneByCopyright(string $copyright) Return the first PUserArchive filtered by the copyright column
- * @method PUserArchive findOneByWithShadow(boolean $with_shadow) Return the first PUserArchive filtered by the with_shadow column
  * @method PUserArchive findOneByGender(int $gender) Return the first PUserArchive filtered by the gender column
  * @method PUserArchive findOneByFirstname(string $firstname) Return the first PUserArchive filtered by the firstname column
  * @method PUserArchive findOneByName(string $name) Return the first PUserArchive filtered by the name column
@@ -196,7 +193,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByFileName(string $file_name) Return PUserArchive objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUserArchive objects filtered by the back_file_name column
  * @method array findByCopyright(string $copyright) Return PUserArchive objects filtered by the copyright column
- * @method array findByWithShadow(boolean $with_shadow) Return PUserArchive objects filtered by the with_shadow column
  * @method array findByGender(int $gender) Return PUserArchive objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUserArchive objects filtered by the firstname column
  * @method array findByName(string $name) Return PUserArchive objects filtered by the name column
@@ -324,7 +320,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `with_shadow`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1306,33 +1302,6 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::COPYRIGHT, $copyright, $comparison);
-    }
-
-    /**
-     * Filter the query on the with_shadow column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByWithShadow(true); // WHERE with_shadow = true
-     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
-     * </code>
-     *
-     * @param     boolean|string $withShadow The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserArchiveQuery The current query, for fluid interface
-     */
-    public function filterByWithShadow($withShadow = null, $comparison = null)
-    {
-        if (is_string($withShadow)) {
-            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PUserArchivePeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

@@ -1,10 +1,4 @@
-{% if context == 'list' %}
-    <div class="listPostFollow">
-        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-        {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
-    </div>
-{% elseif context == 'detail' %}
-    <div class="{% if follower %}actionUnfollow{% else %}actionFollow{% endif %} withLoaderInside">
-        {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
-    </div>
-{% endif %}
+<div class="{% if follower %}actionUnfollow{% else %}actionFollow{% endif %} withLoaderInside">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
+</div>

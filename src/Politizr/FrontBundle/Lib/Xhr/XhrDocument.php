@@ -344,11 +344,9 @@ class XhrDocument
         $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'withShadow' => $debate->getWithShadow(),
                 'title' => $debate->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
-                'testShadow' => true,
             )
         );
 
@@ -525,11 +523,9 @@ class XhrDocument
         $imageHeader = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'withShadow' => $reaction->getWithShadow(),
                 'title' => $reaction->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
-                'testShadow' => true,
             )
         );
 
@@ -666,11 +662,9 @@ class XhrDocument
         $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
             array(
-                'withShadow' => $document->getWithShadow(),
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',
                 'title' => $document->getTitle(),
-                'testShadow' => true,
             )
         );
 

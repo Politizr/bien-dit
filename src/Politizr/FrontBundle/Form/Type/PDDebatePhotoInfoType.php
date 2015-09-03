@@ -28,10 +28,6 @@ class PDDebatePhotoInfoType extends AbstractType
             'required' => true,
         ));
 
-        $builder->add('with_shadow', 'hidden', array(
-            'required' => false,
-        ));
-
         $builder->add('file_name', 'hidden', array(
             'required' => false,
         ));

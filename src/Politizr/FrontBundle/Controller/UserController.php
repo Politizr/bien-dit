@@ -33,6 +33,7 @@ use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
+use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
 
 /**
  * User controller
@@ -216,48 +217,53 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** editProfileAction');
 
-        // User courant
         $user = $this->getUser();
 
-        // Photos profil
-        $backFileName = $user->getBackFileName();
-        $fileName = $user->getFileName();
-
-        // Organisation courante
-        $puCurrentQo = PUCurrentQOQuery::create()
-            ->filterByPUserId($user->getId())
-            ->usePUCurrentQOPQOrganizationQuery()
-                ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
-            ->endUse()
-            ->findOne();
-
-        if (!$puCurrentQo) {
-            $puCurrentQo = new PUCurrentQO();
-            $puCurrentQo->setPUserId($user->getId());
-        }
-
-        // Mandats
-        $formMandateViews = $this->get('politizr.tools.global')->getFormMandateViews($user->getId());
-
-        // Form vierge pour création mandat
-        $mandate = new PUMandate();
-        $mandate->setPUserId($user->getId());
-        $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
-
-        // Formulaire
+        // Biography
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
-        $formOrga = $this->createForm(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
-        $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
+
+        // Photos
+        $formBackPhotoInfo = $this->createForm(new PUserBackPhotoInfoType(), $user);
+
+        // Dedicated elected fields
+        $formOrga = null;
+        $formMandate = null;
+        $formMandateViews = null;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ELECTED')) {
+            // Current organization
+            $puCurrentQo = PUCurrentQOQuery::create()
+                ->filterByPUserId($user->getId())
+                ->usePUCurrentQOPQOrganizationQuery()
+                    ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
+                ->endUse()
+                ->findOne();
+
+            if (!$puCurrentQo) {
+                $puCurrentQo = new PUCurrentQO();
+                $puCurrentQo->setPUserId($user->getId());
+            }
+
+            // Mandates form views
+            $formMandateViews = $this->get('politizr.tools.global')->getFormMandateViews($user->getId());
+
+            // New mandate
+            $mandate = new PUMandate();
+            $mandate->setPUserId($user->getId());
+            $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
+
+            // Current organization & new mandate forms
+            $formOrga = $this->createForm(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
+            $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
+        }
 
         return $this->render('PolitizrFrontBundle:User:editProfile.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'user' => $user,
-            'backFileName' => $backFileName,
-            'fileName' => $fileName,
             'formBio' => $formBio->createView(),
-            'formOrga' => $formOrga->createView(),
-            'formMandate' => $formMandate->createView(),
-            'formMandateViews' => $formMandateViews,
+            'formBackPhotoInfo' => $formBackPhotoInfo->createView(),
+            'formOrga' => $formOrga?$formOrga->createView():null,
+            'formMandate' => $formMandate?$formMandate->createView():null,
+            'formMandateViews' => $formMandateViews?$formMandateViews:null,
         ));
     }
 

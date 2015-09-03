@@ -22,7 +22,6 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
- * @method PDDebateArchiveQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PDDebateArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PDDebateArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDDebateArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
@@ -42,7 +41,6 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByTitle() Group by the title column
  * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
  * @method PDDebateArchiveQuery groupByCopyright() Group by the copyright column
- * @method PDDebateArchiveQuery groupByWithShadow() Group by the with_shadow column
  * @method PDDebateArchiveQuery groupByDescription() Group by the description column
  * @method PDDebateArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDDebateArchiveQuery groupByNoteNeg() Group by the note_neg column
@@ -68,7 +66,6 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByTitle(string $title) Return the first PDDebateArchive filtered by the title column
  * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
  * @method PDDebateArchive findOneByCopyright(string $copyright) Return the first PDDebateArchive filtered by the copyright column
- * @method PDDebateArchive findOneByWithShadow(boolean $with_shadow) Return the first PDDebateArchive filtered by the with_shadow column
  * @method PDDebateArchive findOneByDescription(string $description) Return the first PDDebateArchive filtered by the description column
  * @method PDDebateArchive findOneByNotePos(int $note_pos) Return the first PDDebateArchive filtered by the note_pos column
  * @method PDDebateArchive findOneByNoteNeg(int $note_neg) Return the first PDDebateArchive filtered by the note_neg column
@@ -88,7 +85,6 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByTitle(string $title) Return PDDebateArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebateArchive objects filtered by the copyright column
- * @method array findByWithShadow(boolean $with_shadow) Return PDDebateArchive objects filtered by the with_shadow column
  * @method array findByDescription(string $description) Return PDDebateArchive objects filtered by the description column
  * @method array findByNotePos(int $note_pos) Return PDDebateArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDDebateArchive objects filtered by the note_neg column
@@ -208,7 +204,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `with_shadow`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -467,33 +463,6 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::COPYRIGHT, $copyright, $comparison);
-    }
-
-    /**
-     * Filter the query on the with_shadow column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByWithShadow(true); // WHERE with_shadow = true
-     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
-     * </code>
-     *
-     * @param     boolean|string $withShadow The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PDDebateArchiveQuery The current query, for fluid interface
-     */
-    public function filterByWithShadow($withShadow = null, $comparison = null)
-    {
-        if (is_string($withShadow)) {
-            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PDDebateArchivePeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

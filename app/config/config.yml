@@ -407,7 +407,6 @@ bazinga_faker:
             custom_formatters:
                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
-                WithShadow:             { method: boolean, parameters: [ 80 ] }
                 Copyright:              { method: lorem, parameters: [ 1, 1 ] }
 
                 Firstname:              { method: firstname }
@@ -516,7 +515,6 @@ bazinga_faker:
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 75 ] }
 
-                WithShadow:             { method: boolean, parameters: [ 80 ] }
                 Copyright:              { method: lorem, parameters: [ 1, 1 ] }
 
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
@@ -671,7 +669,8 @@ fos_elastica:
                     # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
                     indexable_callback:         'isIndexable'
                     mappings:
-                        arrayTags:
+                        tags:
+                            property_path:      arrayTags
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
@@ -718,7 +717,8 @@ fos_elastica:
                 p_user:
                     indexable_callback:         'isIndexable'
                     mappings:
-                        arrayTags:
+                        tags:
+                            property_path:      arrayTags
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer

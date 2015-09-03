@@ -1,41 +1,76 @@
 <script>
     // on document ready
     $(function() {
-        // Initialisation form ajax upload
-        $("#form-user-back-photo").ajaxForm(optionsBack);
-        $("#form-user-photo").ajaxForm(options);
+        $("#formUserPhoto").ajaxForm(photoOptions);
+        $("#formUserBackPhoto").ajaxForm(backPhotoOptions);
+        $('.showIllustrationShadow').hide();
     });
+
+    // open upload modal
+    $("body").on("click", "[action='modalBackUploadOpen']", function() {
+        $('#modalUploadBox').show();
+        $('#modalUpload').slideDown('fast');
+        $('body').addClass('noscroll');
+        $('html, body').animate({
+            scrollTop: $("body").offset().top
+        }, 0);
+    });
+
+    // close upload modal 
+    $("body").on("click", "[action='modalUploadClose']", function() {
+        $('body').removeClass('noscroll');
+        $('#modalUploadBox').hide();
+        $('#modalUpload').slideUp();
+    });
+    
+    // image shadow on/off
+    $("body").on("click", "[action='maskIllustrationShadow']", function() {
+        $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
+        $('.showIllustrationShadow').show();
+    });
+    $("body").on("click", "[action='showIllustrationShadow']", function() {
+        $('.showIllustrationShadow').hide();
+        $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').show();
+    });
+
 
     // **************************** //
     //      LISTENERS
     // **************************** //
-    // Clic bouton upload photo local
-    $("body").on("click", "[action='back-file-select']", function() {
-        $("[action='back-file-upload']").trigger('click');
-        return false;
-    });
-    $("body").on("click", "[action='file-select']", function() {
-        $("[action='file-upload']").trigger('click');
+    // Clic button upload photo local
+    $("body").on("click", "[action='fileSelect']", function() {
+        console.log('click file select');
+        $("#fileName").trigger('click');
         return false;
     });
 
-
-    // Upload simple
-    $("body").on("change", "[action='back-file-upload']", function() {
-        $('#form-user-back-photo').submit();
+    // Form submit upload photo
+    $("body").on("change", "#fileName", function() {
+        console.log('change file name');
+        $('#formUserPhoto').submit();
     });
-    $("body").on("change", "[action='file-upload']", function() {
-        $('#form-user-photo').submit();
+
+    // Click button upload back photo local
+    $("body").on("click", "[action='backFileSelect']", function() {
+        console.log('click back file select');
+        $("#backFileName").trigger('click');
+        return false;
+    });
+
+    // Form submit upload back photo
+    $("body").on("change", "#backFileName", function() {
+        console.log('change back file name');
+        $('#formUserBackPhoto').submit();
     });
 
 
     // **************************** //
     //      VARIABLES
     // **************************** //
-    // Options Jquery Form JS > upload ajax
+    // Options Jquery Form JS
 
-    // photo back
-    var optionsBack = {
+    // Profile photo
+    var photoOptions = {
         // iframe: true,
         beforeSend: function() 
         {
@@ -59,11 +94,10 @@
             data = $.parseJSON( data );
             console.log('data parse JSON = ' + data);
 
-            if (!data['success']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#header').css('background-image', 'url(/uploads/users/'+data['filename']+')');
+            if (data['success']) {
+                // update & imgLiquid uploaded photo
+                $('#uploadedPhoto').html(data['html']);
+                fullImgLiquid();
             }
         },
         error: function(data)
@@ -74,8 +108,8 @@
         }
     }; 
 
-    // photo profil
-    var options = {
+    // Back photo
+    var backPhotoOptions = {
         // iframe: true,
         beforeSend: function() 
         {
@@ -99,11 +133,12 @@
             data = $.parseJSON( data );
             console.log('data parse JSON = ' + data);
 
-            if (!data['success']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#current-photo').html('<img class="img-rounded" src="/uploads/users/'+data['filename']+'" />')
+            if (data['success']) {
+                // update & imgLiquid uploaded photo
+                $('#uploadedBackPhoto').html(data['html']);
+                fullImgLiquid();
+
+                $('#user_back_photo_info_back_file_name, #reaction_photo_info_file_name').val(data['fileName']);
             }
         },
         error: function(data)
@@ -114,58 +149,22 @@
         }
     }; 
 
-
-    // Suppression photo
-    $('body').on('click', '[action="back-file-delete"]', function(e){
-        console.log('*** click back file delete');
-
-        e.preventDefault();
-
-        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_USER_BACK_PHOTO_DELETE',
-            'xhrService': 'user',
-            'xhrMethod': 'userBackPhotoDelete',
-            'xhrType': 'RETURN_BOOLEAN',
-            } only %}";
-
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : xhrPath,
-            data: $("#form-user-back-photo").serialize(),
-            dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
-            success: function(data) {
-                $('#ajaxGlobalLoader').hide();
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    $('#header').css('background-image', 'url(/bundles/politizrfront/images/default_user_back.jpg');
-                }
-            }
-        });
-    });
-
-    // Suppression photo
-    $('body').on('click', '[action="file-delete"]', function(e){
+    // Delete photo
+    $('body').on('click', "[action='fileDelete']", function(e){
         console.log('*** click file delete');
-
-        e.preventDefault();
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_USER_PHOTO_DELETE',
             'xhrService': 'user',
             'xhrMethod': 'userPhotoDelete',
-            'xhrType': 'RETURN_BOOLEAN',
+            'xhrType': 'RETURN_HTML',
             } only %}";
 
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url : xhrPath,
-            data: $("#form-user-photo").serialize(),
-            dataType: 'json',
+            data: $("#formUserBackPhotoInfoUpdate").serialize(),
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
                 $('#ajaxGlobalLoader').hide();
@@ -173,7 +172,61 @@
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#current-photo').html('<img  class="img-rounded" src="{{ asset("bundles/politizrfront/images/profil_default.png") }}">');
+                    // update & imgLiquid uploaded photo
+                    $('#uploadedPhoto').html(data['html']);
+                    fullImgLiquid();
+                }
+            }
+        });
+    });
+
+    // Delete back photo
+    $('body').on('click', "[action='backFileDelete']", function(e){
+        console.log('*** click back file delete');
+
+        $('#uploadedBackPhoto').html('');
+        $('#user_back_photo_info_back_file_name').val(null);
+    });
+
+    // Save user back photo info
+    $("body").on("click", "[action='userBackPhotoInfoSave']", function(e) {
+        console.log('*** click save user back photo info');
+
+        var copyright = copyrightEditor.serialize();
+        console.log(copyright['element-0']['value']);
+
+        $('#user_back_photo_info_copyright').val(copyright['element-0']['value']);
+
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_USER_BACK_PHOTO_INFO_UPDATE',
+            'xhrService': 'user',
+            'xhrMethod': 'userBackPhotoInfoUpdate',
+            'xhrType': 'RETURN_HTML',
+            } only %}";
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url : xhrPath,
+            data: $("#formUserBackPhotoInfoUpdate").serialize(),
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                $('#ajaxGlobalLoader').hide();
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    // update copyright info
+                    $('#copyright').html(data['copyright']);
+
+                    // update & imgLiquid uploaded photo
+                    console.log(data['imageHeader']);
+                    $('#profileHeaderIllustration').html(data['imageHeader']);
+                    $('#illustration_l').html(data['imageHeader']);
+                    $('#illustration_r').html(data['imageHeader']);
+                    fullImgLiquid();
+
+                    $("[action='modalUploadClose']").trigger('click');
                 }
             }
         });

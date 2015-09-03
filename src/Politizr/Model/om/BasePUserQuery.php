@@ -72,7 +72,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
- * @method PUserQuery orderByWithShadow($order = Criteria::ASC) Order by the with_shadow column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -120,7 +119,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserQuery groupByCopyright() Group by the copyright column
- * @method PUserQuery groupByWithShadow() Group by the with_shadow column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
  * @method PUserQuery groupByName() Group by the name column
@@ -262,7 +260,6 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
  * @method PUser findOneByCopyright(string $copyright) Return the first PUser filtered by the copyright column
- * @method PUser findOneByWithShadow(boolean $with_shadow) Return the first PUser filtered by the with_shadow column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
  * @method PUser findOneByName(string $name) Return the first PUser filtered by the name column
@@ -310,7 +307,6 @@ use Politizr\Model\PUserQuery;
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
  * @method array findByCopyright(string $copyright) Return PUser objects filtered by the copyright column
- * @method array findByWithShadow(boolean $with_shadow) Return PUser objects filtered by the with_shadow column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
  * @method array findByName(string $name) Return PUser objects filtered by the name column
@@ -443,7 +439,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `with_shadow`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1427,33 +1423,6 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::COPYRIGHT, $copyright, $comparison);
-    }
-
-    /**
-     * Filter the query on the with_shadow column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByWithShadow(true); // WHERE with_shadow = true
-     * $query->filterByWithShadow('yes'); // WHERE with_shadow = true
-     * </code>
-     *
-     * @param     boolean|string $withShadow The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterByWithShadow($withShadow = null, $comparison = null)
-    {
-        if (is_string($withShadow)) {
-            $withShadow = in_array(strtolower($withShadow), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PUserPeer::WITH_SHADOW, $withShadow, $comparison);
     }
 
     /**

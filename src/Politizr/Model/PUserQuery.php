@@ -62,7 +62,6 @@ SELECT DISTINCT
     file_name,
     back_file_name,
     copyright,
-    with_shadow,
     gender,
     firstname,
     name,

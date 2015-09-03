@@ -46,20 +46,36 @@ Politizr\Model\PQOrganization:
     parti0:
         online:             true
         p_q_type_id:        electif
-        title:              Non Inscrit
-        initials:           Non Inscrit
+        title:              Sans Étiquette
+        initials:           Sans Étiquette
         file_name:          nologo.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                null
     parti1:
         online:             true
         p_q_type_id:        electif
-        title:              Parti Communiste Français
-        initials:           PCF
-        file_name:          pcf.png
+        title:              Lutte Ouvrière
+        initials:           LO
+        file_name:          lo.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                https://fr.wikipedia.org/wiki/Parti_communiste_fran%C3%A7ais
+        url:                https://fr.wikipedia.org/wiki/Lutte_ouvri%C3%A8re
     parti2:
+        online:             true
+        p_q_type_id:        electif
+        title:              Nouveau Parti Anticapitaliste
+        initials:           NPA
+        file_name:          npa.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                https://fr.wikipedia.org/wiki/Nouveau_Parti_anticapitaliste
+#     parti3:
+#         online:             true
+#         p_q_type_id:        electif
+#         title:              Front de Gauche
+#         initials:           FDG
+#         file_name:          fdg.jpg
+#         description:        <?php $faker('paragraphs', 4, true); ?>
+#         url:                https://fr.wikipedia.org/wiki/Front_de_gauche_%28France%29
+    parti4:
         online:             true
         p_q_type_id:        electif
         title:              Parti de Gauche
@@ -67,7 +83,15 @@ Politizr\Model\PQOrganization:
         file_name:          pg.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Parti_de_gauche_%28France%29
-    parti3:
+    parti5:
+        online:             true
+        p_q_type_id:        electif
+        title:              Parti Communiste Français
+        initials:           PCF
+        file_name:          pcf.png
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                https://fr.wikipedia.org/wiki/Parti_communiste_fran%C3%A7ais
+    parti6:
         online:             true
         p_q_type_id:        electif
         title:              Parti Socialiste
@@ -75,7 +99,7 @@ Politizr\Model\PQOrganization:
         file_name:          ps.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Parti_socialiste_%28France%29
-    parti4:
+    parti7:
         online:             true
         p_q_type_id:        electif
         title:              Parti Radical de Gauche
@@ -83,7 +107,7 @@ Politizr\Model\PQOrganization:
         file_name:          prg.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Parti_radical_de_gauche
-    parti5:
+    parti8:
         online:             true
         p_q_type_id:        electif
         title:              Europe écologie Les Verts
@@ -91,7 +115,7 @@ Politizr\Model\PQOrganization:
         file_name:          eelv.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Europe_%C3%89cologie_Les_Verts
-    parti6:
+    parti9:
         online:             true
         p_q_type_id:        electif
         title:              Divers gauche
@@ -99,7 +123,7 @@ Politizr\Model\PQOrganization:
         file_name:          dvg.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Divers_gauche
-    parti7:
+    parti10:
         online:             true
         p_q_type_id:        electif
         title:              Mouvement Démocrate
@@ -107,7 +131,7 @@ Politizr\Model\PQOrganization:
         file_name:          modem.gif
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Mouvement_d%C3%A9mocrate_%28France%29
-    parti8:
+    parti11:
         online:             true
         p_q_type_id:        electif
         title:              Union des Démocrates et Indépendants
@@ -115,7 +139,7 @@ Politizr\Model\PQOrganization:
         file_name:          udi.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Union_des_d%C3%A9mocrates_et_ind%C3%A9pendants
-    parti9:
+    parti12:
         online:             true
         p_q_type_id:        electif
         title:              Divers droite
@@ -123,7 +147,7 @@ Politizr\Model\PQOrganization:
         file_name:          dvd.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Divers_droite
-    parti10:
+    parti13:
         online:             true
         p_q_type_id:        electif
         title:              Les Républicains
@@ -131,7 +155,7 @@ Politizr\Model\PQOrganization:
         file_name:          lr.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Les_R%C3%A9publicains_%28parti_fran%C3%A7ais%29
-    parti11:
+    parti14:
         online:             true
         p_q_type_id:        electif
         title:              Debout la France
@@ -139,7 +163,7 @@ Politizr\Model\PQOrganization:
         file_name:          dlf.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                https://fr.wikipedia.org/wiki/Debout_la_France
-    parti12:
+    parti15:
         online:             true
         p_q_type_id:        electif
         p_q_type_id:        electif

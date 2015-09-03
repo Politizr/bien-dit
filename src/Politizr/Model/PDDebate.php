@@ -266,7 +266,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
      * Debate's array tags
      * /!\ used by elastica indexation
      *
-     * @return PropelCollection[PTag]
+     * @return array[string]
      */
     public function getArrayTags($tagTypeId = null, $online = true)
     {

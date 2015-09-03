@@ -265,12 +265,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $copyright;
 
     /**
-     * The value for the with_shadow field.
-     * @var        boolean
-     */
-    protected $with_shadow;
-
-    /**
      * The value for the gender field.
      * @var        int
      */
@@ -1285,17 +1279,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [with_shadow] column value.
-     *
-     * @return boolean
-     */
-    public function getWithShadow()
-    {
-
-        return $this->with_shadow;
-    }
-
-    /**
      * Get the [gender] column value.
      *
      * @return int
@@ -2263,35 +2246,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setCopyright()
 
     /**
-     * Sets the value of the [with_shadow] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setWithShadow($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->with_shadow !== $v) {
-            $this->with_shadow = $v;
-            $this->modifiedColumns[] = PUserPeer::WITH_SHADOW;
-        }
-
-
-        return $this;
-    } // setWithShadow()
-
-    /**
      * Set the value of [gender] column.
      *
      * @param  int $v new value
@@ -2839,27 +2793,26 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->file_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
             $this->back_file_name = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
             $this->copyright = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->with_shadow = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
-            $this->gender = ($row[$startcol + 27] !== null) ? (int) $row[$startcol + 27] : null;
-            $this->firstname = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->name = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->birthday = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->subtitle = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->biography = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
-            $this->website = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
-            $this->twitter = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
-            $this->facebook = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
-            $this->phone = ($row[$startcol + 36] !== null) ? (string) $row[$startcol + 36] : null;
-            $this->newsletter = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
-            $this->last_connect = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
-            $this->nb_connected_days = ($row[$startcol + 39] !== null) ? (int) $row[$startcol + 39] : null;
-            $this->nb_views = ($row[$startcol + 40] !== null) ? (int) $row[$startcol + 40] : null;
-            $this->qualified = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
-            $this->validated = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
-            $this->online = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
-            $this->created_at = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
-            $this->updated_at = ($row[$startcol + 45] !== null) ? (string) $row[$startcol + 45] : null;
-            $this->slug = ($row[$startcol + 46] !== null) ? (string) $row[$startcol + 46] : null;
+            $this->gender = ($row[$startcol + 26] !== null) ? (int) $row[$startcol + 26] : null;
+            $this->firstname = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->name = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->birthday = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->subtitle = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->biography = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->website = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->twitter = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->facebook = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
+            $this->phone = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
+            $this->newsletter = ($row[$startcol + 36] !== null) ? (boolean) $row[$startcol + 36] : null;
+            $this->last_connect = ($row[$startcol + 37] !== null) ? (string) $row[$startcol + 37] : null;
+            $this->nb_connected_days = ($row[$startcol + 38] !== null) ? (int) $row[$startcol + 38] : null;
+            $this->nb_views = ($row[$startcol + 39] !== null) ? (int) $row[$startcol + 39] : null;
+            $this->qualified = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
+            $this->validated = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
+            $this->online = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
+            $this->created_at = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
+            $this->updated_at = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
+            $this->slug = ($row[$startcol + 45] !== null) ? (string) $row[$startcol + 45] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2869,7 +2822,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 47; // 47 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 46; // 46 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -3924,9 +3877,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::COPYRIGHT)) {
             $modifiedColumns[':p' . $index++]  = '`copyright`';
         }
-        if ($this->isColumnModified(PUserPeer::WITH_SHADOW)) {
-            $modifiedColumns[':p' . $index++]  = '`with_shadow`';
-        }
         if ($this->isColumnModified(PUserPeer::GENDER)) {
             $modifiedColumns[':p' . $index++]  = '`gender`';
         }
@@ -4075,9 +4025,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`copyright`':
                         $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
-                        break;
-                    case '`with_shadow`':
-                        $stmt->bindValue($identifier, (int) $this->with_shadow, PDO::PARAM_INT);
                         break;
                     case '`gender`':
                         $stmt->bindValue($identifier, $this->gender, PDO::PARAM_INT);
@@ -4532,66 +4479,63 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getCopyright();
                 break;
             case 26:
-                return $this->getWithShadow();
-                break;
-            case 27:
                 return $this->getGender();
                 break;
-            case 28:
+            case 27:
                 return $this->getFirstname();
                 break;
-            case 29:
+            case 28:
                 return $this->getName();
                 break;
-            case 30:
+            case 29:
                 return $this->getBirthday();
                 break;
-            case 31:
+            case 30:
                 return $this->getSubtitle();
                 break;
-            case 32:
+            case 31:
                 return $this->getBiography();
                 break;
-            case 33:
+            case 32:
                 return $this->getWebsite();
                 break;
-            case 34:
+            case 33:
                 return $this->getTwitter();
                 break;
-            case 35:
+            case 34:
                 return $this->getFacebook();
                 break;
-            case 36:
+            case 35:
                 return $this->getPhone();
                 break;
-            case 37:
+            case 36:
                 return $this->getNewsletter();
                 break;
-            case 38:
+            case 37:
                 return $this->getLastConnect();
                 break;
-            case 39:
+            case 38:
                 return $this->getNbConnectedDays();
                 break;
-            case 40:
+            case 39:
                 return $this->getNbViews();
                 break;
-            case 41:
+            case 40:
                 return $this->getQualified();
                 break;
-            case 42:
+            case 41:
                 return $this->getValidated();
                 break;
-            case 43:
+            case 42:
                 return $this->getOnline();
                 break;
-            case 44:
+            case 43:
                 return $this->getCreatedAt();
                 break;
-            case 45:
+            case 44:
                 return $this->getUpdatedAt();
                 break;
-            case 46:
+            case 45:
                 return $this->getSlug();
                 break;
             default:
@@ -4649,27 +4593,26 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[23] => $this->getFileName(),
             $keys[24] => $this->getBackFileName(),
             $keys[25] => $this->getCopyright(),
-            $keys[26] => $this->getWithShadow(),
-            $keys[27] => $this->getGender(),
-            $keys[28] => $this->getFirstname(),
-            $keys[29] => $this->getName(),
-            $keys[30] => $this->getBirthday(),
-            $keys[31] => $this->getSubtitle(),
-            $keys[32] => $this->getBiography(),
-            $keys[33] => $this->getWebsite(),
-            $keys[34] => $this->getTwitter(),
-            $keys[35] => $this->getFacebook(),
-            $keys[36] => $this->getPhone(),
-            $keys[37] => $this->getNewsletter(),
-            $keys[38] => $this->getLastConnect(),
-            $keys[39] => $this->getNbConnectedDays(),
-            $keys[40] => $this->getNbViews(),
-            $keys[41] => $this->getQualified(),
-            $keys[42] => $this->getValidated(),
-            $keys[43] => $this->getOnline(),
-            $keys[44] => $this->getCreatedAt(),
-            $keys[45] => $this->getUpdatedAt(),
-            $keys[46] => $this->getSlug(),
+            $keys[26] => $this->getGender(),
+            $keys[27] => $this->getFirstname(),
+            $keys[28] => $this->getName(),
+            $keys[29] => $this->getBirthday(),
+            $keys[30] => $this->getSubtitle(),
+            $keys[31] => $this->getBiography(),
+            $keys[32] => $this->getWebsite(),
+            $keys[33] => $this->getTwitter(),
+            $keys[34] => $this->getFacebook(),
+            $keys[35] => $this->getPhone(),
+            $keys[36] => $this->getNewsletter(),
+            $keys[37] => $this->getLastConnect(),
+            $keys[38] => $this->getNbConnectedDays(),
+            $keys[39] => $this->getNbViews(),
+            $keys[40] => $this->getQualified(),
+            $keys[41] => $this->getValidated(),
+            $keys[42] => $this->getOnline(),
+            $keys[43] => $this->getCreatedAt(),
+            $keys[44] => $this->getUpdatedAt(),
+            $keys[45] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -4860,70 +4803,67 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setCopyright($value);
                 break;
             case 26:
-                $this->setWithShadow($value);
-                break;
-            case 27:
                 $valueSet = PUserPeer::getValueSet(PUserPeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 28:
+            case 27:
                 $this->setFirstname($value);
                 break;
-            case 29:
+            case 28:
                 $this->setName($value);
                 break;
-            case 30:
+            case 29:
                 $this->setBirthday($value);
                 break;
-            case 31:
+            case 30:
                 $this->setSubtitle($value);
                 break;
-            case 32:
+            case 31:
                 $this->setBiography($value);
                 break;
-            case 33:
+            case 32:
                 $this->setWebsite($value);
                 break;
-            case 34:
+            case 33:
                 $this->setTwitter($value);
                 break;
-            case 35:
+            case 34:
                 $this->setFacebook($value);
                 break;
-            case 36:
+            case 35:
                 $this->setPhone($value);
                 break;
-            case 37:
+            case 36:
                 $this->setNewsletter($value);
                 break;
-            case 38:
+            case 37:
                 $this->setLastConnect($value);
                 break;
-            case 39:
+            case 38:
                 $this->setNbConnectedDays($value);
                 break;
-            case 40:
+            case 39:
                 $this->setNbViews($value);
                 break;
-            case 41:
+            case 40:
                 $this->setQualified($value);
                 break;
-            case 42:
+            case 41:
                 $this->setValidated($value);
                 break;
-            case 43:
+            case 42:
                 $this->setOnline($value);
                 break;
-            case 44:
+            case 43:
                 $this->setCreatedAt($value);
                 break;
-            case 45:
+            case 44:
                 $this->setUpdatedAt($value);
                 break;
-            case 46:
+            case 45:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -4976,27 +4916,26 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[23], $arr)) $this->setFileName($arr[$keys[23]]);
         if (array_key_exists($keys[24], $arr)) $this->setBackFileName($arr[$keys[24]]);
         if (array_key_exists($keys[25], $arr)) $this->setCopyright($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setWithShadow($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setGender($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setFirstname($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setName($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setBirthday($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setSubtitle($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setBiography($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setWebsite($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setTwitter($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setFacebook($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setPhone($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setNewsletter($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setLastConnect($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setNbConnectedDays($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setNbViews($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setQualified($arr[$keys[41]]);
-        if (array_key_exists($keys[42], $arr)) $this->setValidated($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setOnline($arr[$keys[43]]);
-        if (array_key_exists($keys[44], $arr)) $this->setCreatedAt($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setUpdatedAt($arr[$keys[45]]);
-        if (array_key_exists($keys[46], $arr)) $this->setSlug($arr[$keys[46]]);
+        if (array_key_exists($keys[26], $arr)) $this->setGender($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setFirstname($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setName($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setBirthday($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setSubtitle($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setBiography($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setWebsite($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setTwitter($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setFacebook($arr[$keys[34]]);
+        if (array_key_exists($keys[35], $arr)) $this->setPhone($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setNewsletter($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setLastConnect($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setNbConnectedDays($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setNbViews($arr[$keys[39]]);
+        if (array_key_exists($keys[40], $arr)) $this->setQualified($arr[$keys[40]]);
+        if (array_key_exists($keys[41], $arr)) $this->setValidated($arr[$keys[41]]);
+        if (array_key_exists($keys[42], $arr)) $this->setOnline($arr[$keys[42]]);
+        if (array_key_exists($keys[43], $arr)) $this->setCreatedAt($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setUpdatedAt($arr[$keys[44]]);
+        if (array_key_exists($keys[45], $arr)) $this->setSlug($arr[$keys[45]]);
     }
 
     /**
@@ -5034,7 +4973,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::FILE_NAME)) $criteria->add(PUserPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PUserPeer::BACK_FILE_NAME)) $criteria->add(PUserPeer::BACK_FILE_NAME, $this->back_file_name);
         if ($this->isColumnModified(PUserPeer::COPYRIGHT)) $criteria->add(PUserPeer::COPYRIGHT, $this->copyright);
-        if ($this->isColumnModified(PUserPeer::WITH_SHADOW)) $criteria->add(PUserPeer::WITH_SHADOW, $this->with_shadow);
         if ($this->isColumnModified(PUserPeer::GENDER)) $criteria->add(PUserPeer::GENDER, $this->gender);
         if ($this->isColumnModified(PUserPeer::FIRSTNAME)) $criteria->add(PUserPeer::FIRSTNAME, $this->firstname);
         if ($this->isColumnModified(PUserPeer::NAME)) $criteria->add(PUserPeer::NAME, $this->name);
@@ -5143,7 +5081,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setFileName($this->getFileName());
         $copyObj->setBackFileName($this->getBackFileName());
         $copyObj->setCopyright($this->getCopyright());
-        $copyObj->setWithShadow($this->getWithShadow());
         $copyObj->setGender($this->getGender());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setName($this->getName());
@@ -12846,7 +12783,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->file_name = null;
         $this->back_file_name = null;
         $this->copyright = null;
-        $this->with_shadow = null;
         $this->gender = null;
         $this->firstname = null;
         $this->name = null;
@@ -13483,7 +13419,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setFileName($archive->getFileName());
         $this->setBackFileName($archive->getBackFileName());
         $this->setCopyright($archive->getCopyright());
-        $this->setWithShadow($archive->getWithShadow());
         $this->setGender($archive->getGender());
         $this->setFirstname($archive->getFirstname());
         $this->setName($archive->getName());

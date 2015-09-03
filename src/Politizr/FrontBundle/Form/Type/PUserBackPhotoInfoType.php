@@ -12,11 +12,11 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Photo info reaction edition form
+ * Back photo info user edition form
  *
  * @author Lionel Bouzonville
  */
-class PDReactionPhotoInfoType extends AbstractType
+class PUserBackPhotoInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,15 +24,7 @@ class PDReactionPhotoInfoType extends AbstractType
             'required' => true,
         ));
         
-        $builder->add('p_d_debate_id', 'hidden', array(
-            'required' => true,
-        ));
-        
-        $builder->add('p_user_id', 'hidden', array(
-            'required' => true,
-        ));
-
-        $builder->add('file_name', 'hidden', array(
+        $builder->add('back_file_name', 'hidden', array(
             'required' => false,
         ));
 
@@ -47,7 +39,7 @@ class PDReactionPhotoInfoType extends AbstractType
      */
     public function getName()
     {
-        return 'reaction_photo_info';
+        return 'user_back_photo_info';
     }
     
     /**
@@ -56,7 +48,7 @@ class PDReactionPhotoInfoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Politizr\Model\PDReaction',
+            'data_class' => 'Politizr\Model\PUser',
         ));
     }
 }

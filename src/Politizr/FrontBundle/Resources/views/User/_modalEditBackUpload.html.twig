@@ -6,23 +6,23 @@
             <div class="modalUploadIllustrationContainer" style="display: block;">
                 <div id="currentPhoto">
                     <div class="illustrationShadow"></div>
-                    <div id="uploadedPhoto">
-                        {% if reaction.fileName %}
-                            {{ reaction | image('debate_header') }}
+                    <div id="uploadedBackPhoto">
+                        {% if user.backFileName %}
+                            {{ user | photoBack('user_bio_back') }}
                         {% endif %}
                     </div>
                 </div>
                 <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow"><i class="iconCheck"></i> Masquer l'ombre</div>
                 <div class="toggleIllustrationShadow showIllustrationShadow" action="showIllustrationShadow"><i class="iconCheck"></i> Afficher l'ombre</div> 
             </div>
-            <form id="formDocumentPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="{{ reaction.id }}">
-                <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}">
+            <!-- @todo HTML/CSS à styler -->
+            <form id="formUserBackPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_BACK_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userBackPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ user.id }}">
                 <div id="uploadFileContainer">
-                    <input type="file" name="fileName" id="fileName">
-                    <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
+                    <input type="file" name="backFileName" id="backFileName">
+                    <label action="backFileSelect" for="backFileName" tabindex="0">parcourir</label>
                     <div class="photoDelete">
-                        <a action="fileDelete" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>supprimer</a>
+                        <a action="backFileDelete" subjectId="{{ user.id }}"><i class="iconDraft"></i>supprimer</a>
                     </div>
                 </div>
             </form>
@@ -36,18 +36,18 @@
                 </div>
             </div>
             <div class="editable copyright">
-                {{ reaction.copyright | raw }}
+                {{ user.copyright | raw }}
             </div>
             <div class="photoInfoSave">
-                <a action="reactionPhotoInfoSave" subjectId="{{ reaction.id }}">
+                <a action="userBackPhotoInfoSave" subjectId="{{ user.id }}">
                     <i class="iconCheckInSquare"></i> Valider
                 </a>
             </div>
             <a class="cancelModalUploadBox" action="modalUploadClose">Annuler</a>
-            <form name="reaction_photo_info" id="formReactionPhotoInfoUpdate">
+            <form method="POST" name="user_photo_info" id="formUserBackPhotoInfoUpdate">
                 {# hidden form inputs filled by js #}
-                {{ form_row(formPhotoInfo.copyright) }}
-                {{ form_rest(formPhotoInfo) }}
+                {{ form_row(formBackPhotoInfo.copyright) }}
+                {{ form_rest(formBackPhotoInfo) }}
             </form>
         </div>
     </div>

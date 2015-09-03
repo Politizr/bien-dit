@@ -49,7 +49,6 @@ class PDReactionTableMap extends TableMap
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('with_shadow', 'WithShadow', 'BOOLEAN', false, 1, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);

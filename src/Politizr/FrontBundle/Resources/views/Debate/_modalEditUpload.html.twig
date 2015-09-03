@@ -12,7 +12,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow" withShadow="{{ debate.withShadow }}"><i class="iconCheck"></i> Masquer l'ombre</div>
+                <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow"><i class="iconCheck"></i> Masquer l'ombre</div>
                 <div class="toggleIllustrationShadow showIllustrationShadow" action="showIllustrationShadow"><i class="iconCheck"></i> Afficher l'ombre</div> 
             </div>
             <form id="formDocumentPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
