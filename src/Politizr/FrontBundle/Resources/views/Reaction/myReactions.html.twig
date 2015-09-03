@@ -1,0 +1,22 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block main %}
+    <div id="publicationsList">
+        <h1>Mes réactions</h1>
+
+        {% if nbReactions == 0 %}
+            <div id="noPublications">Vous n'avez publié aucune réaction.</div>
+        {% else %}
+            <div id="listContent">
+            </div>
+        {% endif %}
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+    
+    {% if nbReactions > 0 %}
+        {% include 'PolitizrFrontBundle:JS\\Document:myContributions.js.twig' with { 'xhrRoute': 'ROUTE_REACTION_MY_REACTIONS', 'xhrMethod': 'myReactionsPaginated' } %}
+    {% endif %}
+{% endblock javascriptFooter %}

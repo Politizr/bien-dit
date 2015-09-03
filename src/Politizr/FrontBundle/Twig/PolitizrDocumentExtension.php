@@ -90,6 +90,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'itemContextReaction',
+                array($this, 'itemContextReaction'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbComments',
                 array($this, 'nbComments'),
                 array('is_safe' => array('html'))
@@ -240,6 +245,41 @@ class PolitizrDocumentExtension extends \Twig_Extension
         } else {
             $html = $nbReactions.' réactions';
         }
+
+        return $html;
+    }
+
+    /**
+     * Render the item reaction context
+     *
+     * @param PDReaction $reaction
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function itemContextReaction(PDReaction $reaction, $debateContext)
+    {
+        $parentReaction = null;
+        if ($reaction->getLevel() > 1) {
+            $parentReaction = $reaction->getParent();
+        }
+        $parentDebate = $reaction->getDebate();
+
+        $debateIsFollowed = false;
+        if ($this->user) {
+            $debateIsFollowed = $parentDebate->isFollowedBy($this->user->getId());
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reaction:_itemContext.html.twig',
+            array(
+                'reaction' => $reaction,
+                'parentReaction' => $parentReaction,
+                'parentDebate' => $parentDebate,
+                'debateIsFollowed' => $debateIsFollowed,
+                'debateContext' => $debateContext
+            )
+        );
 
         return $html;
     }

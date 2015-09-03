@@ -123,25 +123,46 @@ class UserController extends Controller
     /* ######################################################################################################## */
 
     /**
-     * Contributions
+     * Debates
      */
-    public function contributionAction()
+    public function myDebatesAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** contributionAction');
+        $logger->info('*** myDebatesAction');
 
         $user = $this->getUser();
+        
+        $nbDebates = PDDebateQuery::create()
+            ->filterByPUserId($user->getId())
+            ->online()
+            ->orderByPublishedAt('desc')
+            ->count();
 
-        // Débats rédigés
-        $debates = PDDebateQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
-
-        // Réactions rédigées
-        $reactions = PDReactionQuery::create()->filterByPUserId($user->getId())->online()->orderByPublishedAt('desc')->find();
-
-        return $this->render('PolitizrFrontBundle:Timeline:contribution.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Debate:myDebates.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'debates' => $debates,
-            'reactions' => $reactions,
+            'nbDebates' => $nbDebates,
+        ));
+    }
+
+    /**
+     * Reactions
+     */
+    public function myReactionsAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** myReactionsAction');
+
+        $user = $this->getUser();
+        
+        $nbReactions = PDReactionQuery::create()
+            ->filterByPUserId($user->getId())
+            ->online()
+            ->orderByPublishedAt('desc')
+            ->count();
+
+        return $this->render('PolitizrFrontBundle:Reaction:myReactions.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'nbReactions' => $nbReactions,
         ));
     }
 

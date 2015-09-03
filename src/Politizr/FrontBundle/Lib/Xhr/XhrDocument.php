@@ -390,7 +390,7 @@ class XhrDocument
         $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
 
         return array(
-            'redirectUrl' => $this->router->generate('Contribution'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $this->router->generate('MyDebates'.$this->globalTools->computeProfileSuffix()),
         );
     }
 
@@ -576,7 +576,7 @@ class XhrDocument
 
         // Renvoi de l'url de redirection
         return array(
-            'redirectUrl' => $this->router->generate('Contribution'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $this->router->generate('MyReactions'.$this->globalTools->computeProfileSuffix()),
         );
     }
 
@@ -826,5 +826,95 @@ class XhrDocument
             'html' => $html,
             'counter' => $counter,
             );
+    }
+
+    /* ######################################################################################################## */
+    /*                                            CONTRIBUTIONS                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * User's debates' contributions
+     */
+    public function myDebatesPaginated(Request $request)
+    {
+        $this->logger->info('*** myDebatesPaginated');
+
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // @todo use constant for "limit"
+        $debates = PDDebateQuery::create()
+            ->filterByPUserId($user->getId())
+            ->online()
+            ->orderByPublishedAt('desc')
+            ->limit(10)
+            ->offset($offset)
+            ->find();
+
+        // @todo use constant for "limit"
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Debate:_paginatedMyDebates.html.twig',
+            array(
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User's reactions' contributions
+     */
+    public function myReactionsPaginated(Request $request)
+    {
+        $this->logger->info('*** myReactionsPaginated');
+
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // @todo use constant for "limit"
+        $reactions = PDReactionQuery::create()
+            ->filterByPUserId($user->getId())
+            ->online()
+            ->orderByPublishedAt('desc')
+            ->limit(10)
+            ->offset($offset)
+            ->find();
+
+        // @todo use constant for "limit"
+        $moreResults = false;
+        if (sizeof($reactions) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reaction:_paginatedMyReactions.html.twig',
+            array(
+                'reactions' => $reactions,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
     }
 }

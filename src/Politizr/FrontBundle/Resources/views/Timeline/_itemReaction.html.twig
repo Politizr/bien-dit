@@ -7,22 +7,7 @@
         <div class="timelineItemHolder">
 
             <div class="timelineItemContext">
-                {% if parentReaction is not null %}
-                    <span class="timelineItemContextHighlight">
-                        À propos de la réaction de 
-                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
-                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
-                    </span>
-                    <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
-                    <br/>
-                {% endif %}
-
-                {% if not debateContext %}
-                    <span class="timelineItemContextHighlight">
-                        Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
-                    </span>
-                    <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
-                {% endif %}
+                {{ reaction | itemContextReaction(debateContext) }}
             </div>
             
             <div class="timelineItemContent timelineItemOfficial">

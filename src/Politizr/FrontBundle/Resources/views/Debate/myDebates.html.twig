@@ -1,0 +1,22 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block main %}
+    <div id="publicationsList">
+        <h1>Mes débats</h1>
+
+        {% if nbDebates == 0 %}
+            <div id="noPublications">Vous n'avez publié aucun débat.</div>
+        {% else %}
+            <div id="listContent">
+            </div>
+        {% endif %}
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+    
+    {% if nbDebates > 0 %}
+        {% include 'PolitizrFrontBundle:JS\\Document:myContributions.js.twig' with { 'xhrRoute': 'ROUTE_DEBATE_MY_DEBATES', 'xhrMethod': 'myDebatesPaginated' } %}
+    {% endif %}
+{% endblock javascriptFooter %}

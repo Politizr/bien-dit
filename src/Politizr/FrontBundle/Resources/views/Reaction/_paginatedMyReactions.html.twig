@@ -1,0 +1,56 @@
+{% for reaction in reactions %}
+    <div class="publicationsListItem withLoaderInside">
+        <div class="ajaxLoader" style="display: none;">
+            <i class="iconSpin5 animateSpin"></i>
+            <div class="ajaxLoaderBg"></div>
+        </div>
+        <div class="publicationsListItemHeader">
+            <span>réaction</span>publiée {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+        </div>
+        <div class="publicationsListItemTitle">
+            <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                {{ reaction.title }}
+            </a>
+        </div>
+
+        <div class="publicationsListItemContext">
+            {{ reaction | itemContextReaction(false) }}
+        </div>        
+        <div class="publicationsListItemStats">
+            <div class="publicationsListItemStatsLeft">
+                <div class="postSummaryActivity">
+                    <div class="reactionsCounter">
+                        <i class="iconReaction"></i>
+                        {{ reaction | nbReactions }}
+                    </div>
+                    <div class="commentsCounter" action="paragraphCommentsCounter">
+                        <i class="iconComment"></i>
+                        {{ reaction | nbComments }}
+                    </div>
+                </div>
+            </div>
+            <div class="publicationsListItemStatsRight">
+                <div class="postNote">
+                    <div class="notePlus">
+                        {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                    </div>
+                    <div class="noteMinus">
+                        <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="publicationsListItemActions">
+            <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                <i class="iconGoTo"></i>Afficher
+            </a>
+        </div>
+        <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
+    </div>
+{% endfor %}
+
+<div id="timelineScrollNav">
+    {% if moreResults %}
+        <a id="moreResults" action="listingPaginatedNext" offset="{{ offset }}">suite</a>
+    {% endif %}
+</div>
