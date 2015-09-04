@@ -291,9 +291,13 @@ span.timelineItemContextHighlight {
 .timelineActions a i {	font-size: 8px; bottom:0;}
 
 .timelineItem .postSummary {
-	margin: 20px 0 10px -40px;
+	margin: 20px 0 10px -60px;
 	z-index: 0;
 }
+
+// .timelineItem .timelineItemHolder .postSummary {
+// 	margin-left: -60px;
+// }
 
 .timelineItem .postSummary .pad40 {
 	padding: 40px 60px;

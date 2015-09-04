@@ -31,7 +31,7 @@ body.css760 #goUpHolder { display: none;}
 
 body.css760 h1 {
 	width: calc(100% - 40px); 
-	padding: 0 20px;	
+	padding: 0 20px;
 }
 
 ////// edit
@@ -314,4 +314,9 @@ body.css760 .publicationsListItemActions a {
 	float: left;
 	clear: both;
 	margin: 0;	
+}
+
+/// prefs
+body.css760 #prefs {
+	padding: 0 20px;
 }
