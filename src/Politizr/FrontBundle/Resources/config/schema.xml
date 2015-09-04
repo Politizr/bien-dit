@@ -333,20 +333,33 @@
     </table>
 
 
-
-
     <table name="p_notification">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_n_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
         <column name="description" type="longvarchar" />
         
         <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_n_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_n_type_id" foreign="id" />
+        </foreign-key>        
     </table>
 
+    <table name="p_n_type">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="description" type="longvarchar" />
+    </table>
 
     <table name="p_user">
         <behavior name="timestampable" />

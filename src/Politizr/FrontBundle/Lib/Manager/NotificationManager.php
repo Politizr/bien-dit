@@ -100,8 +100,8 @@ class NotificationManager
     public function deleteUserSubscribeEmail($userId, $notificationId)
     {
         $result = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($subjectId)
-            ->filterByPUserId($user->getId())
+            ->filterByPNotificationId($notificationId)
+            ->filterByPUserId($userId)
             ->delete();
 
         return $result;

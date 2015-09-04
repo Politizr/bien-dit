@@ -1,26 +1,29 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block main %}
-    <div id="main" class="container">
-        <h3>Mes notifications</h3>
-        <h4>Par email</h4>
+    <div id="main">
+        <div id="prefs" class="notificationsPrefs">
+            <h1>Mes notifications</h1>
 
-        <table class="table table-hover">
-            {% for notification in notifications %}
-                <tr>
-                    <td>
-                        <span>{{ notification.title }}</span>
-                    </td>
-                    <td>
-                        {% if notification.id in emailNotifIds %}
-                            <span class="fa fa-check-square-o" subject-id="{{ notification.id }}" action="email-unsubscribe"></span>
-                        {% else %}
-                            <span class="fa fa-square-o" subject-id="{{ notification.id }}" action="email-subscribe"></span>
-                        {% endif %}
-                    </td>
-                </tr>
+            {% for notificationType in notificationsType %}        
+                <h2>{{ notificationType.title }}</h2>
+                <p>Je souhaite être averti par email :</p>
+                {% for notification in notificationType.notifications %}
+                    <div class="notificationsPrefs">
+                        <div class="notificationsPrefsItem withLoaderInside">
+                            <div class="ajaxLoader" style="display: none;">
+                                <i class="iconSpin5 animateSpin"></i>
+                                <div class="ajaxLoaderBg"></div>
+                            </div> 
+                            <input type="checkbox" id="notif-{{ notificationType.id }}-{{ loop.index }}" subjectId="{{ notification.id }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
+                            <label for="notif-{{ notificationType.id }}-{{ loop.index }}">
+                                <i class="iconCheckInSquare"></i>{{ notification.title }}
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
             {% endfor %}
-        </table>
+        </div>
     </div>
 {% endblock main %}
 

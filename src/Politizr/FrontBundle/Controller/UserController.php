@@ -21,6 +21,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
+use Politizr\Model\PNTypeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUCurrentQOQuery;
 
@@ -266,19 +267,16 @@ class UserController extends Controller
     }
 
     /**
-     * Gestion des notifications par email
+     * Edit notifications
      */
     public function editNotificationsAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** editNotificationsAction');
 
-        // Récupération user courant
         $user = $this->getUser();
 
-        // Récupération liste des notifications
-        $notifications = PNotificationQuery::create()
-                        ->filterByOnline(true)
+        $notificationsType = PNTypeQuery::create()
                         ->orderById()
                         ->find();
 
@@ -291,7 +289,7 @@ class UserController extends Controller
 
         return $this->render('PolitizrFrontBundle:User:editNotifications.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'notifications' => $notifications,
+            'notificationsType' => $notificationsType,
             'emailNotifIds' => $emailNotifIds,
         ));
     }

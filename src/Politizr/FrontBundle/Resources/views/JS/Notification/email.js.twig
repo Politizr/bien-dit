@@ -1,8 +1,9 @@
 <script>
     // Souscription email
-    $("body").on("click", "span[action='email-subscribe']", function(e) {
-        console.log('*** click email-subscribe');
+    $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
+        console.log('*** click notifEmailSubscribe');
         
+        var localLoader = $(this).closest('.notificationsPrefsItem').find('.ajaxLoader').first();
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_EMAIL_SUBSCRIBE',
             'xhrService': 'notification',
@@ -10,30 +11,34 @@
             'xhrType': 'RETURN_BOOLEAN',
             } only %}";
 
+        var subjectId = $(this).attr('subjectId');
+        console.log(subjectId);
+
         $.ajax({
             type: 'POST',
             url: xhrPath,
             context: this,
-            data: { 'subjectId': $(this).attr('subject-id') },
+            data: { 'subjectId': subjectId },
             dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
-                $('#ajaxGlobalLoader').hide();
+                localLoader.hide();
                 if (data['error']) {
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();
                 } else {
-                    $(this).attr('class', 'fa fa-check-square-o');
-                    $(this).attr('action', 'email-unsubscribe');
+                    $(this).attr('checked', 'checked');
+                    $(this).attr('action', 'notifEmailUnsubscribe');
                 }
             }
         });
     });
 
     // Désouscription email
-    $("body").on("click", "span[action='email-unsubscribe']", function(e) {
-        console.log('*** click email-unsubscribe');
+    $("body").on("click", "[action='notifEmailUnsubscribe']", function(e) {
+        console.log('*** click notifEmailUnsubscribe');
         
+        var localLoader = $(this).closest('.notificationsPrefsItem').find('.ajaxLoader').first();
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_EMAIL_UNSUBSCRIBE',
             'xhrService': 'notification',
@@ -41,21 +46,24 @@
             'xhrType': 'RETURN_BOOLEAN',
             } only %}";
                 
+        var subjectId = $(this).attr('subjectId');
+        console.log(subjectId);
+
         $.ajax({
             type: 'POST',
             url: xhrPath,
             context: this,
-            data: { 'subjectId': $(this).attr('subject-id') },
+            data: { 'subjectId': subjectId },
             dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
-                $('#ajaxGlobalLoader').hide();
+                localLoader.hide();
                 if (data['error']) {
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();
                 } else {
-                    $(this).attr('class', 'fa fa-square-o');
-                    $(this).attr('action', 'email-subscribe');
+                    $(this).removeAttr('checked');
+                    $(this).attr('action', 'notifEmailSubscribe');
                 }
             }
         });

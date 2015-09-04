@@ -12,67 +12,58 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
+use Politizr\Model\PNType;
 use Politizr\Model\PNTypePeer;
-use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
-use Politizr\Model\PUNotificationPeer;
-use Politizr\Model\PUSubscribeEmailPeer;
-use Politizr\Model\PUSubscribeScreenPeer;
-use Politizr\Model\map\PNotificationTableMap;
+use Politizr\Model\map\PNTypeTableMap;
 
-abstract class BasePNotificationPeer
+abstract class BasePNTypePeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_notification';
+    const TABLE_NAME = 'p_n_type';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PNotification';
+    const OM_CLASS = 'Politizr\\Model\\PNType';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PNotificationTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PNTypeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_notification.id';
-
-    /** the column name for the p_n_type_id field */
-    const P_N_TYPE_ID = 'p_notification.p_n_type_id';
+    const ID = 'p_n_type.id';
 
     /** the column name for the title field */
-    const TITLE = 'p_notification.title';
+    const TITLE = 'p_n_type.title';
 
     /** the column name for the description field */
-    const DESCRIPTION = 'p_notification.description';
-
-    /** the column name for the online field */
-    const ONLINE = 'p_notification.online';
+    const DESCRIPTION = 'p_n_type.description';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_notification.created_at';
+    const CREATED_AT = 'p_n_type.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_notification.updated_at';
+    const UPDATED_AT = 'p_n_type.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PNotification objects.
+     * An identity map to hold any loaded instances of PNType objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PNotification[]
+     * @var        array PNType[]
      */
     public static $instances = array();
 
@@ -81,30 +72,30 @@ abstract class BasePNotificationPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PNotificationPeer::$fieldNames[PNotificationPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PNTypePeer::$fieldNames[PNTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PNTypeId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pNTypeId', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID, PNotificationPeer::P_N_TYPE_ID, PNotificationPeer::TITLE, PNotificationPeer::DESCRIPTION, PNotificationPeer::ONLINE, PNotificationPeer::CREATED_AT, PNotificationPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_N_TYPE_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_n_type_id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PNTypePeer::ID, PNTypePeer::TITLE, PNTypePeer::DESCRIPTION, PNTypePeer::CREATED_AT, PNTypePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PNotificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PNTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PNTypeId' => 1, 'Title' => 2, 'Description' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pNTypeId' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID => 0, PNotificationPeer::P_N_TYPE_ID => 1, PNotificationPeer::TITLE => 2, PNotificationPeer::DESCRIPTION => 3, PNotificationPeer::ONLINE => 4, PNotificationPeer::CREATED_AT => 5, PNotificationPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_N_TYPE_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_n_type_id' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PNTypePeer::ID => 0, PNTypePeer::TITLE => 1, PNTypePeer::DESCRIPTION => 2, PNTypePeer::CREATED_AT => 3, PNTypePeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -119,10 +110,10 @@ abstract class BasePNotificationPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PNotificationPeer::getFieldNames($toType);
-        $key = isset(PNotificationPeer::$fieldKeys[$fromType][$name]) ? PNotificationPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PNTypePeer::getFieldNames($toType);
+        $key = isset(PNTypePeer::$fieldKeys[$fromType][$name]) ? PNTypePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PNotificationPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PNTypePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -139,11 +130,11 @@ abstract class BasePNotificationPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PNotificationPeer::$fieldNames)) {
+        if (!array_key_exists($type, PNTypePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PNotificationPeer::$fieldNames[$type];
+        return PNTypePeer::$fieldNames[$type];
     }
 
     /**
@@ -155,12 +146,12 @@ abstract class BasePNotificationPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PNotificationPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PNTypePeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PNotificationPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PNTypePeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -178,19 +169,15 @@ abstract class BasePNotificationPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PNotificationPeer::ID);
-            $criteria->addSelectColumn(PNotificationPeer::P_N_TYPE_ID);
-            $criteria->addSelectColumn(PNotificationPeer::TITLE);
-            $criteria->addSelectColumn(PNotificationPeer::DESCRIPTION);
-            $criteria->addSelectColumn(PNotificationPeer::ONLINE);
-            $criteria->addSelectColumn(PNotificationPeer::CREATED_AT);
-            $criteria->addSelectColumn(PNotificationPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PNTypePeer::ID);
+            $criteria->addSelectColumn(PNTypePeer::TITLE);
+            $criteria->addSelectColumn(PNTypePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PNTypePeer::CREATED_AT);
+            $criteria->addSelectColumn(PNTypePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.p_n_type_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -212,21 +199,21 @@ abstract class BasePNotificationPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PNTypePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PNotificationPeer::addSelectColumns($criteria);
+            PNTypePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PNTypePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -245,7 +232,7 @@ abstract class BasePNotificationPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PNotification
+     * @return PNType
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -253,7 +240,7 @@ abstract class BasePNotificationPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PNotificationPeer::doSelect($critcopy, $con);
+        $objects = PNTypePeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -271,7 +258,7 @@ abstract class BasePNotificationPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PNotificationPeer::populateObjects(PNotificationPeer::doSelectStmt($criteria, $con));
+        return PNTypePeer::populateObjects(PNTypePeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -289,16 +276,16 @@ abstract class BasePNotificationPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PNotificationPeer::addSelectColumns($criteria);
+            PNTypePeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        $criteria->setDbName(PNTypePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -312,7 +299,7 @@ abstract class BasePNotificationPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PNotification $obj A PNotification object.
+     * @param PNType $obj A PNType object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -321,7 +308,7 @@ abstract class BasePNotificationPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PNotificationPeer::$instances[$key] = $obj;
+            PNTypePeer::$instances[$key] = $obj;
         }
     }
 
@@ -333,7 +320,7 @@ abstract class BasePNotificationPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PNotification object or a primary key value.
+     * @param      mixed $value A PNType object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -341,17 +328,17 @@ abstract class BasePNotificationPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PNotification) {
+            if (is_object($value) && $value instanceof PNType) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PNotification object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PNType object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PNotificationPeer::$instances[$key]);
+            unset(PNTypePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -362,14 +349,14 @@ abstract class BasePNotificationPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PNotification Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PNType Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PNotificationPeer::$instances[$key])) {
-                return PNotificationPeer::$instances[$key];
+            if (isset(PNTypePeer::$instances[$key])) {
+                return PNTypePeer::$instances[$key];
             }
         }
 
@@ -384,28 +371,22 @@ abstract class BasePNotificationPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PNotificationPeer::$instances as $instance) {
+        foreach (PNTypePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PNotificationPeer::$instances = array();
+        PNTypePeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_notification
+     * Method to invalidate the instance pool of all tables related to p_n_type
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUNotificationPeer instance pool,
+        // Invalidate objects in PNotificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUNotificationPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeEmailPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeEmailPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeScreenPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeScreenPeer::clearInstancePool();
+        PNotificationPeer::clearInstancePool();
     }
 
     /**
@@ -455,11 +436,11 @@ abstract class BasePNotificationPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PNotificationPeer::getOMClass();
+        $cls = PNTypePeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PNotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PNotificationPeer::getInstanceFromPool($key))) {
+            $key = PNTypePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PNTypePeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -468,7 +449,7 @@ abstract class BasePNotificationPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PNotificationPeer::addInstanceToPool($obj, $key);
+                PNTypePeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -482,262 +463,24 @@ abstract class BasePNotificationPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PNotification object, last column rank)
+     * @return array (PNType object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PNotificationPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PNotificationPeer::getInstanceFromPool($key))) {
+        $key = PNTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PNTypePeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PNotificationPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PNTypePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PNotificationPeer::getOMClass($row, $startcol);
+            $cls = PNTypePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PNotificationPeer::addInstanceToPool($obj, $key);
+            PNTypePeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related PNType table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinPNType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PNotificationPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of PNotification objects pre-filled with their PNType objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PNotification objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinPNType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
-        }
-
-        PNotificationPeer::addSelectColumns($criteria);
-        $startcol = PNotificationPeer::NUM_HYDRATE_COLUMNS;
-        PNTypePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PNotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PNotificationPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = PNotificationPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PNotificationPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = PNTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = PNTypePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = PNTypePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    PNTypePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (PNotification) to $obj2 (PNType)
-                $obj2->addPNotification($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining all related tables
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PNotificationPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-    /**
-     * Selects a collection of PNotification objects pre-filled with all related objects.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PNotification objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
-        }
-
-        PNotificationPeer::addSelectColumns($criteria);
-        $startcol2 = PNotificationPeer::NUM_HYDRATE_COLUMNS;
-
-        PNTypePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PNTypePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PNotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PNotificationPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PNotificationPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PNotificationPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-            // Add objects for joined PNType rows
-
-            $key2 = PNTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-            if ($key2 !== null) {
-                $obj2 = PNTypePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = PNTypePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PNTypePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
-
-                // Add the $obj1 (PNotification) to the collection in $obj2 (PNType)
-                $obj2->addPNotification($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
     }
 
     /**
@@ -749,7 +492,7 @@ abstract class BasePNotificationPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PNotificationPeer::DATABASE_NAME)->getTable(PNotificationPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PNTypePeer::DATABASE_NAME)->getTable(PNTypePeer::TABLE_NAME);
     }
 
     /**
@@ -757,9 +500,9 @@ abstract class BasePNotificationPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePNotificationPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePNotificationPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PNotificationTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePNTypePeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePNTypePeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PNTypeTableMap());
       }
     }
 
@@ -772,19 +515,19 @@ abstract class BasePNotificationPeer
     public static function getOMClass($row = 0, $colnum = 0)
     {
 
-        $event = new DetectOMClassEvent(PNotificationPeer::OM_CLASS, $row, $colnum);
+        $event = new DetectOMClassEvent(PNTypePeer::OM_CLASS, $row, $colnum);
         EventDispatcherProxy::trigger('om.detect', $event);
         if($event->isDetected()){
             return $event->getDetectedClass();
         }
 
-        return PNotificationPeer::OM_CLASS;
+        return PNTypePeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PNotification or Criteria object.
+     * Performs an INSERT on the database, given a PNType or Criteria object.
      *
-     * @param      mixed $values Criteria or PNotification object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PNType object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -793,22 +536,22 @@ abstract class BasePNotificationPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PNotification object
+            $criteria = $values->buildCriteria(); // build Criteria from PNType object
         }
 
-        if ($criteria->containsKey(PNotificationPeer::ID) && $criteria->keyContainsValue(PNotificationPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PNotificationPeer::ID.')');
+        if ($criteria->containsKey(PNTypePeer::ID) && $criteria->keyContainsValue(PNTypePeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PNTypePeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        $criteria->setDbName(PNTypePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -825,9 +568,9 @@ abstract class BasePNotificationPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PNotification or Criteria object.
+     * Performs an UPDATE on the database, given a PNType or Criteria object.
      *
-     * @param      mixed $values Criteria or PNotification object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PNType object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -836,35 +579,35 @@ abstract class BasePNotificationPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PNotificationPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PNTypePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PNotificationPeer::ID);
-            $value = $criteria->remove(PNotificationPeer::ID);
+            $comparison = $criteria->getComparison(PNTypePeer::ID);
+            $value = $criteria->remove(PNTypePeer::ID);
             if ($value) {
-                $selectCriteria->add(PNotificationPeer::ID, $value, $comparison);
+                $selectCriteria->add(PNTypePeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PNTypePeer::TABLE_NAME);
             }
 
-        } else { // $values is PNotification object
+        } else { // $values is PNType object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        $criteria->setDbName(PNTypePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_notification table.
+     * Deletes all rows from the p_n_type table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -873,19 +616,19 @@ abstract class BasePNotificationPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PNotificationPeer::TABLE_NAME, $con, PNotificationPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PNTypePeer::TABLE_NAME, $con, PNTypePeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PNotificationPeer::clearInstancePool();
-            PNotificationPeer::clearRelatedInstancePool();
+            PNTypePeer::clearInstancePool();
+            PNTypePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -896,9 +639,9 @@ abstract class BasePNotificationPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PNotification or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PNType or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PNotification object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PNType object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -909,32 +652,32 @@ abstract class BasePNotificationPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PNotificationPeer::clearInstancePool();
+            PNTypePeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PNotification) { // it's a model object
+        } elseif ($values instanceof PNType) { // it's a model object
             // invalidate the cache for this single object
-            PNotificationPeer::removeInstanceFromPool($values);
+            PNTypePeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PNotificationPeer::DATABASE_NAME);
-            $criteria->add(PNotificationPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PNTypePeer::DATABASE_NAME);
+            $criteria->add(PNTypePeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PNotificationPeer::removeInstanceFromPool($singleval);
+                PNTypePeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        $criteria->setDbName(PNTypePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -944,7 +687,7 @@ abstract class BasePNotificationPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PNotificationPeer::clearRelatedInstancePool();
+            PNTypePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -955,13 +698,13 @@ abstract class BasePNotificationPeer
     }
 
     /**
-     * Validates all modified columns of given PNotification object.
+     * Validates all modified columns of given PNType object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PNotification $obj The object to validate.
+     * @param PNType $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -971,8 +714,8 @@ abstract class BasePNotificationPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PNotificationPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PNotificationPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PNTypePeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PNTypePeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -988,7 +731,7 @@ abstract class BasePNotificationPeer
 
         }
 
-        return BasePeer::doValidate(PNotificationPeer::DATABASE_NAME, PNotificationPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PNTypePeer::DATABASE_NAME, PNTypePeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -996,23 +739,23 @@ abstract class BasePNotificationPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PNotification
+     * @return PNType
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PNotificationPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PNTypePeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PNotificationPeer::DATABASE_NAME);
-        $criteria->add(PNotificationPeer::ID, $pk);
+        $criteria = new Criteria(PNTypePeer::DATABASE_NAME);
+        $criteria->add(PNTypePeer::ID, $pk);
 
-        $v = PNotificationPeer::doSelect($criteria, $con);
+        $v = PNTypePeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1022,32 +765,32 @@ abstract class BasePNotificationPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PNotification[]
+     * @return PNType[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PNTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PNotificationPeer::DATABASE_NAME);
-            $criteria->add(PNotificationPeer::ID, $pks, Criteria::IN);
-            $objs = PNotificationPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PNTypePeer::DATABASE_NAME);
+            $criteria->add(PNTypePeer::ID, $pks, Criteria::IN);
+            $objs = PNTypePeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePNotificationPeer
+} // BasePNTypePeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePNotificationPeer::buildTableMap();
+BasePNTypePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePNotificationPeer'));
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePNTypePeer'));

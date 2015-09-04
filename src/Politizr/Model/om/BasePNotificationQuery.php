@@ -15,6 +15,7 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
+use Politizr\Model\PNType;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PNotificationQuery;
@@ -25,6 +26,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PNotificationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PNotificationQuery orderByPNTypeId($order = Criteria::ASC) Order by the p_n_type_id column
  * @method PNotificationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PNotificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PNotificationQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -32,6 +34,7 @@ use Politizr\Model\PUser;
  * @method PNotificationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PNotificationQuery groupById() Group by the id column
+ * @method PNotificationQuery groupByPNTypeId() Group by the p_n_type_id column
  * @method PNotificationQuery groupByTitle() Group by the title column
  * @method PNotificationQuery groupByDescription() Group by the description column
  * @method PNotificationQuery groupByOnline() Group by the online column
@@ -41,6 +44,10 @@ use Politizr\Model\PUser;
  * @method PNotificationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PNotificationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PNotificationQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PNotificationQuery leftJoinPNType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PNType relation
+ * @method PNotificationQuery rightJoinPNType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PNType relation
+ * @method PNotificationQuery innerJoinPNType($relationAlias = null) Adds a INNER JOIN clause to the query using the PNType relation
  *
  * @method PNotificationQuery leftJoinPUNotificationPNotification($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUNotificationPNotification relation
  * @method PNotificationQuery rightJoinPUNotificationPNotification($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUNotificationPNotification relation
@@ -57,6 +64,7 @@ use Politizr\Model\PUser;
  * @method PNotification findOne(PropelPDO $con = null) Return the first PNotification matching the query
  * @method PNotification findOneOrCreate(PropelPDO $con = null) Return the first PNotification matching the query, or a new PNotification object populated from the query conditions when no match is found
  *
+ * @method PNotification findOneByPNTypeId(int $p_n_type_id) Return the first PNotification filtered by the p_n_type_id column
  * @method PNotification findOneByTitle(string $title) Return the first PNotification filtered by the title column
  * @method PNotification findOneByDescription(string $description) Return the first PNotification filtered by the description column
  * @method PNotification findOneByOnline(boolean $online) Return the first PNotification filtered by the online column
@@ -64,6 +72,7 @@ use Politizr\Model\PUser;
  * @method PNotification findOneByUpdatedAt(string $updated_at) Return the first PNotification filtered by the updated_at column
  *
  * @method array findById(int $id) Return PNotification objects filtered by the id column
+ * @method array findByPNTypeId(int $p_n_type_id) Return PNotification objects filtered by the p_n_type_id column
  * @method array findByTitle(string $title) Return PNotification objects filtered by the title column
  * @method array findByDescription(string $description) Return PNotification objects filtered by the description column
  * @method array findByOnline(boolean $online) Return PNotification objects filtered by the online column
@@ -178,7 +187,7 @@ abstract class BasePNotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `online`, `created_at`, `updated_at` FROM `p_notification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_n_type_id`, `title`, `description`, `online`, `created_at`, `updated_at` FROM `p_notification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -308,6 +317,50 @@ abstract class BasePNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PNotificationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_n_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPNTypeId(1234); // WHERE p_n_type_id = 1234
+     * $query->filterByPNTypeId(array(12, 34)); // WHERE p_n_type_id IN (12, 34)
+     * $query->filterByPNTypeId(array('min' => 12)); // WHERE p_n_type_id >= 12
+     * $query->filterByPNTypeId(array('max' => 12)); // WHERE p_n_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPNType()
+     *
+     * @param     mixed $pNTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PNotificationQuery The current query, for fluid interface
+     */
+    public function filterByPNTypeId($pNTypeId = null, $comparison = null)
+    {
+        if (is_array($pNTypeId)) {
+            $useMinMax = false;
+            if (isset($pNTypeId['min'])) {
+                $this->addUsingAlias(PNotificationPeer::P_N_TYPE_ID, $pNTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pNTypeId['max'])) {
+                $this->addUsingAlias(PNotificationPeer::P_N_TYPE_ID, $pNTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PNotificationPeer::P_N_TYPE_ID, $pNTypeId, $comparison);
     }
 
     /**
@@ -479,6 +532,82 @@ abstract class BasePNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PNotificationPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PNType object
+     *
+     * @param   PNType|PropelObjectCollection $pNType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PNotificationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPNType($pNType, $comparison = null)
+    {
+        if ($pNType instanceof PNType) {
+            return $this
+                ->addUsingAlias(PNotificationPeer::P_N_TYPE_ID, $pNType->getId(), $comparison);
+        } elseif ($pNType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PNotificationPeer::P_N_TYPE_ID, $pNType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPNType() only accepts arguments of type PNType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PNType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PNotificationQuery The current query, for fluid interface
+     */
+    public function joinPNType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PNType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PNType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PNType relation PNType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PNTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePNTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPNType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PNType', '\Politizr\Model\PNTypeQuery');
     }
 
     /**

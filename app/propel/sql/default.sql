@@ -500,9 +500,32 @@ DROP TABLE IF EXISTS `p_notification`;
 CREATE TABLE `p_notification`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_n_type_id` INTEGER NOT NULL,
     `title` VARCHAR(250),
     `description` TEXT,
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_notification_FI_1` (`p_n_type_id`),
+    CONSTRAINT `p_notification_FK_1`
+        FOREIGN KEY (`p_n_type_id`)
+        REFERENCES `p_n_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_n_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_n_type`;
+
+CREATE TABLE `p_n_type`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(150),
+    `description` TEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
