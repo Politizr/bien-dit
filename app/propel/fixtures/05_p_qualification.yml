@@ -199,12 +199,12 @@ Politizr\Model\PQMandate:
     vice_president_conseiller_communautaire:
         online:             true
         p_q_type_id:        electif
-        title:              Vice-Président
+        title:              Vice-Président du Conseil Communautaire
         select_title:       Conseil Communautaire
     president_conseiller_communautaire:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président du Conseil Communautaire
         select_title:       Conseil Communautaire
     conseiller_departemental:
         online:             true
@@ -214,12 +214,12 @@ Politizr\Model\PQMandate:
     vice_president_conseiller_departemental:
         online:             true
         p_q_type_id:        electif
-        title:              Vice-Président
+        title:              Vice-Président du Conseil Départemental
         select_title:       Conseil Départemental (ex Conseil Général)
     president_conseiller_departemental:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président du Conseil Départemental
         select_title:       Conseil Départemental (ex Conseil Général)
     conseiller_regional:
         online:             true
@@ -229,12 +229,12 @@ Politizr\Model\PQMandate:
     vice_president_conseiller_regional:
         online:             true
         p_q_type_id:        electif
-        title:              Vice-Président
+        title:              Vice-Président du Conseil Régional
         select_title:       Conseil Régional
     president_conseiller_regional:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président du Conseil Régional
         select_title:       Conseil Régional
     depute:
         online:             true
@@ -244,12 +244,12 @@ Politizr\Model\PQMandate:
     vice_president_depute:
         online:             true
         p_q_type_id:        electif
-        title:              Vice-Président
+        title:              Vice-Président de l'Assemblée Nationale
         select_title:       Assemblée Nationale
     president_depute:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président de l'Assemblée Nationale
         select_title:       Assemblée Nationale
     senateur:
         online:             true
@@ -259,12 +259,12 @@ Politizr\Model\PQMandate:
     vice_president_senateur:
         online:             true
         p_q_type_id:        electif
-        title:              Vice-Président
+        title:              Vice-Président du Sénat
         select_title:       Sénat
     president_senateur:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président du Sénat
         select_title:       Sénat
     depute_europeen:
         online:             true
@@ -274,7 +274,7 @@ Politizr\Model\PQMandate:
     president_depute_europeen:
         online:             true
         p_q_type_id:        electif
-        title:              Président
+        title:              Président du Parlement Européen
         select_title:       Parlement Européen
     president:
         online:             true
