@@ -1,6 +1,6 @@
 {% for notif in notifs %}
     <div class="notifItem withLoaderInside">
-        <div class="ajaxLoader" style="display: none;"><i class="iconSpin5 animateSpin"></i><div class="ajaxLoaderBg"></div></div>
+        <div class="ajaxLoader" style="display: none;"><div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div></div>
         <div class="notifItemHeader">
             <i class="iconDuo"></i>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}{% if not notif.checked %}<i action="notificationCheck" class="iconCross" subjectId="{{ notif.id }}"></i>{% endif %}
         </div>

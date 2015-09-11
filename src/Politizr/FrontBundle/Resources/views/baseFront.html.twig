@@ -63,12 +63,14 @@
                 </div>
 
                 {# loader ajax global #} 
-                <div id="ajaxGlobalLoader" class="modal">
+                <div id="ajaxGlobalLoader" class="modal" style="display: none;">
                     <div class="ajaxLoader">
-                        <i class="iconSpin5 animateSpin"></i>
-                        <div class="ajaxLoaderBg"></div>
+                        <i class="iconPltzrLogoAlt"></i>
+                        <div class="iconLoaderBg"></div>
+                        <svg width="44" height="44" viewbox="0 0 40 40" ><polygon points="0 0 0 40 40 40 40 0" class="pltzrLoaderStrokes" /></svg>
+                        <div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
                     </div>
-                </div>                
+                </div>              
 
             {% endblock genericBoxes %}
 
