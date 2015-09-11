@@ -295,6 +295,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
         <column name="title" type="varchar" size="250" />
+        <column name="select_title" type="varchar" size="250" />
 
         <column name="online" type="boolean" />
 
@@ -413,7 +414,7 @@
         <column name="name" type="varchar" size="150" />
         <column name="birthday" type="date" />
 
-        <column name="subtitle" type="varchar" size="500" />
+        <column name="subtitle" type="longvarchar" />
         <column name="biography" type="longvarchar" />
 
         <column name="website" type="varchar" size="150" />
