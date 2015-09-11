@@ -63,7 +63,8 @@
 .timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
 .timelineMarkAllAsRead:hover {color: #fff;}
 
-#timeline {	padding-bottom: 20px;}
+#timeline {	padding-bottom: 20px; float: left;clear: both; width: 100%; position: relative;}
+#timeline #listContent {position: relative;}
 
 #emptyTimeline {
 	background-color: $lightGrey;
@@ -249,6 +250,9 @@ span.timelineItemContextHighlight {
 	display: inline-block;
 	float: none;
 }
+
+.timelineItemContentFooter .commentsNote .notePlus, .timelineItemContentFooter .commentsNote .noteMinus { cursor: default ;}
+.timelineItemContentFooter .commentsNote .notePlus:hover, .timelineItemContentFooter .commentsNote .noteMinus:hover { color: inherit;}
 
 .postSummaryActivity {
 	margin-top: 15px;

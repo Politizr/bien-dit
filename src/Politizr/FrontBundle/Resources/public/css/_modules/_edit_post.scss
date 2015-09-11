@@ -10,6 +10,8 @@
 	position: relative;	
 	min-height: 14px;
 }
+#editMyPublicTags .fieldsetHeader {border-top: none;}
+form#formDebateUpdate #tagBox .fieldsetHeader {border-top: none;}
 
 .fieldsetHeaderTitle {
 	font-size: 10px;
@@ -307,9 +309,9 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 
 #uploadFileContainer { position: relative; margin-bottom: 40px;}
 
-#formDocumentPhoto {display: inline-block; width: 100%;}
-#formDocumentPhoto input[type="file"] { display: none;}
-#formDocumentPhoto label {
+#formDocumentPhoto, #formUserBackPhoto {display: inline-block; width: 100%;}
+#formDocumentPhoto input[type="file"], #formUserBackPhoto input[type="file"] { display: none;}
+#formDocumentPhoto label, #formUserBackPhoto label {
 	display: inline-block;
 	font-size: 13px;
     font-family: 'nerissemibold';
@@ -321,8 +323,8 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
     text-align: center;
     cursor: pointer;
 }
-#formDocumentPhoto label:hover { color: $highlight; border-color: $highlight;}
-#formDocumentPhoto .fieldsetHeader .iconQuestion {top:20px;}
+#formDocumentPhoto label:hover, #formUserBackPhoto label:hover { color: $highlight; border-color: $highlight;}
+#formDocumentPhoto .fieldsetHeader .iconQuestion, #formUserBackPhoto .fieldsetHeader .iconQuestion {top:20px;}
 
 .photoDelete {
 	display: inline-block;

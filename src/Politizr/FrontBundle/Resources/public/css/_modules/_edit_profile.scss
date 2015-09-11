@@ -66,8 +66,6 @@
 #postText.profileFieldset .paragraph {padding: 20px 40px; width: 620px;}
 #postText.profileFieldset {padding: 20px 0;}
 
-#editShowMyAge .fieldsetHeader { border: none; }
-
 #editMyPrivateTags .tagLabel {color: lighten( $darkGrey, 10% ); border-color: $semilightGrey;}
 #editMyPrivateTags .tagLabel a:hover {color: $highlight;}
 .editableTagList .noTag {
@@ -81,7 +79,7 @@
 
 .profileFieldset .jcf-select { margin-left: 40px; }
 
-.editable.inAFewWords {
+.editable.subtitle {
 	margin-bottom: 40px;
 	padding: 40px;
 	border: solid 1px $formGrey;
@@ -93,9 +91,9 @@
 	line-height: 160%;
 	text-transform: none;
 }
-.editable.inAFewWords:focus {    outline: 0;}
-.editable.inAFewWords a {color: $highlight;}
-.editable.inAFewWords.medium-editor-placeholder:after {
+.editable.subtitle:focus {    outline: 0;}
+.editable.subtitle a {color: $highlight;}
+.editable.subtitle.medium-editor-placeholder:after {
 	color: lighten( $highlight, 20% );
 	left: 40px;
     top: 40px;
@@ -103,18 +101,59 @@
     text-transform: none;
 } 
 
+// edit social links
+
+#socialLinks {
+	float: left;
+	clear: both;
+	width: calc(100% - 80px);
+	margin: 0 0 0 40px; 
+	padding-bottom: 60px;
+}
+#socialLinks .profileTwitter, #socialLinks .profileFacebook, #socialLinks .profileGooglePlus, #socialLinks .profileWebsite {
+	margin : 0 0 20px 0;
+	float: left;
+	width: 100%;
+	position: relative;
+}
+#socialLinks .profileWebsite {margin-bottom: 0;}
+#socialLinks i {
+	position: absolute;
+	left: -2px;
+	top: 12px;
+}
+#socialLinks input {
+	margin-left: 30px;
+	padding: 10px;
+	width: calc(100% - 52px);
+	font-size: 12px;
+	font-family: 'nerissemibold';
+	padding: 10px;
+	color: $darkGrey;
+	border: solid 1px $semilightGrey;
+	background-color: #fff;
+}
+
+
 // edit mandates
+
+#newMandate.editMandateItem {
+	margin: 0 40px 40px 40px;
+	padding: 0;
+	width: calc(100% - 80px);
+	background-color: transparent;
+}
 
 .editMandateItem {
 	display: inline-block;
-	margin: 0 40px;
 	width: calc(100% - 80px);
-	padding-bottom: 40px;
+	padding: 40px;
 	margin-bottom: 40px;
-	border-bottom: solid 1px lighten( $highlight, 30% );
 	font-size: 10px;
     font-family: 'nerisblack';
     text-transform: uppercase;
+    background-color: $lightGrey;
+    position: relative;
 }
 
 .editMandateItem span.dea {
@@ -135,22 +174,30 @@
 	float: left;
 }
 
-.editMandateWhatAndWhere input {
+.editMandateWhatAndWhere input, .editMandatePeriod input {
 	float: left;
 	clear: both;
 	width: 324px;
 	margin-top: 8px;
-	border: solid 1px $formGrey;
+	border: solid 1px $semilightGrey;
 	font-size: 12px;
     font-family: 'nerisblack';
     text-transform: uppercase;
     padding: 15px 20px;
-    color: $semiDarkGrey;
+    color: $darkGrey;
 }
-input.editMandateWhatAndWhere::-webkit-input-placeholder { color:$semiDarkGrey; }
-input.editMandateWhatAndWhere::-moz-placeholder { color:$semiDarkGrey; } /* firefox 19+ */
-input.editMandateWhatAndWhere:-ms-input-placeholder { color:$semiDarkGrey; } /* ie */
-input.editMandateWhatAndWhere input:-moz-placeholder { color:$semiDarkGrey; } 
+input.editMandateWhatAndWhere::-webkit-input-placeholder, input.editMandatePeriod::-webkit-input-placeholder { color:$semiDarkGrey; }
+input.editMandateWhatAndWhere::-moz-placeholder, input.editMandatePeriod::-moz-placeholder { color:$semiDarkGrey; } /* firefox 19+ */
+input.editMandateWhatAndWhere:-ms-input-placeholder, input.editMandatePeriod:-ms-input-placeholder  { color:$semiDarkGrey; } /* ie */
+input.editMandateWhatAndWhere input:-moz-placeholder, input.editMandatePeriod input:-moz-placeholder { color:$semiDarkGrey; } 
+
+.editMandatePeriod input {
+	width: 45px;
+	clear: none;
+	margin-top: 0;
+	text-align: center;
+	color: $highlight;
+}
 
 .editMandateWhatAndWhere {
 	float: left;
@@ -178,60 +225,32 @@ input.editMandateWhatAndWhere input:-moz-placeholder { color:$semiDarkGrey; }
 	position: relative;
 	margin-bottom: 8px;
 }
-.editMandatePeriod .jcf-select {
-	min-width: 20px;
-	max-width: 20px;
-	float: left;
-	padding: 15px 45px 15px 20px;
-}
 
-.editMandatePeriod .jcf-select .jcf-select-text {
-	text-overflow: ellipsis;
-	white-space:  normal;
-	overflow:  auto;
-	display: block;
+.mandateActions {
+	float: right;
+	width: 100%;
+	margin-top: 15px;
+}
+.mandateActions i {font-size: 11px;}
+
+.editMandateCreate {
+	color: $highlight;
 	font-size: 12px;
-	line-height: 20px;
-	width: 35px;
+	text-transform: none;
+    font-family: 'nerissemibold';
+    cursor: pointer;
+	float: right;
 }
 
-//// add/remove elements
-.editMandateDeletePeriod {
-	z-index: 1;
-	position: absolute;
-	color: $semiGrey;
-	right: -7px;
-	top:-6px;
-	font-size: 11px;
-	background-color: #fff;
-	cursor: pointer;
-}
-.editMandateDeleteItem, .editMandateAddPeriod {
+.editMandateDeleteItem {
 	color: $semiGrey;	
 	font-size: 12px;
 	text-transform: none;
     font-family: 'nerissemibold';
     cursor: pointer;
-}
-.editMandateDeleteItem {
-	margin-top: 10px;
-	float: left;
-}
-.editMandateAddPeriod {
-	margin-top: 2px;
-	float: right;
+   	float: left;
 }
 
-.editMandateDeleteItem i, .editMandateAddPeriod i {font-size: 11px;}
-.editMandateDeletePeriod:hover, .editMandateDeleteItem:hover, .editMandateAddPeriod:hover, .editMandateAddMandate {color: $highlight;}
-.editMandateAddMandate {
-	float: left;
-	clear: both;
-	margin : -20px 0 0 40px;
-    font-family: 'nerissemibold';
-   	font-size: 12px;
-   	cursor: pointer;
-   	position: relative;
-   	z-index: 1;
-}
-.editMandateAddMandate:hover {color: $darkGrey;}
+
+.editMandateAddMandate {color: $highlight;}
+.editMandateDeleteItem:hover, .editMandateCreate:hover {color: $darkGrey;}

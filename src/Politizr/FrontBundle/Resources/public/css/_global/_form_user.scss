@@ -88,10 +88,15 @@ textarea:focus, input:focus { outline: 0;}
 .comments input[type=submit]:hover, .comments input[type=button]:hover, .comments .cancel:hover {	color: $darkGrey;}
 
 //search form
+.search {
+	width: 100%;
+	text-align: center;
+}
+
 .search form.searchForm {
 	width: 440px;
 	display: inline-block;
-	margin: 60px 0 60px 260px;
+	margin: 60px 0;
 	clear: both;
 }
 

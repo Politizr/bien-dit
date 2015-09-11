@@ -12,7 +12,6 @@
     font-family: 'nerissemibold';
 }
 
-
 .actionFollow, .actionUnfollow {
 	float: right;
 	margin-top: 20px;
@@ -21,14 +20,26 @@
 	font-family: nerissemibold;
 	position: relative;
 	cursor: pointer;
+	padding-left: 15px;
 }
+#fixedActions .actionFollow, #fixedActions .actionUnfollow {	padding-left: 0;}
 
 .actionFollow:hover, .actionUnfollow:hover {color: $darkGrey;}
 .actionFollow i, .actionUnfollow i {position: absolute; left: 0; font-size: 9px;}
 
 
 
-/// go to update under
+/// got to update under
+
+#fixedActions .subscribe a {
+	background-color: $highlight;
+	color: #fff;	
+}
+
+#fixedActions .subscribe a:hover {
+	background-color: $darkGrey;	
+	color: #fff;
+}
 
 #fixedActions .actionSave,
 #fixedActions .actionPublish,

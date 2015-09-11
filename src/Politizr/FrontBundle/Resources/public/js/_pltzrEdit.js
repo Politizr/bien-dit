@@ -63,7 +63,7 @@ $(function(){
     });
 	
 	// edit in a few words
-	var copyrightEditor = new MediumEditor('.editable.inAFewWords', {
+	var copyrightEditor = new MediumEditor('.editable.subtitle', {
 		buttons: ['bold', 'anchor'],
         buttonLabels: {
 	        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
