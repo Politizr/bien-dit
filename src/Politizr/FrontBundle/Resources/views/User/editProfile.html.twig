@@ -48,7 +48,6 @@
                 <div id="profileSummaryFooter">
                     <div class="avatar60">
                         <div id="smallCamera">
-                            <!-- @todo HTML/CSS à styler pr un upload ajax sans modal intermédiaire -->
                             <form id="formUserPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="id" value="{{ user.id }}">
                                 <div id="uploadFileContainer">
@@ -154,7 +153,6 @@
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
                     </div>
                 </div>
-                <!-- @todo HTML/CSS editable inAFewWords > editable subtitle -->
                 <div class="editable subtitle">{{ user.subtitle | raw }}</div>
             </div>
 
@@ -177,7 +175,6 @@
                 </div>
             </div>
 
-            <!-- @todo HTML/CSS add twitter / facebook / website -->
             <div id="socialLinks" class="profileFieldset">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">mes liens</div>
