@@ -179,18 +179,19 @@
 
             <!-- @todo HTML/CSS add twitter / facebook / website -->
             <div id="socialLinks" class="profileFieldset">
-                <div class="paragraph">
-                    <div class="twitter">
-                        {{ form_widget(formBio.twitter, { 'attr': {'placeholder': 'Compte Twitter'}}) }}
-                    </div>
-                    <div class="facebook">
-                        {{ form_widget(formBio.facebook, { 'attr': {'placeholder': 'Compte Facebook'}}) }}
-                    </div>
-                    <div class="website">
-                        {{ form_widget(formBio.website, { 'attr': {'placeholder': 'Site web'}}) }}
-                    </div>
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">mes liens</div>
                 </div>
-            </div>
+                <div class="profileTwitter">
+                    <i class="iconSocialTw"></i>{{ form_widget(formBio.twitter, { 'attr': {'placeholder': 'Compte Twitter'}}) }}
+                </div>
+                <div class="profileFacebook">
+                    <i class="iconSocialFb"></i>{{ form_widget(formBio.facebook, { 'attr': {'placeholder': 'Compte Facebook'}}) }}
+                </div>
+                <div class="profileWebsite">
+                    <i class="iconLink"></i>{{ form_widget(formBio.website, { 'attr': {'placeholder': 'Site web'}}) }}
+                </div>
+            </div>         
 
             {# hidden form inputs filled by js #}
             {{ form_row(formBio.subtitle) }}

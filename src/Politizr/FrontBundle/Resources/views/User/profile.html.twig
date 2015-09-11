@@ -40,6 +40,17 @@
                                 {{ user }}
                                 {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
                             </div>
+                            <div id="profileSocialLinks">
+                                {% if user.facebook is not empty %}
+                                    <a href="{{ user.facebook }}" target="_blank"><i class="iconSocialFb"></i></a>
+                                {% endif %}
+                                {% if user.twitter is not empty %}
+                                    <a href="{{ user.twitter }}" target="_blank"><i class="iconSocialTw"></i></a>
+                                {% endif %}
+                                {% if user.website is not empty %}
+                                    <a href="{{ user.website }}" target="_blank"><i class="iconLink"></i></a>
+                                {% endif %}
+                            </div>                            
                         </div>
                     </div>
                     <div id="profileSubtitle">{{ user.subtitle | raw }}</div>
