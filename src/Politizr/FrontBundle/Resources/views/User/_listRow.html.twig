@@ -9,7 +9,7 @@
                 {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { user: user } only %}
             </div>
             <div class="authorInAFewWords">
-                {{ user.subtitle }}
+                {{ user.subtitle | raw }}
             </div>
         </div>
     </div>

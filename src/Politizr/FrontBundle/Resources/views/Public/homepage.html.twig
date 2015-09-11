@@ -136,7 +136,7 @@
                             <div class="authorName">
                                 {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': citizenUser} only %}
                             </div>
-                            <div class="authorInAFewWords">{{ citizenUser.subtitle }}</div>
+                            <div class="authorInAFewWords">{{ citizenUser.subtitle | raw }}</div>
                         </div>
                     </div>
                 {% endif %}
@@ -152,7 +152,7 @@
                                 {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': electedUser} only %}
                                 {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with {'user': electedUser} only %}
                             </div>
-                            <div class="authorInAFewWords">{{ electedUser.subtitle }}</div>
+                            <div class="authorInAFewWords">{{ electedUser.subtitle | raw }}</div>
                         </div>
                     </div>
                 {% endif %}
