@@ -1,0 +1,20 @@
+{% form_theme formMandate 'PolitizrFrontBundle:Form:fields.html.twig' %}
+<form method="POST" name="formMandateCreate" id="formMandateCreate">
+    {{ form_errors(formMandate) }}
+
+    <div class="editMandateWhatAndWhere">
+        {{ form_widget(formMandate.p_q_mandate, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+        {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
+    </div>
+    <span class="dea">de</span>
+    <div class="editMandatePeriod">
+
+        {{ form_widget(formMandate.begin_at, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+        <span class="dea">à</span>
+        {{ form_widget(formMandate.end_at, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+    </div>
+    <div class="mandateActions">
+        <a class="editMandateCreate" action="mandateCreate"><i class="iconCheck"></i>Ajouter</a>
+    </div>
+    {{ form_rest(formMandate) }}
+</form>

@@ -114,14 +114,6 @@
     });
 
     // Mandate creation
-    $("body").on("click", "[action='addNewMandate']", function(e) {
-        $('#newMandate').slideDown("slow");
-    });
-
-    $("body").on("click", "[action='cancelNewMandate']", function(e) {
-        $('#newMandate').slideUp("slow");
-    });
-
     $("body").on("click", "[action='mandateCreate']", function(e) {
         console.log('*** click mandateCreate');
 
@@ -147,14 +139,11 @@
                     $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat bien enregistré.');
                     $('#infoBoxHolder .boxSuccess').show();
 
-                    $('#myMandate').html(data['html']);
+                    $('#newMandate').html(data['newMandate']);
+                    $('#myMandates').html(data['editMandates']);
                     
                     // JCF forms styling
                     jcf.replaceAll();
-
-                    // clear form & slide up
-                    $('#formMandateCreate')[0].reset();
-                    $('#newMandate').slideUp("slow");
                 }
             }
         });
@@ -185,6 +174,11 @@
                 } else {
                     $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat mis à jour.');
                     $('#infoBoxHolder .boxSuccess').show();
+
+                    $('#myMandates').html(data['editMandates']);
+                    
+                    // JCF forms styling
+                    jcf.replaceAll();
                 }
             }
         });
@@ -198,7 +192,7 @@
             'xhrRoute': 'ROUTE_USER_MANDATE_DELETE',
             'xhrService': 'user',
             'xhrMethod': 'mandateProfileDelete',
-            'xhrType': 'RETURN_BOOLEAN',
+            'xhrType': 'RETURN_HTML',
             } only %}";
         var subjectId = $(this).attr('subjectId');
         console.log('subjectId = ' + subjectId);
@@ -210,7 +204,6 @@
                     type: 'POST',
                     url: xhrPath,
                     data: { 'id': subjectId },
-                    context: $(this).closest('.editMandateItem'),
                     dataType: 'json',
                     {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
                     success: function(data) {
@@ -222,7 +215,10 @@
                             $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat supprimé.');
                             $('#infoBoxHolder .boxSuccess').show();
 
-                            $(this).closest('.editMandateItem').hide();
+                            $('#myMandates').html(data['editMandates']);
+                            
+                            // JCF forms styling
+                            jcf.replaceAll();
                         }
                     }
                 });

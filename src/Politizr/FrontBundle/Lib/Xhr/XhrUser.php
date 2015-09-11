@@ -467,16 +467,24 @@ class XhrUser
         $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
 
         // Rendering
-        $html = $this->templating->render(
+        $newMandate = $this->templating->render(
+            'PolitizrFrontBundle:User:_newMandate.html.twig',
+            array(
+                'formMandate' => $form->createView()
+            )
+        );
+
+        // Rendering
+        $editMandates = $this->templating->render(
             'PolitizrFrontBundle:User:_editMandates.html.twig',
             array(
-                'formMandate' => $form->createView(),
                 'formMandateViews' => $formMandateViews
             )
         );
 
         return array(
-            'html' => $html,
+            'newMandate' => $newMandate,
+            'editMandates' => $editMandates,
             );
     }
 
@@ -492,6 +500,7 @@ class XhrUser
         $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $mandate = PUMandateQuery::create()->findPk($id);
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
@@ -504,7 +513,20 @@ class XhrUser
             throw new FormValidationException($errors);
         }
 
-        return true;
+        // @todo to refactor
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
+
+        // Rendering
+        $editMandates = $this->templating->render(
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            array(
+                'formMandateViews' => $formMandateViews
+            )
+        );
+
+        return array(
+            'editMandates' => $editMandates,
+            );
     }
 
     /**
@@ -519,12 +541,26 @@ class XhrUser
         $this->logger->info('$id = ' . print_r($id, true));
 
         // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
         $mandate = PUMandateQuery::create()->findPk($id);
 
         // @todo valid ownership of mandate before deletion
         $this->userManager->deleteMandate($mandate);
 
-        return true;
+        // @todo to refactor
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
+
+        // Rendering
+        $editMandates = $this->templating->render(
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            array(
+                'formMandateViews' => $formMandateViews
+            )
+        );
+
+        return array(
+            'editMandates' => $editMandates,
+            );
     }
 
     /**

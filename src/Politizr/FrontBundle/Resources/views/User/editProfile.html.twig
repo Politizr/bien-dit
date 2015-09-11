@@ -198,45 +198,26 @@
             {{ form_rest(formBio) }}
         </form>
 
-        <!-- @todo HTML/CSS add mandate bloc à sortir du div "myMandate" -->
-        <div class="fieldsetHeader">
-            <div class="fieldsetHeaderTitle">mes mandats</div>
-            <i class="iconQuestion" action="toggleHelper"></i>
-            <div class="helperSlider helperSliderRight" style="display: none;">
-                <i class="iconArrowUp"></i>
-                <i class="iconCross" action="hideHelper"></i>
-                @todo : slider ajouter un mandat
+        <div id="myMandate" class="profileFieldset">
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">mes mandats</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    @todo : slider ajouter un mandat
+                </div>
             </div>
-        </div>
 
-        <!-- @todo HTML/CSS add mandate en haut de la liste des mandats -->
-        <div action="addNewMandate" class="editMandateAddMandate"><i class="iconAdd"></i>Ajouter un mandat</div>
-        <div class="editMandateItem" id="newMandate" style="display: none">
-            <form method="POST" name="formMandateCreate" id="formMandateCreate">
-                {{ form_errors(formMandate) }}
-
-                <div class="editMandateWhatAndWhere">
-                    {{ form_widget(formMandate.p_q_mandate, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
-                    {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
-                </div>
-                <span class="dea">de</span>
-                <div class="editMandatePeriod">
-                    {{ form_widget(formMandate.begin_at, { 'attr': {'placeholder': 'date de début (JJ/MM/AAAA)'}}) }}
-                    <span class="dea">à</span>
-                    {{ form_widget(formMandate.end_at, { 'attr': {'placeholder': 'date de fin (JJ/MM/AAAA)'}}) }}
-                </div>
-                <!-- @todo HTML/CSS div enregistrer / annuler pour un nouveau mandat -->
-                <div class="mandateActions">
-                    <a action="cancelNewMandate"><i class="iconCancel"></i>Annuler</a>
-                    <a action="mandateCreate"><i class="iconSave"></i>Enregistrer</a>
-                </div>    
-                {{ form_rest(formMandate) }}
-            </form>
-        </div>
+            <!-- @todo HTML/CSS styler les années en select -->
+            <div id="newMandate" class="editMandateItem">
+                {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'formMandate': formMandate } %}
+            </div>
 
         {% if formMandate and formMandateViews %}
-            <div id="myMandate" class="profileFieldset">
-                {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandate': formMandate, 'formMandateViews': formMandateViews } %}
+            <!-- @todo HTML/CSS les mandats existants sont encadrés dans un bloc myMandates -->
+            <div id="myMandates">
+                {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
             </div>
         {% endif %}
     </div>

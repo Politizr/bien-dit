@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\FrontBundle\Form\DataTransformer\YearToDateTransformer;
+
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PQOrganizationQuery;
@@ -69,26 +71,30 @@ class PUMandateType extends AbstractType
         //         'expanded' => false,
         //     ));
 
-        // Date de début
+        // Begin date
         $builder->add('begin_at', 'date', array(
                 'required' => true,
                 'label' => 'Date de début',
-                'widget' => 'single_text',
+                'widget' => 'choice',
+                'input' => 'datetime',
+                // @todo add empty value but set default day and month to avoid form errors
+                // 'empty_value' => '',
+                'years' => range(date('Y'), date('Y') - 70, -1),
                 'format' => 'dd/MM/yyyy',
-                'constraints' => new NotBlank(array('message' => 'Saisie d\'une date de début obligatoire.')),
-                'invalid_message' => 'La date doit être au format JJ/MM/AAAA',
-                'attr' => array('placeholder' => 'JJ/MM/AAAA')
-            ));
+                'constraints' => new NotBlank(array('message' => 'Saisie d\'une année de début obligatoire.')),
+        ));
         
         // Date de fin
         $builder->add('end_at', 'date', array(
-                'required' => false,
-                'label' => 'Date de fin',
-                'widget' => 'single_text',
+                'required' => true,
+                'label' => 'Date de début',
+                'widget' => 'choice',
+                'input' => 'datetime',
+                // @todo add empty value but set default day and month to avoid form errors
+                // 'empty_value' => '',
+                'years' => range(date('Y'), date('Y') - 70, -1),
                 'format' => 'dd/MM/yyyy',
-                'invalid_message' => 'La date doit être au format JJ/MM/AAAA',
-                'attr' => array('placeholder' => 'JJ/MM/AAAA')
-            ));
+        ));
         
     }
 
