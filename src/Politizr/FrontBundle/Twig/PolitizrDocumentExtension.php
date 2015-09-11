@@ -181,9 +181,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param PDocumentInterface $document
      * @param string $filterName
+     * @param boolean $withShadow
      * @return html
      */
-    public function image(PDocumentInterface $document, $filterName = 'debate_header')
+    public function image(PDocumentInterface $document, $filterName = 'debate_header', $withShadow = true)
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -209,6 +210,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,
+                'withShadow' => $withShadow
             )
         );
 

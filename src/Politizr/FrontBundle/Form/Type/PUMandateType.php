@@ -41,6 +41,7 @@ class PUMandateType extends AbstractType
                 'label' => 'Type de mandat',
                 'class' => 'Politizr\\Model\\PQMandate',
                 'query' => PQMandateQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
+                // @todo https://github.com/propelorm/PropelBundle/issues/358
                 // 'group_by' => 'selectTitle',
                 'property' => 'title',
                 'index_property' => 'id',
