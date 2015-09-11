@@ -76,7 +76,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 150, null);
         $this->addColumn('name', 'Name', 'VARCHAR', false, 150, null);
         $this->addColumn('birthday', 'Birthday', 'DATE', false, null, null);
-        $this->addColumn('subtitle', 'Subtitle', 'VARCHAR', false, 500, null);
+        $this->addColumn('subtitle', 'Subtitle', 'LONGVARCHAR', false, null, null);
         $this->addColumn('biography', 'Biography', 'LONGVARCHAR', false, null, null);
         $this->addColumn('website', 'Website', 'VARCHAR', false, 150, null);
         $this->addColumn('twitter', 'Twitter', 'VARCHAR', false, 150, null);

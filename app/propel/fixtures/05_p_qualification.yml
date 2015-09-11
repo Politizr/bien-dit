@@ -176,55 +176,107 @@ Politizr\Model\PQOrganization:
 
 # LISTE DE TOUS LES MANDATS EXISTANTS
 Politizr\Model\PQMandate:
-    president:
-        online:             true
-        p_q_type_id:        electif
-        title:              Président de la République
-    depute:
-        online:             true
-        p_q_type_id:        electif
-        title:              Député
-    senateur:
-        online:             true
-        p_q_type_id:        electif
-        title:              Sénateur
-    depute_europeen:
-        online:             true
-        p_q_type_id:        electif
-        title:              Député Européen
-    conseiller_regional:
-        online:             true
-        p_q_type_id:        electif
-        title:              Conseiller Régional
-    president_conseiller_regional:
-        online:             true
-        p_q_type_id:        electif
-        title:              Président du Conseil Régional
-    conseiller_departemental:
-        online:             true
-        p_q_type_id:        electif
-        title:              Conseiller Général
-    president_conseiller_departemental:
-        online:             true
-        p_q_type_id:        electif
-        title:              Président du Conseil Général
-    conseiller_communautaire:
-        online:             true
-        p_q_type_id:        electif
-        title:              Conseiller Communautaire
-    president_conseiller_communautaire:
-        online:             true
-        p_q_type_id:        electif
-        title:              Président du Conseil Communautaire
-    maire:
-        online:             true
-        p_q_type_id:        electif
-        title:              Maire
-    adjoint_maire:
-        online:             true
-        p_q_type_id:        electif
-        title:              Adjoint au Maire
     conseiller_municipal:
         online:             true
         p_q_type_id:        electif
         title:              Conseiller Municipal
+        select_title:       Commune
+    adjoint_maire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Adjoint au Maire
+        select_title:       Commune
+    maire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Maire
+        select_title:       Commune
+    conseiller_communautaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Communautaire
+        select_title:       Conseil Communautaire
+    vice_president_conseiller_communautaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Vice-Président
+        select_title:       Conseil Communautaire
+    president_conseiller_communautaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Conseil Communautaire
+    conseiller_departemental:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Départemental (ex Conseiller Général)
+        select_title:       Conseil Départemental (ex Conseil Général)
+    vice_president_conseiller_departemental:
+        online:             true
+        p_q_type_id:        electif
+        title:              Vice-Président
+        select_title:       Conseil Départemental (ex Conseil Général)
+    president_conseiller_departemental:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Conseil Départemental (ex Conseil Général)
+    conseiller_regional:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Régional
+        select_title:       Conseil Régional
+    vice_president_conseiller_regional:
+        online:             true
+        p_q_type_id:        electif
+        title:              Vice-Président
+        select_title:       Conseil Régional
+    president_conseiller_regional:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Conseil Régional
+    depute:
+        online:             true
+        p_q_type_id:        electif
+        title:              Député
+        select_title:       Assemblée Nationale
+    vice_president_depute:
+        online:             true
+        p_q_type_id:        electif
+        title:              Vice-Président
+        select_title:       Assemblée Nationale
+    president_depute:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Assemblée Nationale
+    senateur:
+        online:             true
+        p_q_type_id:        electif
+        title:              Sénateur
+        select_title:       Sénat
+    vice_president_senateur:
+        online:             true
+        p_q_type_id:        electif
+        title:              Vice-Président
+        select_title:       Sénat
+    president_senateur:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Sénat
+    depute_europeen:
+        online:             true
+        p_q_type_id:        electif
+        title:              Député Européen
+        select_title:       Parlement Européen
+    president_depute_europeen:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président
+        select_title:       Parlement Européen
+    president:
+        online:             true
+        p_q_type_id:        electif
+        title:              Président de la République

@@ -24,6 +24,7 @@ use Politizr\Model\PUMandate;
 /**
  * @method PQMandateQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PQMandateQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PQMandateQuery orderBySelectTitle($order = Criteria::ASC) Order by the select_title column
  * @method PQMandateQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PQMandateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PQMandateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -33,6 +34,7 @@ use Politizr\Model\PUMandate;
  *
  * @method PQMandateQuery groupById() Group by the id column
  * @method PQMandateQuery groupByTitle() Group by the title column
+ * @method PQMandateQuery groupBySelectTitle() Group by the select_title column
  * @method PQMandateQuery groupByOnline() Group by the online column
  * @method PQMandateQuery groupByCreatedAt() Group by the created_at column
  * @method PQMandateQuery groupByUpdatedAt() Group by the updated_at column
@@ -56,6 +58,7 @@ use Politizr\Model\PUMandate;
  * @method PQMandate findOneOrCreate(PropelPDO $con = null) Return the first PQMandate matching the query, or a new PQMandate object populated from the query conditions when no match is found
  *
  * @method PQMandate findOneByTitle(string $title) Return the first PQMandate filtered by the title column
+ * @method PQMandate findOneBySelectTitle(string $select_title) Return the first PQMandate filtered by the select_title column
  * @method PQMandate findOneByOnline(boolean $online) Return the first PQMandate filtered by the online column
  * @method PQMandate findOneByCreatedAt(string $created_at) Return the first PQMandate filtered by the created_at column
  * @method PQMandate findOneByUpdatedAt(string $updated_at) Return the first PQMandate filtered by the updated_at column
@@ -65,6 +68,7 @@ use Politizr\Model\PUMandate;
  *
  * @method array findById(int $id) Return PQMandate objects filtered by the id column
  * @method array findByTitle(string $title) Return PQMandate objects filtered by the title column
+ * @method array findBySelectTitle(string $select_title) Return PQMandate objects filtered by the select_title column
  * @method array findByOnline(boolean $online) Return PQMandate objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PQMandate objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PQMandate objects filtered by the updated_at column
@@ -180,7 +184,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_mandate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `select_title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_mandate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -339,6 +343,35 @@ abstract class BasePQMandateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQMandatePeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the select_title column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySelectTitle('fooValue');   // WHERE select_title = 'fooValue'
+     * $query->filterBySelectTitle('%fooValue%'); // WHERE select_title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $selectTitle The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQMandateQuery The current query, for fluid interface
+     */
+    public function filterBySelectTitle($selectTitle = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($selectTitle)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $selectTitle)) {
+                $selectTitle = str_replace('*', '%', $selectTitle);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQMandatePeer::SELECT_TITLE, $selectTitle, $comparison);
     }
 
     /**

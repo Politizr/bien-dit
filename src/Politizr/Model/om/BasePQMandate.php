@@ -59,6 +59,12 @@ abstract class BasePQMandate extends BaseObject implements Persistent
     protected $title;
 
     /**
+     * The value for the select_title field.
+     * @var        string
+     */
+    protected $select_title;
+
+    /**
      * The value for the online field.
      * @var        boolean
      */
@@ -170,6 +176,17 @@ abstract class BasePQMandate extends BaseObject implements Persistent
     {
 
         return $this->title;
+    }
+
+    /**
+     * Get the [select_title] column value.
+     *
+     * @return string
+     */
+    public function getSelectTitle()
+    {
+
+        return $this->select_title;
     }
 
     /**
@@ -337,6 +354,27 @@ abstract class BasePQMandate extends BaseObject implements Persistent
 
         return $this;
     } // setTitle()
+
+    /**
+     * Set the value of [select_title] column.
+     *
+     * @param  string $v new value
+     * @return PQMandate The current object (for fluent API support)
+     */
+    public function setSelectTitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->select_title !== $v) {
+            $this->select_title = $v;
+            $this->modifiedColumns[] = PQMandatePeer::SELECT_TITLE;
+        }
+
+
+        return $this;
+    } // setSelectTitle()
 
     /**
      * Sets the value of the [online] column.
@@ -517,12 +555,13 @@ abstract class BasePQMandate extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->online = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->slug = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->sortable_rank = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->p_q_type_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->select_title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->sortable_rank = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->p_q_type_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -532,7 +571,7 @@ abstract class BasePQMandate extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = PQMandatePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PQMandatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PQMandate object", $e);
@@ -839,6 +878,9 @@ abstract class BasePQMandate extends BaseObject implements Persistent
         if ($this->isColumnModified(PQMandatePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
+        if ($this->isColumnModified(PQMandatePeer::SELECT_TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`select_title`';
+        }
         if ($this->isColumnModified(PQMandatePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
@@ -873,6 +915,9 @@ abstract class BasePQMandate extends BaseObject implements Persistent
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
+                    case '`select_title`':
+                        $stmt->bindValue($identifier, $this->select_title, PDO::PARAM_STR);
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
@@ -1053,21 +1098,24 @@ abstract class BasePQMandate extends BaseObject implements Persistent
                 return $this->getTitle();
                 break;
             case 2:
-                return $this->getOnline();
+                return $this->getSelectTitle();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 4:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 5:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 6:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 7:
+                return $this->getSortableRank();
+                break;
+            case 8:
                 return $this->getPQTypeId();
                 break;
             default:
@@ -1101,12 +1149,13 @@ abstract class BasePQMandate extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getOnline(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
-            $keys[5] => $this->getSlug(),
-            $keys[6] => $this->getSortableRank(),
-            $keys[7] => $this->getPQTypeId(),
+            $keys[2] => $this->getSelectTitle(),
+            $keys[3] => $this->getOnline(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
+            $keys[6] => $this->getSlug(),
+            $keys[7] => $this->getSortableRank(),
+            $keys[8] => $this->getPQTypeId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1161,21 +1210,24 @@ abstract class BasePQMandate extends BaseObject implements Persistent
                 $this->setTitle($value);
                 break;
             case 2:
-                $this->setOnline($value);
+                $this->setSelectTitle($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 4:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 5:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 6:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 7:
+                $this->setSortableRank($value);
+                break;
+            case 8:
                 $this->setPQTypeId($value);
                 break;
         } // switch()
@@ -1204,12 +1256,13 @@ abstract class BasePQMandate extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setOnline($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setSlug($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSortableRank($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPQTypeId($arr[$keys[7]]);
+        if (array_key_exists($keys[2], $arr)) $this->setSelectTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSortableRank($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPQTypeId($arr[$keys[8]]);
     }
 
     /**
@@ -1223,6 +1276,7 @@ abstract class BasePQMandate extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PQMandatePeer::ID)) $criteria->add(PQMandatePeer::ID, $this->id);
         if ($this->isColumnModified(PQMandatePeer::TITLE)) $criteria->add(PQMandatePeer::TITLE, $this->title);
+        if ($this->isColumnModified(PQMandatePeer::SELECT_TITLE)) $criteria->add(PQMandatePeer::SELECT_TITLE, $this->select_title);
         if ($this->isColumnModified(PQMandatePeer::ONLINE)) $criteria->add(PQMandatePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PQMandatePeer::CREATED_AT)) $criteria->add(PQMandatePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PQMandatePeer::UPDATED_AT)) $criteria->add(PQMandatePeer::UPDATED_AT, $this->updated_at);
@@ -1293,6 +1347,7 @@ abstract class BasePQMandate extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTitle($this->getTitle());
+        $copyObj->setSelectTitle($this->getSelectTitle());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1738,6 +1793,7 @@ abstract class BasePQMandate extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->title = null;
+        $this->select_title = null;
         $this->online = null;
         $this->created_at = null;
         $this->updated_at = null;
