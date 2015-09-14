@@ -226,6 +226,23 @@ input.editMandateWhatAndWhere input:-moz-placeholder, input.editMandatePeriod in
 	margin-bottom: 8px;
 }
 
+.editMandatePeriod .jcf-select {
+	min-width: 20px;
+	max-width: 20px;
+	float: left;
+	padding: 15px 45px 15px 20px;
+}
+
+.editMandatePeriod .jcf-select .jcf-select-text {
+	text-overflow: ellipsis;
+	white-space:  normal;
+	overflow:  auto;
+	display: block;
+	font-size: 12px;
+	line-height: 20px;
+	width: 35px;
+}
+
 .mandateActions {
 	float: right;
 	width: 100%;

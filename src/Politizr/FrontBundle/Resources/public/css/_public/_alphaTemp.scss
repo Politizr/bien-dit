@@ -1,0 +1,107 @@
+@import "../_global/colors";
+
+// temp connexion alpha
+#boxLogin {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 60px 0;
+}
+
+#boxLogin .wrapper {text-align: center;}
+
+#boxLogin .pltzrHeader {
+	height: 60px;
+	width: 320px;
+	border-top: solid 1px #eabaa2;
+	display: inline-block;
+}
+
+#boxLogin .pltzrHeader i {
+	font-size: 42px;
+	background-color: #fff;	
+	color: $darkHighlight;
+	padding: 10px;
+	margin-top: -32px;
+	display: inline-block;
+}
+
+#loginForm, #lostPasswordForm {
+    width: 320px;
+	display: inline-block;	
+	position: relative;
+	margin: 20px auto;
+}
+
+#boxLogin input {
+	width: calc(100% - 20px);
+	height: 40px;
+	padding: 0 10px;
+	border: none;
+	background-color: #f4eadf;	
+    font-family: 'nerissemibold';	
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+#boxLogin input[type=checkbox] {
+	-webkit-appearance:  checkbox;
+	-moz-appearance:  checkbox;
+	appearance:  checkbox;
+	width: auto;
+	height: auto;
+	padding: 0;
+	margin: 0 5px 0 0 !important;
+}
+
+#boxLogin label {
+	width: 100%;
+	float: left;
+	text-align: left;
+    font-family: 'nerislight';	
+    font-size: 14px;
+    margin: 0 0 5px 0;
+}
+#boxLogin .checkbox {
+	width: 100%;
+	float: left;
+}
+#boxLogin .checkbox label { font-family: 'nerissemibold'; font-size: 12px; margin: 0;}
+
+#loginForm a, #lostPasswordForm a {
+	clear: both;
+	display: inline-block;
+    font-family: 'nerislight';
+   	cursor: pointer;
+   	color: $darkHighlight;
+}
+#loginForm a:hover, #lostPasswordForm a:hover {color: $darkGrey; }
+
+#loginForm a.submit, #lostPasswordForm a.submit {
+	background-color: $darkHighlight;
+    text-transform: uppercase;
+    color: #fff;
+    width: 160px;
+    padding: 13px 0;
+    margin: 50px 0 15px 0;
+    display: inline-block;
+}
+#lostPasswordForm a.submit {margin-top: 30px;}
+#loginForm a.submit:hover, #lostPasswordForm a.submit:hover {background-color: $darkGrey; color: #fff;}
+
+#boxLogin #box_success, #boxLogin #box_error {
+    font-family: 'nerissemibold';
+    padding: 20px;
+    width: calc(100% - 40px);
+    color: #fff;
+    margin-bottom: 30px;
+    line-height: 120%;
+}
+
+#boxLogin #box_success {background-color: $success;}
+#boxLogin #box_error {background-color: $error;}
+
+#boxLogin #box_success a, #boxLogin #box_error a {
+	color: #fff;
+	text-decoration: underline;
+}
