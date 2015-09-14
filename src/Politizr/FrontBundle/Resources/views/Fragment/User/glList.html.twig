@@ -1,7 +1,0 @@
-<div class="scroll">
-    {% for user in users %}
-        {% include 'PolitizrFrontBundle:Fragment\\User:ListRow.html.twig' with { 'user': user } only %}
-        <hr>
-    {% endfor %}
-</div>
-{% include 'PolitizrFrontBundle:Fragment\\Global:ScrollNav.html.twig' with { 'results': users, 'offset': offset } %}

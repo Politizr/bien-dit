@@ -1,9 +1,0 @@
-<div id="scroll-nav-{{ context }}">
-    <div class="text-center">
-        {% if results | length == 10 %}
-            <a class="btn btn-primary" action="paginate-next-{{ context }}" offset="{{ offset }}">suite</a>
-        {% else %}
-            <p class="bg-info">Il n'y a plus de résultats</p>
-        {% endif %}
-    </div>
-</div>
