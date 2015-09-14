@@ -28,18 +28,19 @@
 .actionFollow i, .actionUnfollow i {position: absolute; left: 0; font-size: 9px;}
 
 
-
-/// got to update under
-
-#fixedActions .subscribe a {
+#fixedActions .subscribe a, #fixedActions .editProfile a {
 	background-color: $highlight;
 	color: #fff;	
 }
 
-#fixedActions .subscribe a:hover {
+#fixedActions .subscribe a:hover, #fixedActions .editProfile a:hover {
 	background-color: $darkGrey;	
 	color: #fff;
 }
+
+
+
+/// got to update under
 
 #fixedActions .actionSave,
 #fixedActions .actionPublish,

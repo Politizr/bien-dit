@@ -14,20 +14,21 @@
 #ajaxGlobalLoader .ajaxLoader i {
 	position: fixed;
 	top: calc(50% - 14px);
-	left: calc(50% - 20px);
+	left: calc(50% - 19px);
 	z-index: 2;
-	color: $highlight;
+	color: $darkGrey;
 	font-size: 28px;
 }
 
 #ajaxGlobalLoader .iconLoaderBg {
 	position: absolute;
-	background: #fff;
+	background-color: $darkGrey;
 	z-index: 1;
+	background: #fff;
 	top: calc(50% - 11px);
 	left: calc(50% - 11px);
 	width: 22px;
-	height: 22px;	
+	height: 22px;
 }
 
 #ajaxGlobalLoader .ajaxLoader svg {
@@ -39,12 +40,12 @@
  
 #ajaxGlobalLoader .ajaxLoader .pltzrLoaderStrokes {
 	fill: none;
-	stroke-width: 5px;
-	stroke: $highlight;
+	stroke-width: 7px;
+	stroke: $darkGrey;
 	stroke-dasharray: 40;
 	stroke-dashoffset: 50%;
-	-webkit-animation: movedash 1.5s forwards 0s infinite;
-	animation: movedash 1.5s forwards 0s infinite;
+	-webkit-animation: movedash 0.7s forwards 0s infinite;
+	animation: movedash 0.7s forwards 0s infinite;
 }
 
 @-webkit-keyframes movedash {
