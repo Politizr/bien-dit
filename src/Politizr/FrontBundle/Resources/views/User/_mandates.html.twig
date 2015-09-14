@@ -2,9 +2,9 @@
     <div class="mandateItem">
         <div class="mandatePeriod">
             {% if (mandate.isCurrent) %}
-                Depuis le {{ mandate.beginAt | date('d/m/Y') }}
+                Depuis {{ mandate.beginAt | date('Y') }}
             {% else %}
-                Du {{ mandate.beginAt | date('d/m/Y') }} au {{ mandate.endAt | date('d/m/Y') }}
+                De {{ mandate.beginAt | date('Y') }} à {{ mandate.endAt | date('Y') }}
             {% endif %}
         </div>
         <div class="mandateDetail">
