@@ -75,7 +75,7 @@ class TimelineService
     private function getFollowedDebatesIdsArray($userId)
     {
         $debateIds = PUFollowDDQuery::create()
-            ->select('Id')
+            ->select('PDDebateId')
             ->filterByPUserId($userId)
             ->find()
             ->toArray();

@@ -1,3 +1,13 @@
+#  Débats suivis
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_debate.id IN (5,1) )
+
+UNION DISTINCT
+
 #  Réactions aux débats suivis
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
