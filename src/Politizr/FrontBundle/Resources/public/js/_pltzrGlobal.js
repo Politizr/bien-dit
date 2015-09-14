@@ -70,16 +70,10 @@ $(function(){
 	
 	// notifications 
 	$("body").on("click", "[action='linkNotifications']", function() {
-		$('#notifications').slideDown();
-		$('html, body').animate({
-			scrollTop: $("body").offset().top
-		}, 'fast');
+		$('#notifications').slideToggle();
 	});
 	$("body").on("click", "[action='notifClose']", function() {
 		$('#notifications').slideUp('fast');
-		$('html, body').animate({
-			scrollTop: $("body").offset().top
-		}, 'fast');
 	});
 	
 	// hide / show menu preferences

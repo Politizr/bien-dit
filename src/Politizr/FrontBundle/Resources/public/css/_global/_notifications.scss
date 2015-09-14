@@ -4,7 +4,12 @@
 	background-color: $lightHighlight;
 	margin-bottom: 60px;
 	float: left;
-	width: 100%;
+	width: 700px;
+	position: fixed;
+	top:60px;
+	z-index: 9000;
+	max-height: calc(100% - 60px);
+	overflow-y: auto;
 }
 
 #notifications .pad40 {
