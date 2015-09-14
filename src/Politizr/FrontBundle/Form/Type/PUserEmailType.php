@@ -48,9 +48,7 @@ class PUserEmailType extends AbstractType
         ));
 
         $builder->add('newsletter', 'checkbox', array(
-            'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr',
-            'attr' => array( 'checked' => 'checked', 'align_with_widget' => true )
+            'required' => false
         ));
     }
 

@@ -351,6 +351,7 @@ class XhrDocument
                 'title' => $debate->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
+                'withShadow' => true
             )
         );
 
@@ -530,6 +531,7 @@ class XhrDocument
                 'title' => $reaction->getTitle(),
                 'path' => $path,
                 'filterName' => 'debate_header',
+                'withShadow' => true
             )
         );
 
@@ -669,6 +671,7 @@ class XhrDocument
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',
                 'title' => $document->getTitle(),
+                'withShadow' => true
             )
         );
 

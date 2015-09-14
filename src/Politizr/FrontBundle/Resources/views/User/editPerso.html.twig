@@ -21,12 +21,22 @@
             <form name="user" method="post" id="formPerso1">
                 {{ form_errors(formPerso1) }}
 
-                <!-- @todo HTML/CSS <div class="formGroup"> => <div class="form-group"> (sf2 generation) -->
-                {{ form_row(formPerso1.gender) }}
-                {{ form_row(formPerso1.name) }}
-                {{ form_row(formPerso1.firstname) }}
-                {{ form_row(formPerso1.birthday) }}
-
+                <div class="formGroup">
+                    <label>Civilité</label>
+                    {{ form_widget(formPerso1.gender) }}
+                </div>
+                <div class="formGroup">
+                    <label>Prénom</label>
+                    {{ form_widget(formPerso1.firstname) }}
+                </div>
+                <div class="formGroup">
+                    <label>Nom</label>
+                    {{ form_widget(formPerso1.name) }}
+                </div>
+                <div class="formGroup">
+                    <label>Date de naissance</label>
+                    {{ form_widget(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
+                </div>
                 {{ form_rest(formPerso1) }}
     
                 {% if not app.user.validated %}
@@ -42,8 +52,19 @@
             <form name="user" method="post" id="formPerso2">
                 {{ form_errors(formPerso2) }}
 
-                {{ form_row(formPerso2.email) }}
-                {{ form_row(formPerso2.newsletter) }}
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso2.email.first) }}
+                </div>
+                <div class="formGroup">
+                    <label>Confirmation email</label>
+                    {{ form_widget(formPerso2.email.second) }}
+                </div>
+                <div class="formGroup">
+                    {# @todo fix the label for the checkbox #}
+                    {{ form_widget(formPerso2.newsletter) }}
+                    {{ form_label(formPerso2.newsletter, 'Abonnement newsletter', {'label_attr': {'name': 'user_newsletter'}}) }}
+                </div>
 
                 {{ form_rest(formPerso2) }}
 
@@ -59,8 +80,18 @@
             <form name="user" method="post" id="formPerso3">
                 {{ form_errors(formPerso3) }}
 
-                {{ form_row(formPerso3.username) }}
-                {{ form_row(formPerso3.password) }}
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso3.username) }}
+                </div>
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso3.password.first) }}
+                </div>
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso3.password.second) }}
+                </div>
 
                 {{ form_rest(formPerso3) }}
            
