@@ -189,18 +189,23 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
 
-        $path = 'bundles/politizrfront/images/default_debate.jpg';
-        if ($fileName = $document->getFileName()) {
-            switch ($document->getType()) {
-                case ObjectTypeConstants::TYPE_DEBATE:
-                    $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
-                    break;
-                case ObjectTypeConstants::TYPE_REACTION:
-                    $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
-                    break;
-            }
-
-            $path = $uploadWebPath.$fileName;
+        switch ($document->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                $fileName = $document->getFileName();
+                $path = $uploadWebPath.$fileName;
+                if (empty($fileName)) {
+                    $path = PathConstants::DEBATE_DEFAULT_PATH . 'default_debate.jpg';
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+                $fileName = $document->getFileName();
+                $path = $uploadWebPath.$fileName;
+                if (empty($fileName)) {
+                    $path = PathConstants::REACTION_DEFAULT_PATH . 'default_reaction.jpg';
+                }
+                break;
         }
 
         // Construction du rendu du tag

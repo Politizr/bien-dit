@@ -168,19 +168,30 @@ class GlobalTools
     /**
      * Explode HTML text in an array of containing all the paragraphs
      * http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
+     * http://stackoverflow.com/questions/7509774/php-explode-string-by-html-tag
      *
      * @param string $htmlText
      * @return array
      */
     public function explodeParagraphs($htmlText)
     {
-        $htmlText = str_replace('</p>', '', $htmlText);
-        $paragraphs = explode('<p>', $htmlText);
-        array_shift($paragraphs);
+        // $htmlText = str_replace('</p>', '', $htmlText);
+        // $paragraphs = explode('<p>', $htmlText);
+        // array_shift($paragraphs);
+
+        // $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument("4.0", "utf-8");
+        // $dom->loadHTML($htmlText);
+        $dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
+        $xPath = new \DOMXPath($dom);
+        $entries = $xPath->evaluate("//p|//h1|//h2|//blockquote|//ul//li");
+        $paragraphs = array();
+        foreach ($entries as $entry) {
+            $paragraphs[] = '<' . $entry->tagName . '>' . $entry->nodeValue .  '</' . $entry->tagName . '>';
+        }
 
         return $paragraphs;
     }
-
 
     /**
      * Create form views for each user's mandate

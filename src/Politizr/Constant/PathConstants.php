@@ -25,12 +25,14 @@ class PathConstants
     // ************************************************************************************ //
     const DEBATE_UPLOAD_PATH = '/../../../web/uploads/documents/';
     const DEBATE_UPLOAD_WEB_PATH = '/uploads/documents/';
+    const DEBATE_DEFAULT_PATH = 'bundles/politizrfront/images/';
 
     // ************************************************************************************ //
     //                                        REACTIONS
     // ************************************************************************************ //
     const REACTION_UPLOAD_PATH = '/../../../web/uploads/documents/';
     const REACTION_UPLOAD_WEB_PATH = '/uploads/documents/';
+    const REACTION_DEFAULT_PATH = 'bundles/politizrfront/images/';
 
     // ************************************************************************************ //
     //                                        ORDERS
