@@ -1,6 +1,6 @@
 <!-- @todo html/css: ajout d'une classe elected si le user est un élu -->
 {% if user %}
-    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.qualified %}elected{% endif %} {% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if user.isQualified %}elected{% endif %} {% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
         {{ user }}
     </a>
 {% else %}

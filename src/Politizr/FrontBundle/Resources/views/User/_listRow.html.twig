@@ -1,5 +1,5 @@
 <div class="modalItem listProfile">
-    <div class="listProfileOfficial">
+    <div class="{% if user.isQualified %}listProfileOfficial{% else %}listProfileDefault{% endif %}">
         <div class="avatar40">
             {{ user | photo('user_40') }}
         </div>
@@ -13,6 +13,9 @@
             </div>
         </div>
     </div>
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="modalItemShow">
+        <i class="iconGoTo"></i>Afficher
+    </a>
     <div class="subscribe">
         {{ user | linkSubscribeUser }}
     </div>

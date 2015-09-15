@@ -89,7 +89,7 @@
             <div id="hideCompleteBio"><span action="hideCompleteBio">masquer</span></div>
         </div>
         
-        {% if user.qualified %}
+        {% if user.isQualified %}
             <div id="profileMandate">
                 <span>mandats</span>
                 {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'mandates': user.mandates } only %}
