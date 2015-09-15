@@ -248,7 +248,7 @@
 	font-size: 18px;
 }
 
-#profileBio ul {
+#profileBio ul, #profileBio ol {
 	margin: 0;
 	padding: 0 0 0 18px;
 	font-size: 15px;
@@ -395,7 +395,7 @@
 .authorName a:hover {color: $highlight;}
 .authorName .organization:hover {background-color: $highlight; cursor: pointer;}
 
-.authorInAFewWords {
+.authorSubtitle {
 	float: left;
 	width: 100%;
 	clear: both;

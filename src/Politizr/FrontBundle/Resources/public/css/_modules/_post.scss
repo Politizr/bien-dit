@@ -34,6 +34,7 @@
 .paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
 .paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
+/*
 .paragraph.summary p::before, .paragraph.summary .editable.summary p:first-child::before {
 	content: "—";
 	display: inline-block;
@@ -43,6 +44,7 @@
 	color: $darkHighlight;
 }
 .paragraph.summary .editable.summary p::before  {display: none;}
+*/
 .paragraph.summary .editable.summary { border: none;}
 
 .paragraph h1 {
