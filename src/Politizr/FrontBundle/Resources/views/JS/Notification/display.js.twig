@@ -9,10 +9,17 @@
         $('#notifications').slideToggle();
     });
 
+    // mobile : hide menus when opening nofications
+    $("body.css760").on("body.css760 click", "[action='linkNotifications']", function() {
+        $('#headerCenter, #menu').hide();
+    });
+
+
     $("body").on("click", ".notifClose", function() {
         $('#notifications').slideUp('fast');
     });
-    
+
+
     // Regular function with arguments
     function notificationsLoading(){
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
