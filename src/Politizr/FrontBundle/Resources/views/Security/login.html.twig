@@ -1,34 +1,61 @@
 {% extends 'PolitizrFrontBundle::layoutHomepage.html.twig' %}
 
+{% block header %}
+{% endblock %}
+
 {% block content %}
-    {# @todo html/css à styler dans une modal "classique" w. div #modalBoxContent > addClass('connection') #}
+    <!--
     <div id="oAuthButtons">
-        {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
-        {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
-        {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
+        {# include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} #}
+        {# include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} #}
+        {# include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} #}
     </div>
+    -->
     <div id="boxLogin">
-        <form id="formLogin">
-            {{ form_errors(formLogin) }}
-
-            {{ form_row(formLogin.username) }}
-            {{ form_row(formLogin.password) }}
-            {{ form_row(formLogin.remember_me) }}
+        <div class="wrapper">
+           <div class="pltzrHeader">
+                <a href="index.html"><i class="iconPltzrLogoAlt"></i></a>
+            </div><br>
             
-            {{ form_rest(formLogin) }}
-        </form>
-        <a action="login">Connexion</button>
-        <a action="showLostPasswordBox">Mot de passe oublié?</button>
-    </div>
-    <div id="boxLostPassword" style="display:none">
-        <form id="formLostPassword">
-            {{ form_errors(formLostPassword) }}
+            <div id="loginForm">
+                <form id="formLogin">
+                    {{ form_errors(formLogin) }}
 
-            {{ form_row(formLostPassword.email) }}
+                    <div class="formGroup">
+                        <label>Identifiant</label>
+                        {{ form_widget(formLogin.username) }}
+                    </div>
 
-            {{ form_rest(formLostPassword) }}
-        </form>
-        <a action="reinitPassword">Réinitialisation mot de passe</button>
-        <a action="showLoginBox">Connexion</button>
+                    <div class="formGroup">
+                        <label>Mot de passe</label>
+                        {{ form_widget(formLogin.password) }}
+                    </div>
+
+                    <div class="formGroup">
+                        {{ form_widget(formLogin.remember_me) }}
+                        {{ form_label(formLogin.remember_me, 'Se souvenir de moi') }}
+                    </div>
+
+                    {{ form_rest(formLogin) }}
+                </form>
+
+                <a action="login" class="submit">Connexion</a><br>
+                <a action="showLostPasswordBox">Mot de passe oublié?</a>
+            </div>
+            <div id="lostPasswordForm" style="display: none">
+                <form id="formLostPassword">
+                    {{ form_errors(formLostPassword) }}
+
+                    <div class="formGroup">
+                        <label>Identifiant</label>
+                        {{ form_widget(formLostPassword.email) }}
+                    </div>
+
+                    {{ form_rest(formLostPassword) }}
+                </form>
+                <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
+                <a action="showLoginBox">Connexion</a>
+            </div>
+        </div>
     </div>
 {% endblock content %}

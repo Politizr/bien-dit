@@ -3,15 +3,15 @@
     $("body").on("click", "[action='showLostPasswordBox']", function(e) {
         console.log('*** click showLostPasswordBox');
 
-        $('#boxLostPassword').show();
-        $('#boxLogin').hide();
+        $('#lostPasswordForm').show();
+        $('#loginForm').hide();
     });
 
     $("body").on("click", "[action='showLoginBox']", function(e) {
         console.log('*** click showLoginBox');
 
-        $('#boxLostPassword').hide();
-        $('#boxLogin').show();
+        $('#lostPasswordForm').hide();
+        $('#loginForm').show();
     });
 
     // clic connexion
