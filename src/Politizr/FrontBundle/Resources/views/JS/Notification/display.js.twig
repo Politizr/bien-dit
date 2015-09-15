@@ -57,6 +57,7 @@
 
         e.preventDefault();
 
+        var localLoader = $(this).closest('.notifItem').find('.ajaxLoader').first();
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTIF_CHECK',
             'xhrService': 'notification',
@@ -70,8 +71,10 @@
             url : xhrPath,
             context: $(this).closest('.notifItem'),
             data: { 'subjectId': $(this).attr('subjectId') },
-            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
+                localLoader.hide();
+
                 $(this).find('.notifHighlight').attr('class', '');
                 $(this).find('.iconCross').remove();
 

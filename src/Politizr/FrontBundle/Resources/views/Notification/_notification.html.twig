@@ -1,47 +1,12 @@
-{% if
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_DEBATE_PUBLISH')
-%}
-    <a action="notificationCheck" href="{{ authorUrl }}">{{ author }}</a> a publié <a action="notificationCheck" href="{{ url }}">{{ title }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
-    or id == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
-    or id == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_REACTION_PUBLISH')
-    or id == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
-%}
-    <a action="notificationCheck" href="{{ authorUrl }}">{{ author }}</a> a publié <a action="notificationCheck" href="{{ url }}">{{ title }}</a> en réaction à <a href="{{ reactionParentUrl }}">{{ reactionParentTitle }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_D_COMMENT_PUBLISH') 
-    or id == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_COMMENT_PUBLISH')
-%}
-    <a action="notificationCheck" href="{{ authorUrl }}">{{ author }}</a> a commenté "{{ title | slice(0, 50) }}..." sur <a action="notificationCheck" href="{{ url }}">{{ commentDoc }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
-%}
-    <a action="notificationCheck" href="{{ authorUrl }}">{{ author }}</a> s'est abonné au débat <a action="notificationCheck" href="{{ url }}">{{ title }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
-%}
-    <a action="notificationCheck" href="{{ authorUrl }}">{{ author }}</a> s'est abonné à votre profil.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
-%}
-    Félicitations, vous avez obtenu le badge <a action="notificationCheck" href="{{ url }}">{{ title }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_POS')
-    or id == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
-%}
-    Vous avez reçu une note positive sur <a action="notificationCheck" href="{{ url }}">{{ title }}</a>.
-
-{% elseif
-    id == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_NEG')
-    or constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_NEG')
-%}
-    Vous avez reçu une note négative sur <a action="notificationCheck" href="{{ url }}">{{ title }}</a>.
-
-{% endif %}
+<div class="notifItemHeader">
+    <i class="{% include 'PolitizrFrontBundle:Notification:_notificationIcon.html.twig' %}"></i>
+    {{ notification.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
+    {% if not notification.checked %}
+        <i action="notificationCheck" class="iconCross" subjectId="{{ notification.id }}"></i>
+    {% endif %}
+</div>
+<div class="notifItemContent">
+    <span {% if not notification.checked %}class="notifHighlight"{% endif %} subjectId="{{ notification.id }}">
+        {% include 'PolitizrFrontBundle:Notification:_notificationMessage.html.twig' %}
+    </span>
+</div>

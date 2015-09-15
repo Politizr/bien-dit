@@ -1,22 +1,14 @@
 {% for notif in notifs %}
     <div class="notifItem withLoaderInside">
-        <div class="ajaxLoader" style="display: none;"><div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div></div>
-        <div class="notifItemHeader">
-            <i class="iconDuo"></i>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}{% if not notif.checked %}<i action="notificationCheck" class="iconCross" subjectId="{{ notif.id }}"></i>{% endif %}
+        <div class="ajaxLoader" style="display: none;">
+            <div class="ajaxLoaderSpinner"></div>
+            <div class="ajaxLoaderBg"></div>
+            <div class="ajaxLoaderBlockClick"></div>
         </div>
-        <div class="notifItemContent">
-            <span {% if not notif.checked %}class="notifHighlight"{% endif %} subjectId="{{ notif.id }}">
-                {{ notif | linkedNotification }}
-            </span>
-            <span>
-                <i {% if not notif.checked %}action="notificationCheck" title="Marquer comme lu"{% else %}title="Lu"{% endif %}></i>
-            </span>
-        </div>
+        {{ notif | linkedNotification }}
     </div>
 {% else %}
-    <tr>
-        <td colspan="2">
-            <p class="bg-info">Vous n'avez aucune notification.</p>
-        </td>
-    </tr>
+    <div class="notifItem withLoaderInside">
+        <div class="notifItemContent">Aucune notification</div>
+    </div>
 {% endfor %}

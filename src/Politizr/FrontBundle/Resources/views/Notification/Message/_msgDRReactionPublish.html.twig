@@ -1,0 +1,12 @@
+<a action="notificationCheck" href="{{ authorUrl }}">
+    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
+    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
+</a>
+a publié 
+<a action="notificationCheck" href="{{ url }}">
+    "{{ title }}"
+</a>
+à propos de votre réaction
+<a href="{{ reactionParentUrl }}">
+    "{{ reactionParentTitle }}"
+</a>.

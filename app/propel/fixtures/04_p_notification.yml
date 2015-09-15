@@ -11,7 +11,7 @@ Politizr\Model\PNType:
     profil:
         title:              Profil
 
-# Constantes de classe PNotification + @todo à maj => glNotification.html.twig à MAJ en parallèle
+# Constantes de classe PNotification  / Politizr/Constants/PNotificationConstants
 Politizr\Model\PNotification:
     d_comment_publish:
         online:             true

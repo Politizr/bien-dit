@@ -1,0 +1,41 @@
+{% spaceless %}
+{% if
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_DEBATE_PUBLISH')
+%}
+    iconDuo
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
+    or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
+    or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_REACTION_PUBLISH')
+    or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
+%}
+    iconNotifNo
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_COMMENT_PUBLISH') 
+    or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_COMMENT_PUBLISH')
+%}
+    iconNotifYes
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
+%}
+    iconBookmark
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
+%}
+    iconBookmark
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
+%}
+    iconBookmark
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_POS')
+    or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
+%}
+    iconBookmark
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_NEG')
+    or constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_NEG')
+%}
+    iconBookmark
+{% endif %}
+{% endspaceless %}

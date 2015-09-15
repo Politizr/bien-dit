@@ -445,8 +445,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Notification:_notification.html.twig',
             array(
-                'id' => $notification->getPNotificationId(),
-                'puId' => $notification->getId(),
+                'notification' => $notification,
+                'notificationId' => $notification->getPNotificationId(),
                 'author' => $author,
                 'authorUrl' => $authorUrl,
                 'title' => $title,

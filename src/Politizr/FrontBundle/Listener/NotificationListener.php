@@ -149,6 +149,7 @@ class NotificationListener
      * Notifications associées à gérer:
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
      * - Une réaction a été publié sur un débat suivi
+     * - Une réaction a été publié sur un auteur suivi
      *
      * @param GenericEvent
      */
