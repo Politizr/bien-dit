@@ -6,10 +6,7 @@
 
     // ouverture/fermeture box notifications
     $("body").on("click", "[action='linkNotifications']", function() {
-        $('#notifications').slideDown('fast');
-        $('html, body').animate({
-            scrollTop: $("body").offset().top
-        }, 'fast');
+        $('#notifications').slideToggle();
     });
 
     $("body").on("click", ".notifClose", function() {
