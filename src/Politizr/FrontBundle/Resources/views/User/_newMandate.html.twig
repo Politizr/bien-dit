@@ -8,10 +8,9 @@
     </div>
     <span class="dea">de</span>
     <div class="editMandatePeriod">
-
-        {{ form_widget(formMandate.begin_at, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+        {{ form_widget(formMandate.begin_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
         <span class="dea">à</span>
-        {{ form_widget(formMandate.end_at, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+        {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
     </div>
     <div class="mandateActions">
         <a class="editMandateCreate" action="mandateCreate"><i class="iconCheck"></i>Ajouter</a>

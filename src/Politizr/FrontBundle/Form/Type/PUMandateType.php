@@ -72,30 +72,26 @@ class PUMandateType extends AbstractType
         //     ));
 
         // Begin date
-        $builder->add('begin_at', 'date', array(
-                'required' => true,
-                'label' => 'Date de début',
-                'widget' => 'choice',
-                'input' => 'datetime',
-                // @todo add empty value but set default day and month to avoid form errors
-                // 'empty_value' => '',
-                'years' => range(date('Y'), date('Y') - 70, -1),
-                'format' => 'dd/MM/yyyy',
-                'constraints' => new NotBlank(array('message' => 'Saisie d\'une année de début obligatoire.')),
-        ));
+        $builder->add(
+            $builder->create(
+                'begin_at',
+                'text',
+                array(
+                    'required' => true,
+                    'constraints' => array(
+                        new NotBlank(array('message' => 'Saisie d\'une année de début obligatoire.')),
+                    )
+                )
+            )->addModelTransformer(new YearToDateTransformer())
+        );
         
         // Date de fin
-        $builder->add('end_at', 'date', array(
-                'required' => true,
-                'label' => 'Date de début',
-                'widget' => 'choice',
-                'input' => 'datetime',
-                // @todo add empty value but set default day and month to avoid form errors
-                // 'empty_value' => '',
-                'years' => range(date('Y'), date('Y') - 70, -1),
-                'format' => 'dd/MM/yyyy',
-        ));
-        
+        $builder->add(
+            $builder->create(
+                'end_at',
+                'text'
+            )->addModelTransformer(new YearToDateTransformer())
+        );
     }
 
     /**
