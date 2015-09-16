@@ -72,12 +72,16 @@ class XhrConstants
     const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
     const ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
     const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
+    const ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS = 'search/debate/tag';
+    const ROUTE_MODAL_SEARCH_USER_BY_TAGS = 'search/user/tag';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';
 
     // RECHERCHE
     const ROUTE_SEARCH = 'recherche';
+    const ROUTE_SEARCH_TAG_ADD = 'search/tag/add';
+    const ROUTE_SEARCH_TAG_DELETE = 'search/tag/delete';
 
     // SECURITY
     const ROUTE_SECURITY_LOGIN = 'login';

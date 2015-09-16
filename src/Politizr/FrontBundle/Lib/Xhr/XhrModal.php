@@ -145,6 +145,112 @@ class XhrModal
             );
     }
 
+    /**
+     * Init search forms
+     */
+    public function initSearchForms(Request $request)
+    {
+        $this->logger->info('*** initSearchForms');
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_search.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                                 SEARCH                                                   */
+    /* ######################################################################################################## */
+
+    /**
+     * Debate search by tags listing
+     */
+    public function searchDebateList(Request $request)
+    {
+        $this->logger->info('*** searchDebateList');
+
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // Function process
+        // @todo constant management refactoring
+        $debates = PDDebateQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($debates) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+            array(
+                'debates' => $debates,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * User search by tags listing
+     */
+    public function searchUserList(Request $request)
+    {
+        $this->logger->info('*** searchUserList');
+        
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // Function process
+        // @todo constant management refactoring
+        $users = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(10)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($users) == 10) {
+            $moreResults = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+            array(
+                'users' => $users,
+                'offset' => intval($offset) + 10,
+                'moreResults' => $moreResults,
+                )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
 
     /* ######################################################################################################## */
     /*                                                 RANKING                                                  */

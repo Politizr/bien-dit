@@ -1,6 +1,5 @@
 <div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" subjectId="{{ object.id }}" newTag="{{ newTag }}" path="{{ pathCreate }}">
 
-    {# @todo maj code avec normalisation camelCase #}
     <div class="editableTagList">
         {% for tag in tags %}
             {% include 'PolitizrFrontBundle:Tag:_detailEditable.html.twig' with { 'subjectId': object.id, 'tag': tag, 'path': pathDelete } %}&nbsp;

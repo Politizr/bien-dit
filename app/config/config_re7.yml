@@ -19,7 +19,7 @@ monolog:
 #             level: info
 
 swiftmailer:
-    delivery_address: lionel.bouzonville@gmail.com
+    delivery_address: thomas@politizr.com
 
 # Bazinga Faker
 bazinga_faker:

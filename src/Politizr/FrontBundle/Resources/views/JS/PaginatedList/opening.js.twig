@@ -51,6 +51,14 @@
         loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
     });
 
+    // modal search
+    $("body").on("click", "[action='modalSearch']", function() {
+        console.log('*** modalSearch');
+        $('#modalBoxContent').removeClass().addClass('search');
+        modalLoading();
+        initSearch();
+    });
+
 
     // modal abuse
     $("body").on("click", "[action='modalAbuse']", function() {
@@ -79,10 +87,45 @@
     };
 
     /**
+     * Init search list modal
+     *
+     * @param string twigTemplate
+     */
+    function initSearch() {
+        console.log('*** initSearch');
+
+        var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_PAGINATED_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'initSearchForms',
+            'xhrType': 'RETURN_HTML',
+            } only %}";
+
+        $.ajax({
+            type: 'POST',
+            url: xhrPath,
+            dataType: 'json',
+            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            success: function(data) {
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    $('#modalBoxContent').html(data['html']);
+                    initInputSearchByTags();
+                }
+                $('#ajaxGlobalLoader').hide();
+            }
+        });
+    }
+
+    /**
      * Load paginated list
      *
      * @param string twigTemplate
      * @param string withFilters  true | false
+     * @param string model ModelQuery to search in
+     * @param string slug  ModelQuery findBySlug attribute
      */
     function loadPaginatedList(twigTemplate, withFilters, model, slug) {
         console.log('*** loadPaginatedList');

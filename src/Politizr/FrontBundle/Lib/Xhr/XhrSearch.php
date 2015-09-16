@@ -13,24 +13,33 @@ use Pagerfanta\Exception\NotIntegerCurrentPageException;
 use Pagerfanta\Exception\LessThan1CurrentPageException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
+use Politizr\Model\PTagQuery;
+
 use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
- * XHR service for search management.
- * @todo code outdated
+ * @todo service by service constructor injection
  *
  * @author Lionel Bouzonville
  */
 class XhrSearch
 {
-    private $sc;
+    private $fosElasticaFinder; // @todo
+    private $templating;
+    private $logger;
 
     /**
-     *
+     * @param @fos_elastica.finder.politizr
+     * @param @templating
+     * @param @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->sc = $serviceContainer;
+    public function __construct(
+        $templating,
+        $logger
+    ) {
+        $this->templating = $templating;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -42,12 +51,9 @@ class XhrSearch
      */
     private function pagerQuery($query)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** pagerQuery');
+        $this->logger->info('*** pagerQuery');
 
         // Retrieve used services
-        $finder = $this->sc->get('fos_elastica.finder.politizr');
-
         if (!$query) {
             throw new InconsistentDataException('Empty search request');
         } else {
@@ -65,7 +71,7 @@ class XhrSearch
                 'post_tags' => array('</b>'),
             ));
 
-            $pager = $finder->findPaginated($querySearch);
+            $pager = $this->fosElasticaFinder->findPaginated($querySearch);
 
             return $pager;
         }
@@ -73,19 +79,15 @@ class XhrSearch
     }
 
     /* ######################################################################################################## */
-    /*                                                  SEARCH                                                  */
+    /*                                               ES SEARCH                                                  */
     /* ######################################################################################################## */
 
     /**
-     * Search
+     * Fulltext search w. Elastic Search
      */
-    public function search(Request $request)
+    public function elasticSearch(Request $request)
     {
-        $logger = $this->sc->get('logger');
-        $logger->info('*** search');
-
-        // Retrieve used services
-        $templating = $this->sc->get('templating');
+        $this->logger->info('*** elasticSearch');
 
         // Request arguments
         $query = $request->get('query');
@@ -107,7 +109,7 @@ class XhrSearch
             throw new InconsistentDataException($e->getMessage());
         }
 
-        $html = $templating->render(
+        $html = $this->templating->render(
             'PolitizrFrontBundle:Navigation:searchResultPage.html.twig',
             array(
                     'query' => $query,
@@ -118,5 +120,69 @@ class XhrSearch
         return array(
             'html' => $html,
             );
+    }
+
+    /* ######################################################################################################## */
+    /*                                             TAGS SEARCH                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Add tag to search
+     */
+    public function addSearchTag(Request $request)
+    {
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+
+        $tag = PTagQuery::create()->findPk($tagId);
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag id-%s does not exist'), $tagId);
+        }
+
+        // @todo put tag in search session
+        $session = $request->getSession();
+        $session->set('search/tag/'.$tagId, $tagId);
+
+        $xhrPathDelete = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_SEARCH_TAG_DELETE',
+                'xhrService' => 'search',
+                'xhrMethod' => 'deleteSearchTag',
+                'xhrType' => 'RETURN_BOOLEAN',
+            )
+        );
+
+        $htmlTag = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_searchEditable.html.twig',
+            array(
+                'tag' => $tag,
+                'path' => $xhrPathDelete
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'htmlTag' => $htmlTag
+            );
+    }
+
+    /**
+     * Delete tag from search
+     */
+    public function deleteSearchTag(Request $request)
+    {
+        $this->logger->info('*** deleteSearchTag');
+        
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+
+        // @todo remove tag from search session
+        $session = $request->getSession();
+        $session->remove('search/tag/'.$tagId);
+
+        return true;
     }
 }
