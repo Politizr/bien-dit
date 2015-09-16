@@ -44,10 +44,6 @@ $(function(){
 		
 	// mobile : hide menus when opening nofications
 	$("body.css760").on("body.css760 click", "[action='linkNotifications']", function() {
-		$('#notifications').slideDown('fast');
-		$('html, body').animate({
-			scrollTop: $("body").offset().top
-		}, 'fast');
 		$('#headerCenter, #menu').hide();
 	});
 									

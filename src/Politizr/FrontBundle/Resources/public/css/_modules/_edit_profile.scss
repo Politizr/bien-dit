@@ -32,6 +32,7 @@
 // small camera
 #profileHeader .avatar60 {
 	position: relative;
+	overflow: visible !important; // debug ie
 }
 
 #profileHeader #smallCamera {

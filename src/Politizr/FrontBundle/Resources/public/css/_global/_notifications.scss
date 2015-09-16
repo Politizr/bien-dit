@@ -71,6 +71,8 @@
 	line-height: 160%;
 }
 
+.notifItem.viewedNotif, .notifItem.viewedNotif a {	color: $semiDarkGrey;}
+
 .notifItemHeader {
 	font-family: 'Merriweather Italic';
     font-style: italic;
@@ -81,12 +83,9 @@
 
 .notifItemHeader i {
 	position: absolute;
-	left: 0;
-	font-size: 8px;
+	left: -2px;
+	font-size: 11px;
 }
-
-.notifItemHeader i.iconDuo {font-size: 12px;}
-.notifItemHeader i.iconBookmark {font-size: 12px;}
 
 .notifItemHeader i.iconCross {
 	right: 0;

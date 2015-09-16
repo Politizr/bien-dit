@@ -1,6 +1,9 @@
 @import "../_global/colors";
 
-// temp connexion alpha
+// no social share on alpha
+#social {display: none;}
+
+// temp connexion on alpha
 #boxLogin {
 	width: 100%;
 	float: left;

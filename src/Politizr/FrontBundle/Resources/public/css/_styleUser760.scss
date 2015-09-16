@@ -49,6 +49,11 @@ body.css760 .notifClose {
 	position: absolute;
 	right: 20px;
 }
+body.css760 #notifications {
+	top:0;
+	width: calc(100% - 40px);
+	max-height: 100%;
+}
 
 body.css760 #notifications .pad40 {
 	float: left;
