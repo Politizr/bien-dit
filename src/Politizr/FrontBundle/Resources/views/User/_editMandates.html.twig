@@ -1,6 +1,5 @@
 {% for formMandate in formMandateViews %}
     <div class="editMandateItem">
-        {% form_theme formMandate 'PolitizrFrontBundle:Form:fields.html.twig' %}    
         <form method="POST" name="formMandateUpdate" id="formMandateUpdate">
             {{ form_errors(formMandate) }}
 
