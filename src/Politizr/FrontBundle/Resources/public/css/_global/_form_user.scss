@@ -96,27 +96,52 @@ textarea:focus, input:focus { outline: 0;}
 .search form.searchForm {
 	width: 440px;
 	display: inline-block;
-	margin: 60px 0;
+	margin: 60px 0 40px 0;
 	clear: both;
 }
 
 .search form.searchForm input {
 	padding: 0;
-	font-family: nerislight;
-	font-size: 40px;
-	font-weight: normal;
+	font-family: 'nerislight';
+	font-size: 28px;
 	border: none;
-	width: 90%;
+	border-bottom: solid 1px $formGrey;
+	width: 100%;
+	padding: 10px 0;
 	display: inline-block;
 	background-color: transparent;
 }
 
-.search form.searchForm input[type=submit] {
-	font-size: 28px;
-	text-align: right;
-	width: 10%;
-	color: $semiGrey;
+.search form.searchForm .searchTagList {
+	float: left;
+	width: 100%;
+	margin: 20px 0 30px 0;
+	font-family: 'nerisblack';
+	font-size: 12px;
+	text-transform: uppercase;
+	text-align: left;
+}
+.searchTagList .tagLabel:last-of-type {
+	margin-right: 20px;
+}
+
+.search form.searchForm button {
+	cursor: pointer;
+	font-size: 13px;
+	display: inline-block;
+	font-weight: normal;
+	height: 35px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	color: $semiDarkGrey;
 	font-family: 'fontello';
+}
+.search form.searchForm button:hover {color: $darkGrey;}
+.search form.searchForm button span {
+	margin-left: 2px;
+	font-family: 'nerissemibold';
 }
 
 .search .listProfile {	width: 620px;}
