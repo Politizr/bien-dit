@@ -5,6 +5,7 @@
         
         e.preventDefault();
 
+        var localLoader = $(this).closest('.notes').find('.ajaxLoader').first();
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_NOTE',
             'xhrService': 'document',
@@ -18,9 +19,9 @@
             context: $(this).closest('.notes'),
             data: { 'subjectId': $(this).attr('subjectId'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
             dataType: 'json',
-            {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
+            {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
-                $('#ajaxGlobalLoader').hide();
+                localLoader.hide();
                 if (data['error']) {
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();

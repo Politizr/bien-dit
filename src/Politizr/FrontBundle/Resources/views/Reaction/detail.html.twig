@@ -115,13 +115,13 @@
             {% endfor %}
         </div>
 
-        <div id="giveNote" class="withLoaderInside">
-            <div class="ajaxLoader" style="display: none;">
-                <i class="iconSpin5 animateSpin"></i>
-                <div class="ajaxLoaderBg"></div>
-            </div>
+        <div id="giveNote">
             <span>noter cette publication : </span>
-            <div class="notes postNote">
+            <div class="notes postNote withLoaderInside">
+                <div class="ajaxLoader" style="display: none;">
+                    <i class="iconSpin5 animateSpin"></i>
+                    <div class="ajaxLoaderBg"></div>
+                </div>                
                 {{ reaction | linkNoteReaction }}
             </div>
         </div>
