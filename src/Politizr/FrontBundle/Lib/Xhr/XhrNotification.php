@@ -61,7 +61,7 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notifs = $this->notificationManager->getScreenUserNotifications($user->getId());
-        $nbNotifs = count($notifs);
+        $counterNotifs = $this->notificationManager->countScreenUserNotifications($user->getId());
 
         // Rendering
         $html = $this->templating->render(
@@ -73,8 +73,8 @@ class XhrNotification
 
         return array(
             'html' => $html,
-            'nb' => $nbNotifs > 0 ? $nbNotifs:'-',
-            );
+            'counterNotifs' => $counterNotifs > 0 ? $counterNotifs:'-',
+        );
     }
 
     /**

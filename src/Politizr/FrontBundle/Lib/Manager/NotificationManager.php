@@ -36,6 +36,23 @@ class NotificationManager
     /*                                            CRUD OPERATIONS                                               */
     /* ######################################################################################################## */
 
+    private function getScreenNotifIds()
+    {
+        $notifIds = array(
+            NotificationConstants::ID_D_COMMENT_PUBLISH,
+            NotificationConstants::ID_D_NOTE_POS,
+            NotificationConstants::ID_D_NOTE_NEG,
+            NotificationConstants::ID_D_D_REACTION_PUBLISH,
+            NotificationConstants::ID_D_D_FOLLOWED,
+            NotificationConstants::ID_D_R_REACTION_PUBLISH,
+            NotificationConstants::ID_D_C_NOTE_POS,
+            NotificationConstants::ID_D_C_NOTE_NEG,
+            NotificationConstants::ID_U_FOLLOWED,
+            NotificationConstants::ID_U_BADGE,
+        );
+
+        return $notifIds;
+    }
 
     /**
      * Get user's screen notifications
@@ -50,19 +67,7 @@ class NotificationManager
         $minAt = new \DateTime();
         $minAt->modify($modifyAt);
 
-        // Filter notifs by ID
-        $notifIds = array(
-            NotificationConstants::ID_D_COMMENT_PUBLISH,
-            NotificationConstants::ID_D_NOTE_POS,
-            NotificationConstants::ID_D_NOTE_NEG,
-            NotificationConstants::ID_D_D_REACTION_PUBLISH,
-            NotificationConstants::ID_D_D_FOLLOWED,
-            NotificationConstants::ID_D_R_REACTION_PUBLISH,
-            NotificationConstants::ID_D_C_NOTE_POS,
-            NotificationConstants::ID_D_C_NOTE_NEG,
-            NotificationConstants::ID_U_FOLLOWED,
-            NotificationConstants::ID_U_BADGE,
-        );
+        $notifIds = $this->getScreenNotifIds();
 
         // Notifications de moins d'une semaine ou non checkées
         $notifications = PUNotificationQuery::create()
@@ -75,6 +80,26 @@ class NotificationManager
                             ->find();
 
         return $notifications;
+    }
+
+    /**
+     * Count user's screen notifications - count only unchecked notif
+     *
+     * @param integer $userId
+     * @return int
+     */
+    public function countScreenUserNotifications($userId)
+    {
+        $notifIds = $this->getScreenNotifIds();
+
+        // Notifications de moins d'une semaine ou non checkées
+        $nbNotifications = PUNotificationQuery::create()
+                            ->filterByPUserId($userId)
+                            ->filterByChecked(false)
+                            ->filterByPNotificationId($notifIds)
+                            ->count();
+
+        return $nbNotifications;
     }
 
     /**
