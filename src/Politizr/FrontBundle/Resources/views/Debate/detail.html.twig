@@ -99,7 +99,6 @@
                 <div id="p-{{ loop.index }}" class="paragraph">
                     {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
                     {{ paragraph | raw }}
-                    {# @todo chargement des imgLiquid post ajax #}
                     <div class="comments"></div>
                 </div>
             {% endfor %}
@@ -109,8 +108,7 @@
             <span>noter cette publication : </span>
             <div class="notes postNote withLoaderInside">
                 <div class="ajaxLoader" style="display: none;">
-                    <i class="iconSpin5 animateSpin"></i>
-                    <div class="ajaxLoaderBg"></div>
+                    <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
                 </div>
                 {{ debate | linkNoteDebate }}
             </div>

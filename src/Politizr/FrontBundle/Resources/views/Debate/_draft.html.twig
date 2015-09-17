@@ -1,7 +1,6 @@
 <div class="publicationsListItem withLoaderInside">
     <div class="ajaxLoader" style="display: none;">
-        <i class="iconSpin5 animateSpin"></i>
-        <div class="ajaxLoaderBg"></div>
+        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
     </div>
     <div class="publicationsListItemHeader">
         <span>débat</span>dernière mise à jour {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': debate.updatedAt } only %}
