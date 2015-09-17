@@ -40,15 +40,21 @@ class TagManager
      * Get array of [id, tag]
      *
      * @param integer $tagTypeId
+     * @param boolean $used
      * @param boolean $online
      * @return array
      */
-    public function getArrayTags($tagTypeId = null, $online = true)
+    public function getArrayTags($tagTypeId = null, $used = false, $online = true)
     {
         $tags = PTagQuery::create()
             ->select(array('id', 'title'))
+            ->distinct()
             ->_if(null !== $online)
                 ->filterByOnline($online)
+            ->_endif()
+            ->_if(null !== $used)
+                ->usePuTaggedTPTagQuery()->endUse()
+                ->usePDDTaggedTQuery()->endUse()
             ->_endif()
             ->_if(null !== $tagTypeId)
                 ->filterByPTTagTypeId($tagTypeId)

@@ -140,7 +140,7 @@ class XhrSearch
             throw new InconsistentDataException(sprintf('Tag id-%s does not exist'), $tagId);
         }
 
-        // @todo put tag in search session
+        // Put tag in search session
         $session = $request->getSession();
         $session->set('search/tag/'.$tagId, $tagId);
 
@@ -179,9 +179,24 @@ class XhrSearch
         $tagId = $request->get('tagId');
         $this->logger->info('$tagId = ' . print_r($tagId, true));
 
-        // @todo remove tag from search session
+        // Remove tag from search session
         $session = $request->getSession();
         $session->remove('search/tag/'.$tagId);
+
+        return true;
+    }
+
+
+    /**
+     * Clear tags session
+     */
+    public function clearSession(Request $request)
+    {
+        $this->logger->info('*** clearSession');
+        
+        // Remove all tags from search session
+        $session = $request->getSession();
+        $session->remove('search/tag');
 
         return true;
     }

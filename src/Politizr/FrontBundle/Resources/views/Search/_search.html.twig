@@ -1,0 +1,20 @@
+<div id="searchByTag">
+    <form class="searchForm">
+        <input id="searchInput" class="selectedTag" autofocus="autofocus" type="text" placeholder="Saisissez un tag">
+        <input type="hidden" class="selectedTagID" />
+
+        <div class="searchTagList">
+        </div>
+
+        <a class="searchSubmit" action="searchByTags">&#xe80c; <span>Lancez votre recherche</span></a>
+    </form>
+</div>
+<div id="paginatedList" class="listContainer"
+    url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'searchDebateList',
+        'xhrType': 'RETURN_HTML',
+    } only %}"
+    withFilters="true">
+</div>

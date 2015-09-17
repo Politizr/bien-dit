@@ -17,9 +17,9 @@
 
         // autocomplete initialization
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_TAG_LISTING',
+            'xhrRoute': 'ROUTE_TAG_SEARCH_LISTING',
             'xhrService': 'tag',
-            'xhrMethod': 'getTags',
+            'xhrMethod': 'getSearchTags',
             'xhrType': 'RETURN_HTML',
             } only %}";
 

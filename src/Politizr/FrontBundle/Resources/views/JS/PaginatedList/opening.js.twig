@@ -56,7 +56,8 @@
         console.log('*** modalSearch');
         $('#modalBoxContent').removeClass().addClass('search');
         modalLoading();
-        initSearch();
+        updateCloseModalActions('searchModalClose');
+        loadSearchForm();
     });
 
 
@@ -87,17 +88,32 @@
     };
 
     /**
-     * Init search list modal
+     *  Change modal's close action
+     */
+    function updateCloseModalActions(action)
+    {
+        console.log('*** updateCloseModalActions');
+        console.log(action);
+        if (typeof action === "undefined") {
+            return false;
+        }
+
+        $('#modalHeader').children('.headerLogo').first().attr('action', action);
+        $('#modalHeader').children('.modalClose').first().attr('action', action);
+    }
+
+    /**
+     * Load search form
      *
      * @param string twigTemplate
      */
-    function initSearch() {
-        console.log('*** initSearch');
+    function loadSearchForm() {
+        console.log('*** loadSearchForm');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_MODAL_PAGINATED_LIST',
             'xhrService': 'modal',
-            'xhrMethod': 'initSearchForms',
+            'xhrMethod': 'loadSearchForm',
             'xhrType': 'RETURN_HTML',
             } only %}";
 

@@ -292,6 +292,20 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
+     * Filter by array of tags id
+     *
+     * @param array[int]
+     * @return PDDebateQuery
+     */
+    public function filterByTags($tagIds)
+    {
+        return $this
+            ->usePuTaggedTPUserQuery()
+                ->filterByPTagId($tagIds)
+            ->endUse();
+    }
+
+    /**
      * Filter by geolocalization
      *
      * @param Geocoded $geocoded

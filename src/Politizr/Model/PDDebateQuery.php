@@ -313,6 +313,20 @@ LIMIT ".$offset.", ".$limit."
     }
 
     /**
+     * Filter by array of tags id
+     *
+     * @param array[int]
+     * @return PDDebateQuery
+     */
+    public function filterByTags($tagIds)
+    {
+        return $this
+            ->usePDDTaggedTQuery()
+                ->filterByPTagId($tagIds)
+            ->endUse();
+    }
+
+    /**
      * Filter by geolocalization
      *
      * @param Geocoded $geocoded

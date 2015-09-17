@@ -145,15 +145,50 @@ class XhrModal
             );
     }
 
-    /**
-     * Init search forms
+    /* ######################################################################################################## */
+    /*                                   SEARCH MODAL FUNCTIONS                                                 */
+    /* ######################################################################################################## */
+
+   /**
+     * Loading init complete struct filters + list for search
      */
-    public function initSearchForms(Request $request)
+    public function loadSearchFiltersList(Request $request)
     {
-        $this->logger->info('*** initSearchForms');
+        $this->logger->info('*** loadSearchFiltersList');
+        
+        // Filters form rendering (default for debate)
+        $listOrder = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
+        );
+        $listFilter = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
+        );
+
+        // Global header + filter rendering
+        $paginatedList = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_search.html.twig',
+            array(
+                'listOrder' => $listOrder,
+                'listFilter' => $listFilter,
+            )
+        );
+
+        $this->logger->info($paginatedList);
+
+        return array(
+            'paginatedList' => $paginatedList,
+            );
+    }
+
+    /**
+     * Load search form
+     */
+    public function loadSearchForm(Request $request)
+    {
+        $this->logger->info('*** loadSearchForm');
         
         $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_search.html.twig'
+            'PolitizrFrontBundle:Search:_search.html.twig'
         );
 
         return array(
@@ -180,10 +215,23 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
+
+        // Get tags from search session
+        $session = $request->getSession();
+        $tags = $session->get('search/tag');
+
+        // at least one tag
+        if (empty($tags)) {
+            $error = 'Vous devez saisir au moins un tag';
+            throw new FormValidationException($error);
+        }
+
         // @todo constant management refactoring
+        // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
+                    ->filterByTags($tags)
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
                     ->limit(10)
@@ -201,6 +249,7 @@ class XhrModal
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateSearchNext'
             )
         );
 
@@ -223,10 +272,16 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
+
+        // Get tags from search session
+        $session = $request->getSession();
+        $tags = $session->get('search/tag');
+
         // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
+                    ->filterByTags($tags)
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
                     ->limit(10)
@@ -244,6 +299,7 @@ class XhrModal
                 'users' => $users,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateSearchNext'
                 )
         );
 
@@ -291,6 +347,7 @@ class XhrModal
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
             )
         );
 
@@ -334,6 +391,7 @@ class XhrModal
                 'users' => $users,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 
@@ -370,6 +428,7 @@ class XhrModal
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
             )
         );
 
@@ -406,6 +465,7 @@ class XhrModal
                 'users' => $users,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 
@@ -454,6 +514,7 @@ class XhrModal
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
             )
         );
 
@@ -501,6 +562,7 @@ class XhrModal
                 'users' => $users,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 
@@ -553,6 +615,7 @@ class XhrModal
                 'users' => $users,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 
@@ -601,6 +664,7 @@ class XhrModal
                 'debates' => $debates,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
             )
         );
 
@@ -649,6 +713,7 @@ class XhrModal
                 'order' => $order,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 
@@ -698,6 +763,7 @@ class XhrModal
                 'order' => $order,
                 'offset' => intval($offset) + 10,
                 'moreResults' => $moreResults,
+                'paginateNextAction' => 'paginateNext'
                 )
         );
 

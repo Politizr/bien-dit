@@ -120,7 +120,38 @@ class XhrTag
             $tagTypeId = null;
         }
 
-        $tags = $this->tagManager->getArrayTags($tagTypeId, true);
+        $tags = $this->tagManager->getArrayTags($tagTypeId);
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'tags' => $tags,
+            'zoneId' => $zoneId
+            );
+    }
+
+    /* ######################################################################################################## */
+    /*                                               SEARCH TAG FUNCTIONS                                      */
+    /* ######################################################################################################## */
+
+    /**
+     * Get search tags, w. only used tags in debate or users
+     */
+    public function getSearchTags(Request $request)
+    {
+        $this->logger->info('*** getSearchTags');
+
+        // Request arguments
+        $tagTypeId = $request->get('tagTypeId');
+        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        $zoneId = $request->get('zoneId');
+        $this->logger->info('$zoneId = ' . print_r($zoneId, true));
+
+        // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
+        $tags = $this->tagManager->getArrayTags($tagTypeId, true, true);
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
