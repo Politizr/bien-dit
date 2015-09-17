@@ -2,6 +2,11 @@
     // on document ready
     $(function() {
         $('.comments').hide();
+
+        if(window.location.hash) {
+           var paragraphId = window.location.hash.substr(1);
+           openParagraph(paragraphId);
+        }
     });
 
     // close comments
@@ -24,8 +29,25 @@
 
         // Fermeture préalable de tous les paragraphes ouverts
         context = $('.comments').slideUp().html('');
+        openParagraph($(this).closest('.paragraph').attr('id'));
+    });
 
-        var context = $(this).closest('.paragraph');
+    // open paragraph id
+    function openParagraph(paragraphId)
+    {
+        console.log('*** openParagraph');
+        console.log(paragraphId);
+
+        var context = $('#'+paragraphId);
+
+        var subjectId = context.find('.commentsCounter').attr('subjectId');
+        var type = context.find('.commentsCounter').attr('type');
+        var noParagraph = context.find('.commentsCounter').attr('noParagraph');
+
+        console.log(subjectId);
+        console.log(type);
+        console.log(noParagraph);
+
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_COMMENTS',
             'xhrService': 'document',
@@ -37,7 +59,7 @@
             type: 'POST',
             url: xhrPath,
             context: context,
-            data: { 'subjectId': $(this).attr('subjectId'), 'type':  $(this).attr('type'), 'noParagraph': $(this).attr('noParagraph') },
+            data: { 'subjectId': subjectId, 'type': type, 'noParagraph': noParagraph },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -47,12 +69,12 @@
                     $('#infoBoxHolder .boxError').show();
                 } else {
                     $(this).find('.comments').html(data['html']).slideDown();
-                    $(this).find('.counter').html(data['counter']);
+                    $(this).find('.commentsCounter').html(data['counter']);
                     fullImgLiquid();
                 }
             }
-        });
-    });
+        });        
+    }
 
     // création d'un commentaire
     $("body").on("click", "input[action='createComment']", function(e) {
