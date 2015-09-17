@@ -60,7 +60,7 @@ class XhrNotification
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $notifs = $this->notificationManager->getUserNotifications($user->getId());
+        $notifs = $this->notificationManager->getScreenUserNotifications($user->getId());
         $nbNotifs = count($notifs);
 
         // Rendering

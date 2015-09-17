@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Lib\Manager;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Constant\NotificationConstants;
+
 use Politizr\FrontBundle\Lib\Notification;
 
 use Politizr\Model\PUNotification;
@@ -31,88 +33,36 @@ class NotificationManager
     }
 
     /* ######################################################################################################## */
-    /*                                                  RAW SQL                                                 */
-    /* ######################################################################################################## */
-
-   /**
-     * Get distinct [objectName+objectId+authorUserID]' rows from PUNotifications
-     *
-     * @see app/sql/notifications.sql
-     *
-     * @param integer $userId
-     * @param DateTime $dateTime
-     * @return string
-     */
-    public function createDistinctUserNotificationsRawSql($debateId, $inQueryUserIds)
-    {
-        // Préparation requête SQL
-        $sql = "
-SELECT DISTINCT p_object_name, p_object_id, p_author_user_id
-FROM `p_u_notification` 
-WHERE p_u_notification.p_user_id=".$userId." AND (p_u_notification.created_at>='".$dateTime."' OR p_u_notification.checked=0) 
-ORDER BY p_u_notification.created_at DESC
-    ";
-
-        return $sql;
-    }
-
-    /*
-     * Execute SQL and hydrate Notification model
-     *
-     * @param string $sql
-     * @return array[Notification]
-     */
-    private function hydrateNotificationRows($sql)
-    {
-        $this->logger->info('*** hydrateNotificationRows');
-
-        $timeline = array();
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            // dump($sql);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            // dump($result);
-
-            foreach ($result as $row) {
-                $timelineRow = new TimelineRow();
-
-                $timelineRow->setId($row['id']);
-                $timelineRow->setTitle($row['title']);
-                $timelineRow->setPublishedAt($row['published_at']);
-                $timelineRow->setType($row['type']);
-
-                $timeline[] = $timelineRow;
-            }
-        }
-
-        return $timeline;
-    }
-
-
-    /* ######################################################################################################## */
     /*                                            CRUD OPERATIONS                                               */
     /* ######################################################################################################## */
 
 
     /**
-     * Get user's notifications
+     * Get user's screen notifications
      *
      * @param integer $userId
      * @param string $modifyAt  get notifications from current date applying this string - has to be DateTime.modify compatible
      * @return PropelCollection|PUNotification[]
      */
-    public function getUserNotifications($userId, $modifyAt = '-7 day')
+    public function getScreenUserNotifications($userId, $modifyAt = '-7 day')
     {
         // Requête notifs
         $minAt = new \DateTime();
         $minAt->modify($modifyAt);
+
+        // Filter notifs by ID
+        $notifIds = array(
+            NotificationConstants::ID_D_COMMENT_PUBLISH,
+            NotificationConstants::ID_D_NOTE_POS,
+            NotificationConstants::ID_D_NOTE_NEG,
+            NotificationConstants::ID_D_D_REACTION_PUBLISH,
+            NotificationConstants::ID_D_D_FOLLOWED,
+            NotificationConstants::ID_D_R_REACTION_PUBLISH,
+            NotificationConstants::ID_D_C_NOTE_POS,
+            NotificationConstants::ID_D_C_NOTE_NEG,
+            NotificationConstants::ID_U_FOLLOWED,
+            NotificationConstants::ID_U_BADGE,
+        );
 
         // Notifications de moins d'une semaine ou non checkées
         $notifications = PUNotificationQuery::create()
@@ -120,6 +70,7 @@ ORDER BY p_u_notification.created_at DESC
                             ->filterByCreatedAt(array('min' => $minAt))
                             ->_or()
                             ->filterByChecked(false)
+                            ->filterByPNotificationId($notifIds)
                             ->orderByCreatedAt('desc')
                             ->find();
 

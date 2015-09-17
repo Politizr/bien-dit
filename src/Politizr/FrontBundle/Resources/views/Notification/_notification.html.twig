@@ -3,6 +3,8 @@
     {{ notification.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
     {% if not notification.checked %}
         <i action="notificationCheck" class="iconCross" subjectId="{{ notification.id }}"></i>
+    {% else %}
+        <i class="iconCross"></i>
     {% endif %}
 </div>
 <div class="notifItemContent">

@@ -631,6 +631,7 @@ Politizr\Model\PUser:
         online:                 1
 
 
+# @todo event > notifications par défaut à mettre à jour automatiquement à la création d'un user
 # NOTIFICATIONS USERS DEBATTEURS DE TEST
 Politizr\Model\PUSubscribeEmail:
     u1s1:
@@ -745,4 +746,3 @@ Politizr\Model\PUSubscribeEmail:
     u2s14:
         p_notification_id:  s_d_reaction_publish
         p_user_id:          sarko
-
