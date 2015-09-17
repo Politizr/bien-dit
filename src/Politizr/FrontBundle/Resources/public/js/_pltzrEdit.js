@@ -15,7 +15,7 @@ $(function(){
        		text: 'Cliquez ici pour saisir l\'accroche de votre publication.'
 		},
 	    anchor: {
-            placeholderText: 'Saississez une adresse internet'
+            placeholderText: 'Saisissez une adresse internet'
         },
         anchorPreview: false,
         firstHeader:'h1',
@@ -38,7 +38,7 @@ $(function(){
        		text: 'Cliquez ici pour saisir le texte de votre publication.'
 		},
 	    anchor: {
-            placeholderText: 'Saississez une adresse internet'
+            placeholderText: 'Saisissez une adresse internet'
         },
         anchorPreview: false,
         firstHeader:'h1',
@@ -57,7 +57,7 @@ $(function(){
        		text: 'Crédits photo'
 		},
 	    anchor: {
-            placeholderText: 'Saississez une adresse internet'
+            placeholderText: 'Saisissez une adresse internet'
         },
         anchorPreview: false
     });
@@ -73,7 +73,7 @@ $(function(){
        		text: 'Cliquez ici pour saisir votre texte de présentation en quelques mots'
 		},
 	    anchor: {
-            placeholderText: 'Saississez une adresse internet'
+            placeholderText: 'Saisissez une adresse internet'
         },
         anchorPreview: false
     });
