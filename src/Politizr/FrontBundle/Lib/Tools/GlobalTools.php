@@ -179,6 +179,10 @@ class GlobalTools
         // $paragraphs = explode('<p>', $htmlText);
         // array_shift($paragraphs);
 
+        if (empty($htmlText)) {
+            return array();
+        }
+
         // $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom = new \DOMDocument("4.0", "utf-8");
         // $dom->loadHTML($htmlText);
