@@ -54,6 +54,20 @@
         $('#openMenuPreferences').show();
     });
 
+    // mobile : toggle menu mobile 
+    $("body").on("touchstart click", "[action='menuMobileTriggerMenu']", function(e) {
+        if(e.type == "touchstart") { // if touchstart start toggle
+            $('#headerCenter, #menu').toggle();
+            $('#menuPreferences, #fixedActions').hide();
+            e.stopPropagation();
+            e.preventDefault(); // stop touchstart 
+            return false;
+        } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
+            $('#headerCenter, #menu').toggle();
+            $('#menuPreferences, #fixedActions').hide();
+        }
+    });
+
     // hide / show helper
     $("body").on("click", "[action='toggleHelper']", function() {
         $('.helperSlider').hide();
