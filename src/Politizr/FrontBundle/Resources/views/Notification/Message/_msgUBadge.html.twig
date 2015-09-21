@@ -1,1 +1,1 @@
-Félicitations, vous avez obtenu le badge <a action="notificationCheck" href="{{ url }}">"{{ title }}"</a>.
+Félicitations! vous avez obtenu le badge {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | slice(0, 50), 'url': url } only %}.

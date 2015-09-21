@@ -9,6 +9,6 @@
 </div>
 <div class="notifItemContent">
     <span {% if not notification.checked %}class="notifHighlight"{% endif %} subjectId="{{ notification.id }}">
-        {% include 'PolitizrFrontBundle:Notification:_notificationMessage.html.twig' %}
+        {% include 'PolitizrFrontBundle:Notification:_notificationMessage.html.twig' with { 'type': constant('Politizr\\Constant\\NotificationConstants::TYPE_SCREEN')} %}
     </span>
 </div>

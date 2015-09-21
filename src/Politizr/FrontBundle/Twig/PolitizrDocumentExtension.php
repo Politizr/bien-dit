@@ -182,9 +182,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @param PDocumentInterface $document
      * @param string $filterName
      * @param boolean $withShadow
+     * @param boolean $email
      * @return html
      */
-    public function image(PDocumentInterface $document, $filterName = 'debate_header', $withShadow = true)
+    public function image(PDocumentInterface $document, $filterName = 'debate_header', $withShadow = true, $email = false)
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -208,9 +209,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 break;
         }
 
+        $template= '_imageHeader.html.twig';
+        if ($email) {
+            $template = '_imageEmail.html.twig';
+        }
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            'PolitizrFrontBundle:Document:'.$template,
             array(
                 'title' => $document->getTitle(),
                 'path' => $path,
@@ -662,7 +668,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $comment,
-                'type' => $type,
+                'type' => $comment->getType(),
                 'pos' => $pos,
                 'neg' => $neg,
             )

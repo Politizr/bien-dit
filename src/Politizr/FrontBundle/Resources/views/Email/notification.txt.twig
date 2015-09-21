@@ -4,4 +4,4 @@ Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', a
 
 Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
 
-{% include 'PolitizrFrontBundle:Email:signature.txt.twig' %}
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

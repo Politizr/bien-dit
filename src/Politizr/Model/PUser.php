@@ -81,14 +81,14 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Test if activity less than 10mn
+     * Test if activity less than Xmn
      *
      * @return boolean
      */
     public function isActiveNow()
     {
         $delay = new \DateTime();
-        $delay->modify('-10 minute');
+        $delay->modify('-5 minute');
 
         if ($this->getLastActivity() >= $delay) {
             return true;

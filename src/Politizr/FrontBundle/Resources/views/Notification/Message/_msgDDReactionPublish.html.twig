@@ -1,12 +1,1 @@
-<a action="notificationCheck" href="{{ authorUrl }}">
-    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
-    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
-</a>
-a publié 
-<a action="notificationCheck" href="{{ url }}">
-    "{{ title }}"
-</a>
-à propos de votre débat
-<a href="{{ reactionParentUrl }}">
-    "{{ reactionParentTitle }}"
-</a>.
+{% include 'PolitizrFrontBundle:Notification\\Message:_screenAuthor.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a publié la réaction {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | slice(0, 50), 'url': url } only %} au sujet de votre publication {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': document.title | slice(0, 50), 'url': documentUrl } only %}

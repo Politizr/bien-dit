@@ -1,5 +1,4 @@
-Vous suivez <a action="notificationCheck" href="{{ authorUrl }}">
+<a action="notificationCheck" href="{{ authorUrl }}">
     {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
 </a>
-et il a commenté "{{ title | slice(0, 50) }}..." sur <a action="notificationCheck" href="{{ url }}">"{{ document.title }}"</a>.

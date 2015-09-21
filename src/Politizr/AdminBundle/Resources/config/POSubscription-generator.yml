@@ -27,7 +27,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des formules d'abonnement
+            title:                              "Liste des formules d'abonnement"
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
             display:                            [ title, price, description ]

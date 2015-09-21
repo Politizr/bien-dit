@@ -1,1 +1,1 @@
-Vous avez reçu une note positive sur votre commentaire <a action="notificationCheck" href="{{ url }}">"{{ title }}"</a>.
+Votre commentaire {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | slice(0, 50), 'url': url } only %} a obtenu un vote positif.

@@ -346,7 +346,7 @@ class XhrDocument
             $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$fileName;
         }
         $imageHeader = $this->templating->render(
-            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
             array(
                 'title' => $debate->getTitle(),
                 'path' => $path,
@@ -526,7 +526,7 @@ class XhrDocument
             $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
         }
         $imageHeader = $this->templating->render(
-            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
             array(
                 'title' => $reaction->getTitle(),
                 'path' => $path,
@@ -666,7 +666,7 @@ class XhrDocument
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Debate:_imageHeader.html.twig',
+            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
             array(
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',

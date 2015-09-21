@@ -1,6 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Constant\NotificationConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
@@ -162,9 +163,11 @@ class PolitizrUserExtension extends \Twig_Extension
      * User's profile photo
      *
      * @param PUser $user
+     * @param string $default
+     * @param boolean $email
      * @return html
      */
-    public function photo(PUser $user, $filterName = 'user_bio', $default = 'profil_default.png')
+    public function photo(PUser $user, $filterName = 'user_bio', $default = 'profil_default.png', $email = false)
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -174,9 +177,14 @@ class PolitizrUserExtension extends \Twig_Extension
             $path = 'uploads/users/'.$fileName;
         }
 
+        $template= '_photo.html.twig';
+        if ($email) {
+            $template = '_photoEmail.html.twig';
+        }
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:User:_photo.html.twig',
+            'PolitizrFrontBundle:User:'.$template,
             array(
                 'user' => $user,
                 'path' => $path,
@@ -347,20 +355,26 @@ class PolitizrUserExtension extends \Twig_Extension
      * @todo add test on returning objects + throw InconsistentDataException (InconsistentDataEventException?)
      *
      * @param PUNotification $notification
-     * @param boolean $absolute render absolute URL link
+     * @param int $type NotificationConstants
      * @return html
      */
-    public function linkedNotification(PUNotification $notification, $absolute = false)
+    public function linkedNotification(PUNotification $notification, $type = NotificationConstants::TYPE_SCREEN)
     {
         $this->logger->info('*** linkedNotification');
         $this->logger->info('$notification = '.print_r($notification, true));
+        $this->logger->info('$type = '.print_r($type, true));
+
+        // absolute URL for email notif
+        $absolute = false;
+        if (NotificationConstants::TYPE_EMAIL === $type) {
+            $absolute = true;
+        }
 
         // Récupération de l'objet d'interaction
         $title = '';
         $url = '#';
-        $commentDoc = '';
-        $reactionParentTitle = null;
-        $reactionParentUrl = null;
+        $document = null;
+        $documentUrl = '#';
         switch ($notification->getPObjectName()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
@@ -379,14 +393,12 @@ class PolitizrUserExtension extends \Twig_Extension
                     // Document parent associée à la réaction
                     if ($subject->getTreeLevel() > 1) {
                         // Réaction parente
-                        $parent = $subject->getParent();
-                        $reactionParentTitle = $parent->getTitle();
-                        $reactionParentUrl = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()), $absolute);
+                        $document = $subject->getParent();
+                        $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
                     } else {
                         // Débat
-                        $debate = $subject->getDebate();
-                        $reactionParentTitle = $debate->getTitle();
-                        $reactionParentUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()), $absolute);
+                        $document = $subject->getDebate();
+                        $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                     }
                 }
 
@@ -395,20 +407,20 @@ class PolitizrUserExtension extends \Twig_Extension
                 $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
                 
                 if ($subject) {
-                    $title = $subject->getDescription();
                     $document = $subject->getPDocument();
-                    $commentDoc = $document->getTitle();
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
                 
                 if ($subject) {
-                    $title = $subject->getDescription();
                     $document = $subject->getPDocument();
-                    $commentDoc = $document->getTitle();
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -424,10 +436,6 @@ class PolitizrUserExtension extends \Twig_Extension
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('ReputationC', array(), $absolute);
-                    if ($this->isGrantedE()) {
-                        $url = $this->router->generate('ReputationE', array(), $absolute);
-                    }
                 }
                 
                 break;
@@ -441,21 +449,38 @@ class PolitizrUserExtension extends \Twig_Extension
             $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
         }
 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Notification:_notification.html.twig',
-            array(
-                'notification' => $notification,
-                'notificationId' => $notification->getPNotificationId(),
-                'author' => $author,
-                'authorUrl' => $authorUrl,
-                'title' => $title,
-                'url' => $url,
-                'commentDoc' => $commentDoc,
-                'reactionParentTitle' => $reactionParentTitle,
-                'reactionParentUrl' => $reactionParentUrl,
-            )
-        );
+        // Screen / Email rendering
+        if (NotificationConstants::TYPE_EMAIL === $type) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Notification:_notificationEmail.html.twig',
+                array(
+                    'notification' => $notification,
+                    'notificationId' => $notification->getPNotificationId(),
+                    'subject' => $subject,
+                    'title' => $title,
+                    'url' => $url,
+                    'author' => $author,
+                    'authorUrl' => $authorUrl,
+                    'document' => $document,
+                    'documentUrl' => $documentUrl,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Notification:_notification.html.twig',
+                array(
+                    'notification' => $notification,
+                    'notificationId' => $notification->getPNotificationId(),
+                    'subject' => $subject,
+                    'title' => $title,
+                    'url' => $url,
+                    'author' => $author,
+                    'authorUrl' => $authorUrl,
+                    'document' => $document,
+                    'documentUrl' => $documentUrl,
+                )
+            );
+        }
 
         return $html;
     }

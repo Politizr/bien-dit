@@ -1,1 +1,1 @@
-Vous avez reçu une note négative sur <a action="notificationCheck" href="{{ url }}">"{{ title }}"</a>.
+Vous avez reçu une note négative sur votre commentaire {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | slice(0, 50), 'url': url } only %}.

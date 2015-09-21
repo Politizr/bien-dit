@@ -1,4 +1,1 @@
-<a action="notificationCheck" href="{{ authorUrl }}">
-    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
-    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
-</a> s'est abonné à votre profil.
+{% include 'PolitizrFrontBundle:Notification\\Message:_screenAuthor.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} suit désormais votre activité.
