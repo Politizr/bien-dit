@@ -15,7 +15,10 @@ body.css760 .publicationsListItemStatsRight {
 }
 
 body.css760 .publicationsListItemStatsRight .postNote {
-	margin: 0;
+	margin: 10px 0 0 0;	
+	clear: both;
+	float: left;
+	width: 100%;
 }
 
 body.css760 .publicationStats {display: none;}
