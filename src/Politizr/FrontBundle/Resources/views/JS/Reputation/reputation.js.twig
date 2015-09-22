@@ -1,32 +1,26 @@
 <script>
-    // on document ready
-    $(function() {
-        historyActionsList();
-    });
 
-    // Page suivante
-    $("body").on("click", "[action='paginate-next']", function(e) {
-        console.log('*** click paginate-next');
-
-        console.log($(this).attr('offset'));
-        historyActionsList($(this).attr('offset'));
-    });
-
-    // Chargement paginé de la liste
-    function historyActionsList (offset) {
-        offset = (typeof offset === "undefined") ? 0 : offset;
+    /**
+     * Reputation charts
+     * @todo manage scale, next/prev, ...?
+     */
+    function reputationCharts() { 
+        console.log('*** reputationCharts');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_LIST_ACTIONS',
-            'xhrService': 'modal',
-            'xhrMethod': 'historyActionsList',
+            'xhrRoute': 'ROUTE_MODAL_REPUTATION',
+            'xhrService': 'user',
+            'xhrMethod': 'reputationEvolution',
             'xhrType': 'RETURN_HTML',
             } only %}";
+
+        lastWeek = getLastWeek();
+        console.log(lastWeek);
 
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: { 'offset': offset },
+            data: { 'startAt': lastWeek },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -34,13 +28,65 @@
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();
                 } else {
-                    $('#scroll-nav').remove();
 
-                    $('#history').append(data['html']);
+                    var lineChartData = {
+                        labels : data['labels'],
+                        datasets : [
+                            {
+                                data : data['data'],
+                                // @todo fill theses values not here:
+                                label: "Reputation points",
+                                fillColor : "rgba(229, 108, 64, 0.3)",
+                                strokeColor : "#e56c40",
+                                pointColor : "#e56c40",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "#e56c40"
+                            }
+                        ]               
+                    }
+                    loadReputationDataCharts(lineChartData);
                 }
                 $('#ajaxGlobalLoader').hide();
             }
-        });    
+        });
     }
+
+    // init charts with data
+    function loadReputationDataCharts(lineChartData) {
+        console.log('*** loadReputationDataCharts');
+        console.log(lineChartData);
+
+        if (lineChartData === "undefined") {
+            return false;
+        }
+
+        var ctx = document.getElementById("reputationLine").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartData, {
+            responsive: true,
+            animation: false,
+            bezierCurve : false,
+            scaleFontFamily: "'nerissemibold'",
+            scaleFontSize: 8,
+            scaleFontColor: "#a9a9a9",
+            tooltipTemplate: "<%= value %> POINTS",
+            tooltipFontFamily: "'nerisblack'",
+            tooltipFontSize: 10,
+            tooltipFillColor: "#2d2d2d",
+            tooltipFontColor: "#fff",
+            tooltipCornerRadius : 3,
+            tooltipYPadding:10,
+            tooltipXPadding:10,
+            tooltipCaretSize:4,
+            pointDotRadius : 4,
+            pointDotStrokeWidth : 2,
+            scaleShowGridLines : false,
+            scaleGridLineColor : "#dbdcdd",
+            scaleLineColor: "#dbdcdd",
+            datasetStrokeWidth : 2,
+            pointHitDetectionRadius : 5
+        });        
+    }
+
 
 </script>

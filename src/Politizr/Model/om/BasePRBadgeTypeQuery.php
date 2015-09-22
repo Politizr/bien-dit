@@ -15,7 +15,7 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
-use Politizr\Model\PRBadge;
+use Politizr\Model\PRBadgeFamily;
 use Politizr\Model\PRBadgeType;
 use Politizr\Model\PRBadgeTypePeer;
 use Politizr\Model\PRBadgeTypeQuery;
@@ -39,9 +39,9 @@ use Politizr\Model\PRBadgeTypeQuery;
  * @method PRBadgeTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PRBadgeTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PRBadgeTypeQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
- * @method PRBadgeTypeQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
- * @method PRBadgeTypeQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
+ * @method PRBadgeTypeQuery leftJoinPRBadgeFamily($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadgeFamily relation
+ * @method PRBadgeTypeQuery rightJoinPRBadgeFamily($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadgeFamily relation
+ * @method PRBadgeTypeQuery innerJoinPRBadgeFamily($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadgeFamily relation
  *
  * @method PRBadgeType findOne(PropelPDO $con = null) Return the first PRBadgeType matching the query
  * @method PRBadgeType findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeType matching the query, or a new PRBadgeType object populated from the query conditions when no match is found
@@ -63,6 +63,9 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
+
+    // archivable behavior
+    protected $archiveOnDelete = true;
 
     /**
      * Initializes internal state of BasePRBadgeTypeQuery object.
@@ -486,41 +489,41 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PRBadge object
+     * Filter the query by a related PRBadgeFamily object
      *
-     * @param   PRBadge|PropelObjectCollection $pRBadge  the related object to use as filter
+     * @param   PRBadgeFamily|PropelObjectCollection $pRBadgeFamily  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PRBadgeTypeQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPRBadge($pRBadge, $comparison = null)
+    public function filterByPRBadgeFamily($pRBadgeFamily, $comparison = null)
     {
-        if ($pRBadge instanceof PRBadge) {
+        if ($pRBadgeFamily instanceof PRBadgeFamily) {
             return $this
-                ->addUsingAlias(PRBadgeTypePeer::ID, $pRBadge->getPRBadgeTypeId(), $comparison);
-        } elseif ($pRBadge instanceof PropelObjectCollection) {
+                ->addUsingAlias(PRBadgeTypePeer::ID, $pRBadgeFamily->getPRBadgeTypeId(), $comparison);
+        } elseif ($pRBadgeFamily instanceof PropelObjectCollection) {
             return $this
-                ->usePRBadgeQuery()
-                ->filterByPrimaryKeys($pRBadge->getPrimaryKeys())
+                ->usePRBadgeFamilyQuery()
+                ->filterByPrimaryKeys($pRBadgeFamily->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPRBadge() only accepts arguments of type PRBadge or PropelCollection');
+            throw new PropelException('filterByPRBadgeFamily() only accepts arguments of type PRBadgeFamily or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PRBadge relation
+     * Adds a JOIN clause to the query using the PRBadgeFamily relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PRBadgeTypeQuery The current query, for fluid interface
      */
-    public function joinPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPRBadgeFamily($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PRBadge');
+        $relationMap = $tableMap->getRelation('PRBadgeFamily');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -535,14 +538,14 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PRBadge');
+            $this->addJoinObject($join, 'PRBadgeFamily');
         }
 
         return $this;
     }
 
     /**
-     * Use the PRBadge relation PRBadge object
+     * Use the PRBadgeFamily relation PRBadgeFamily object
      *
      * @see       useQuery()
      *
@@ -550,13 +553,13 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PRBadgeQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PRBadgeFamilyQuery A secondary query class using the current class as primary query
      */
-    public function usePRBadgeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePRBadgeFamilyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPRBadge($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PRBadge', '\Politizr\Model\PRBadgeQuery');
+            ->joinPRBadgeFamily($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PRBadgeFamily', '\Politizr\Model\PRBadgeFamilyQuery');
     }
 
     /**
@@ -596,6 +599,14 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
     protected function basePreDelete(PropelPDO $con)
     {
         EventDispatcherProxy::trigger(array('delete.pre','query.delete.pre'), new QueryEvent($this));
+        // archivable behavior
+
+        if ($this->archiveOnDelete) {
+            $this->archive($con);
+        } else {
+            $this->archiveOnDelete = true;
+        }
+
         // event behavior
         // placeholder, issue #5
 
@@ -976,6 +987,89 @@ abstract class BasePRBadgeTypeQuery extends ModelCriteria
             $con->rollback();
             throw $e;
         }
+    }
+
+    // archivable behavior
+
+    /**
+     * Copy the data of the objects satisfying the query into PRBadgeTypeArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
+     *
+     * @return     int the number of archived objects
+     * @throws     PropelException
+     */
+    public function archive($con = null, $useLittleMemory = true)
+    {
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
     }
 
     // extend behavior

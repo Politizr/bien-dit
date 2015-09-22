@@ -18,8 +18,6 @@ use Politizr\Constant\ReputationConstants;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PNTypeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
@@ -115,67 +113,6 @@ class UserController extends Controller
 
         return $this->render('PolitizrFrontBundle:Timeline:user.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-        ));
-    }
-
-
-    /* ######################################################################################################## */
-    /*                                                    REPUTATION                                            */
-    /* ######################################################################################################## */
-
-    /**
-     * Reputation
-     */
-    public function reputationAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** reputationAction');
-
-        // Récupération user courant
-        $user = $this->getUser();
-
-        // score de réputation
-        $reputationScore = $user->getReputationScore();
-
-        // badges
-        $badgesGold = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_GOLD)
-                        ->filterByOnline(true)
-                        ->usePRBadgeTypeQuery()
-                            ->orderByRank()
-                        ->endUse()
-                        ->find();
-        $badgesSilver = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_SILVER)
-                        ->filterByOnline(true)
-                        ->usePRBadgeTypeQuery()
-                            ->orderByRank()
-                        ->endUse()
-                        ->find();
-        $badgesBronze = PRBadgeQuery::create()
-                        ->filterByPRBadgeMetalId(ReputationConstants::BADGE_METAL_BRONZE)
-                        ->filterByOnline(true)
-                        ->usePRBadgeTypeQuery()
-                            ->orderByRank()
-                        ->endUse()
-                        ->find();
-
-        // ids des badges du user
-        $badgeIds = array();
-        $badgeIds = PUBadgeQuery::create()
-                        ->filterByPUserId($user->getId())
-                        ->find()
-                        ->toKeyValue('PRBadgeId', 'PRBadgeId');
-        $badgeIds = array_keys($badgeIds);
-
-        // Affichage de la vue
-        return $this->render('PolitizrFrontBundle:Reputation:detail.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'reputationScore' => $reputationScore,
-            'badgesGold' => $badgesGold,
-            'badgesSilver' => $badgesSilver,
-            'badgesBronze' => $badgesBronze,
-            'badgeIds' => $badgeIds,
         ));
     }
 

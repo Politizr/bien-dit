@@ -12,101 +12,98 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
-use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PRBadgeMetalPeer;
-use Politizr\Model\PRBadgeMetalQuery;
-use Politizr\Model\PRBadgePeer;
-use Politizr\Model\map\PRBadgeMetalTableMap;
+use Politizr\Model\PRBadgeFamilyArchive;
+use Politizr\Model\PRBadgeFamilyArchivePeer;
+use Politizr\Model\map\PRBadgeFamilyArchiveTableMap;
 
-abstract class BasePRBadgeMetalPeer
+abstract class BasePRBadgeFamilyArchivePeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_r_badge_metal';
+    const TABLE_NAME = 'p_r_badge_family_archive';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PRBadgeMetal';
+    const OM_CLASS = 'Politizr\\Model\\PRBadgeFamilyArchive';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeMetalTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeFamilyArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 8;
+
+    /** the column name for the p_r_badge_type_id field */
+    const P_R_BADGE_TYPE_ID = 'p_r_badge_family_archive.p_r_badge_type_id';
 
     /** the column name for the id field */
-    const ID = 'p_r_badge_metal.id';
+    const ID = 'p_r_badge_family_archive.id';
 
     /** the column name for the title field */
-    const TITLE = 'p_r_badge_metal.title';
+    const TITLE = 'p_r_badge_family_archive.title';
 
     /** the column name for the description field */
-    const DESCRIPTION = 'p_r_badge_metal.description';
+    const DESCRIPTION = 'p_r_badge_family_archive.description';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_r_badge_metal.created_at';
+    const CREATED_AT = 'p_r_badge_family_archive.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_r_badge_metal.updated_at';
+    const UPDATED_AT = 'p_r_badge_family_archive.updated_at';
 
     /** the column name for the sortable_rank field */
-    const SORTABLE_RANK = 'p_r_badge_metal.sortable_rank';
+    const SORTABLE_RANK = 'p_r_badge_family_archive.sortable_rank';
+
+    /** the column name for the archived_at field */
+    const ARCHIVED_AT = 'p_r_badge_family_archive.archived_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PRBadgeMetal objects.
+     * An identity map to hold any loaded instances of PRBadgeFamilyArchive objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PRBadgeMetal[]
+     * @var        array PRBadgeFamilyArchive[]
      */
     public static $instances = array();
 
-
-    // sortable behavior
-
-    /**
-     * rank column
-     */
-    const RANK_COL = 'p_r_badge_metal.sortable_rank';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PRBadgeMetalPeer::$fieldNames[PRBadgeMetalPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PRBadgeFamilyArchivePeer::$fieldNames[PRBadgeFamilyArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'createdAt', 'updatedAt', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeMetalPeer::ID, PRBadgeMetalPeer::TITLE, PRBadgeMetalPeer::DESCRIPTION, PRBadgeMetalPeer::CREATED_AT, PRBadgeMetalPeer::UPDATED_AT, PRBadgeMetalPeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'created_at', 'updated_at', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('PRBadgeTypeId', 'Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', 'SortableRank', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pRBadgeTypeId', 'id', 'title', 'description', 'createdAt', 'updatedAt', 'sortableRank', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeFamilyArchivePeer::P_R_BADGE_TYPE_ID, PRBadgeFamilyArchivePeer::ID, PRBadgeFamilyArchivePeer::TITLE, PRBadgeFamilyArchivePeer::DESCRIPTION, PRBadgeFamilyArchivePeer::CREATED_AT, PRBadgeFamilyArchivePeer::UPDATED_AT, PRBadgeFamilyArchivePeer::SORTABLE_RANK, PRBadgeFamilyArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_R_BADGE_TYPE_ID', 'ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SORTABLE_RANK', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('p_r_badge_type_id', 'id', 'title', 'description', 'created_at', 'updated_at', 'sortable_rank', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PRBadgeMetalPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PRBadgeFamilyArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'SortableRank' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'sortableRank' => 5, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeMetalPeer::ID => 0, PRBadgeMetalPeer::TITLE => 1, PRBadgeMetalPeer::DESCRIPTION => 2, PRBadgeMetalPeer::CREATED_AT => 3, PRBadgeMetalPeer::UPDATED_AT => 4, PRBadgeMetalPeer::SORTABLE_RANK => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'SORTABLE_RANK' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'created_at' => 3, 'updated_at' => 4, 'sortable_rank' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('PRBadgeTypeId' => 0, 'Id' => 1, 'Title' => 2, 'Description' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'SortableRank' => 6, 'ArchivedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('pRBadgeTypeId' => 0, 'id' => 1, 'title' => 2, 'description' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'sortableRank' => 6, 'archivedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeFamilyArchivePeer::P_R_BADGE_TYPE_ID => 0, PRBadgeFamilyArchivePeer::ID => 1, PRBadgeFamilyArchivePeer::TITLE => 2, PRBadgeFamilyArchivePeer::DESCRIPTION => 3, PRBadgeFamilyArchivePeer::CREATED_AT => 4, PRBadgeFamilyArchivePeer::UPDATED_AT => 5, PRBadgeFamilyArchivePeer::SORTABLE_RANK => 6, PRBadgeFamilyArchivePeer::ARCHIVED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('P_R_BADGE_TYPE_ID' => 0, 'ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SORTABLE_RANK' => 6, 'ARCHIVED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('p_r_badge_type_id' => 0, 'id' => 1, 'title' => 2, 'description' => 3, 'created_at' => 4, 'updated_at' => 5, 'sortable_rank' => 6, 'archived_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -121,10 +118,10 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PRBadgeMetalPeer::getFieldNames($toType);
-        $key = isset(PRBadgeMetalPeer::$fieldKeys[$fromType][$name]) ? PRBadgeMetalPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PRBadgeFamilyArchivePeer::getFieldNames($toType);
+        $key = isset(PRBadgeFamilyArchivePeer::$fieldKeys[$fromType][$name]) ? PRBadgeFamilyArchivePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PRBadgeMetalPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PRBadgeFamilyArchivePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -141,11 +138,11 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PRBadgeMetalPeer::$fieldNames)) {
+        if (!array_key_exists($type, PRBadgeFamilyArchivePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PRBadgeMetalPeer::$fieldNames[$type];
+        return PRBadgeFamilyArchivePeer::$fieldNames[$type];
     }
 
     /**
@@ -157,12 +154,12 @@ abstract class BasePRBadgeMetalPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PRBadgeMetalPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PRBadgeFamilyArchivePeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PRBadgeMetalPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PRBadgeFamilyArchivePeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -180,19 +177,23 @@ abstract class BasePRBadgeMetalPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PRBadgeMetalPeer::ID);
-            $criteria->addSelectColumn(PRBadgeMetalPeer::TITLE);
-            $criteria->addSelectColumn(PRBadgeMetalPeer::DESCRIPTION);
-            $criteria->addSelectColumn(PRBadgeMetalPeer::CREATED_AT);
-            $criteria->addSelectColumn(PRBadgeMetalPeer::UPDATED_AT);
-            $criteria->addSelectColumn(PRBadgeMetalPeer::SORTABLE_RANK);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::P_R_BADGE_TYPE_ID);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::ID);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::TITLE);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::CREATED_AT);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::UPDATED_AT);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::SORTABLE_RANK);
+            $criteria->addSelectColumn(PRBadgeFamilyArchivePeer::ARCHIVED_AT);
         } else {
+            $criteria->addSelectColumn($alias . '.p_r_badge_type_id');
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.sortable_rank');
+            $criteria->addSelectColumn($alias . '.archived_at');
         }
     }
 
@@ -212,21 +213,21 @@ abstract class BasePRBadgeMetalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PRBadgeMetalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PRBadgeFamilyArchivePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PRBadgeMetalPeer::addSelectColumns($criteria);
+            PRBadgeFamilyArchivePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PRBadgeMetalPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PRBadgeFamilyArchivePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -245,7 +246,7 @@ abstract class BasePRBadgeMetalPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PRBadgeMetal
+     * @return PRBadgeFamilyArchive
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -253,7 +254,7 @@ abstract class BasePRBadgeMetalPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PRBadgeMetalPeer::doSelect($critcopy, $con);
+        $objects = PRBadgeFamilyArchivePeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -271,7 +272,7 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PRBadgeMetalPeer::populateObjects(PRBadgeMetalPeer::doSelectStmt($criteria, $con));
+        return PRBadgeFamilyArchivePeer::populateObjects(PRBadgeFamilyArchivePeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -289,16 +290,16 @@ abstract class BasePRBadgeMetalPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PRBadgeMetalPeer::addSelectColumns($criteria);
+            PRBadgeFamilyArchivePeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PRBadgeMetalPeer::DATABASE_NAME);
+        $criteria->setDbName(PRBadgeFamilyArchivePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -312,7 +313,7 @@ abstract class BasePRBadgeMetalPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PRBadgeMetal $obj A PRBadgeMetal object.
+     * @param PRBadgeFamilyArchive $obj A PRBadgeFamilyArchive object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -321,7 +322,7 @@ abstract class BasePRBadgeMetalPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PRBadgeMetalPeer::$instances[$key] = $obj;
+            PRBadgeFamilyArchivePeer::$instances[$key] = $obj;
         }
     }
 
@@ -333,7 +334,7 @@ abstract class BasePRBadgeMetalPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PRBadgeMetal object or a primary key value.
+     * @param      mixed $value A PRBadgeFamilyArchive object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -341,17 +342,17 @@ abstract class BasePRBadgeMetalPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PRBadgeMetal) {
+            if (is_object($value) && $value instanceof PRBadgeFamilyArchive) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PRBadgeMetal object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PRBadgeFamilyArchive object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PRBadgeMetalPeer::$instances[$key]);
+            unset(PRBadgeFamilyArchivePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -362,14 +363,14 @@ abstract class BasePRBadgeMetalPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PRBadgeMetal Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PRBadgeFamilyArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PRBadgeMetalPeer::$instances[$key])) {
-                return PRBadgeMetalPeer::$instances[$key];
+            if (isset(PRBadgeFamilyArchivePeer::$instances[$key])) {
+                return PRBadgeFamilyArchivePeer::$instances[$key];
             }
         }
 
@@ -384,22 +385,19 @@ abstract class BasePRBadgeMetalPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PRBadgeMetalPeer::$instances as $instance) {
+        foreach (PRBadgeFamilyArchivePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PRBadgeMetalPeer::$instances = array();
+        PRBadgeFamilyArchivePeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_r_badge_metal
+     * Method to invalidate the instance pool of all tables related to p_r_badge_family_archive
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PRBadgePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PRBadgePeer::clearInstancePool();
     }
 
     /**
@@ -415,11 +413,11 @@ abstract class BasePRBadgeMetalPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null) {
+        if ($row[$startcol + 1] === null) {
             return null;
         }
 
-        return (string) $row[$startcol];
+        return (string) $row[$startcol + 1];
     }
 
     /**
@@ -434,7 +432,7 @@ abstract class BasePRBadgeMetalPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return (int) $row[$startcol + 1];
     }
 
     /**
@@ -449,11 +447,11 @@ abstract class BasePRBadgeMetalPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PRBadgeMetalPeer::getOMClass();
+        $cls = PRBadgeFamilyArchivePeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PRBadgeMetalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PRBadgeMetalPeer::getInstanceFromPool($key))) {
+            $key = PRBadgeFamilyArchivePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PRBadgeFamilyArchivePeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -462,7 +460,7 @@ abstract class BasePRBadgeMetalPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PRBadgeMetalPeer::addInstanceToPool($obj, $key);
+                PRBadgeFamilyArchivePeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -476,21 +474,21 @@ abstract class BasePRBadgeMetalPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PRBadgeMetal object, last column rank)
+     * @return array (PRBadgeFamilyArchive object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PRBadgeMetalPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PRBadgeMetalPeer::getInstanceFromPool($key))) {
+        $key = PRBadgeFamilyArchivePeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PRBadgeFamilyArchivePeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PRBadgeMetalPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PRBadgeFamilyArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PRBadgeMetalPeer::getOMClass($row, $startcol);
+            $cls = PRBadgeFamilyArchivePeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PRBadgeMetalPeer::addInstanceToPool($obj, $key);
+            PRBadgeFamilyArchivePeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -505,7 +503,7 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PRBadgeMetalPeer::DATABASE_NAME)->getTable(PRBadgeMetalPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PRBadgeFamilyArchivePeer::DATABASE_NAME)->getTable(PRBadgeFamilyArchivePeer::TABLE_NAME);
     }
 
     /**
@@ -513,9 +511,9 @@ abstract class BasePRBadgeMetalPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePRBadgeMetalPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePRBadgeMetalPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PRBadgeMetalTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePRBadgeFamilyArchivePeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePRBadgeFamilyArchivePeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PRBadgeFamilyArchiveTableMap());
       }
     }
 
@@ -528,19 +526,19 @@ abstract class BasePRBadgeMetalPeer
     public static function getOMClass($row = 0, $colnum = 0)
     {
 
-        $event = new DetectOMClassEvent(PRBadgeMetalPeer::OM_CLASS, $row, $colnum);
+        $event = new DetectOMClassEvent(PRBadgeFamilyArchivePeer::OM_CLASS, $row, $colnum);
         EventDispatcherProxy::trigger('om.detect', $event);
         if($event->isDetected()){
             return $event->getDetectedClass();
         }
 
-        return PRBadgeMetalPeer::OM_CLASS;
+        return PRBadgeFamilyArchivePeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PRBadgeMetal or Criteria object.
+     * Performs an INSERT on the database, given a PRBadgeFamilyArchive or Criteria object.
      *
-     * @param      mixed $values Criteria or PRBadgeMetal object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PRBadgeFamilyArchive object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -549,22 +547,18 @@ abstract class BasePRBadgeMetalPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PRBadgeMetal object
-        }
-
-        if ($criteria->containsKey(PRBadgeMetalPeer::ID) && $criteria->keyContainsValue(PRBadgeMetalPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PRBadgeMetalPeer::ID.')');
+            $criteria = $values->buildCriteria(); // build Criteria from PRBadgeFamilyArchive object
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PRBadgeMetalPeer::DATABASE_NAME);
+        $criteria->setDbName(PRBadgeFamilyArchivePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -581,9 +575,9 @@ abstract class BasePRBadgeMetalPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PRBadgeMetal or Criteria object.
+     * Performs an UPDATE on the database, given a PRBadgeFamilyArchive or Criteria object.
      *
-     * @param      mixed $values Criteria or PRBadgeMetal object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PRBadgeFamilyArchive object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -592,35 +586,35 @@ abstract class BasePRBadgeMetalPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PRBadgeFamilyArchivePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PRBadgeMetalPeer::ID);
-            $value = $criteria->remove(PRBadgeMetalPeer::ID);
+            $comparison = $criteria->getComparison(PRBadgeFamilyArchivePeer::ID);
+            $value = $criteria->remove(PRBadgeFamilyArchivePeer::ID);
             if ($value) {
-                $selectCriteria->add(PRBadgeMetalPeer::ID, $value, $comparison);
+                $selectCriteria->add(PRBadgeFamilyArchivePeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PRBadgeMetalPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PRBadgeFamilyArchivePeer::TABLE_NAME);
             }
 
-        } else { // $values is PRBadgeMetal object
+        } else { // $values is PRBadgeFamilyArchive object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PRBadgeMetalPeer::DATABASE_NAME);
+        $criteria->setDbName(PRBadgeFamilyArchivePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_r_badge_metal table.
+     * Deletes all rows from the p_r_badge_family_archive table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -629,19 +623,19 @@ abstract class BasePRBadgeMetalPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PRBadgeMetalPeer::TABLE_NAME, $con, PRBadgeMetalPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PRBadgeFamilyArchivePeer::TABLE_NAME, $con, PRBadgeFamilyArchivePeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PRBadgeMetalPeer::clearInstancePool();
-            PRBadgeMetalPeer::clearRelatedInstancePool();
+            PRBadgeFamilyArchivePeer::clearInstancePool();
+            PRBadgeFamilyArchivePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -652,9 +646,9 @@ abstract class BasePRBadgeMetalPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PRBadgeMetal or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PRBadgeFamilyArchive or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PRBadgeMetal object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PRBadgeFamilyArchive object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -665,32 +659,32 @@ abstract class BasePRBadgeMetalPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PRBadgeMetalPeer::clearInstancePool();
+            PRBadgeFamilyArchivePeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PRBadgeMetal) { // it's a model object
+        } elseif ($values instanceof PRBadgeFamilyArchive) { // it's a model object
             // invalidate the cache for this single object
-            PRBadgeMetalPeer::removeInstanceFromPool($values);
+            PRBadgeFamilyArchivePeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
-            $criteria->add(PRBadgeMetalPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PRBadgeFamilyArchivePeer::DATABASE_NAME);
+            $criteria->add(PRBadgeFamilyArchivePeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PRBadgeMetalPeer::removeInstanceFromPool($singleval);
+                PRBadgeFamilyArchivePeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PRBadgeMetalPeer::DATABASE_NAME);
+        $criteria->setDbName(PRBadgeFamilyArchivePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -700,7 +694,7 @@ abstract class BasePRBadgeMetalPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PRBadgeMetalPeer::clearRelatedInstancePool();
+            PRBadgeFamilyArchivePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -711,13 +705,13 @@ abstract class BasePRBadgeMetalPeer
     }
 
     /**
-     * Validates all modified columns of given PRBadgeMetal object.
+     * Validates all modified columns of given PRBadgeFamilyArchive object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PRBadgeMetal $obj The object to validate.
+     * @param PRBadgeFamilyArchive $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -727,8 +721,8 @@ abstract class BasePRBadgeMetalPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PRBadgeMetalPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PRBadgeMetalPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PRBadgeFamilyArchivePeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PRBadgeFamilyArchivePeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -744,7 +738,7 @@ abstract class BasePRBadgeMetalPeer
 
         }
 
-        return BasePeer::doValidate(PRBadgeMetalPeer::DATABASE_NAME, PRBadgeMetalPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PRBadgeFamilyArchivePeer::DATABASE_NAME, PRBadgeFamilyArchivePeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -752,23 +746,23 @@ abstract class BasePRBadgeMetalPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PRBadgeMetal
+     * @return PRBadgeFamilyArchive
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PRBadgeMetalPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PRBadgeFamilyArchivePeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
-        $criteria->add(PRBadgeMetalPeer::ID, $pk);
+        $criteria = new Criteria(PRBadgeFamilyArchivePeer::DATABASE_NAME);
+        $criteria->add(PRBadgeFamilyArchivePeer::ID, $pk);
 
-        $v = PRBadgeMetalPeer::doSelect($criteria, $con);
+        $v = PRBadgeFamilyArchivePeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -778,172 +772,32 @@ abstract class BasePRBadgeMetalPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PRBadgeMetal[]
+     * @return PRBadgeFamilyArchive[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeFamilyArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
-            $criteria->add(PRBadgeMetalPeer::ID, $pks, Criteria::IN);
-            $objs = PRBadgeMetalPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PRBadgeFamilyArchivePeer::DATABASE_NAME);
+            $criteria->add(PRBadgeFamilyArchivePeer::ID, $pks, Criteria::IN);
+            $objs = PRBadgeFamilyArchivePeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-    // sortable behavior
-
-    /**
-     * Get the highest rank
-     *
-     * @param     PropelPDO optional connection
-     *
-     * @return    integer highest position
-     */
-    public static function getMaxRank(PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        // shift the objects with a position lower than the one of object
-        $c = new Criteria();
-        $c->addSelectColumn('MAX(' . PRBadgeMetalPeer::RANK_COL . ')');
-        $stmt = PRBadgeMetalPeer::doSelectStmt($c, $con);
-
-        return $stmt->fetchColumn();
-    }
-
-    /**
-     * Get an item from the list based on its rank
-     *
-     * @param     integer   $rank rank
-     * @param     PropelPDO $con optional connection
-     *
-     * @return PRBadgeMetal
-     */
-    public static function retrieveByRank($rank, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-
-        $c = new Criteria;
-        $c->add(PRBadgeMetalPeer::RANK_COL, $rank);
-
-        return PRBadgeMetalPeer::doSelectOne($c, $con);
-    }
-
-    /**
-     * Reorder a set of sortable objects based on a list of id/position
-     * Beware that there is no check made on the positions passed
-     * So incoherent positions will result in an incoherent list
-     *
-     * @param     array     $order id => rank pairs
-     * @param     PropelPDO $con   optional connection
-     *
-     * @return    boolean true if the reordering took place, false if a database problem prevented it
-     */
-    public static function reorder(array $order, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-
-        $con->beginTransaction();
-        try {
-            $ids = array_keys($order);
-            $objects = PRBadgeMetalPeer::retrieveByPKs($ids);
-            foreach ($objects as $object) {
-                $pk = $object->getPrimaryKey();
-                if ($object->getSortableRank() != $order[$pk]) {
-                    $object->setSortableRank($order[$pk]);
-                    $object->save($con);
-                }
-            }
-            $con->commit();
-
-            return true;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Return an array of sortable objects ordered by position
-     *
-     * @param     Criteria  $criteria  optional criteria object
-     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
-     * @param     PropelPDO $con       optional connection
-     *
-     * @return    array list of sortable objects
-     */
-    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-
-        if ($criteria === null) {
-            $criteria = new Criteria();
-        } elseif ($criteria instanceof Criteria) {
-            $criteria = clone $criteria;
-        }
-
-        $criteria->clearOrderByColumns();
-
-        if ($order == Criteria::ASC) {
-            $criteria->addAscendingOrderByColumn(PRBadgeMetalPeer::RANK_COL);
-        } else {
-            $criteria->addDescendingOrderByColumn(PRBadgeMetalPeer::RANK_COL);
-        }
-
-        return PRBadgeMetalPeer::doSelect($criteria, $con);
-    }
-
-    /**
-     * Adds $delta to all Rank values that are >= $first and <= $last.
-     * '$delta' can also be negative.
-     *
-     * @param      int $delta Value to be shifted by, can be negative
-     * @param      int $first First node to be shifted
-     * @param      int $last  Last node to be shifted
-     * @param      PropelPDO $con Connection to use.
-     */
-    public static function shiftRank($delta, $first = null, $last = null, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
-        }
-
-        $whereCriteria = PRBadgeMetalQuery::create();
-        if (null !== $first) {
-            $whereCriteria->add(PRBadgeMetalPeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
-        }
-        if (null !== $last) {
-            $whereCriteria->addAnd(PRBadgeMetalPeer::RANK_COL, $last, Criteria::LESS_EQUAL);
-        }
-
-        $valuesCriteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
-        $valuesCriteria->add(PRBadgeMetalPeer::RANK_COL, array('raw' => PRBadgeMetalPeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
-
-        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
-        PRBadgeMetalPeer::clearInstancePool();
-    }
-
-} // BasePRBadgeMetalPeer
+} // BasePRBadgeFamilyArchivePeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePRBadgeMetalPeer::buildTableMap();
+BasePRBadgeFamilyArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePRBadgeMetalPeer'));
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePRBadgeFamilyArchivePeer'));

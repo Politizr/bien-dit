@@ -961,14 +961,11 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Sum user's "score_evolution" in PUReputation
      *
+     * @param \DateTime $fromAt
      * @return integer
      */
-    public function getReputationScore(\PropelPDO $con = null)
+    public function getReputationScore($fromAt = null)
     {
-        if ($con === null) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        }
-
         $sql = "
     SELECT SUM(score_evolution) as score
     FROM p_u_reputation
@@ -976,6 +973,11 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     WHERE p_u_reputation.p_user_id = ?
     ";
 
+        if ($fromAt) {
+            $sql .= sprintf("AND p_u_reputation.created_at >= '%s'", $fromAt->format('Y-m-d H:i:s'));
+        }
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($sql);
         $stmt->bindValue(1, $this->getId(), \PDO::PARAM_INT);
         $stmt->execute();

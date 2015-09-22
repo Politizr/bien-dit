@@ -21,15 +21,13 @@ class PRBadgeType extends BasePRBadgeType
 
     /**
      *
-     * @param boolean $online
      * @return PropelCollection[PRBadge]
      */
-    public function getBadges($online = true)
+    public function getBadgeFamilies()
     {
-        $query = PRBadgeQuery::create()
-            ->filterIfOnline($online)
-            ->orderByTitle();
+        $query = PRBadgeFamilyQuery::create()
+            ->orderByRank();
 
-        return parent::getPRBadges($query);
+        return parent::getPRBadgeFamilies($query);
     }
 }

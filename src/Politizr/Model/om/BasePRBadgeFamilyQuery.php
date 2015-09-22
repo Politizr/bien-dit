@@ -16,56 +16,68 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PRBadge;
-use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PRBadgeMetalPeer;
-use Politizr\Model\PRBadgeMetalQuery;
+use Politizr\Model\PRBadgeFamily;
+use Politizr\Model\PRBadgeFamilyPeer;
+use Politizr\Model\PRBadgeFamilyQuery;
+use Politizr\Model\PRBadgeType;
 
 /**
- * @method PRBadgeMetalQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PRBadgeMetalQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method PRBadgeMetalQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PRBadgeMetalQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PRBadgeMetalQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method PRBadgeMetalQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
+ * @method PRBadgeFamilyQuery orderByPRBadgeTypeId($order = Criteria::ASC) Order by the p_r_badge_type_id column
+ * @method PRBadgeFamilyQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PRBadgeFamilyQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PRBadgeFamilyQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PRBadgeFamilyQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PRBadgeFamilyQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PRBadgeFamilyQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
- * @method PRBadgeMetalQuery groupById() Group by the id column
- * @method PRBadgeMetalQuery groupByTitle() Group by the title column
- * @method PRBadgeMetalQuery groupByDescription() Group by the description column
- * @method PRBadgeMetalQuery groupByCreatedAt() Group by the created_at column
- * @method PRBadgeMetalQuery groupByUpdatedAt() Group by the updated_at column
- * @method PRBadgeMetalQuery groupBySortableRank() Group by the sortable_rank column
+ * @method PRBadgeFamilyQuery groupByPRBadgeTypeId() Group by the p_r_badge_type_id column
+ * @method PRBadgeFamilyQuery groupById() Group by the id column
+ * @method PRBadgeFamilyQuery groupByTitle() Group by the title column
+ * @method PRBadgeFamilyQuery groupByDescription() Group by the description column
+ * @method PRBadgeFamilyQuery groupByCreatedAt() Group by the created_at column
+ * @method PRBadgeFamilyQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PRBadgeFamilyQuery groupBySortableRank() Group by the sortable_rank column
  *
- * @method PRBadgeMetalQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PRBadgeMetalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PRBadgeMetalQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PRBadgeFamilyQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PRBadgeFamilyQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PRBadgeFamilyQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PRBadgeMetalQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
- * @method PRBadgeMetalQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
- * @method PRBadgeMetalQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
+ * @method PRBadgeFamilyQuery leftJoinPRBadgeType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadgeType relation
+ * @method PRBadgeFamilyQuery rightJoinPRBadgeType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadgeType relation
+ * @method PRBadgeFamilyQuery innerJoinPRBadgeType($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadgeType relation
  *
- * @method PRBadgeMetal findOne(PropelPDO $con = null) Return the first PRBadgeMetal matching the query
- * @method PRBadgeMetal findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeMetal matching the query, or a new PRBadgeMetal object populated from the query conditions when no match is found
+ * @method PRBadgeFamilyQuery leftJoinPRBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadge relation
+ * @method PRBadgeFamilyQuery rightJoinPRBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadge relation
+ * @method PRBadgeFamilyQuery innerJoinPRBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PRBadge relation
  *
- * @method PRBadgeMetal findOneByTitle(string $title) Return the first PRBadgeMetal filtered by the title column
- * @method PRBadgeMetal findOneByDescription(string $description) Return the first PRBadgeMetal filtered by the description column
- * @method PRBadgeMetal findOneByCreatedAt(string $created_at) Return the first PRBadgeMetal filtered by the created_at column
- * @method PRBadgeMetal findOneByUpdatedAt(string $updated_at) Return the first PRBadgeMetal filtered by the updated_at column
- * @method PRBadgeMetal findOneBySortableRank(int $sortable_rank) Return the first PRBadgeMetal filtered by the sortable_rank column
+ * @method PRBadgeFamily findOne(PropelPDO $con = null) Return the first PRBadgeFamily matching the query
+ * @method PRBadgeFamily findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeFamily matching the query, or a new PRBadgeFamily object populated from the query conditions when no match is found
  *
- * @method array findById(int $id) Return PRBadgeMetal objects filtered by the id column
- * @method array findByTitle(string $title) Return PRBadgeMetal objects filtered by the title column
- * @method array findByDescription(string $description) Return PRBadgeMetal objects filtered by the description column
- * @method array findByCreatedAt(string $created_at) Return PRBadgeMetal objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PRBadgeMetal objects filtered by the updated_at column
- * @method array findBySortableRank(int $sortable_rank) Return PRBadgeMetal objects filtered by the sortable_rank column
+ * @method PRBadgeFamily findOneByPRBadgeTypeId(int $p_r_badge_type_id) Return the first PRBadgeFamily filtered by the p_r_badge_type_id column
+ * @method PRBadgeFamily findOneByTitle(string $title) Return the first PRBadgeFamily filtered by the title column
+ * @method PRBadgeFamily findOneByDescription(string $description) Return the first PRBadgeFamily filtered by the description column
+ * @method PRBadgeFamily findOneByCreatedAt(string $created_at) Return the first PRBadgeFamily filtered by the created_at column
+ * @method PRBadgeFamily findOneByUpdatedAt(string $updated_at) Return the first PRBadgeFamily filtered by the updated_at column
+ * @method PRBadgeFamily findOneBySortableRank(int $sortable_rank) Return the first PRBadgeFamily filtered by the sortable_rank column
+ *
+ * @method array findByPRBadgeTypeId(int $p_r_badge_type_id) Return PRBadgeFamily objects filtered by the p_r_badge_type_id column
+ * @method array findById(int $id) Return PRBadgeFamily objects filtered by the id column
+ * @method array findByTitle(string $title) Return PRBadgeFamily objects filtered by the title column
+ * @method array findByDescription(string $description) Return PRBadgeFamily objects filtered by the description column
+ * @method array findByCreatedAt(string $created_at) Return PRBadgeFamily objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PRBadgeFamily objects filtered by the updated_at column
+ * @method array findBySortableRank(int $sortable_rank) Return PRBadgeFamily objects filtered by the sortable_rank column
  */
-abstract class BasePRBadgeMetalQuery extends ModelCriteria
+abstract class BasePRBadgeFamilyQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
+    // archivable behavior
+    protected $archiveOnDelete = true;
+
     /**
-     * Initializes internal state of BasePRBadgeMetalQuery object.
+     * Initializes internal state of BasePRBadgeFamilyQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -77,23 +89,23 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PRBadgeMetal';
+            $modelName = 'Politizr\\Model\\PRBadgeFamily';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
         EventDispatcherProxy::trigger(array('construct','query.construct'), new QueryEvent($this));
     }
 
     /**
-     * Returns a new PRBadgeMetalQuery object.
+     * Returns a new PRBadgeFamilyQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PRBadgeMetalQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PRBadgeFamilyQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PRBadgeMetalQuery
+     * @return PRBadgeFamilyQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PRBadgeMetalQuery) {
+        if ($criteria instanceof PRBadgeFamilyQuery) {
             return $criteria;
         }
         $query = new static(null, null, $modelAlias);
@@ -117,19 +129,19 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PRBadgeMetal|PRBadgeMetal[]|mixed the result, formatted by the current formatter
+     * @return   PRBadgeFamily|PRBadgeFamily[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PRBadgeMetalPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PRBadgeFamilyPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeFamilyPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -147,7 +159,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PRBadgeMetal A model object, or null if the key is not found
+     * @return                 PRBadgeFamily A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -162,12 +174,12 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PRBadgeMetal A model object, or null if the key is not found
+     * @return                 PRBadgeFamily A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `created_at`, `updated_at`, `sortable_rank` FROM `p_r_badge_metal` WHERE `id` = :p0';
+        $sql = 'SELECT `p_r_badge_type_id`, `id`, `title`, `description`, `created_at`, `updated_at`, `sortable_rank` FROM `p_r_badge_family` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -178,10 +190,10 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $cls = PRBadgeMetalPeer::getOMClass();
+            $cls = PRBadgeFamilyPeer::getOMClass();
             $obj = new $cls;
             $obj->hydrate($row);
-            PRBadgeMetalPeer::addInstanceToPool($obj, (string) $key);
+            PRBadgeFamilyPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -194,7 +206,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PRBadgeMetal|PRBadgeMetal[]|mixed the result, formatted by the current formatter
+     * @return PRBadgeFamily|PRBadgeFamily[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -215,7 +227,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PRBadgeMetal[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PRBadgeFamily[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -236,12 +248,12 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -249,12 +261,56 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::ID, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the p_r_badge_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPRBadgeTypeId(1234); // WHERE p_r_badge_type_id = 1234
+     * $query->filterByPRBadgeTypeId(array(12, 34)); // WHERE p_r_badge_type_id IN (12, 34)
+     * $query->filterByPRBadgeTypeId(array('min' => 12)); // WHERE p_r_badge_type_id >= 12
+     * $query->filterByPRBadgeTypeId(array('max' => 12)); // WHERE p_r_badge_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPRBadgeType()
+     *
+     * @param     mixed $pRBadgeTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
+     */
+    public function filterByPRBadgeTypeId($pRBadgeTypeId = null, $comparison = null)
+    {
+        if (is_array($pRBadgeTypeId)) {
+            $useMinMax = false;
+            if (isset($pRBadgeTypeId['min'])) {
+                $this->addUsingAlias(PRBadgeFamilyPeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pRBadgeTypeId['max'])) {
+                $this->addUsingAlias(PRBadgeFamilyPeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeFamilyPeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId, $comparison);
     }
 
     /**
@@ -274,18 +330,18 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -296,7 +352,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::ID, $id, $comparison);
     }
 
     /**
@@ -312,7 +368,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByTitle($title = null, $comparison = null)
     {
@@ -325,7 +381,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::TITLE, $title, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::TITLE, $title, $comparison);
     }
 
     /**
@@ -341,7 +397,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByDescription($description = null, $comparison = null)
     {
@@ -354,7 +410,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::DESCRIPTION, $description, $comparison);
     }
 
     /**
@@ -375,18 +431,18 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -397,7 +453,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -418,18 +474,18 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -440,7 +496,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -460,18 +516,18 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function filterBySortableRank($sortableRank = null, $comparison = null)
     {
         if (is_array($sortableRank)) {
             $useMinMax = false;
             if (isset($sortableRank['min'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($sortableRank['max'])) {
-                $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PRBadgeFamilyPeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -482,7 +538,83 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeMetalPeer::SORTABLE_RANK, $sortableRank, $comparison);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::SORTABLE_RANK, $sortableRank, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PRBadgeType object
+     *
+     * @param   PRBadgeType|PropelObjectCollection $pRBadgeType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PRBadgeFamilyQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPRBadgeType($pRBadgeType, $comparison = null)
+    {
+        if ($pRBadgeType instanceof PRBadgeType) {
+            return $this
+                ->addUsingAlias(PRBadgeFamilyPeer::P_R_BADGE_TYPE_ID, $pRBadgeType->getId(), $comparison);
+        } elseif ($pRBadgeType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PRBadgeFamilyPeer::P_R_BADGE_TYPE_ID, $pRBadgeType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPRBadgeType() only accepts arguments of type PRBadgeType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PRBadgeType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
+     */
+    public function joinPRBadgeType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PRBadgeType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PRBadgeType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PRBadgeType relation PRBadgeType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PRBadgeTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePRBadgeTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPRBadgeType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PRBadgeType', '\Politizr\Model\PRBadgeTypeQuery');
     }
 
     /**
@@ -491,14 +623,14 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param   PRBadge|PropelObjectCollection $pRBadge  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PRBadgeMetalQuery The current query, for fluid interface
+     * @return                 PRBadgeFamilyQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPRBadge($pRBadge, $comparison = null)
     {
         if ($pRBadge instanceof PRBadge) {
             return $this
-                ->addUsingAlias(PRBadgeMetalPeer::ID, $pRBadge->getPRBadgeMetalId(), $comparison);
+                ->addUsingAlias(PRBadgeFamilyPeer::ID, $pRBadge->getPRBadgeFamilyId(), $comparison);
         } elseif ($pRBadge instanceof PropelObjectCollection) {
             return $this
                 ->usePRBadgeQuery()
@@ -515,7 +647,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function joinPRBadge($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -562,14 +694,14 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   PRBadgeMetal $pRBadgeMetal Object to remove from the list of results
+     * @param   PRBadgeFamily $pRBadgeFamily Object to remove from the list of results
      *
-     * @return PRBadgeMetalQuery The current query, for fluid interface
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
      */
-    public function prune($pRBadgeMetal = null)
+    public function prune($pRBadgeFamily = null)
     {
-        if ($pRBadgeMetal) {
-            $this->addUsingAlias(PRBadgeMetalPeer::ID, $pRBadgeMetal->getId(), Criteria::NOT_EQUAL);
+        if ($pRBadgeFamily) {
+            $this->addUsingAlias(PRBadgeFamilyPeer::ID, $pRBadgeFamily->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -596,6 +728,14 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     protected function basePreDelete(PropelPDO $con)
     {
         EventDispatcherProxy::trigger(array('delete.pre','query.delete.pre'), new QueryEvent($this));
+        // archivable behavior
+
+        if ($this->archiveOnDelete) {
+            $this->archive($con);
+        } else {
+            $this->archiveOnDelete = true;
+        }
+
         // event behavior
         // placeholder, issue #5
 
@@ -652,31 +792,31 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PRBadgeMetalPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PRBadgeMetalPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PRBadgeFamilyPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PRBadgeMetalPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PRBadgeFamilyPeer::UPDATED_AT);
     }
 
     /**
@@ -684,31 +824,31 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PRBadgeMetalPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PRBadgeFamilyPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PRBadgeMetalPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PRBadgeFamilyPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PRBadgeMetalQuery The current query, for fluid interface
+     * @return     PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PRBadgeMetalPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PRBadgeFamilyPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -749,8 +889,8 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PRBadgeMetalPeer::DATABASE_NAME);
-        $db = Propel::getDB(PRBadgeMetalPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PRBadgeFamilyPeer::DATABASE_NAME);
+        $db = Propel::getDB(PRBadgeFamilyPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {
@@ -835,18 +975,36 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     // sortable behavior
 
     /**
+     * Returns the objects in a certain list, from the list scope
+     *
+     * @param int $scope Scope to determine which objects node to return
+     *
+     * @return PRBadgeFamilyQuery The current query, for fluid interface
+     */
+    public function inList($scope)
+    {
+
+        PRBadgeFamilyPeer::sortableApplyScopeCriteria($this, $scope, 'addUsingAlias');
+
+        return $this;
+    }
+
+    /**
      * Filter the query based on a rank in the list
      *
      * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
+
      *
-     * @return    PRBadgeMetalQuery The current query, for fluid interface
+     * @return    PRBadgeFamilyQuery The current query, for fluid interface
      */
-    public function filterByRank($rank)
+    public function filterByRank($rank, $scope)
     {
 
 
         return $this
-            ->addUsingAlias(PRBadgeMetalPeer::RANK_COL, $rank, Criteria::EQUAL);
+            ->inList($scope)
+            ->addUsingAlias(PRBadgeFamilyPeer::RANK_COL, $rank, Criteria::EQUAL);
     }
 
     /**
@@ -855,20 +1013,20 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      *
      * @param     string $order either Criteria::ASC (default) or Criteria::DESC
      *
-     * @return    PRBadgeMetalQuery The current query, for fluid interface
+     * @return    PRBadgeFamilyQuery The current query, for fluid interface
      */
     public function orderByRank($order = Criteria::ASC)
     {
         $order = strtoupper($order);
         switch ($order) {
             case Criteria::ASC:
-                return $this->addAscendingOrderByColumn($this->getAliasedColName(PRBadgeMetalPeer::RANK_COL));
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(PRBadgeFamilyPeer::RANK_COL));
                 break;
             case Criteria::DESC:
-                return $this->addDescendingOrderByColumn($this->getAliasedColName(PRBadgeMetalPeer::RANK_COL));
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(PRBadgeFamilyPeer::RANK_COL));
                 break;
             default:
-                throw new PropelException('PRBadgeMetalQuery::orderBy() only accepts "asc" or "desc" as argument');
+                throw new PropelException('PRBadgeFamilyQuery::orderBy() only accepts "asc" or "desc" as argument');
         }
     }
 
@@ -876,30 +1034,34 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
      * Get an item from the list based on its rank
      *
      * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
      * @param     PropelPDO $con optional connection
      *
-     * @return    PRBadgeMetal
+     * @return    PRBadgeFamily
      */
-    public function findOneByRank($rank, PropelPDO $con = null)
+    public function findOneByRank($rank, $scope, PropelPDO $con = null)
     {
 
         return $this
-            ->filterByRank($rank)
+            ->filterByRank($rank, $scope)
             ->findOne($con);
     }
 
     /**
-     * Returns the list of objects
+     * Returns a list of objects
      *
+     * @param int $scope Scope to determine which objects node to return
+
      * @param      PropelPDO $con	Connection to use.
      *
      * @return     mixed the list of results, formatted by the current formatter
      */
-    public function findList($con = null)
+    public function findList($scope, $con = null)
     {
 
 
         return $this
+            ->inList($scope)
             ->orderByRank()
             ->find($con);
     }
@@ -907,17 +1069,21 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     /**
      * Get the highest rank
      *
+     * @param int $scope Scope to determine which objects node to return
+
      * @param     PropelPDO optional connection
      *
      * @return    integer highest position
      */
-    public function getMaxRank(PropelPDO $con = null)
+    public function getMaxRank($scope, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+            $con = Propel::getConnection(PRBadgeFamilyPeer::DATABASE_NAME);
         }
         // shift the objects with a position lower than the one of object
-        $this->addSelectColumn('MAX(' . PRBadgeMetalPeer::RANK_COL . ')');
+        $this->addSelectColumn('MAX(' . PRBadgeFamilyPeer::RANK_COL . ')');
+
+        PRBadgeFamilyPeer::sortableApplyScopeCriteria($this, $scope);
         $stmt = $this->doSelect($con);
 
         return $stmt->fetchColumn();
@@ -926,17 +1092,20 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     /**
      * Get the highest rank by a scope with a array format.
      *
+     * @param     int $scope		The scope value as scalar type or array($value1, ...).
+
      * @param     PropelPDO optional connection
      *
      * @return    integer highest position
      */
-    public function getMaxRankArray(PropelPDO $con = null)
+    public function getMaxRankArray($scope, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+            $con = Propel::getConnection(PRBadgeFamilyPeer::DATABASE_NAME);
         }
         // shift the objects with a position lower than the one of object
-        $this->addSelectColumn('MAX(' . PRBadgeMetalPeer::RANK_COL . ')');
+        $this->addSelectColumn('MAX(' . PRBadgeFamilyPeer::RANK_COL . ')');
+        PRBadgeFamilyPeer::sortableApplyScopeCriteria($this, $scope);
         $stmt = $this->doSelect($con);
 
         return $stmt->fetchColumn();
@@ -955,7 +1124,7 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
     public function reorder(array $order, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
+            $con = Propel::getConnection(PRBadgeFamilyPeer::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -976,6 +1145,89 @@ abstract class BasePRBadgeMetalQuery extends ModelCriteria
             $con->rollback();
             throw $e;
         }
+    }
+
+    // archivable behavior
+
+    /**
+     * Copy the data of the objects satisfying the query into PRBadgeFamilyArchive archive objects.
+     * The archived objects are then saved.
+     * If any of the objects has already been archived, the archived object
+     * is updated and not duplicated.
+     * Warning: This termination methods issues 2n+1 queries.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     * @param      Boolean $useLittleMemory	Whether or not to use PropelOnDemandFormatter to retrieve objects.
+     *               Set to false if the identity map matters.
+     *               Set to true (default) to use less memory.
+     *
+     * @return     int the number of archived objects
+     * @throws     PropelException
+     */
+    public function archive($con = null, $useLittleMemory = true)
+    {
+        $totalArchivedObjects = 0;
+        $criteria = clone $this;
+        // prepare the query
+        $criteria->setWith(array());
+        if ($useLittleMemory) {
+            $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgeFamilyPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+        $con->beginTransaction();
+        try {
+            // archive all results one by one
+            foreach ($criteria->find($con) as $object) {
+                $object->archive($con);
+                $totalArchivedObjects++;
+            }
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            throw $e;
+        }
+
+        return $totalArchivedObjects;
+    }
+
+    /**
+     * Enable/disable auto-archiving on delete for the next query.
+     *
+     * @param boolean $archiveOnDelete True if the query must archive deleted objects, false otherwise.
+     */
+    public function setArchiveOnDelete($archiveOnDelete)
+    {
+        $this->archiveOnDelete = $archiveOnDelete;
+    }
+
+    /**
+     * Delete records matching the current query without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
+    }
+
+    /**
+     * Delete all records without archiving them.
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return integer the number of deleted rows
+     */
+    public function deleteAllWithoutArchive($con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->deleteAll($con);
     }
 
     // extend behavior

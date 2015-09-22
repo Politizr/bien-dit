@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_r_badge' table.
+ * This class defines the structure of the 'p_r_badge_family' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PRBadgeTableMap extends TableMap
+class PRBadgeFamilyTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PRBadgeTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PRBadgeFamilyTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,19 +36,18 @@ class PRBadgeTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_r_badge');
-        $this->setPhpName('PRBadge');
-        $this->setClassname('Politizr\\Model\\PRBadge');
+        $this->setName('p_r_badge_family');
+        $this->setPhpName('PRBadgeFamily');
+        $this->setClassname('Politizr\\Model\\PRBadgeFamily');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         // columns
+        $this->addForeignKey('p_r_badge_type_id', 'PRBadgeTypeId', 'INTEGER', 'p_r_badge_type', 'id', true, null, null);
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_r_badge_family_id', 'PRBadgeFamilyId', 'INTEGER', 'p_r_badge_family', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         // validators
     } // initialize()
@@ -58,9 +57,8 @@ class PRBadgeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PRBadgeFamily', 'Politizr\\Model\\PRBadgeFamily', RelationMap::MANY_TO_ONE, array('p_r_badge_family_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PUBadge', 'Politizr\\Model\\PUBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_id', ), 'CASCADE', 'CASCADE', 'PUBadges');
-        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
+        $this->addRelation('PRBadgeType', 'Politizr\\Model\\PRBadgeType', RelationMap::MANY_TO_ONE, array('p_r_badge_type_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_family_id', ), 'CASCADE', 'CASCADE', 'PRBadges');
     } // buildRelations()
 
     /**
@@ -81,20 +79,10 @@ class PRBadgeTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
-            'sluggable' =>  array (
-  'add_cleanup' => 'true',
-  'slug_column' => 'slug',
-  'slug_pattern' => '{title}',
-  'replace_pattern' => '/\\W+/',
-  'replacement' => '-',
-  'separator' => '-',
-  'permanent' => 'false',
-  'scope_column' => '',
-),
             'sortable' =>  array (
   'rank_column' => 'sortable_rank',
   'use_scope' => 'true',
-  'scope_column' => 'p_r_badge_family_id',
+  'scope_column' => 'p_r_badge_type_id',
 ),
             'archivable' =>  array (
   'archive_table' => '',
@@ -113,4 +101,4 @@ class PRBadgeTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PRBadgeTableMap
+} // PRBadgeFamilyTableMap

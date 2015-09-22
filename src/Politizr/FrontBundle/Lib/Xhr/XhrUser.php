@@ -12,11 +12,15 @@ use Politizr\Exception\FormValidationException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 
+use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PUBadgeQuery;
+use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUMandateQuery;
@@ -45,6 +49,7 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
+    private $reputationManager;
     private $timelineService;
     private $globalTools;
     private $logger;
@@ -59,6 +64,7 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
+     * @param @politizr.manager.reputation
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
      * @param @logger
@@ -72,6 +78,7 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
+        $reputationManager,
         $timelineService,
         $globalTools,
         $logger
@@ -89,6 +96,7 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
+        $this->reputationManager = $reputationManager;
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
@@ -631,41 +639,78 @@ class XhrUser
     /**
      * User's reputation listing
      */
-    public function historyActionsList(Request $request)
+    public function reputation(Request $request)
     {
-        $this->logger->info('*** historyActionsList');
+        $this->logger->info('*** reputation');
 
-        // Request arguments
-        $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $order = $request->get('order');
-        $this->logger->info('$order = ' . print_r($order, true));
-        $filters = $request->get('filters');
-        $this->logger->info('$filters = ' . print_r($filters, true));
-
-        // Function process
+        // Récupération user courant
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $historyActions = PUReputationQuery::create()
-                            ->filterByPUserId($user->getId())
-                            ->orderByCreatedAt('desc')
-                            ->limit(10)
-                            ->offset($offset)
-                            ->find();
+        // score de réputation
+        $reputationScore = $user->getReputationScore();
+
+        // badges
+        $badgesType = PRBadgeTypeQuery::create()
+                        ->orderByRank()
+                        ->find();
+
+        // ids des badges du user
+        $badgeIds = array();
+        $badgeIds = PUBadgeQuery::create()
+                        ->filterByPUserId($user->getId())
+                        ->find()
+                        ->toKeyValue('PRBadgeId', 'PRBadgeId');
+        $badgeIds = array_keys($badgeIds);
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:glListHistoryActions.html.twig',
+            'PolitizrFrontBundle:Reputation:_detail.html.twig',
             array(
-                'historyActions' => $historyActions,
-                'offset' => intval($offset) + 10,
-                )
+                'reputationScore' => $reputationScore,
+                'badgesType' => $badgesType,
+                'badgeIds' => $badgeIds,
+            )
         );
 
         return array(
             'html' => $html,
             );
     }
+
+    /**
+     * User's reputation evolution datas for chart JS
+     * Diplay the (max) last 30 actions 
+     * @todo smart management of startAt argument?
+     */
+    public function reputationEvolution(Request $request)
+    {
+        $this->logger->info('*** reputationEvolution');
+
+        // Request arguments
+        $startAt = $request->get('startAt');
+        $this->logger->info('$startAt = ' . print_r($startAt, true));
+        $startAt = new \DateTime($startAt);
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $evolution = $this->reputationManager->getUserReputationEvolution($user->getId());
+
+        $score = 0;
+        $labels = [];
+        $data = [];
+        foreach ($evolution as $step) {
+            $createdAt = new \DateTime($step['CreatedAt']);
+            $labels[] = $createdAt->format('d/m/Y H:i');
+
+            $score += $step['action.ScoreEvolution'];
+            $data[] = $score;
+        }
+
+        return array(
+            'labels' => $labels,
+            'data' => $data,
+            );
+    }
+
 
     /* ######################################################################################################## */
     /*                                                TIMELINE                                                  */

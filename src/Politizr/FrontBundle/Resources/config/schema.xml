@@ -43,22 +43,42 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_r_badge_family_id" />
+        </behavior>
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_r_badge_family_id" type="integer" required="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_r_badge_family" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_badge_family_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_r_badge_family">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_r_badge_type_id" />
+        </behavior>
+        <behavior name="archivable" />
+
         <column name="p_r_badge_type_id" type="integer" required="true" />
-        <column name="p_r_badge_metal_id" type="integer" required="true" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
 
-        <column name="online" type="boolean" />
-
         <foreign-key foreignTable="p_r_badge_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_type_id" foreign="id" />
-        </foreign-key>
-        <foreign-key foreignTable="p_r_badge_metal" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_r_badge_metal_id" foreign="id" />
         </foreign-key>
     </table>
 
@@ -66,25 +86,13 @@
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="sortable" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
     </table>
-
-    <table name="p_r_badge_metal">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        <behavior name="sortable" />
-        
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        
-        <column name="title" type="varchar" size="150" />
-        <column name="description" type="longvarchar" />
-    </table>
-
-
 
 
 

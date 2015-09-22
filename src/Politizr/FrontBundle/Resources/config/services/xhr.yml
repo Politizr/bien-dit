@@ -72,6 +72,7 @@ services:
             - @form.factory
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user
+            - @politizr.manager.reputation
             - @politizr.functional.timeline
             - @politizr.tools.global
             - @logger

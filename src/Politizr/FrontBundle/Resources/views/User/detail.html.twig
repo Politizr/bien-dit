@@ -35,10 +35,12 @@
         <div id="profileHeader">
             <div class="pad40">
                 <div id="profileSummaryHeader">
-                    <div id="profileReputationCounter" action="modalOpen">
-                        <i class="iconCup"></i>
-                        {{ user.reputationScore }} points de réputation
-                    </div>
+                    {% if not user.qualified %}
+                        <div id="profileReputationCounter" action="modalOpen">
+                            <i class="iconCup"></i>
+                            {{ user.reputationScore }} points de réputation
+                        </div>
+                    {% endif %}
                     <div id="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
                         {{ user.countFollowers }} abonnés
                     </div>

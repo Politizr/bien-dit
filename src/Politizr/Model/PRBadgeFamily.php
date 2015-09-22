@@ -2,13 +2,13 @@
 
 namespace Politizr\Model;
 
-use Politizr\Model\om\BasePRBadgeMetal;
+use Politizr\Model\om\BasePRBadgeFamily;
 
 /**
  *
  * @author Lionel Bouzonville
  */
-class PRBadgeMetal extends BasePRBadgeMetal
+class PRBadgeFamily extends BasePRBadgeFamily
 {
     /**
      *
@@ -28,7 +28,7 @@ class PRBadgeMetal extends BasePRBadgeMetal
     {
         $query = PRBadgeQuery::create()
             ->filterIfOnline($online)
-            ->orderByTitle();
+            ->orderByRank();
 
         return parent::getPRBadges($query);
     }

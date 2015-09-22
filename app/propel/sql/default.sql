@@ -124,26 +124,43 @@ DROP TABLE IF EXISTS `p_r_badge`;
 CREATE TABLE `p_r_badge`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_r_badge_type_id` INTEGER NOT NULL,
-    `p_r_badge_metal_id` INTEGER NOT NULL,
+    `p_r_badge_family_id` INTEGER NOT NULL,
     `title` VARCHAR(150),
-    `description` TEXT,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_r_badge_slug` (`slug`(255)),
-    INDEX `p_r_badge_FI_1` (`p_r_badge_type_id`),
-    INDEX `p_r_badge_FI_2` (`p_r_badge_metal_id`),
+    INDEX `p_r_badge_FI_1` (`p_r_badge_family_id`),
     CONSTRAINT `p_r_badge_FK_1`
+        FOREIGN KEY (`p_r_badge_family_id`)
+        REFERENCES `p_r_badge_family` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_family
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_family`;
+
+CREATE TABLE `p_r_badge_family`
+(
+    `p_r_badge_type_id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    INDEX `p_r_badge_family_FI_1` (`p_r_badge_type_id`),
+    CONSTRAINT `p_r_badge_family_FK_1`
         FOREIGN KEY (`p_r_badge_type_id`)
         REFERENCES `p_r_badge_type` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_r_badge_FK_2`
-        FOREIGN KEY (`p_r_badge_metal_id`)
-        REFERENCES `p_r_badge_metal` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -155,23 +172,6 @@ CREATE TABLE `p_r_badge`
 DROP TABLE IF EXISTS `p_r_badge_type`;
 
 CREATE TABLE `p_r_badge_type`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(150),
-    `description` TEXT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `sortable_rank` INTEGER,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_r_badge_metal
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_r_badge_metal`;
-
-CREATE TABLE `p_r_badge_metal`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150),
@@ -1255,19 +1255,55 @@ DROP TABLE IF EXISTS `p_r_badge_archive`;
 CREATE TABLE `p_r_badge_archive`
 (
     `id` INTEGER NOT NULL,
-    `p_r_badge_type_id` INTEGER NOT NULL,
-    `p_r_badge_metal_id` INTEGER NOT NULL,
+    `p_r_badge_family_id` INTEGER NOT NULL,
     `title` VARCHAR(150),
-    `description` TEXT,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_r_badge_archive_I_1` (`p_r_badge_type_id`),
-    INDEX `p_r_badge_archive_I_2` (`p_r_badge_metal_id`),
-    INDEX `p_r_badge_archive_I_3` (`slug`(255))
+    INDEX `p_r_badge_archive_I_1` (`p_r_badge_family_id`),
+    INDEX `p_r_badge_archive_I_2` (`slug`(255))
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_family_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_family_archive`;
+
+CREATE TABLE `p_r_badge_family_archive`
+(
+    `p_r_badge_type_id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_r_badge_family_archive_I_1` (`p_r_badge_type_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_type_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_type_archive`;
+
+CREATE TABLE `p_r_badge_type_archive`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

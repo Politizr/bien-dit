@@ -31,6 +31,12 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/chart.min.js') }}"></script>
+{% endblock %}
+
 {% block wrapper %}
     <div class="wrapper">
         {% block header %}
@@ -70,10 +76,11 @@
     
     {% include 'PolitizrFrontBundle:JS\\Notification:display.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\Follow:subscribe.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\PaginatedList:opening.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Modal:opening.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\PaginatedList:loading.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\PaginatedList:search.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\Tag:search.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\Monitoring:abuse.js.twig' %}
+    {% include 'PolitizrFrontBundle:JS\\Reputation:reputation.js.twig' %}
 
 {% endblock javascriptFooter %}

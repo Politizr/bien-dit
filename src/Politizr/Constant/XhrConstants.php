@@ -75,6 +75,8 @@ class XhrConstants
     const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
     const ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
     const ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
+    const ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
+    const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';

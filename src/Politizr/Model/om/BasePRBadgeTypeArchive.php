@@ -10,31 +10,27 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
-use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\ModelEvent;
-use Politizr\Model\PRBadge;
-use Politizr\Model\PRBadgeMetal;
-use Politizr\Model\PRBadgeMetalPeer;
-use Politizr\Model\PRBadgeMetalQuery;
-use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PRBadgeTypeArchive;
+use Politizr\Model\PRBadgeTypeArchivePeer;
+use Politizr\Model\PRBadgeTypeArchiveQuery;
 
-abstract class BasePRBadgeMetal extends BaseObject implements Persistent
+abstract class BasePRBadgeTypeArchive extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PRBadgeMetalPeer';
+    const PEER = 'Politizr\\Model\\PRBadgeTypeArchivePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PRBadgeMetalPeer
+     * @var        PRBadgeTypeArchivePeer
      */
     protected static $peer;
 
@@ -81,10 +77,10 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
     protected $sortable_rank;
 
     /**
-     * @var        PropelObjectCollection|PRBadge[] Collection to store aggregation of PRBadge objects.
+     * The value for the archived_at field.
+     * @var        string
      */
-    protected $collPRBadges;
-    protected $collPRBadgesPartial;
+    protected $archived_at;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -105,20 +101,6 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    // sortable behavior
-
-    /**
-     * Queries to be executed in the save transaction
-     * @var        array
-     */
-    protected $sortableQueries = array();
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pRBadgesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -250,10 +232,50 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [archived_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getArchivedAt($format = null)
+    {
+        if ($this->archived_at === null) {
+            return null;
+        }
+
+        if ($this->archived_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->archived_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->archived_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -263,7 +285,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PRBadgeMetalPeer::ID;
+            $this->modifiedColumns[] = PRBadgeTypeArchivePeer::ID;
         }
 
 
@@ -274,7 +296,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * Set the value of [title] column.
      *
      * @param  string $v new value
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setTitle($v)
     {
@@ -284,7 +306,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
 
         if ($this->title !== $v) {
             $this->title = $v;
-            $this->modifiedColumns[] = PRBadgeMetalPeer::TITLE;
+            $this->modifiedColumns[] = PRBadgeTypeArchivePeer::TITLE;
         }
 
 
@@ -295,7 +317,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * Set the value of [description] column.
      *
      * @param  string $v new value
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -305,7 +327,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
 
         if ($this->description !== $v) {
             $this->description = $v;
-            $this->modifiedColumns[] = PRBadgeMetalPeer::DESCRIPTION;
+            $this->modifiedColumns[] = PRBadgeTypeArchivePeer::DESCRIPTION;
         }
 
 
@@ -317,7 +339,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -327,7 +349,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PRBadgeMetalPeer::CREATED_AT;
+                $this->modifiedColumns[] = PRBadgeTypeArchivePeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -340,7 +362,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -350,7 +372,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PRBadgeMetalPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PRBadgeTypeArchivePeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -362,7 +384,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * Set the value of [sortable_rank] column.
      *
      * @param  int $v new value
-     * @return PRBadgeMetal The current object (for fluent API support)
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
      */
     public function setSortableRank($v)
     {
@@ -372,12 +394,35 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
 
         if ($this->sortable_rank !== $v) {
             $this->sortable_rank = $v;
-            $this->modifiedColumns[] = PRBadgeMetalPeer::SORTABLE_RANK;
+            $this->modifiedColumns[] = PRBadgeTypeArchivePeer::SORTABLE_RANK;
         }
 
 
         return $this;
     } // setSortableRank()
+
+    /**
+     * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PRBadgeTypeArchive The current object (for fluent API support)
+     */
+    public function setArchivedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->archived_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->archived_at !== null && $tmpDt = new DateTime($this->archived_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->archived_at = $newDateAsString;
+                $this->modifiedColumns[] = PRBadgeTypeArchivePeer::ARCHIVED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setArchivedAt()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -417,6 +462,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->sortable_rank = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->archived_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -426,10 +472,10 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = PRBadgeMetalPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PRBadgeTypeArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PRBadgeMetal object", $e);
+            throw new PropelException("Error populating PRBadgeTypeArchive object", $e);
         }
     }
 
@@ -472,13 +518,13 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PRBadgeTypeArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PRBadgeMetalPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PRBadgeTypeArchivePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -487,8 +533,6 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         $this->hydrate($row, 0, true); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->collPRBadges = null;
 
         } // if (deep)
     }
@@ -510,20 +554,15 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeTypeArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
             EventDispatcherProxy::trigger(array('delete.pre','model.delete.pre'), new ModelEvent($this));
-            $deleteQuery = PRBadgeMetalQuery::create()
+            $deleteQuery = PRBadgeTypeArchiveQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
-            // sortable behavior
-
-            PRBadgeMetalPeer::shiftRank(-1, $this->getSortableRank() + 1, null, $con);
-            PRBadgeMetalPeer::clearInstancePool();
-
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -561,39 +600,21 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PRBadgeTypeArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // sortable behavior
-            $this->processSortableQueries($con);
             // event behavior
             EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
-                // timestampable behavior
-                if (!$this->isColumnModified(PRBadgeMetalPeer::CREATED_AT)) {
-                    $this->setCreatedAt(time());
-                }
-                if (!$this->isColumnModified(PRBadgeMetalPeer::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
-                // sortable behavior
-                if (!$this->isColumnModified(PRBadgeMetalPeer::RANK_COL)) {
-                    $this->setSortableRank(PRBadgeMetalQuery::create()->getMaxRankArray($con) + 1);
-                }
-
                 // event behavior
                 EventDispatcherProxy::trigger('model.insert.pre', new ModelEvent($this));
             } else {
                 $ret = $ret && $this->preUpdate($con);
-                // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PRBadgeMetalPeer::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
                 // event behavior
                 EventDispatcherProxy::trigger(array('update.pre', 'model.update.pre'), new ModelEvent($this));
             }
@@ -611,7 +632,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
                 $this->postSave($con);
                 // event behavior
                 EventDispatcherProxy::trigger('model.save.post', new ModelEvent($this));
-                PRBadgeMetalPeer::addInstanceToPool($this);
+                PRBadgeTypeArchivePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -652,23 +673,6 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->pRBadgesScheduledForDeletion !== null) {
-                if (!$this->pRBadgesScheduledForDeletion->isEmpty()) {
-                    PRBadgeQuery::create()
-                        ->filterByPrimaryKeys($this->pRBadgesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pRBadgesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPRBadges !== null) {
-                foreach ($this->collPRBadges as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -689,33 +693,32 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PRBadgeMetalPeer::ID;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PRBadgeMetalPeer::ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PRBadgeMetalPeer::ID)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PRBadgeMetalPeer::TITLE)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
-        if ($this->isColumnModified(PRBadgeMetalPeer::DESCRIPTION)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
-        if ($this->isColumnModified(PRBadgeMetalPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PRBadgeMetalPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
-        if ($this->isColumnModified(PRBadgeMetalPeer::SORTABLE_RANK)) {
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::SORTABLE_RANK)) {
             $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
+        }
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::ARCHIVED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_r_badge_metal` (%s) VALUES (%s)',
+            'INSERT INTO `p_r_badge_type_archive` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -742,6 +745,9 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
                     case '`sortable_rank`':
                         $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
+                    case '`archived_at`':
+                        $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
+                        break;
                 }
             }
             $stmt->execute();
@@ -749,13 +755,6 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -836,18 +835,10 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = PRBadgeMetalPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = PRBadgeTypeArchivePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collPRBadges !== null) {
-                    foreach ($this->collPRBadges as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
 
             $this->alreadyInValidation = false;
@@ -868,7 +859,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PRBadgeMetalPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PRBadgeTypeArchivePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -902,6 +893,9 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             case 5:
                 return $this->getSortableRank();
                 break;
+            case 6:
+                return $this->getArchivedAt();
+                break;
             default:
                 return null;
                 break;
@@ -919,17 +913,16 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['PRBadgeMetal'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PRBadgeTypeArchive'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PRBadgeMetal'][$this->getPrimaryKey()] = true;
-        $keys = PRBadgeMetalPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PRBadgeTypeArchive'][$this->getPrimaryKey()] = true;
+        $keys = PRBadgeTypeArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
@@ -937,17 +930,13 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
             $keys[5] => $this->getSortableRank(),
+            $keys[6] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->collPRBadges) {
-                $result['PRBadges'] = $this->collPRBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -965,7 +954,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PRBadgeMetalPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PRBadgeTypeArchivePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -999,6 +988,9 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
             case 5:
                 $this->setSortableRank($value);
                 break;
+            case 6:
+                $this->setArchivedAt($value);
+                break;
         } // switch()
     }
 
@@ -1021,7 +1013,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PRBadgeMetalPeer::getFieldNames($keyType);
+        $keys = PRBadgeTypeArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
@@ -1029,6 +1021,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setSortableRank($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setArchivedAt($arr[$keys[6]]);
     }
 
     /**
@@ -1038,14 +1031,15 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
+        $criteria = new Criteria(PRBadgeTypeArchivePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PRBadgeMetalPeer::ID)) $criteria->add(PRBadgeMetalPeer::ID, $this->id);
-        if ($this->isColumnModified(PRBadgeMetalPeer::TITLE)) $criteria->add(PRBadgeMetalPeer::TITLE, $this->title);
-        if ($this->isColumnModified(PRBadgeMetalPeer::DESCRIPTION)) $criteria->add(PRBadgeMetalPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PRBadgeMetalPeer::CREATED_AT)) $criteria->add(PRBadgeMetalPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PRBadgeMetalPeer::UPDATED_AT)) $criteria->add(PRBadgeMetalPeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PRBadgeMetalPeer::SORTABLE_RANK)) $criteria->add(PRBadgeMetalPeer::SORTABLE_RANK, $this->sortable_rank);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::ID)) $criteria->add(PRBadgeTypeArchivePeer::ID, $this->id);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::TITLE)) $criteria->add(PRBadgeTypeArchivePeer::TITLE, $this->title);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::DESCRIPTION)) $criteria->add(PRBadgeTypeArchivePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::CREATED_AT)) $criteria->add(PRBadgeTypeArchivePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::UPDATED_AT)) $criteria->add(PRBadgeTypeArchivePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::SORTABLE_RANK)) $criteria->add(PRBadgeTypeArchivePeer::SORTABLE_RANK, $this->sortable_rank);
+        if ($this->isColumnModified(PRBadgeTypeArchivePeer::ARCHIVED_AT)) $criteria->add(PRBadgeTypeArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
     }
@@ -1060,8 +1054,8 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PRBadgeMetalPeer::DATABASE_NAME);
-        $criteria->add(PRBadgeMetalPeer::ID, $this->id);
+        $criteria = new Criteria(PRBadgeTypeArchivePeer::DATABASE_NAME);
+        $criteria->add(PRBadgeTypeArchivePeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1102,7 +1096,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PRBadgeMetal (or compatible) type.
+     * @param object $copyObj An object of PRBadgeTypeArchive (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1114,24 +1108,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSortableRank($this->getSortableRank());
-
-        if ($deepCopy && !$this->startCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-            // store object hash to prevent cycle
-            $this->startCopy = true;
-
-            foreach ($this->getPRBadges() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPRBadge($relObj->copy($deepCopy));
-                }
-            }
-
-            //unflag object copy
-            $this->startCopy = false;
-        } // if ($deepCopy)
-
+        $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1147,7 +1124,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PRBadgeMetal Clone of current object.
+     * @return PRBadgeTypeArchive Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1167,281 +1144,15 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PRBadgeMetalPeer
+     * @return PRBadgeTypeArchivePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PRBadgeMetalPeer();
+            self::$peer = new PRBadgeTypeArchivePeer();
         }
 
         return self::$peer;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('PRBadge' == $relationName) {
-            $this->initPRBadges();
-        }
-    }
-
-    /**
-     * Clears out the collPRBadges collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PRBadgeMetal The current object (for fluent API support)
-     * @see        addPRBadges()
-     */
-    public function clearPRBadges()
-    {
-        $this->collPRBadges = null; // important to set this to null since that means it is uninitialized
-        $this->collPRBadgesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPRBadges collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPRBadges($v = true)
-    {
-        $this->collPRBadgesPartial = $v;
-    }
-
-    /**
-     * Initializes the collPRBadges collection.
-     *
-     * By default this just sets the collPRBadges collection to an empty array (like clearcollPRBadges());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPRBadges($overrideExisting = true)
-    {
-        if (null !== $this->collPRBadges && !$overrideExisting) {
-            return;
-        }
-        $this->collPRBadges = new PropelObjectCollection();
-        $this->collPRBadges->setModel('PRBadge');
-    }
-
-    /**
-     * Gets an array of PRBadge objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PRBadgeMetal is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PRBadge[] List of PRBadge objects
-     * @throws PropelException
-     */
-    public function getPRBadges($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPRBadges || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPRBadges) {
-                // return empty collection
-                $this->initPRBadges();
-            } else {
-                $collPRBadges = PRBadgeQuery::create(null, $criteria)
-                    ->filterByPRBadgeMetal($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPRBadgesPartial && count($collPRBadges)) {
-                      $this->initPRBadges(false);
-
-                      foreach ($collPRBadges as $obj) {
-                        if (false == $this->collPRBadges->contains($obj)) {
-                          $this->collPRBadges->append($obj);
-                        }
-                      }
-
-                      $this->collPRBadgesPartial = true;
-                    }
-
-                    $collPRBadges->getInternalIterator()->rewind();
-
-                    return $collPRBadges;
-                }
-
-                if ($partial && $this->collPRBadges) {
-                    foreach ($this->collPRBadges as $obj) {
-                        if ($obj->isNew()) {
-                            $collPRBadges[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPRBadges = $collPRBadges;
-                $this->collPRBadgesPartial = false;
-            }
-        }
-
-        return $this->collPRBadges;
-    }
-
-    /**
-     * Sets a collection of PRBadge objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pRBadges A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PRBadgeMetal The current object (for fluent API support)
-     */
-    public function setPRBadges(PropelCollection $pRBadges, PropelPDO $con = null)
-    {
-        $pRBadgesToDelete = $this->getPRBadges(new Criteria(), $con)->diff($pRBadges);
-
-
-        $this->pRBadgesScheduledForDeletion = $pRBadgesToDelete;
-
-        foreach ($pRBadgesToDelete as $pRBadgeRemoved) {
-            $pRBadgeRemoved->setPRBadgeMetal(null);
-        }
-
-        $this->collPRBadges = null;
-        foreach ($pRBadges as $pRBadge) {
-            $this->addPRBadge($pRBadge);
-        }
-
-        $this->collPRBadges = $pRBadges;
-        $this->collPRBadgesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PRBadge objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PRBadge objects.
-     * @throws PropelException
-     */
-    public function countPRBadges(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPRBadges || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPRBadges) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPRBadges());
-            }
-            $query = PRBadgeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPRBadgeMetal($this)
-                ->count($con);
-        }
-
-        return count($this->collPRBadges);
-    }
-
-    /**
-     * Method called to associate a PRBadge object to this object
-     * through the PRBadge foreign key attribute.
-     *
-     * @param    PRBadge $l PRBadge
-     * @return PRBadgeMetal The current object (for fluent API support)
-     */
-    public function addPRBadge(PRBadge $l)
-    {
-        if ($this->collPRBadges === null) {
-            $this->initPRBadges();
-            $this->collPRBadgesPartial = true;
-        }
-
-        if (!in_array($l, $this->collPRBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPRBadge($l);
-
-            if ($this->pRBadgesScheduledForDeletion and $this->pRBadgesScheduledForDeletion->contains($l)) {
-                $this->pRBadgesScheduledForDeletion->remove($this->pRBadgesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PRBadge $pRBadge The pRBadge object to add.
-     */
-    protected function doAddPRBadge($pRBadge)
-    {
-        $this->collPRBadges[]= $pRBadge;
-        $pRBadge->setPRBadgeMetal($this);
-    }
-
-    /**
-     * @param	PRBadge $pRBadge The pRBadge object to remove.
-     * @return PRBadgeMetal The current object (for fluent API support)
-     */
-    public function removePRBadge($pRBadge)
-    {
-        if ($this->getPRBadges()->contains($pRBadge)) {
-            $this->collPRBadges->remove($this->collPRBadges->search($pRBadge));
-            if (null === $this->pRBadgesScheduledForDeletion) {
-                $this->pRBadgesScheduledForDeletion = clone $this->collPRBadges;
-                $this->pRBadgesScheduledForDeletion->clear();
-            }
-            $this->pRBadgesScheduledForDeletion[]= clone $pRBadge;
-            $pRBadge->setPRBadgeMetal(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PRBadgeMetal is new, it will return
-     * an empty collection; or if this PRBadgeMetal has previously
-     * been saved, it will retrieve related PRBadges from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PRBadgeMetal.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PRBadge[] List of PRBadge objects
-     */
-    public function getPRBadgesJoinPRBadgeType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PRBadgeQuery::create(null, $criteria);
-        $query->joinWith('PRBadgeType', $join_behavior);
-
-        return $this->getPRBadges($query, $con);
     }
 
     /**
@@ -1455,6 +1166,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
         $this->created_at = null;
         $this->updated_at = null;
         $this->sortable_rank = null;
+        $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1477,19 +1189,10 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPRBadges) {
-                foreach ($this->collPRBadges as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPRBadges instanceof PropelCollection) {
-            $this->collPRBadges->clearIterator();
-        }
-        $this->collPRBadges = null;
     }
 
     /**
@@ -1499,7 +1202,7 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PRBadgeMetalPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PRBadgeTypeArchivePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1510,371 +1213,6 @@ abstract class BasePRBadgeMetal extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
-    }
-
-    // timestampable behavior
-
-    /**
-     * Mark the current object so that the update date doesn't get updated during next save
-     *
-     * @return     PRBadgeMetal The current object (for fluent API support)
-     */
-    public function keepUpdateDateUnchanged()
-    {
-        $this->modifiedColumns[] = PRBadgeMetalPeer::UPDATED_AT;
-
-        return $this;
-    }
-
-    // sortable behavior
-
-    /**
-     * Wrap the getter for rank value
-     *
-     * @return    int
-     */
-    public function getRank()
-    {
-        return $this->sortable_rank;
-    }
-
-    /**
-     * Wrap the setter for rank value
-     *
-     * @param     int
-     * @return    PRBadgeMetal
-     */
-    public function setRank($v)
-    {
-        return $this->setSortableRank($v);
-    }
-
-    /**
-     * Check if the object is first in the list, i.e. if it has 1 for rank
-     *
-     * @return    boolean
-     */
-    public function isFirst()
-    {
-        return $this->getSortableRank() == 1;
-    }
-
-    /**
-     * Check if the object is last in the list, i.e. if its rank is the highest rank
-     *
-     * @param     PropelPDO  $con      optional connection
-     *
-     * @return    boolean
-     */
-    public function isLast(PropelPDO $con = null)
-    {
-        return $this->getSortableRank() == PRBadgeMetalQuery::create()->getMaxRankArray($con);
-    }
-
-    /**
-     * Get the next item in the list, i.e. the one for which rank is immediately higher
-     *
-     * @param     PropelPDO  $con      optional connection
-     *
-     * @return    PRBadgeMetal
-     */
-    public function getNext(PropelPDO $con = null)
-    {
-
-        $query = PRBadgeMetalQuery::create();
-
-        $query->filterByRank($this->getSortableRank() + 1);
-
-
-        return $query->findOne($con);
-    }
-
-    /**
-     * Get the previous item in the list, i.e. the one for which rank is immediately lower
-     *
-     * @param     PropelPDO  $con      optional connection
-     *
-     * @return    PRBadgeMetal
-     */
-    public function getPrevious(PropelPDO $con = null)
-    {
-
-        $query = PRBadgeMetalQuery::create();
-
-        $query->filterByRank($this->getSortableRank() - 1);
-
-
-        return $query->findOne($con);
-    }
-
-    /**
-     * Insert at specified rank
-     * The modifications are not persisted until the object is saved.
-     *
-     * @param     integer    $rank rank value
-     * @param     PropelPDO  $con      optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     *
-     * @throws    PropelException
-     */
-    public function insertAtRank($rank, PropelPDO $con = null)
-    {
-        $maxRank = PRBadgeMetalQuery::create()->getMaxRankArray($con);
-        if ($rank < 1 || $rank > $maxRank + 1) {
-            throw new PropelException('Invalid rank ' . $rank);
-        }
-        // move the object in the list, at the given rank
-        $this->setSortableRank($rank);
-        if ($rank != $maxRank + 1) {
-            // Keep the list modification query for the save() transaction
-            $this->sortableQueries []= array(
-                'callable'  => array(self::PEER, 'shiftRank'),
-                'arguments' => array(1, $rank, null, )
-            );
-        }
-
-        return $this;
-    }
-
-    /**
-     * Insert in the last rank
-     * The modifications are not persisted until the object is saved.
-     *
-     * @param PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     *
-     * @throws    PropelException
-     */
-    public function insertAtBottom(PropelPDO $con = null)
-    {
-        $this->setSortableRank(PRBadgeMetalQuery::create()->getMaxRankArray($con) + 1);
-
-        return $this;
-    }
-
-    /**
-     * Insert in the first rank
-     * The modifications are not persisted until the object is saved.
-     *
-     * @return    PRBadgeMetal the current object
-     */
-    public function insertAtTop()
-    {
-        return $this->insertAtRank(1);
-    }
-
-    /**
-     * Move the object to a new rank, and shifts the rank
-     * Of the objects inbetween the old and new rank accordingly
-     *
-     * @param     integer   $newRank rank value
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     *
-     * @throws    PropelException
-     */
-    public function moveToRank($newRank, PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            throw new PropelException('New objects cannot be moved. Please use insertAtRank() instead');
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        if ($newRank < 1 || $newRank > PRBadgeMetalQuery::create()->getMaxRankArray($con)) {
-            throw new PropelException('Invalid rank ' . $newRank);
-        }
-
-        $oldRank = $this->getSortableRank();
-        if ($oldRank == $newRank) {
-            return $this;
-        }
-
-        $con->beginTransaction();
-        try {
-            // shift the objects between the old and the new rank
-            $delta = ($oldRank < $newRank) ? -1 : 1;
-            PRBadgeMetalPeer::shiftRank($delta, min($oldRank, $newRank), max($oldRank, $newRank), $con);
-
-            // move the object to its new rank
-            $this->setSortableRank($newRank);
-            $this->save($con);
-
-            $con->commit();
-
-            return $this;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Exchange the rank of the object with the one passed as argument, and saves both objects
-     *
-     * @param     PRBadgeMetal $object
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     *
-     * @throws Exception if the database cannot execute the two updates
-     */
-    public function swapWith($object, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        $con->beginTransaction();
-        try {
-            $oldRank = $this->getSortableRank();
-            $newRank = $object->getSortableRank();
-            $this->setSortableRank($newRank);
-            $this->save($con);
-            $object->setSortableRank($oldRank);
-            $object->save($con);
-            $con->commit();
-
-            return $this;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Move the object higher in the list, i.e. exchanges its rank with the one of the previous object
-     *
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     */
-    public function moveUp(PropelPDO $con = null)
-    {
-        if ($this->isFirst()) {
-            return $this;
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        $con->beginTransaction();
-        try {
-            $prev = $this->getPrevious($con);
-            $this->swapWith($prev, $con);
-            $con->commit();
-
-            return $this;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Move the object higher in the list, i.e. exchanges its rank with the one of the next object
-     *
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     */
-    public function moveDown(PropelPDO $con = null)
-    {
-        if ($this->isLast($con)) {
-            return $this;
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        $con->beginTransaction();
-        try {
-            $next = $this->getNext($con);
-            $this->swapWith($next, $con);
-            $con->commit();
-
-            return $this;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Move the object to the top of the list
-     *
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     */
-    public function moveToTop(PropelPDO $con = null)
-    {
-        if ($this->isFirst()) {
-            return $this;
-        }
-
-        return $this->moveToRank(1, $con);
-    }
-
-    /**
-     * Move the object to the bottom of the list
-     *
-     * @param     PropelPDO $con optional connection
-     *
-     * @return integer the old object's rank
-     */
-    public function moveToBottom(PropelPDO $con = null)
-    {
-        if ($this->isLast($con)) {
-            return false;
-        }
-        if ($con === null) {
-            $con = Propel::getConnection(PRBadgeMetalPeer::DATABASE_NAME);
-        }
-        $con->beginTransaction();
-        try {
-            $bottom = PRBadgeMetalQuery::create()->getMaxRankArray($con);
-            $res = $this->moveToRank($bottom, $con);
-            $con->commit();
-
-            return $res;
-        } catch (Exception $e) {
-            $con->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Removes the current object from the list.
-     * The modifications are not persisted until the object is saved.
-     *
-     * @param     PropelPDO $con optional connection
-     *
-     * @return    PRBadgeMetal the current object
-     */
-    public function removeFromList(PropelPDO $con = null)
-    {
-        // Keep the list modification query for the save() transaction
-        $this->sortableQueries []= array(
-            'callable'  => array(self::PEER, 'shiftRank'),
-            'arguments' => array(-1, $this->getSortableRank() + 1, null)
-        );
-        // remove the object from the list
-        $this->setSortableRank(null);
-
-        return $this;
-    }
-
-    /**
-     * Execute queries that were saved to be run inside the save transaction
-     */
-    protected function processSortableQueries($con)
-    {
-        foreach ($this->sortableQueries as $query) {
-            $query['arguments'][]= $con;
-            call_user_func_array($query['callable'], $query['arguments']);
-        }
-        $this->sortableQueries = array();
     }
 
     // event behavior

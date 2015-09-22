@@ -21,285 +21,252 @@ Politizr\Model\PRBadgeType:
         description:        |
             Badges relatifs aux suivis et abonnements de profils
 
-Politizr\Model\PRBadgeMetal:
-    or:
+Politizr\Model\PRBadgeFamily:
+    # Type débat
+    publicationWithMinNbReactions:
+        p_r_badge_type_id:  debat
         sortable_rank:      1
-        title:              Or
+        title:              Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins plusieurs réactions
         description:        |
-            Niveau or
-    argent:
+            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins %d réactions
+    publicationWithMinNotePlus:
+        p_r_badge_type_id:  debat
         sortable_rank:      2
-        title:              Argent
+        title:              Être l’auteur de plusieurs contenus "débat" ou "réaction" ayant atteint au moins une note positive donnée
         description:        |
-            Niveau argent
-    bronze:
+            Être l’auteur de %d contenus "débat" ou "réaction" ayant obtenu au moins +%d
+    reactionFirstForMinDebates:
+        p_r_badge_type_id:  debat
         sortable_rank:      3
-        title:              Bronze
+        title:              Être l’auteur de la première réaction sur plusieurs débats
         description:        |
-            Niveau bronze
+            Être l’auteur de la première réaction sur %d débats
 
-# Constantes de classe PRBadge à MAJ en parallèle
+    # Type commentaire
+    publishMinNbComments:
+        p_r_badge_type_id:  commentaire
+        sortable_rank:      1
+        title:              Écrire plusieurs commentaires
+        description:        |
+            Écrire %d commentaires
+    commentWithMinNotePlus:
+        p_r_badge_type_id:  commentaire
+        sortable_rank:      2
+        title:              Atteindre un score donné à un de ses commentaires
+        description:        |
+            Atteindre un score de +%d à un de ses commentaires
+
+    # Type participation
+    completeProfileFull:
+        p_r_badge_type_id:  participation
+        sortable_rank:      1
+        title:              Compléter son profil à 100%
+        description:        |
+            Compléter son profil à 100%
+    createMinNewTags:
+        p_r_badge_type_id:  participation
+        sortable_rank:      2
+        title:              Avoir généré plusieurs nouveaux tags
+        description:        |
+            Avoir généré %d nouveaux tags
+    submitMinNbAbusesAsk:
+        p_r_badge_type_id:  participation
+        sortable_rank:      3
+        title:              Avoir fait plusieurs demandes de modération pertinente
+        description:        |
+            Avoir fait %d demandes de modération pertinente
+    putMinNbNotesPlus:
+        p_r_badge_type_id:  participation
+        sortable_rank:      4
+        title:              Avoir attribué plusieurs notes positives
+        description:        |
+            Avoir attribué %d notes positives
+    putMinNbNotesMinus:
+        p_r_badge_type_id:  participation
+        sortable_rank:      5
+        title:              Avoir attribué plusieurs notes négatives
+        description:        |
+            Avoir attribué %d notes négatives
+    visitSiteWithMinNbConsecutiveDays:
+        p_r_badge_type_id:  participation
+        sortable_rank:      6
+        title:              Visiter le site pendant plusieurs jours consécutifs
+        description:        |
+            Visiter le site pendant %d jours consécutifs
+
+    # Type communautaire
+    followMinNbProfiles:
+        p_r_badge_type_id:  communautaire
+        sortable_rank:      1
+        title:              Suivre plusieurs profils
+        description:        |
+            Suivre %d profils
+    followedByMinNbProfiles:
+        p_r_badge_type_id:  communautaire
+        sortable_rank:      2
+        title:              Être suivi par plusieurs profils
+        description:        |
+            Être suivi par %d profils
+    socialShareMinNbContents:
+        p_r_badge_type_id:  communautaire
+        sortable_rank:      3
+        title:              Avoir partagé plusieurs contenus Politizr sur les réseaux sociaux
+        description:        |
+            Avoir partagé %d contenus Politizr sur les réseaux sociaux
+
+# PRBadge
 Politizr\Model\PRBadge:
     # Type débat
     querelle:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: publicationWithMinNbReactions
         title:              Querellé
-        description:        |
-            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     controverse:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: publicationWithMinNbReactions
         title:              Controversé
-        description:        |
-            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     polemique:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: publicationWithMinNbReactions
         title:              Polémiqué
-        description:        |
-            Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
     redacteur:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: publicationWithMinNotePlus
         title:              Rédacteur
-        description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
     auteur:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: publicationWithMinNotePlus
         title:              Auteur
-        description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
     ecrivain:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: publicationWithMinNotePlus
         title:              Écrivain
-        description:        |
-            Être l’auteur de X contenus "débat" ou "réaction" ayant obtenu au moins +X
     eclaireur:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: reactionFirstForMinDebates
         title:              Éclaireur
-        description:        |
-            Être l’auteur de la 1ère réaction sur X débats
     avant-garde:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: reactionFirstForMinDebates
         title:              Avant Garde
-        description:        |
-            Être l’auteur de la 1ère réaction sur X débats
     guide:
         online:             true
-        p_r_badge_type_id:  debat
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: reactionFirstForMinDebates
         title:              Guide
-        description:        |
-            Être l’auteur de la 1ère réaction sur X débats
 
     # Type commentaire
     annotateur:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: publishMinNbComments
         title:              Annotateur
-        description:        |
-            Écrire X commentaires
-    glossateur:
+    bavard:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: argent
-        title:              Glossateur
-        description:        |
-            Écrire X commentaires
+        p_r_badge_family_id: publishMinNbComments
+        title:              Bavard
     commentateur:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: publishMinNbComments
         title:              Commentateur
-        description:        |
-            Écrire X commentaires
     effronté:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: commentWithMinNotePlus
         title:              Effronté
-        description:        |
-            Atteindre un score de +X à un de ses commentaires
     impertinent:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: commentWithMinNotePlus
         title:              Impertinent
-        description:        |
-            Atteindre un score de +X à un de ses commentaires
     audacieux:
         online:             true
-        p_r_badge_type_id:  commentaire
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: commentWithMinNotePlus
         title:              Audacieux
-        description:        |
-            Atteindre un score de +X à un de ses commentaires
-
 
     # Type participation
     studieux:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: completeProfileFull
         title:              Studieux
-        description:        |
-            Compléter son profil à 100%
     tagueur:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: createMinNewTags
         title:              Tagueur
-        description:        |
-            Avoir généré X nouveaux tags
     surveillant:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: submitMinNbAbusesAsk
         title:              Surveillant
-        description:        |
-            Avoir fait X demandes de modération pertinente
     fougueux:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: putMinNbNotesPlus
         title:              Fougueux
-        description:        |
-            Avoir attribué X notes positives
     enthousiaste:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: putMinNbNotesPlus
         title:              Enthousiaste
-        description:        |
-            Avoir attribué X notes positives
     passionné:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: putMinNbNotesPlus
         title:              Passionné
-        description:        |
-            Avoir attribué X notes positives
     persifleur:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: putMinNbNotesMinus
         title:              Persifleur
-        description:        |
-            Avoir attribué X notes négatives
     reprobateur:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: putMinNbNotesMinus
         title:              Réprobateur
-        description:        |
-            Avoir attribué X notes négatives
     critique:
         online:             true
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: putMinNbNotesMinus
         title:              Critique
-        description:        |
-            Avoir attribué X notes négatives
     attentif:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: visitSiteWithMinNbConsecutiveDays
         title:              Attentif
-        description:        |
-            Visiter le site pendant X jours consécutifs
     assidu:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: visitSiteWithMinNbConsecutiveDays
         title:              Assidu
-        description:        |
-            Visiter le site pendant X jours consécutifs
     fidèle:
         online:             false
-        p_r_badge_type_id:  participation
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: visitSiteWithMinNbConsecutiveDays
         title:              Fidèle
-        description:        |
-            Visiter le site pendant X jours consécutifs
 
     # Type communautaire
     suiveur:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: followMinNbProfiles
         title:              Suiveur
-        description:        |
-            Suivre X profils citoyens
     disciple:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: followMinNbProfiles
         title:              Disciple
-        description:        |
-            Suivre X profils citoyens
     inconditionnel:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: followMinNbProfiles
         title:              Inconditionnel
-        description:        |
-            Suivre X profils citoyens
     important:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: followedByMinNbProfiles
         title:              Important
-        description:        |
-            Être suivi par X profils
     influent:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: followedByMinNbProfiles
         title:              Influent
-        description:        |
-            Être suivi par X profils
     incontournable:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: followedByMinNbProfiles
         title:              Incontournable
-        description:        |
-            Être suivi par X profils
     porte-voix:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: bronze
+        p_r_badge_family_id: socialShareMinNbContents
         title:              Porte Voix
-        description:        |
-            Avoir partagé X contenus Politizr sur les réseaux sociaux
     fan:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: argent
+        p_r_badge_family_id: socialShareMinNbContents
         title:              Fan
-        description:        |
-            Avoir partagé X contenus Politizr sur les réseaux sociaux
     ambassadeur:
         online:             true
-        p_r_badge_type_id:  communautaire
-        p_r_badge_metal_id: or
+        p_r_badge_family_id: socialShareMinNbContents
         title:              Ambassadeur
-        description:        |
-            Avoir partagé X contenus Politizr sur les réseaux sociaux
 
 
 # Constantes de classe PRAction à MAJ en parallèle + check si notifications à maj en parallèle
