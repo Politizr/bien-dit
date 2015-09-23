@@ -144,6 +144,9 @@
     $('body').on('click', "[action='debatePublish']", function(e){
         console.log('*** click publish debate');
 
+        // automatic saving before publish
+        $('[action="debateSave"]').trigger('click', 'silence');
+
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_DEBATE_PUBLISH',
             'xhrService': 'document',
@@ -185,6 +188,9 @@
     // Publish reaction
     $('body').on('click', "[action='reactionPublish']", function(e){
         console.log('*** click publish reaction');
+
+        // automatic saving before publish
+        $('[action="reactionSave"]').trigger('click', 'silence');
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_REACTION_PUBLISH',
