@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Constant\ListingConstants;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
 
@@ -226,7 +228,6 @@ class XhrModal
             throw new FormValidationException($error);
         }
 
-        // @todo constant management refactoring
         // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
         $debates = PDDebateQuery::create()
                     ->distinct()
@@ -234,12 +235,12 @@ class XhrModal
                     ->filterByTags($tags)
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -247,7 +248,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateSearchNext'
             )
@@ -277,19 +278,18 @@ class XhrModal
         $session = $request->getSession();
         $tags = $session->get('search/tag');
 
-        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->filterByTags($tags)
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -297,7 +297,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateSearchNext'
                 )
@@ -326,18 +326,17 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
-        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -345,7 +344,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
             )
@@ -370,18 +369,17 @@ class XhrModal
         $offset = $queryParams[2];
 
         // Function process
-        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -389,7 +387,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )
@@ -414,11 +412,10 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        // @todo constant management refactoring
-        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, 10);
+        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
         
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -426,7 +423,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
             )
@@ -451,11 +448,10 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        // @todo constant management refactoring
-        $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, 10);
+        $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
         
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -463,7 +459,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )
@@ -490,7 +486,6 @@ class XhrModal
         $subjectId = $queryParams[3];
 
         // Function process
-        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
@@ -499,12 +494,12 @@ class XhrModal
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -512,7 +507,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
             )
@@ -538,7 +533,6 @@ class XhrModal
         $subjectId = $queryParams[3];
 
         // Function process
-        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -547,12 +541,12 @@ class XhrModal
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -560,7 +554,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )
@@ -586,7 +580,6 @@ class XhrModal
         $subjectId = $queryParams[3];
 
         // Function process
-        // @todo constant management refactoring
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
@@ -599,13 +592,13 @@ class XhrModal
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find()
                     ;
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -613,7 +606,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_users.html.twig',
             array(
                 'users' => $users,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )
@@ -640,7 +633,6 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        // @todo constant management refactoring
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
@@ -649,12 +641,12 @@ class XhrModal
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ->find();
 
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -662,7 +654,7 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
             array(
                 'debates' => $debates,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
             )
@@ -689,20 +681,19 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        // @todo constant management refactoring
         $query = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ;
 
         $users = $user->getSubscribers($query);
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -711,7 +702,7 @@ class XhrModal
             array(
                 'users' => $users,
                 'order' => $order,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )
@@ -739,20 +730,19 @@ class XhrModal
         // Function process
         $user = PUserQuery::create()->findPk($subjectId);
 
-        // @todo constant management refactoring
         $query = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
-                    ->limit(10)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
                     ->offset($offset)
                     ;
 
         $users = $user->getFollowers($query);
 
         $moreResults = false;
-        if (sizeof($users) == 10) {
+        if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -761,7 +751,7 @@ class XhrModal
             array(
                 'users' => $users,
                 'order' => $order,
-                'offset' => intval($offset) + 10,
+                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                 'moreResults' => $moreResults,
                 'paginateNextAction' => 'paginateNext'
                 )

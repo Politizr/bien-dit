@@ -16,6 +16,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\ListingConstants;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -961,10 +962,11 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * Sum user's "score_evolution" in PUReputation
      *
+     * @param int $untilId
      * @param \DateTime $fromAt
      * @return integer
      */
-    public function getReputationScore($fromAt = null)
+    public function getReputationScore($untilId = null, $fromAt = null)
     {
         $sql = "
     SELECT SUM(score_evolution) as score
@@ -973,6 +975,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     WHERE p_u_reputation.p_user_id = ?
     ";
 
+        if ($untilId) {
+            $sql .= sprintf("AND p_u_reputation.id < %s", $untilId);
+        }
         if ($fromAt) {
             $sql .= sprintf("AND p_u_reputation.created_at >= '%s'", $fromAt->format('Y-m-d H:i:s'));
         }
@@ -992,6 +997,54 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $score;
     }
 
+    /**
+     * Get user's reputation evolution as array of (created_at, score_evolution)
+     *
+     * @param int $offset
+     * @return array
+     */
+    public function getArrayReputationEvolution($offset = 0)
+    {
+        // SELECT p_u_reputation.id, p_u_reputation.created_at, p_r_action.score_evolution, p_r_action.title
+        // FROM `p_u_reputation` LEFT JOIN `p_r_action` ON p_u_reputation.p_r_action_id = p_r_action.id
+        // WHERE
+        // `p_user_id` = '1'
+        // LIMIT 30
+
+        // http://stackoverflow.com/questions/19524589/propel-selecting-columns-from-aliased-join-tables
+        $evolutions = PUReputationQuery::create()
+            ->usePRActionQuery('action', 'left join')
+            ->endUse()
+            ->select(array('Id', 'CreatedAt', 'action.ScoreEvolution', 'action.Title'))
+            ->filterByPUserId($this->getId())
+            ->orderByCreatedAt('desc')
+            ->limit(ListingConstants::REPUTATION_CHARTS_PAGINATION)
+            ->offset($offset)
+            ->find()
+            ->toArray();
+
+        return $evolutions;
+    }
+
+    /**
+     * Count user's reputation evolution
+     *
+     * @param int $offset
+     * @return int
+     */
+    public function countReputationEvolution($offset = 0)
+    {
+        $evolutions = PUReputationQuery::create()
+            ->usePRActionQuery('action', 'left join')
+            ->endUse()
+            ->filterByPUserId($this->getId())
+            ->orderByCreatedAt('desc')
+            ->limit(ListingConstants::REPUTATION_CHARTS_PAGINATION)
+            ->offset($offset)
+            ->count();
+
+        return $evolutions;
+    }
 
     // ************************************************************************************ //
     //                                          NOTIFICATIONS

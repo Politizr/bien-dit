@@ -21,7 +21,6 @@
     });
 
     // Page suivante
-    // @todo bug listing "subscriptions" > un désabonnement modifie les retours de la requête et l'offset n'est plus bon
     $("body").on("click", "[action='paginateNext']", function(e) {
         listing(false, $(this).attr('offset'));
     });

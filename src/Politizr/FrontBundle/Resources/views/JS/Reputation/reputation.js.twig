@@ -1,11 +1,26 @@
 <script>
+    // Useful to destroy previous one before creating new chart
+    var globalChartInstance;
+
+    // Pagination
+    $("body").on("click", "[action='paginatePrevChart']", function(e) {
+        reputationCharts($(this).attr('offset'));
+    });
+
+    $("body").on("click", "[action='paginateNextChart']", function(e) {
+        reputationCharts($(this).attr('offset'));
+    });
 
     /**
      * Reputation charts
      * @todo manage scale, next/prev, ...?
+     * @param int offset
      */
-    function reputationCharts() { 
+    function reputationCharts(offset) { 
         console.log('*** reputationCharts');
+        console.log(offset);
+
+        offset = (typeof offset === "undefined") ? 0 : offset;
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_MODAL_REPUTATION',
@@ -14,13 +29,10 @@
             'xhrType': 'RETURN_HTML',
             } only %}";
 
-        lastWeek = getLastWeek();
-        console.log(lastWeek);
-
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: { 'startAt': lastWeek },
+            data: { 'offset': offset },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -28,7 +40,12 @@
                     $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                     $('#infoBoxHolder .boxError').show();
                 } else {
+                    // purge charts
+                    if(globalChartInstance) {
+                        globalChartInstance.destroy();
+                    }
 
+                    // load charts
                     var lineChartData = {
                         labels : data['labels'],
                         datasets : [
@@ -45,14 +62,34 @@
                             }
                         ]               
                     }
-                    loadReputationDataCharts(lineChartData);
+                    globalChartInstance = loadReputationDataCharts(lineChartData);
+
+                    // update pagination offset
+                    console.log(data['offsetPrev']);
+                    console.log(data['offsetNext']);
+
+                    $('.chartNavPrev').attr('offset', data['offsetPrev']);
+                    $('.chartNavNext').attr('offset', data['offsetNext']);
+
+                    $('.chartNavNext').show();
+                    if (null == data['offsetNext']) {
+                        $('.chartNavNext').hide();
+                    }
+                    $('.chartNavPrev').show();
+                    if (null == data['offsetPrev']) {
+                        $('.chartNavPrev').hide();
+                    }
                 }
                 $('#ajaxGlobalLoader').hide();
             }
         });
     }
 
-    // init charts with data
+    /**
+     * init charts with data
+     * @param array
+     * @return chart instance
+     */
     function loadReputationDataCharts(lineChartData) {
         console.log('*** loadReputationDataCharts');
         console.log(lineChartData);
@@ -62,7 +99,7 @@
         }
 
         var ctx = document.getElementById("reputationLine").getContext("2d");
-        window.myLine = new Chart(ctx).Line(lineChartData, {
+        var myChart = new Chart(ctx).Line(lineChartData, {
             responsive: true,
             animation: false,
             bezierCurve : false,
@@ -85,7 +122,9 @@
             scaleLineColor: "#dbdcdd",
             datasetStrokeWidth : 2,
             pointHitDetectionRadius : 5
-        });        
+        });
+
+        return myChart;
     }
 
 

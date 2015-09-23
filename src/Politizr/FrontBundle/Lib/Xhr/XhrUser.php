@@ -13,6 +13,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -49,7 +50,6 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
-    private $reputationManager;
     private $timelineService;
     private $globalTools;
     private $logger;
@@ -64,7 +64,6 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
-     * @param @politizr.manager.reputation
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
      * @param @logger
@@ -78,7 +77,6 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
-        $reputationManager,
         $timelineService,
         $globalTools,
         $logger
@@ -96,7 +94,6 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
-        $this->reputationManager = $reputationManager;
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
@@ -679,7 +676,7 @@ class XhrUser
 
     /**
      * User's reputation evolution datas for chart JS
-     * Diplay the (max) last 30 actions 
+     * Display the max last 30 actions
      * @todo smart management of startAt argument?
      */
     public function reputationEvolution(Request $request)
@@ -687,27 +684,53 @@ class XhrUser
         $this->logger->info('*** reputationEvolution');
 
         // Request arguments
-        $startAt = $request->get('startAt');
-        $this->logger->info('$startAt = ' . print_r($startAt, true));
-        $startAt = new \DateTime($startAt);
+        // $startAt = $request->get('startAt');
+        // $this->logger->info('$startAt = ' . print_r($startAt, true));
+        // $startAt = new \DateTime($startAt);
+
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
 
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $evolution = $this->reputationManager->getUserReputationEvolution($user->getId());
+        $evolutions = $user->getArrayReputationEvolution($offset);
 
-        $score = 0;
+        // Score evolution by date
         $labels = [];
         $data = [];
-        foreach ($evolution as $step) {
-            $createdAt = new \DateTime($step['CreatedAt']);
-            $labels[] = $createdAt->format('d/m/Y H:i');
+        $offsetNext = null;
+        $offsetPrev = null;
+        if (sizeof($evolutions) > 0) {
+            $untilId = $evolutions[sizeof($evolutions) - 1]['Id'];
+            $score = $user->getReputationScore($untilId);
 
-            $score += $step['action.ScoreEvolution'];
-            $data[] = $score;
+            // inversed loop
+            for ($i = sizeof($evolutions) - 1; $i >= 0; $i--) {
+                $createdAt = new \DateTime($evolutions[$i]['CreatedAt']);
+                $labels[] = /*$evolutions[$i]['action.Title'] . ' - ' . */$createdAt->format('d/m/Y H:i');
+
+                $score += $evolutions[$i]['action.ScoreEvolution'];
+                $data[] = $score;
+            }
+
+            // offset next / prev
+            if ($user->countReputationEvolution($offset + ListingConstants::REPUTATION_CHARTS_PAGINATION) > 0) {
+                $offsetPrev = $offset + ListingConstants::REPUTATION_CHARTS_PAGINATION;
+            }
+            if ($offset > 0) {
+                $offsetNext = $offset - ListingConstants::REPUTATION_CHARTS_PAGINATION;
+
+                if ($offsetNext < 0) {
+                    $offsetNext = 0;
+                }
+            }
         }
 
         return array(
             'labels' => $labels,
             'data' => $data,
+            'offsetPrev' => $offsetPrev,
+            'offsetNext' => $offsetNext,
             );
     }
 
