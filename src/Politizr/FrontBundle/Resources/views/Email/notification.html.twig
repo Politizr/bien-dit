@@ -5,8 +5,8 @@
         <title>{% include 'PolitizrFrontBundle:Notification:_notificationTitle.html.twig' with { 'notificationId': notif.pNotificationId } %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: none; margin: 0 20px; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
-        <table width="100%" bgcolor="#2D2D2D" border="0" cellpadding="0" cellspacing="0">
+    <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: none; margin: 0; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
+        <table width="100%" bgcolor="#2D2D2D" border="20" bordercolor="#2D2D2D" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
                     <!-- fix outlook max-width bug -->
@@ -15,7 +15,7 @@
                         
                         <!-- header -->
                         <tr>
-                            <td colspan="2" style="text-align: center; padding: 40px 0">
+                            <td colspan="2" style="text-align: center; padding: 20px 0 40px 0">
                                 <a href="http://www.politizr.com" target="_blank"><img src="{{ asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg', absolute=true) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
                             </td>
                         </tr>
