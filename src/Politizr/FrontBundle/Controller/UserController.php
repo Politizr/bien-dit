@@ -100,7 +100,12 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
 
-        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $this->get('politizr.tools.global')->computeProfileSuffix())));
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Homepage'));
+        }
+
+        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
     }
 
     /**
