@@ -25,6 +25,28 @@
         listing(false, $(this).attr('offset'));
     });
 
+    //
+    $("body").on("postFollowDebateEvent", function(event, subjectId, way) {
+        console.log('*** postFollowDebateEvent');
+        modalType = $('#modalBoxContent').attr('class');
+
+        // @todo JS use constant
+        if (modalType == 'subscriptions') {
+            console.log('modal subscriptions');
+            // dynamicaly offset updating
+            if ($('#moreResults').attr('offset')) {
+                var offset = parseInt($('#moreResults').attr('offset'));
+                if (way == 'unfollow') {
+                    offset = offset - 1;
+                } else {
+                    offset = offset + 1;
+                }
+                console.log(offset);
+                $('#moreResults').attr('offset', offset);
+            }
+        }
+    });
+
     /**
      * Init filters and first listing loading
      *

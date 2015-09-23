@@ -36,6 +36,8 @@
     // modal subscriptions
     $("body").on("click", "[action='modalSubscriptions']", function() {
         console.log('*** modalSubscriptions');
+        // @todo JS use constant
+        // /!\ class string used in loading.js to manage dynamic offset updates
         $('#modalBoxContent').removeClass().addClass('subscriptions');
         modalLoading();
 

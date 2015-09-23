@@ -12,11 +12,14 @@
             'xhrType': 'RETURN_HTML',
             } only %}";
 
+        var subjectId = $(this).attr('subjectId');
+        var way = $(this).attr('way');
+
         $.ajax({
             type: 'POST',
             url: xhrPath,
             context: context,
-            data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
+            data: { 'subjectId': subjectId, 'way': way },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxErrorLocalLoader.js.twig' %}
             success: function(data) {
@@ -27,6 +30,8 @@
                 } else {
                     // MAJ du bouton suivre / Se désabonner
                     $(this).html(data['html']);
+
+                    $(this).trigger('postFollowDebateEvent', [ subjectId, way ]);
                 }
             }
         });
