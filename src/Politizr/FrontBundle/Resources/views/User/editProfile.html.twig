@@ -204,12 +204,12 @@
                 {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'formMandate': formMandate } %}
             </div>
 
-        {% if formMandate and formMandateViews %}
-            <!-- @todo HTML/CSS les mandats existants sont encadrés dans un bloc myMandates -->
             <div id="myMandates">
-                {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
+                {% if formMandate and formMandateViews %}
+                    {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock main %}
 
