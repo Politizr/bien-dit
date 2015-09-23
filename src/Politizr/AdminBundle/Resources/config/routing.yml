@@ -118,15 +118,15 @@ Politizr_AdminBundle_PTTagType:
     type:     admingenerator
     prefix:   /PTTagType
 
+Politizr_AdminBundle_PRBadgeFamily:
+    resource: "@PolitizrAdminBundle/Controller/PRBadgeFamily/"
+    type:     admingenerator
+    prefix:   /PRBadgeFamily
+
 Politizr_AdminBundle_PRBadgeType:
     resource: "@PolitizrAdminBundle/Controller/PRBadgeType/"
     type:     admingenerator
     prefix:   /PRBadgeType
-
-Politizr_AdminBundle_PRBadgeMetal:
-    resource: "@PolitizrAdminBundle/Controller/PRBadgeMetal/"
-    type:     admingenerator
-    prefix:   /PRBadgeMetal
 
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"

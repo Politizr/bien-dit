@@ -68,13 +68,13 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $types,
-            'Badge',
-            'Politizr_AdminBundle_PRBadgeType_list'
+            'Badge (famille)',
+            'Politizr_AdminBundle_PRBadgeFamily_list'
         );
         $this->addLinkRoute(
             $types,
-            'Niveau des badge',
-            'Politizr_AdminBundle_PRBadgeMetal_list'
+            'Badge (type)',
+            'Politizr_AdminBundle_PRBadgeType_list'
         );
         $this->addLinkRoute(
             $types,

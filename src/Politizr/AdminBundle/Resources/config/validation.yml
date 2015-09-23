@@ -94,6 +94,11 @@ Politizr\Model\PTTagType:
         title:
             - NotBlank:     ~
 
+Politizr\Model\PRBadgeFamily:
+    properties:
+        title:
+            - NotBlank:     ~
+
 Politizr\Model\PRBadgeType:
     properties:
         title:

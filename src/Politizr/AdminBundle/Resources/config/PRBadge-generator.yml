@@ -8,18 +8,12 @@ params:
     fields:
         id:
             label:          ID
-        p_r_badge_type_id:
-            label:          Type
-        p_r_badge_type:
-            label:          Type
-        p_r_badge_metal_id:
-            label:          Niveau
-        p_r_badge_metal:
-            label:          Niveau
+        p_r_badge_family_id:
+            label:          Famille
+        p_r_badge_family:
+            label:          Famille
         title:
             label:          Titre
-        description:
-            label:          Description
         online:
             label:          En ligne
         created_at:
@@ -36,9 +30,9 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_type_id, p_r_badge_metal_id, description, nb_users, online ]
+            display:                            [ title, p_r_badge_family_id, nb_users, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_r_badge_metal_id, p_r_badge_type_id, online, created_at ]
+            filters:                            [ title, p_r_badge_family_id, online, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -55,12 +49,11 @@ builders:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_type_id, p_r_badge_metal_id ], [ title ] ]
-                "Champs complémentaires":       [ [ description ] ]
+                "Champs principaux":            [ [ p_r_badge_family_id ], [ title ] ]
             fields:
-                p_r_badge_type:
+                p_r_badge_family:
                     addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PRBadgeFamilyQuery::create()->orderByRank() 
             actions:
               save:                             ~
               list:                             ~
@@ -69,13 +62,13 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_type_id , p_r_badge_metal_id ], [ title ], [ description ] ]
+                    "Texte":                    [ [ p_r_badge_family_id  ], [ title ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                p_r_badge_type:
+                p_r_badge_family:
                     addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PRBadgeFamilyQuery::create()->orderByRank() 
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -90,7 +83,7 @@ builders:
 #             title:                              "Visualisation du badge '{{ PRBadge.title }}'"
 #             tabs:
 #                 "Contenu":
-#                     "Texte":                    [ [ p_r_badge_type, p_r_badge_metal ], [ title ], [ description ] ]
+#                     "Texte":                    [ [ p_r_badge_family ], [ title ] ]
 #                 "Utilisation":
 #                     "Utilisateurs badgés":      [ block_users ]
 #                 "Attributs":

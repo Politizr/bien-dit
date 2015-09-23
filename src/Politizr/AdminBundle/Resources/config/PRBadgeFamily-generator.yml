@@ -1,6 +1,6 @@
 generator:                  admingenerator.generator.propel
 params:
-    model:                  Politizr\Model\PRBadgeMetal
+    model:                  Politizr\Model\PRBadgeFamily
     namespace_prefix:       Politizr
     concurrency_lock:       ~
     bundle_name:            AdminBundle
@@ -23,9 +23,9 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des metaux de badge
+            title:                              Liste des familles de badge
             max_per_page:                       50
-            sort:                               [ id, ASC ]
+            sort:                               [ title, ASC ]
             display:                            [ title, description ]
             actions:
                 new:                            ~
@@ -39,7 +39,7 @@ builders:
         filetype: ~
     new:
         params:
-            title:                              "Création d'un métal de badge"
+            title:                              "Création d'une famille de badge"
             display:
                 "Champs principaux":            [ [ title ] ]
                 "Champs complémentaires":       [ [ description ] ]
@@ -48,7 +48,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du métal de badge '{{ PRBadgeMetal.title }}'"
+            title:                              "Edition de la famille de badge '{{ PRBadgeFamily.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ], [ description ] ]
@@ -66,7 +66,7 @@ builders:
                 list: ~
     show:
         params:
-            title:                              "Visualisation du métal de badge '{{ PRBadgeMetal.title }}'"
+            title:                              "Visualisation du type de badge '{{ PRBadgeFamily.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ], [ description ] ]
