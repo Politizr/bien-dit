@@ -50,6 +50,7 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
+    private $reputationManager;
     private $timelineService;
     private $globalTools;
     private $logger;
@@ -64,6 +65,7 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
+     * @param @politizr.manager.reputation
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
      * @param @logger
@@ -77,6 +79,7 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
+        $reputationManager,
         $timelineService,
         $globalTools,
         $logger
@@ -94,6 +97,7 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
+        $this->reputationManager = $reputationManager;
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
@@ -684,54 +688,54 @@ class XhrUser
         $this->logger->info('*** reputationEvolution');
 
         // Request arguments
-        // $startAt = $request->get('startAt');
-        // $this->logger->info('$startAt = ' . print_r($startAt, true));
-        // $startAt = new \DateTime($startAt);
+        $jsStartAt = $request->get('startAt');
+        $this->logger->info('$jsStartAt = ' . print_r($jsStartAt, true));
 
-        // Request arguments
-        $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // First & last day of month
+        $startAt = new \DateTime($jsStartAt);
+        $endAt = new \DateTime($jsStartAt);
+        $endAt->modify('+1 month');
 
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $evolutions = $user->getArrayReputationEvolution($offset);
+        $reputationByDates = $this->reputationManager->getReputationByDates($user->getId(), $startAt, $endAt);
 
         // Score evolution by date
+        $score = $user->getReputationScore($startAt);
+        dump($score);
+
         $labels = [];
         $data = [];
-        $offsetNext = null;
-        $offsetPrev = null;
-        if (sizeof($evolutions) > 0) {
-            $untilId = $evolutions[sizeof($evolutions) - 1]['Id'];
-            $score = $user->getReputationScore($untilId);
-
-            // inversed loop
-            for ($i = sizeof($evolutions) - 1; $i >= 0; $i--) {
-                $createdAt = new \DateTime($evolutions[$i]['CreatedAt']);
-                $labels[] = /*$evolutions[$i]['action.Title'] . ' - ' . */$createdAt->format('d/m/Y H:i');
-
-                $score += $evolutions[$i]['action.ScoreEvolution'];
-                $data[] = $score;
-            }
-
-            // offset next / prev
-            if ($user->countReputationEvolution($offset + ListingConstants::REPUTATION_CHARTS_PAGINATION) > 0) {
-                $offsetPrev = $offset + ListingConstants::REPUTATION_CHARTS_PAGINATION;
-            }
-            if ($offset > 0) {
-                $offsetNext = $offset - ListingConstants::REPUTATION_CHARTS_PAGINATION;
-
-                if ($offsetNext < 0) {
-                    $offsetNext = 0;
+        
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($startAt, $interval, $endAt);
+        foreach ($period as $day) {
+            $find = false;
+            foreach ($reputationByDates as $reputationByDate) {
+                if ($day->format('Y-m-d') == $reputationByDate['created_at']) {
+                    $score += $reputationByDate['sum_score'];
+                    $find = true;
+                    break;
                 }
             }
+            $data[] = $score;
+            $labels[] = $day->format('d/m/Y');
         }
+
+        // delete first / last labels for pagination
+        $labels[0] = "";
+        $labels[sizeof($labels) -1] = "";
+
+        // next / prev
+        $nextMonth = $endAt;
+        $prevMonth = new \DateTime($jsStartAt);
+        $prevMonth->modify('-1 month');
 
         return array(
             'labels' => $labels,
             'data' => $data,
-            'offsetPrev' => $offsetPrev,
-            'offsetNext' => $offsetNext,
-            );
+            'datePrev' => $prevMonth->format('Y-m-d'),
+            'dateNext' => $nextMonth->format('Y-m-d'),
+        );
     }
 
 

@@ -4,23 +4,26 @@
 
     // Pagination
     $("body").on("click", "[action='paginatePrevChart']", function(e) {
-        reputationCharts($(this).attr('offset'));
+        reputationCharts($(this).attr('startAt'));
     });
 
     $("body").on("click", "[action='paginateNextChart']", function(e) {
-        reputationCharts($(this).attr('offset'));
+        reputationCharts($(this).attr('startAt'));
     });
 
     /**
      * Reputation charts
-     * @todo manage scale, next/prev, ...?
-     * @param int offset
+     * @param Date startAt
      */
-    function reputationCharts(offset) { 
+    function reputationCharts(startAt) { 
         console.log('*** reputationCharts');
-        console.log(offset);
+        console.log(startAt);
 
-        offset = (typeof offset === "undefined") ? 0 : offset;
+        // get first day of current month
+        if (typeof startAt === "undefined") {
+            var startAt = new Date();
+            var startAt = new Date(startAt.getFullYear(), startAt.getMonth(), 1);
+        }
 
         var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_MODAL_REPUTATION',
@@ -32,7 +35,7 @@
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: { 'offset': offset },
+            data: { 'startAt': startAt },
             dataType: 'json',
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
@@ -65,20 +68,13 @@
                     globalChartInstance = loadReputationDataCharts(lineChartData);
 
                     // update pagination offset
-                    console.log(data['offsetPrev']);
-                    console.log(data['offsetNext']);
+                    console.log(data['datePrev']);
+                    console.log(data['dateNext']);
 
-                    $('.chartNavPrev').attr('offset', data['offsetPrev']);
-                    $('.chartNavNext').attr('offset', data['offsetNext']);
-
-                    $('.chartNavNext').show();
-                    if (null == data['offsetNext']) {
-                        $('.chartNavNext').hide();
-                    }
+                    $('.chartNavPrev').attr('startAt', data['datePrev']);
+                    $('.chartNavNext').attr('startAt', data['dateNext']);
                     $('.chartNavPrev').show();
-                    if (null == data['offsetPrev']) {
-                        $('.chartNavPrev').hide();
-                    }
+                    $('.chartNavNext').show();
                 }
                 $('#ajaxGlobalLoader').hide();
             }

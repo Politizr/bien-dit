@@ -385,6 +385,26 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
+        // Validation constraints
+        $title = $debate->getTitle();
+        $title = trim($title);
+        $description = $debate->getDescription();
+        $description = trim($description);
+        // title requirement
+        if (empty($title)) {
+            $error = 'Vous devez saisir un titre';
+            throw new FormValidationException($error);
+        }
+        // description requirement
+        // @todo test at least one not empty paragraph block (<p></p>)
+        if (empty($description)) {
+            $error = 'Vous devez saisir une description';
+            throw new FormValidationException($error);
+        }
+        // tags requirement
+        // @todo 3 tags required
+
+        // Publication
         $this->documentManager->publishDebate($debate);
         $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
@@ -565,6 +585,26 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
+        // Validation constraints
+        $title = $debate->getTitle();
+        $title = trim($title);
+        $description = $debate->getDescription();
+        $description = trim($description);
+        // title requirement
+        if (empty($title)) {
+            $error = 'Vous devez saisir un titre';
+            throw new FormValidationException($error);
+        }
+        // description requirement
+        // @todo test at least one not empty paragraph block (<p></p>)
+        if (empty($description)) {
+            $error = 'Vous devez saisir une description';
+            throw new FormValidationException($error);
+        }
+        // tags requirement
+        // @todo 3 tags required
+
+        // Publication
         $this->documentManager->publishReaction($reaction);
         $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 

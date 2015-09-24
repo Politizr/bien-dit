@@ -262,7 +262,7 @@ class TimelineService
         return $sql;
     }
 
-    /*
+    /**
      * Execute SQL and hydrate TimelineRow model
      *
      * @param string $sql
