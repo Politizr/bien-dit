@@ -24,7 +24,7 @@ $(function(){
 	        return false;
 		} else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
 			$('#menuPreferences').toggle();
-			$('#headerCenter, #menu, #fixedActions').hide();				    
+			$('#headerCenter, #menu, #fixedActions, #notifications').hide();				    
 		}					
 	});
 	
@@ -32,21 +32,28 @@ $(function(){
 	$("body.css760").on("touchstart click", "[action='menuMobileTriggerActions']", function(e) {
 		if(e.type == "touchstart") { // if touchstart start toggle
 			$('#fixedActions').toggle();
-			$('#headerCenter, #menu, #menuPreferences').hide();
+			$('#headerCenter, #menu, #menuPreferences, #notifications').hide();
 			e.stopPropagation();
 	        e.preventDefault(); // stop touchstart 
 	        return false;
 		} else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
 			$('#fixedActions').toggle();
-			$('#headerCenter, #menu, #menuPreferences').hide();	    
+			$('#headerCenter, #menu, #menuPreferences, #notifications').hide();	    
 		}					
 	});
 		
-	// mobile : hide menus when opening nofications
-	$("body.css760").on("body.css760 click", "[action='linkNotifications']", function() {
-		$('#headerCenter, #menu').hide();
+	// mobile : hide menus when opening notifications
+	$("body.css760").on("touchstart click", "[action='linkNotifications']", function(e) {
+		if(e.type == "touchstart") { // if touchstart start toggle
+			$('#headerCenter, #menu').hide();
+			e.stopPropagation();
+	        e.preventDefault(); // stop touchstart 
+	        return false;
+		} else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
+			$('#headerCenter, #menu').hide();			    
+		}					
 	});
-									
+										
 	// open classement + suggestion + listbytag + organization sheet + signal abuse + search + followers
 	$("body").on("click", "[action='modalOpen']", function() {
 		$('#modalBox').fadeIn('fast');

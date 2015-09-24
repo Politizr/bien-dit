@@ -313,30 +313,47 @@ body.noscroll {
 
 .badgeProgressBar {
 	width: 100%;
-	clear: both;
-	height: 20px;
+	clear: both;	
+	display: inline-block;
 	background-color: $semilightGrey;
 	margin-bottom: 30px;
+
 }
 .badgeProgressBar:last-child {margin-bottom: 0;}
 
-.badgeAcquired {
+
+.badgeStepOne, .badgeStepTwo {width: calc(33.3% - 11px); }
+.badgeStepThree {width: calc(33.2% - 10px); border-color: $highlight; }
+.badgeOneStep {width: calc(100% - 10px);  border: none;}
+
+.badgeStepOne, .badgeStepTwo, .badgeStepThree {
 	float: left;
-    font-family: 'nerissemibold';
+    font-family: 'nerisblack';
 	font-weight: normal;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 100%;
 	text-transform: uppercase;
-	color: #fff;
-	background-color: $highlight;
+	color: $semiDarkGrey;
 	padding: 5px;
-	border-right: solid 1px $semilightGrey;
+	border-right: solid 1px $lightGrey;
 }
 
-.badgeAcquired.badgeStepOne, .badgeAcquired.badgeStepTwo {width: calc(33.3% - 11px); }
-.badgeAcquired.badgeStepThree {width: calc(33.2% - 10px); border-color: $highlight; }
-.badgeAcquired.badgeOneStep {width: calc(100% - 10px);  border: none;}
+.badgeAcquired {
+	background-color: $highlight;
+	color: #fff;
+}
 
+.badgeProgressBar span {
+	font-style: italic;
+	font-family: 'Merriweather Italic';	
+	width: 100%;
+	clear: both;
+	display: inline-block;
+	text-transform: none;
+	margin-top: 5px;
+	line-height: 130%;
+	font-size: 12px;
+}
 
 // reputation
 
