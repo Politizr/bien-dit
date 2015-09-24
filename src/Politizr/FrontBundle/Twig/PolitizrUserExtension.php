@@ -156,7 +156,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        return $this->photo($user, 'user_15', 'profil15_default.png');
+        return $this->photo($user, 'user_15', false, false, 'profil15_default.png');
     }
 
     /**
