@@ -701,7 +701,6 @@ class XhrUser
 
         // Score evolution by date
         $score = $user->getReputationScore($startAt);
-        dump($score);
 
         $labels = [];
         $data = [];
