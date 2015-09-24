@@ -163,11 +163,13 @@ class PolitizrUserExtension extends \Twig_Extension
      * User's profile photo
      *
      * @param PUser $user
-     * @param string $default
+     * @param string $filterName
+     * @param boolean $withLink
      * @param boolean $email
+     * @param string $default
      * @return html
      */
-    public function photo(PUser $user, $filterName = 'user_bio', $default = 'profil_default.png', $email = false)
+    public function photo(PUser $user, $filterName = 'user_bio', $withLink = true, $email = false, $default = 'profil_default.png')
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -182,12 +184,19 @@ class PolitizrUserExtension extends \Twig_Extension
             $template = '_photoEmail.html.twig';
         }
 
+        // URL detail
+        $url = null;
+        if ($user) {
+            $url = $this->router->generate('UserDetail', array('slug' => $user));
+        }
+
         // Construction du rendu du tag
         $html = $this->templating->render(
             'PolitizrFrontBundle:User:'.$template,
             array(
                 'user' => $user,
                 'path' => $path,
+                'url' => $url,
                 'filterName' => $filterName,
                 )
         );
