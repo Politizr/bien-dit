@@ -24,21 +24,25 @@
         <div class="modalBadgeItem">
             <h3>badges {{ badgeType.title }}</h3>
             {% for badgeFamily in badgeType.badgeFamilies %}
-                <div class="badgeDescription">{{ badgeFamily.title }}</div>
-                <div class="badgeProgressBar">
-                    {% for badge in badgeFamily.badges %}
-                        {% set badgeStep = 'badgeStepOne' %}
-                        {% if loop.index == 2 %}
-                            {% set badgeStep = 'badgeStepTwo' %}
-                        {% elseif loop.index == 3 %}
-                            {% set badgeStep = 'badgeStepThree' %}
-                        {% endif %}
-                        <!-- @todo HTML/CSS gérer le cas badgeAcquired non présent > affichage en grisé du nom du badge --> 
-                        <div class="{% if badge.id in badgeIds %}badgeAcquired {% endif %}{{ badgeStep }}">{{ badge.title }}</div>
-                        <!-- @todo HTML/CSS prévoir une infobulle expliquant pour chaque badge comment l'obtenir -->
+                {% for badge in badgeFamily.badges %}
+                    {% if loop.first %}
+                        <div class="badgeDescription">{{ badgeFamily.title }}</div>
+                        <div class="badgeProgressBar">
+                    {% endif %}
+                    {% set badgeStep = 'badgeStepOne' %}
+                    {% if loop.index == 2 %}
+                        {% set badgeStep = 'badgeStepTwo' %}
+                    {% elseif loop.index == 3 %}
+                        {% set badgeStep = 'badgeStepThree' %}
+                    {% endif %}
+                    <div class="{% if badge.id in badgeIds %}badgeAcquired {% endif %}{{ badgeStep }}{% if badgeFamily.badges | length == 1 %} {{ badgeInOnlyOneStep }}{% endif %}">
+                        {{ badge.title }}
                         <span class="infoBadge">{{ badge | howToReach }}</span>
-                    {% endfor %}
-                </div>
+                    </div>
+                    {% if loop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </div>
     {% endfor %}
