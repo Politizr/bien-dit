@@ -101,7 +101,6 @@ textarea:focus, input:focus { outline: 0;}
 }
 
 .search form.searchForm input {
-	padding: 0;
 	font-family: 'nerislight';
 	font-size: 28px;
 	border: none;
@@ -114,7 +113,7 @@ textarea:focus, input:focus { outline: 0;}
 
 .search form.searchForm .searchTagList {
 	float: left;
-	width: 100%;
+	//width: 100%;
 	margin: 20px 0 30px 0;
 	font-family: 'nerisblack';
 	font-size: 12px;
@@ -125,24 +124,28 @@ textarea:focus, input:focus { outline: 0;}
 	margin-right: 20px;
 }
 
-.search form.searchForm a.searchSubmit {
+.search form.searchForm input.searchSubmit {
 	cursor: pointer;
+	width: auto;
+	height: auto;
 	font-size: 13px;
 	display: inline-block;
 	font-weight: normal;
-	padding: 10px 0 11px 0;
+	padding: 8px 0 10px;
 	border: none;
 	background-color: transparent;
 	text-transform: none;
 	cursor: pointer;
 	color: $semiDarkGrey;
-	font-family: 'fontello';
+	font-family: 'fontello', 'nerissemibold';
 }
-.search form.searchForm a.searchSubmit:hover {color: $darkGrey;}
+.search form.searchForm input.searchSubmit:hover {color: $darkGrey;}
+/*
 .search form.searchForm a.searchSubmit span {
 	margin-left: 2px;
 	font-family: 'nerissemibold';
 }
+*/
 
 .search .listProfile {	width: 620px;}
 .search .listProfile .listProfileRight { width: 570px;}

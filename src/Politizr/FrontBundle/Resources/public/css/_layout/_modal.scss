@@ -317,16 +317,14 @@ body.noscroll {
 	display: inline-block;
 	background-color: $semilightGrey;
 	margin-bottom: 30px;
-
 }
 .badgeProgressBar:last-child {margin-bottom: 0;}
 
-
 .badgeStepOne, .badgeStepTwo {width: calc(33.3% - 11px); }
 .badgeStepThree {width: calc(33.2% - 10px); border-color: $highlight; }
-.badgeOneStep {width: calc(100% - 10px);  border: none;}
+.badgeInOnlyOneStep {width: calc(100% - 10px);  border: none;}
 
-.badgeStepOne, .badgeStepTwo, .badgeStepThree {
+.badgeStepOne, .badgeStepTwo, .badgeStepThree, .badgeInOnlyOneStep {
 	float: left;
     font-family: 'nerisblack';
 	font-weight: normal;
