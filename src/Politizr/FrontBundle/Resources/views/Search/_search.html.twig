@@ -1,12 +1,11 @@
 <div id="searchByTag">
-    <form class="searchForm">
+    <form class="searchForm" id="searchForm" action="#">
         <input id="searchInput" class="selectedTag" autofocus="autofocus" type="text" placeholder="Saisissez un tag">
         <input type="hidden" class="selectedTagID" />
 
         <div class="searchTagList">
         </div>
-
-        <a class="searchSubmit" action="searchByTags">&#xe80c; <span>Lancez votre recherche</span></a>
+        <input type="submit" class="searchSubmit" value="&#xe80c; Lancez votre recherche">
     </form>
 </div>
 <div id="paginatedList" class="listContainer"

@@ -1,6 +1,8 @@
 <script>
     // Search
-    $("body").on("click", "[action='searchByTags']", function(e) {
+    $("body").on("submit", "#searchForm", function(e) {
+        console.log('*** submit searchForm');
+        e.preventDefault();
         initSearchListingByTags();
     });
 
