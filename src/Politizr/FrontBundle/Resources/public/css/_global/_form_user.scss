@@ -114,24 +114,23 @@ textarea:focus, input:focus { outline: 0;}
 .search form.searchForm .searchTagList {
 	float: left;
 	//width: 100%;
-	margin: 20px 0 30px 0;
+	margin: 20px 0 0 0;
 	font-family: 'nerisblack';
 	font-size: 12px;
 	text-transform: uppercase;
 	text-align: left;
 }
-.searchTagList .tagLabel:last-of-type {
-	margin-right: 20px;
-}
-
 .search form.searchForm input.searchSubmit {
 	cursor: pointer;
 	width: auto;
 	height: auto;
+	clear: both;
+	float: left;
 	font-size: 13px;
 	display: inline-block;
 	font-weight: normal;
 	padding: 8px 0 10px;
+	margin: 15px 0 0 0;
 	border: none;
 	background-color: transparent;
 	text-transform: none;
@@ -140,12 +139,6 @@ textarea:focus, input:focus { outline: 0;}
 	font-family: 'fontello', 'nerissemibold';
 }
 .search form.searchForm input.searchSubmit:hover {color: $darkGrey;}
-/*
-.search form.searchForm a.searchSubmit span {
-	margin-left: 2px;
-	font-family: 'nerissemibold';
-}
-*/
 
 .search .listProfile {	width: 620px;}
 .search .listProfile .listProfileRight { width: 570px;}
