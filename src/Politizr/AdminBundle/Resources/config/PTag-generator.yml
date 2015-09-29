@@ -35,14 +35,14 @@ builders:
                     "Tous":                     ~
                     "Zonage":
                         filters:
-                            filterByPTTagTypeId:        1
+                            p_t_tag_type_id:    1
                     "Thèmes":
-                        default:                        true
+                        default:                true
                         filters:
-                            filterByPTTagTypeId:        2
-            display:                            [ title, p_t_tag_type_id, countPDDebates, countPUsers, online ]
+                            p_t_tag_type_id:    2
+            display:                            [ title, p_t_tag_type, countPDDebates, countPUsers, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_t_tag_type_id, online, created_at ]
+            filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
             fields:
                 countPDDebates:
                     label:                      Débats taggés

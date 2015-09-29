@@ -30,9 +30,9 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_family_id, nb_users, online ]
+            display:                            [ title, p_r_badge_family, nb_users, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_r_badge_family_id, online, created_at ]
+            filters:                            [ title, p_r_badge_family, online, created_at ]
             actions:
                 new:                            ~
             object_actions:

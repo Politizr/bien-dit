@@ -87,18 +87,18 @@ builders:
                 group_1: 
                     "Toutes":                   ~
                     "Ouvertes":
-                        default: true
+                        default:                1
                         filters:
-                            filterByPOOrderStateId: 1
+                            p_o_order_state_id: 1
                     "Traitées":
                         filters:
-                            filterByPOOrderStateId: 2
+                            p_o_order_state_id: 2
                     "Annulées":
                         filters:
-                            filterByPOOrderStateId: 3
-            display:                            [ id, p_o_order_state_id, p_o_payment_state_id, p_o_subscription_id, p_o_payment_type_id, p_user_id, price, promotion, total ]
+                            p_o_order_state_id: 3
+            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, price, promotion, total ]
             # filtersMode:                        top
-            filters:                            [ id, p_o_order_state_id, p_o_payment_state_id, p_o_subscription_id, p_o_payment_type_id, p_user_id, created_at ]
+            filters:                            [ id, p_o_order_state_id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, created_at ]
             actions:
                 new:                            ~
             object_actions:

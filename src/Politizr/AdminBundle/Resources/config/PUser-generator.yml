@@ -80,15 +80,15 @@ builders:
                 group_1: 
                     "Tous":                     ~
                     "Qualifiés":
-                        default:                true
+                        default:                1
                         filters: 
-                            filterByQualified:  true
+                            qualified:          1
                     "Citoyens":
                         filters: 
-                            filterByQualified:  false
-            display:                            [ file_name, name, firstname, qualified, p_u_status_id, online, last_connect ]
+                            qualified:          0
+            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_connect ]
             # filtersMode:                        top
-            filters:                            [ name, firstname, qualified, p_u_status_id, online, last_connect ]
+            filters:                            [ name, firstname, qualified, p_u_status, online, last_connect ]
             actions:
                 new:                            ~
             object_actions:

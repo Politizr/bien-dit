@@ -2,6 +2,8 @@
 
 namespace Politizr\AdminBundle\Controller\PDReaction;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Admingenerated\PolitizrAdminBundle\BasePDReactionController\EditController as BaseEditController;
 
 /**
@@ -12,7 +14,7 @@ class EditController extends BaseEditController
     /**
      *    Surcharge pour gérer la mise en session de l'id du débat associé si non initialisé- gestion du lien "retour au débat"
      */
-    public function indexAction($pk)
+    public function indexAction(Request $request, $pk)
     {
         $PDReaction = $this->getObject($pk);
         if (!$PDReaction) {
@@ -25,7 +27,7 @@ class EditController extends BaseEditController
             $session->set('PDDebate/id', $PDReaction->getPDDebateId());
         }
 
-        return parent::indexAction($pk);
+        return parent::indexAction($request, $pk);
     }
 
     /**
@@ -41,9 +43,9 @@ class EditController extends BaseEditController
 
         $file = $form['uploadedFileName']->getData();
         if ($file) {
-          $currentObject->removeUpload(true);
-          $fileName = $currentObject->upload($file);
-          $currentObject->setFileName($fileName);
+            $currentObject->removeUpload(true);
+            $fileName = $currentObject->upload($file);
+            $currentObject->setFileName($fileName);
         }
     }
 }

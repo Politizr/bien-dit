@@ -2,6 +2,8 @@
 
 namespace Politizr\AdminBundle\Controller\PDReaction;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Admingenerated\PolitizrAdminBundle\BasePDReactionController\ShowController as BaseShowController;
 
 /**
@@ -12,7 +14,7 @@ class ShowController extends BaseShowController
     /**
      *    Surcharge pour gérer la mise en session de l'id du débat associé si non initialisé- gestion du lien "retour au débat"
      */
-    public function indexAction($pk)
+    public function indexAction(Request $request, $pk)
     {
         $PDReaction = $this->getObject($pk);
 
@@ -30,5 +32,4 @@ class ShowController extends BaseShowController
             "PDReaction" => $PDReaction
         ));
     }
-
 }

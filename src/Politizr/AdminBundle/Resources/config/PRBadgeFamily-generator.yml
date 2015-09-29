@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        p_r_badge_type_id:
+            label:          Famille
+        p_r_badge_type:
+            label:          Famille
         title:
             label:          Titre
         description:
@@ -26,7 +30,9 @@ builders:
             title:                              Liste des familles de badge
             max_per_page:                       50
             sort:                               [ title, ASC ]
-            display:                            [ title, description ]
+            display:                            [ title, p_r_badge_type, description ]
+            # filtersMode:                        top
+            filters:                            [ p_r_badge_type ]
             actions:
                 new:                            ~
             object_actions:
@@ -41,8 +47,12 @@ builders:
         params:
             title:                              "Création d'une famille de badge"
             display:
-                "Champs principaux":            [ [ title ] ]
+                "Champs principaux":            [ [ p_r_badge_type ], [ title ] ]
                 "Champs complémentaires":       [ [ description ] ]
+            fields:
+                p_r_badge_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByRank() 
             actions:
               save:                             ~
               list:                             ~

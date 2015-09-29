@@ -58,12 +58,12 @@ builders:
                 group_1: 
                     "Tous":                     ~
                     "Publiés":
-                        default:                true
+                        default:                1
                         filters:
-                            filterByPublished:  true
+                            published:          1
                     "Brouillons":
                         filters:
-                            filterByPublished:  false
+                            published:          0
             display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
             # filtersMode:                        top
             filters:                            [ id, p_user_id, published, published_at, online, created_at ]
