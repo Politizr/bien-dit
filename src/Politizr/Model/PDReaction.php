@@ -82,7 +82,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -97,7 +97,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -111,7 +111,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     public function postDelete(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            $this->elasticaPersister->deleteOne($this);
+            // $this->elasticaPersister->deleteOne($this);
         } else {
             throw new \Exception('Indexation service not found');
         }

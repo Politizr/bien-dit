@@ -134,7 +134,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -149,7 +149,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -163,7 +163,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     public function postDelete(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            $this->elasticaPersister->deleteOne($this);
+            // $this->elasticaPersister->deleteOne($this);
         } else {
             throw new \Exception('Indexation service not found');
         }
@@ -921,6 +921,41 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
 
         return $debates;
     }
+
+    /**
+     * User's debates' comments
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDDebate]
+     */
+    public function getDComments($online = true)
+    {
+        $comments = PDRCommentQuery::create()
+            ->filterIfOnline($online)
+            ->orderByCreatedAt('desc')
+            ->find();
+
+        return $comments;
+    }
+
+    /**
+     * User's reactions' comments
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDDebate]
+     */
+    public function getRComments($online = true)
+    {
+        $comments = PDRCommentQuery::create()
+            ->filterIfOnline($online)
+            ->orderByCreatedAt('desc')
+            ->find();
+
+        return $comments;
+    }
+
 
     // ************************************************************************************ //
     //                                          REPUTATION
