@@ -113,7 +113,7 @@ builders:
         params:
             title:                              "Création d'une commande"
             display:
-                "Champs principaux":            [ [ p_user_id ], [ p_o_subscription_id ], [ subscription_begin_at, subscription_end_at ], [ p_o_order_state_id ], [ p_o_payment_state_id, p_o_payment_type_id ], [ price, promotion, total ] ]
+                "Champs principaux":            [ [ p_user_id ], [ p_o_subscription ], [ subscription_begin_at, subscription_end_at ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
                 "Champs complémentaires":       [ [ information ], [ gender, firstname, name ], [ phone, email ], [ elective_mandates ] ]
             fields:
                 p_user_id:
@@ -136,7 +136,7 @@ builders:
             title:                              "Edition de la commande n°{{ POrder.id }}"
             tabs:
                 "Commande":
-                    "Type":                     [ [ p_o_subscription_id ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
                 "Utilisateur":
                     "Objet associé":            [ [ p_user_id ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
@@ -146,9 +146,9 @@ builders:
                 # "Emails":
                 #     "Emails":                   [ block_mail ]
                 "Paiement":
-                    "Informations":             [ [ p_o_payment_state_id, p_o_payment_type_id ] ]
+                    "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
                 "Statut":
-                    "Actuel":                   [ [ p_o_order_state_id ] ]
+                    "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -195,15 +195,15 @@ builders:
             title:                              "Visualisation de la commande n°{{ POrder.id }}"
             tabs:
                 "Commande":
-                    "Type":                     [ [ p_o_subscription_id ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                    "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
                 "Utilisateur":
                     "Objet associé":            [ [ p_user_id ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
                     "Justificatifs":            [ supporting_document, elective_mandates ]
                 "Paiement":
-                    "Informations":             [ [ p_o_payment_state_id, p_o_payment_type_id ] ]
+                    "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
                 "Statut":
-                    "Actuel":                   [ [ p_o_order_state_id ] ]
+                    "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
             # fields:

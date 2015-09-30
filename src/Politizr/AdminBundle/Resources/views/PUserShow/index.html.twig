@@ -15,9 +15,14 @@
     <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
 {% endblock %}
 
-{# Bloc tags #}
-{% block show_column_block_tags_geo %}
-    {{ adminUserTags(PUser, constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), 2, 'show') }}
+{# User's tag #}
+{% block show_column_block_tags_public %}
+    {{ adminUserTags(PUser, null, 1, mode='show') }}
+{% endblock %}
+
+{# User's private tags #}
+{% block show_column_block_tags_private %}
+    {{ adminUserPrivateTags(PUser, null, 2, mode='show') }}
 {% endblock %}
 
 {# Blocs badges #}
@@ -42,6 +47,8 @@
 {% endblock %}
 
 
+{# @todo rewrite to use directly admingenerated list #}
+
 {# Bloc débats #}
 {% block show_column_block_debates %}
     {{ adminUserDebates(PUser) }}
@@ -53,30 +60,25 @@
 {% endblock %}
 
 
-{# Bloc commentaires documents #}
-{% block show_column_block_comments %}
-    {{ adminUserComments(PUser) }}
+{# Bloc commentaires débats #}
+{% block show_column_block_d_comments %}
+    {{ adminUserDComments(PUser) }}
+{% endblock %}
+
+{# Bloc commentaires réactions #}
+{% block show_column_block_r_comments %}
+    {{ adminUserRComments(PUser) }}
 {% endblock %}
 
 
-{# Bloc followers qualifiés #}
-{% block show_column_block_followers_q %}
-    {{ adminUserFollowersQ(PUser) }}
+{# Bloc followers #}
+{% block show_column_block_followers %}
+    {{ adminUserFollowers(PUser) }}
 {% endblock %}
 
-{# Bloc followers citoyens #}
-{% block show_column_block_followers_c %}
-    {{ adminUserFollowersC(PUser) }}
-{% endblock %}
-
-{# Bloc subscribers qualifiés #}
-{% block show_column_block_subscribers_q %}
-    {{ adminUserSubscribersQ(PUser) }}
-{% endblock %}
-
-{# Bloc subscribers citoyens #}
-{% block show_column_block_subscribers_c %}
-    {{ adminUserSubscribersC(PUser) }}
+{# Bloc subscribers #}
+{% block show_column_block_subscribers %}
+    {{ adminUserSubscribers(PUser) }}
 {% endblock %}
 
 {# Bloc affinités politiques #}
@@ -84,7 +86,6 @@
     {{ adminUserAffinities(PUser) }}
 {% endblock %}
 
-
-{% block generic_actions_script %}
-    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
-{% endblock %}
+{% block object_actions_script_container %}
+    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2 } %}
+{% endblock object_actions_script_container %}

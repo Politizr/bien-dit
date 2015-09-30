@@ -1,6 +1,6 @@
 <div id="tagsZone-{{ zoneId }}">
     {# Variables #}
-    <div class="tagsAttr" ptTagTypeId="{{ ptTagTypeId }}" objectId="{{ pUser.id }}" addUrl="{{ path('AdminAddPUTaggedTPTag') }}"></div>
+    <div class="tagsAttr" tagTypeId="{{ tagTypeId }}" objectId="{{ user.id }}" addUrl="{{ path('AdminAddPUTaggedTPTag') }}"></div>
     
     {# Sélection #}
     <input type="text" class="selectedTag" />
@@ -10,7 +10,7 @@
     {# Affichage #}
     <div class="displayTagsZone">
         {% for pTag in pTags %}
-            {% include 'PolitizrAdminBundle:Fragment:Tag.html.twig' with { 'objectId': pUser.id, 'pTagId': pTag.id, 'pTagTitle': pTag.title, 'deleteUrl': path('AdminDeletePUTaggedTPTag') } %}
+            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'objectId': user.id, 'pTagId': pTag.id, 'pTagTitle': pTag.title, 'deleteUrl': path('AdminDeletePUTaggedTPTag') } %}
         {% endfor %}
     </div>
 </div>

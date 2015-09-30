@@ -2,6 +2,20 @@
 
 {% block title %}Module d'administration Politizr{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/font-awesome/css/font-awesome.min.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+{% block javascripts_head %}
+    {{ parent() }}
+    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
+{% endblock %}
+
+
 {% block header %}
     {% embed 'AdmingeneratorGeneratorBundle::header.html.twig' %}
         {% block logo %}

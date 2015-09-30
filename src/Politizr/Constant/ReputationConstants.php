@@ -10,29 +10,17 @@ namespace Politizr\Constant;
 class ReputationConstants
 {
     // ******************************************************** //
-    //            PRBADGEMETAL OBJECT ID CONSTANTS
-    // ******************************************************** //
-
-    const BADGE_METAL_GOLD = 1;
-    const BADGE_METAL_SILVER = 2;
-    const BADGE_METAL_BRONZE = 3;
-
-
-    // ******************************************************** //
     //            PRBADGETYPE OBJECT ID CONSTANTS
     // ******************************************************** //
-
     const BADGE_TYPE_DEBATE = 1;
     const BADGE_TYPE_COMMENT = 2;
     const BADGE_TYPE_PARTICIPATION = 3;
     const BADGE_TYPE_MODERATION = 4;
     const BADGE_TYPE_OTHER = 5;
 
-
     // ******************************************************** //
     //            PRACTION OBJECT ID CONSTANTS
     // ******************************************************** //
-
 
     // ******************************************************** //
     //              DEBATES / REACTIONS / COMMENTS

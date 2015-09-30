@@ -2,6 +2,7 @@
 namespace Politizr\AdminBundle\Twig;
 
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PUFollowDDQuery;
 
@@ -61,6 +62,13 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                 )
             ),
+            'adminUserPrivateTags'  => new \Twig_Function_Method(
+                $this,
+                'adminUserPrivateTags',
+                array(
+                    'is_safe' => array('html')
+                )
+            ),
             'adminUserDebates'  => new \Twig_Function_Method(
                 $this,
                 'adminUserDebates',
@@ -75,37 +83,30 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserComments'  => new \Twig_Function_Method(
+            'adminUserDComments'  => new \Twig_Function_Method(
                 $this,
-                'adminUserComments',
+                'adminUserDComments',
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserFollowersQ'  => new \Twig_Function_Method(
+            'adminUserRComments'  => new \Twig_Function_Method(
                 $this,
-                'adminUserFollowersQ',
+                'adminUserRComments',
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserFollowersC'  => new \Twig_Function_Method(
+            'adminUserFollowers'  => new \Twig_Function_Method(
                 $this,
-                'adminUserFollowersC',
+                'adminUserFollowers',
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserSubscribersQ'  => new \Twig_Function_Method(
+            'adminUserSubscribers'  => new \Twig_Function_Method(
                 $this,
-                'adminUserSubscribersQ',
-                array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'adminUserSubscribersC'  => new \Twig_Function_Method(
-                $this,
-                'adminUserSubscribersC',
+                'adminUserSubscribers',
                 array(
                     'is_safe' => array('html')
                     )
@@ -173,89 +174,176 @@ class PolitizrAdminExtension extends \Twig_Extension
 
 
     /**
-     *  Gestion des tags d'un user
+     * User's tagged tags management
      *
-     * @param $pUser        PUser       PUser
-     * @param $ptTagTypeId  integer     ID type de tag
-     * @param $zoneId       integer     ID de la zone CSS
-     * @param $mode         string      edit (default) / show
-     *
+     * @param PUser $user
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminUserTags($pUser, $ptTagTypeId, $zoneId = 1, $mode = 'edit')
+    public function adminUserTags($user, $tagTypeId = null, $zoneId = 1, $newTag = true, $mode = 'edit')
     {
         $this->logger->info('*** adminUserTags');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
-        // $this->logger->info('$ptTagTypeId = '.print_r($ptTagTypeId, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
-        // $this->logger->info('$mode = '.print_r($mode, true));
+        // $this->logger->info('$mode = '.print_r($zoneId, true));
 
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'userTaggedAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
 
-        if ($mode == 'edit') {
-            $template = "UserTagsEdit.html.twig";
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'userTaggedDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
+                array(
+                    'object' => $user,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'tags' => $user->getTaggedTags($tagTypeId),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                    )
+            );
         } else {
-            $template = "UserTagsShow.html.twig";
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $user->getTaggedTags($tagTypeId),
+                    )
+            );
         }
 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:'.$template,
-            array(
-                'pUser' => $pUser,
-                'ptTagTypeId' => $ptTagTypeId,
-                'zoneId' => $zoneId,
-                'pTags' => $pUser->getTaggedTags($ptTagTypeId)
-            )
-        );
-
         return $html;
-
     }
 
     /**
-     *  Gestion des débats d'un user
+     * User's followed tags management
      *
-     * @param $pUser        PUser
-     *
+     * @param PUser $user
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminUserDebates($pUser)
+    public function adminUserPrivateTags($user, $tagTypeId = null, $zoneId = 1, $newTag = true, $mode = 'edit')
+    {
+        $this->logger->info('*** adminUserPrivateTags');
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'userFollowAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'userFollowDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
+                array(
+                    'object' => $user,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'tags' => $user->getFollowTags($tagTypeId),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                    )
+            );
+        } else {
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $user->getFollowTags($tagTypeId),
+                    )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * User's debates
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserDebates($user)
     {
         $this->logger->info('*** adminUserDebates');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$pUser = '.print_r($user, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserDebates.html.twig',
+            'PolitizrAdminBundle:Fragment\\Debate:_userDebates.html.twig',
             array(
-                'pUser' => $pUser,
-                'pdDebates' => $pUser->getDebates(),
+                'user' => $user,
+                'debates' => $user->getDebates(),
             )
         );
 
         return $html;
-
     }
 
 
     /**
-     *  Gestion des réactions d'un user
+     * User's reactions
      *
-     * @param $pUser        PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function adminUserReactions($pUser)
+    public function adminUserReactions($user)
     {
         $this->logger->info('*** adminUserReactions');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserReactions.html.twig',
+            'PolitizrAdminBundle:Fragment\\Reaction:_userReactions.html.twig',
             array(
-                'pUser' => $pUser,
-                'pdReactions' => $pUser->getReactions(),
+                'user' => $user,
+                'reactions' => $user->getReactions(),
             )
         );
 
@@ -265,49 +353,45 @@ class PolitizrAdminExtension extends \Twig_Extension
 
 
     /**
-     *  Gestion des commentaires sur un débat d'un user
+     * User's debates' comments
      *
-     *  @param $pUser        PUser
-     *
-     *  @return string
-     */
-    public function adminUserComments($pUser)
-    {
-        $this->logger->info('*** adminUserComments');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserComments.html.twig',
-            array(
-                'pUser' => $pUser,
-                'pdComments' => $pUser->getComments(),
-            )
-        );
-
-        return $html;
-
-    }
-
-
-    /**
-     *  Gestion des commentaires sur une réaction d'un user
-     *
-     * @param $pUser        PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function adminUserCommentsR($pUser)
+    public function adminUserDComments($user)
     {
-        $this->logger->info('*** adminUserCommentsR');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        $this->logger->info('*** adminUserDComments');
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserCommentsR.html.twig',
+            'PolitizrAdminBundle:Fragment\\Comment:_userComments.html.twig',
             array(
-                'pUser' => $pUser,
-                'pdrComments' => $pUser->getCommentsR(),
+                'user' => $user,
+                'comments' => $user->getDComments(),
+            )
+        );
+
+        return $html;
+
+    }
+
+
+    /**
+     * User's reactions' comments
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserRComments($user)
+    {
+        $this->logger->info('*** adminUserRComments');
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Comment:_userComments.html.twig',
+            array(
+                'user' => $user,
+                'comments' => $user->getRComments(),
             )
         );
 
@@ -316,98 +400,45 @@ class PolitizrAdminExtension extends \Twig_Extension
     }
 
     /**
-     *  Gestion des followers qualifiés d'un user
+     * User's followers
      *
-     * @param $pUser        PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function adminUserFollowersQ($pUser)
+    public function adminUserFollowers($user)
     {
-        $this->logger->info('*** adminUserFollowersQ');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        $this->logger->info('*** adminUserFollowers');
+        // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            'PolitizrAdminBundle:Fragment\\Follow:_userFollowersSubscribers.html.twig',
             array(
-                'pUser' => $pUser,
-                'pUsers' => $pUser->getFollowersQ(),
+                'user' => $user,
+                'users' => $user->getFollowers(),
             )
         );
 
         return $html;
     }
 
-
     /**
-     *  Gestion des followers citoyens d'un user
+     * User's subscribers
      *
-     * @param $pUser        PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function adminUserFollowersC($pUser)
+    public function adminUserSubscribers($user)
     {
-        $this->logger->info('*** adminUserFollowersC');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        $this->logger->info('*** adminUserSubscribers');
+        // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
+            'PolitizrAdminBundle:Fragment\\Follow:_userFollowersSubscribers.html.twig',
             array(
-                'pUser' => $pUser,
-                'pUsers' => $pUser->getFollowersC(),
-            )
-        );
-
-        return $html;
-    }
-
-
-    /**
-     *  Gestion des abonnements qualifiés d'un user
-     *
-     * @param $pUser        PUser
-     *
-     * @return string
-     */
-    public function adminUserSubscribersQ($pUser)
-    {
-        $this->logger->info('*** adminUserSubscribersQ');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
-            array(
-                'pUser' => $pUser,
-                'pUsers' => $pUser->getSubscribersQ(),
-            )
-        );
-
-        return $html;
-    }
-
-
-    /**
-     *  Gestion des abonnements citoyens d'un user
-     *
-     * @param $pUser        PUser
-     *
-     * @return string
-     */
-    public function adminUserSubscribersC($pUser)
-    {
-        $this->logger->info('*** adminUserSubscribersC');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:UserFollowersSubscribers.html.twig',
-            array(
-                'pUser' => $pUser,
-                'pUsers' => $pUser->getSubscribersC(),
+                'user' => $user,
+                'users' => $user->getSubscribers(),
             )
         );
 
@@ -530,47 +561,68 @@ class PolitizrAdminExtension extends \Twig_Extension
     }
 
     /**
-     *  Gestion des tags d'un débat
+     * Debate's tagged tags management
      *
-     * @param $pdDebate     PDDebate    PDDebate
-     * @param $tagTypeId  integer     ID type de tag
-     * @param $zoneId       integer     ID de la zone CSS
-     * @param $mode         string      edit (default) / show
-     *
+     * @param PDDebate $debate
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
      * @return string
      */
     public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminDebateTags');
-        // $this->logger->info('$pdDebate = '.print_r($pdDebate, true));
-        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
+        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
-        // $this->logger->info('$mode = '.print_r($mode, true));
 
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'debateAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
 
-        if ($mode == 'edit') {
-            $template = "DebateTagsEdit.html.twig";
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'debateDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Tag:_edit.html.twig',
+                array(
+                    'object' => $debate,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'tags' => $debate->getTags($tagTypeId),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                )
+            );
         } else {
-            $template = "DebateTagsShow.html.twig";
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $debate->getTags($tagTypeId),
+                    )
+            );
         }
 
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:'.$template,
-            array(
-                'object' => $debate,
-                'tagTypeId' => $tagTypeId,
-                'zoneId' => $zoneId,
-                'newTag' => $newTag,
-                'tags' => $debate->getTags($tagTypeId),
-                'addPath' => 'DebateAddTag',
-                'deletePath' => 'DebateDeleteTag',
-            )
-        );
-
         return $html;
-
     }
 
     /**

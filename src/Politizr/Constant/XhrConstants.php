@@ -124,4 +124,18 @@ class XhrConstants
     // MONITORING
     const ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
     const ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
+
+    // ******************************************************** //
+    //                  XHR URL REWRITING (ADMIN)
+    // ******************************************************** //
+
+    // TAGS
+    const ADMIN_ROUTE_TAG_LISTING = 'tags/listing';
+    const ADMIN_ROUTE_TAG_SEARCH_LISTING = 'tags/search/listing';
+    const ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
+    const ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
+    const ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
+    const ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
+    const ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
+    const ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
 }

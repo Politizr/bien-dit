@@ -184,13 +184,11 @@ class XhrTag
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
 
         // associate tag to debate
         $pddTaggedT = PDDTaggedTQuery::create()
@@ -274,13 +272,11 @@ class XhrTag
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
 
         // associate tag to user's following
         $puFollowT = PUFollowTQuery::create()
@@ -361,13 +357,11 @@ class XhrTag
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
 
         // associate tag to user's tagging
         $puTaggedT = PUTaggedTQuery::create()

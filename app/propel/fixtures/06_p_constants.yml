@@ -83,28 +83,20 @@ Politizr\Model\POPaymentType:
 
 
 Politizr\Model\POSubscription:
+    1mois:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 1 mois
+        description:    |
+            Abonnement mensuel
+        price:          5
     1an:
         online:         true
         sortable_rank:  1
         title:          Abonnement 1 an
         description:    |
-            Abonnement annuel
-        price:          49.90
-    2ans:
-        online:         true
-        sortable_rank:  1
-        title:          Abonnement 2 ans
-        description:    |
-            Abonnement pour 2 ans
-        price:          89.90
-    5ans:
-        online:         true
-        sortable_rank:  1
-        title:          Abonnement 5 ans
-        description:    |
-            Abonnement pour 5 ans
-        price:          189.90
-
+            Abonnement pour 1 an
+        price:          50
 
 # USERS "admin" > lionel + thomas
 Politizr\Model\PUser:

@@ -1,0 +1,15 @@
+<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" subjectId="{{ object.id }}" newTag="{{ newTag }}" path="{{ pathCreate }}">
+
+    <div class="editableTagList">
+        {% for tag in tags %}
+            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'subjectId': object.id, 'tag': tag, 'path': pathDelete } %}&nbsp;
+        {% endfor %}
+    </div>
+
+    <hr/>
+    
+    {# Sélection #}
+    <input type="text" class="selectedTag" placeholder="tag" />
+    <input type="hidden" class="selectedTagID" />
+    <button type="button" action="addTag">Ajouter</button>
+</div>

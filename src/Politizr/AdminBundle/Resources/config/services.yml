@@ -13,6 +13,15 @@ services:
         tags:
             - { name: kernel.event_listener, event: order_pdf }
 
+    # XHR
+    politizr.xhr.admin:
+        class: Politizr\AdminBundle\Lib\Xhr\XhrAdmin
+        arguments:
+            - @security.token_storage
+            - @router
+            - @templating
+            - @politizr.manager.tag
+            - @logger
 
 
     # EXTENSIONS TWIG

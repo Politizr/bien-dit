@@ -41,7 +41,7 @@ class PublicController extends Controller
         // most "followed" debate today
         $followedDebate = PDDebateQuery::create()
             ->online()
-            ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
+            // ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
             ->filterByLastDay()
             ->orderByMostFollowed()
             ->orderByLast()
@@ -51,7 +51,7 @@ class PublicController extends Controller
         if (null === $followedDebate) {
             $followedDebate = PDDebateQuery::create()
                 ->online()
-                ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
+                // ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                 ->filterByLastWeek()
                 ->orderByMostFollowed()
                 ->orderByLast()
@@ -59,7 +59,7 @@ class PublicController extends Controller
             if (null === $followedDebate) {
                 $followedDebate = PDDebateQuery::create()
                     ->online()
-                    ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
+                    // ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                     ->filterByLastMonth()
                     ->orderByMostFollowed()
                     ->orderByLast()
@@ -67,7 +67,7 @@ class PublicController extends Controller
                 if (null === $followedDebate) {
                     $followedDebate = PDDebateQuery::create()
                         ->online()
-                        ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
+                        // ->filterById($activeDebate->getId(), \Criteria::NOT_EQUAL)
                         ->orderByLast()
                         ->findOne();
                 }

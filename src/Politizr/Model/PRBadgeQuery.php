@@ -36,9 +36,9 @@ class PRBadgeQuery extends BasePRBadgeQuery
     {
         return $this
             ->_if(null !== $typeId)
-                ->filterByPRBadgeTypeId($typeId)
-            ->_else()
-                ->orderByPRBadgeTypeId()
+                ->usePRBadgeFamilyQuery()
+                    ->filterByPRBadgeTypeId($typeId)
+                ->endUse()
             ->_endif();
     }
 }

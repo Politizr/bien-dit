@@ -1,0 +1,14 @@
+<div class="debate">
+    <div class="debate-title"><b>{{ debate.title }}</b></div>
+    <hr>
+    <div class="debate-online">{% if debate.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="debate-published">{% if debate.published %}Publié le {{ debate.publishedAt | date('d/m/Y H:i') }}{% else %}Brouillon{% endif %}</div>
+    <hr>
+    <div class="debate-nbReactions">{{ debate.countReactions }} réactions</div>
+    <div class="debate-nbFollowers">{{ debate.countFollowers }} followers</div>
+    <div class="debate-nbFollowers">{{ debate.countComments }} commentaires</div>
+    <hr>
+    <a href="{{ path('Politizr_AdminBundle_PDDebate_edit', { 'pk': debate.id }) }}">Editer</a>&nbsp;-&nbsp; 
+    <a href="{{ path('Politizr_AdminBundle_PDDebate_show', { 'pk': debate.id }) }}">Consulter</a>
+    <hr>
+</div>

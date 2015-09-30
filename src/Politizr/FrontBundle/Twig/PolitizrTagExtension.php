@@ -208,7 +208,7 @@ class PolitizrTagExtension extends \Twig_Extension
     public function userTaggedTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
     {
         $this->logger->info('*** userTaggedTagsEdit');
-        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$debate = '.print_r($user, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 

@@ -1,0 +1,20 @@
+<div class="comment">
+    <div class="comment-parentDebateTitle">Associé au document <b>{{ comment.pDocument }}</b></div>
+    <hr>
+    <div class="comment-description">{{ comment.description | striptags | slice(0, 150) | raw }}...</div>
+    <hr>
+    <div class="comment-online">{% if comment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="comment-published">Publié le {{ comment.publishedAt | date('d/m/Y H:i') }}</div>
+    <hr>
+    <div class="comment-paragraph">{% if comment.paragraphNo == 0 %}Commentaire <b>général</b>{% else %}Commentaire du <b>paragraphe n°{{ comment.paragraphNo }}</b>{% endif %}</div>
+    <div class="comment-note"><b>{{ comment.notePos }} +</b> &nbsp; <b>{{ comment.noteNeg }} -</b></div>
+    <hr>
+    {% if comment.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %}
+        <a href="{{ path('Politizr_AdminBundle_PDDComment_edit', { 'pk': comment.id }) }}">Editer</a>&nbsp;-&nbsp; 
+        <a href="{{ path('Politizr_AdminBundle_PDDComment_show', { 'pk': comment.id }) }}">Consulter</a>
+    {% else %}
+        <a href="{{ path('Politizr_AdminBundle_PDRComment_edit', { 'pk': comment.id }) }}">Editer</a>&nbsp;-&nbsp; 
+        <a href="{{ path('Politizr_AdminBundle_PDRComment_show', { 'pk': comment.id }) }}">Consulter</a>
+    {% endif %}
+    <hr>
+</div>

@@ -87,8 +87,8 @@ builders:
                         filters: 
                             qualified:          0
             display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_connect ]
-            # filtersMode:                        top
-            filters:                            [ name, firstname, qualified, p_u_status, online, last_connect ]
+            filtersMode:                        top
+            filters:                            [ id, name, firstname, qualified, p_u_status, online, last_connect ]
             actions:
                 new:                            ~
             object_actions:
@@ -128,7 +128,8 @@ builders:
                 "Descriptif":
                     "Informations":             [ subtitle, biography ]
                 "Tag":
-                    "Tags du profil":           [ block_tags_geo ]
+                    "Tags associés - public":   [ block_tags_public ]
+                    "Tags suivis - privé":      [ block_tags_private ]
                 "Réputation":
                     "Badges":                   [ badges ]
                 "Statut":
@@ -160,13 +161,24 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PRBadge
                         query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
-                block_tags_geo:
-                    label:                      "Tags géo"
+                block_tags_public:
+                    label:                      "Tags publiques"
+                    grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
+                block_tags_private:
+                    label:                      "Tags privés"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                subtitle:
+                    grid_class:                 "col-md-12"
                 biography:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
                 last_connect:
@@ -195,18 +207,18 @@ builders:
                 "Descriptif":
                     "Informations":             [ biography ]
                 "Tag":
-                    "Tags du profil":           [ block_tags_geo ]
+                    "Tags associés - public":   [ block_tags_public ]
+                    "Tags suivis - privé":      [ block_tags_private ]
                 "Réputation":
                     "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                     "Réactions":                [ block_reactions ]
-                    "Commentaires":             [ block_comments ]
+                    "Commentaires":             [ block_d_comments, block_r_comments ]
                 "Abonnement":
-                    "Followers":                [ block_followers_q, block_followers_c ]
-                    "Suivis":                   [ block_subscribers_q, block_subscribers_c ]
+                    "Followers et abonnements": [ block_followers, block_subscribers ]
                 "Statut":
-                    "Actuel":                   [ [ p_u_status_id ] ]
+                    "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_connect ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
@@ -214,8 +226,16 @@ builders:
                     "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
-                block_tags_geo:
-                    label:                      "Tags géo"
+                block_tags_public:
+                    label:                      "Tags publiques"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_tags_private:
+                    label:                      "Tags privés"
+                    grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
@@ -262,32 +282,26 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_comments:
-                    label:                      "Commentaires"
+                block_d_comments:
+                    label:                      "Commentaires de débat"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_followers_q:
-                    label:                      "Qualifiés"
+                block_r_comments:
+                    label:                      "Commentaires de réaction"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_followers_c:
-                    label:                      "Citoyens"
+                block_followers:
+                    label:                      "Followers"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_subscribers_q:
-                    label:                      "Qualifiés"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
-                block_subscribers_c:
-                    label:                      "Citoyens"
+                block_subscribers:
+                    label:                      "Abonnements"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:

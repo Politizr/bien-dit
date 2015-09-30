@@ -92,6 +92,16 @@ Politizr_AdminBundle_PDReaction:
     type:     admingenerator_nested
     prefix:   /PDReaction
 
+Politizr_AdminBundle_PDDComment:
+    resource: "@PolitizrAdminBundle/Controller/PDDComment/"
+    type:     admingenerator
+    prefix:   /PDDComment
+
+Politizr_AdminBundle_PDRComment:
+    resource: "@PolitizrAdminBundle/Controller/PDRComment/"
+    type:     admingenerator
+    prefix:   /PDRComment
+
 
 # Tags
 Politizr_AdminBundle_PTag:
