@@ -1,5 +1,5 @@
 {% for notif in notifs %}
-    <div class="notifItem withLoaderInside">
+    <div class="notifItem {% if notif.checked %}viewedNotif{% endif %} withLoaderInside">
         <div class="ajaxLoader" style="display: none;">
             <div class="ajaxLoaderSpinner"></div>
             <div class="ajaxLoaderBg"></div>

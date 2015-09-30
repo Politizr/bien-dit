@@ -81,8 +81,9 @@
             success: function(data) {
                 localLoader.hide();
 
-                $(this).find('.notifHighlight').attr('class', '');
-                $(this).find('.iconCross').remove();
+                $(this).find('.notifHighlight').removeClass();
+                $(this).find('.iconCheck').remove();
+                $(this).addClass('viewedNotif');
 
                 $('#notifCounter').html(parseInt($('#notifCounter').text()) - 1);
 
@@ -136,7 +137,9 @@
             {% include 'PolitizrFrontBundle:JS:_ajaxError.js.twig' %}
             success: function(data) {
                 // MAJ du style
-                $('.notifHighlight').attr('class', '');
+                $('.notifItem').addClass('viewedNotif');
+                $('.notifItem').find('.notifHighlight').removeClass();
+                $('.notifItem').find('.iconCheck').remove();
 
                 // MAJ du compteur
                 $('#notifCounter').html('-');
