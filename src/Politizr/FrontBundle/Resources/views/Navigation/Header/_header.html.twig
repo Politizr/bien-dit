@@ -7,7 +7,7 @@
             {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
                 <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
             {% else %}
-                <a href="{{ path('Login') }}">identification</button>
+                <a href="{{ path('Login') }}">identification</a>
                 <!-- <a href="{# path('Inscription') #}">inscription</a> -->
             {% endif %}
         </div>
