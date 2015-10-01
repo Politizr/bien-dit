@@ -37,7 +37,18 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
-        $documents = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
+        $reputation = $this->addDropdown($menu, 'Document');
+        $this->addLinkRoute(
+            $reputation,
+            'Débat',
+            'Politizr_AdminBundle_PDDebate_list'
+        );
+        $this->addLinkRoute(
+            $reputation,
+            'Réaction',
+            'Politizr_AdminBundle_PDReaction_list'
+        );
+
 
         // Commentaires
         $reputation = $this->addDropdown($menu, 'Commentaire');

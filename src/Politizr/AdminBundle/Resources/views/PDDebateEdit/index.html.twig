@@ -20,3 +20,7 @@
     {# TinyMCE #}
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 1 } %}
+{% endblock object_actions_script_container %}

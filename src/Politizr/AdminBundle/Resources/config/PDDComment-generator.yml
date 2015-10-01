@@ -120,11 +120,6 @@ builders:
                     label:                      "Auteur"
                 block_p_d_debate:
                     label:                      "Débat"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
             actions:
                 list:                           ~
                 edit:                           ~

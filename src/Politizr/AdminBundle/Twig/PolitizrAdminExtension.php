@@ -517,32 +517,22 @@ class PolitizrAdminExtension extends \Twig_Extension
     // ****************************************  GESTION DEBAT ******************************************* //
 
     /**
-     *  Gestion des réactions associées à un débat
+     * Display debate's reactions
      *
-     * @param $pdDebate     PDDDebate
-     * @param $mode         string      edit (default) / show
-     *
+     * @param PDDDebate $debate
      * @return string
      */
-    public function adminDebateReactions($pdDebate, $mode = 'edit')
+    public function adminDebateReactions($debate)
     {
         $this->logger->info('*** adminDebateReactions');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
-        // $this->logger->info('$mode = '.print_r($mode, true));
-
-        if ($mode == 'edit') {
-            $template = "DebateReactionsEdit.html.twig";
-        } else {
-            $template = "DebateReactionsShow.html.twig";
-        }
-
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:'.$template,
+            'PolitizrAdminBundle:Fragment\\Reaction:_debateReactions.html.twig',
             array(
-                'pdDebate' => $pdDebate,
-                'PDReactions' => $pdDebate->getTreeReactions(),
+                'debate' => $debate,
+                'reactions' => $debate->getTreeReactions(),
             )
         );
 
@@ -615,7 +605,7 @@ class PolitizrAdminExtension extends \Twig_Extension
 
             // Construction du rendu du tag
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Tag:_edit.html.twig',
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
                 array(
                     'object' => $debate,
                     'tagTypeId' => $tagTypeId,
@@ -748,7 +738,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
                 } else {
-                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
@@ -761,7 +752,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
                 } else {
-                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
@@ -774,7 +766,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
                 } else {
-                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
@@ -787,7 +780,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
                 } else {
-                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -800,7 +794,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
                 } else {
-                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                    $html = 'non trouvé';
                 }
                 break;
             default:

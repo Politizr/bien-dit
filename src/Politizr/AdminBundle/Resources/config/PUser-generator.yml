@@ -228,90 +228,32 @@ builders:
             fields:
                 block_tags_public:
                     label:                      "Tags publiques"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_tags_private:
                     label:                      "Tags privés"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_debates:
                     label:                      "Débats"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_badges_debat:
                     label:                      "Débat"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_badges_comment:
                     label:                      "Commentaire"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_badges_participation:
                     label:                      "Participation"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_badges_moderation:
                     label:                      "Modération"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_badges_autre:
                     label:                      "Autres"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_reactions:
                     label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_d_comments:
                     label:                      "Commentaires de débat"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_r_comments:
                     label:                      "Commentaires de réaction"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_followers:
                     label:                      "Followers"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_subscribers:
                     label:                      "Abonnements"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 block_affinities:
                     label:                      "Partis Politiques"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 last_connect:
                     label:                      Date de dernière connexion
             actions:

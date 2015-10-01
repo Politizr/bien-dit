@@ -12,19 +12,6 @@ use Admingenerated\PolitizrAdminBundle\BasePDDebateController\EditController as 
 class EditController extends BaseEditController
 {
     /**
-     *  Surcharge pour mise en session de l'id de l'objet courant, utilisé pour les actions sur les réactions
-     */
-    public function indexAction(Request $request, $pk)
-    {
-        // Mise en session de l'ID de l'objet
-        $session = $this->get('session');
-        $session->set('PDDebate/id', $pk);
-        $session->set('PDDebate/action', 'edit');
-
-        return parent::indexAction($request, $pk);
-    }
-
-    /**
      * Manage file upload
      *
      * @param \Symfony\Component\Form\Form $form the valid form
