@@ -8,20 +8,16 @@ params:
     fields:
         id:
             label:          ID
-            filterable:     1
         p_user_id:
-            label:          Utilisateur
-            filterable:     1
+            label:          ID Utilisateur
         p_user:
             label:          Utilisateur
-            filterable:     1
             addFormOptions:
                 query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
         file_name:
             label:          Image
         title:
             label:          Titre
-            filterable:     1
         description:
             label:          Description
         note_pos:
@@ -30,18 +26,14 @@ params:
             label:          Notes -
         published:
             label:          Publié
-            filterable:     1
         published_at:
             label:          Publication
-            filterable:     1
         published_by:
             label:          Auteur
         online:
             label:          En ligne
-            filterable:     1
         created_at:
             label:          Création
-            filterable:     1
         updated_at:
             label:          Mis à jour
     object_actions:
@@ -102,7 +94,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ uploadedFileName, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user_id ] ]
+                    "Utilisateur":              [ p_user ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Tags":
@@ -120,13 +112,12 @@ builders:
                     addFormOptions:
                         # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
+                p_user:
                     addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
+                        disabled:               true
+                        read_only:              true
                 description:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
                 block_reactions:
@@ -169,7 +160,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ file_name, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user_id ] ]
+                    "Utilisateur":              [ block_p_user ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":
@@ -183,6 +174,8 @@ builders:
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
+                block_p_user:
+                    label:                      "Auteur"
                 block_reactions:
                     label:                      "Réactions"
                 block_comments:

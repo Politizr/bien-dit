@@ -49,7 +49,7 @@ builders:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_family_id ], [ title ] ]
+                "Champs principaux":            [ [ p_r_badge_family ], [ title ] ]
             fields:
                 p_r_badge_family:
                     addFormOptions:
@@ -62,7 +62,7 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_family_id  ], [ title ] ]
+                    "Texte":                    [ [ p_r_badge_family  ], [ title ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:

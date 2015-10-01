@@ -12,13 +12,14 @@ params:
             label:                              Activé
         roles:          
             label:                              Liste des rôles
-            formType:                           afe_collection_table
+            dbType:                             ARRAY
+            formType:                           collection
             addFormOptions:         
                 type:                           text
                 allow_add:                      true
                 allow_delete:                   true
                 by_reference:                   false
-                new_label:                      " - Nouveau rôle"
+                # new_label:                      " - Nouveau rôle"
                 options:            
                     label:                      Rôle
         plainPassword:          
@@ -69,7 +70,7 @@ builders:
                 "Identité":
                     "Connexion":                [ username ]
                     "Mot de passe":             [ plainPassword ]
-                "Droits d'acccès":
+                "Droits accès":
                     "Gestion des rôles":        [ roles ]
                 "Attributs":
                     "Email":                    [ email ]

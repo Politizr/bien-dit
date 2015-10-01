@@ -40,7 +40,17 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $documents = $this->addLinkRoute($menu, 'Débat', 'Politizr_AdminBundle_PDDebate_list');
 
         // Commentaires
-        // $comments = $this->addLinkRoute($menu, 'Commentaire', 'Politizr_AdminBundle_PDComment_list');
+        $reputation = $this->addDropdown($menu, 'Commentaire');
+        $this->addLinkRoute(
+            $reputation,
+            'Débat',
+            'Politizr_AdminBundle_PDDComment_list'
+        );
+        $this->addLinkRoute(
+            $reputation,
+            'Réaction',
+            'Politizr_AdminBundle_PDRComment_list'
+        );
 
         // Tags
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');
@@ -97,8 +107,20 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_POOrderState_list'
         );
 
+        // Monitoring
+        $monitoring = $this->addDropdown($menu, 'Suivi');
+        $this->addLinkRoute(
+            $monitoring,
+            'Abus',
+            'Politizr_AdminBundle_PMAbuseReporting_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
+            'Exceptions',
+            'Politizr_AdminBundle_PMAppException_list'
+        );
 
-        // Réglages techniques: notifications utilisateurs
+        // Régla
         $regulations = $this->addDropdown($menu, 'Réglage');
         $this->addLinkRoute(
             $regulations,

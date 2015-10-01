@@ -1,9 +1,16 @@
 <?php
 namespace Politizr\AdminBundle\Twig;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 /**
@@ -163,6 +170,13 @@ class PolitizrAdminExtension extends \Twig_Extension
             'adminReactionComments'  => new \Twig_Function_Method(
                 $this,
                 'adminReactionComments',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminCreatePath'  => new \Twig_Function_Method(
+                $this,
+                'adminCreatePath',
                 array(
                     'is_safe' => array('html')
                     )
@@ -703,15 +717,104 @@ class PolitizrAdminExtension extends \Twig_Extension
     }
 
 
+    // ****************************************  GESTION MONITORING ******************************************* //
+
+
+    /**
+     * Create a link to the object.
+     *
+     * @param string $objectClass
+     * @param int $objectId
+     * @param boolean $displayType
+     * @param string $mode show|edit
+     * @return string
+     */
+    public function adminCreatePath($objectClass, $objectId, $displayType = false, $mode = 'show')
+    {
+        $this->logger->info('*** adminCreatePath');
+        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+        // $this->logger->info('$displayType = '.print_r($displayType, true));
+        // $this->logger->info('$mode = '.print_r($mode, true));
+
+        switch($objectClass) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                ($displayType)?$label = 'Débat ':$label = '';
+                $subject = PDDebateQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('Politizr_AdminBundle_PDDebate_show', array('pk' => $objectId));
+
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                } else {
+                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                ($displayType)?$label = 'Réaction ':$label = '';
+                $subject = PDReactionQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('Politizr_AdminBundle_PDReaction_show', array('pk' => $objectId));
+
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                } else {
+                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                ($displayType)?$label = 'Commentaire (débat) ':$label = '';
+                $subject = PDDCommentQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = substr($subject->getDescription(), 0, 50);
+                    $url = $this->router->generate('Politizr_AdminBundle_PDDComment_show', array('pk' => $objectId));
+
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                } else {
+                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                ($displayType)?$label = 'Commentaire (réaction) ':$label = '';
+                $subject = PDRCommentQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = substr($subject->getDescription(), 0, 50);
+                    $url = $this->router->generate('Politizr_AdminBundle_PDRComment_show', array('pk' => $objectId));
+
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                } else {
+                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_USER:
+                ($displayType)?$label = 'Utilisateur ':$label = '';
+                $subject = PUserQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->__toString();
+                    $url = $this->router->generate('Politizr_AdminBundle_PUser_show', array('pk' => $objectId));
+
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                } else {
+                    $html = sprintf('%sid-%s non trouvé', $label, $objectId);
+                }
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object class %s not managed.'), $objectClass);
+        }
+
+        return $html;
+    }
+
+    // ******************************************************************************************************* //
 
 
     public function getName()
     {
         return 'admin_ajax_extension';
     }
-
-
-    /* ######################################################################################################## */
-    /*                                                 FONCTIONS PRIVÉES                                        */
-    /* ######################################################################################################## */
 }

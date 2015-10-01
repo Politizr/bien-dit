@@ -31,10 +31,17 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
 
     /**
      *
+     * @return string
      */
     public function __toString()
     {
-        return $this->getTitle();
+        $title = $this->getTitle();
+
+        if (!empty($title)) {
+            return $this->getTitle();
+        }
+
+        return 'Pas de titre';
     }
 
     /**

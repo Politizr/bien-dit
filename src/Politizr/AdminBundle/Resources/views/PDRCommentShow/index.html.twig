@@ -1,1 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDRCommentShow:index.html.twig" %}
+
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDRComment.PUserId) }}
+{% endblock %}
+
+{% block show_column_block_p_d_reaction %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDRComment.PDReactionId) }}
+{% endblock %}

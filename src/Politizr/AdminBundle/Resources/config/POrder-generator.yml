@@ -137,8 +137,9 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Objets":
+                    "Utilisateur":              [ p_user ]
                 "Utilisateur":
-                    "Objet associé":            [ [ p_user_id ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
                     "Justificatifs":            [ uploadedSupportingDocument, elective_mandates ]
                 # "Facture":
@@ -159,12 +160,10 @@ builders:
                     addFormOptions:
                         # deleteable:             supportingDocument
                         data_class:             Symfony\Component\HttpFoundation\File\File            
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
+                p_user:
                     addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
+                        disabled:               true
+                        read_only:              true
                 price:
                     formType:                   money
                 promotion:
@@ -196,8 +195,9 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
                 "Utilisateur":
-                    "Objet associé":            [ [ p_user_id ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
                     "Justificatifs":            [ supporting_document, elective_mandates ]
                 "Paiement":
@@ -206,9 +206,9 @@ builders:
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
-            # fields:
-            #     last_connect:
-            #         label:                      Date de dernière connexion
+            fields:
+                block_p_user:
+                    label:                      "Auteur"
             actions:
                 list:                           ~
                 edit:                           ~

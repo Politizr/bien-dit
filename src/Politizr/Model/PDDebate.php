@@ -35,7 +35,13 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
      */
     public function __toString()
     {
-        return $this->getTitle();
+        $title = $this->getTitle();
+
+        if (!empty($title)) {
+            return $this->getTitle();
+        }
+
+        return 'Pas de titre';
     }
 
     /**

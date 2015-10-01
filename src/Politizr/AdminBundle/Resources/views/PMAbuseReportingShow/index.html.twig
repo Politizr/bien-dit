@@ -1,0 +1,6 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMAbuseReportingShow:index.html.twig" %}
+
+
+{% block show_column_block_p_object %}
+    {{ adminCreatePath(PMAbuseReporting.PObjectName, PMAbuseReporting.PObjectId, true) }}
+{% endblock %}

@@ -1,5 +1,10 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateShow:index.html.twig" %}
 
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
+{% endblock %}
+
 {# Contenus #}
 {% block show_column_summary %}
     {{ PDDebate.getSummary | raw }}

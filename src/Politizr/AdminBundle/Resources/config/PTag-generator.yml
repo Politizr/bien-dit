@@ -9,7 +9,7 @@ params:
         id:
             label:          ID
         p_t_tag_type_id:
-            label:          Type
+            label:          ID Type
         p_t_tag_type:
             label:          Type
         title:
@@ -63,7 +63,7 @@ builders:
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ [ p_t_tag_type_id ], [ title ] ]
+                "Champs principaux":            [ [ p_t_tag_type ], [ title ] ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
@@ -76,7 +76,7 @@ builders:
             title:                              "Edition du tag '{{ PTag.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_t_tag_type_id ], [ title ] ]
+                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
