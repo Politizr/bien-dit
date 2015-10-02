@@ -19,6 +19,10 @@ parameters:
     contact_email: contact@politizr.com
     noreply_email: ne-pas-repondre@politizr.com
 
+    # Hosts
+    host.admin: *
+    host.public: *
+
     # OAuth parameters
     # Facebook
     facebook_client_id: 123

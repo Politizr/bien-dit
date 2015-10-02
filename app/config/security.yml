@@ -25,21 +25,23 @@ security:
     firewalls:
         # Firewall zone admin
         admin_area:
-            pattern:                        ^/admin
+            pattern:                        ^/
+            host:                           "%host.admin%"
             form_login:     
                 provider:                   fos_userbundle
                 csrf_provider:              form.csrf_provider
-                login_path:                 /admin/login
-                check_path:                 /admin/login_check
-                default_target_path:        /admin/
+                login_path:                 /login
+                check_path:                 /login_check
+                default_target_path:        /
             logout:             
-                path:                       /admin/logout
-                target:                     /admin/login
+                path:                       /logout
+                target:                     /login
             anonymous:                      true
 
         # Firewall OAuth
         oauth:
             pattern:                        ^/oauth/.*
+            host:                           "%host.public%"
             anonymous:                      ~
             provider:                       oauth
             oauth:
@@ -57,6 +59,7 @@ security:
         # Firewall login classique
         public:
             pattern:                        ^/
+            host:                           "%host.public%"
             form_login:
                 login_path:                 /
                 # check_path:                 /inscription/check
@@ -72,12 +75,12 @@ security:
             anonymous:                      true
 
     access_control:
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }                              # Espace ADMIN
-        - { path: ^/u/, role: ROLE_CITIZEN_INSCRIPTION }                    # Process d'inscription citoyen
-        - { path: ^/v/, role: ROLE_ELECTED_INSCRIPTION }                    # Process d'inscription elu
-        - { path: ^/citoyen/, role: ROLE_CITIZEN }                          # Espace citoyen
-        - { path: ^/elu/, role: ROLE_ELECTED }                              # Espace élu
-        - { path: ^/profil/, role: ROLE_PROFILE_COMPLETED }                 # Profil citoyen ou élu complet
-        - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/oauth/target, roles: ROLE_OAUTH_USER }                  # Process d'inscription OAuth
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.admin%" }
+        - { path: ^/, role: ROLE_ADMIN, host: "%host.admin%" }                              # Espace ADMIN
+        - { path: ^/u/, role: ROLE_CITIZEN_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription citoyen
+        - { path: ^/v/, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription elu
+        - { path: ^/citoyen/, role: ROLE_CITIZEN, host: "%host.public%" }                          # Espace citoyen
+        - { path: ^/elu/, role: ROLE_ELECTED, host: "%host.public%" }                              # Espace élu
+        - { path: ^/profil/, role: ROLE_PROFILE_COMPLETED, host: "%host.public%" }                 # Profil citoyen ou élu complet
+        - { path: ^/oauth/, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.public%" }
+        - { path: ^/oauth/target, roles: ROLE_OAUTH_USER , host: "%host.public%"}                  # Process d'inscription OAuth
