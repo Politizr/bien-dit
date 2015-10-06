@@ -1,19 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:index.html.twig" %}
 
-{% block stylesheets %}
-    {{ parent() }}
-
-    {# Autocomplete #}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery-ui.min.css') }}">
-{% endblock %}
-
-{% block javascripts_head %}
-    {{ parent() }}
-
-    {# Autocomplete #}
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
 
@@ -22,5 +8,5 @@
 {% endblock %}
 
 {% block object_actions_script_container %}
-    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 1 } %}
+    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 1, 'admin': true } %}
 {% endblock object_actions_script_container %}

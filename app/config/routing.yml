@@ -1,11 +1,11 @@
 politizr_admin:
     resource: "@PolitizrAdminBundle/Resources/config/routing.yml"
-    host:     %host.admin%
+    host:     "%host.admin%"
     prefix:   /
 
 politizr_front:
     resource: "@PolitizrFrontBundle/Resources/config/routing.yml"
-    host:     %host.public%
+    host:     "%host.public%"
     prefix:   /
 
 _liip_imagine:

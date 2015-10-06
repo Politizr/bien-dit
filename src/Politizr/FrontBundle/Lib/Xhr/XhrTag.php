@@ -188,7 +188,8 @@ class XhrTag
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag);
 
         // associate tag to debate
         $pddTaggedT = PDDTaggedTQuery::create()

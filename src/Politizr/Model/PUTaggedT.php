@@ -36,7 +36,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
             // get associated object
             $user = PUserQuery::create()->findPk($this->getPUserId());
             if ($user && $user->isIndexable()) {
-                $this->elasticaPersister->replaceOne($user);
+                // $this->elasticaPersister->replaceOne($user);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -53,7 +53,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
             // get associated object
             $user = PUserQuery::create()->findPk($this->getPUserId());
             if ($user && $user->isIndexable()) {
-                $this->elasticaPersister->replaceOne($user);
+                // $this->elasticaPersister->replaceOne($user);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -70,7 +70,7 @@ class PUTaggedT extends BasePUTaggedT implements ContainerAwareInterface
             // get associated object
             $user = PUserQuery::create()->findPk($this->getPUserId());
             if ($user && $user->isIndexable()) {
-                $this->elasticaPersister->replaceOne($user);
+                // $this->elasticaPersister->replaceOne($user);
             }
         } else {
             throw new \Exception('Indexation service not found');

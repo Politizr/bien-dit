@@ -207,7 +207,7 @@ class PolitizrAdminExtension extends \Twig_Extension
         if ('edit' === $mode) {
             // Construction des chemins XHR
             $xhrPathCreate = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_CREATE',
                     'xhrService' => 'admin',
@@ -217,7 +217,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             );
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
                     'xhrService' => 'admin',
@@ -272,7 +272,7 @@ class PolitizrAdminExtension extends \Twig_Extension
         if ('edit' === $mode) {
             // Construction des chemins XHR
             $xhrPathCreate = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE',
                     'xhrService' => 'admin',
@@ -282,7 +282,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             );
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
                     'xhrService' => 'admin',
@@ -584,7 +584,7 @@ class PolitizrAdminExtension extends \Twig_Extension
         if ('edit' === $mode) {
             // Construction des chemins XHR
             $xhrPathCreate = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
                     'xhrService' => 'admin',
@@ -594,7 +594,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             );
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
                     'xhrService' => 'admin',

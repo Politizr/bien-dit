@@ -185,13 +185,11 @@ class XhrAdmin
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         if (empty($tagTypeId)) {
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, null, $newTag);
 
         // associate tag to debate
         $pddTaggedT = PDDTaggedTQuery::create()

@@ -20,12 +20,21 @@
             var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
             console.log('tagTypeId = '+tagTypeId);
 
-            var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-                'xhrRoute': 'ROUTE_TAG_LISTING',
-                'xhrService': 'tag',
-                'xhrMethod': 'getTags',
-                'xhrType': 'RETURN_HTML',
-                } only %}";
+            {% if admin %}
+                var xhrPath = "{% include 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig' with {
+                    'xhrRoute': 'ADMIN_ROUTE_TAG_LISTING',
+                    'xhrService': 'tag',
+                    'xhrMethod': 'getTags',
+                    'xhrType': 'RETURN_HTML',
+                    } only %}";
+            {% else %}
+                var xhrPath = "{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+                    'xhrRoute': 'ROUTE_TAG_LISTING',
+                    'xhrService': 'tag',
+                    'xhrMethod': 'getTags',
+                    'xhrType': 'RETURN_HTML',
+                    } only %}";
+            {% endif %}
 
             $.ajax({
                 type: 'POST',

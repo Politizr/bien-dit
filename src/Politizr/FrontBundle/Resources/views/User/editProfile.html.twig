@@ -220,7 +220,7 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
 
-    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2 } %}
+    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2, 'admin': false } %}
 
     {% include 'PolitizrFrontBundle:JS\\Document:medium.js.twig' %}
     {% include 'PolitizrFrontBundle:JS\\User:editProfile.js.twig' %}

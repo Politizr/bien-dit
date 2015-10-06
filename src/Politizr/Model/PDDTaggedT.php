@@ -34,7 +34,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
         if ($this->elasticaPersister) {
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -49,7 +49,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
         if ($this->elasticaPersister) {
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
             throw new \Exception('Indexation service not found');
@@ -64,7 +64,7 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
         if ($this->elasticaPersister) {
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
             throw new \Exception('Indexation service not found');
