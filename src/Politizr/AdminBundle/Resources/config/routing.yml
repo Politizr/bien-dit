@@ -21,6 +21,14 @@ fos_user_change_password:
 ################################################################################
 #               CUSTOM ROUTES
 ################################################################################
+# ADMIN GENERIC XHR
+AdminXhrGeneric:
+    pattern:  /adminxhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
+    requirements:
+        _method:        POST
+        xhrRoute:       ".+"
+        xhrType:        \d
 
 # Accueil
 PolitizrAdminHomepage:

@@ -39,6 +39,10 @@ params:
             label:          Email
         phone:
             label:          Téléphone
+        username:          
+            label:          Identifiant
+        plainPassword:          
+            label:          Mot de passe
         last_connect:
             label:          Dernière connexion
         p_r_badges:
@@ -61,7 +65,7 @@ params:
                     ROLE_ELECTED_INSCRIPTION:   'Inscription Débatteur en cours'
                     ROLE_CITIZEN:               'Citoyen'
                     ROLE_ELECTED:               'Débatteur'
-                    ROLE_PROFILE_COMPLETED:     'Inscription terminée'                                                 
+                    ROLE_PROFILE_COMPLETED:     'Inscription terminée'
         created_at:
             label:          Création
         updated_at:
@@ -103,10 +107,11 @@ builders:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ qualified, p_u_status_id ], [ gender ], [ firstname, name ] ]
+                "Champs principaux":            [ [ qualified, p_u_status_id, email ], [ gender, firstname, name ], [ username ], [ plainPassword ], [ roles ] ]
                 "Champs complémentaires":       [ biography ]
             fields:
                 biography:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
                 p_u_status_id:
@@ -114,6 +119,15 @@ builders:
                     formType:       choice
                     addFormOptions:
                         choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
+                plainPassword:          
+                    dbType:                             VARCHAR
+                    formType:                           repeated
+                    addFormOptions:         
+                        first_options:          
+                            label:                      Mot de passe
+                        second_options:         
+                            label:                      Confirmation
+                        type:                           password
             actions:
               save:                             ~
               list:                             ~
@@ -122,9 +136,11 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ qualified ]
                     "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
+                "Identifiant":
+                    "Connexion":                [ username, plainPassword ]
+                    "Rôles":                    [ roles ]
                 "Descriptif":
                     "Informations":             [ subtitle, biography ]
                 "Tag":
@@ -133,12 +149,12 @@ builders:
                 "Réputation":
                     "Badges":                   [ badges ]
                 "Statut":
-                    "Actuel":                   [ [ p_u_status_id ] ]
-                    "Connexion":                [ last_connect ]
+                    "Actuel":                   [ p_u_status_id ]
+                    "Activité":                 [ last_connect ]
                 "Attributs":
-                    "En ligne":                 [ [ online ] ]
-                    "Validé":                   [ [ validated ] ]
-                    "Rôles":                    [ roles ]
+                    "Type":                     [ qualified ]
+                    "En ligne":                 [ online ]
+                    "Validé":                   [ validated ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedFileName:
@@ -148,6 +164,15 @@ builders:
                     addFormOptions:
                         # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
+                plainPassword:          
+                    dbType:                             VARCHAR
+                    formType:                           repeated
+                    addFormOptions:         
+                        first_options:          
+                            label:                      Mot de passe
+                        second_options:         
+                            label:                      Confirmation
+                        type:                           password
                 p_u_status_id:
                     label:          Statut
                     formType:       choice

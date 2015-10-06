@@ -599,26 +599,20 @@ class XhrUser
 
         $form->bind($request);
         if ($form->isValid()) {
-            $userPerso = $form->getData();
-            $userPerso->save();
+            $user = $form->getData();
 
             // @todo use form type constant
             if ($formTypeId == 1) {
-                // @todo migrate to puser->preSave
-                $user->setNickname($userPerso->getFirstname() . ' ' . $userPerso->getName());
-                $user->setRealname($userPerso->getFirstname() . ' ' . $userPerso->getName());
+                $user->setNickname($user->getFirstname() . ' ' . $user->getName());
+                $user->setRealname($user->getFirstname() . ' ' . $user->getName());
                 $user->save();
             } elseif ($formTypeId == 2) {
-                // @todo migrate to puser->preSave
-                $user->setEmailCanonical($this->emailCanonicalizer->canonicalize($userPerso->getEmail()));
+                $userManager->updateCanonicalFields($user);
                 $user->save();
             } elseif ($formTypeId == 3) {
-                // @todo migrate to puser->preSave
-                $password = $userPerso->getPassword();
-                if ($password) {
-                    $encoder = $this->encoderFactory->getEncoder($user);
-                    $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-                    $user->setPlainPassword($password);
+                $plainPassword = $user->getPlainPassword();
+                if ($plainPassword) {
+                    $this->userManager->updatePassword($user);
                     $user->save();
 
                     // Envoi email

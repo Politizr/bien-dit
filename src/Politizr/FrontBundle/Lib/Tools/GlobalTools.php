@@ -183,15 +183,22 @@ class GlobalTools
             return array();
         }
 
-        // $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom = new \DOMDocument("4.0", "utf-8");
-        // $dom->loadHTML($htmlText);
-        $dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
-        $xPath = new \DOMXPath($dom);
-        $entries = $xPath->evaluate("//p|//h1|//h2|//blockquote|//ul//li");
+        // // $dom = new \DOMDocument('1.0', 'UTF-8');
+        // $dom = new \DOMDocument("4.0", "utf-8");
+        // // $dom->loadHTML($htmlText);
+        // $dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
+        // $xPath = new \DOMXPath($dom);
+        // $entries = $xPath->evaluate("//p|//h1|//h2|//blockquote|//ul//li");
+        // $paragraphs = array();
+        // foreach ($entries as $entry) {
+        //     dump($entry->nodeValue);
+        //     $paragraphs[] = '<' . $entry->tagName . '>' . $entry->nodeValue .  '</' . $entry->tagName . '>';
+        // }
+
         $paragraphs = array();
-        foreach ($entries as $entry) {
-            $paragraphs[] = '<' . $entry->tagName . '>' . $entry->nodeValue .  '</' . $entry->tagName . '>';
+        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>/is', $htmlText, $matches);
+        for ($i = 0; $i < $count; ++$i) {
+            $paragraphs[] = $matches[0][$i];
         }
 
         return $paragraphs;

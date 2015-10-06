@@ -29,7 +29,7 @@ User:
 
 # GENERIC XHR
 XhrGeneric:
-    pattern:  /{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
+    pattern:  /xhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
     requirements:
         _method:        POST

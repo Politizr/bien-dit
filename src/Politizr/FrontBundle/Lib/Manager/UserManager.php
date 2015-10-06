@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
@@ -18,14 +20,25 @@ use Politizr\Model\PUFollowUQuery;
  */
 class UserManager
 {
+    protected $encoderFactory;
+    protected $usernameCanonicalizer;
+    protected $emailCanonicalizer;
+
     private $logger;
 
     /**
      *
+     * @param @security.encoder_factory
+     * @param @fos_user.util.username_canonicalizer
+     * @param @fos_user.util.email_canonicalizer
      * @param @logger
      */
-    public function __construct($logger)
+    public function __construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $logger)
     {
+        $this->encoderFactory = $encoderFactory;
+        $this->usernameCanonicalizer = $usernameCanonicalizer;
+        $this->emailCanonicalizer = $emailCanonicalizer;
+
         $this->logger = $logger;
     }
 
@@ -214,6 +227,60 @@ LIMIT ".$offset.", ".$count."
         ";
 
         return $sql;
+    }
+
+    /* ######################################################################################################## */
+    /*                                        SECURITY OPERATIONS                                               */
+    /* ######################################################################################################## */
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateCanonicalFields(UserInterface $user)
+    {
+        $user->setUsernameCanonical($this->canonicalizeUsername($user->getUsername()));
+        $user->setEmailCanonical($this->canonicalizeEmail($user->getEmail()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updatePassword(UserInterface $user)
+    {
+        if (0 !== strlen($password = $user->getPlainPassword())) {
+            $encoder = $this->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+            $user->eraseCredentials();
+        }
+    }
+
+    /**
+     * Canonicalizes an email
+     *
+     * @param string $email
+     *
+     * @return string
+     */
+    protected function canonicalizeEmail($email)
+    {
+        return $this->emailCanonicalizer->canonicalize($email);
+    }
+
+    /**
+     * Canonicalizes a username
+     *
+     * @param string $username
+     *
+     * @return string
+     */
+    protected function canonicalizeUsername($username)
+    {
+        return $this->usernameCanonicalizer->canonicalize($username);
+    }
+
+    protected function getEncoder(UserInterface $user)
+    {
+        return $this->encoderFactory->getEncoder($user);
     }
 
 

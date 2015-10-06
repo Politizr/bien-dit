@@ -10,18 +10,28 @@ params:
             label:                              Login
         enabled:            
             label:                              Activé
-        roles:          
-            label:                              Liste des rôles
-            dbType:                             ARRAY
-            formType:                           collection
-            addFormOptions:         
-                type:                           text
-                allow_add:                      true
-                allow_delete:                   true
-                by_reference:                   false
-                # new_label:                      " - Nouveau rôle"
-                options:            
-                    label:                      Rôle
+        # roles:          
+        #     label:                              Liste des rôles
+        #     dbType:                             ARRAY
+        #     formType:                           collection
+        #     addFormOptions:         
+        #         type:                           text
+        #         allow_add:                      true
+        #         allow_delete:                   true
+        #         by_reference:                   false
+        #         # new_label:                      " - Nouveau rôle"
+        #         options:            
+        #             label:                      Rôle
+        roles:
+            label:                              Liste des rôles de l'utilisateur
+            formType:                           choice
+            addFormOptions:
+                expanded:                       true
+                multiple:                       true
+                choices:                
+                    ROLE_USER:                  'Utilisateur'
+                    ROLE_ADMIN:                 'Administrateur'
+                    ROLE_SYSTEM:                'System'
         plainPassword:          
             label:                              label.plainPassword
             dbType:                             VARCHAR
