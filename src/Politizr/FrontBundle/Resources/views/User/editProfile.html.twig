@@ -188,35 +188,37 @@
             {{ form_rest(formBio) }}
         </form>
 
-        <div id="myMandate" class="profileFieldset">
-            <div class="fieldsetHeader">
-                <div class="fieldsetHeaderTitle">mes mandats</div>
-                <i class="iconQuestion" action="toggleHelper"></i>
-                <div class="helperSlider helperSliderRight" style="display: none;">
-                    <i class="iconArrowUp"></i>
-                    <i class="iconCross" action="hideHelper"></i>
-                    @todo : slider ajouter un mandat
+        {% if user.isQualified %}
+            <div id="myMandate" class="profileFieldset">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">mes mandats</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        @todo : slider ajouter un mandat
+                    </div>
+                </div>
+
+                <!-- @todo HTML/CSS styler les années en select -->
+                <div id="newMandate" class="editMandateItem">
+                    {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'formMandate': formMandate } %}
+                </div>
+
+                <div id="myMandates">
+                    {% if formMandate and formMandateViews %}
+                        {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
+                    {% endif %}
                 </div>
             </div>
-
-            <!-- @todo HTML/CSS styler les années en select -->
-            <div id="newMandate" class="editMandateItem">
-                {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'formMandate': formMandate } %}
-            </div>
-
-            <div id="myMandates">
-                {% if formMandate and formMandateViews %}
-                    {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
-                {% endif %}
-            </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/smoke.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/smoke.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.form.min.js') }}"></script>
 
