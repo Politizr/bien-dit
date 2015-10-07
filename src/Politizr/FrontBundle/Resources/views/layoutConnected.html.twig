@@ -72,15 +72,19 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
-    
-    {% include 'PolitizrFrontBundle:JS\\Notification:display.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Follow:subscribe.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Modal:opening.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\PaginatedList:loading.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\PaginatedList:search.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Tag:search.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Monitoring:abuse.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Reputation:reputation.js.twig' %}
-
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/notification/display.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/follow/subscribe.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/modal/opening.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/loading.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/accentMap.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/abuse.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/reputation.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

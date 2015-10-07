@@ -105,8 +105,18 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS\\User:detail.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Timeline:timeline.js.twig' with { 'userId': user.id, 'route': constant('Politizr\\Constant\\XhrConstants::ROUTE_TIMELINE_USER') } %}
 
-    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        // on document ready
+        $(function() {
+            timelineUserList({{ user.id }});
+        });
+    </script>
 {% endblock javascriptFooter %}

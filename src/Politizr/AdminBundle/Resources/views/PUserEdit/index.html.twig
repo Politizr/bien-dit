@@ -8,5 +8,9 @@
 {% endblock %}
 
 {% block object_actions_script_container %}
+    <script>
+        var nbZones = 2;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
     {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2, 'admin': true } %}
 {% endblock object_actions_script_container %}

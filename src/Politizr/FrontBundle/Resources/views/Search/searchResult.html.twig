@@ -30,7 +30,10 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    
-    {% include 'PolitizrFrontBundle:JS\\Search:searchResult.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/search/searchResult.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

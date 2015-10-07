@@ -106,5 +106,9 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:JS\\User:editPerso.js.twig' %}
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

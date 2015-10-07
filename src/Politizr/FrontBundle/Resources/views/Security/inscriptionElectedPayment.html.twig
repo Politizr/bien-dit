@@ -24,8 +24,12 @@
     </div>
 {% endblock main %}
 
-
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS\\Security:payment.js.twig' %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/payment.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

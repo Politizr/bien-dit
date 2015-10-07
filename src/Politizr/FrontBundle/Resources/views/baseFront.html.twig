@@ -63,7 +63,7 @@
                 </div>
 
                 {# loader ajax global #} 
-                <div id="ajaxGlobalLoader" class="modal" style="display: none;">
+                <div id="ajaxGlobalLoader" class="modal">
                     <div class="ajaxLoader">
                         <i class="iconPltzrLogoAlt"></i>
                         <div class="iconLoaderBg"></div>
@@ -82,7 +82,10 @@
             {% endblock wrapper %}
 
             {% block javascriptFooter %}
-            {% endblock %}
+                <script type="text/javascript">
+                    var baseUrl = '{{ app.request.getBaseUrl }}';
+                </script>
+            {% endblock javascriptFooter %}
 
             {% block tawkTo %}
                 <!--Start of Tawk.to Script-->
@@ -101,4 +104,5 @@
             {% endblock %}
         </body>
     {% endblock body %}
+
 </html>

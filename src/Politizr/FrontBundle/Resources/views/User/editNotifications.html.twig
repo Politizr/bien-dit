@@ -31,5 +31,9 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% include 'PolitizrFrontBundle:JS\\Notification:email.js.twig' %}
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/notification/email.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

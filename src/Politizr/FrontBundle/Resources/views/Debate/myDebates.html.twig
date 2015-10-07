@@ -15,8 +15,16 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    
+
     {% if nbDebates > 0 %}
-        {% include 'PolitizrFrontBundle:JS\\Document:myContributions.js.twig' with { 'xhrRoute': 'ROUTE_DEBATE_MY_DEBATES', 'xhrMethod': 'myDebatesPaginated' } %}
+        <script>
+            var xhrRoute = ROUTE_DEBATE_MY_DEBATES;
+            var xhrMethod = 'myDebatesPaginated';
+        </script>
+        {% javascripts
+            '@PolitizrFrontBundle/Resources/public/js/politizr/document/myContributions.js'
+            filter='uglifyjs2' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
     {% endif %}
 {% endblock javascriptFooter %}

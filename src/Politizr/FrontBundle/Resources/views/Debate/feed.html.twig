@@ -96,6 +96,10 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    
-    {% include 'PolitizrFrontBundle:JS\\Document:feed.js.twig' %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/feed.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

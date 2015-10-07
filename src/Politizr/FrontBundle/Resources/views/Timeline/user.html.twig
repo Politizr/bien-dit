@@ -13,6 +13,17 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    
-    {% include 'PolitizrFrontBundle:JS\\Timeline:timeline.js.twig' with { 'route': constant('Politizr\\Constant\\XhrConstants::ROUTE_TIMELINE_MINE') } %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        // on document ready
+        $(function() {
+            timelineList();
+        });
+    </script>
 {% endblock javascriptFooter %}

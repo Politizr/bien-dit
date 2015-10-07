@@ -123,9 +123,11 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    
-    {% include 'PolitizrFrontBundle:JS\\Reputation:notation.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Document:comments.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/comments.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

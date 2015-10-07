@@ -30,13 +30,23 @@
     {% endblock %}
 {% endblock wrapper %}
 
+
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:global.js.twig' %}
 
-    {% include 'PolitizrFrontBundle:JS\\Security:login.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Modal:opening.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\PaginatedList:loading.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\PaginatedList:search.js.twig' %}
-    {% include 'PolitizrFrontBundle:JS\\Tag:search.js.twig' %}
+    <script type="text/javascript">
+        var routeXhrGeneric = '{{ app.request.getBaseUrl }}/xhr/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
+    </script>
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/loading.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/accentMap.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/search.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}
