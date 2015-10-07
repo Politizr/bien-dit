@@ -586,9 +586,9 @@ class XhrDocument
         }
 
         // Validation constraints
-        $title = $debate->getTitle();
+        $title = $reaction->getTitle();
         $title = trim($title);
-        $description = $debate->getDescription();
+        $description = $reaction->getDescription();
         $description = trim($description);
         // title requirement
         if (empty($title)) {
