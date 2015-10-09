@@ -46,6 +46,10 @@ function initInputSearchByTags() {
 
                 // http://api.jqueryui.com/autocomplete/
                 $('#searchByTag').find('.selectedTag').first().autocomplete({
+                    focus: function(event, ui){
+                        event.preventDefault();
+                        $('#searchInput').val(ui.item.label);
+                    },
                     source: function( request, response ) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
                         response( $.grep( availableTags, function( value ) {

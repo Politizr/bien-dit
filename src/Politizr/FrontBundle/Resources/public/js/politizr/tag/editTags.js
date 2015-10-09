@@ -52,6 +52,10 @@ $(function() {
                     // http://api.jqueryui.com/autocomplete/
                     $('#editTagZone-'+zoneId).children('.selectedTag').first().autocomplete({
                     // $('.selectedTag').autocomplete({
+                        focus: function(event, ui){
+                            event.preventDefault();
+                            $('input.selectedTag').val(ui.item.label);
+                        },
                         source: function( request, response ) {
                             var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
                             response( $.grep( availableTags, function( value ) {
