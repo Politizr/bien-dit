@@ -5,14 +5,14 @@ $(function() {
 
 // Update user
 $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
-    console.log('*** click user profile update');
-    console.log(mode);
+    // console.log('*** click user profile update');
+    // console.log(mode);
 
     var subtitle = subtitleEditor.serialize();
     var biography = biographyEditor.serialize();
 
-    console.log(subtitle['element-0']['value']);
-    console.log(biography['element-0']['value']);
+    // console.log(subtitle['element-0']['value']);
+    // console.log(biography['element-0']['value']);
 
     $('#user_subtitle').val(subtitle['element-0']['value']);
     $('#user_biography').val(biography['element-0']['value']);
@@ -55,7 +55,7 @@ $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
 
 // Update current organization
 $("body").on("change", "select[action='organizationUpdate']", function(e) {
-    console.log('*** change select organization');
+    // console.log('*** change select organization');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_ORGA_UPDATE,
@@ -88,7 +88,7 @@ $("body").on("change", "select[action='organizationUpdate']", function(e) {
 // MAJ des affinités politiques
 // @todo dead code / relancer rossier sur le sujet
 $("body").on("click", "[action='affinities-update']", function(e) {
-    console.log('*** click affinities-update');
+    // console.log('*** click affinities-update');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_AFFINITIES_UPDATE,
@@ -120,7 +120,7 @@ $("body").on("click", "[action='affinities-update']", function(e) {
 
 // Mandate creation
 $("body").on("click", "[action='mandateCreate']", function(e) {
-    console.log('*** click mandateCreate');
+    // console.log('*** click mandateCreate');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_CREATE,
@@ -158,7 +158,7 @@ $("body").on("click", "[action='mandateCreate']", function(e) {
 
 // Mandate update
 $("body").on("click", "[action='mandateUpdate']", function(e) {
-    console.log('*** click mandateUpdate');
+    // console.log('*** click mandateUpdate');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_UPDATE,
@@ -195,7 +195,7 @@ $("body").on("click", "[action='mandateUpdate']", function(e) {
 
 // Mandate deletion
 $("body").on("click", "[action='mandateDelete']", function(e) {
-    console.log('*** click mandateDelete');
+    // console.log('*** click mandateDelete');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_DELETE,
@@ -204,7 +204,7 @@ $("body").on("click", "[action='mandateDelete']", function(e) {
         RETURN_HTML
         );
     var subjectId = $(this).attr('subjectId');
-    console.log('subjectId = ' + subjectId);
+    // console.log('subjectId = ' + subjectId);
 
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer ce mandat?";
     smoke.confirm(confirmMsg, function(e) {

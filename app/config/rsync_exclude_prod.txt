@@ -40,3 +40,7 @@ reload-bdd.sh
 
 /web/uploads/
 /web/static/
+
+/web/js/
+/web/assetic/css/compiled/
+/web/assetic/js/compiled/

@@ -29,7 +29,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des reports d'abus
+            title:                              Liste des reports des abus
             max_per_page:                       50
             sort:                               [ id, DESC ]
             display:                            [ p_user, message, created_at ]
@@ -42,7 +42,7 @@ builders:
         filetype: ~
     show:
         params:
-            title:                              "Visualisation report d'abus {{ PMAbuseReporting.id }}"
+            title:                              "Visualisation report des abus {{ PMAbuseReporting.id }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ message ]

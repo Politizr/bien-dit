@@ -5,10 +5,13 @@
     {{ adminDebateTags(PDDebate, null, 1, true) }}
 {% endblock %}
 
-{% block generic_actions_script_container %}
+{% block object_actions_script_container %}
     <script>
         var nbZones = 2;
         var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+        var xhrUrlPrefix = '/adminxhr';
     </script>
-    {% include 'PolitizrFrontBundle:JS\\Tag:editTags.js.twig' with { 'nbZones': 2, 'admin': true } %}
-{% endblock %}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+{% endblock object_actions_script_container %}

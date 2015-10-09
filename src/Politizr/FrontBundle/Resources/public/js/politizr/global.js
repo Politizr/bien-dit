@@ -95,7 +95,7 @@ $("body").on("click", "[action='share-gg']", function(e) {
 
 // imgLiquid
 function fullImgLiquid() {
-    console.log('*** fullImgLiquid');
+    // console.log('*** fullImgLiquid');
 
     // full size image on public homepage
     $("#homeClaim, #homeOfficial").imgLiquid({
@@ -149,7 +149,7 @@ function fullImgLiquid() {
 
 // sticky date
 function stickyDate() {
-    console.log('*** stickyDate');
+    // console.log('*** stickyDate');
     
     // sticky day for css
     // with timelineHeader

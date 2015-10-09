@@ -1,6 +1,6 @@
 // user profile perso update
 $("body").on("click", "button[action='submitPerso']", function(e) {
-    console.log('click submitPerso');
+    // console.log('click submitPerso');
 
     var form = $(this).closest('form');
 

@@ -1,6 +1,6 @@
 // follow / unfollow debate
 $("body").on("click", "[action='followDebate']", function(e) {
-    console.log('*** click followDebate');
+    // console.log('*** click followDebate');
     
     var context = $(this).closest('.subscribe');
     var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();
@@ -40,7 +40,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
 
 // follow / unfollow user
 $("body").on("click", "[action='followUser']", function(e) {
-    console.log('*** click followUser');
+    // console.log('*** click followUser');
 
     var context = $(this).closest('.subscribe');
     var localLoader = $(this).closest('.subscribe').find('.ajaxLoader').first();

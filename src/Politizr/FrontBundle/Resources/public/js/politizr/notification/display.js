@@ -60,7 +60,7 @@ function notificationsLoading(){
 
 // check notification
 $("body").on("click", "i[action='notificationCheck']", function(e) {
-    console.log('*** click i notificationCheck');
+    // console.log('*** click i notificationCheck');
 
     e.preventDefault();
 
@@ -97,7 +97,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
 })
 
 $("body").on("click", "a[action='notificationCheck']", function(e) {
-    console.log('*** click a notificationCheck');
+    // console.log('*** click a notificationCheck');
 
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CHECK,
@@ -125,7 +125,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
 
 // check toutes les notifications
 $("body").on("click", "div[action='notificationCheckAll']", function(e) {
-    console.log('*** click notificationCheckAll');
+    // console.log('*** click notificationCheckAll');
 
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CHECK_ALL,

@@ -10,17 +10,18 @@ var normalize = function( term ) {
 // on document ready
 $(function() {
     // autocomplete initialization
-    console.log('nbZones = '+nbZones);
+    // console.log('nbZones = '+nbZones);
 
     for (i = 1; i <= nbZones; i++ ) {
         var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
-        console.log('tagTypeId = '+tagTypeId);
+        // console.log('tagTypeId = '+tagTypeId);
 
         var xhrPath = getXhrPath(
             xhrRoute,
             'tag',
             'getTags',
-            RETURN_HTML
+            RETURN_HTML,
+            xhrUrlPrefix
             );
 
         $.ajax({
@@ -75,7 +76,7 @@ $(function() {
 
 // clic ajout nouveau tag
 $("body").on("click", "button[action='addTag']", function() {
-    console.log('click addTag');
+    // console.log('click addTag');
 
     var tagTitle = $(this).siblings('.selectedTag').first().val();
     var tagId = $(this).siblings('.selectedTagID').first().val();
@@ -85,12 +86,12 @@ $("body").on("click", "button[action='addTag']", function() {
     var newTag = $(this).closest('.addTag').attr('newTag');
     var addUrl = $(this).closest('.addTag').attr('path');
 
-    console.log('title = ' + tagTitle);
-    console.log('id = ' + tagId);
-    console.log('type = ' + tagTypeId);
-    console.log('subjectId = ' + subjectId);
-    console.log('newTag = ' + newTag);
-    console.log('url = ' + addUrl);
+    // console.log('title = ' + tagTitle);
+    // console.log('id = ' + tagId);
+    // console.log('type = ' + tagTypeId);
+    // console.log('subjectId = ' + subjectId);
+    // console.log('newTag = ' + newTag);
+    // console.log('url = ' + addUrl);
 
     tag = tagTitle.trim();
     if (tag === '') {
@@ -130,15 +131,15 @@ $("body").on("click", "button[action='addTag']", function() {
 
 // clic suppression tag
 $("body").on("click", "[action='deleteTag']", function() {
-    console.log('click deleteTag');
+    // console.log('click deleteTag');
 
     var tagId = $(this).attr('tagId');
     var subjectId = $(this).attr('subjectId');;
     var deleteUrl = $(this).attr('path');
 
-    console.log('tagId = ' + tagId);
-    console.log('subjectId = ' + subjectId);
-    console.log('deleteUrl = ' + deleteUrl);
+    // console.log('tagId = ' + tagId);
+    // console.log('subjectId = ' + subjectId);
+    // console.log('deleteUrl = ' + deleteUrl);
 
     $.ajax({
         type: 'POST',

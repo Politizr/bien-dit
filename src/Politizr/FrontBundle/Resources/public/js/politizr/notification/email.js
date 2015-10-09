@@ -1,6 +1,6 @@
 // Souscription email
 $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
-    console.log('*** click notifEmailSubscribe');
+    // console.log('*** click notifEmailSubscribe');
     
     var localLoader = $(this).closest('.notificationsPrefsItem').find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
@@ -11,7 +11,7 @@ $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
         );
 
     var subjectId = $(this).attr('subjectId');
-    console.log(subjectId);
+    // console.log(subjectId);
 
     $.ajax({
         type: 'POST',
@@ -37,7 +37,7 @@ $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
 
 // Désouscription email
 $("body").on("click", "[action='notifEmailUnsubscribe']", function(e) {
-    console.log('*** click notifEmailUnsubscribe');
+    // console.log('*** click notifEmailUnsubscribe');
     
     var localLoader = $(this).closest('.notificationsPrefsItem').find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
@@ -48,7 +48,7 @@ $("body").on("click", "[action='notifEmailUnsubscribe']", function(e) {
         );
             
     var subjectId = $(this).attr('subjectId');
-    console.log(subjectId);
+    // console.log(subjectId);
 
     $.ajax({
         type: 'POST',

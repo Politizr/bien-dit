@@ -15,8 +15,8 @@ $("body").on("click", "[action='paginateNextChart']", function(e) {
  * @param Date startAt
  */
 function reputationCharts(startAt) { 
-    console.log('*** reputationCharts');
-    console.log(startAt);
+    // console.log('*** reputationCharts');
+    // console.log(startAt);
 
     // get first day of current month
     if (typeof startAt === "undefined") {
@@ -69,8 +69,8 @@ function reputationCharts(startAt) {
                 globalChartInstance = loadReputationDataCharts(lineChartData);
 
                 // update pagination offset
-                console.log(data['datePrev']);
-                console.log(data['dateNext']);
+                // console.log(data['datePrev']);
+                // console.log(data['dateNext']);
 
                 $('.chartNavPrev').attr('startAt', data['datePrev']);
                 $('.chartNavNext').attr('startAt', data['dateNext']);
@@ -88,8 +88,8 @@ function reputationCharts(startAt) {
  * @return chart instance
  */
 function loadReputationDataCharts(lineChartData) {
-    console.log('*** loadReputationDataCharts');
-    console.log(lineChartData);
+    // console.log('*** loadReputationDataCharts');
+    // console.log(lineChartData);
 
     if (lineChartData === "undefined") {
         return false;

@@ -5,7 +5,7 @@ $(function() {
 
 // payment choice
 $("body").on("click", "[action='payment-choice']", function() {
-    console.log('*** click radio-choice');
+    // console.log('*** click radio-choice');
 
     $(".payment-detail").hide();
     $(this).siblings(".payment-detail").show();
@@ -13,7 +13,7 @@ $("body").on("click", "[action='payment-choice']", function() {
 
 // payment process
 $("body").on("click", "[action='payment-process']", function(e) {
-    console.log('*** payment-process');
+    // console.log('*** payment-process');
 
     var xhrPath = getXhrPath(
         ROUTE_SECURITY_PAYMENT_PROCESS,

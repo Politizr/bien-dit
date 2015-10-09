@@ -10,7 +10,7 @@ $(function() {
 
 // close comments
 $("body").on("click", "[action='closeComments']", function(e) {
-    console.log('*** click closeComments');
+    // console.log('*** click closeComments');
 
     context = $(this).closest('.paragraph').find('.comments');
     context.slideUp();
@@ -24,7 +24,7 @@ $("body").on('change keyup keydown paste cut', 'textarea', function () {
 
 // affichage des commentaires par paragraphe
 $("body").on("click", "[action='comments']", function(e) {
-    console.log('*** click comments');
+    // console.log('*** click comments');
 
     // Fermeture préalable de tous les paragraphes ouverts
     context = $('.comments').slideUp().html('');
@@ -34,8 +34,8 @@ $("body").on("click", "[action='comments']", function(e) {
 // open paragraph id
 function openParagraph(paragraphId)
 {
-    console.log('*** openParagraph');
-    console.log(paragraphId);
+    // console.log('*** openParagraph');
+    // console.log(paragraphId);
 
     var context = $('#'+paragraphId);
 
@@ -43,9 +43,9 @@ function openParagraph(paragraphId)
     var type = context.find('.commentsCounter').attr('type');
     var noParagraph = context.find('.commentsCounter').attr('noParagraph');
 
-    console.log(subjectId);
-    console.log(type);
-    console.log(noParagraph);
+    // console.log(subjectId);
+    // console.log(type);
+    // console.log(noParagraph);
 
     var xhrPath = getXhrPath(
         ROUTE_COMMENTS,
@@ -79,7 +79,7 @@ function openParagraph(paragraphId)
 
 // création d'un commentaire
 $("body").on("click", "input[action='createComment']", function(e) {
-    console.log('*** click createComment');
+    // console.log('*** click createComment');
     
     var context = $(this).closest('.paragraph');
     var localLoader = $(this).prev('.ajaxLoader');

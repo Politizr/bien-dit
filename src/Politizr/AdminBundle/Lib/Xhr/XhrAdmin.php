@@ -207,7 +207,7 @@ class XhrAdmin
             $xhrPathDelete = $this->templating->render(
                 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
                 array(
-                    'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
                     'xhrService' => 'tag',
                     'xhrMethod' => 'debateDeleteTag',
                     'xhrType' => 'RETURN_BOOLEAN',

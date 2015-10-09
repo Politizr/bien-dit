@@ -4,6 +4,7 @@ namespace Politizr\Constant;
 
 /**
  * XHR constants
+ * /!\ to sync w. js/politizr/xhr.js
  *
  * @author Lionel Bouzonville
  */

@@ -131,8 +131,10 @@ var ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
 /**
  *
  */
-function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType ) {
-    var routeXhrGeneric = baseUrl + '/xhr/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
+function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType, xhrUrlPrefix ) {
+    xhrUrlPrefix = (typeof xhrUrlPrefix === "undefined") ? '/xhr' : xhrUrlPrefix;
+
+    var routeXhrGeneric = baseUrl + xhrUrlPrefix + '/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
 
     routeXhrGeneric = routeXhrGeneric.replace('%xhrRoute%', xhrRoute);
     routeXhrGeneric = routeXhrGeneric.replace('%xhrService%', xhrService);
@@ -141,6 +143,7 @@ function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType ) {
 
     return routeXhrGeneric;
 }
+
 
 /**
  *
@@ -201,6 +204,6 @@ function xhrError(jqXHR, textStatus, errorThrown, localLoader ) {
     $('#ajaxGlobalLoader').hide();
     $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
     $('#infoBoxHolder .boxError').show();
-    console.log('textStatus - '+textStatus);
-    console.log('errorThrown - '+errorThrown);
+    // console.log('textStatus - '+textStatus);
+    // console.log('errorThrown - '+errorThrown);
 }

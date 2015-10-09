@@ -15,9 +15,9 @@ $("body").on("click", "[action='timelineUserPaginatedNext']", function(e) {
  * @param integer offset
  */
 function timelineList(init, offset) {
-    console.log('*** timelineList');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** timelineList');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -28,7 +28,7 @@ function timelineList(init, offset) {
         'timelinePaginated',
         RETURN_HTML
         );
-    console.log('xhrPath = '+ xhrPath);
+    // console.log('xhrPath = '+ xhrPath);
     
     $.ajax({
         type: 'POST',
@@ -67,10 +67,10 @@ function timelineList(init, offset) {
  * @param integer offset
  */
 function timelineUserList(userId, init, offset) {
-    console.log('*** timelineUserList');
-    console.log(userId);
-    console.log(init);
-    console.log(offset);
+    // console.log('*** timelineUserList');
+    // console.log(userId);
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;

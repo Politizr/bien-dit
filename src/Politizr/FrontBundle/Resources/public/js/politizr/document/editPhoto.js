@@ -37,14 +37,14 @@ $("body").on("click", "[action='showIllustrationShadow']", function() {
 // **************************** //
 // Clic bouton upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    console.log('click file select');
+    // console.log('click file select');
     $("#fileName").trigger('click');
     return false;
 });
 
 // Upload simple
 $("body").on("change", "#fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
     $('#formDocumentPhoto').submit();
 });
 
@@ -66,16 +66,16 @@ var options = {
     complete: function(data) 
     {
         data = data.responseText;
-        console.log('data.responseText = ' + data);
+        // console.log('data.responseText = ' + data);
 
         // Gestion retour iframe IE
         data = data.replace('<PRE>', '');
         data = data.replace('</PRE>', '');
         data = data.replace('<pre>', '');
         data = data.replace('</pre>', '');
-        console.log('data replace = ' + data);
+        // console.log('data replace = ' + data);
         data = $.parseJSON( data );
-        console.log('data parse JSON = ' + data);
+        // console.log('data parse JSON = ' + data);
 
         if (data['success']) {
             // update & imgLiquid uploaded photo
@@ -95,7 +95,7 @@ var options = {
 
 // Delete photo
 $('body').on('click', "[action='fileDelete']", function(e){
-    console.log('*** click file delete');
+    // console.log('*** click file delete');
 
     $('#uploadedPhoto').html('');
     $('#debate_photo_info_file_name, #reaction_photo_info_file_name').val(null);
@@ -103,10 +103,10 @@ $('body').on('click', "[action='fileDelete']", function(e){
 
 // Save debate photo info
 $("body").on("click", "[action='debatePhotoInfoSave']", function(e) {
-    console.log('*** click save debate photo info');
+    // console.log('*** click save debate photo info');
 
     var copyright = copyrightEditor.serialize();
-    console.log(copyright['element-0']['value']);
+    // console.log(copyright['element-0']['value']);
 
     $('#debate_photo_info_copyright').val(copyright['element-0']['value']);
 
@@ -135,7 +135,7 @@ $("body").on("click", "[action='debatePhotoInfoSave']", function(e) {
                 $('#copyright').html(data['copyright']);
 
                 // update & imgLiquid uploaded photo
-                console.log(data['imageHeader']);
+                // console.log(data['imageHeader']);
                 $('#illustrationMain').html(data['imageHeader']);
                 $('#illustration_l').html(data['imageHeader']);
                 $('#illustration_r').html(data['imageHeader']);
@@ -149,10 +149,10 @@ $("body").on("click", "[action='debatePhotoInfoSave']", function(e) {
 
 // Save reaction photo info
 $("body").on("click", "[action='reactionPhotoInfoSave']", function(e) {
-    console.log('*** click save reaction photo info');
+    // console.log('*** click save reaction photo info');
 
     var copyright = copyrightEditor.serialize();
-    console.log(copyright['element-0']['value']);
+    // console.log(copyright['element-0']['value']);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_PHOTO_INFO_UPDATE,
@@ -179,7 +179,7 @@ $("body").on("click", "[action='reactionPhotoInfoSave']", function(e) {
                 $('#copyright').html(data['copyright']);
 
                 // update & imgLiquid uploaded photo
-                console.log(data['imageHeader']);
+                // console.log(data['imageHeader']);
                 $('#illustrationMain').html(data['imageHeader']);
                 $('#illustration_l').html(data['imageHeader']);
                 $('#illustration_r').html(data['imageHeader']);

@@ -1,6 +1,6 @@
 // clic post abuse
 $("body").on("click", "[action='createAbuseReporting']", function(e) {
-    console.log('*** click createAbuseReporting');
+    // console.log('*** click createAbuseReporting');
 
     var xhrPath = getXhrPath(
         ROUTE_MONITORING_ABUSE_CHECK,

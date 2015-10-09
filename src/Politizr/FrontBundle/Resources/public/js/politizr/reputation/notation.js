@@ -1,6 +1,6 @@
 // notation
 $("body").on("click", "[action='note']", function(e) {
-    console.log('*** click note');
+    // console.log('*** click note');
     
     e.preventDefault();
 

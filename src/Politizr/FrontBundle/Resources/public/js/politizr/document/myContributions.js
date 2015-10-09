@@ -15,9 +15,9 @@ $("body").on("click", "[action='listingPaginatedNext']", function(e) {
  * @param integer offset
  */
 function contributionList(init, offset) {
-    console.log('*** contributionList');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** contributionList');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;

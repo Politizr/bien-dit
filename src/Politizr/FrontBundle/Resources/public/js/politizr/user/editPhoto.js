@@ -38,27 +38,27 @@ $("body").on("click", "[action='showIllustrationShadow']", function() {
 // **************************** //
 // Clic button upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    console.log('click file select');
+    // console.log('click file select');
     $("#fileName").trigger('click');
     return false;
 });
 
 // Form submit upload photo
 $("body").on("change", "#fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
     $('#formUserPhoto').submit();
 });
 
 // Click button upload back photo local
 $("body").on("click", "[action='backFileSelect']", function() {
-    console.log('click back file select');
+    // console.log('click back file select');
     $("#backFileName").trigger('click');
     return false;
 });
 
 // Form submit upload back photo
 $("body").on("change", "#backFileName", function() {
-    console.log('change back file name');
+    // console.log('change back file name');
     $('#formUserBackPhoto').submit();
 });
 
@@ -82,16 +82,16 @@ var photoOptions = {
     complete: function(data) 
     {
         data = data.responseText;
-        console.log('data.responseText = ' + data);
+        // console.log('data.responseText = ' + data);
 
         // Gestion retour iframe IE
         data = data.replace('<PRE>', '');
         data = data.replace('</PRE>', '');
         data = data.replace('<pre>', '');
         data = data.replace('</pre>', '');
-        console.log('data replace = ' + data);
+        // console.log('data replace = ' + data);
         data = $.parseJSON( data );
-        console.log('data parse JSON = ' + data);
+        // console.log('data parse JSON = ' + data);
 
         if (data['success']) {
             // update & imgLiquid uploaded photo
@@ -121,16 +121,16 @@ var backPhotoOptions = {
     complete: function(data) 
     {
         data = data.responseText;
-        console.log('data.responseText = ' + data);
+        // console.log('data.responseText = ' + data);
 
         // Gestion retour iframe IE
         data = data.replace('<PRE>', '');
         data = data.replace('</PRE>', '');
         data = data.replace('<pre>', '');
         data = data.replace('</pre>', '');
-        console.log('data replace = ' + data);
+        // console.log('data replace = ' + data);
         data = $.parseJSON( data );
-        console.log('data parse JSON = ' + data);
+        // console.log('data parse JSON = ' + data);
 
         if (data['success']) {
             // update & imgLiquid uploaded photo
@@ -150,7 +150,7 @@ var backPhotoOptions = {
 
 // Delete photo
 $('body').on('click', "[action='fileDelete']", function(e){
-    console.log('*** click file delete');
+    // console.log('*** click file delete');
 
     var xhrPath = getXhrPath(
         ROUTE_USER_PHOTO_DELETE,
@@ -183,7 +183,7 @@ $('body').on('click', "[action='fileDelete']", function(e){
 
 // Delete back photo
 $('body').on('click', "[action='backFileDelete']", function(e){
-    console.log('*** click back file delete');
+    // console.log('*** click back file delete');
 
     $('#uploadedBackPhoto').html('');
     $('#user_back_photo_info_back_file_name').val(null);
@@ -191,10 +191,10 @@ $('body').on('click', "[action='backFileDelete']", function(e){
 
 // Save user back photo info
 $("body").on("click", "[action='userBackPhotoInfoSave']", function(e) {
-    console.log('*** click save user back photo info');
+    // console.log('*** click save user back photo info');
 
     var copyright = copyrightEditor.serialize();
-    console.log(copyright['element-0']['value']);
+    // console.log(copyright['element-0']['value']);
 
     $('#user_back_photo_info_copyright').val(copyright['element-0']['value']);
 
@@ -223,7 +223,7 @@ $("body").on("click", "[action='userBackPhotoInfoSave']", function(e) {
                 $('#copyright').html(data['copyright']);
 
                 // update & imgLiquid uploaded photo
-                console.log(data['imageHeader']);
+                // console.log(data['imageHeader']);
                 $('#profileHeaderIllustration').html(data['imageHeader']);
                 $('#illustration_l').html(data['imageHeader']);
                 $('#illustration_r').html(data['imageHeader']);

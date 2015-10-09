@@ -57,8 +57,8 @@ $('.postSummaryFooter, #postText').on( 'change keyup keydown paste cut', 'textar
 
 // Save debate
 $("body").on("click", "[action='debateSave']", function(e, mode) {
-    console.log('*** click debate save');
-    console.log(mode);
+    // console.log('*** click debate save');
+    // console.log(mode);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -67,7 +67,7 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
         RETURN_BOOLEAN
         );
     var description = descriptionEditor.serialize();
-    console.log(description['element-0']['value']);
+    // console.log(description['element-0']['value']);
 
     $('#debate_description').val(description['element-0']['value']);
 
@@ -101,8 +101,8 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
 
 // Save reaction
 $("body").on("click", "[action='reactionSave']", function(e, mode) {
-    console.log('*** click reaction save');
-    console.log(mode);
+    // console.log('*** click reaction save');
+    // console.log(mode);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_UPDATE,
@@ -111,7 +111,7 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
         RETURN_BOOLEAN
         );
     var description = descriptionEditor.serialize();
-    console.log(description['element-0']['value']);
+    // console.log(description['element-0']['value']);
 
     $('#reaction_description').val(description['element-0']['value']);
  
@@ -145,7 +145,7 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
 
 // Publish debate
 $('body').on('click', "[action='debatePublish']", function(e){
-    console.log('*** click publish debate');
+    // console.log('*** click publish debate');
 
     // automatic saving before publish
     $('[action="debateSave"]').trigger('click', 'silence');
@@ -192,7 +192,7 @@ $('body').on('click', "[action='debatePublish']", function(e){
 
 // Publish reaction
 $('body').on('click', "[action='reactionPublish']", function(e){
-    console.log('*** click publish reaction');
+    // console.log('*** click publish reaction');
 
     // automatic saving before publish
     $('[action="reactionSave"]').trigger('click', 'silence');
@@ -239,7 +239,7 @@ $('body').on('click', "[action='reactionPublish']", function(e){
 
 // Delete debate
 $('body').on('click', "[action='debateDelete']", function(e){
-    console.log('*** click delete debate');
+    // console.log('*** click delete debate');
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_DELETE,
@@ -283,7 +283,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
 
 // Delete reaction
 $('body').on('click', "[action='reactionDelete']", function(e){
-    console.log('*** click delete reaction');
+    // console.log('*** click delete reaction');
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_DELETE,

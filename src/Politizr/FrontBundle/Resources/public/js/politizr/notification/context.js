@@ -2,7 +2,7 @@
 
 // Context email notification debate subscribe
 $("body").on("click", "span[action='notif-subscribe']", function(e) {
-    console.log('*** click notif-subscribe');
+    // console.log('*** click notif-subscribe');
 
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE,
@@ -36,7 +36,7 @@ $("body").on("click", "span[action='notif-subscribe']", function(e) {
 
 // Context email notification debate unsubscribe
 $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
-    console.log('*** click notif-unsubscribe');
+    // console.log('*** click notif-unsubscribe');
     
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE,
@@ -69,7 +69,7 @@ $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
 
 // Context email notification user subscribe
 $("body").on("click", "span[action='notif-subscribe']", function(e) {
-    console.log('*** click notif-subscribe');
+    // console.log('*** click notif-subscribe');
 
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE,
@@ -103,7 +103,7 @@ $("body").on("click", "span[action='notif-subscribe']", function(e) {
 
 // Context email notification user unsubscribe
 $("body").on("click", "span[action='notif-unsubscribe']", function(e) {
-    console.log('*** click notif-unsubscribe');
+    // console.log('*** click notif-unsubscribe');
     
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE,
