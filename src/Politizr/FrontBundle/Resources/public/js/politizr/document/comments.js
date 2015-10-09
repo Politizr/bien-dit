@@ -12,9 +12,16 @@ $(function() {
 $("body").on("click", "[action='closeComments']", function(e) {
     // console.log('*** click closeComments');
 
-    context = $(this).closest('.paragraph').find('.comments');
+    var paragraphElement = $(this).closest('.paragraph');
+
+    context = paragraphElement.find('.comments');
     context.slideUp();
     context.html('');
+
+    // scroll to paragraph
+    $('html, body').animate({
+        scrollTop: paragraphElement.offset().top
+    }, '1000');    
 });
 
 // ajustement de la taille du textarea de saisie d'un commentaire en fonction de la saisie en cours
@@ -72,6 +79,11 @@ function openParagraph(paragraphId)
                 $(this).find('.comments').html(data['html']).slideDown();
                 $(this).find('.counter').html(data['counter']);
                 fullImgLiquid();
+
+                // scroll to comment
+                $('html, body').animate({
+                    scrollTop: $(this).find('.comments').offset().top
+                }, '1000');
             }
         }
     });        
