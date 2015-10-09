@@ -70,7 +70,7 @@ function openParagraph(paragraphId)
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $(this).find('.comments').html(data['html']).slideDown();
-                $(this).find('.commentsCounter').html(data['counter']);
+                $(this).find('.counter').html(data['counter']);
                 fullImgLiquid();
             }
         }

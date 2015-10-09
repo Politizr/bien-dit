@@ -97,7 +97,9 @@
         <div id="postText">
             {% for paragraph in paragraphs %}
                 <div id="p-{{ loop.index }}" class="paragraph">
-                    {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
+                    <div class="counter">
+                        {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
+                    </div>
                     {{ paragraph | raw }}
                     <div class="comments"></div>
                 </div>
