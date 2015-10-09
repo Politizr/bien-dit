@@ -117,24 +117,11 @@ var ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
 //                  XHR URL REWRITING (ADMIN)
 // ******************************************************** //
 
-// TAGS
-var ADMIN_ROUTE_TAG_LISTING = 'admin/tags/listing';
-var ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';
-var ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
-var ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
-var ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
-var ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
-var ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
-var ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
-
-
 /**
  *
  */
-function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType, xhrUrlPrefix ) {
-    xhrUrlPrefix = (typeof xhrUrlPrefix === "undefined") ? '/xhr' : xhrUrlPrefix;
-
-    var routeXhrGeneric = baseUrl + xhrUrlPrefix + '/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
+function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType ) {
+    var routeXhrGeneric = baseUrl + '/xhr/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
 
     routeXhrGeneric = routeXhrGeneric.replace('%xhrRoute%', xhrRoute);
     routeXhrGeneric = routeXhrGeneric.replace('%xhrService%', xhrService);

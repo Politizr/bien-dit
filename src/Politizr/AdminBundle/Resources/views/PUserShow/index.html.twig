@@ -12,7 +12,9 @@
 
 {# Image #}
 {% block show_column_file_name %}
-    <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
+    {% if PUser.fileName %}
+        <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
+    {% endif %}
 {% endblock %}
 
 {# User's tag #}
@@ -90,7 +92,6 @@
     <script>
         var nbZones = 2;
         var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
-        var xhrUrlPrefix = '/adminxhr';
     </script>
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    

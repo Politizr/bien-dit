@@ -23,4 +23,14 @@ class NewController extends BaseNewController
         $userManager->updateCanonicalFields($user);
         $userManager->updatePassword($user);
     }
+
+    /**
+     * @see Admingenerated\PolitizrAdminBundle\BasePUserController\NewController
+     */
+    protected function postSave(Form $form, PUser $user)
+    {
+        $userManager = $this->get('politizr.manager.user');
+
+        $userManager->createAllUserSubscribeEmail($user->getId());
+    }
 }

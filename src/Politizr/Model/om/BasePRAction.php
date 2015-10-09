@@ -65,18 +65,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
     protected $description;
 
     /**
-     * The value for the p_object_name field.
-     * @var        string
-     */
-    protected $p_object_name;
-
-    /**
-     * The value for the p_object_id field.
-     * @var        int
-     */
-    protected $p_object_id;
-
-    /**
      * The value for the score_evolution field.
      * @var        int
      */
@@ -185,28 +173,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
     {
 
         return $this->description;
-    }
-
-    /**
-     * Get the [p_object_name] column value.
-     *
-     * @return string
-     */
-    public function getPObjectName()
-    {
-
-        return $this->p_object_name;
-    }
-
-    /**
-     * Get the [p_object_id] column value.
-     *
-     * @return int
-     */
-    public function getPObjectId()
-    {
-
-        return $this->p_object_id;
     }
 
     /**
@@ -386,48 +352,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
     } // setDescription()
 
     /**
-     * Set the value of [p_object_name] column.
-     *
-     * @param  string $v new value
-     * @return PRAction The current object (for fluent API support)
-     */
-    public function setPObjectName($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->p_object_name !== $v) {
-            $this->p_object_name = $v;
-            $this->modifiedColumns[] = PRActionPeer::P_OBJECT_NAME;
-        }
-
-
-        return $this;
-    } // setPObjectName()
-
-    /**
-     * Set the value of [p_object_id] column.
-     *
-     * @param  int $v new value
-     * @return PRAction The current object (for fluent API support)
-     */
-    public function setPObjectId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_object_id !== $v) {
-            $this->p_object_id = $v;
-            $this->modifiedColumns[] = PRActionPeer::P_OBJECT_ID;
-        }
-
-
-        return $this;
-    } // setPObjectId()
-
-    /**
      * Set the value of [score_evolution] column.
      *
      * @param  int $v new value
@@ -579,13 +503,11 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->description = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->score_evolution = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->online = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->slug = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->score_evolution = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -595,7 +517,7 @@ abstract class BasePRAction extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = PRActionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PRActionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PRAction object", $e);
@@ -897,12 +819,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
         if ($this->isColumnModified(PRActionPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
-        if ($this->isColumnModified(PRActionPeer::P_OBJECT_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`p_object_name`';
-        }
-        if ($this->isColumnModified(PRActionPeer::P_OBJECT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_object_id`';
-        }
         if ($this->isColumnModified(PRActionPeer::SCORE_EVOLUTION)) {
             $modifiedColumns[':p' . $index++]  = '`score_evolution`';
         }
@@ -937,12 +853,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case '`p_object_name`':
-                        $stmt->bindValue($identifier, $this->p_object_name, PDO::PARAM_STR);
-                        break;
-                    case '`p_object_id`':
-                        $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
                         break;
                     case '`score_evolution`':
                         $stmt->bindValue($identifier, $this->score_evolution, PDO::PARAM_INT);
@@ -1111,24 +1021,18 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getPObjectName();
-                break;
-            case 4:
-                return $this->getPObjectId();
-                break;
-            case 5:
                 return $this->getScoreEvolution();
                 break;
-            case 6:
+            case 4:
                 return $this->getOnline();
                 break;
-            case 7:
+            case 5:
                 return $this->getCreatedAt();
                 break;
-            case 8:
+            case 6:
                 return $this->getUpdatedAt();
                 break;
-            case 9:
+            case 7:
                 return $this->getSlug();
                 break;
             default:
@@ -1163,13 +1067,11 @@ abstract class BasePRAction extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getPObjectName(),
-            $keys[4] => $this->getPObjectId(),
-            $keys[5] => $this->getScoreEvolution(),
-            $keys[6] => $this->getOnline(),
-            $keys[7] => $this->getCreatedAt(),
-            $keys[8] => $this->getUpdatedAt(),
-            $keys[9] => $this->getSlug(),
+            $keys[3] => $this->getScoreEvolution(),
+            $keys[4] => $this->getOnline(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
+            $keys[7] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1224,24 +1126,18 @@ abstract class BasePRAction extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setPObjectName($value);
-                break;
-            case 4:
-                $this->setPObjectId($value);
-                break;
-            case 5:
                 $this->setScoreEvolution($value);
                 break;
-            case 6:
+            case 4:
                 $this->setOnline($value);
                 break;
-            case 7:
+            case 5:
                 $this->setCreatedAt($value);
                 break;
-            case 8:
+            case 6:
                 $this->setUpdatedAt($value);
                 break;
-            case 9:
+            case 7:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1271,13 +1167,11 @@ abstract class BasePRAction extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setScoreEvolution($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setOnline($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setSlug($arr[$keys[9]]);
+        if (array_key_exists($keys[3], $arr)) $this->setScoreEvolution($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
     }
 
     /**
@@ -1292,8 +1186,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
         if ($this->isColumnModified(PRActionPeer::ID)) $criteria->add(PRActionPeer::ID, $this->id);
         if ($this->isColumnModified(PRActionPeer::TITLE)) $criteria->add(PRActionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PRActionPeer::DESCRIPTION)) $criteria->add(PRActionPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PRActionPeer::P_OBJECT_NAME)) $criteria->add(PRActionPeer::P_OBJECT_NAME, $this->p_object_name);
-        if ($this->isColumnModified(PRActionPeer::P_OBJECT_ID)) $criteria->add(PRActionPeer::P_OBJECT_ID, $this->p_object_id);
         if ($this->isColumnModified(PRActionPeer::SCORE_EVOLUTION)) $criteria->add(PRActionPeer::SCORE_EVOLUTION, $this->score_evolution);
         if ($this->isColumnModified(PRActionPeer::ONLINE)) $criteria->add(PRActionPeer::ONLINE, $this->online);
         if ($this->isColumnModified(PRActionPeer::CREATED_AT)) $criteria->add(PRActionPeer::CREATED_AT, $this->created_at);
@@ -1364,8 +1256,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setPObjectName($this->getPObjectName());
-        $copyObj->setPObjectId($this->getPObjectId());
         $copyObj->setScoreEvolution($this->getScoreEvolution());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1896,8 +1786,6 @@ abstract class BasePRAction extends BaseObject implements Persistent
         $this->id = null;
         $this->title = null;
         $this->description = null;
-        $this->p_object_name = null;
-        $this->p_object_id = null;
         $this->score_evolution = null;
         $this->online = null;
         $this->created_at = null;

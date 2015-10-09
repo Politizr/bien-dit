@@ -18,6 +18,7 @@ use Politizr\Constant\ListingConstants;
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
+use Politizr\Model\PUReputation;
 
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
@@ -728,6 +729,68 @@ class XhrUser
             'data' => $data,
             'datePrev' => $prevMonth->format('Y-m-d'),
             'dateNext' => $nextMonth->format('Y-m-d'),
+        );
+    }
+
+    /**
+     * User's reputation update (ADMIN)
+     */
+    public function userReputationUpdate(Request $request)
+    {
+        $this->logger->info('*** userReputationUpdate');
+
+        // Request arguments
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $evolution = $request->get('evolution');
+        $this->logger->info('$evolution = ' . print_r($evolution, true));
+
+        // Function process
+        $user = PUserQuery::create()->findPk($subjectId);
+        if (null === $user) {
+            throw new InconsistentDataException(sprintf('User id-%s not found.', $subjectId));
+        }
+
+        // @todo notif user?
+        // Reputation evolution update
+        $con = \Propel::getConnection('default');
+
+        if ($evolution > 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i < $evolution; $i++) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_POS);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        } elseif ($evolution < 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i > $evolution; $i--) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        }
+
+        $newScore = $user->getReputationScore();
+
+        return array(
+            'score' => $newScore
         );
     }
 

@@ -9,9 +9,11 @@ use Politizr\Exception\FormValidationException;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
+use Politizr\Model\PUSubscribeEmail;
 
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PNotificationQuery;
 
 /**
  * DB manager service for user.
@@ -373,6 +375,24 @@ LIMIT ".$offset.", ".$count."
         return $user;
     }
 
+    /* ######################################################################################################## */
+    /*                                    RELATED TABLES OPERATIONS                                             */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Delete user's mandate
+     *
+     * @param PUMandate $mandate
+     * @return integer
+     */
+    public function deleteMandate(PUMandate $mandate)
+    {
+        $result = $mandate->delete();
+
+        return $result;
+    }
+
     /**
      * Create a new PUFollowDD assocation
      *
@@ -445,6 +465,8 @@ LIMIT ".$offset.", ".$count."
         return $result;
     }
 
+
+
     /**
      * Update PUFollowU contextual email subscription
      *
@@ -501,15 +523,23 @@ LIMIT ".$offset.", ".$count."
     }
 
     /**
-     * Delete user's mandate
+     * Create PUSubscribeEmail between a user and every PNotification
      *
-     * @param PUMandate $mandate
-     * @return integer
+     * @param integer $userId
+     * @param integer $debateId
+     * @return PUFollowDD
      */
-    public function deleteMandate(PUMandate $mandate)
+    public function createAllUserSubscribeEmail($userId)
     {
-        $result = $mandate->delete();
+        $notifications = PNotificationQuery::create()->find();
 
-        return $result;
+        foreach ($notifications as $notif) {
+            $puSubscribeEmail = new PUSubscribeEmail();
+
+            $puSubscribeEmail->setPUserId($userId);
+            $puSubscribeEmail->setPNotificationId($notif->getId());
+
+            $puSubscribeEmail->save();
+        }
     }
 }

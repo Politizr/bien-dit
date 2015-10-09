@@ -108,9 +108,6 @@
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
 
-        <column name="p_object_name" type="varchar" size="150" />
-        <column name="p_object_id" type="integer" />
-
         <column name="score_evolution" type="integer" />
 
         <column name="online" type="boolean" />

@@ -12,9 +12,9 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 
 /**
- *  Gestion des actions mettant à jour la réputation
+ * Gestion des actions mettant à jour la réputation
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
 class NotificationListener
 {

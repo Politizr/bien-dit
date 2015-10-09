@@ -147,6 +147,7 @@ builders:
                     "Tags associés - public":   [ block_tags_public ]
                     "Tags suivis - privé":      [ block_tags_private ]
                 "Réputation":
+                    "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
@@ -178,14 +179,12 @@ builders:
                     formType:       choice
                     addFormOptions:
                         choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
-                badges:
-                    dbType:                     model
-                    formType:                   model
+                subtitle:
+                    grid_class:                 "col-md-12"
+                biography:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
-                        multiple:               true
-                        required:               false
-                        class:                  Politizr\Model\PRBadge
-                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
+                        attr:                   { class : tinymce }
                 block_tags_public:
                     label:                      "Tags publiques"
                     grid_class:                 "col-md-12"
@@ -200,12 +199,21 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                subtitle:
-                    grid_class:                 "col-md-12"
-                biography:
-                    grid_class:                 "col-md-12"
+                badges:
+                    dbType:                     model
+                    formType:                   model
                     addFormOptions:
-                        attr:                   { class : tinymce }
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PRBadge
+                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
+                block_reputation:
+                    label:                      "Réputation"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 last_connect:
                     label:                      Date de dernière connexion
                     addFormOptions:
@@ -235,6 +243,7 @@ builders:
                     "Tags associés - public":   [ block_tags_public ]
                     "Tags suivis - privé":      [ block_tags_private ]
                 "Réputation":
+                    "Score":                    [ reputationScore ]
                     "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
                 "Publication":
                     "Débats":                   [ block_debates ]
@@ -255,6 +264,8 @@ builders:
                     label:                      "Tags publiques"
                 block_tags_private:
                     label:                      "Tags privés"
+                reputationScore:
+                    label:                      "Score"
                 block_debates:
                     label:                      "Débats"
                 block_badges_debat:

@@ -20,8 +20,7 @@ $(function() {
             xhrRoute,
             'tag',
             'getTags',
-            RETURN_HTML,
-            xhrUrlPrefix
+            RETURN_HTML
             );
 
         $.ajax({

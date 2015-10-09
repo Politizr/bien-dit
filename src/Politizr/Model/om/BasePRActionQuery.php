@@ -25,8 +25,6 @@ use Politizr\Model\PUser;
  * @method PRActionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PRActionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRActionQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method PRActionQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
- * @method PRActionQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
  * @method PRActionQuery orderByScoreEvolution($order = Criteria::ASC) Order by the score_evolution column
  * @method PRActionQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PRActionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -36,8 +34,6 @@ use Politizr\Model\PUser;
  * @method PRActionQuery groupById() Group by the id column
  * @method PRActionQuery groupByTitle() Group by the title column
  * @method PRActionQuery groupByDescription() Group by the description column
- * @method PRActionQuery groupByPObjectName() Group by the p_object_name column
- * @method PRActionQuery groupByPObjectId() Group by the p_object_id column
  * @method PRActionQuery groupByScoreEvolution() Group by the score_evolution column
  * @method PRActionQuery groupByOnline() Group by the online column
  * @method PRActionQuery groupByCreatedAt() Group by the created_at column
@@ -57,8 +53,6 @@ use Politizr\Model\PUser;
  *
  * @method PRAction findOneByTitle(string $title) Return the first PRAction filtered by the title column
  * @method PRAction findOneByDescription(string $description) Return the first PRAction filtered by the description column
- * @method PRAction findOneByPObjectName(string $p_object_name) Return the first PRAction filtered by the p_object_name column
- * @method PRAction findOneByPObjectId(int $p_object_id) Return the first PRAction filtered by the p_object_id column
  * @method PRAction findOneByScoreEvolution(int $score_evolution) Return the first PRAction filtered by the score_evolution column
  * @method PRAction findOneByOnline(boolean $online) Return the first PRAction filtered by the online column
  * @method PRAction findOneByCreatedAt(string $created_at) Return the first PRAction filtered by the created_at column
@@ -68,8 +62,6 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PRAction objects filtered by the id column
  * @method array findByTitle(string $title) Return PRAction objects filtered by the title column
  * @method array findByDescription(string $description) Return PRAction objects filtered by the description column
- * @method array findByPObjectName(string $p_object_name) Return PRAction objects filtered by the p_object_name column
- * @method array findByPObjectId(int $p_object_id) Return PRAction objects filtered by the p_object_id column
  * @method array findByScoreEvolution(int $score_evolution) Return PRAction objects filtered by the score_evolution column
  * @method array findByOnline(boolean $online) Return PRAction objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PRAction objects filtered by the created_at column
@@ -184,7 +176,7 @@ abstract class BasePRActionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `p_object_name`, `p_object_id`, `score_evolution`, `online`, `created_at`, `updated_at`, `slug` FROM `p_r_action` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `score_evolution`, `online`, `created_at`, `updated_at`, `slug` FROM `p_r_action` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -372,77 +364,6 @@ abstract class BasePRActionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRActionPeer::DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_object_name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPObjectName('fooValue');   // WHERE p_object_name = 'fooValue'
-     * $query->filterByPObjectName('%fooValue%'); // WHERE p_object_name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $pObjectName The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PRActionQuery The current query, for fluid interface
-     */
-    public function filterByPObjectName($pObjectName = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($pObjectName)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $pObjectName)) {
-                $pObjectName = str_replace('*', '%', $pObjectName);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PRActionPeer::P_OBJECT_NAME, $pObjectName, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_object_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPObjectId(1234); // WHERE p_object_id = 1234
-     * $query->filterByPObjectId(array(12, 34)); // WHERE p_object_id IN (12, 34)
-     * $query->filterByPObjectId(array('min' => 12)); // WHERE p_object_id >= 12
-     * $query->filterByPObjectId(array('max' => 12)); // WHERE p_object_id <= 12
-     * </code>
-     *
-     * @param     mixed $pObjectId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PRActionQuery The current query, for fluid interface
-     */
-    public function filterByPObjectId($pObjectId = null, $comparison = null)
-    {
-        if (is_array($pObjectId)) {
-            $useMinMax = false;
-            if (isset($pObjectId['min'])) {
-                $this->addUsingAlias(PRActionPeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pObjectId['max'])) {
-                $this->addUsingAlias(PRActionPeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PRActionPeer::P_OBJECT_ID, $pObjectId, $comparison);
     }
 
     /**

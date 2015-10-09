@@ -3,6 +3,8 @@ namespace Politizr\FrontBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
+use Politizr\Exception\SendEmailException;
+
 use Politizr\Model\PMAppException;
 
 /**

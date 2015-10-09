@@ -2,6 +2,8 @@
 
 namespace Politizr\FrontBundle\Listener;
 
+use Politizr\Exception\SendEmailException;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -14,6 +16,7 @@ class EmailListener
 
     protected $mailer;
     protected $templating;
+    protected $monitoringManager;
     protected $logger;
 
     protected $contactEmail;
@@ -22,11 +25,18 @@ class EmailListener
 
     /**
      *
+     * @param @mailer $mailer
+     * @param @templating
+     * @param @politizr.manager.monitoring
+     * @param @logger
+     * @param string $contactEmail
+     * @param string $noreplyEmail
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail)
+    public function __construct($mailer, $templating, $monitoringManager, $logger, $contactEmail, $noreplyEmail)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->monitoringManager = $monitoringManager;
         $this->logger = $logger;
 
         $this->contactEmail = $contactEmail;
@@ -81,7 +91,7 @@ class EmailListener
                 $this->logger->err('Exception - message = '.$e->getMessage());
             }
             
-            throw $e;
+            throw new SendEmailException($e->getMessage(), $e);
         }
     }
 
@@ -133,7 +143,7 @@ class EmailListener
                 $this->logger->err('Exception - message = '.$e->getMessage());
             }
             
-            throw $e;
+            throw new SendEmailException($e->getMessage(), $e);
         }
     }
 
@@ -181,11 +191,8 @@ class EmailListener
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
         } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->err('Exception - message = '.$e->getMessage());
-            }
-            
-            throw $e;
+            $this->logger->err('Exception - message = '.$e->getMessage());
+            $pmAppException = $this->monitoringManager->createAppException($e);
         }
     }
 }

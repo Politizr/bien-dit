@@ -23,58 +23,64 @@ class ReputationConstants
     // ******************************************************** //
 
     // ******************************************************** //
+    //                  UPDATE REPUT VIA ADMIN
+    // ******************************************************** //
+    const ACTION_ID_R_ADMIN_POS = 1;
+    const ACTION_ID_R_ADMIN_NEG = 2;
+
+    // ******************************************************** //
     //              DEBATES / REACTIONS / COMMENTS
     // ******************************************************** //
-    const ACTION_ID_D_DEBATE_PUBLISH = 1;
-    const ACTION_ID_D_REACTION_PUBLISH = 2;
-    const ACTION_ID_D_COMMENT_PUBLISH = 3;
+    const ACTION_ID_D_DEBATE_PUBLISH = 3;
+    const ACTION_ID_D_REACTION_PUBLISH = 4;
+    const ACTION_ID_D_COMMENT_PUBLISH = 5;
     
-    const ACTION_ID_D_TARGET_DEBATE_REACTION_PUBLISH = 4;
-    const ACTION_ID_D_TARGET_REACTION_REACTION_PUBLISH = 5;
+    const ACTION_ID_D_TARGET_DEBATE_REACTION_PUBLISH = 6;
+    const ACTION_ID_D_TARGET_REACTION_REACTION_PUBLISH = 7;
 
-    const ACTION_ID_D_TARGET_DEBATE_COMMENT_PUBLISH = 6;
-    const ACTION_ID_D_TARGET_REACTION_COMMENT_PUBLISH = 7;
+    const ACTION_ID_D_TARGET_DEBATE_COMMENT_PUBLISH = 8;
+    const ACTION_ID_D_TARGET_REACTION_COMMENT_PUBLISH = 9;
 
     // ******************************************************** //
     //                      NOTATIONS
     // ******************************************************** //
-    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS = 8;
-    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG = 9;
+    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS = 10;
+    const ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG = 11;
 
-    const ACTION_ID_D_AUTHOR_REACTION_NOTE_POS = 10;
-    const ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG = 11;
+    const ACTION_ID_D_AUTHOR_REACTION_NOTE_POS = 12;
+    const ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG = 13;
 
-    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS = 12;
-    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG = 13;
+    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS = 14;
+    const ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG = 15;
 
-    const ACTION_ID_D_TARGET_DEBATE_NOTE_POS = 14;
-    const ACTION_ID_D_TARGET_DEBATE_NOTE_NEG = 15;
+    const ACTION_ID_D_TARGET_DEBATE_NOTE_POS = 16;
+    const ACTION_ID_D_TARGET_DEBATE_NOTE_NEG = 17;
 
-    const ACTION_ID_D_TARGET_REACTION_NOTE_POS = 16;
-    const ACTION_ID_D_TARGET_REACTION_NOTE_NEG = 17;
+    const ACTION_ID_D_TARGET_REACTION_NOTE_POS = 18;
+    const ACTION_ID_D_TARGET_REACTION_NOTE_NEG = 19;
 
-    const ACTION_ID_D_TARGET_COMMENT_NOTE_POS = 18;
-    const ACTION_ID_D_TARGET_COMMENT_NOTE_NEG = 19;
+    const ACTION_ID_D_TARGET_COMMENT_NOTE_POS = 20;
+    const ACTION_ID_D_TARGET_COMMENT_NOTE_NEG = 21;
 
     // ******************************************************** //
     //                      FOLLOWING
     // ******************************************************** //
-    const ACTION_ID_D_AUTHOR_DEBATE_FOLLOW = 20;
-    const ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW = 21;
+    const ACTION_ID_D_AUTHOR_DEBATE_FOLLOW = 22;
+    const ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW = 23;
 
-    const ACTION_ID_U_AUTHOR_USER_FOLLOW = 22;
-    const ACTION_ID_U_AUTHOR_USER_UNFOLLOW = 23;
+    const ACTION_ID_U_AUTHOR_USER_FOLLOW = 24;
+    const ACTION_ID_U_AUTHOR_USER_UNFOLLOW = 25;
 
-    const ACTION_ID_D_TARGET_DEBATE_FOLLOW = 24;
-    const ACTION_ID_D_TARGET_DEBATE_UNFOLLOW = 25;
+    const ACTION_ID_D_TARGET_DEBATE_FOLLOW = 26;
+    const ACTION_ID_D_TARGET_DEBATE_UNFOLLOW = 27;
 
-    const ACTION_ID_U_TARGET_USER_FOLLOW = 26;
-    const ACTION_ID_U_TARGET_USER_UNFOLLOW = 27;
+    const ACTION_ID_U_TARGET_USER_FOLLOW = 28;
+    const ACTION_ID_U_TARGET_USER_UNFOLLOW = 29;
 
     // ******************************************************** //
     //                      SOCIAL NETWORK
     // ******************************************************** //
-    const ACTION_ID_D_SHARE= 28;
+    const ACTION_ID_D_SHARE= 30;
     
 
 

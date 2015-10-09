@@ -33,13 +33,13 @@ abstract class BasePRActionPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PRActionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_r_action.id';
@@ -49,12 +49,6 @@ abstract class BasePRActionPeer
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_r_action.description';
-
-    /** the column name for the p_object_name field */
-    const P_OBJECT_NAME = 'p_r_action.p_object_name';
-
-    /** the column name for the p_object_id field */
-    const P_OBJECT_ID = 'p_r_action.p_object_id';
 
     /** the column name for the score_evolution field */
     const SCORE_EVOLUTION = 'p_r_action.score_evolution';
@@ -90,12 +84,12 @@ abstract class BasePRActionPeer
      * e.g. PRActionPeer::$fieldNames[PRActionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'PObjectName', 'PObjectId', 'ScoreEvolution', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'pObjectName', 'pObjectId', 'scoreEvolution', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PRActionPeer::ID, PRActionPeer::TITLE, PRActionPeer::DESCRIPTION, PRActionPeer::P_OBJECT_NAME, PRActionPeer::P_OBJECT_ID, PRActionPeer::SCORE_EVOLUTION, PRActionPeer::ONLINE, PRActionPeer::CREATED_AT, PRActionPeer::UPDATED_AT, PRActionPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'SCORE_EVOLUTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'p_object_name', 'p_object_id', 'score_evolution', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'ScoreEvolution', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'scoreEvolution', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PRActionPeer::ID, PRActionPeer::TITLE, PRActionPeer::DESCRIPTION, PRActionPeer::SCORE_EVOLUTION, PRActionPeer::ONLINE, PRActionPeer::CREATED_AT, PRActionPeer::UPDATED_AT, PRActionPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'SCORE_EVOLUTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'score_evolution', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -105,12 +99,12 @@ abstract class BasePRActionPeer
      * e.g. PRActionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'PObjectName' => 3, 'PObjectId' => 4, 'ScoreEvolution' => 5, 'Online' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, 'Slug' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'pObjectName' => 3, 'pObjectId' => 4, 'scoreEvolution' => 5, 'online' => 6, 'createdAt' => 7, 'updatedAt' => 8, 'slug' => 9, ),
-        BasePeer::TYPE_COLNAME => array (PRActionPeer::ID => 0, PRActionPeer::TITLE => 1, PRActionPeer::DESCRIPTION => 2, PRActionPeer::P_OBJECT_NAME => 3, PRActionPeer::P_OBJECT_ID => 4, PRActionPeer::SCORE_EVOLUTION => 5, PRActionPeer::ONLINE => 6, PRActionPeer::CREATED_AT => 7, PRActionPeer::UPDATED_AT => 8, PRActionPeer::SLUG => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'P_OBJECT_NAME' => 3, 'P_OBJECT_ID' => 4, 'SCORE_EVOLUTION' => 5, 'ONLINE' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, 'SLUG' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'p_object_name' => 3, 'p_object_id' => 4, 'score_evolution' => 5, 'online' => 6, 'created_at' => 7, 'updated_at' => 8, 'slug' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'ScoreEvolution' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'scoreEvolution' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PRActionPeer::ID => 0, PRActionPeer::TITLE => 1, PRActionPeer::DESCRIPTION => 2, PRActionPeer::SCORE_EVOLUTION => 3, PRActionPeer::ONLINE => 4, PRActionPeer::CREATED_AT => 5, PRActionPeer::UPDATED_AT => 6, PRActionPeer::SLUG => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'SCORE_EVOLUTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'score_evolution' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -187,8 +181,6 @@ abstract class BasePRActionPeer
             $criteria->addSelectColumn(PRActionPeer::ID);
             $criteria->addSelectColumn(PRActionPeer::TITLE);
             $criteria->addSelectColumn(PRActionPeer::DESCRIPTION);
-            $criteria->addSelectColumn(PRActionPeer::P_OBJECT_NAME);
-            $criteria->addSelectColumn(PRActionPeer::P_OBJECT_ID);
             $criteria->addSelectColumn(PRActionPeer::SCORE_EVOLUTION);
             $criteria->addSelectColumn(PRActionPeer::ONLINE);
             $criteria->addSelectColumn(PRActionPeer::CREATED_AT);
@@ -198,8 +190,6 @@ abstract class BasePRActionPeer
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.p_object_name');
-            $criteria->addSelectColumn($alias . '.p_object_id');
             $criteria->addSelectColumn($alias . '.score_evolution');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');

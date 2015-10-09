@@ -132,6 +132,13 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminUserReputation'  => new \Twig_Function_Method(
+                $this,
+                'adminUserReputation',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminDebateReactions'  => new \Twig_Function_Method(
                 $this,
                 'adminDebateReactions',
@@ -512,6 +519,27 @@ class PolitizrAdminExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * User's reputation
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserReputation($user)
+    {
+        $this->logger->info('*** adminUserReputation');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Reputation:user.html.twig',
+            array(
+                'user' => $user,
+            )
+        );
+
+        return $html;
+    }
 
 
     // ****************************************  GESTION DEBAT ******************************************* //

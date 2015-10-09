@@ -271,6 +271,18 @@ Politizr\Model\PRBadge:
 
 # Constantes de classe PRAction à MAJ en parallèle + check si notifications à maj en parallèle
 Politizr\Model\PRAction:
+    r_admin_pos:
+        online:             true
+        title:              Modération +1 administrateur Politizr
+        description:        |
+            Modération +1 administrateur Politizr
+        score_evolution:    1
+    r_admin_neg:
+        online:             true
+        title:              Modération -1 administrateur Politizr
+        description:        |
+            Modération -1 administrateur Politizr
+        score_evolution:    -1
     d_debate_publish:
         online:             true
         title:              Publier un débat

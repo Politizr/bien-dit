@@ -9,3 +9,7 @@
 {% block form_row_block_tags_private %}
     {{ adminUserPrivateTags(PUser, null, 2, true) }}
 {% endblock %}
+
+{% block form_row_block_reputation %}
+    {{ adminUserReputation(PUser) }}
+{% endblock %}
