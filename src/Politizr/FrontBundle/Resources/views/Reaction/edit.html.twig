@@ -28,9 +28,9 @@
         <div class="actionSave">
             <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>sauvegarder</a>
         </div>
-        <div class="actionPublish">
-            <a action="reactionPublish" subjectId="{{ reaction.id }}"><i class="iconPublish"></i>publier</a>
-        </div>
+
+        {{ app.user | isAuthorizedToPublishReaction(reaction.id) }}
+
         <div class="actionDelete">
             <!-- @todo html/css à prévoir & styler -->
             <a action="reactionDelete" subjectId="{{ reaction.id }}"><i class="iconCross"></i>supprimer</a>

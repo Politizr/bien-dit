@@ -129,17 +129,17 @@ class ReputationConstants
     //             ACTIONS' FUNCTIONAL CONSTANTS
     //            MINIMAL REPUTATION TO REACH FOR ACTION
     // ******************************************************** //
-    const ACTION_COMMENT_NOTE_POS = 5;
-    const ACTION_REACTION_NOTE_POS = 10;
-    const ACTION_DEBATE_NOTE_POS = 10;
+    const ACTION_COMMENT_NOTE_POS = 0;
+    const ACTION_REACTION_NOTE_POS = 0;
+    const ACTION_DEBATE_NOTE_POS = 0;
 
-    const ACTION_COMMENT_NOTE_NEG = 50;
-    const ACTION_REACTION_NOTE_NEG = 100;
-    const ACTION_DEBATE_NOTE_NEG = 100;
+    const ACTION_COMMENT_NOTE_NEG = 20;
+    const ACTION_REACTION_NOTE_NEG = 20;
+    const ACTION_DEBATE_NOTE_NEG = 20;
     
-    const ACTION_COMMENT_WRITE = 5;
-    const ACTION_DEBATE_WRITE = 100;
-    const ACTION_REACTION_WRITE = 250;
+    const ACTION_COMMENT_WRITE = 10;
+    const ACTION_DEBATE_WRITE = 50;
+    const ACTION_REACTION_WRITE = 100;
 
     const ACTION_ABUSE_REPORT = 0;
 

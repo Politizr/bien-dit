@@ -1156,12 +1156,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "2f8027f85ef137f25dd3291860807c3697acfa3e"
+                "reference": "7b26e8b87945f825bb5df29691ee72e12cf97894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/2f8027f85ef137f25dd3291860807c3697acfa3e",
-                "reference": "2f8027f85ef137f25dd3291860807c3697acfa3e",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/7b26e8b87945f825bb5df29691ee72e12cf97894",
+                "reference": "7b26e8b87945f825bb5df29691ee72e12cf97894",
                 "shasum": ""
             },
             "require": {
@@ -1272,7 +1272,7 @@
                 "yahoo",
                 "yandex"
             ],
-            "time": "2015-09-30 09:11:03"
+            "time": "2015-10-09 06:46:40"
         },
         {
             "name": "imagine/imagine",

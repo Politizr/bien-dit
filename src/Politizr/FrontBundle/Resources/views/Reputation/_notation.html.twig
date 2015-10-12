@@ -4,18 +4,25 @@
             {{ object.notePos }}<i class="iconNotePlus"></i>
         </div>
     {% else %}
-        <div class="notePlus">
+        <div class="notePlus blockedVote">
             {{ object.notePos }}<i class="iconNotePlus"></i>
         </div>
     {% endif %}
-    {% if not neg %}
-        <div class="noteMinus" action="note" subjectId="{{ object.id }}" type="{{ type }}" way="down">
-            <i class="iconNoteMinus"></i>{{ object.noteNeg }}
-        </div>
+    {% if isAuthorizedToNotateNeg %}
+        {% if not neg %}
+            <div class="noteMinus" action="note" subjectId="{{ object.id }}" type="{{ type }}" way="down">
+                <i class="iconNoteMinus"></i>{{ object.noteNeg }}
+            </div>
+        {% else %}
+            <div class="noteMinus blockedVote">
+                <i class="iconNoteMinus"></i>{{ object.noteNeg }}
+            </div>
+        {% endif %}
     {% else %}
-        <div class="noteMinus">
+        <div class="noteMinus blockedVote">
             <i class="iconNoteMinus"></i>{{ object.noteNeg }}
         </div>
+        {% include 'PolitizrFrontBundle:Reputation:_cannotNotateNeg.html.twig' with { 'score': score, 'minScore': minScore } only %}
     {% endif %}
 {% else %}
     <div class="notePlus">

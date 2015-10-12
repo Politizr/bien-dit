@@ -55,6 +55,12 @@ class UserController extends Controller
         $logger->info('*** detailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Login'));
+        }
+
+
         $user = PUserQuery::create()->filterBySlug($slug)->findOne();
         if (!$user) {
             throw new NotFoundHttpException('User "'.$slug.'" not found.');
@@ -102,7 +108,7 @@ class UserController extends Controller
 
         $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
         if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Homepage'));
+            return $this->redirect($this->generateUrl('Login'));
         }
 
         return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));

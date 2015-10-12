@@ -1021,6 +1021,7 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     FROM p_u_reputation
     LEFT JOIN p_r_action ON p_u_reputation.p_r_action_id=p_r_action.id
     WHERE p_u_reputation.p_user_id = ?
+    AND p_r_action.online = 1
     ";
 
         if ($untilAt) {

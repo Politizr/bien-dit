@@ -284,72 +284,72 @@ Politizr\Model\PRAction:
             Modération -1 administrateur Politizr
         score_evolution:    -1
     d_debate_publish:
-        online:             true
+        online:             false
         title:              Publier un débat
         description:        |
             Publier un débat
-        score_evolution:    10
+        score_evolution:    0
     d_reaction_publish:
-        online:             true
+        online:             false
         title:              Publier une réaction
         description:        |
             Publier une réaction
-        score_evolution:    30
+        score_evolution:    0
     d_comment_publish:
-        online:             true
+        online:             false
         title:              Publier un commentaire
         description:        |
             Publier un commentaire
-        score_evolution:    5
+        score_evolution:    0
     d_target_debate_reaction_publish:
-        online:             true
+        online:             false
         title:              Publication d'une réaction à son débat
         description:        |
             Publication d'une réaction sur un de ses débats
-        score_evolution:    5
+        score_evolution:    0
     d_target_reaction_reaction_publish:
-        online:             true
+        online:             false
         title:              Publication d'une réaction à sa réaction
         description:        |
             Publication d'une réaction sur une de ses réactions
-        score_evolution:    5
+        score_evolution:    0
     d_target_debate_comment_publish:
-        online:             true
+        online:             false
         title:              Publication d'un commentaire à son débat
         description:        |
             Publication d'un commentaire sur un de ses débats
-        score_evolution:    2
+        score_evolution:    0
     d_target_reaction_comment_publish:
-        online:             true
+        online:             false
         title:              Publication d'un commentaire à sa réaction
         description:        |
             Publication d'un commentaire sur une de ses réactions
-        score_evolution:    2
+        score_evolution:    0
 
     d_author_debate_note_pos:
         online:				true
         title:				Donner une note positive à un débat
         description:		|
             Mettre une note + à un débat
-        score_evolution:	1
+        score_evolution:	2
     d_author_debate_note_neg:
         online:				true
         title:				Donner une note négative à un débat
         description:		|
             Mettre une note - à un débat
-        score_evolution:	-1
+        score_evolution:	-2
     d_author_reaction_note_pos:
         online:             true
         title:              Donner une note positive à une réaction
         description:        |
             Mettre une note + à une réaction
-        score_evolution:    1
+        score_evolution:    3
     d_author_reaction_note_neg:
         online:             true
         title:              Donner une note négative à une réaction
         description:        |
             Mettre une note - à une réaction
-        score_evolution:    -1
+        score_evolution:    -3
     d_author_comment_note_pos:
         online:             true
         title:              Donner une note positive à un commentaire
@@ -367,31 +367,31 @@ Politizr\Model\PRAction:
         title:              Recevoir une note positive à son débat
         description:        |
             Recevoir une note + à son débat
-        score_evolution:    1
+        score_evolution:    10
     d_target_debate_note_neg:
         online:             true
         title:              Recevoir une note négative à son débat
         description:        |
             Recevoir une note - à son débat
-        score_evolution:    -1
+        score_evolution:    -2
     d_target_reaction_note_pos:
         online:             true
         title:              Recevoir une note positive à sa réaction
         description:        |
             Recevoir une note + à sa réaction
-        score_evolution:    1
+        score_evolution:    15
     d_target_reaction_note_neg:
         online:             true
         title:              Recevoir une note négative à sa réaction
         description:        |
             Recevoir une note - à sa réaction
-        score_evolution:    -1
+        score_evolution:    -3
     d_target_comment_note_pos:
         online:             true
         title:              Recevoir une note positive à son commentaire
         description:        |
             Recevoir une note + à son commentaire
-        score_evolution:    1
+        score_evolution:    5
     d_target_comment_note_neg:
         online:             true
         title:              Recevoir une note négative à son commentaire
@@ -400,11 +400,11 @@ Politizr\Model\PRAction:
         score_evolution:    -1
 
     d_author_debate_follow:
-        online:             true
+        online:             false
         title:              Suivre un débat
         description:        |
             Suivre un débat
-        score_evolution:    2
+        score_evolution:    0
     d_author_debate_unfollow:
         online:             true
         title:              Ne plus suivre un débat
@@ -412,11 +412,11 @@ Politizr\Model\PRAction:
             Ne plus suivre un débat
         score_evolution:    -1
     u_author_user_follow:
-        online:             true
+        online:             false
         title:              Suivre un utilisateur
         description:        |
             Suivre un utilisateur
-        score_evolution:    2
+        score_evolution:    0
     u_author_user_unfollow:
         online:             true
         title:              Ne plus suivre un utilisateur
@@ -434,7 +434,7 @@ Politizr\Model\PRAction:
         title:              Ne plus être suivi pour son débat
         description:        |
             Ne plus être suivi pour son débat
-        score_evolution:    -1
+        score_evolution:    -5
     u_target_user_follow:
         online:             true
         title:              Être suivi pour son profil
@@ -446,7 +446,7 @@ Politizr\Model\PRAction:
         title:              Ne plus être suivi pour son profil
         description:        |
             Ne plus être suivi pour son profil
-        score_evolution:    -1
+        score_evolution:    -5
 
     d_share:
         online:             true

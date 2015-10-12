@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Symfony\Component\Form\FormView;
+
 use Politizr\Constant\NotificationConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
@@ -124,6 +126,21 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'isAuthorizedToReportAbuse',
                 array($this, 'isAuthorizedToReportAbuse'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToNewComment',
+                array($this, 'isAuthorizedToNewComment'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToPublishDebate',
+                array($this, 'isAuthorizedToPublishDebate'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToPublishReaction',
+                array($this, 'isAuthorizedToPublishReaction'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -543,6 +560,101 @@ class PolitizrUserExtension extends \Twig_Extension
         return false;
     }
 
+    /**
+     * Display the new comment form - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param FormView $formComment
+     * @return string
+     */
+    public function isAuthorizedToNewComment(PUser $user, FormView $formComment)
+    {
+        // $this->logger->info('*** isAuthorizedToNewComment');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_COMMENT_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Comment:_new.html.twig',
+                array(
+                    'formComment' => $formComment,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotComment.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Display the publish link - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param int $debateId
+     * @return string
+     */
+    public function isAuthorizedToPublishDebate(PUser $user, $debateId)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_DEBATE_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Debate:_publishLink.html.twig',
+                array(
+                    'debateId' => $debateId,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotPublishDebate.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Display the publish link - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param int $reactionId
+     * @return string
+     */
+    public function isAuthorizedToPublishReaction(PUser $user, $reactionId)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishReaction');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
+                array(
+                    'debateId' => $debateId,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

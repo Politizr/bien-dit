@@ -445,6 +445,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
+
     /**
      * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
      *
@@ -477,7 +478,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
-
     /**
      * Affiche & active / désactive les Note + / Note -
      *
@@ -491,6 +491,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $pos = false;
         $neg = false;
+
+        $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
             $ownDebate = PDDebateQuery::create()
@@ -522,6 +524,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 if ($noteNeg) {
                     $neg = true;
                 }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
+                }
             }
         }
 
@@ -533,11 +541,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'type' => ObjectTypeConstants::TYPE_DEBATE,
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_DEBATE_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
             )
         );
 
         return $html;
-
     }
 
     /**
@@ -554,6 +564,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $pos = false;
         $neg = false;
+
+        $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
             $ownReaction = PDReactionQuery::create()
@@ -585,6 +597,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 if ($noteNeg) {
                     $neg = true;
                 }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_REACTION_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
+                }
             }
         }
 
@@ -596,6 +614,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'type' => ObjectTypeConstants::TYPE_REACTION,
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_REACTION_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
             )
         );
 
@@ -617,6 +638,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $pos = false;
         $neg = false;
+
+        $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
             switch ($comment->getType()) {
@@ -660,6 +683,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 if ($noteNeg) {
                     $neg = true;
                 }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_COMMENT_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
+                }
             }
         }
 
@@ -671,6 +700,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'type' => $comment->getType(),
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_COMMENT_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
             )
         );
 
