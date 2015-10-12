@@ -18,6 +18,6 @@ monolog:
 #             type:  chromephp
 #             level: info
 
-swiftmailer:
-#    delivery_address: thomas@ecologic-com.com
-    delivery_address: lionel.bouzonville@gmail.com
+# swiftmailer:
+#     delivery_address: thomas@ecologic-com.com
+#     delivery_address: lionel.bouzonville@gmail.com
