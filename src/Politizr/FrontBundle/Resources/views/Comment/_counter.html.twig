@@ -1,3 +1,6 @@
-<div class="commentsCounter" action="comments" subjectId="{{ document.id }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
+<div class="commentsCounter withLoaderInside" action="comments" subjectId="{{ document.id }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
+    <div class="ajaxLoader" style="display: none;">
+        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+    </div>
     {{ document | nbComments(paragraphNo) }}<i class="iconComment"></i>
 </div>
