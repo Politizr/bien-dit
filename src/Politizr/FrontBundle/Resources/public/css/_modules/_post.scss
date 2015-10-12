@@ -303,6 +303,7 @@ a.linkToPost:hover {color: $darkGrey;}
     width: 38px;
     text-align: right;
     cursor: pointer;
+    z-index: 10;
 }
 
 .paragraph .commentsCounter i {
