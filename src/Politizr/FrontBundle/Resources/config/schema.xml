@@ -880,7 +880,7 @@
         <column name="line" type="integer" />
 
         <column name="code" type="integer" />
-        <column name="message" type="varchar" size="250" />
+        <column name="message" type="varchar" size="1500" />
 
         <column name="stack_trace" type="clob" />      
     </table>
