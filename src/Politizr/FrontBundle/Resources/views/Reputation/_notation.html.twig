@@ -6,6 +6,7 @@
     {% else %}
         <div class="notePlus blockedVote">
             {{ object.notePos }}<i class="iconNotePlus"></i>
+            {% include 'PolitizrFrontBundle:Reputation:_cannotNotatePos.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNotePos': hasAlreadyNotePos } only %}
         </div>
     {% endif %}
     {% if isAuthorizedToNotateNeg %}
@@ -22,7 +23,7 @@
         <div class="noteMinus blockedVote">
             <i class="iconNoteMinus"></i>{{ object.noteNeg }}
         </div>
-        {% include 'PolitizrFrontBundle:Reputation:_cannotNotateNeg.html.twig' with { 'score': score, 'minScore': minScore } only %}
+        {% include 'PolitizrFrontBundle:Reputation:_cannotNotateNeg.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNoteNeg': hasAlreadyNoteNeg, 'isAuthorizedToNotateNeg': isAuthorizedToNotateNeg, 'score': score, 'minScore': minScore } only %}
     {% endif %}
 {% else %}
     <div class="notePlus">

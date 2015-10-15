@@ -494,6 +494,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $score = null;
         $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
 
         if ($this->user) {
             $ownDebate = PDDebateQuery::create()
@@ -504,6 +507,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             if ($ownDebate) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
@@ -517,6 +522,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -524,6 +530,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
                 }
 
                 // min score management
@@ -545,6 +552,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'score' => $score,
                 'minScore' => ReputationConstants::ACTION_DEBATE_NOTE_NEG,
                 'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
@@ -568,6 +578,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $score = null;
         $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
 
         if ($this->user) {
             $ownReaction = PDReactionQuery::create()
@@ -578,6 +591,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             if ($ownReaction) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS)
@@ -591,6 +606,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -598,6 +614,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
                 }
 
                 // min score management
@@ -619,6 +636,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'score' => $score,
                 'minScore' => ReputationConstants::ACTION_REACTION_NOTE_NEG,
                 'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
@@ -643,6 +663,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $score = null;
         $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
 
         if ($this->user) {
             switch ($comment->getType()) {
@@ -665,6 +688,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             if ($document) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS)
@@ -678,6 +703,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -685,6 +711,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
                 }
 
                 // min score management
@@ -706,6 +733,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'score' => $score,
                 'minScore' => ReputationConstants::ACTION_COMMENT_NOTE_NEG,
                 'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
