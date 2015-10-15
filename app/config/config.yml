@@ -20,11 +20,26 @@ framework:
     form:            true
     csrf_protection: true
     validation:      { enabled: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
 
     default_locale:  %locale%
     # trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
-    session:         true
+
+    session:
+        # 3 months
+        cookie_lifetime: 7776000
+        # 3 hours
+        gc_maxlifetime: 10800
+
+    # admingenerator assetic packages definition
+    templating:
+        engines: ['twig']
+        packages:
+            admingenerator_css:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s" 
+            admingenerator_js:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s"
 
 # Twig Configuration
 twig:
