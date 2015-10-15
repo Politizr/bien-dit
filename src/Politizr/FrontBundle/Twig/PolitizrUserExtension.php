@@ -204,7 +204,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // URL detail
         $url = null;
         if ($withLink && $user) {
-            $url = $this->router->generate('UserDetail', array('slug' => $user));
+            $url = $this->router->generate('UserDetail', array('slug' => $user->getSlug()));
         }
 
         // Construction du rendu du tag
