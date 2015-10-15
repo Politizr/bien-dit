@@ -43,8 +43,10 @@ params:
             label:          Identifiant
         plainPassword:          
             label:          Mot de passe
-        last_connect:
+        last_login:
             label:          Dernière connexion
+        last_activity:
+            label:          Dernière activité
         p_r_badges:
             label:          Badges
         qualified:
@@ -90,9 +92,9 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_connect ]
+            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_login ]
             filtersMode:                        top
-            filters:                            [ id, name, firstname, qualified, p_u_status, online, last_connect ]
+            filters:                            [ id, name, firstname, qualified, p_u_status, online, last_login ]
             actions:
                 new:                            ~
             object_actions:
@@ -108,12 +110,7 @@ builders:
             title:                              "Création d'un utilisateur"
             display:
                 "Champs principaux":            [ [ qualified, p_u_status_id, email ], [ gender, firstname, name ], [ username ], [ plainPassword ], [ roles ] ]
-                "Champs complémentaires":       [ biography ]
             fields:
-                biography:
-                    grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 p_u_status_id:
                     label:          Statut
                     formType:       choice
@@ -151,7 +148,7 @@ builders:
                     "Badges":                   [ badges ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
-                    "Activité":                 [ last_connect ]
+                    "Activité":                 [ last_login, last_activity ]
                 "Attributs":
                     "Type":                     [ qualified ]
                     "En ligne":                 [ online ]
@@ -214,8 +211,12 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                last_connect:
+                last_login:
                     label:                      Date de dernière connexion
+                    addFormOptions:
+                        widget:                 single_text
+                last_activity:
+                    label:                      Date de dernière activité
                     addFormOptions:
                         widget:                 single_text
                 created_at:
@@ -253,7 +254,7 @@ builders:
                     "Followers et abonnements": [ block_followers, block_subscribers ]
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
-                    "Connexion":                [ last_connect ]
+                    "Connexion":                [ last_login, last_activity ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
@@ -290,8 +291,10 @@ builders:
                     label:                      "Abonnements"
                 block_affinities:
                     label:                      "Partis Politiques"
-                last_connect:
+                last_login:
                     label:                      Date de dernière connexion
+                last_activity:
+                    label:                      Date de dernière activité
             actions:
                 list:                           ~
                 edit:                           ~
