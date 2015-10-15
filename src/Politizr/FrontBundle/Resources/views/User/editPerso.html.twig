@@ -85,12 +85,12 @@
                     {{ form_widget(formPerso3.username) }}
                 </div>
                 <div class="formGroup">
-                    <label>Email</label>
-                    {{ form_widget(formPerso3.password.first) }}
+                    <label>Mot de passe</label>
+                    {{ form_widget(formPerso3.plainPassword.first) }}
                 </div>
                 <div class="formGroup">
-                    <label>Email</label>
-                    {{ form_widget(formPerso3.password.second) }}
+                    <label>Confirmation</label>
+                    {{ form_widget(formPerso3.plainPassword.second) }}
                 </div>
 
                 {{ form_rest(formPerso3) }}
