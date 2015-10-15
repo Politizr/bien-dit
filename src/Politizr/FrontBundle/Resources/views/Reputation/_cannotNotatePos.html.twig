@@ -1,0 +1,8 @@
+<!-- @todo html/css à styler -->
+<div class="cannotNotatePos">
+    {% if isOwnDocument %}
+        Vous ne pouvez pas noter votre propre publication.
+    {% elseif hasAlreadyNotePos %}
+        Vous avez déjà attribué une note + à cette publication.
+    {% endif %}
+</div>
