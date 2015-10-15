@@ -492,6 +492,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
         $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
@@ -565,6 +566,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
         $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
@@ -639,6 +641,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
         $isAuthorizedToNotateNeg = false;
 
         if ($this->user) {
