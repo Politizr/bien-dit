@@ -54,7 +54,7 @@ $(function() {
                     // $('.selectedTag').autocomplete({
                         focus: function(event, ui){
                             event.preventDefault();
-                            $('input.selectedTag').val(ui.item.label);
+                            $('#editTagZone-'+zoneId).children('.selectedTag').first().val(ui.item.label);
                         },
                         source: function( request, response ) {
                             var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
