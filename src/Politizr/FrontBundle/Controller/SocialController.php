@@ -72,7 +72,7 @@ class SocialController extends Controller
     {
         // with tinyurl
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://tinyurl.com/api-create.php?url=".$url);
+        curl_setopt($ch, CURLOPT_URL, "https://tinyurl.com/api-create.php?url=".$url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $bookUrlShort = curl_exec($ch);
