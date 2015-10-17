@@ -9,21 +9,15 @@
             {% include 'PolitizrFrontBundle:Reputation:_cannotNotatePos.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNotePos': hasAlreadyNotePos } only %}
         </div>
     {% endif %}
-    {% if isAuthorizedToNotateNeg %}
-        {% if not neg %}
+    {% if not neg %}
             <div class="noteMinus" action="note" subjectId="{{ object.id }}" type="{{ type }}" way="down">
                 <i class="iconNoteMinus"></i>{{ object.noteNeg }}
             </div>
-        {% else %}
-            <div class="noteMinus blockedVote">
-                <i class="iconNoteMinus"></i>{{ object.noteNeg }}
-            </div>
-        {% endif %}
     {% else %}
         <div class="noteMinus blockedVote">
             <i class="iconNoteMinus"></i>{{ object.noteNeg }}
+            {% include 'PolitizrFrontBundle:Reputation:_cannotNotateNeg.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNoteNeg': hasAlreadyNoteNeg, 'isAuthorizedToNotateNeg': isAuthorizedToNotateNeg, 'score': score, 'minScore': minScore } only %}
         </div>
-        {% include 'PolitizrFrontBundle:Reputation:_cannotNotateNeg.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNoteNeg': hasAlreadyNoteNeg, 'isAuthorizedToNotateNeg': isAuthorizedToNotateNeg, 'score': score, 'minScore': minScore } only %}
     {% endif %}
 {% else %}
     <div class="notePlus">

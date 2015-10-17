@@ -93,6 +93,18 @@ $("body").on("click", "[action='share-gg']", function(e) {
     window.open('https://plus.google.com/share?url='+$(this).attr('url'), 'google_plus_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
 });
 
+// blocked notation
+$(document).on("touchstart click", function(){
+    if( $('.noteBubble').is(':visible')) {
+        $('.noteBubble').hide();    
+    }
+});
+
+$("body").on("touchstart click", ".blockedVote", function(e) {
+    e.stopPropagation();
+    $(this).find('.noteBubble').toggle();
+});
+
 // imgLiquid
 function fullImgLiquid() {
     // console.log('*** fullImgLiquid');
