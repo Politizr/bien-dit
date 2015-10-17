@@ -92,7 +92,10 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, qualified, p_u_status, online, last_login ]
+            display:                            [ file_name, name, firstname, qualified, p_u_status, reputation_score, online, last_login ]
+            fields:
+                reputation_score:
+                    label:                      Score
             filtersMode:                        top
             filters:                            [ id, name, firstname, qualified, p_u_status, online, last_login ]
             actions:
