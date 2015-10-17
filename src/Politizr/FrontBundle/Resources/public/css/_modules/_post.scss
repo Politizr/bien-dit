@@ -3,7 +3,7 @@
 // post
 
 #postText {
-	padding: 60px 0;
+	padding: 40px 0 60px 0;
 	background-color: $lightGrey;
 	float: left;
 	width: 100%;
@@ -15,7 +15,7 @@
 	width: 540px;
 	position: relative;
 }
-.paragraph:last-child, .paragraph:last-child blockquote {padding-bottom: 0; margin-bottom: 0;}
+.paragraph:last-child {padding-bottom: 0; margin-bottom: 0;}
 
 //trick for anchor on paragraph (: fixed header hide top of paragraph)
 #postText div[id^="p-"]  { //especially for id starting with p- because of an edition related bug
@@ -32,8 +32,8 @@
 	line-height: 200%;
 }
 
-.paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
-.paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
+.paragraph a, .paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
+.paragraph a:hover, .paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
 /*
 .paragraph.summary p::before, .paragraph.summary .editable.summary p:first-child::before {
@@ -98,11 +98,17 @@
 }
 
 .paragraph ul, .paragraph ol {
-	margin: 0;
+	margin: 0 0 40px 0;
 	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
 	width: calc(100% - 18px);
+}
+
+.paragraph blockquote ul, .paragraph blockquote ol {
+	list-style-type: none;
+	width: 100%;
+	padding: 0;
 }
 
 // give note
@@ -520,7 +526,7 @@ a.linkToPost:hover {color: $darkGrey;}
 }
 
 .postSummary .pad40 {
-	position: relative;
+	position: absolute;
 	z-index: 1;
 	width: calc(100% - 80px);
 	height: 280px;

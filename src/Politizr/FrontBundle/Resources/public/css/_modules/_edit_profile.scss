@@ -68,6 +68,9 @@
 #postText.profileFieldset {padding: 20px 0;}
 
 #editMyPrivateTags .tagLabel {color: lighten( $darkGrey, 10% ); border-color: $semilightGrey;}
+
+#editMyPrivateTags.tagBox .fieldsetHeader { border-top: 1px solid $semilightGrey;}
+
 #editMyPrivateTags .tagLabel a:hover {color: $highlight;}
 .editableTagList .noTag {
 	text-transform: none;
@@ -103,6 +106,11 @@
 } 
 
 // edit social links
+
+#socialLinks .fieldsetHeader {
+	margin: 0 0 20px 0;
+	width: 100%;
+}
 
 #socialLinks {
 	float: left;

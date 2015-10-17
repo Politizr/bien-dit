@@ -207,6 +207,7 @@ span.timelineItemContextHighlight {
 	width: 600px;
 	height: 200px;
 	margin-bottom: 10px;
+	overflow: hidden;
 }
 
 .timelineItemHighlight .avatar40 {float: left; margin-top: 5px;}
@@ -215,6 +216,12 @@ span.timelineItemContextHighlight {
 	display: inline-block;
 	float: right;
 	width: calc(100% - 50px);
+}
+.timelineItemHighlight .timelineItemIllustration a {
+	width: 100%;
+}
+.timelineItemHighlight .avatar40 a {
+	width: 40px;
 }
 
 .timelineItemHighlight a p {

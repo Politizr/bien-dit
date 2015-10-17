@@ -477,11 +477,13 @@ body {	overflow-x: hidden;}
 	clear: both;
 	width: 100%;
 	height: 680px;
+	position: relative;
 }
 
 #homeOfficial .wrapper {
-	height: 680px;
-	position: relative;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
 	text-align: center;
 }
 

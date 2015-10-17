@@ -84,6 +84,10 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 	width: 100%;
 }
 
+.tagBox .fieldsetHeader {
+	border-top: none;
+}
+
 .addTag { 
 	margin: 0 40px;
 	width: calc(100% - 80px);
@@ -226,7 +230,7 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 .editable:focus {    outline: 0;}
 .paragraph.summary .editable p {margin: 0;}
 .paragraph .editable p {margin: 0 0 40px 0;}
-.paragraph .editable p:last-child, .paragraph .editable h1:last-child, .paragraph .editable h2:last-child, .paragraph .editable blockquote:last-child {margin-bottom: 0;}
+.paragraph .editable p:last-child, .paragraph .editable h1:last-child, .paragraph .editable h2:last-child, .paragraph .editable blockquote:last-child, .paragraph .editable ul:last-child, .paragraph .editable ol:last-child {margin-bottom: 0;}
 
 //// modal upload illustration
 

@@ -1,0 +1,295 @@
+@import "_global/fonts";
+@import "_global/colors";
+
+body {
+	margin: 0;
+	background: $lightGrey;
+	font-size: 18px;
+    font-family: 'nerislight';
+}
+
+b {
+	font-weight: normal;
+	font-family: 'nerissemibold';
+	color: #696969;
+}
+
+i {
+	font-style: normal;
+	font-family: 'nerislight_italic';
+}
+
+.separator {
+	border-top : solid 1px $semiGrey;
+	float: left;
+	width: calc(100% - 200px);
+	margin: 20px 100px 20px 100px;
+	clear: both;
+}
+
+#assistHeader {
+	text-align: center;
+	border-bottom: solid 1px #c0c0c0;
+	height: 19px;
+	width: 220px;
+	position: fixed;
+	top: 40px;
+	left: calc(50% - 480px);
+	z-index: 2;
+}
+#assistHeader a {
+	color: $darkGrey;
+	background: $lightGrey;
+	border: solid 1px $lightGrey;
+	font-size: 31px;
+	top: 0px;
+	width: 42px;
+	left: calc(50% - 22px);
+	position: absolute;
+}
+#assistHeader a:hover {
+	color: $highlight;
+}
+
+#assistSidebar {
+	width: 220px;
+	position: fixed;
+	top: 100px;
+	left: calc(50% - 480px);
+	height: calc(100% - 100px);
+	overflow: auto;
+}
+
+#assistMenu {
+	padding: 20px;
+	width: calc(100% - 40px);
+	background: $darkGrey;
+	font-family: 'nerissemibold';
+	float: left;
+}
+#assistMenu span {
+	text-transform: uppercase;
+	float: left;
+	clear: both;
+	color: #fff;
+	font-size: 10px;
+	margin: 10px 0 5px 0;
+}
+#assistMenu a {
+	text-decoration: none;
+	float: left;
+	clear: both;
+	margin-bottom: 10px;
+	color: $greyBlue;
+	font-size: 13px;
+}
+#assistMenu a:last-child {margin-bottom: 0;}
+#assistMenu a:hover {color: $highlight}
+#assistMenu span.assistMenuIntro {
+	float: left;
+	clear: both;
+	color: #fff;
+	font-size: 11px;
+	margin: -5px 0 5px 0;
+	text-transform: none;
+	font-family: 'nerissemibold_italic';
+	line-height: 160%;
+}
+
+#assistContent {
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
+	padding-left: 260px;
+}
+
+.assistItem {
+	background: #fff;
+	border-top: solid 40px #f0f0f0;
+	padding: 40px 40px 0 40px;
+	width: calc(100% - 80px);
+	clear: both;
+	float: left;
+	color: #8b8b8b;
+	line-height: 160%;
+}
+.assistItem:last-child {margin-bottom: 80px;}
+
+.assistItem ul, .assistItem ol {
+	margin: 10px 0 0 0;
+	padding: 0 0 20px 0;
+	list-style-position: inside;
+}
+
+.assistItem li { margin-bottom: 20px;}
+.assistItem li:last-child { margin-bottom: 0;}
+
+.assistItem i.info {	
+	font-size: 14px;
+	line-height: 160%;
+	clear: both;
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+.assistItem .info li {
+	margin-bottom: 0px;
+}
+.info.red {color: $highlight;}
+
+.assistItem h1 {
+	font-weight: normal;
+	color: $greyBlue;
+	font-size: 38px;
+	font-family: 'nerisblack';
+	margin: 0 0 24px 0;
+	line-height: 120%;
+}
+
+.assistItem h2 {
+	font-weight: normal;
+	font-size: 16px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	margin: 0 0 20px 0;
+	color: #696969;
+}
+
+.assistItem h3 {
+	font-weight: normal;
+	font-size: 20px;
+	font-family: 'nerisblack';
+	margin: 20px 0;
+	float: left;
+	width: 100%;
+	color: #696969;
+}
+
+.assistItem a { 
+	color: #8b8b8b; 
+	font-family: 'nerislight_italic'; 
+	font-size: 14px;
+	display: inline-block;
+}
+.assistItem a:hover {color: $highlight}
+.assistItem img {
+	float: left;
+	margin: 10px 0 30px -40px;
+	border: solid 1px $semilightGrey;
+}
+
+/// TABLE
+
+table {
+	width: 100%;
+	clear: both;
+	margin: 0 0 20px 0;
+	font-size: 14px;
+	line-height: 120%;
+	border: solid 1px $semiDarkGrey;
+}
+
+table td {
+	border-bottom: solid 1px $semiDarkGrey;
+	border-right: solid 1px $semiDarkGrey;
+	padding: 20px 0;
+	width: 14.2%;
+}
+table td:last-child {border-right: none;}
+
+table#pointActions td, table#pointNotes td, table#pointFollow td {	text-align: center;}
+table#pointActions i.iconCheck {color: $success;}
+table#pointActions i.iconCross {font-size: 11px; color: $error;}
+
+table tr#theader td {
+	background: $semiDarkGrey;
+	color: #fff;
+	padding: 10px 0;
+}
+#theader td {border-color: $semilightGrey;}
+
+table tr:last-child td {border-bottom: none;}
+
+table#pointNotes td, table#pointFollow td { text-align: center;}
+
+table#pointNotes i {font-size: 13px;}
+
+//// MOBILE
+
+.iconMenu {display: none;}
+body.css980 .iconMenu {
+	display:  block;
+	position: absolute;
+	right: 3.3%;
+	top: 20px;
+	font-size: 20px;
+}
+body.css980 .iconMenu:hover {cursor: pointer;}
+
+body.css980 #assistHeader {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: auto;
+	background: $lightGrey;
+	z-index: 2;
+	height: 60px;
+}
+
+body.css980 #assistHeader a {
+	left: 3%;
+	top:10px;
+	font-size: 27px;
+	width: auto;
+	border: none;
+}
+
+body.css980 #assistSidebar {
+	display: none;
+	position: fixed;
+	width: 92%;
+	margin-left: 4%;
+	margin-right: 4%;
+	top: 60px;
+	left: auto;	
+	z-index: 2;
+}
+
+body.css980 #assistContent {
+	position: relative;
+	float: left;
+	clear: both;
+	width: 92%;
+	margin-left: 4%;
+	margin-right: 4%;
+	top: auto;
+	left: auto;
+	padding-left: 0;
+}
+
+#noteForMobile {
+	display: none;
+	width: calc(100% - 40px);
+	padding: 20px;
+	background-color: $highlight;
+	margin-top: 80px;
+	font-size: 16px;
+	color: #fff;
+	text-align: center;
+}
+
+#noteForMobile b {color: #fff;}
+body.css980 #noteForMobile { display: block;} 
+
+body.css980 .assistItem {
+	border-top-width: 80px;
+	width: calc(100% - 40px);
+	padding: 20px 20px 0 20px;
+}
+
+body.css980 img {
+	width: calc(100% + 38px);
+	margin-left: -20px;
+	height: auto;
+}
