@@ -147,4 +147,16 @@ class PublicController extends Controller
             'electedUser' => $electedUser,
         ));
     }
+
+    /**
+     * Help
+     */
+    public function helpAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** helpAction');
+
+        return $this->render('PolitizrFrontBundle:Public:help.html.twig', array(
+        ));
+    }
 }

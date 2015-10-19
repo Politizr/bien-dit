@@ -5,3 +5,7 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
+Help:
+    pattern:  /assitance
+    defaults: { _controller: PolitizrFrontBundle:Public:help }
+

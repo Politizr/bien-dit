@@ -1,0 +1,32 @@
+{% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
+
+{% block title %}Politizr{% endblock title %}
+{% block description %}Politizr{% endblock description %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/assistance.css') }}">
+{% endblock %}
+
+{% block responsiveHeader %}
+    <script>
+        $(document).ready(function () {
+            $('body').restive({
+                breakpoints: ['980', '10000'],
+                classes: ['css980', 'css'],
+                force_dip: true
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}
