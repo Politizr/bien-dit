@@ -641,7 +641,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
                 array(
-                    'debateId' => $debateId,
+                    'reactionId' => $reactionId,
                 )
             );
         } else {
