@@ -3,8 +3,9 @@
     {% if isOwnDocument %}
         Vous ne pouvez pas noter votre propre publication.
     {% elseif hasAlreadyNoteNeg %}
-        Vous avez déjà attribué une note - cette publication.
+        Vous avez déjà attribué une note <i class="iconNoteMinus"></i> cette publication.
     {% elseif not isAuthorizedToNotateNeg %}
         Votre <a href="{{ path('Help') }}#p-reputation">réputation</a> est de "{{ score }}". Elle doit être de "{{ minScore }}" au moins pour pouvoir attribuer une note négative.
     {% endif %}
+    <i class="iconArrowDown"></i>
 </div>
