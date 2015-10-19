@@ -450,19 +450,30 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
      *
      * @param PDReaction $reaction
+     * @param boolean $edit
      * @return string
      */
-    public function linkParentReaction(PDReaction $reaction)
+    public function linkParentReaction(PDReaction $reaction, $edit = false)
     {
         // $this->logger->info('*** linkParentReaction');
         // $this->logger->info('$debate = '.print_r($reaction, true));
 
-        if ($reaction->getLevel() > 1) {
-            $parent = $reaction->getParent();
-            $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+        if ($edit) {
+            if (null == $reaction->getParentReactionId()) {
+                $parent = $reaction->getDebate();
+                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+            } else {
+                $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());
+                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+            }
         } else {
-            $parent = $reaction->getDebate();
-            $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+            if ($reaction->getLevel() > 1) {
+                $parent = $reaction->getParent();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+            } else {
+                $parent = $reaction->getDebate();
+                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+            }
         }
 
         // Construction du rendu du tag
