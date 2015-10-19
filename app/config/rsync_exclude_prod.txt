@@ -32,6 +32,7 @@ reload-bdd.sh
 /web/.htaccess
 /web/app.php
 /web/app_stage.php
+/web/app_debug.php
 /web/app.php.org
 /web/app.php.temp
 /web/index.php

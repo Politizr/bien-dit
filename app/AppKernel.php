@@ -54,7 +54,7 @@ class AppKernel extends Kernel
             new Politizr\CommandBundle\PolitizrCommandBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'stage'))) {
+        if (in_array($this->getEnvironment(), array('dev', 'test', 'stage', 'debug'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
