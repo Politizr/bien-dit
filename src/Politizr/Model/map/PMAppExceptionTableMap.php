@@ -46,7 +46,7 @@ class PMAppExceptionTableMap extends TableMap
         $this->addColumn('file', 'File', 'VARCHAR', false, 250, null);
         $this->addColumn('line', 'Line', 'INTEGER', false, null, null);
         $this->addColumn('code', 'Code', 'INTEGER', false, null, null);
-        $this->addColumn('message', 'Message', 'VARCHAR', false, 250, null);
+        $this->addColumn('message', 'Message', 'VARCHAR', false, 1500, null);
         $this->addColumn('stack_trace', 'StackTrace', 'CLOB', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

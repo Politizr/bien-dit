@@ -196,6 +196,17 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $aPDDebate;
 
     /**
+     * @var        PDReaction
+     */
+    protected $aPDReactionRelatedByParentReactionId;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPDReactionsRelatedById;
+    protected $collPDReactionsRelatedByIdPartial;
+
+    /**
      * @var        PropelObjectCollection|PDRComment[] Collection to store aggregation of PDRComment objects.
      */
     protected $collPDRComments;
@@ -244,6 +255,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
     // archivable behavior
     protected $archiveOnDelete = true;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDReactionsRelatedByIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -689,6 +706,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->parent_reaction_id !== $v) {
             $this->parent_reaction_id = $v;
             $this->modifiedColumns[] = PDReactionPeer::PARENT_REACTION_ID;
+        }
+
+        if ($this->aPDReactionRelatedByParentReactionId !== null && $this->aPDReactionRelatedByParentReactionId->getId() !== $v) {
+            $this->aPDReactionRelatedByParentReactionId = null;
         }
 
 
@@ -1203,6 +1224,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->aPDDebate !== null && $this->p_d_debate_id !== $this->aPDDebate->getId()) {
             $this->aPDDebate = null;
         }
+        if ($this->aPDReactionRelatedByParentReactionId !== null && $this->parent_reaction_id !== $this->aPDReactionRelatedByParentReactionId->getId()) {
+            $this->aPDReactionRelatedByParentReactionId = null;
+        }
     } // ensureConsistency
 
     /**
@@ -1244,6 +1268,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDDebate = null;
+            $this->aPDReactionRelatedByParentReactionId = null;
+            $this->collPDReactionsRelatedById = null;
+
             $this->collPDRComments = null;
 
         } // if (deep)
@@ -1450,6 +1477,13 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setPDDebate($this->aPDDebate);
             }
 
+            if ($this->aPDReactionRelatedByParentReactionId !== null) {
+                if ($this->aPDReactionRelatedByParentReactionId->isModified() || $this->aPDReactionRelatedByParentReactionId->isNew()) {
+                    $affectedRows += $this->aPDReactionRelatedByParentReactionId->save($con);
+                }
+                $this->setPDReactionRelatedByParentReactionId($this->aPDReactionRelatedByParentReactionId);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1459,6 +1493,23 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pDReactionsRelatedByIdScheduledForDeletion !== null) {
+                if (!$this->pDReactionsRelatedByIdScheduledForDeletion->isEmpty()) {
+                    PDReactionQuery::create()
+                        ->filterByPrimaryKeys($this->pDReactionsRelatedByIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDReactionsRelatedByIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDReactionsRelatedById !== null) {
+                foreach ($this->collPDReactionsRelatedById as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->pDRCommentsScheduledForDeletion !== null) {
@@ -1758,11 +1809,25 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aPDReactionRelatedByParentReactionId !== null) {
+                if (!$this->aPDReactionRelatedByParentReactionId->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPDReactionRelatedByParentReactionId->getValidationFailures());
+                }
+            }
+
 
             if (($retval = PDReactionPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
+
+                if ($this->collPDReactionsRelatedById !== null) {
+                    foreach ($this->collPDReactionsRelatedById as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
 
                 if ($this->collPDRComments !== null) {
                     foreach ($this->collPDRComments as $referrerFK) {
@@ -1936,6 +2001,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if (null !== $this->aPDDebate) {
                 $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPDReactionRelatedByParentReactionId) {
+                $result['PDReactionRelatedByParentReactionId'] = $this->aPDReactionRelatedByParentReactionId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collPDReactionsRelatedById) {
+                $result['PDReactionsRelatedById'] = $this->collPDReactionsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2211,6 +2282,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPDReactionsRelatedById() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDReactionRelatedById($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPDRComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRComment($relObj->copy($deepCopy));
@@ -2371,6 +2448,58 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         return $this->aPDDebate;
     }
 
+    /**
+     * Declares an association between this object and a PDReaction object.
+     *
+     * @param                  PDReaction $v
+     * @return PDReaction The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPDReactionRelatedByParentReactionId(PDReaction $v = null)
+    {
+        if ($v === null) {
+            $this->setParentReactionId(NULL);
+        } else {
+            $this->setParentReactionId($v->getId());
+        }
+
+        $this->aPDReactionRelatedByParentReactionId = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PDReaction object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDReactionRelatedById($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PDReaction object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PDReaction The associated PDReaction object.
+     * @throws PropelException
+     */
+    public function getPDReactionRelatedByParentReactionId(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPDReactionRelatedByParentReactionId === null && ($this->parent_reaction_id !== null) && $doQuery) {
+            $this->aPDReactionRelatedByParentReactionId = PDReactionQuery::create()->findPk($this->parent_reaction_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPDReactionRelatedByParentReactionId->addPDReactionsRelatedById($this);
+             */
+        }
+
+        return $this->aPDReactionRelatedByParentReactionId;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -2382,9 +2511,287 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('PDReactionRelatedById' == $relationName) {
+            $this->initPDReactionsRelatedById();
+        }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
         }
+    }
+
+    /**
+     * Clears out the collPDReactionsRelatedById collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPDReactionsRelatedById()
+     */
+    public function clearPDReactionsRelatedById()
+    {
+        $this->collPDReactionsRelatedById = null; // important to set this to null since that means it is uninitialized
+        $this->collPDReactionsRelatedByIdPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDReactionsRelatedById collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDReactionsRelatedById($v = true)
+    {
+        $this->collPDReactionsRelatedByIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDReactionsRelatedById collection.
+     *
+     * By default this just sets the collPDReactionsRelatedById collection to an empty array (like clearcollPDReactionsRelatedById());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDReactionsRelatedById($overrideExisting = true)
+    {
+        if (null !== $this->collPDReactionsRelatedById && !$overrideExisting) {
+            return;
+        }
+        $this->collPDReactionsRelatedById = new PropelObjectCollection();
+        $this->collPDReactionsRelatedById->setModel('PDReaction');
+    }
+
+    /**
+     * Gets an array of PDReaction objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     * @throws PropelException
+     */
+    public function getPDReactionsRelatedById($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collPDReactionsRelatedById || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDReactionsRelatedById) {
+                // return empty collection
+                $this->initPDReactionsRelatedById();
+            } else {
+                $collPDReactionsRelatedById = PDReactionQuery::create(null, $criteria)
+                    ->filterByPDReactionRelatedByParentReactionId($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDReactionsRelatedByIdPartial && count($collPDReactionsRelatedById)) {
+                      $this->initPDReactionsRelatedById(false);
+
+                      foreach ($collPDReactionsRelatedById as $obj) {
+                        if (false == $this->collPDReactionsRelatedById->contains($obj)) {
+                          $this->collPDReactionsRelatedById->append($obj);
+                        }
+                      }
+
+                      $this->collPDReactionsRelatedByIdPartial = true;
+                    }
+
+                    $collPDReactionsRelatedById->getInternalIterator()->rewind();
+
+                    return $collPDReactionsRelatedById;
+                }
+
+                if ($partial && $this->collPDReactionsRelatedById) {
+                    foreach ($this->collPDReactionsRelatedById as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDReactionsRelatedById[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDReactionsRelatedById = $collPDReactionsRelatedById;
+                $this->collPDReactionsRelatedByIdPartial = false;
+            }
+        }
+
+        return $this->collPDReactionsRelatedById;
+    }
+
+    /**
+     * Sets a collection of PDReactionRelatedById objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDReactionsRelatedById A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPDReactionsRelatedById(PropelCollection $pDReactionsRelatedById, PropelPDO $con = null)
+    {
+        $pDReactionsRelatedByIdToDelete = $this->getPDReactionsRelatedById(new Criteria(), $con)->diff($pDReactionsRelatedById);
+
+
+        $this->pDReactionsRelatedByIdScheduledForDeletion = $pDReactionsRelatedByIdToDelete;
+
+        foreach ($pDReactionsRelatedByIdToDelete as $pDReactionRelatedByIdRemoved) {
+            $pDReactionRelatedByIdRemoved->setPDReactionRelatedByParentReactionId(null);
+        }
+
+        $this->collPDReactionsRelatedById = null;
+        foreach ($pDReactionsRelatedById as $pDReactionRelatedById) {
+            $this->addPDReactionRelatedById($pDReactionRelatedById);
+        }
+
+        $this->collPDReactionsRelatedById = $pDReactionsRelatedById;
+        $this->collPDReactionsRelatedByIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDReaction objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDReaction objects.
+     * @throws PropelException
+     */
+    public function countPDReactionsRelatedById(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collPDReactionsRelatedById || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDReactionsRelatedById) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDReactionsRelatedById());
+            }
+            $query = PDReactionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDReactionRelatedByParentReactionId($this)
+                ->count($con);
+        }
+
+        return count($this->collPDReactionsRelatedById);
+    }
+
+    /**
+     * Method called to associate a PDReaction object to this object
+     * through the PDReaction foreign key attribute.
+     *
+     * @param    PDReaction $l PDReaction
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPDReactionRelatedById(PDReaction $l)
+    {
+        if ($this->collPDReactionsRelatedById === null) {
+            $this->initPDReactionsRelatedById();
+            $this->collPDReactionsRelatedByIdPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDReactionsRelatedById->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDReactionRelatedById($l);
+
+            if ($this->pDReactionsRelatedByIdScheduledForDeletion and $this->pDReactionsRelatedByIdScheduledForDeletion->contains($l)) {
+                $this->pDReactionsRelatedByIdScheduledForDeletion->remove($this->pDReactionsRelatedByIdScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDReactionRelatedById $pDReactionRelatedById The pDReactionRelatedById object to add.
+     */
+    protected function doAddPDReactionRelatedById($pDReactionRelatedById)
+    {
+        $this->collPDReactionsRelatedById[]= $pDReactionRelatedById;
+        $pDReactionRelatedById->setPDReactionRelatedByParentReactionId($this);
+    }
+
+    /**
+     * @param	PDReactionRelatedById $pDReactionRelatedById The pDReactionRelatedById object to remove.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePDReactionRelatedById($pDReactionRelatedById)
+    {
+        if ($this->getPDReactionsRelatedById()->contains($pDReactionRelatedById)) {
+            $this->collPDReactionsRelatedById->remove($this->collPDReactionsRelatedById->search($pDReactionRelatedById));
+            if (null === $this->pDReactionsRelatedByIdScheduledForDeletion) {
+                $this->pDReactionsRelatedByIdScheduledForDeletion = clone $this->collPDReactionsRelatedById;
+                $this->pDReactionsRelatedByIdScheduledForDeletion->clear();
+            }
+            $this->pDReactionsRelatedByIdScheduledForDeletion[]= $pDReactionRelatedById;
+            $pDReactionRelatedById->setPDReactionRelatedByParentReactionId(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PDReactionsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsRelatedByIdJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDReactionsRelatedById($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PDReactionsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsRelatedByIdJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PDDebate', $join_behavior);
+
+        return $this->getPDReactionsRelatedById($query, $con);
     }
 
     /**
@@ -2687,6 +3094,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPDReactionsRelatedById) {
+                foreach ($this->collPDReactionsRelatedById as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPDRComments) {
                 foreach ($this->collPDRComments as $o) {
                     $o->clearAllReferences($deep);
@@ -2698,6 +3110,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             if ($this->aPDDebate instanceof Persistent) {
               $this->aPDDebate->clearAllReferences($deep);
             }
+            if ($this->aPDReactionRelatedByParentReactionId instanceof Persistent) {
+              $this->aPDReactionRelatedByParentReactionId->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2705,12 +3120,17 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         // nested_set behavior
         $this->collNestedSetChildren = null;
         $this->aNestedSetParent = null;
+        if ($this->collPDReactionsRelatedById instanceof PropelCollection) {
+            $this->collPDReactionsRelatedById->clearIterator();
+        }
+        $this->collPDReactionsRelatedById = null;
         if ($this->collPDRComments instanceof PropelCollection) {
             $this->collPDRComments->clearIterator();
         }
         $this->collPDRComments = null;
         $this->aPUser = null;
         $this->aPDDebate = null;
+        $this->aPDReactionRelatedByParentReactionId = null;
     }
 
     /**

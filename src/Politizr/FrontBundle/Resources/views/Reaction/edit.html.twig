@@ -46,7 +46,7 @@
                     <div class="postSummaryFooter">
                         <!-- @todo fonctionnel > est-ce bien raisonnable de disposer d'un lien "normal" au niveau d'un écran d'édition? -->
                         <div class="postSummaryGotoParent">
-                            {{ reaction | linkParentReaction }}
+                            {{ reaction | linkParentReaction(true) }}
                         </div>
                         {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre réaction'}}) }}
                     </div>

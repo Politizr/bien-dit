@@ -253,10 +253,10 @@ class DocumentController extends Controller
         }
 
         // parent document for compared edition
-        if ($reaction->getLevel() > 1) {
-            $parent = $reaction->getParent();
-        } else {
+        if (null == $reaction->getParentReactionId()) {
             $parent = $reaction->getDebate();
+        } else {
+            $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());
         }
 
         // Paragraphs explode
