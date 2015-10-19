@@ -38,6 +38,28 @@
 	color: #fff;
 }
 
+#fixedActions .cannotPublishDebate, #fixedActions .cannotPublishReaction {
+	color: $alert;
+	font-family: 'nerissemibold';
+	font-size: 12px;
+	line-height: 140%;
+	text-transform: none;
+	text-align: left;
+	margin-top: 5px;
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+#fixedActions .cannotPublishDebate a, #fixedActions .cannotPublishReaction a {
+	width: auto;
+	float: none;
+	padding: 0;
+	color: inherit;
+}
+#fixedActions .cannotPublishDebate a:hover, #fixedActions .cannotPublishReaction a:hover {color: $highlight;}
+
+
 /// got to update under
 
 #fixedActions .actionSave,

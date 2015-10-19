@@ -79,6 +79,45 @@ span.followedDebate::after {	content: "*";}
 .noteMinus {	padding-left: 13px;}
 .noteMinus i {	left: -2px;}
 
+#giveNote .blockedVote, .blockedVote {
+	position: relative;
+}
+.blockedVote:hover, .commentsNote .blockedVote:hover, #giveNote .blockedVote:hover {cursor: default;}
+
+#giveNote .blockedVote, .commentsNote .blockedVote {color: #eba78f;}
+#giveNote .blockedVote.notePlus:hover, #giveNote .blockedVote.noteMinus:hover, .commentsNote .blockedVote.notePlus:hover, .commentsNote .blockedVote.noteMinus:hover {color: #eba78f;}
+
+.noteBubble {
+	position: absolute;
+	width: 160px;
+	padding: 10px;
+	left: -10px;
+	bottom: 20px;
+	background-color: $alert;
+	color: #fff;
+	-moz-box-shadow: 0px 0px 0px 10px $darkGrey;
+	-webkit-box-shadow: 0px 0px 10px 0px $darkGrey;
+	-o-box-shadow: 0px 0px 10px 0px $darkGrey;
+	box-shadow: 0px 0px 10px 0px $darkGrey;
+    font-family: 'nerissemibold';
+    font-style: normal;
+    line-height: 120%;
+}
+.commentsNote .blockedVote .noteBubble { bottom: 25px; }
+
+.noteBubble i {
+	position: static;
+	left: 0;
+}
+
+.noteBubble i.iconArrowDown {
+	position: absolute;
+	bottom: -7px;
+	margin-left: 6px;
+	font-size: 12px;
+	color: $alert;
+}
+
 .avatar15 {
 	width: 15px;
 	height: 15px;
