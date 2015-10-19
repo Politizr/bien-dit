@@ -46,6 +46,12 @@ function openParagraph(paragraphId)
 
     var context = $('#'+paragraphId);
 
+    // close if already open
+    if (context.find('.comments').is(':visible')) {
+        context.find(".commentsClose").trigger( "click" );
+        return;
+    }
+
     var subjectId = context.find('.commentsCounter').attr('subjectId');
     var type = context.find('.commentsCounter').attr('type');
     var noParagraph = context.find('.commentsCounter').attr('noParagraph');
@@ -56,7 +62,8 @@ function openParagraph(paragraphId)
     // console.log(type);
     // console.log(noParagraph);
 
-    console.log(localLoader);
+    // console.log(localLoader);
+
 
     var xhrPath = getXhrPath(
         ROUTE_COMMENTS,
@@ -75,7 +82,7 @@ function openParagraph(paragraphId)
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
-            $('#ajaxGlobalLoader').hide();
+            localLoader.hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
@@ -122,7 +129,8 @@ $("body").on("click", "input[action='createComment']", function(e) {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $(this).find('.comments').html(data['html']).slideDown();
-                $(this).find('.commentsCounter').html(data['counter']);
+                $(this).find('.counter').html(data['counter']);
+                fullImgLiquid();
 
                 // $("#formCommentNew").trigger("reset");
                 $("#comment_description").val("");
