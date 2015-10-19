@@ -412,10 +412,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
                 
                 if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
+
                     // Document parent associée à la réaction
                     if ($subject->getTreeLevel() > 1) {
                         // Réaction parente

@@ -1,12 +1,5 @@
-Vous suivez <a action="notificationCheck" href="{{ authorUrl }}">
-    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
-    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
-</a>
- et il vient de publier
-<a action="notificationCheck" href="{{ url }}">
-    "{{ title }}"
-</a>
-au sujet de
-<a href="{{ documentUrl }}">
-    "{{ document.title }}"
-</a>.
+{% if document %}
+    Vous suivez {% include 'PolitizrFrontBundle:Notification\\Message:_screenAuthor.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} et il vient de publier {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | slice(0, 50), 'url': url } only %} au sujet de la publication {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': document.title | slice(0, 50), 'url': documentUrl } only %}
+{% else %}
+    <i>Cette notification concernait un document supprimé.</i>
+{% endif %}
