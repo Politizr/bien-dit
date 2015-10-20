@@ -117,11 +117,11 @@ class GlobalTools
      * @param  string      $destPath             chemin absolu de destination
      * @param  int         $maxWidth             largeur max > utilisé pour resize
      * @param  int         $maxHeight            hauteur max > utilisé pour resize
-     * @param  int         $sizeLimit            Taille limite du fichier > 5 * 1024 * 1024 (5Mo)
+     * @param  int         $sizeLimit            Taille limite du fichier > 20 * 1024 * 1024 (20Mo)
      * @param  array       $allowedExtensions    Extensions de fichier autorisées
      *
      */
-    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 5242880, $allowedExtensions = array('jpg', 'jpeg', 'png'))
+    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $allowedExtensions = array('jpg', 'jpeg', 'png'))
     {
         $this->logger->info('*** uploadXhrImage');
 
