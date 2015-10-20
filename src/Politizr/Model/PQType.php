@@ -10,4 +10,11 @@ use Politizr\Model\om\BasePQType;
  */
 class PQType extends BasePQType
 {
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 }

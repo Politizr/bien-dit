@@ -110,6 +110,13 @@ Politizr\Model\PRBadgeType:
         title:
             - NotBlank:     ~
 
+Politizr\Model\PQOrganization:
+    properties:
+        title:
+            - NotBlank:     ~
+        initials:
+            - NotBlank:     ~
+
 Politizr\Model\POSubscription:
     properties:
         title:

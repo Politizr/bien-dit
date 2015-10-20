@@ -1,0 +1,5 @@
+{% extends_admingenerated "PolitizrAdminBundle:PQOrganizationList:row.html.twig" %}
+
+{% block list_td_column_file_name %}
+    <img src="{{ asset('/uploads/organizations/'~PQOrganization.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PQOrganization.title }}">
+{% endblock list_td_column_file_name %}

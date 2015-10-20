@@ -146,6 +146,11 @@ Politizr_AdminBundle_PRBadgeType:
     type:     admingenerator
     prefix:   /PRBadgeType
 
+Politizr_AdminBundle_PQOrganization:
+    resource: "@PolitizrAdminBundle/Controller/PQOrganization/"
+    type:     admingenerator
+    prefix:   /PQOrganization
+
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
     type:     admingenerator
