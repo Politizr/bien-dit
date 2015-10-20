@@ -66,7 +66,7 @@
             {{ user | photoBack('user_bio_back') }}
         </div>
 
-        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': '@todo' } %}
+        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': user.copyright } %}
         
         <div id="profilePublicTagList">
             {{ user | userTags }}
