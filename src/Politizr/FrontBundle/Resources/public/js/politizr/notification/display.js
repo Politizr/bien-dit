@@ -3,11 +3,11 @@ $(function() {
     notificationsLoading();
 })
 
-// ouverture/fermeture box notifications
-$("body").on("click", "[action='linkNotifications']", function() {
-    $('#notifications').slideToggle();
-});
-
+// // ouverture/fermeture box notifications
+// $("body").on("click", "[action='linkNotifications']", function() {
+//     $('#notifications').slideToggle();
+// });
+// 
 // mobile : hide menus when opening notifications
 $("body.css760").on("touchstart click", "[action='linkNotifications']", function(e) {
     if(e.type == "touchstart") { // if touchstart start toggle
@@ -17,6 +17,17 @@ $("body.css760").on("touchstart click", "[action='linkNotifications']", function
         return false;
     } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
         $('#headerCenter, #menu').hide();               
+    }
+});
+
+$("body.css760").on("touchstart click", "[action='linkNotifications']", function(e) {
+    if(e.type == "touchstart") { // if touchstart start toggle
+        $('#headerCenter, #menu').hide();
+        e.stopPropagation();
+        e.preventDefault(); // stop touchstart 
+    return false;
+    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
+        $('#headerCenter, #menu').hide();
     }
 });
 
