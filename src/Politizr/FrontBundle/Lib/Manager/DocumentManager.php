@@ -306,7 +306,7 @@ LIMIT ".$offset.", ".$count."
      * @param PDDebate $reaction
      * @return integer
      */
-    public function deleteReaction(PDDebate $reaction)
+    public function deleteReaction(PDReaction $reaction)
     {
         $result = $reaction->delete();
 
