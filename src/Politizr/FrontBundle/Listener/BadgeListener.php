@@ -401,7 +401,7 @@ GROUP BY p_d_debate_id
                         ->filterByNotePos(array('min' => $nbNotePos))
                         ->count();
 
-            if ($nbDebate >= 0 || $nbReaction >= 0) {
+            if ($nbDebate > 0 || $nbReaction > 0) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }
