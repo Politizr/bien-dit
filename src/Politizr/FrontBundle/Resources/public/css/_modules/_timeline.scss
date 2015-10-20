@@ -63,7 +63,14 @@
 .timelineMarkAllAsRead i {font-size: 9px; position: absolute; left: 0;}
 .timelineMarkAllAsRead:hover {color: #fff;}
 
-#timeline {	padding-bottom: 20px; float: left;clear: both; width: 100%; position: relative;}
+#timeline {	
+	padding-bottom: 20px; 
+	float: left;
+	clear: both; 
+	width: 100%; 
+	position: relative;
+	margin: -3px 0 0 0;
+}
 #timeline #listContent {position: relative;}
 
 #emptyTimeline {
@@ -191,6 +198,10 @@ span.timelineItemContextHighlight {
 	margin-bottom: 8px;
 	margin-top: -2px;
 	font-family: 'nerissemibold';
+}
+
+.timelineItemHighlight blockquote {
+	margin: 0;
 }
 
 /*

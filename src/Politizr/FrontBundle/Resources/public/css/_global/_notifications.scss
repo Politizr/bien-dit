@@ -20,7 +20,7 @@
 #notifHeader, #notifFooter {
 	text-transform: uppercase;
 	font-size: 10px;
-	font-family: nerissemibold;
+	font-family: 'nerissemibold';
 	color: $darkHighlight;
 	float: left;
 	width: 100%;	
@@ -99,10 +99,14 @@
 .notifItemContent {
 	font-size: 13px;
 	padding-left: 20px;
+	font-family: 'nerissemibold';
 }
 
-.notifItemContent a {color: inherit;}
-.notifItemContent a:hover {color: $darkHighlight;}
+.notifItemContent a {
+	color: $darkHighlight;
+	font-family: 'nerisblack';
+}
+.notifItemContent a:hover {color: $darkGrey;}
 .notifItemContent .organization:hover {background-color: $darkHighlight; cursor: pointer;}
 
 .notifSpeciale {color: $darkHighlight;}
@@ -110,8 +114,8 @@
 span.notifHighlight {
 	clear: both;
 	display: inline-block;
-	font-family: nerisblack;
 }
+
 
 .notifItem span.clearUnder {	width: 100%;}
 

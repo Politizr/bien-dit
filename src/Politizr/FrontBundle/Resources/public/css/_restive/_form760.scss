@@ -26,15 +26,11 @@ body.css760 .search form.searchForm {
 	float: left;
 }
 
-body.css760 .search form.searchForm input {
-	font-size: 26px;
-	width: 88%;
-}
 
-body.css760 .search form.searchForm input[type=submit] {
-	font-size: 26px;
-	width: 12%;
-}
+body.css760 .search form.searchForm input {	font-size: 22px;}
+
+body.css760 .search form.searchForm input[type=submit] { font-size: 13px;}
+
 
 body.css760 .listProfile {
 	width: calc(100% - 80px);

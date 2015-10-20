@@ -345,6 +345,12 @@ a.linkToPost:hover {color: $darkGrey;}
 	padding: 20px;
 }
 
+.commentsEditNew .actionsButtons {margin-left: 2px;}
+
+.commentsTextarea {
+	line-height: 180%;
+}
+
 .commentsList {
 	display: inline-block;
 	clear: both;
