@@ -3,38 +3,19 @@ $(function() {
     notificationsLoading();
 })
 
-// // ouverture/fermeture box notifications
-// $("body").on("click", "[action='linkNotifications']", function() {
-//     $('#notifications').slideToggle();
-// });
-// 
-// mobile : hide menus when opening notifications
+
+// ouverture/fermeture box notifications
+$("body").on("touchstart click", "[action='linkNotifications']", function() {
+    $('#notifications').slideToggle();
+});
 $("body.css760").on("touchstart click", "[action='linkNotifications']", function(e) {
-    if(e.type == "touchstart") { // if touchstart start toggle
-        $('#headerCenter, #menu').hide();
-        e.stopPropagation();
-        e.preventDefault(); // stop touchstart 
-        return false;
-    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
-        $('#headerCenter, #menu').hide();               
-    }
+    $('#headerCenter, #menu').hide();               
 });
 
-$("body.css760").on("touchstart click", "[action='linkNotifications']", function(e) {
-    if(e.type == "touchstart") { // if touchstart start toggle
-        $('#headerCenter, #menu').hide();
-        e.stopPropagation();
-        e.preventDefault(); // stop touchstart 
-    return false;
-    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
-        $('#headerCenter, #menu').hide();
-    }
-});
-
+// close notif
 $("body").on("click", ".notifClose", function() {
     $('#notifications').slideUp('fast');
 });
-
 
 // Regular function with arguments
 function notificationsLoading(){
