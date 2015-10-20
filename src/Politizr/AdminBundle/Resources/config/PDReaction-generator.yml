@@ -25,7 +25,7 @@ params:
         parent_reaction_id:
             label:          ID Réaction associé
         parent:
-            label:          Débat associé
+            label:          Réaction associée
         file_name:
             label:          Image
         title:
