@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\FrontBundle\Form\Type\SearchType;
 
 /**

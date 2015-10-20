@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
 
