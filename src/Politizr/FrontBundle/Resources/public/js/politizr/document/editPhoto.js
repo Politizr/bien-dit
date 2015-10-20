@@ -122,7 +122,7 @@ $("body").on("click", "[action='debatePhotoInfoSave']", function(e) {
         dataType: 'json',
         url : xhrPath,
         data: $("#formDebatePhotoInfoUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -166,7 +166,7 @@ $("body").on("click", "[action='reactionPhotoInfoSave']", function(e) {
         dataType: 'json',
         url : xhrPath,
         data: $("#formReactionPhotoInfoUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {

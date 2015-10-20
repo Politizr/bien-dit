@@ -80,7 +80,7 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
             dataType: 'json',
             url : xhrPath,
             data: $("#formDebateUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
             statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
             error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
             success: function(data) {
@@ -124,7 +124,7 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
             dataType: 'json',
             url : xhrPath,
             data: $("#formReactionUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
             statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
             error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
             success: function(data) {
@@ -167,7 +167,7 @@ $('body').on('click', "[action='debatePublish']", function(e){
                 url : xhrPath,
                 data: { 'id': subjectId },
                 dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
                 error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
                 success: function(data) {
@@ -214,7 +214,7 @@ $('body').on('click', "[action='reactionPublish']", function(e){
                 url : xhrPath,
                 data: { 'id': subjectId },
                 dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
                 error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
                 success: function(data) {
@@ -258,7 +258,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
                 url : xhrPath,
                 data: { 'id': subjectId },
                 dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
                 error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
                 success: function(data) {
@@ -302,7 +302,7 @@ $('body').on('click', "[action='reactionDelete']", function(e){
                 url : xhrPath,
                 data: { 'id': subjectId },
                 dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
                 error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
                 success: function(data) {

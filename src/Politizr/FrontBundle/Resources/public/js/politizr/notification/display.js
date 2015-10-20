@@ -113,7 +113,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
         url : xhrPath,
         context: this,
         data: { 'subjectId': $(this).closest('span').attr('subjectId') },
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -139,7 +139,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
         dataType: 'json',
         url : xhrPath,
         context: $(this).closest('table'),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {

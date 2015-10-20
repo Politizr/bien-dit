@@ -17,7 +17,7 @@ $("body").on("click", "[action='paginateNext']", function(e) {
         url: xhrPath,
         data: { 'query': $(this).attr('query'), 'page': $(this).attr('page') },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {

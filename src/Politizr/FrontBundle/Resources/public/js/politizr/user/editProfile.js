@@ -33,7 +33,7 @@ $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
             dataType: 'json',
             url : xhrPath,
             data: $("#formUserProfileUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
             statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
             error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
             success: function(data) {
@@ -69,7 +69,7 @@ $("body").on("change", "select[action='organizationUpdate']", function(e) {
         dataType: 'json',
         url : xhrPath,
         data: $("#formUserOrganizationUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -102,7 +102,7 @@ $("body").on("click", "[action='affinities-update']", function(e) {
         url: xhrPath,
         data: $('#form-affinities-update').serialize(),
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -134,7 +134,7 @@ $("body").on("click", "[action='mandateCreate']", function(e) {
         url: xhrPath,
         data: $("#formMandateCreate").serialize(),
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -172,7 +172,7 @@ $("body").on("click", "[action='mandateUpdate']", function(e) {
         url: xhrPath,
         data: $(this).closest('#formMandateUpdate').serialize(),
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -214,7 +214,7 @@ $("body").on("click", "[action='mandateDelete']", function(e) {
                 url: xhrPath,
                 data: { 'id': subjectId },
                 dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
                 error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
                 success: function(data) {

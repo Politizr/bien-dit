@@ -28,7 +28,7 @@ $("body").on("click", "[action='payment-process']", function(e) {
         context: this,
         data: { 'pOPaymentTypeId': $(this).attr('pOPaymentTypeId') },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {

@@ -180,7 +180,6 @@ function xhr500( localLoader ) {
 
 /**
  *
- * @param int mode 1 => global loader, 2 => local loader, 3 => no loader
  */
 function xhrError(jqXHR, textStatus, errorThrown, localLoader ) {
     localLoader = (typeof localLoader === "undefined") ? null : localLoader;

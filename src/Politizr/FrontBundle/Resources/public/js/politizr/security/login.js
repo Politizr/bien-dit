@@ -31,7 +31,7 @@ $("body").on("click", "[action='login']", function(e) {
         url: xhrPath,
         data: $("#formLogin").serialize(),
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
@@ -65,7 +65,7 @@ $("body").on("click", "[action='reinitPassword']", function(e) {
         url: xhrPath,
         data: $("#formLostPassword").serialize(),
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
