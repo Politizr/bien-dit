@@ -29,6 +29,8 @@ framework:
         cookie_lifetime: 7776000
         # 3 hours
         gc_maxlifetime: 10800
+        # http://vvv.tobiassjosten.net/symfony/keep-symfony2-sessions-through-cache-clear/
+        save_path: %kernel.root_dir%/sessions
 
     # admingenerator assetic packages definition
     templating:

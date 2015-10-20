@@ -21,6 +21,7 @@ reload-bdd.sh
 
 /app/cache/*
 /app/logs/*
+/app/sessions/*
 /app/config/parameters.yml
 /app/config/parameters.yml.dev
 /app/config/parameters.yml.re7
@@ -33,6 +34,7 @@ reload-bdd.sh
 /web/app.php
 /web/app_stage.php
 /web/app_debug.php
+/web/app_debug.php.org
 /web/app.php.org
 /web/app.php.temp
 /web/index.php
