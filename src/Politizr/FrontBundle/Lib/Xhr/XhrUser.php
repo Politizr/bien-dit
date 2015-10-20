@@ -220,7 +220,7 @@ class XhrUser
         }
 
         // Rendering
-        $path = '/bundles/politizrfront/images/default_user_back.jpg';
+        $path = '/bundles/politizrfront/images/default_profile.jpg';
         if ($user && $fileName = $user->getBackFileName()) {
             $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
         }
