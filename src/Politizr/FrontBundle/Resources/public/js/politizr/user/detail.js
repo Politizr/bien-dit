@@ -1,9 +1,9 @@
 // on document ready
 $(function(){
-    // @todo html/css height en px > wont work
-    $('#profileBio').css({overflow: "hidden", height:"360px" });
+    // $('#profileBio').css({overflow: "hidden", height:"360px" });
     $('#hideCompleteBio').hide();
-    $('#showCompleteBio').show();        
+    // $('#showCompleteBio').show();        
+    $('#showCompleteBio').hide();
 });
 
 // show full bio
