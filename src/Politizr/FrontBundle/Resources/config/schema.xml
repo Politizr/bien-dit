@@ -775,10 +775,6 @@
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
-
-        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="parent_reaction_id" foreign="id" />
-        </foreign-key>
     </table>
 
     <table name="p_d_d_comment">
