@@ -97,7 +97,7 @@ builders:
                 reputation_score:
                     label:                      Score
             filtersMode:                        top
-            filters:                            [ id, name, firstname, qualified, p_u_status, online, last_login ]
+            filters:                            [ id, email, name, firstname, qualified, p_u_status, online, last_login ]
             actions:
                 new:                            ~
             object_actions:
