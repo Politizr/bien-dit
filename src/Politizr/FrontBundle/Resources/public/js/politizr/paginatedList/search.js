@@ -32,7 +32,7 @@ $("body").on("click", "[action='searchModalClose']", function() {
         type: 'POST',
         url: xhrPath,
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
