@@ -129,7 +129,7 @@ class GlobalTools
         if ($myRequestedFile == null) {
             throw new FormValidationException('Fichier non existant.');
         } else if ($myRequestedFile->getError() > 0) {
-            throw new FormValidationException('Erreur upload n°'.$myRequestedFile->getError(), 1);
+            throw new FormValidationException('Erreur upload n°'.$myRequestedFile->getError());
         } else {
             // Contrôle extension
             // $allowedExtensions = array('jpg', 'jpeg', 'png');
