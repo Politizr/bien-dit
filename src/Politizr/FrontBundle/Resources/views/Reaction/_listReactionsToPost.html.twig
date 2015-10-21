@@ -22,9 +22,8 @@
                 </div>
                 <div class="reactionsToPostItemPostTitle">
                     <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
-                        {{ reaction.title }}
-                        {# @todo description excerpt #}
-                        {# reaction.description | raw #}
+                        <span>{{ reaction.title }}</span>
+                        {{ reaction.description | excerpt }}
                     </a>
                 </div>
             </div>
