@@ -938,34 +938,32 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      * User's debates' comments
      *
      * @param boolean $online
-     * @param boolean $published
      * @return PropelCollection[PDDebate]
      */
     public function getDComments($online = true)
     {
-        $comments = PDRCommentQuery::create()
+        $query = PDDCommentQuery::create()
             ->filterIfOnline($online)
             ->orderByCreatedAt('desc')
-            ->find();
+            ;
 
-        return $comments;
+        return parent::getPDDComments($query);
     }
 
     /**
      * User's reactions' comments
      *
      * @param boolean $online
-     * @param boolean $published
      * @return PropelCollection[PDDebate]
      */
     public function getRComments($online = true)
     {
-        $comments = PDRCommentQuery::create()
+        $query = PDRCommentQuery::create()
             ->filterIfOnline($online)
             ->orderByCreatedAt('desc')
-            ->find();
+            ;
 
-        return $comments;
+        return parent::getPDRComments($query);
     }
 
 
