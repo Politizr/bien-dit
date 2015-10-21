@@ -45,5 +45,5 @@ reload-bdd.sh
 /web/static/
 
 /web/js/
-/web/assetic/css/compiled/
-/web/assetic/js/compiled/
+/web/assetic/
+/web/assetic/
