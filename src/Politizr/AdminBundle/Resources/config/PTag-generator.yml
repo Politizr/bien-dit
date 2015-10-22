@@ -91,7 +91,6 @@ builders:
                       widget:                   single_text
             actions:
                 save:                           ~
-                save_and_list:                  ~
                 list:                           ~
 #     show:
 #         params:
