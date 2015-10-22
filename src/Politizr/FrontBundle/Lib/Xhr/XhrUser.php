@@ -279,6 +279,7 @@ class XhrUser
         $html = $this->templating->render(
             'PolitizrFrontBundle:User:_photo.html.twig',
             array(
+                'url' => null,
                 'user' => $user,
                 'path' => $path,
                 'filterName' => 'user_bio',
@@ -317,6 +318,7 @@ class XhrUser
         $html = $this->templating->render(
             'PolitizrFrontBundle:User:_photo.html.twig',
             array(
+                'url' => null,
                 'user' => $user,
                 'path' => $path,
                 'filterName' => 'user_bio',
