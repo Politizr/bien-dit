@@ -24,6 +24,15 @@ function delayRequest(ev) {
     }, 2000); // 2s
 }
 
+/**
+ * Auto save
+ * Event = mouseup
+ */
+$('.editable.subtitle, .editable.biography').on('mouseup', function() {
+    // console.log('mouseup debate description');
+    $('[action="userProfileUpdate"]').trigger('click', 'silence');
+});
+
 
 // Update user
 $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {

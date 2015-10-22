@@ -24,12 +24,12 @@ function delayRequest(ev) {
 
 /**
  * Auto save
- * Event = mouseup mouse out
+ * Event = mouseup
  */
-// $('.editable.description').on('mouseup mouseout', function() {
-//     console.log('mouseup debate description');
-//     $('[action="'+documentSave+'"]').trigger('click', 'silence');
-// });
+$('.editable.description').on('mouseup', function() {
+    // console.log('mouseup debate description');
+    $('[action="'+documentSave+'"]').trigger('click', 'silence');
+});
 
 // compared mode
 $("body").on("click", "[action='activeComparedEdition']", function() {
