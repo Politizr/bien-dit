@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
+use StudioEcho\Lib\StudioEchoUtils;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -143,7 +145,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
