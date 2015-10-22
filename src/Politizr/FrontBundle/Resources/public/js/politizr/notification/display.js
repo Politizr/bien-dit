@@ -30,9 +30,10 @@ function notificationsLoading(){
         type: 'POST',
         dataType: 'json',
         url : xhrPath,
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        // Fix #77
+        // beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
+        // statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        // error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
             $('#ajaxGlobalLoader').hide();
 
