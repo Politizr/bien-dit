@@ -4,6 +4,10 @@
 {% endif %}
 {% extends layout %}
 
+{% block title %}
+    {{ parent() }} - Utilisateur {{ user }}
+{% endblock title %}
+
 {% block header %}
     {% if app.user and app.user | isAuthorizedToReportAbuse %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
@@ -47,8 +51,13 @@
         <div id="profileHeader">
             <div class="pad40">
                 <div id="profileSummaryHeader">
-                    {% if not user.qualified %}
-                        <div id="profileReputationCounter" action="modalOpen">
+                    {% if app.user.id == user.id %}
+                        <div id="profileReputationCounter" action="modalReputation">
+                            <i class="iconCup"></i>
+                            {{ user.reputationScore }} points de réputation
+                        </div>
+                    {% elseif not user.qualified %}
+                        <div id="profileReputationCounter">
                             <i class="iconCup"></i>
                             {{ user.reputationScore }} points de réputation
                         </div>

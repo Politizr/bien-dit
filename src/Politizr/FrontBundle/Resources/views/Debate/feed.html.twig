@@ -4,6 +4,10 @@
 {% endif %}
 {% extends layout %}
 
+{% block title %}
+    {{ parent() }} - Fil du débat - {{ debate.title }}
+{% endblock title %}
+
 {% block connexionBox %}
     {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
         {{ render(controller('PolitizrFrontBundle:Security:login')) }}

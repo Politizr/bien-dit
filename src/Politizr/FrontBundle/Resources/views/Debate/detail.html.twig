@@ -4,6 +4,10 @@
 {% endif %}
 {% extends layout %}
 
+{% block title %}
+    {{ parent() }} - {{ debate.title }}
+{% endblock title %}
+
 {% block header %}
     {% if app.user and app.user | isAuthorizedToReportAbuse %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}

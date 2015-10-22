@@ -1,5 +1,9 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
+{% block title %}
+    {{ parent() }} - Inscription élu(e) ou ancien(ne) élu(e)
+{% endblock title %}
+
 {% block connexionBox %}
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
 {% endblock %}

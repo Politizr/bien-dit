@@ -1,5 +1,9 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
+{% block title %}
+    {{ parent() }} - Mon fil d'actualités
+{% endblock title %}
+
 {% block main %}
     <div id="timeline">
         <div id="timelineHeader" class="stickyTimelineHeader" style="display: none">

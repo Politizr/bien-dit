@@ -1,5 +1,9 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
+{% block title %}
+    {{ parent() }} - Mon profil
+{% endblock title %}
+
 {% block fixedActions %}
     <div id="fixedActions">
         <div class="editProfile">
@@ -106,10 +110,4 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <script>
-        // on document ready
-        $(function() {
-            timelineUserList({{ user.id }});
-        });
-    </script>
 {% endblock javascriptFooter %}

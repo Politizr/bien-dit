@@ -6,6 +6,10 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>  
 {% endblock javascriptHeader %}
 
+{% block title %}
+    {{ parent() }} - Éditer une réaction
+{% endblock title %}
+
 {% block header %}
     {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
         {% block socialLinks %}{% endblock socialLinks %}

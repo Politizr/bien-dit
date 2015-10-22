@@ -1,5 +1,9 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
+{% block title %}
+    {{ parent() }} - Inscription
+{% endblock title %}
+
 {% block connexionBox %}
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
 {% endblock %}
