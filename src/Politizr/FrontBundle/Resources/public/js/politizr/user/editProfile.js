@@ -3,6 +3,28 @@ $(function() {
     jcf.replaceAll();
 });
 
+/**
+ * Auto save
+ * Event = keyup + 2sec
+ * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+ */
+var autosave = $('.editable.subtitle, .editable.biography').on('keyup', delayRequest);
+function dataRequest() {
+    $('[action="userProfileUpdate"]').trigger('click', 'silence');
+}
+function delayRequest(ev) {
+    if(delayRequest.timeout) {
+        clearTimeout(delayRequest.timeout);
+    }
+
+    var target = this;
+
+    delayRequest.timeout = setTimeout(function() {
+        dataRequest.call(target, ev);
+    }, 2000); // 2s
+}
+
+
 // Update user
 $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
     // console.log('*** click user profile update');

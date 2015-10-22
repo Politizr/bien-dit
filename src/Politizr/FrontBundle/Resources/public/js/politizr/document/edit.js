@@ -1,38 +1,36 @@
-// **************************** //
-//      Auto save silencieuse
-//      TODO: à affiner
-//    // **************************** //
-//
-//    // MAJ des tags
-//    $(".auto_submit_form").change(function() {
-//        $('[action="debate-save"]').trigger('click', 'silence');
-//    });
-//
-//    // Saisie de texte sur les éditeurs medium
-//    // http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
-//    var autosave = $('.summary-editable, .description-editable').on('keyup', delayRequest);
-//    function dataRequest() {
-//        // $('[action="debate-save"]').click();
-//        $('[action="debate-save"]').trigger('click', 'silence');
-//    }
-//    function delayRequest(ev) {
-//        if(delayRequest.timeout) {
-//            clearTimeout(delayRequest.timeout);
-//        }
-//    
-//        var target = this;
-//    
-//        delayRequest.timeout = setTimeout(function() {
-//            dataRequest.call(target, ev);
-//        }, 2000); // 2s
-//    }
-//
-//    // Mise en forme sur les éditeurs medium
-//    $('.summary-editable, .description-editable').on('mouseup', function() {
-//        $('[action="debate-save"]').trigger('click', 'silence');
-//    });
-//
-//
+// Auto save / document context
+var documentSave = $('.actionSave').find('a').attr('action');
+
+/**
+ * Auto save
+ * Event = keyup + 2sec
+ * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+ */
+var autosave = $('.postSummaryTitle, .editable.description').on('keyup', delayRequest);
+function dataRequest() {
+    $('[action="'+documentSave+'"]').trigger('click', 'silence');
+}
+function delayRequest(ev) {
+    if(delayRequest.timeout) {
+        clearTimeout(delayRequest.timeout);
+    }
+
+    var target = this;
+
+    delayRequest.timeout = setTimeout(function() {
+        dataRequest.call(target, ev);
+    }, 2000); // 2s
+}
+
+/**
+ * Auto save
+ * Event = mouseup mouse out
+ */
+// $('.editable.description').on('mouseup mouseout', function() {
+//     console.log('mouseup debate description');
+//     $('[action="'+documentSave+'"]').trigger('click', 'silence');
+// });
+
 // compared mode
 $("body").on("click", "[action='activeComparedEdition']", function() {
     $('#swithEditionIndependentEdition').hide();
