@@ -23,8 +23,10 @@
                         <i class="iconCup"></i>
                         {{ user.reputationScore }} points de réputation
                     </div>
-                    <i class="iconInfo" action="confidentialToggle"></i>
-                    <div class="confidentialInfo" style="display: none;">Cette information est privée</div>
+                    {% if user.qualified %}
+                        <i class="iconInfo" action="confidentialToggle"></i>
+                        <div class="confidentialInfo" style="display: none;">Cette information est privée</div>
+                    {% endif %}
                     <div id="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
                         {{ user.countFollowers }} abonnés
                     </div>
@@ -93,13 +95,6 @@
                 {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'mandates': user.mandates } only %}
             </div>
         {% endif %}
-
-        <div id="recentActivity">activité récente</div>
-        <div id="timeline">
-            <!-- @todo html/css bug sticky suite au reload ajax, la date reste collée en haut de l'écran -->
-            <!-- @todo html/css contenu de la timeline dans id listContent (idem my politizr) -->
-            <div id="listContent"></div>
-        </div>
 {% endblock main %}
 
 {% block javascriptFooter %}
@@ -107,7 +102,6 @@
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
