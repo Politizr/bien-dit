@@ -40,45 +40,20 @@ $("body").on("click", "[action='showCopyright']", function() {
     $('#copyrightBox').toggle();       
 });
 
-// hide / show menu preferences
-// $("body").on("click", "[action='openMenuPreferences']", function() {
-//     $('#menuPreferences').show();
-//     $(this).hide();
-//     $('#hideMenuPreferences').show();
-// });
-// 
-// $("body").on("click", "[action='hideMenuPreferences']", function() {
-//     $('#menuPreferences').hide();
-//     $(this).hide();
-//     $('#openMenuPreferences').show();
-// });
-
-// hide / show menu preferences
-$("body.css, body.css1000").on("click", "[action='openMenuPreferences']", function() {
-	$('#menuPreferences').show();
-	$(this).hide();
-	$('#hideMenuPreferences').show();
+// hide / show menu preferences	
+$("body").on("touchstart click", "[action='openMenuPreferences']", function() {
+    $('body.css #menuPreferences, body.css1000 #menuPreferences').show();
+    $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').show();
+    $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').hide();
+    
+    $('body.css760 #menuPreferences').toggle();
+	$('body.css760 #headerCenter, body.css760 #menu, body.css760 #fixedActions').hide();
 });
 
-$("body.css, body.css1000").on("click", "[action='hideMenuPreferences']", function() {
-	$('#menuPreferences').hide();
-	$(this).hide();
-	$('#openMenuPreferences').show();
-});
-
-// mobile : toggle menu preferences
-$("body.css760 #hideMenuPreferences").hide();
-$("body.css760").on("touchstart click", "[action='openMenuPreferences']", function(e) {
-	if(e.type == "touchstart") { // if touchstart start toggle
-		$('#menuPreferences').toggle();
-		$('#headerCenter, #menu, #fixedActions').hide();
-		e.stopPropagation();
-        e.preventDefault(); // stop touchstart 
-        return false;
-	} else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
-		$('#menuPreferences').toggle();
-		$('#headerCenter, #menu, #fixedActions, #notifications').hide();				    
-	}					
+$("body").on("touchstart click", "[action='hideMenuPreferences']", function() {
+    $('body.css #menuPreferences, body.css1000 #menuPreferences').hide();
+    $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').hide();
+    $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').show();
 });
 
 // mobile : toggle menu mobile 
