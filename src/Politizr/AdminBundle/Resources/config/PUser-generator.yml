@@ -225,7 +225,7 @@ builders:
                         multiple:               true
                         required:               false
                         class:                  Politizr\Model\PRBadge
-                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderById() 
                 block_reputation:
                     label:                      "Réputation"
                     grid_class:                 "col-md-12"

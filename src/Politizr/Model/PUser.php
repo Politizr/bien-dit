@@ -448,6 +448,70 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     // ************************************************************************************ //
 
     /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function addFollower(PUser $user)
+    {
+        $follower = new PUFollowU();
+
+        $follower->setPUserId($this->getId());
+        $follower->setPUserFollowerId($user->getId());
+
+        $follower->save();
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function removeFollower(PUser $user)
+    {
+        PUFollowUQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterByPUserFollowerId($user->getId())
+            ->delete();
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function addSubscriber(PUser $user)
+    {
+        $follower = new PUFollowU();
+
+        $follower->setPUserId($user->getId());
+        $follower->setPUserFollowerId($this->getId());
+
+        $follower->save();
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function removeSubscriber(PUser $user)
+    {
+        PUFollowUQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPUserFollowerId($this->getId())
+            ->delete();
+
+        return $this;
+    }
+
+    /**
      * Users' subscribers
      * Equal nest management
      *
@@ -974,17 +1038,33 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     /**
      * @see addPuReputationRbPRBadge
      */
-    public function addBadge(PRBadge $prBadge)
+    public function addBadge(PRBadge $badge)
     {
-        return parent::addPRBadge($prBadge);
+        $userBadge = new PUBadge();
+
+        $userBadge->setPUserId($this->getId());
+        $userBadge->setPRBadgeId($badge->getId());
+
+        $userBadge->save();
+
+        return $this;
+        // cf #70
+        // return parent::addPRBadge($prBadge);
     }
 
     /**
-     * @see removePuReputationRbPRBadge
+     * @param PRBadge $badge
      */
-    public function removeBadge(PRBadge $prBadge)
+    public function removeBadge(PRBadge $badge)
     {
-        return parent::removePRBadge($prBadge);
+        PUBadgeQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterByPRBadgeId($badge->getId())
+            ->delete();
+
+        return $this;
+        // cf #70
+        // return parent::removePRBadge($prBadge);
     }
 
     /**

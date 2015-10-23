@@ -29,7 +29,7 @@ builders:
         params:
             title:                              Liste des badges
             max_per_page:                       50
-            sort:                               [ title, ASC ]
+            sort:                               [ id, ASC ]
             display:                            [ title, p_r_badge_family, nb_users, online ]
             # filtersMode:                        top
             filters:                            [ title, p_r_badge_family, online, created_at ]
