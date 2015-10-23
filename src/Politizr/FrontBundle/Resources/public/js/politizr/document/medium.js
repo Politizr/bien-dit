@@ -18,7 +18,8 @@ var descriptionEditor = new MediumEditor('.editable.description', {
     },
     anchorPreview: false,
     firstHeader:'h1',
-    secondHeader:'h2'
+    secondHeader:'h2',
+    autoLink: true
 });     
 
 // copyright
@@ -37,7 +38,8 @@ var copyrightEditor = new MediumEditor('.editable.copyright', {
     },
     anchorPreview: false,
     firstHeader:'h1',
-    secondHeader:'h2'
+    secondHeader:'h2',
+    autoLink: true
 });
 
 // subtitle
@@ -53,7 +55,8 @@ var subtitleEditor = new MediumEditor('.editable.subtitle', {
     anchor: {
         placeholderText: 'Saississez une adresse internet'
     },
-    anchorPreview: false
+    anchorPreview: false,
+    autoLink: true
 });
 
 // biography
@@ -76,6 +79,7 @@ var biographyEditor = new MediumEditor('.editable.biography', {
     },
     anchorPreview: false,
     firstHeader:'h1',
-    secondHeader:'h2'
+    secondHeader:'h2',
+    autoLink: true
 });     
 
