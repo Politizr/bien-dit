@@ -41,19 +41,17 @@ $("body").on("click", "[action='showCopyright']", function() {
 });
 
 // hide / show menu preferences
-/*
-$("body").on("click", "[action='openMenuPreferences']", function() {
-    $('#menuPreferences').show();
-    $(this).hide();
-    $('#hideMenuPreferences').show();
-});
-
-$("body").on("click", "[action='hideMenuPreferences']", function() {
-    $('#menuPreferences').hide();
-    $(this).hide();
-    $('#openMenuPreferences').show();
-});
-*/
+// $("body").on("click", "[action='openMenuPreferences']", function() {
+//     $('#menuPreferences').show();
+//     $(this).hide();
+//     $('#hideMenuPreferences').show();
+// });
+// 
+// $("body").on("click", "[action='hideMenuPreferences']", function() {
+//     $('#menuPreferences').hide();
+//     $(this).hide();
+//     $('#openMenuPreferences').show();
+// });
 
 // hide / show menu preferences
 $("body.css, body.css1000").on("click", "[action='openMenuPreferences']", function() {
