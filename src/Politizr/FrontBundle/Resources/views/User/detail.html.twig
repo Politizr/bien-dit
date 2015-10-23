@@ -47,93 +47,14 @@
 {% endblock fixedActions %}
 
 {% block main %}
-    <div id="main">
-        <div id="profileHeader">
-            <div class="pad40">
-                <div id="profileSummaryHeader">
-                    {% if app.user.id == user.id %}
-                        <div id="profileReputationCounter" action="modalReputation">
-                            <i class="iconCup"></i>
-                            {{ user.reputationScore }} points de réputation
-                        </div>
-                    {% elseif not user.qualified %}
-                        <div id="profileReputationCounter">
-                            <i class="iconCup"></i>
-                            {{ user.reputationScore }} points de réputation
-                        </div>
-                    {% endif %}
-                    <div id="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
-                        {{ user.countFollowers }} abonnés
-                    </div>
-                </div>
-                <div id="profileSummaryFooter">
-                    <div class="avatar60">
-                        {{ user | photo('user_60') }}
-                    </div>
-                    <div id="profileNameHolder">
-                        <div id="profileNameBottom">
-                            <div id="profileName">
-                                {{ user }}
-                                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
-                            </div>
-                            <div id="profileSocialLinks">
-                                {% if user.facebook is not empty %}
-                                    <a href="{{ user.facebook }}" target="_blank"><i class="iconSocialFb"></i></a>
-                                {% endif %}
-                                {% if user.twitter is not empty %}
-                                    <a href="{{ user.twitter }}" target="_blank"><i class="iconSocialTw"></i></a>
-                                {% endif %}
-                                {% if user.website is not empty %}
-                                    <a href="{{ user.website }}" target="_blank"><i class="iconLink"></i></a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="profileSubtitle">{{ user.subtitle | raw }}</div>
-                </div>
-            </div>                      
-            <div id="profileHeaderIllustration">
-                {{ user | photoBack('user_bio_back') }}
-            </div>             
-        </div>
-        <div id="illustration_l">
-            {{ user | photoBack('user_bio_back') }}
-        </div>
-        <div id="illustration_r">
-            {{ user | photoBack('user_bio_back') }}
-        </div>
-
-        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': user.copyright } %}
-        
-        <div id="profilePublicTagList">
-            {{ user | userTags }}
-        </div>
-
-        <div id="profileBio">
-            <div id="showCompleteBio"><span action="showCompleteBio">afficher la suite</span></div>
-            {{ user.biography | raw }}
-            <div id="hideCompleteBio"><span action="hideCompleteBio">masquer</span></div>
-        </div>
-        
-        {% if user.isQualified %}
-            <div id="profileMandate">
-                <span>mandats</span>
-                {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'mandates': user.mandates } only %}
-            </div>
-        {% endif %}
-
-        <div id="recentActivity">activité récente</div>
-        <div id="timeline">
-            <!-- @todo html/css bug sticky suite au reload ajax, la date reste collée en haut de l'écran -->
-            <!-- @todo html/css contenu de la timeline dans id listContent (idem my politizr) -->
-            <div id="listContent"></div>
-        </div>
+    {% include 'PolitizrFrontBundle:User:_detail.html.twig' %}
 {% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
