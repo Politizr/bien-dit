@@ -217,9 +217,9 @@ body {
 	position: absolute;
 	-moz-opacity: 0.80;
 	opacity: 0.80;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
-	filter:alpha(opacity=80);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=70);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+	filter:alpha(opacity=70);
 	background: -moz-linear-gradient(top,  #000000 0%, #2a2a2a 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(100%,#2a2a2a)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  #000000 0%,#2a2a2a 100%); /* Chrome10+,Safari5.1+ */

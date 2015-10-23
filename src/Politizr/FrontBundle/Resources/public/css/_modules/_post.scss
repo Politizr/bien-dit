@@ -79,7 +79,7 @@
 	font-family: 'Merriweather Bold';
 	font-weight: normal;	
 	line-height: 200%;
-	margin: 0 0 40px 0;
+	margin: 0 0 0 0;
 	padding: 0;
 	font-size: 15px;
 	clear: both;
@@ -99,7 +99,7 @@
 }
 
 .paragraph ul, .paragraph ol {
-	margin: 0 0 40px 0;
+	margin: 0 0 0 0;
 	padding: 0 0 0 18px;
 	font-size: 15px;
 	line-height: 200%;
@@ -215,13 +215,6 @@
 	font-family: 'nerissemibold';
 }
 
-.reactionsToPostItemContent p::before {
-	content: "—";
-	display: inline-block;
-	margin-right: 5px;
-	font-size: 13px;
-}
-
 .reactionsToPostItemIllustration {
 	float: right;
 	width: 600px;
@@ -235,9 +228,24 @@
 	font-size: 15px;
 	line-height: 200%;
 	margin-top: -6px;
+	color: $darkGrey;
 }
+.reactionsToPostItemPostTitle:hover { color: $highlight;}
 
-.reactionsToPostItemPostTitle a {display: block;}
+.reactionsToPostItemPostTitle a {display: block; }
+
+.reactionsToPostItemPostTitle blockquote { margin: 0;}
+#reactionsToPost .reactionsToPostItemPostTitle h1, #reactionsToPost .reactionsToPostItemPostTitle h2 { 
+	text-transform: none;
+	font-family: Merriweather;
+	font-size: 15px;
+	color: $darkGrey;
+	padding: 0;
+	font-weight: normal;
+	font-style: normal;
+}
+#reactionsToPost .reactionsToPostItemPostTitle:hover h1, #reactionsToPost .reactionsToPostItemPostTitle:hover h2 { color: $highlight;}
+#reactionsToPost .reactionsToPostItemPostTitle ul {	padding-left: 20px;}
 
 .reactionsToPostItemFooter {
 	float: left;
