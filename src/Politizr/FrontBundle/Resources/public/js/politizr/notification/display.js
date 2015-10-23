@@ -7,7 +7,7 @@ $(function() {
 // ouverture/fermeture box notifications
 $("body").on("touchstart click", "[action='linkNotifications']", function() {
     $('#notifications').slideToggle();
-    $('body.css760 #headerCenter, body.css760 #menu').hide();
+    $('body.css760 #headerCenter, body.css760 #menu').hide(); 
 });
 
 // close notif

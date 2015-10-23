@@ -41,6 +41,7 @@ $("body").on("click", "[action='showCopyright']", function() {
 });
 
 // hide / show menu preferences
+/*
 $("body").on("click", "[action='openMenuPreferences']", function() {
     $('#menuPreferences').show();
     $(this).hide();
@@ -51,6 +52,35 @@ $("body").on("click", "[action='hideMenuPreferences']", function() {
     $('#menuPreferences').hide();
     $(this).hide();
     $('#openMenuPreferences').show();
+});
+*/
+
+// hide / show menu preferences
+$("body.css, body.css1000").on("click", "[action='openMenuPreferences']", function() {
+	$('#menuPreferences').show();
+	$(this).hide();
+	$('#hideMenuPreferences').show();
+});
+
+$("body.css, body.css1000").on("click", "[action='hideMenuPreferences']", function() {
+	$('#menuPreferences').hide();
+	$(this).hide();
+	$('#openMenuPreferences').show();
+});
+
+// mobile : toggle menu preferences
+$("body.css760 #hideMenuPreferences").hide();
+$("body.css760").on("touchstart click", "[action='openMenuPreferences']", function(e) {
+	if(e.type == "touchstart") { // if touchstart start toggle
+		$('#menuPreferences').toggle();
+		$('#headerCenter, #menu, #fixedActions').hide();
+		e.stopPropagation();
+        e.preventDefault(); // stop touchstart 
+        return false;
+	} else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
+		$('#menuPreferences').toggle();
+		$('#headerCenter, #menu, #fixedActions, #notifications').hide();				    
+	}					
 });
 
 // mobile : toggle menu mobile 
