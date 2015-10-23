@@ -149,6 +149,9 @@ builders:
                 "Réputation":
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]
+                "Abonnement":
+                    "Followers":                [ followers ]
+                    "Abonnements":              [ subscribers ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
                     "Activité":                 [ last_login, last_activity ]
@@ -158,6 +161,22 @@ builders:
                     "Validé":                   [ validated ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                followers:
+                    dbType:                     model
+                    formType:                   model
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                subscribers:
+                    dbType:                     model
+                    formType:                   model
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
@@ -254,7 +273,8 @@ builders:
                     "Réactions":                [ block_reactions ]
                     "Commentaires":             [ block_d_comments, block_r_comments ]
                 "Abonnement":
-                    "Followers et abonnements": [ block_followers, block_subscribers ]
+                    "Followers":                [ block_followers ]
+                    "Abonnements":              [ block_subscribers ]
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_login, last_activity ]
