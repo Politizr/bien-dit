@@ -41,7 +41,7 @@ $("body").on("click", "[action='showCopyright']", function() {
 });
 
 // hide / show menu preferences	
-$("body").on("touchstart click", "[action='openMenuPreferences']", function() {
+$("body").on("click", "[action='openMenuPreferences']", function() {
     $('body.css #menuPreferences, body.css1000 #menuPreferences').show();
     $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').show();
     $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').hide();
@@ -50,7 +50,7 @@ $("body").on("touchstart click", "[action='openMenuPreferences']", function() {
 	$('body.css760 #headerCenter, body.css760 #menu, body.css760 #fixedActions').hide();
 });
 
-$("body").on("touchstart click", "[action='hideMenuPreferences']", function() {
+$("body").on("click", "[action='hideMenuPreferences']", function() {
     $('body.css #menuPreferences, body.css1000 #menuPreferences').hide();
     $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').hide();
     $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').show();
