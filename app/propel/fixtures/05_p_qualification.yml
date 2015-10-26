@@ -236,6 +236,16 @@ Politizr\Model\PQMandate:
         p_q_type_id:        electif
         title:              Président du Conseil Régional
         select_title:       Conseil Régional
+    conseiller_consulaire:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Consulaire
+        select_title:       Conseil Consulaire
+    conseiller_consulaire_afe:
+        online:             true
+        p_q_type_id:        electif
+        title:              Conseiller Consulaire membre de l'Assemblée des Français de l'étranger
+        select_title:       Conseil Consulaire
     depute:
         online:             true
         p_q_type_id:        electif

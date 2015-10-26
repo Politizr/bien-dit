@@ -1,6 +1,6 @@
 generator:                  admingenerator.generator.propel
 params:
-    model:                  Politizr\Model\PQOrganization
+    model:                  Politizr\Model\PQMandate
     namespace_prefix:       Politizr
     concurrency_lock:       ~
     bundle_name:            AdminBundle
@@ -9,26 +9,13 @@ params:
         id:
             label:          ID
         p_q_type_id:
-            label:          ID Type
+            label:          ID Type de mandat
         p_q_type:
-            label:          Type
-            dbType:         model
-            formType:       model
-            addFormOptions:
-                multiple:   true
-                required:   false
-                class:      Politizr\Model\PQType
-                query:      \Politizr\Model\PQTypeQuery::create()->orderByTitle() 
+            label:          Type de mandat
         title:
             label:          Titre
-        initials:
-            label:          Initiales
-        description:
-            label:          Description
-        file_name:
-            label:          Logo
-        url:
-            label:          URL
+        select_title:
+            label:          Famille
         online:
             label:          En ligne
         created_at:
@@ -42,32 +29,35 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des organisations
+            title:                              Liste des types de mandat
             max_per_page:                       50
-            sort:                               [ title, ASC ]
+            sort:                               [ sortable_rank, ASC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
-                    "Partis politiques":
+                    "Mandat électif":
                         default:                1
                         filters: 
                             p_q_type_id:        1
-            display:                            [ file_name, p_q_type_id, initials, title ]
-            filters:                            [ p_q_type, p_q_type_id, initials ]
+            display:                            [ select_title, title, online ]
+            filters:                            [ p_q_type_id, p_q_type, select_title, title, online ]
             actions:
                 new:                            ~
             object_actions:
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
     excel:
         params: ~
         filename: ~
         filetype: ~
     new:
         params:
-            title:                              "Création d'une organisation"
+            title:                              "Création d'un type de mandat"
             display:
-                "Champs principaux":            [ [ initials, title ], [ p_q_type ] ]
+                "Champs principaux":            [ p_q_type, title ]
+                "Champs complémentaires":       [ select_title ]
             fields:
                 p_q_type:
                     dbType:                     model
@@ -82,11 +72,10 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition de l'organisation '{{ PQOrganization.title }}'"
+            title:                              "Edition du type de mandat '{{ PQMandate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ initials, title ] ]
-                    "Plus informations":        [ description, url ]
+                    "Texte":                    [ title, select_title ]
                 "Attributs":
                     "Type":                     [ p_q_type ]
                     "En ligne":                 [ online ]
@@ -100,8 +89,6 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PQType
                         query:                  \Politizr\Model\PQTypeQuery::create()->orderById()
-                description:
-                    grid_class:                 "col-md-12"
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -111,25 +98,11 @@ builders:
             actions:
                 save: ~
                 list: ~
-    # show:
-    #     params:
-    #         title:                              "Visualisation de l'action '{{ PQOrganization.title }}'"
-    #         tabs:
-    #             "Contenu":
-    #                 "Texte":                    [ [ title, score_evolution ], [ description ] ]
-    #             "Attributs":
-    #                 "Création":                 [ [ created_at, updated_at ] ]
-    #         fields:
-    #             block_badges:
-    #                 label:                      "Badges"
-    #                 formType:                   hidden
-    #                 dbType:                     VARCHAR
-    #         actions:
-    #           list:                             ~
-    #           delete:                           ~
     actions:
         params:
             object_actions:
-                delete: ~
+                moveUp:                         ~
+                moveDown:                       ~
+                delete:                         ~
             batch_actions:
-                delete: ~
+                delete:                         ~

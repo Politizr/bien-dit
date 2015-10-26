@@ -104,6 +104,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $types,
+            'Mandat',
+            'Politizr_AdminBundle_PQMandate_list'
+        );
+        $this->addLinkRoute(
+            $types,
             'Formule d\'abonnement',
             'Politizr_AdminBundle_POSubscription_list'
         );

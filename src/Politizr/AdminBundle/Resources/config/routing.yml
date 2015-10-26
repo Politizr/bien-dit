@@ -151,6 +151,11 @@ Politizr_AdminBundle_PQOrganization:
     type:     admingenerator
     prefix:   /PQOrganization
 
+Politizr_AdminBundle_PQMandate:
+    resource: "@PolitizrAdminBundle/Controller/PQMandate/"
+    type:     admingenerator
+    prefix:   /PQMandate
+
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
     type:     admingenerator

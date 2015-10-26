@@ -1,9 +1,9 @@
-{% extends_admingenerated "PolitizrAdminBundle:POPaymentTypeList:row.html.twig" %}
+{% extends_admingenerated "PolitizrAdminBundle:PQMandateList:row.html.twig" %}
 
 {% block object_action_moveup %}
     {% spaceless %}
-        {% if not POPaymentType.isFirst() %}
-            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_POPaymentType_object", { 'pk': POPaymentType.Id, action: 'moveUp' }) }}" 
+        {% if not PQMandate.isFirst() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PQMandate_object", { 'pk': PQMandate.Id, action: 'moveUp' }) }}" 
                 data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip">
                 <i class="fa fa-fw fa-arrow-up"></i>
             </a>
@@ -13,8 +13,8 @@
 
 {% block object_action_movedown %}
     {% spaceless %}
-        {% if not POPaymentType.isLast() %}
-            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_POPaymentType_object", { 'pk': POPaymentType.Id, action: 'moveDown' }) }}" 
+        {% if not PQMandate.isLast() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PQMandate_object", { 'pk': PQMandate.Id, action: 'moveDown' }) }}" 
                 data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip">
                 <i class="fa fa-fw fa-arrow-down"></i>
             </a>
