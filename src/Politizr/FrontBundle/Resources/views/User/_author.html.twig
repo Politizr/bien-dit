@@ -9,7 +9,7 @@
         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
     </div>
     <div class="authorSubtitle">
-        {% include 'PolitizrFrontBundle:User:_authorMandate.html.twig' with { 'user': user } only %}
+        {{ user.subtitle | raw }}
     </div>
 {% else %}
     <i>utilisateur supprimé</i>
