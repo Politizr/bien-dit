@@ -72,17 +72,23 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
     }
 
     /**
-     * Check if profile is qualified and has been validated
+     * Check if profile is qualified
      *
      * @return boolean
      */
     public function isQualified()
     {
-        if ($this->getQualified() && $this->getValidated()) {
-            return true;
-        }
+        return $this->getQualified();
+    }
 
-        return false;
+    /**
+     * Check if profile has been validated
+     *
+     * @return boolean
+     */
+    public function isValidated()
+    {
+        return $this->getValidated();
     }
 
     /**
