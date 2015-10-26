@@ -54,10 +54,10 @@ $("body").on("click", "[action='reinitPassword']", function(e) {
     // console.log('*** click reinitPassword');
 
     var xhrPath = getXhrPath(
-        'ROUTE_SECURITY_LOST_PASSWORD_CHECK',
+        ROUTE_SECURITY_LOST_PASSWORD_CHECK,
         'security',
         'lostPasswordCheck',
-        'RETURN_BOOLEAN'
+        RETURN_BOOLEAN
         );
 
     $.ajax({
