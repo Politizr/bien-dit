@@ -230,8 +230,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /**
-     * Nombre de réactions d'un document.
-     * pour un débat: nombre de réaction total / pour une réaction: nombre de réactions filles
+     * Document's number of reactions
      *
      * @param PDocumentInterface $document
      * @return html
@@ -247,7 +246,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $nbReactions = $document->countReactions(true, true);
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $nbReactions = $document->countChildrenReactions(true, true);
+                // 1st level only:
+                // $nbReactions = $document->countChildrenReactions(true, true);
+                $nbReactions = $document->countDescendantsReactions(true, true);
                 break;
         }
 

@@ -375,6 +375,23 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     }
 
     /**
+     * Reaction's descendant count
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return int
+     */
+    public function countDescendantsReactions($online = null, $published = null)
+    {
+        $query = PDReactionQuery::create()
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByPublishedAt('desc');
+
+        return parent::countDescendants($query);
+    }
+
+    /**
      * Reaction's children count
      *
      * @param boolean $online
