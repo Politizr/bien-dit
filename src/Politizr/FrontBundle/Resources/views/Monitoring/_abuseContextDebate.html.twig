@@ -2,10 +2,10 @@
     {{ debate | image('debate_abuse', false) }}
 </div>
 <div class="contextTitle">
+    <div class="publicationTitle">
+        {{ debate.title }}
+    </div>
     {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
-</div>
-<div class="publicationTitle">
-    {{ debate.title }}
 </div>
 <div class="contextDescription">
     {{ debate.description | excerpt }}
