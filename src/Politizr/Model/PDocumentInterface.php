@@ -25,6 +25,13 @@ interface PDocumentInterface
     public function isOwner($userId);
 
     /**
+     * Test if the document is displayed in front: check online && published attributes
+     *
+     * @return boolean
+     */
+    public function isDisplayed();
+
+    /**
      * Get the object type
      *
      * @return string

@@ -53,6 +53,14 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
     }
 
     /**
+     * @see PDocumentInterface::isDisplayed
+     */
+    public function isDisplayed()
+    {
+        return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
      * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null)

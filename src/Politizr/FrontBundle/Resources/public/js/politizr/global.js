@@ -107,6 +107,15 @@ $("body").on("touchstart click", ".blockedVote", function(e) {
     e.stopPropagation();
     $(this).find('.noteBubble').toggle();
 });
+    
+// toggle confidential info text
+$("body").on("mouseover", "[action='confidentialToggle']", function() {
+    $(this).next('.confidentialInfo').show();
+});
+
+$("body").on("mouseout", "[action='confidentialToggle']", function() {
+    $(this).next('.confidentialInfo').hide();   
+});
 
 // imgLiquid
 function fullImgLiquid() {

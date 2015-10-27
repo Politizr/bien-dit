@@ -12,7 +12,13 @@
                         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
                         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
                     </span>
-                    <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+                    {% if parentReaction.isDisplayed %}
+                        <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+                    {% else %}
+                        {{ parentReaction.title }}
+                        <i class="iconInfo" action="confidentialToggle"></i>
+                        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+                    {% endif %}
                     <br/>
                 {% endif %}
                 
@@ -20,7 +26,13 @@
                     <span class="timelineItemContextHighlight">
                         Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
                     </span>
-                    <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a>
+                    {% if parentDebate.isDisplayed %}
+                        <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a>
+                    {% else %}
+                        {{ parentDebate.title }}
+                        <i class="iconInfo" action="confidentialToggle"></i>
+                        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+                    {% endif %}
                 {% endif %}
             </div>
 
@@ -38,15 +50,15 @@
                     <div class="avatar40">
                         {{ comment.user | photo('user_40') }}
                     </div>
-                    {% if (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) %}
-                        <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}#p-{{ comment.paragraphNo }}">
-                    {% elseif (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}
-                        <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}#p-{{ comment.paragraphNo }}">
-                    {% else %}
-                        <a href="#">
-                    {% endif %}
-                        <p>{{ comment.description }}</p>
-                    </a>
+                        {% if (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') and parentDebate.isDisplayed) %}
+                            <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}#p-{{ comment.paragraphNo }}">
+                        {% elseif (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') and parentReaction.isDisplayed) %}
+                            <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}#p-{{ comment.paragraphNo }}">
+                        {% else %}
+                            <a href="#">
+                        {% endif %}
+                            <p>{{ comment.description }}</p>
+                        </a>
                 </div>
                 <div class="timelineItemContentFooter">
                     <div class="commentsNote">

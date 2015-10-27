@@ -4,7 +4,13 @@
         {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
     </span>
-    <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+    {% if parentReaction.isDisplayed %}
+        <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+    {% else %}
+        {{ parentReaction.title }}
+        <i class="iconInfo" action="confidentialToggle"></i>
+        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+    {% endif %}
     <br/>
 {% endif %}
 
@@ -12,5 +18,11 @@
     <span class="timelineItemContextHighlight">
         Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
     </span>
-    <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
+    {% if parentDebate.isDisplayed %}
+        <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
+    {% else %}
+        {{ parentDebate.title }}
+        <i class="iconInfo" action="confidentialToggle"></i>
+        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+    {% endif %}
 {% endif %}

@@ -20,12 +20,3 @@ $("body").on("click", "[action='hideCompleteBio']", function() {
     $('#showCompleteBio').show();
 });
 
-    
-// toggle confidential info text
-$("body").on("mouseover", "[action='confidentialToggle']", function() {
-    $(this).next('.confidentialInfo').show();
-});
-
-$("body").on("mouseout", "[action='confidentialToggle']", function() {
-    $(this).next('.confidentialInfo').hide();   
-});

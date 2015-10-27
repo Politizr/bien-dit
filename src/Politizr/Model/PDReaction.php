@@ -54,6 +54,15 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         return ObjectTypeConstants::TYPE_REACTION;
     }
 
+
+    /**
+     * @see PDocumentInterface::isDisplayed
+     */
+    public function isDisplayed()
+    {
+        return $this->getOnline() && $this->getPublished();
+    }
+
     /**
      * @param ContainerInterface $container
      */
