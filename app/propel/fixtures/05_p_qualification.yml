@@ -244,7 +244,7 @@ Politizr\Model\PQMandate:
     conseiller_consulaire_afe:
         online:             true
         p_q_type_id:        electif
-        title:              Conseiller Consulaire membre de l'Assemblée des Français de l'étranger
+        title:              Membre de l'Assemblée des Français de l'étranger
         select_title:       Conseil Consulaire
     depute:
         online:             true
