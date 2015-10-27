@@ -3,17 +3,17 @@
 
 {% block title %}
     {% if (isGrantedE()) %}
-        Politizr - Espace Débatteur
+        Politizr - Débatteur {{ app.user }}
     {% elseif (isGrantedC()) %}
-        Politizr - Espace Citoyen
+        Politizr - Citoyen {{ app.user }}
     {% endif %}
 {% endblock title %}
 
 {% block description %}
     {% if (isGrantedE()) %}
-        Politizr Espace Débatteur
+        Politizr débatteur
     {% elseif (isGrantedC()) %}
-        Politizr Espace Citoyen
+        Politizr citoyen
     {% endif %}
 {% endblock description %}
 
