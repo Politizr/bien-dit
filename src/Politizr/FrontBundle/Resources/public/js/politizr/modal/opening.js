@@ -5,7 +5,7 @@
 // modal reputation
 $("body").on("click", "[action='modalReputation']", function() {
     // console.log('*** modalReputation');
-    $('#modalBox').removeClass().addClass('reputation');
+    $('#modalBox#modalBoxContent').removeClass().addClass('reputation');
     modalLoading();
     loadReputation();
 });
@@ -14,7 +14,7 @@ $("body").on("click", "[action='modalReputation']", function() {
 // modal abuse
 $("body").on("click", "[action='modalAbuse']", function() {
     // console.log('*** modalAbuse');
-    $('#modalBox').removeClass().addClass('formAbuse');
+    $('#modalBox#modalBoxContent').removeClass().addClass('formAbuse');
     modalLoading();
 
     var subjectId = $(this).attr('subjectId');
