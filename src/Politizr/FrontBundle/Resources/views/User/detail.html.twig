@@ -39,7 +39,7 @@
                 </a>
             </div>
         {% else %}
-            <div class="subscribe">
+            <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
                 {{ user | linkSubscribeUser }}
             </div>
         {% endif %}

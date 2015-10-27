@@ -16,7 +16,7 @@
 
 {% block fixedActions %}
     <div id="fixedActions">
-        <div class="subscribe">
+        <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
             {{ debate | linkSubscribeDebate }}
         </div>
     </div>

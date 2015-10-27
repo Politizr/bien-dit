@@ -36,7 +36,7 @@
         <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
             <i class="iconTimeline"></i>fil du débat
         </a>
-        <div class="subscribe">
+        <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
             {{ debate | linkSubscribeDebate }}
         </div>
     </div>

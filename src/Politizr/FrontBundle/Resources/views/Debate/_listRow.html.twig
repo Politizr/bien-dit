@@ -42,7 +42,7 @@
         
         {{ debate | image('debate_header') }}
     </div>
-    <div class="subscribe">
+    <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
         {{ debate | linkSubscribeDebate }}
     </div>
     <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>

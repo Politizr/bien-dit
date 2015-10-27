@@ -26,12 +26,12 @@ $("body").on("click", "[action='paginateNext']", function(e) {
 
 //
 $("body").on("postFollowDebateEvent", function(event, subjectId, way) {
-    console.log('*** postFollowDebateEvent');
+    // console.log('*** postFollowDebateEvent');
     modalType = $('#modalBoxContent').attr('class');
 
     // @todo JS use constant
     if (modalType == 'subscriptions') {
-        console.log('modal subscriptions');
+        // console.log('modal subscriptions');
         // dynamicaly offset updating
         if ($('#moreResults').attr('offset')) {
             var offset = parseInt($('#moreResults').attr('offset'));
@@ -40,7 +40,7 @@ $("body").on("postFollowDebateEvent", function(event, subjectId, way) {
             } else {
                 offset = offset + 1;
             }
-            console.log(offset);
+            // console.log(offset);
             $('#moreResults').attr('offset', offset);
         }
     }
@@ -53,9 +53,9 @@ $("body").on("postFollowDebateEvent", function(event, subjectId, way) {
  * @param string withFilters  true | false
  */
 function initListing(type, withFilters) {
-    console.log('*** initListing');
-    console.log(type);
-    console.log(withFilters);
+    // console.log('*** initListing');
+    // console.log(type);
+    // console.log(withFilters);
 
     type = (typeof type === "undefined") ? 'debate' : type;
     withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
@@ -104,20 +104,20 @@ function initListing(type, withFilters) {
  * @param string offset
  */
 function listing(init, offset) {
-    console.log('*** listing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** listing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
     
     // Récupération de l'ordonnancement en cours
     var order = $('#listOrder').serializeArray();
-    console.dir(order);
+    // console.dir(order);
 
     // Récupération du form des filtres
     var filters = $('#listFilter').serializeArray();
-    console.dir(filters);
+    // console.dir(filters);
 
     // Concaténation des attributs
     var datas = $.merge(order, filters);
@@ -129,7 +129,7 @@ function listing(init, offset) {
         datas.push({name: index, value: element});
     });
 
-    console.dir(datas);
+    // console.dir(datas);
 
     // Récupération de l'URL de la liste
     var url = $('#paginatedList').attr('url');
