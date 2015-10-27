@@ -7,9 +7,7 @@
     {% if parentReaction.isDisplayed %}
         <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
     {% else %}
-        {{ parentReaction.title }}
-        <i class="iconInfo" action="confidentialToggle"></i>
-        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+        <i>{{ parentReaction.title }}</i>
     {% endif %}
     <br/>
 {% endif %}
@@ -21,8 +19,6 @@
     {% if parentDebate.isDisplayed %}
         <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
     {% else %}
-        {{ parentDebate.title }}
-        <i class="iconInfo" action="confidentialToggle"></i>
-        <div class="confidentialInfo" style="display: none;">Cette publication a été mise hors ligne</div>
+        <i>{{ parentDebate.title }}</i>
     {% endif %}
 {% endif %}
