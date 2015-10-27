@@ -1,6 +1,6 @@
 // Search
 $("body").on("submit", "#searchFormId", function(e) {
-    // console.log('*** submit searchForm');
+    console.log('*** submit searchForm');
     e.preventDefault();
     initSearchListingByTags();
 });
@@ -12,12 +12,11 @@ $("body").on("click", "[action='paginateSearchNext']", function(e) {
 
 // Close modal, purge search session
 $("body").on("click", "[action='searchModalClose']", function() {
-    // console.log('*** click searchModalClose');
+    console.log('*** click searchModalClose');
 
     // @todo fix trigger doesnt work
     // $("[action='modalClose']").trigger("click");
     $('body').removeClass('noscroll');
-    $('#modalBoxContent').html('');
     $(this).closest('.modal').hide();
     $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
 
@@ -48,8 +47,8 @@ $("body").on("click", "[action='searchModalClose']", function() {
  * Load paginated list struct (type + filters) and throws the search
  */
 function initSearchListingByTags() {
-    // console.log('*** initSearchListingByTags');
-    // console.log($('.type[value="debate"]').attr('url'));
+    console.log('*** initSearchListingByTags');
+    console.log($('.type[value="debate"]').attr('url'));
 
     // update target listing to debate type
     $('#paginatedList').attr('url', $('.type[value="debate"]').attr('url'));
@@ -73,7 +72,7 @@ function initSearchListingByTags() {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#paginatedList').html(data['paginatedList']);
+                $('#searchFilters').html(data['searchFilters']);
                 searchListingByTags();
             }
         }
@@ -87,9 +86,9 @@ function initSearchListingByTags() {
  * @param string offset
  */
 function searchListingByTags(init, offset) {
-    // console.log('*** listing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** listing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -116,7 +115,7 @@ function searchListingByTags(init, offset) {
 
     // Récupération de l'URL de la liste
     var url = $('#paginatedList').attr('url');
-    // console.log(url);
+    console.log(url);
 
     $.ajax({
         type: 'POST',

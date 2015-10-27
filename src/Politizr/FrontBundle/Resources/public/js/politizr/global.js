@@ -127,7 +127,7 @@ function fullImgLiquid() {
     });
 
     // user read / edition
-    $("#profileHeaderIllustration").imgLiquid({
+    $(".profileHeaderIllustration").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"

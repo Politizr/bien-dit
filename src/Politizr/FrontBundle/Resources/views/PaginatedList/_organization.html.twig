@@ -1,29 +1,21 @@
-<div id="organizationSheetLogo">
-    <img src="{{ asset('uploads/organizations/'~subject.fileName) | imagine_filter('organization_detail') }}" alt="{{ subject.initials }}">
-</div>
-<h1>{{ subject.title }}</h1>
-<div class="organizationSheetInitials">
-    <div class="organization">{{ subject.initials }}</div>
-</div>
-<div class="wikiSample">
-    {{ subject.description | raw }}
-    <div class="wikiSampleMask"></div>
-</div>
-<div class="wikiLink">
-    <a href="{{ subject.url }}" target="_blank">afficher la suite sur wikipédia</a>
-</div>
-<h1>Profils correspondants</h1>
 {% spaceless %}
-<div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+    <div class="modalSidebar">
+        <h1>{{ subject.title }}</h1>
+        <div class="organizationInfo">
+            <div class="organization">{{ subject.initials }}</div>
+            <a class="organizationLink" href="{{ subject.url }}" target="_blank"><i class="iconGoTo"></i>Site officiel</a>
+        </div>
+        <div class="listCriteria criteriaSidebar">
+            <form id="listOrder"></form>
+            <form id="listFilter"></form>
+        </div> 
+    </div>
+    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
         'xhrRoute': 'ROUTE_MODAL_ORGANIZATION_USER_LIST',
         'xhrService': 'modal',
         'xhrMethod': 'organizationUserList',
         'xhrType': 'RETURN_HTML',
     } only %}" withFilters="true" data-subject-id="{{ subject.id }}">
-    <div class="listCriteria criteriaSidebar">
-        <form id="listOrder"></form>
-        <form id="listFilter"></form>
+        <div id="listContent" class="modalList withSidebar"></div>
     </div>
-    <div id="listContent" class="modalList withSidebar"></div>
-</div>
 {% endspaceless %}

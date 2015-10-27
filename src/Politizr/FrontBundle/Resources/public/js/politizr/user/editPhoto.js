@@ -224,7 +224,7 @@ $("body").on("click", "[action='userBackPhotoInfoSave']", function(e) {
 
                 // update & imgLiquid uploaded photo
                 // console.log(data['imageHeader']);
-                $('#profileHeaderIllustration').html(data['imageHeader']);
+                $('.profileHeaderIllustration').html(data['imageHeader']);
                 $('#illustration_l').html(data['imageHeader']);
                 $('#illustration_r').html(data['imageHeader']);
                 fullImgLiquid();

@@ -75,7 +75,8 @@
             {% endblock genericBoxes %}
 
             {% block modalBox %}
-                {% include 'PolitizrFrontBundle:Navigation:_modalBox.html.twig' %}
+                {% include 'PolitizrFrontBundle:Navigation\\Modal:_modalBox.html.twig' %}
+                {% include 'PolitizrFrontBundle:Navigation\\Modal:_modalBoxClassic.html.twig' %}
             {% endblock modalBox %}
             
             {% block wrapper %}

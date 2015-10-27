@@ -1,7 +1,7 @@
 // search result pagination
 $("body").on("click", "[action='paginateNext']", function(e) {
-    // console.log('*** click paginateNext');
-    // console.log('page = ' + $(this).attr('page'));
+    console.log('*** click paginateNext');
+    console.log('page = ' + $(this).attr('page'));
 
     e.preventDefault();
 

@@ -167,18 +167,18 @@ class XhrModal
         );
 
         // Global header + filter rendering
-        $paginatedList = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_search.html.twig',
+        $searchFilters = $this->templating->render(
+            'PolitizrFrontBundle:PaginatedList:_searchFilters.html.twig',
             array(
                 'listOrder' => $listOrder,
                 'listFilter' => $listFilter,
             )
         );
 
-        $this->logger->info($paginatedList);
+        $this->logger->info($searchFilters);
 
         return array(
-            'paginatedList' => $paginatedList,
+            'searchFilters' => $searchFilters,
             );
     }
 
