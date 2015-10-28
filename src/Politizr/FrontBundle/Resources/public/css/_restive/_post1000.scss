@@ -1,0 +1,15 @@
+@import "../_global/_colors";
+
+//////post
+
+body.css1000 .postSummary {width: 100%;}
+body.css1000 .timelineItem .postSummary {width:calc(100% + 80px);}
+body.css1000 .timelineItem .postSummaryFooter {width:calc(100% - 120px);}
+
+body.css1000 .postSummary .illustrationShadow {	width: 100%;}
+body.css1000 .postSummaryFooter {	width: calc(100% - 80px);}
+
+body.css1000 .paragraph {	width: calc(100% - 160px);	}
+body.css1000 .reactionsToPostItemIllustration {	width: 100%;}
+
+body.css1000 .comments { width: 100%;}

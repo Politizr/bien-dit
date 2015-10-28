@@ -1,0 +1,264 @@
+@import "colors";
+
+a {text-decoration: none;}
+a:visited {color: inherit;}
+p, form {padding: 0; margin: 0;}
+img {border:none;}
+.withLoaderInside {position: relative;}
+.pad40 {padding: 40px;}
+
+.organization {
+	font-family: nerisblack;
+	font-size: 9px;
+	color: #fff !important;
+	background-color: $anotherGrey;
+	text-transform: uppercase;
+	display: inline-block;
+	margin: 3px 1px 0px 3px;
+	padding: 2px 3px;
+	line-height: 100%;
+	vertical-align:  text-top;
+	cursor: pointer;
+} 
+.organization:hover {background-color: $highlight; cursor: pointer;}
+
+a.followedMember::after {	content: "*";}
+span.followedDebate::after {	content: "*";}
+
+.reactionsCounter, .commentsCounter {
+	margin-right: 40px;
+	display: inline-block;
+	position: relative;
+    font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.reactionsCounter {	padding-left: 18px;}
+.commentsCounter {	padding-left: 20px;}
+
+.commentsCounter i {
+	position: absolute;
+	left: 0px;
+	font-size: 12px;
+}
+
+.reactionsCounter i {
+	position: absolute;
+	left: -1px;
+	font-size: 14px;
+	top: -1px;
+}
+
+.readingTime, .notePlus, .noteMinus { position: relative;}
+.readingTime i, .notePlus i, .noteMinus i {	position: absolute;}
+.readingTime { 
+	padding-left: 16px;
+    font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.readingTime i {
+	left: -4px;
+	font-size: 14px;
+	top: -1px;
+}
+
+.postNote {
+	float: left;
+	clear: both;
+	margin-top: 6px;
+    font-family: 'nerisblack';
+	font-size: 10px;
+}
+
+.notePlus, .noteMinus {	float: left}
+.notePlus i, .noteMinus i {font-size: 9px;}
+.notePlus {margin-right: 10px; padding-right: 13px;}
+.notePlus i {	right: -2px;}
+.noteMinus {	padding-left: 13px;}
+.noteMinus i {	left: -2px;}
+
+#giveNote .blockedVote, .blockedVote {
+	position: relative;
+}
+.blockedVote:hover, .commentsNote .blockedVote:hover, #giveNote .blockedVote:hover {cursor: default;}
+
+#giveNote .blockedVote, .commentsNote .blockedVote {color: #eba78f;}
+#giveNote .blockedVote.notePlus:hover, #giveNote .blockedVote.noteMinus:hover, .commentsNote .blockedVote.notePlus:hover, .commentsNote .blockedVote.noteMinus:hover {color: #eba78f;}
+
+.noteBubble {
+	position: absolute;
+	width: 160px;
+	padding: 10px;
+	left: -10px;
+	bottom: 20px;
+	background-color: $alert;
+	color: #fff;
+	-moz-box-shadow: 0px 0px 0px 10px $darkGrey;
+	-webkit-box-shadow: 0px 0px 10px 0px $darkGrey;
+	-o-box-shadow: 0px 0px 10px 0px $darkGrey;
+	box-shadow: 0px 0px 10px 0px $darkGrey;
+    font-family: 'nerissemibold';
+    font-style: normal;
+    line-height: 120%;
+}
+.commentsNote .blockedVote .noteBubble { bottom: 25px; }
+
+.noteBubble i {
+	position: static;
+	left: 0;
+}
+
+.noteBubble i.iconArrowDown {
+	position: absolute;
+	bottom: -7px;
+	margin-left: 6px;
+	font-size: 12px;
+	color: $alert;
+}
+
+.avatar15 {
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+}
+
+.avatar40 {
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+}
+
+.avatar60 {
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	color: $darkGrey;
+    font-family: 'Merriweather';
+    font-size: 13px;
+    line-height: 100%;
+    cursor: default;
+}
+
+#menuMobileTriggerMenu, #menuMobileTriggerActions {display: none;}
+
+.wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+}
+
+#header {
+	position: fixed;
+	top: 0;
+	width: 960px;
+	height: 60px;
+	left: 50%;
+	margin-left: -480px;
+	background-color: #fff;
+	z-index: 10000;
+}
+
+#social {
+	position: absolute;
+	top: 60px;
+	right: 0;
+	width: 60px;
+	min-height: 360px;
+	background-color: #fff;
+}
+
+#content {
+	width: 700px;
+	float: right;
+	padding-top: 60px;
+	padding-right: 60px;
+	position: relative;
+}
+
+#illustration_l, #illustration_r {
+	background-color: $lightGrey;
+	width: 700px;
+	height: 360px;
+	position: fixed;
+	top: 60px;
+	z-index: -1;
+}
+
+#illustration_l {	right: calc(50% + 480px);}
+#illustration_r {	left: calc(50% + 480px);}
+
+#copyrightHolder {
+	position: fixed;
+	z-index: 19000;
+	margin-left: 800px;
+	top: 365px;
+}
+
+.iconCopyright {
+	font-size: 10px;
+	color: #fff;
+	left: 20px;
+	bottom:40px;
+	cursor: pointer;
+}
+
+.iconCopyright:hover {color: $highlight;}
+
+.illustrationShadow {
+	width: 100%;
+	height: 360px;
+	position: absolute;
+	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=70);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+	filter:alpha(opacity=70);
+	background: -moz-linear-gradient(top,  #000000 0%, #2a2a2a 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(100%,#2a2a2a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #000000 0%,#2a2a2a 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #000000 0%,#2a2a2a 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #000000 0%,#2a2a2a 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #000000 0%,#2a2a2a 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2a2a2a',GradientType=0 ); /* IE6-9 */
+}
+
+#footer {
+	padding: 60px 0 24px 0;
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
+#goUpHolder {
+	position: fixed;
+	width: 40px;
+	height: 40px;
+	margin-left: 920px;
+	bottom: 25px;
+	z-index: 19000;
+}
+
+#goUp {
+	position: absolute;
+	right: 0;
+	width: 40px;
+	padding: 13px 0;
+	background-color: $semilightGrey;
+	color: $anotherGrey;
+	text-align: center;
+	font-size: 10px;
+	cursor: pointer;
+}
+
+#goUp:hover {color: $darkGrey;}
+
+.tag:after { content: ",";}
+.tag:last-child:after {	content: ".";}

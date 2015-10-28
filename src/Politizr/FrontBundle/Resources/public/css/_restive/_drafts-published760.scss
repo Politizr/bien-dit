@@ -1,0 +1,31 @@
+@import "../_global/colors";
+
+body.css760 .publicationsListItemStatsLeft {
+	clear: both;
+	float: left;
+	width: 100%;	
+}
+
+body.css760 .publicationsListItemStatsRight {
+	margin-top: 0;
+	clear: both;
+	float: left;
+	width: 100%;
+	text-align: left;
+}
+
+body.css760 .publicationsListItemStatsRight .postNote {
+	margin: 10px 0 0 0;	
+	clear: both;
+	float: left;
+	width: 100%;
+}
+
+body.css760 .publicationStats {display: none;}
+
+body.css760 .inviteCosigners {
+	clear: both;
+	float: left;
+	width: 100%;
+	margin: 10px 0 0 0;	
+}
