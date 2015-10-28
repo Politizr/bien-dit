@@ -23,7 +23,7 @@ params:
         p_d_debate:
             label:          Débat associé
         parent_reaction_id:
-            label:          ID Réaction associé
+            label:          ID Réaction associée
         parent:
             label:          Réaction associée
         file_name:
@@ -68,9 +68,9 @@ builders:
                     "Brouillons":
                         filters:
                             published:          0
-            display:                            [ id, p_user_id, p_d_debate_id, tree_level, parent, title, note_pos, note_neg, online, published, published_at ]
+            display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             # filtersMode:                        top
-            filters:                            [ id, p_user_id, p_d_debate_id, published, published_at, online, created_at ]
+            filters:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
