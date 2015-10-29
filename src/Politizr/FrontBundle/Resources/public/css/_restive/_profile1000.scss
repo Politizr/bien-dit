@@ -1,0 +1,14 @@
+@import "../_global/_colors";
+
+//////profile
+
+body.css1000 #profileHeader, body.css1000 #profileHeader .illustrationShadow, body.css1000 #profileHeader .profileHeaderIllustration { width: 100%; height: 440px;}
+body.css1000 #profileHeader .pad40 {	height: 360px;}
+body.css1000 #profileBio .paragraph {width: calc(100% - 80px);}
+
+body.css1000 .mandateDetail {padding-bottom: 0;}
+body.css1000 .mandateLocalization { display: inline-block; clear: both; margin: 5px 0 0 0; width: 100%;}
+body.css1000 .mandateItem {padding: 20px;}
+
+// no profile edition for now
+body.css1000 .actionEdit {display: none;}

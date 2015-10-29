@@ -1,0 +1,229 @@
+@import "../_global/colors";
+
+input {	
+	padding: 0; 
+	margin: 0;
+	-webkit-appearance: none;
+	-moz-appearance:none;
+	appearance: none;
+    -webkit-border-radius:0; 
+    -moz-border-radius:0;
+    border-radius:0; 
+}
+
+input[type=submit], 
+input[type=button] {
+	cursor: pointer; 
+	font-family: 'fontello', 'nerissemibold'; 
+	background-color: $highlight;
+	color: #fff;
+	text-transform: uppercase;
+	border: none;
+	display: inline-block;
+	clear: both;
+	width: 180px;
+	height: 40px;	
+	font-size: 13px;
+	text-align: center;
+}
+input[type="submit"]:hover {	background-color: $darkGrey;}
+
+textarea {margin: 0;}
+textarea:focus, input:focus { outline: 0;}
+
+.actionsButtons {
+	float: left; 
+	clear: both; 
+	position: relative;
+}
+
+.formIntro {
+	text-align: center;
+	display: inline-block;
+	width: 100%;
+	margin-top: 20px;
+	color: $anotherGrey;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+    font-style: italic;
+	line-height: 160%;
+}
+
+//comments form 
+.comments form {
+	float: right;
+	width: calc(100% - 60px);
+}
+
+.comments form textarea {
+	padding: 0;
+	width: 100%;
+	border: none;
+	font-size: 13px;
+	font-family: 'Merriweather';
+    overflow: hidden;
+    min-height: 1em;
+    margin-bottom: 5px;
+    resize: none;
+	line-height: 180%;
+}
+
+.comments input[type=submit], .comments input[type=button] {
+	background-color: transparent;
+	color: $highlight;
+	font-size: 13px;
+	height: auto;
+	width: auto;
+	display: inline-block;
+	text-transform: none;
+	padding-left: 1px;
+}
+
+.comments .cancel {
+	display: inline-block;
+	font-family: 'nerissemibold';
+	color: $highlight;
+	cursor: pointer;
+	margin-left: 20px;
+}
+
+.comments input[type=submit]:hover, .comments input[type=button]:hover, .comments .cancel:hover {	color: $darkGrey;}
+
+//search form
+
+#searchByTag form.searchForm {
+	width: 100%;
+	display: inline-block;
+	clear: both;
+	margin: 15px 0 0 0;
+}
+
+#searchByTag form.searchForm input {
+	font-family: 'nerislight';
+	font-size: 18px;
+	border: none;
+	border-bottom: solid 1px $formGrey;
+	width: 100%;
+	padding: 5px 0;
+	display: inline-block;
+	background-color: transparent;
+}
+
+#searchByTag form.searchForm .searchTagList {
+	float: left;
+	//width: 100%;
+	margin: 10px 0 0 0;
+	font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
+	text-align: left;
+}
+#searchByTag form.searchForm .searchTagList .tagLabel { padding: 5px 20px 5px 5px; }
+#searchByTag form.searchForm .searchTagList .tagLabel a {right: 5px;}
+
+#searchByTag form.searchForm input.searchSubmit {
+	cursor: pointer;
+	width: auto;
+	height: auto;
+	clear: both;
+	float: left;
+	font-size: 13px;
+	display: inline-block;
+	font-weight: normal;
+	padding: 8px 0 10px 0;
+	margin: 0;
+	border: none;
+	background-color: transparent;
+	text-transform: none;
+	cursor: pointer;
+	color: $semiDarkGrey;
+	font-family: 'fontello', 'nerissemibold';
+}
+#searchByTag form.searchForm input.searchSubmit:hover {color: $darkGrey;}
+
+// form abus
+form#formAbuseReporting {	width: 660px;}
+.abuseContext { width: 660px;}
+
+form#formAbuseReporting {
+	clear: both;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 60px;
+}
+
+.abuseContext {
+	margin: 40px auto 60px auto;
+	text-align: left;
+	font-family: 'Merriweather';
+	font-size: 13px;
+	line-height: 160%;
+}
+
+.contextImage { 
+	float: left; 
+	margin: 5px 10px 0 0;
+}
+
+.contextTitle {
+	font-family: 'nerisblack';
+	line-height: 140%;
+}
+
+.contextTitle a { 
+	font-size: 13px;
+	color: $darkGrey;
+}
+
+.contextTitle .publicationTitle {
+	font-size: 28px;
+	width: 100%;
+	line-height: 120%;
+	margin-bottom: 10px;
+}
+
+.contextTitle span {	
+	font-family: 'Merriweather Italic';
+	font-style: italic; 
+	font-size: 12px;
+}
+
+.contextDescription {
+	margin-top: 5px;
+}
+
+form#formAbuseReporting textarea {
+	padding: 20px;
+	width: 618px;
+	height: 98px;
+	border: solid 1px $formGrey;
+	font-family: 'Merriweather Italic';
+    font-style: italic;
+	font-size: 13px;
+}
+
+form#formAbuseReporting .actionsButtons { margin: 60px 0;}
+
+form#formAbuseReporting input[type=button] {
+	background-color: $highlight;
+	color: #fff;
+	text-transform: uppercase;
+	border: none;
+	float: left;
+	clear: both;
+	width: 180px;
+	height: 40px;	
+	font-size: 13px;
+	text-align: center;
+}
+
+form#formAbuseReporting .cancel {
+	position: absolute;
+	bottom: 0;
+	left: 200px;
+	font-family: 'nerissemibold';
+	color: $highlight;
+	cursor: pointer;
+}
+
+form#formAbuseReporting form input[type=button]:hover {	background-color: $darkGrey;}
