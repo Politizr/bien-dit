@@ -34,22 +34,85 @@ class PTag extends BasePTag
     }
     
     /* ######################################################################################################## */
+    /*                                                 DEBATES                                                  */
+    /* ######################################################################################################## */
+    
+    /**
+     * @see parent::countPDDTaggedTs
+     */
+    public function countDebates($query = null)
+    {
+        return parent::countPDDTaggedTs($query);
+    }
+
+    /**
+     * Debate's tags
+     */
+    public function getDebates($online = null)
+    {
+        $debates = PDDebateQuery::create()
+            ->usePDDTaggedTQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $debates;
+    }
+    
+    /* ######################################################################################################## */
     /*                                                   USERS                                                  */
     /* ######################################################################################################## */
     
     /**
      * @see parent::countPuTaggedTPTags
      */
-    public function countPUsers(\PropelPDO $con = null, $doQuery = true)
+    public function countTaggedTagUsers($query = null)
     {
-        return parent::countPuTaggedTPTags($con, $doQuery);
+        return parent::countPuTaggedTPTags($query);
     }
 
     /**
-     * @see parent::getPuTaggedTPTags
+     * Tagged tag's users
+     *
+     * @param $online
+     * @return PropelCollection[PUser]
      */
-    public function getPUsers(\PropelPDO $con = null, $doQuery = true)
+    public function getTaggedTagUsers($online = null)
     {
-        return parent::getPuTaggedTPTags($con, $doQuery);
+        $users = PUserQuery::create()
+            ->usePuTaggedTPUserQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $users;
+    }
+
+    /**
+     * @see parent::countPuTaggedTPTags
+     */
+    public function countFollowedTagUsers($query = null)
+    {
+        return parent::countPuFollowTPUsers($query);
+    }
+
+    /**
+     * Follow tag's users
+     *
+     * @param $online
+     * @return PropelCollection[PUser]
+     */
+    public function getFollowTagUsers($online = null)
+    {
+        $users = PUserQuery::create()
+            ->usePuFollowTPUserQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $users;
     }
 }

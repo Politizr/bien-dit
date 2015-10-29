@@ -144,6 +144,8 @@ builders:
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
                 block_p_user:
                     label:                      "Auteur"
@@ -153,6 +155,8 @@ builders:
                     label:                      "Réaction parente"
                 block_comments:
                     label:                      "Commentaires"
+                block_front:
+                    label:                      "Rendu front"
             actions:
                 list:                           ~
                 edit:                           ~

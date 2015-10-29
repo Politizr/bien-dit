@@ -7,3 +7,12 @@
 {% block show_column_block_p_d_reaction %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDRComment.PDReactionId) }}
 {% endblock %}
+
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PDRComment.online and PDRComment.PDReactionId and PDRComment.PDReaction.online and PDRComment.PDReaction.published %}
+        <a href="{{ path('ReactionDetail', {'slug': PDRComment.PDReaction.slug}) }}#p-{{ PDRComment.paragraphNo }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}

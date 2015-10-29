@@ -283,6 +283,8 @@ builders:
                     "Validé":                   [ [ validated ] ]
                     "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
                 block_tags_public:
                     label:                      "Tags publiques"
@@ -290,8 +292,6 @@ builders:
                     label:                      "Tags privés"
                 reputationScore:
                     label:                      "Score"
-                block_debates:
-                    label:                      "Débats"
                 block_badges_debat:
                     label:                      "Débat"
                 block_badges_comment:
@@ -302,6 +302,8 @@ builders:
                     label:                      "Modération"
                 block_badges_autre:
                     label:                      "Autres"
+                block_debates:
+                    label:                      "Débats"
                 block_reactions:
                     label:                      "Réactions"
                 block_d_comments:
@@ -314,6 +316,8 @@ builders:
                     label:                      "Abonnements"
                 block_affinities:
                     label:                      "Partis Politiques"
+                block_front:
+                    label:                      "Rendu front"
                 last_login:
                     label:                      Date de dernière connexion
                 last_activity:

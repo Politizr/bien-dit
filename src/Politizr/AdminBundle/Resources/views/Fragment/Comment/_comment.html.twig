@@ -1,6 +1,8 @@
 <div class="comment">
-    <div class="comment-parentDebateTitle">Associé au document <b>{{ comment.pDocument }}</b></div>
-    <hr>
+    {% if withDocContext %}
+        <div class="comment-parentDebateTitle">Associé au document <b>{{ comment.pDocument }}</b></div>
+        <hr>
+    {% endif %}
     <div class="comment-description">{{ comment.description | striptags | slice(0, 150) | raw }}...</div>
     <hr>
     <div class="comment-online">{% if comment.online %}En ligne{% else %}Hors ligne{% endif %}</div>

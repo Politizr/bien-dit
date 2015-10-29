@@ -181,6 +181,27 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminTagDebates'  => new \Twig_Function_Method(
+                $this,
+                'adminTagDebates',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminTaggedTagUsers'  => new \Twig_Function_Method(
+                $this,
+                'adminTaggedTagUsers',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminFollowTagUsers'  => new \Twig_Function_Method(
+                $this,
+                'adminFollowTagUsers',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminCreatePath'  => new \Twig_Function_Method(
                 $this,
                 'adminCreatePath',
@@ -569,23 +590,22 @@ class PolitizrAdminExtension extends \Twig_Extension
 
 
     /**
-     *  Gestion des commentaires associés à un débat
+     * Debate's comments
      *
-     * @param $pdDebate    PDDDebate
-     *
+     * @param PDDDebate $debate
      * @return string
      */
-    public function adminDebateComments($pdDebate)
+    public function adminDebateComments($debate)
     {
         $this->logger->info('*** adminDebateComments');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:DebateComments.html.twig',
+            'PolitizrAdminBundle:Fragment\\Debate:_comments.html.twig',
             array(
-                'pdDebate' => $pdDebate,
-                'pdComments' => $pdDebate->getComments(),
+                'debate' => $debate,
+                'comments' => $debate->getComments(),
             )
         );
 
@@ -711,23 +731,96 @@ class PolitizrAdminExtension extends \Twig_Extension
 
 
     /**
-     *  Gestion des commentaires associés à un débat
+     * Reaction's comments
      *
-     * @param $pdReaction   PDReaction
-     *
+     * @param PDReaction $reaction
      * @return string
      */
-    public function adminReactionComments($pdReaction)
+    public function adminReactionComments($reaction)
     {
         $this->logger->info('*** adminReactionComments');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment:ReactionComments.html.twig',
+            'PolitizrAdminBundle:Fragment\\Reaction:_comments.html.twig',
             array(
-                'pdReaction' => $pdReaction,
-                'pdrComments' => $pdReaction->getComments(),
+                'reaction' => $reaction,
+                'comments' => $reaction->getComments(),
+            )
+        );
+
+        return $html;
+    }
+
+
+
+    // ****************************************  GESTION TAG ******************************************* //
+
+
+    /**
+     * Tag's debates
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function adminTagDebates($tag)
+    {
+        $this->logger->info('*** adminTagDebates');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Debate:_tagDebates.html.twig',
+            array(
+                'tag' => $tag,
+                'debates' => $tag->getDebates(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Tagged tag's users
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function adminTaggedTagUsers($tag)
+    {
+        $this->logger->info('*** adminTaggedTagUsers');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\User:_tagUsers.html.twig',
+            array(
+                'tag' => $tag,
+                'users' => $tag->getTaggedTagUsers(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Follow tag's users
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function adminFollowTagUsers($tag)
+    {
+        $this->logger->info('*** adminFollowTagUsers');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\User:_tagUsers.html.twig',
+            array(
+                'tag' => $tag,
+                'users' => $tag->getFollowTagUsers(),
             )
         );
 

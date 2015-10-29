@@ -113,6 +113,8 @@ builders:
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
                 description:
                     grid_class:                 "col-md-12"
@@ -120,6 +122,8 @@ builders:
                     label:                      "Auteur"
                 block_p_d_debate:
                     label:                      "Débat"
+                block_front:
+                    label:                      "Rendu front"
             actions:
                 list:                           ~
                 edit:                           ~

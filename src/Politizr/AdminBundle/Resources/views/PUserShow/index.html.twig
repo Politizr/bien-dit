@@ -48,9 +48,6 @@
     {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_OTHER'), 5) }}
 {% endblock %}
 
-
-{# @todo rewrite to use directly admingenerated list #}
-
 {# Bloc débats #}
 {% block show_column_block_debates %}
     {{ adminUserDebates(PUser) }}
@@ -87,6 +84,16 @@
 {% block show_column_block_affinities %}
     {{ adminUserAffinities(PUser) }}
 {% endblock %}
+
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PUser.online %}
+        <a href="{{ path('UserDetail', {'slug': PUser.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}
+
 
 {% block object_actions_script_container %}
     <script>

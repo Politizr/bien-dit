@@ -7,3 +7,12 @@
 {% block show_column_block_p_d_debate %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDComment.PDDebateId) }}
 {% endblock %}
+
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PDDComment.online and PDDComment.PDDebateId and PDDComment.PDDebate.online and PDDComment.PDDebate.published %}
+        <a href="{{ path('DebateDetail', {'slug': PDDComment.PDDebate.slug}) }}#p-{{ PDDComment.paragraphNo }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}

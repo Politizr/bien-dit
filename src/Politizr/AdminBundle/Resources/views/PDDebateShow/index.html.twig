@@ -46,6 +46,16 @@
     {{ adminDebateFollowersC(PDDebate) }}
 {% endblock %}
 
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PDDebate.online and PDDebate.published %}
+        <a href="{{ path('DebateDetail', {'slug': PDDebate.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}
+
+
 {% block object_actions_script_container %}
     <script>
         var nbZones = 1;

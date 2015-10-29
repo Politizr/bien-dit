@@ -29,7 +29,7 @@ builders:
         params:
             title:                              Liste des tags
             max_per_page:                       50
-            sort:                               [ title, ASC ]
+            sort:                               [ created_at, DESC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
@@ -40,18 +40,20 @@ builders:
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
-            display:                            [ title, p_t_tag_type, countPDDebates, countPUsers, created_at, online ]
+            display:                            [ title, p_t_tag_type, countDebates, countTaggedTagUsers, countFollowedTagUsers, created_at, online ]
             # filtersMode:                        top
             filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
             fields:
-                countPDDebates:
-                    label:                      Débats taggés
-                countPUsers:
-                    label:                      Users taggés
+                countDebates:
+                    label:                      Débats associés
+                countTaggedTagUsers:
+                    label:                      Users associé au tag
+                countFollowedTagUsers:
+                    label:                      Users suivant le tag
             actions:
                 new:                            ~
             object_actions:
-#                 show:                           ~
+                show:                           ~
                 edit:                           ~
                 delete:                         ~
     excel:
@@ -76,9 +78,9 @@ builders:
             title:                              "Edition du tag '{{ PTag.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_t_tag_type ], [ title ] ]
+                    "Texte":                    [ [ title ] ]
                 "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Création":                 [ [ p_t_tag_type ], [ online ], [ created_at, updated_at ] ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
@@ -91,18 +93,33 @@ builders:
                       widget:                   single_text
             actions:
                 save:                           ~
+                show:                           ~
                 list:                           ~
-#     show:
-#         params:
-#             title:                              "Visualisation du tag '{{ PTag.title }}'"
-#             tabs:
-#                 "Contenu":
-#                     "Texte":                    [ [ p_t_tag_type ], [ title ] ]]
-#                 "Attributs":
-#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
-#             actions:
-#               list:                             ~
-#               delete:                           ~
+                delete:                         ~
+    show:
+        params:
+            title:                              "Visualisation du tag {{ PTag.title }}"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ] ]
+                "Attributs":
+                    "Création":                 [ [ p_t_tag_type ], [ online ], [ created_at, updated_at ] ]
+                "Publication":
+                    "Débats":                   [ block_debates ]
+                "Utilisateurs":
+                    "Tags associés public":     [ block_tagged_tag_users ]
+                    "Tags suivis privé":        [ block_follow_tag_users ]
+            fields:
+                block_debates:
+                    label:                      "Taggés"
+                block_tagged_tag_users:
+                    label:                      "Taggés"
+                block_follow_tag_users:
+                    label:                      "Taggés"
+            actions:
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
     actions:
         params:
             object_actions:

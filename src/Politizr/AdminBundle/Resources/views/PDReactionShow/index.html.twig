@@ -29,7 +29,14 @@
     {{ PDReaction.getDescription | raw }}
 {% endblock %}
 
-{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PDReaction.online and PDReaction.published %}
+        <a href="{{ path('ReactionDetail', {'slug': PDReaction.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}
 
 {# Bloc commentaires #}
 {% block show_column_block_comments %}

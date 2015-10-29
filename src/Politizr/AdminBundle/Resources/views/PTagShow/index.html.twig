@@ -1,1 +1,17 @@
 {% extends_admingenerated "PolitizrAdminBundle:PTagShow:index.html.twig" %}
+
+{# Debates tags block #}
+{% block show_column_block_debates %}
+    {{ adminTagDebates(PTag) }}
+{% endblock %}
+
+{# Tagged tags block #}
+{% block show_column_block_tagged_tag_users %}
+    {{ adminTaggedTagUsers(PTag) }}
+{% endblock %}
+
+{# Follow tags block #}
+{% block show_column_block_follow_tag_users %}
+    {{ adminFollowTagUsers(PTag) }}
+{% endblock %}
+

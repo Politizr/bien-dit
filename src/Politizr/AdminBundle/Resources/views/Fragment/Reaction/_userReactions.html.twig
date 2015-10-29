@@ -6,6 +6,6 @@
     {% endif %}
     <hr>
     {% for reaction in reactions %}
-        {% include 'PolitizrAdminBundle:Fragment:UserReaction.html.twig' with { 'reaction': reaction } %}
+        {% include 'PolitizrAdminBundle:Fragment\\Reaction:_reaction.html.twig' with { 'reaction': reaction } %}
     {% endfor %}
 </div>

@@ -6,6 +6,6 @@
     {% endif %}
     <hr>
     {% for comment in comments %}
-        {% include 'PolitizrAdminBundle:Fragment\\Comment:_comment.html.twig' with { 'comment': comment } %}
+        {% include 'PolitizrAdminBundle:Fragment\\Comment:_comment.html.twig' with { 'comment': comment, 'withDocContext': true } %}
     {% endfor %}
 </div>
