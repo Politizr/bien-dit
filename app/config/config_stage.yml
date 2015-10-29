@@ -5,6 +5,11 @@ framework:
     router:   { resource: "%kernel.root_dir%/config/routing.yml" }
     profiler: { only_exceptions: false }
 
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
+    session:
+        # cookies should only be sent over secure connections.
+        # cookie_secure: true
+
 monolog:
     handlers:
         main:

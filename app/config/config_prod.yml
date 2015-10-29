@@ -1,15 +1,11 @@
 imports:
     - { resource: config.yml }
 
-#framework:
-#    validation:
-#        cache: apc
-
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
+framework:
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
+    session:
+        # cookies should only be sent over secure connections.
+        # cookie_secure: true
 
 monolog:
     handlers:

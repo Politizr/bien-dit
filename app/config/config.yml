@@ -24,13 +24,17 @@ framework:
     default_locale:  %locale%
     # trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
 
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
     session:
+        name: pzr
         # 3 months
         cookie_lifetime: 7776000
         # 3 hours
         gc_maxlifetime: 10800
         # http://vvv.tobiassjosten.net/symfony/keep-symfony2-sessions-through-cache-clear/
         save_path: %kernel.root_dir%/sessions
+        # http only
+        cookie_httponly: true
 
     # admingenerator assetic packages definition
     templating:

@@ -5,12 +5,17 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing_debug.yml"
         strict_requirements: true
+
     profiler: { only_exceptions: false }
+
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
+    session:
+        # cookies should only be sent over secure connections.
+        cookie_secure: true
 
 web_profiler:
     toolbar: true
     intercept_redirects: false
-
 
 web_profiler_extra:
     routing:
@@ -25,7 +30,6 @@ web_profiler_extra:
     twig:
         enabled:        true
         display_in_wdt: true
-
 
 monolog:
     handlers:
