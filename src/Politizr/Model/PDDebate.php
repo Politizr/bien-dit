@@ -80,7 +80,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
             ),
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 100, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
+                new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
             ),
             'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
             'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),

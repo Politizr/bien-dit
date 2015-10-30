@@ -81,7 +81,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             ),
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 100, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
+                new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
             )
         ));
 
