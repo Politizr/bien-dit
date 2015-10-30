@@ -22,7 +22,7 @@ class StudioEchoUtils
         $txt = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $txt);
 
         // remove accents resulting from OSX's iconv
-        $txt = str_replace(array('\'', '`', '^'), '', $txt);
+        $txt = str_replace(array('\'', '`', '^'), ' ', $txt);
 
         return $txt;
     }
