@@ -169,8 +169,20 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateNewAction');
 
-        // Service associé a la création d'une réaction
-        $debate = $this->get('politizr.functional.document')->createDebate();
+        $user = $this->getUser();
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
+
+        // search "as new" already created debate
+        $debate = PDDebateQuery::create()
+                    ->filterByPUserId($user->getId())
+                    ->where('p_d_debate.created_at = p_d_debate.updated_at')
+                    ->findOne();
+
+        if (!$debate) {
+            $debate = $this->get('politizr.functional.document')->createDebate();
+        }
 
         return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
             'id' => $debate->getId()
@@ -223,8 +235,22 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
 
-        // Service associé a la création d'une réaction
-        $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
+        $user = $this->getUser();
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
+
+        // search "as new" already created reaction
+        $reaction = PDReactionQuery::create()
+                    ->filterByPUserId($user->getId())
+                    ->filterByPDDebateId($debateId)
+                    ->filterByParentReactionId($parentId)
+                    ->where('p_d_reaction.created_at = p_d_reaction.updated_at')
+                    ->findOne();
+
+        if (!$reaction) {
+            $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
+        }
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
             'id' => $reaction->getId()
