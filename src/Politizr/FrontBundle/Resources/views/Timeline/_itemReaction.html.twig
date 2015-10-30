@@ -22,7 +22,9 @@
                 </div>
                 <div class="timelineItemHighlight">
                     <div class="timelineItemIllustration">
-                        {{ reaction | image('debate_timeline', false) }}
+                        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                            {{ reaction | image('debate_timeline', false) }}
+                        </a>
                     </div>
                     <div class="avatar40">
                         {{ reaction.user | photo('user_40') }}
