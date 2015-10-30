@@ -188,7 +188,7 @@ LIMIT ".$offset.", ".$limit."
      */
     public function orderByNote()
     {
-        return $this->orderByNotePos('desc');
+        return $this->orderByNotePos('desc')->orderByNoteNeg('asc');
     }
 
     /**
