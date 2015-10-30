@@ -28,6 +28,7 @@ class GlobalTools
     private $securityContext;
 
     private $formFactory;
+    private $validator;
 
     private $logger;
 
@@ -36,14 +37,22 @@ class GlobalTools
      * @param @security.authorization_checker
      * @param @security.context
      * @param @form.factory
+     * @param @validator
      * @param @logger
      */
-    public function __construct($securityAuthorizationChecker, $securityContext, $formFactory, $logger)
-    {
+    public function __construct(
+        $securityAuthorizationChecker,
+        $securityContext,
+        $formFactory,
+        $validator,
+        $logger
+    ) {
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
         $this->securityContext = $securityContext;
         
         $this->formFactory = $formFactory;
+
+        $this->validator = $validator;
 
         $this->logger = $logger;
     }
@@ -317,5 +326,33 @@ class GlobalTools
         $html = preg_replace($pattern, '', $html);
 
         return $html;
+    }
+
+    /**
+     * Validate constraints to data and manage XHR formatting message
+     *
+     * @param array $data array to validate
+     * @param Constraint\Collection $collectionConstraint
+     * @param array $errorString
+     * @return boolean|string
+     */
+    public function validateConstraints($data, $collectionConstraint, & $errorString)
+    {
+        $errors = $this->validator->validateValue(
+            $data,
+            $collectionConstraint
+        );
+
+        if (count($errors) > 0) {
+            $errorString = 'Merci de corriger les erreurs:<br/><ul>';
+            foreach ($errors as $error) {
+                $errorString .= '<li>' . $error->getMessage() . '</li>';
+            }
+            $errorString .= '</ul>';
+
+            return false;
+        }
+
+        return true;
     }
 }

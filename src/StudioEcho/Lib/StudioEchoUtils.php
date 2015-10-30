@@ -3,10 +3,8 @@ namespace StudioEcho\Lib;
 
 /**
  * Description of StudioEchoUtils
- * TODO: MAJ avec la version github
- * /!\ nouvelles méthodes
  *
- * TODO > méthodes utilisées à migrer vers le serice UtilsManager
+ * @todo migration vers GlobalTools?
  *
  * @author Studio Echo / Lionel Bouzonville
  */

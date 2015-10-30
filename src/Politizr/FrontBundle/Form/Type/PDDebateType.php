@@ -30,6 +30,9 @@ class PDDebateType extends AbstractType
 
         $builder->add('title', 'textarea', array(
             'required' => true,
+            'attr' => array(
+                'maxlength' => 100
+            )
         ));
         
         $builder->add('description', 'hidden', array(

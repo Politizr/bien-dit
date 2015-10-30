@@ -282,13 +282,10 @@ class XhrDocument
 
         $form = $this->formFactory->create(new PDDebateType(), $debate);
         $form->bind($request);
-        if ($form->isValid()) {
-            $debate = $form->getData();
-            $debate->save();
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
-        }
+
+        // No validator tests, always save
+        $debate = $form->getData();
+        $debate->save();
 
         return true;
     }
@@ -385,24 +382,19 @@ class XhrDocument
             throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        // Validation constraints
-        $title = $debate->getTitle();
-        $title = trim($title);
-        $description = $debate->getDescription();
-        $description = trim($description);
-        // title requirement
-        if (empty($title)) {
-            $error = 'Vous devez saisir un titre';
-            throw new FormValidationException($error);
+        // Validation
+        $errorString = array();
+        $valid = $this->globalTools->validateConstraints(
+            array(
+                'title' => $debate->getTitle(),
+                'description' => strip_tags($debate->getDescription())
+            ),
+            $debate->getPublishConstraints(),
+            $errorString
+        );
+        if (!$valid) {
+            throw new FormValidationException($errorString);
         }
-        // description requirement
-        // @todo test at least one not empty paragraph block (<p></p>)
-        if (empty($description)) {
-            $error = 'Vous devez saisir une description';
-            throw new FormValidationException($error);
-        }
-        // tags requirement
-        // @todo 3 tags required
 
         // Publication
         $this->documentManager->publishDebate($debate);
@@ -585,24 +577,19 @@ class XhrDocument
             throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
-        // Validation constraints
-        $title = $reaction->getTitle();
-        $title = trim($title);
-        $description = $reaction->getDescription();
-        $description = trim($description);
-        // title requirement
-        if (empty($title)) {
-            $error = 'Vous devez saisir un titre';
-            throw new FormValidationException($error);
+        // Validation
+        $errorString = array();
+        $valid = $this->globalTools->validateConstraints(
+            array(
+                'title' => $reaction->getTitle(),
+                'description' => strip_tags($reaction->getDescription())
+            ),
+            $reaction->getPublishConstraints(),
+            $errorString
+        );
+        if (!$valid) {
+            throw new FormValidationException($errorString);
         }
-        // description requirement
-        // @todo test at least one not empty paragraph block (<p></p>)
-        if (empty($description)) {
-            $error = 'Vous devez saisir une description';
-            throw new FormValidationException($error);
-        }
-        // tags requirement
-        // @todo 3 tags required
 
         // Publication
         $this->documentManager->publishReaction($reaction);

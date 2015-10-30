@@ -6,5 +6,6 @@ services:
             - @security.authorization_checker
             - @security.context
             - @form.factory
+            - @validator
             - @logger
 

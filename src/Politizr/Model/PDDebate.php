@@ -6,6 +6,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Model\om\BasePDDebate;
@@ -52,12 +56,34 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         return ObjectTypeConstants::TYPE_DEBATE;
     }
 
+
     /**
      * @see PDocumentInterface::isDisplayed
      */
     public function isDisplayed()
     {
         return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
+     * Return constraints to be applied before publication
+     *
+     * @return Collection
+     */
+    public function getPublishConstraints()
+    {
+        $collectionConstraint = new Collection(array(
+            'title' => array(
+                new NotBlank(['message' => 'Le titre ne doit pas être vide']),
+                new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
+            ),
+            'description' => array(
+                new NotBlank(['message' => 'La description ne doit pas être vide']),
+                new Length(['min' => 100, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
+            )
+        ));
+
+        return $collectionConstraint;
     }
 
     /**
