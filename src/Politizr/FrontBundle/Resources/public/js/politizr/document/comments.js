@@ -95,6 +95,9 @@ function openParagraph(paragraphId)
                 $('html, body').animate({
                     scrollTop: $(this).find('.comments').offset().top
                 }, '1000');
+
+                // focus
+                $('#comment_description').focus();
             }
         }
     });        
