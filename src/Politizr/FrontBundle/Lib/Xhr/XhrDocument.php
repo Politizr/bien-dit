@@ -759,6 +759,11 @@ class XhrDocument
         if ($form->isValid()) {
             $this->logger->info('*** isValid');
             $comment = $form->getData();
+
+            if ($comment->getPUserId() != $user->getId()) {
+                throw new InconsistentDataException(sprintf('User id-%s tries to publish a comment for user id-%s.', $user->getId(), $comment->getPUserId()));
+            }
+
             $comment->save();
         } else {
             $this->logger->info('*** not valid');
