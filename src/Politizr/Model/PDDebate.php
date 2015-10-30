@@ -334,7 +334,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         $query = PTagQuery::create()
             ->filterIfTypeId($tagTypeId)
             ->filterIfOnline($online)
-            ->orderByTitle()
+            // ->orderByTitle()
             ->setDistinct();
 
         return parent::getPTags($query);
