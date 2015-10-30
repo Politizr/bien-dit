@@ -11,6 +11,7 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -387,7 +388,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $debate->getTitle(),
-                'description' => strip_tags($debate->getDescription())
+                'description' => strip_tags($debate->getDescription()),
+                'geoTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_GEO),
+                'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
             $errorString

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Count;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
@@ -79,8 +80,10 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
             ),
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 100, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
-            )
+                new Length(['min' => 100, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
+            ),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
+            'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),
         ));
 
         return $collectionConstraint;
@@ -304,7 +307,8 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
 
     /**
      * Debate's array tags
-     * /!\ used by elastica indexation
+     * - used by publish constraints
+     * - used by elastica indexation
      *
      * @return array[string]
      */
