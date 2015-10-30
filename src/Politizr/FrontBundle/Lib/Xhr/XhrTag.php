@@ -91,6 +91,10 @@ class XhrTag
         }
 
         if ($newTag) {
+            if (!preg_match("/^[\w\-\' ]+$/iu", $tagTitle)) {
+                throw new FormValidationException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
+            }
+
             $tag = $this->tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
             return $tag;
         }
