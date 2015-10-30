@@ -5,7 +5,7 @@
     Au contraire, tout signalement abusif sera sanctionné d’une perte de points de réputation.
 </div>
 <div class="abuseContext">
-    {{ context | raw }}
+    {{ context | purify }}
 </div>
 <form id="formAbuseReporting">
     {{ form_errors(formAbuse) }}

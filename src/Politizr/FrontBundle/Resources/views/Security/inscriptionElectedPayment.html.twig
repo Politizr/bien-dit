@@ -13,7 +13,7 @@
                 <div class="payment-choice">
                     <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
                     <div class="payment-detail">
-                        {{ payment.description | raw }}
+                        {{ payment.description | purify }}
                         <br/>
                         <a action="payment-process" class="btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
                     </div>

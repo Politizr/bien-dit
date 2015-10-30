@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="editable copyright">
-                {{ user.copyright | raw }}
+                {{ user.copyright | purify }}
             </div>
             <div class="photoInfoSave">
                 <a action="userBackPhotoInfoSave" subjectId="{{ user.id }}">

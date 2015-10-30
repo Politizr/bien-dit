@@ -28,7 +28,7 @@
                         <div class="authorName">
                             {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': citizenUser} only %}
                         </div>
-                        <div class="authorSubtitle">{{ citizenUser.subtitle | raw }}</div>
+                        <div class="authorSubtitle">{{ citizenUser.subtitle | purify }}</div>
                     </div>
                 </div>
             {% endif %}
@@ -44,7 +44,7 @@
                             {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with {'user': electedUser} only %}
                             {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with {'user': electedUser} only %}
                         </div>
-                        <div class="authorSubtitle">{{ electedUser.subtitle | raw }}</div>
+                        <div class="authorSubtitle">{{ electedUser.subtitle | purify }}</div>
                     </div>
                 </div>
             {% endif %}

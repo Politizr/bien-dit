@@ -4,8 +4,8 @@
 <div class="contextTitle">
     {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': user } only %}
     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { user: user } only %}
-    {{ user.subtitle | raw }}
+    {{ user.subtitle | purify }}
 </div>
 <div class="contextDescription">
-    {{ user.biography | excerpt }}
+    {{ user.biography | excerpt | purify }}
 </div>

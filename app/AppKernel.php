@@ -48,6 +48,9 @@ class AppKernel extends Kernel
             // FOSElastica
             new FOS\ElasticaBundle\FOSElasticaBundle(),
 
+            // HTML Purifier
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),

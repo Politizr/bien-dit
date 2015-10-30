@@ -18,7 +18,7 @@
         </form>
     </div>
     <div class="listCriteria criteriaSidebar">
-        <form id="listOrder">{{ listOrder | raw }}</form>
-        <form id="listFilter">{{ listFilter | raw }}</form>
+        <form id="listOrder">{{ listOrder | purify }}</form>
+        <form id="listFilter">{{ listFilter | purify }}</form>
     </div> 
 {% endspaceless %}

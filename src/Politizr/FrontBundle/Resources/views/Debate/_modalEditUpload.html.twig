@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="editable copyright">
-                {{ debate.copyright | raw }}
+                {{ debate.copyright | purify }}
             </div>
             <div class="photoInfoSave">
                 <a action="debatePhotoInfoSave" subjectId="{{ debate.id }}">

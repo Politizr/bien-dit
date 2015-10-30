@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="editable copyright">
-                {{ reaction.copyright | raw }}
+                {{ reaction.copyright | purify }}
             </div>
             <div class="photoInfoSave">
                 <a action="reactionPhotoInfoSave" subjectId="{{ reaction.id }}">

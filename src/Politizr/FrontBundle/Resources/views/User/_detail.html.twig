@@ -28,7 +28,7 @@
 
     <div id="profileBio">
         <div id="showCompleteBio"><span action="showCompleteBio">afficher la suite</span></div>
-        {{ user.biography | raw }}
+        {{ user.biography | purify }}
         <div id="hideCompleteBio"><span action="hideCompleteBio">masquer</span></div>
     </div>
     

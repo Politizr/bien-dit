@@ -72,7 +72,7 @@
                 <div id="copyrightBox" style="display: none;" action="showCopyright">
                     <i class="iconArrowUp"></i>
                     <div id="copyright">
-                        {{ reaction.copyright | raw }}
+                        {{ reaction.copyright | purify }}
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
                     </div>
                     <div class="editable description">
-                        {{ reaction.description | raw }}
+                        {{ reaction.description | purify }}
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                 </div>
                 {% for paragraph in paragraphs %}
                     <div class="paragraph">
-                        <p>{{ paragraph | raw }}</p>
+                        <p>{{ paragraph | purify }}</p>
                     </div>
                 {% endfor %}
             </div>

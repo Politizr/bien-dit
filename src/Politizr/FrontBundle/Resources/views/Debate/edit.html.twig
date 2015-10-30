@@ -66,7 +66,7 @@
                 <div id="copyrightBox" style="display: none;" action="showCopyright">
                     <i class="iconArrowUp"></i>
                     <div id="copyright">
-                        {{ debate.copyright | raw }}
+                        {{ debate.copyright | purify }}
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
                     </div>
                     <div class="editable description">
-                        {{ debate.description | raw }}
+                        {{ debate.description | purify }}
                     </div>
                 </div>
             </div>

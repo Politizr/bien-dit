@@ -104,7 +104,7 @@
                     <div class="counter">
                         {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
                     </div>
-                    {{ paragraph | raw }}
+                    {{ paragraph | purify }}
                     <div class="comments"></div>
                 </div>
             {% endfor %}

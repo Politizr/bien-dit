@@ -12,7 +12,7 @@
             {% if mandate.organization %}
                 <div class="organization" action="modalOrganization" model="PQOrganization" slug="{{ mandate.organization.slug }}">{{ mandate.organization.initials }}</div>
             {% endif %}
-            <div class="mandateLocalization">{{ mandate.localization | raw  }}</div>
+            <div class="mandateLocalization">{{ mandate.localization | purify  }}</div>
         </div>
     </div>
 {% endfor %}

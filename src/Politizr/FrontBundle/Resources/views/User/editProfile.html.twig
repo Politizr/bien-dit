@@ -88,7 +88,7 @@
             <div id="copyrightBox" style="display: none;" action="showCopyright">
                 <i class="iconArrowUp"></i>
                 <div id="copyright">
-                    {{ user.copyright | raw }}
+                    {{ user.copyright | purify }}
                 </div>
             </div>
         </div>
@@ -149,7 +149,7 @@
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
                     </div>
                 </div>
-                <div class="editable subtitle">{{ user.subtitle | raw }}</div>
+                <div class="editable subtitle">{{ user.subtitle | purify }}</div>
             </div>
 
             <div class="fieldsetHeader">
@@ -166,7 +166,7 @@
             <div id="postText" class="profileFieldset">
                 <div class="paragraph">
                     <div class="editable biography">
-                        {{ user.biography | raw }}
+                        {{ user.biography | purify }}
                     </div>
                 </div>
             </div>
