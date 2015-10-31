@@ -22,6 +22,7 @@ function reputationCharts(startAt) {
     if (typeof startAt === "undefined") {
         var startAt = new Date();
         var startAt = new Date(startAt.getFullYear(), startAt.getMonth(), 1);
+        var startAt  = moment(startAt).format('YYYY-MM-DD');
         console.log('startAt = '+startAt);
     }
 
