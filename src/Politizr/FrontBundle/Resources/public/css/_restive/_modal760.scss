@@ -2,12 +2,15 @@
 
 /// modal
 
-body.css760 .modalHeader {	
-	width: calc(100% - 56px); 
+body.css760 .modalHeaderFixed {	
+	width: calc(100% - 40px); 
 	left: 0;
 	padding: 15px 20px 20px 20px;
 	margin-left: 0;
 }
+
+body.css760 .modalHeader { width: 100%;}
+
 body.css760 .modalHeader .headerLogo {
 	background-color: #fff;
 	height: auto;
