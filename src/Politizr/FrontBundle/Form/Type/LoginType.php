@@ -35,10 +35,10 @@ class LoginType extends AbstractType
             'constraints' => new NotBlank(array('message' => 'Champ obligatoire.'))
             ));
 
-        $builder->add('remember_me', 'checkbox', array(
-            'required' => false,
-            'label' => 'Se souvenir de moi',
-            ));
+        // $builder->add('remember_me', 'checkbox', array(
+        //     'required' => false,
+        //     'label' => 'Se souvenir de moi',
+        //     ));
     }
 
     /**
