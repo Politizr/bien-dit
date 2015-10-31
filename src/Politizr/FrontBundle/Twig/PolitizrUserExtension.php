@@ -477,10 +477,11 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         // Screen / Email rendering
-        if (NotificationConstants::TYPE_EMAIL === $type) {
+        if (NotificationConstants::TYPE_EMAIL === $type || NotificationConstants::TYPE_EMAIL_TXT === $type) {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Notification:_notificationEmail.html.twig',
+                'PolitizrFrontBundle:Notification:_notificationMessage.html.twig',
                 array(
+                    'type' => $type,
                     'notification' => $notification,
                     'notificationId' => $notification->getPNotificationId(),
                     'subject' => $subject,

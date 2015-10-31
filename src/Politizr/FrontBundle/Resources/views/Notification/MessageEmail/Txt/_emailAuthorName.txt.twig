@@ -1,0 +1,4 @@
+{% spaceless %}
+{{ author }} ({{ authorUrl }})
+{% set organizations = author.currentOrganizations %}{% for organization in organizations %}{{ organization.initials }}{% endfor %}
+{% endspaceless %}

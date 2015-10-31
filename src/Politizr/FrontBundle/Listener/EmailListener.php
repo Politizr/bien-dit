@@ -166,12 +166,12 @@ class EmailListener
                     'notif' => $puNotifications,
                 )
             );
-            // $txtBody = $this->templating->render(
-            //     'PolitizrFrontBundle:Email:notification.html.twig',
-            //     array(
-            //         'notif' => $puNotifications,
-            //     )
-            // );
+            $txtBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:notification.txt.twig',
+                array(
+                    'notif' => $puNotifications,
+                )
+            );
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Vous avez une notification!')
@@ -179,7 +179,7 @@ class EmailListener
                     ->setTo($userEmail)
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
-                    // ->addPart($txtBody, 'text/plain', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
 
             // Envoi email

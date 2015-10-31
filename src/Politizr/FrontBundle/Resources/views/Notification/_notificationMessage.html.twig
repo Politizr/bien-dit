@@ -1,64 +1,69 @@
 {% if type == constant('Politizr\\Constant\\NotificationConstants::TYPE_SCREEN') %}
     {% set twigFolder = 'Message' %}
+    {% set twigExt = 'html' %}
 {% elseif type == constant('Politizr\\Constant\\NotificationConstants::TYPE_EMAIL') %}
     {% set twigFolder = 'MessageEmail' %}
+    {% set twigExt = 'html' %}
+{% elseif type == constant('Politizr\\Constant\\NotificationConstants::TYPE_EMAIL_TXT') %}
+    {% set twigFolder = 'MessageEmail\\Txt' %}        
+    {% set twigExt = 'txt' %}
 {% endif %}
 {% spaceless %}
 {% if
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_COMMENT_PUBLISH') 
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCommentPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCommentPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_POS')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDNotePos.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDNotePos.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_NEG')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDNoteNeg.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDNoteNeg.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDDReactionPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDDReactionPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDDFollowed.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDDFollowed.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDRReactionPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDRReactionPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCNotePos.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCNotePos.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_NEG')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCNoteNeg.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgDCNoteNeg.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_DEBATE_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUDebatePublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUDebatePublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_REACTION_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUReactionPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUReactionPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_COMMENT_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUCommentPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSUCommentPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSDReactionPublish.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSDReactionPublish.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUFollowed.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUFollowed.'~twigExt~'.twig' %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
 %}
-    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUBadge.html.twig' %}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUBadge.'~twigExt~'.twig' %}
 {% endif %}
 {% endspaceless %}
