@@ -32,7 +32,7 @@
                 {% endif %}
             </div>
 
-            <div class="timelineItemContent">
+            <div class="timelineItemContent {% if comment.user.id == app.user.id %}timelineItemAuthor{% elseif comment.user.qualified %}timelineItemOfficial{% endif %}">
                 <div class="timelineItemObject">
                     <i class="iconNotifNo"></i>
                     {% if authorIsMe %}
