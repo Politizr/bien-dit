@@ -403,7 +403,7 @@ class SecurityService
         // $googlePlus = new Google_Service_Plus($client);
         $googlePlus = new Google_Service_Oauth2($client);
         $userProfile = $googlePlus->userinfo->get();
-        var_dump($userProfile);
+        // var_dump($userProfile);
     }
 
     /* ######################################################################################################## */
