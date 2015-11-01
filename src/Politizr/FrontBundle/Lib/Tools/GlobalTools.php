@@ -130,7 +130,7 @@ class GlobalTools
      * @param  array       $allowedExtensions    Extensions de fichier autorisées
      *
      */
-    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $allowedExtensions = array('jpg', 'jpeg', 'png'))
+    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif'))
     {
         $this->logger->info('*** uploadXhrImage');
 
