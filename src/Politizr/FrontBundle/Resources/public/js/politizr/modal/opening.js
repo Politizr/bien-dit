@@ -110,8 +110,8 @@ function updateCloseModalActions(action)
         return false;
     }
 
-    $('#modalHeader').children('.headerLogo').first().attr('action', action);
-    $('#modalHeader').children('.modalClose').first().attr('action', action);
+    $('#modalBox').find('.headerLogo').first().attr('action', action);
+    $('#modalBox').find('.modalClose').first().attr('action', action);
 }
 
 /**

@@ -221,7 +221,7 @@ class XhrModal
         // Get tags from search session
         $session = $request->getSession();
         $tags = $session->get('search/tag');
-        // $this->logger->info('session tags = '.print_t($tags, true));
+        $this->logger->info('session tags = '.print_r($tags, true));
 
         // at least one tag
         if (empty($tags)) {
