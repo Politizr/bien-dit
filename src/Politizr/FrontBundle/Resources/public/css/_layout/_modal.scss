@@ -23,6 +23,7 @@ body.noscroll {
 	height: 100%;
 	overflow: auto;
 	background: #fff;
+	position: relative;
 }
 
 .modalBg {
@@ -38,15 +39,20 @@ body.noscroll {
 
 .modalHeader {
 	width: 960px;
-	color: $semiGrey;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+.modalHeaderFixed {
 	position: fixed;
-	z-index: 10000;
-	left: 50%;
+	color: $semiGrey;
 	top: 0;
-	margin-left: -487px;
+	width: 960px;
 	padding: 15px 0 20px 0;
 	background-color: #fff;
-}	
+	z-index: 10000;
+}
 
 .modalHeader .headerLogo {
 	width: auto; 
