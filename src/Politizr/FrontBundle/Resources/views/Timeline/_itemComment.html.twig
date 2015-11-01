@@ -9,7 +9,7 @@
             <div class="timelineItemContext">
                 {% if parentReaction %}
                     <span class="timelineItemContextHighlight">
-                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
+                        À propos de la réaction de {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parentReaction.user } only %}
                         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
                     </span>
                     {% if parentReaction.isDisplayed %}
