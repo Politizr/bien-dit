@@ -825,14 +825,23 @@ class XhrUser
 
         $timelineDateKey = $this->timelineService->generateTimelineDateKey($timeline);
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_paginatedTimeline.html.twig',
-            array(
-                'timelineDateKey' => $timelineDateKey,
-                'offset' => intval($offset) + 10,
-                'moreResults' => $moreResults,
-            )
-        );
+        if ($offset == 0 && count($timeline) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::TIMELINE_TYPE,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Timeline:_paginatedTimeline.html.twig',
+                array(
+                    'timelineDateKey' => $timelineDateKey,
+                    'offset' => intval($offset) + 10,
+                    'moreResults' => $moreResults,
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -862,15 +871,24 @@ class XhrUser
 
         $timelineDateKey = $this->timelineService->generateTimelineDateKey($timeline);
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_paginatedUserTimeline.html.twig',
-            array(
-                'timelineDateKey' => $timelineDateKey,
-                'offset' => intval($offset) + 10,
-                'userId' => $userId,
-                'moreResults' => $moreResults,
-            )
-        );
+        if ($offset == 0 && count($timeline) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::TIMELINE_USER_TYPE,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Timeline:_paginatedUserTimeline.html.twig',
+                array(
+                    'timelineDateKey' => $timelineDateKey,
+                    'offset' => intval($offset) + 10,
+                    'userId' => $userId,
+                    'moreResults' => $moreResults,
+                )
+            );
+        }
 
         return array(
             'html' => $html,

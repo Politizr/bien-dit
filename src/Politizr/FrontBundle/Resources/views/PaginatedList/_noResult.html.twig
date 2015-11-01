@@ -1,0 +1,49 @@
+<div class="noResult">
+    {% if type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SEARCH') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Aucun débat ne correspond à votre recherche.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Aucun utilisateur ne correspond à votre recherche.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_RANKING') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Aucun débat ne correspond à ce classement.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Aucun utilisateur ne correspond à ce classement.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SUGGESTION') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Nous ne pouvons pas vous suggérer de nouveaux débats: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Nous ne pouvons pas vous suggérer de nouveaux utilisateurs: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_TAG') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Aucun débat ne correspond à cette thématique.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Aucun utilisateur ne correspond à cette thématique.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_ORGANIZATION') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Aucun débat ne correspond à cette organisation.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Aucun utilisateur ne correspond à cette organisation.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_FOLLOWED') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
+            Vous ne suivez aucun débat.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Vous ne suivez aucun utilisateur.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_FOLLOWER') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
+            Aucun utilisateur ne vous suit.
+        {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::TIMELINE_TYPE') %}
+        Votre fil d'actualité est vide, suivez des utilisateurs ou des débats pour le remplir.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::TIMELINE_USER_TYPE') %}
+        Cet utilisateur n'a pas publié de commentaires, débats ou réactions.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::FEED_DEBATE_TYPE') %}
+        Le fil de ce débat est vide.
+    {% endif %}
+</div>

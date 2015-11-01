@@ -82,18 +82,22 @@
         </div>
 
         <div id="timeline">
-            <div id="timelineHeader" class="stickyTimelineHeader">
-                <div class="timelinePickADate">
-                    <i class="iconNow"></i> Aller au ...
-                    <select action="goToDate">
-                        <option>sélectionnez une date</option>
-                        {% for dateTimeAt, timeline in timelineDateKey %}
-                            <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:Navigation\\DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
-                        {% endfor %}
-                    </select>
+            {% if noResult %}
+                {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with { 'type': constant('Politizr\\Constant\\ListingConstants::FEED_DEBATE_TYPE') } only %}
+            {% else %}
+                <div id="timelineHeader" class="stickyTimelineHeader">
+                    <div class="timelinePickADate">
+                        <i class="iconNow"></i> Aller au ...
+                        <select action="goToDate">
+                            <option>sélectionnez une date</option>
+                            {% for dateTimeAt, timeline in timelineDateKey %}
+                                <option value="#day-{{ dateTimeAt | date('Y-m-d') }}">{% include 'PolitizrFrontBundle:Navigation\\DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-            </div>
-            {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'debateContext': true } only %}
+                {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'debateContext': true } only %}
+            {% endif %}
         </div>
     </div>
 {% endblock main %}

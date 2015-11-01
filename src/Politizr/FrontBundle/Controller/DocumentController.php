@@ -149,10 +149,16 @@ class DocumentController extends Controller
         $timeline = $timelineService->generateDebateFeedTimeline($debate->getId());
         $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
 
+        $noResult = false;
+        if (count($timeline) == 0) {
+            $noResult = true;
+        }
+
         return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
-            'timelineDateKey' => $timelineDateKey
+            'timelineDateKey' => $timelineDateKey,
+            'noResult' => $noResult,
         ));
     }
 

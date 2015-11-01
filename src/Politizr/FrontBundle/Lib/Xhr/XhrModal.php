@@ -221,6 +221,7 @@ class XhrModal
         // Get tags from search session
         $session = $request->getSession();
         $tags = $session->get('search/tag');
+        // $this->logger->info('session tags = '.print_t($tags, true));
 
         // at least one tag
         if (empty($tags)) {
@@ -244,15 +245,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateSearchNext'
-            )
-        );
+        if ($offset == 0 && count($debates) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SEARCH,
+                    'context' => ListingConstants::MODAL_DEBATES,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+                array(
+                    'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateSearchNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -293,15 +304,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateSearchNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SEARCH,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateSearchNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -340,15 +361,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
-            )
-        );
+        if ($offset == 0 && count($debates) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_RANKING,
+                    'context' => ListingConstants::MODAL_DEBATES,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+                array(
+                    'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -383,15 +414,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_RANKING,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -419,15 +460,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
-            )
-        );
+        if ($offset == 0 && count($debates) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
+                    'context' => ListingConstants::MODAL_DEBATES,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+                array(
+                    'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -455,15 +506,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html
@@ -503,15 +564,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
-            )
-        );
+        if ($offset == 0 && count($debates) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_TAG,
+                    'context' => ListingConstants::MODAL_DEBATES,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+                array(
+                    'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -550,15 +621,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_TAG,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -602,15 +683,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_ORGANIZATION,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -650,15 +741,25 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
-            )
-        );
+        if ($offset == 0 && count($debates) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_FOLLOWED,
+                    'context' => ListingConstants::MODAL_DEBATES,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
+                array(
+                    'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -697,16 +798,26 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'order' => $order,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_FOLLOWED,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'order' => $order,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -746,16 +857,26 @@ class XhrModal
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:PaginatedList:_users.html.twig',
-            array(
-                'users' => $users,
-                'order' => $order,
-                'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                'moreResults' => $moreResults,
-                'paginateNextAction' => 'paginateNext'
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_FOLLOWER,
+                    'context' => ListingConstants::MODAL_USERS,
                 )
-        );
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'order' => $order,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                    )
+            );
+        }
 
         return array(
             'html' => $html,
