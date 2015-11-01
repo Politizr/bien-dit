@@ -124,6 +124,8 @@
 	font-family: 'Merriweather Bold Italic';
 	color: $highlight;
 }
+#profileSubtitle a { color: $highlight; }
+#profileSubtitle a:hover { color: #fff; }
 
 #profilePublicTagList {
 	padding: 40px;
