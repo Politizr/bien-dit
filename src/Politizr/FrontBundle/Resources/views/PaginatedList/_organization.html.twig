@@ -3,7 +3,9 @@
         <h1>{{ subject.title }}</h1>
         <div class="organizationInfo">
             <div class="organization">{{ subject.initials }}</div>
-            <a class="organizationLink" href="{{ subject.url }}" target="_blank"><i class="iconGoTo"></i>Site officiel</a>
+            {% if subject.url %}
+                <a class="organizationLink" href="{{ subject.url }}" target="_blank"><i class="iconGoTo"></i>Site officiel</a>
+            {% endif %}
         </div>
         <div class="listCriteria criteriaSidebar">
             <form id="listOrder"></form>
