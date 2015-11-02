@@ -51,7 +51,7 @@ function initInputSearchByTags() {
                         $('#searchInput').val(ui.item.label);
                     },
                     source: function( request, response ) {
-                        var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                        var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
                         response( $.grep( availableTags, function( value ) {
                             value = value.label || value.value || value;
                             return matcher.test( value ) || matcher.test( normalize( value ) );
