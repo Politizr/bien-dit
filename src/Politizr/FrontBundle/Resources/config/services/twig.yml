@@ -1,4 +1,9 @@
 services:
+    twig.extension.text:
+       class: Twig_Extensions_Extension_Text
+       tags:
+            - { name: twig.extension }
+
     politzr.twig.tag:
         class:                              Politizr\FrontBundle\Twig\PolitizrTagExtension
         arguments:                          [ @service_container ]

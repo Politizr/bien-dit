@@ -5,5 +5,5 @@
     {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}
 </div>
 <div class="contextDescription">
-    <p>{{ comment.description | slice(0, 250) }}</p>
+    <p>{{ comment.description | truncate(250) }}</p>
 </div>
