@@ -125,6 +125,13 @@
             <div id="editParti" class="profileFieldset">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">famille politique</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>choix des partis politiques</h4>
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_organizations.html.twig' %}
+                    </div>
                 </div>
 
                 <form method="POST" name="userOrganization" id="formUserOrganizationUpdate">
