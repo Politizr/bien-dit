@@ -60,8 +60,14 @@ class XhrNotification
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $notifs = $this->notificationManager->getScreenUserNotifications($user->getId());
-        $counterNotifs = $this->notificationManager->countScreenUserNotifications($user->getId());
+        // UC session out > manage this case to avoid multiple useless exceptions
+        if ($user == null) {
+            $notifs = [];
+            $counterNotifs = 0;
+        } else {
+            $notifs = $this->notificationManager->getScreenUserNotifications($user->getId());
+            $counterNotifs = $this->notificationManager->countScreenUserNotifications($user->getId());
+        }
 
         // Rendering
         $html = $this->templating->render(
