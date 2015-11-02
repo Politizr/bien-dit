@@ -3,7 +3,7 @@ services:
     # LISTENERS
     politzr_admin.listener.email:
         class:      Politizr\AdminBundle\Listener\EmailListener
-        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%noreply_email%" ]
+        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%support_email%" ]
         tags:
             - { name: kernel.event_listener, event: order_email }
 

@@ -1,7 +1,7 @@
 services:
     politzr.listener.email:
         class:      Politizr\FrontBundle\Listener\EmailListener
-        arguments:  [ @mailer, @templating, @politizr.manager.monitoring, @logger, "%contact_email%", "%noreply_email%" ]
+        arguments:  [ @mailer, @templating, @politizr.manager.monitoring, @logger, "%contact_email%", "%support_email%" ]
         tags:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }

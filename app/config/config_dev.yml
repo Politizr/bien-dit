@@ -57,7 +57,7 @@ assetic:
     use_controller: true
 
 swiftmailer:
-    delivery_address: lionel.bouzonville@gmail.com
+    disable_delivery: true
 
 # Bazinga Faker
 bazinga_faker:

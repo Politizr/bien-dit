@@ -17,7 +17,7 @@ parameters:
 
     # Email contact
     contact_email: contact@politizr.com
-    noreply_email: ne-pas-repondre@politizr.com
+    support_email: support@politizr.com
 
     # Hosts
     host.admin: *

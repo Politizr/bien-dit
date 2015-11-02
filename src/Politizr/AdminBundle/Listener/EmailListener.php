@@ -21,20 +21,20 @@ class EmailListener
     protected $logger;
 
     protected $contactEmail;
-    protected $noreplyEmail;
+    protected $supportEmail;
 
 
     /**
      *
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail)
+    public function __construct($mailer, $templating, $logger, $contactEmail, $supportEmail)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->logger = $logger;
 
         $this->contactEmail = $contactEmail;
-        $this->noreplyEmail = $noreplyEmail;
+        $this->supportEmail = $supportEmail;
     }
 
     /**
@@ -47,7 +47,7 @@ class EmailListener
         $this->logger->info('*** onOrderEmail');
 
         $order = $event->getSubject();
-        $subject = 'Politizr - ';
+        $subject = '[ Politizr ] ';
         switch ($order->getPOOrderStateId()) {
             case OrderConstants::ORDER_CREATED:
                 $template = 'order';
@@ -92,7 +92,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->contactEmail => 'Politizr'))
+                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
                     ->setTo($order->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')

@@ -19,8 +19,7 @@ monolog:
 #             level: info
 
 swiftmailer:
-#     delivery_address: thomas@ecologic-com.com
-    delivery_address: lionel.bouzonville@gmail.com
+    disable_delivery: true
 
 # Bazinga Faker
 bazinga_faker:

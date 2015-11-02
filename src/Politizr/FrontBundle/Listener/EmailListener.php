@@ -20,7 +20,7 @@ class EmailListener
     protected $logger;
 
     protected $contactEmail;
-    protected $noreplyEmail;
+    protected $supportEmail;
 
 
     /**
@@ -30,9 +30,9 @@ class EmailListener
      * @param @politizr.manager.monitoring
      * @param @logger
      * @param string $contactEmail
-     * @param string $noreplyEmail
+     * @param string $supportEmail
      */
-    public function __construct($mailer, $templating, $monitoringManager, $logger, $contactEmail, $noreplyEmail)
+    public function __construct($mailer, $templating, $monitoringManager, $logger, $contactEmail, $supportEmail)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
@@ -40,7 +40,7 @@ class EmailListener
         $this->logger = $logger;
 
         $this->contactEmail = $contactEmail;
-        $this->noreplyEmail = $noreplyEmail;
+        $this->supportEmail = $supportEmail;
     }
 
     /**
@@ -70,8 +70,8 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Politizr - Réinitialisation du mot de passe')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Réinitialisation du mot de passe')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -122,8 +122,8 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Politizr - Mise à jour de sécurité')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Mise à jour de sécurité')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -174,8 +174,8 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Vous avez une notification!')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Nouvelle notification')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($userEmail)
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
