@@ -4,18 +4,27 @@
         <div class="listCriteria listCriteriaTabs">
             <form id="listType">
                 <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_RANKING_DEBATE_LIST',
-            'xhrService': 'modal',
-            'xhrMethod': 'rankingDebateList',
-            'xhrType': 'RETURN_HTML',
-        } only %}" checked/>
-                <label for="debateType">publications</label>
+                        'xhrRoute': 'ROUTE_MODAL_RANKING_DEBATE_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'rankingDebateList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}" checked/>
+                <label for="debateType">débats</label>
+
+                <input type="radio" class="type" name="type" id="reactionType" value="reaction" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+                        'xhrRoute': 'ROUTE_MODAL_RANKING_REACTION_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'rankingReactionList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}"/>
+                <label for="reactionType">réactions</label>
+
                 <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_RANKING_USER_LIST',
-            'xhrService': 'modal',
-            'xhrMethod': 'rankingUserList',
-            'xhrType': 'RETURN_HTML',
-        } only %}" />
+                        'xhrRoute': 'ROUTE_MODAL_RANKING_USER_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'rankingUserList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}" />
                 <label for="userType">profils</label>
             </form>
         </div>

@@ -1,0 +1,6 @@
+<div class="listTab postTab">
+    {% for reaction in reactions %}
+        {% include 'PolitizrFrontBundle:Reaction:_listRow.html.twig' with { 'reaction': reaction } only %}
+    {% endfor %}
+</div>
+{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset, 'action': paginateNextAction } %}

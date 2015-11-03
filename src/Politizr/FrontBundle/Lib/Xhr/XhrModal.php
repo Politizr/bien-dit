@@ -9,6 +9,7 @@ use Politizr\Exception\FormValidationException;
 use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 
 /**
@@ -123,13 +124,19 @@ class XhrModal
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
-        // @todo constant management refactor
         if ('debate' === $type) {
             $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
             );
             $listFilter = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
+            );
+        } elseif ('reaction' === $type) {
+            $listOrder = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig'
+            );
+            $listFilter = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByReaction.html.twig'
             );
         } elseif ('user' === $type) {
             $listOrder = $this->templating->render(
@@ -387,6 +394,59 @@ class XhrModal
     }
 
     /**
+     * Reaction ranking listing
+     */
+    public function rankingReactionList(Request $request)
+    {
+        $this->logger->info('*** rankingReactionList');
+
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // Function process
+        $reactions = PDReactionQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_RANKING,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
      * Ranking user listing
      */
     public function rankingUserList(Request $request)
@@ -438,6 +498,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                                 SUGGESTION                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Suggestion debate listing

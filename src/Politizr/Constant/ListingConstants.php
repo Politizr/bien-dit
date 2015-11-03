@@ -21,6 +21,7 @@ class ListingConstants
     // ************************************************************ //
 
     const MODAL_DEBATES = 'MODAL_DEBATES';
+    const MODAL_REACTIONS = 'MODAL_REACTIONS';
     const MODAL_USERS = 'MODAL_USERS';
 
     // ************************************************************ //

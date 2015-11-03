@@ -51,6 +51,7 @@ var ROUTE_MODAL_FILTERS = 'filtres';
 var ROUTE_MODAL_SEARCH_INIT_FILTERS_LIST = 'filtres-liste/recherche';
 var ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
 var ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
+var ROUTE_MODAL_RANKING_REACTION_LIST = 'profil/liste/classement/reaction';
 var ROUTE_MODAL_RANKING_USER_LIST = 'profil/liste/classement/utilisateur';
 var ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
 var ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
