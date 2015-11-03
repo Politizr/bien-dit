@@ -25,7 +25,13 @@
         <div id="profileNameHolder">
             <div id="profileNameBottom">
                 <div id="profileName">
-                    {{ user }}
+                    {% if withUrlInName %}
+                        <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="modalItemShow">
+                            {{ user }}
+                        </a>
+                    {% else %}
+                        {{ user }}
+                    {% endif %}
                     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
                 </div>
                 <div id="profileSocialLinks">

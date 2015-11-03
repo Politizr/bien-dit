@@ -1,6 +1,6 @@
 <div id="main">
     <div id="profileHeader">
-        {% include 'PolitizrFrontBundle:User:_header.html.twig' with { 'user': user } only %}
+        {% include 'PolitizrFrontBundle:User:_header.html.twig' with { 'user': user, 'withUrlInName': false } only %}
     </div>
     <div id="illustration_l">
         {{ user | photoBack('user_bio_back') }}
