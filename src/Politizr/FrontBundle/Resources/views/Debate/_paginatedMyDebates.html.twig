@@ -1,9 +1,0 @@
-{% for debate in debates %}
-    {% include 'PolitizrFrontBundle:Debate:_myDebate.html.twig' with { 'debate': debate } %}
-{% endfor %}
-
-<div id="timelineScrollNav">
-    {% if moreResults %}
-        <a id="moreResults" action="listingPaginatedNext" offset="{{ offset }}">suite</a>
-    {% endif %}
-</div>

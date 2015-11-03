@@ -1,9 +1,0 @@
-{% for reaction in reactions %}
-    {% include 'PolitizrFrontBundle:Reaction:_myReaction.html.twig' with { 'reaction': reaction } %}
-{% endfor %}
-
-<div id="timelineScrollNav">
-    {% if moreResults %}
-        <a id="moreResults" action="listingPaginatedNext" offset="{{ offset }}">suite</a>
-    {% endif %}
-</div>

@@ -1,8 +1,8 @@
 {% for document in documents %}
     {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
-        {% include 'PolitizrFrontBundle:Debate:_draft.html.twig' with { 'debate': document } %}
+        {% include 'PolitizrFrontBundle:Debate:_myDebate.html.twig' with { 'debate': document } %}
     {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
-        {% include 'PolitizrFrontBundle:Reaction:_draft.html.twig' with { 'reaction': document } %}
+        {% include 'PolitizrFrontBundle:Reaction:_myReaction.html.twig' with { 'reaction': document } %}
     {% endif %}
 {% endfor %}
 

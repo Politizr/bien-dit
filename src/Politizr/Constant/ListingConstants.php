@@ -39,4 +39,7 @@ class ListingConstants
     const TIMELINE_USER_TYPE = 9;
     
     const FEED_DEBATE_TYPE = 10;
+
+    const MY_DRAFTS_TYPE = 11;
+    const MY_PUBLICATIONS_TYPE = 12;
 }

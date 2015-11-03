@@ -12,6 +12,7 @@ use Politizr\Exception\FormValidationException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -410,7 +411,7 @@ class XhrDocument
         $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
 
         return array(
-            'redirectUrl' => $this->router->generate('MyDebates'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $this->router->generate('MyPublications'.$this->globalTools->computeProfileSuffix()),
         );
     }
 
@@ -612,7 +613,7 @@ class XhrDocument
 
         // Renvoi de l'url de redirection
         return array(
-            'redirectUrl' => $this->router->generate('MyReactions'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $this->router->generate('MyPublications'.$this->globalTools->computeProfileSuffix()),
         );
     }
 
@@ -888,21 +889,29 @@ class XhrDocument
         // Function process
         $documents = $this->documentService->generateDraftsListing($offset);
 
-        // @todo use constant for "limit"
         $moreResults = false;
-        if (sizeof($documents) == 10) {
+        if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_paginatedDrafts.html.twig',
-            array(
-                'profileSuffix' => $this->globalTools->computeProfileSuffix(),
-                'documents' => $documents,
-                'offset' => intval($offset) + 10,
-                'moreResults' => $moreResults,
-            )
-        );
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MY_DRAFTS_TYPE,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Document:_paginatedDrafts.html.twig',
+                array(
+                    'profileSuffix' => $this->globalTools->computeProfileSuffix(),
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                )
+            );
+        }
 
         return array(
             'html' => $html,
@@ -914,85 +923,42 @@ class XhrDocument
     /* ######################################################################################################## */
 
     /**
-     * User's debates' contributions
+     * User's publications
      */
-    public function myDebatesPaginated(Request $request)
+    public function myPublicationsPaginated(Request $request)
     {
-        $this->logger->info('*** myDebatesPaginated');
+        $this->logger->info('*** myPublicationsPaginated');
 
         // Request arguments
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $documents = $this->documentService->generatePublicationsListing($offset);
 
-        // @todo use constant for "limit"
-        $debates = PDDebateQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->limit(10)
-            ->offset($offset)
-            ->find();
-
-        // @todo use constant for "limit"
         $moreResults = false;
-        if (sizeof($debates) == 10) {
+        if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Debate:_paginatedMyDebates.html.twig',
-            array(
-                'debates' => $debates,
-                'offset' => intval($offset) + 10,
-                'moreResults' => $moreResults,
-            )
-        );
-
-        return array(
-            'html' => $html,
-        );
-    }
-
-    /**
-     * User's reactions' contributions
-     */
-    public function myReactionsPaginated(Request $request)
-    {
-        $this->logger->info('*** myReactionsPaginated');
-
-        // Request arguments
-        $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
-
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        // @todo use constant for "limit"
-        $reactions = PDReactionQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->limit(10)
-            ->offset($offset)
-            ->find();
-
-        // @todo use constant for "limit"
-        $moreResults = false;
-        if (sizeof($reactions) == 10) {
-            $moreResults = true;
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MY_PUBLICATIONS_TYPE,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Document:_paginatedPublications.html.twig',
+                array(
+                    'profileSuffix' => $this->globalTools->computeProfileSuffix(),
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                )
+            );
         }
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Reaction:_paginatedMyReactions.html.twig',
-            array(
-                'reactions' => $reactions,
-                'offset' => intval($offset) + 10,
-                'moreResults' => $moreResults,
-            )
-        );
 
         return array(
             'html' => $html,

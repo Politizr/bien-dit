@@ -3,7 +3,8 @@
 FROM p_d_reaction
 WHERE
     p_user_id = 2
-    AND p_d_reaction.published = 0
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
 )
 
 UNION DISTINCT
@@ -13,7 +14,8 @@ UNION DISTINCT
 FROM p_d_debate
 WHERE
     p_user_id = 2
-    AND p_d_debate.published = 0
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
 )
 
 ORDER BY updated_at DESC

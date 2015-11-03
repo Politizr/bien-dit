@@ -55,21 +55,22 @@ class DocumentService
     /* ######################################################################################################## */
 
    /**
-     * Debate feed timeline
+     * My documents listing
      *
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    private function generateDraftsListingRawSql($offset, $count = 10)
+    private function generateMyDocumentsListingRawSql($published, $offset, $count = 10)
     {
         $this->logger->info('*** getSql');
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $sql = $this->documentManager->createDraftsRawSql(
+        $sql = $this->documentManager->createMyDocumentsRawSql(
             $user->getId(),
+            $published,
             $offset,
             $count
         );
@@ -187,7 +188,23 @@ class DocumentService
     {
         $this->logger->info('*** generateDraftsPaginatedListing');
         
-        $sql = $this->generateDraftsListingRawSql($offset);
+        $sql = $this->generateMyDocumentsListingRawSql(false, $offset);
+        $documents = $this->hydrateDocumentRows($sql);
+
+        return $documents;
+    }
+    
+    /**
+     * Get the publication paginated listing of documents (debate + reaction)
+     *
+     * @param integer $offset
+     * @return PropelCollection[PDDebate|PDReaction]
+     */
+    public function generatePublicationsListing($offset = 0)
+    {
+        $this->logger->info('*** generatePublicationsListing');
+        
+        $sql = $this->generateMyDocumentsListingRawSql(true, $offset);
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;

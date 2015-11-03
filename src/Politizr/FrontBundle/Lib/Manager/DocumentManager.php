@@ -99,22 +99,28 @@ ORDER BY published_at ASC
     }
 
    /**
-     * Documents drafts
+     * My documents (drafts / publications)
      *
-     * @see app/sql/drafts.sql
+     * @see app/sql/myDocuments.sql
      *
      * @todo:
      *   > + réactions sur les débats / réactions rédigés par le user courant
      *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
-     * @param integer $debateId
-     * @param array $inQueryUserIds
+     * @param integer $userId
+     * @param boolean $published
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    public function createDraftsRawSql($userId, $offset, $count = 10)
+    public function createMyDocumentsRawSql($userId, $published, $offset, $count = 10)
     {
+        if ($published) {
+            $published = 1;
+        } else {
+            $published = 0;
+        }
+        
         // Préparation requête SQL
         $sql = "
 #  Brouillons de réactions
@@ -122,7 +128,8 @@ ORDER BY published_at ASC
 FROM p_d_reaction
 WHERE
     p_user_id = ".$userId."
-    AND p_d_reaction.published = 0
+    AND p_d_reaction.published = ".$published."
+    AND p_d_reaction.online = 1
 )
 
 UNION DISTINCT
@@ -132,7 +139,8 @@ UNION DISTINCT
 FROM p_d_debate
 WHERE
     p_user_id = ".$userId."
-    AND p_d_debate.published = 0
+    AND p_d_debate.published = ".$published."
+    AND p_d_debate.online = 1
 )
 
 ORDER BY updated_at DESC

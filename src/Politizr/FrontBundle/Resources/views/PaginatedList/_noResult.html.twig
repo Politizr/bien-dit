@@ -45,5 +45,9 @@
         Cet utilisateur n'a pas publié de commentaires, débats ou réactions.
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::FEED_DEBATE_TYPE') %}
         Le fil de ce débat est vide.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MY_DRAFTS_TYPE') %}
+        Vous n'avez rédigé aucun brouillon.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::MY_PUBLICATIONS_TYPE') %}
+        Vous n'avez publié aucun débat ni aucune réaction.
     {% endif %}
 </div>

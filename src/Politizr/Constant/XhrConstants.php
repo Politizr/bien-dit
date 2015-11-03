@@ -33,20 +33,19 @@ class XhrConstants
     // DEBATES + REACTIONS
     const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
+    const ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
 
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
     const ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
     const ROUTE_DEBATE_DELETE = 'profil/debat/supprimer';
     const ROUTE_DEBATE_PHOTO_INFO_UPDATE = 'profil/debat/infos/photo/update';
-    const ROUTE_DEBATE_MY_DEBATES = 'profil/contributions/mes-debats';
 
     // REACTIONS
     const ROUTE_REACTION_UPDATE = 'profil/reaction/update';
     const ROUTE_REACTION_PUBLISH = 'profil/reaction/publier';
     const ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
     const ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
-    const ROUTE_REACTION_MY_REACTIONS = 'profil/contributions/mes-reactions';
 
     // NOTIFICATIONS
     const ROUTE_NOTIF_LOADING = 'profil/notif/chargement';

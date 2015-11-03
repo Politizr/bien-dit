@@ -19,6 +19,11 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
+            // Propel
+            new Propel\PropelBundle\PropelBundle(),
+            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
+            new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
+
             // FOSUserBundle
             new FOS\UserBundle\FOSUserBundle(),
             
@@ -27,11 +32,6 @@ class AppKernel extends Kernel
             
             // HTML2PDF
             new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
-
-            // Propel
-            new Propel\PropelBundle\PropelBundle(),
-            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
-            new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
             
             // Admin Generator & dependencies
             new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),

@@ -324,25 +324,8 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** draftsAction');
 
-        $user = $this->getUser();
-
-        // Nb debate's drafts
-        $nbDebateDrafts = PDDebateQuery::create()
-            ->filterByPUserId($user->getId())
-            ->filterByPublished(false)
-            ->count();
-
-        // Nb reaction's drafts
-        $nbReactionDrafts = PDReactionQuery::create()
-            ->filterByPUserId($user->getId())
-            ->filterByPublished(false)
-            ->count();
-
-        $nbDrafts = $nbDebateDrafts + $nbReactionDrafts;
-
         return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'nbDrafts' => $nbDrafts,
         ));
     }
 
@@ -351,46 +334,15 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     * Debates
+     * Debates & Reactions
      */
-    public function myDebatesAction()
+    public function myPublicationsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** myDebatesAction');
+        $logger->info('*** myPublicationsAction');
 
-        $user = $this->getUser();
-        
-        $nbDebates = PDDebateQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->count();
-
-        return $this->render('PolitizrFrontBundle:Debate:myDebates.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Document:myPublications.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'nbDebates' => $nbDebates,
-        ));
-    }
-
-    /**
-     * Reactions
-     */
-    public function myReactionsAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myReactionsAction');
-
-        $user = $this->getUser();
-        
-        $nbReactions = PDReactionQuery::create()
-            ->filterByPUserId($user->getId())
-            ->online()
-            ->orderByPublishedAt('desc')
-            ->count();
-
-        return $this->render('PolitizrFrontBundle:Reaction:myReactions.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'nbReactions' => $nbReactions,
         ));
     }
 }

@@ -1,11 +1,11 @@
 // on document ready
 $(function() {
-    contributionList();
+    publicationList();
 });
 
 // Next page
 $("body").on("click", "[action='listingPaginatedNext']", function(e) {
-    contributionList(false, $(this).attr('offset'));
+    publicationList(false, $(this).attr('offset'));
 });
 
 /**
@@ -14,8 +14,8 @@ $("body").on("click", "[action='listingPaginatedNext']", function(e) {
  * @param boolean init
  * @param integer offset
  */
-function contributionList(init, offset) {
-    // console.log('*** contributionList');
+function publicationList(init, offset) {
+    // console.log('*** publicationList');
     // console.log(init);
     // console.log(offset);
 

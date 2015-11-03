@@ -20,20 +20,19 @@ var ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 // DEBATES + REACTIONS
 var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
+var ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
 
 // DEBATES
 var ROUTE_DEBATE_UPDATE = 'profil/debat/update';
 var ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
 var ROUTE_DEBATE_DELETE = 'profil/debat/supprimer';
 var ROUTE_DEBATE_PHOTO_INFO_UPDATE = 'profil/debat/infos/photo/update';
-var ROUTE_DEBATE_MY_DEBATES = 'profil/contributions/mes-debats';
 
 // REACTIONS
 var ROUTE_REACTION_UPDATE = 'profil/reaction/update';
 var ROUTE_REACTION_PUBLISH = 'profil/reaction/publier';
 var ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
 var ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
-var ROUTE_REACTION_MY_REACTIONS = 'profil/contributions/mes-reactions';
 
 // NOTIFICATIONS
 var ROUTE_NOTIF_LOADING = 'profil/notif/chargement';

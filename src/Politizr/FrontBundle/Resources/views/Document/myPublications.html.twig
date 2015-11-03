@@ -1,12 +1,12 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block title %}
-    {{ parent() }} - Mes brouillons
+    {{ parent() }} - Mes publications
 {% endblock title %}
 
 {% block main %}
     <div id="publicationsList">
-        <h1>Brouillons</h1>
+        <h1>Mes publications</h1>
         <div id="listContent">
         </div>
     </div>
@@ -16,8 +16,8 @@
     {{ parent() }}
 
     <script>
-        var xhrRoute = ROUTE_DOCUMENT_DRAFTS;
-        var xhrMethod = 'draftsPaginated';
+        var xhrRoute = ROUTE_DEBATE_MY_PUBLICATIONS;
+        var xhrMethod = 'myPublicationsPaginated';
     </script>
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/myPublications.js'
