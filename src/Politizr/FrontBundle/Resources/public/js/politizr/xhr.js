@@ -54,6 +54,7 @@ var ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
 var ROUTE_MODAL_RANKING_REACTION_LIST = 'profil/liste/classement/reaction';
 var ROUTE_MODAL_RANKING_USER_LIST = 'profil/liste/classement/utilisateur';
 var ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
+var ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
 var ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
 var ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
 var ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';

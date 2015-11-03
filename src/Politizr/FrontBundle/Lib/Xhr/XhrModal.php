@@ -550,6 +550,52 @@ class XhrModal
     }
 
     /**
+     * Suggestion reaction listing
+     */
+    public function suggestionReactionList(Request $request)
+    {
+        $this->logger->info('*** suggestionReactionList');
+        
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        
+        // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $reactions = PDReactionQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * Suggestion user listing
      */
     public function suggestionUserList(Request $request)

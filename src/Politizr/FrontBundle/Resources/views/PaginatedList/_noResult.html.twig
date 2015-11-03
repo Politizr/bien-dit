@@ -14,6 +14,8 @@
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SUGGESTION') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
             Nous ne pouvons pas vous suggérer de nouveaux débats: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
+            Nous ne pouvons pas vous suggérer de nouvelles réactions: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
             Nous ne pouvons pas vous suggérer de nouveaux utilisateurs: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
         {% endif %}
