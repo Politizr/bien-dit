@@ -98,6 +98,7 @@ class EmailListener
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Order billing');
 
             // Facture en PJ
             if ($pj) {

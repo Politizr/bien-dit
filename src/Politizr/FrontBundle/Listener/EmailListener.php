@@ -77,6 +77,7 @@ class EmailListener
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Lost password');
 
             // Envoi email
             $failedRecipients = array();
@@ -129,6 +130,7 @@ class EmailListener
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Update password');
 
             // Envoi email
             $failedRecipients = array();
@@ -181,6 +183,7 @@ class EmailListener
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Notification');
 
             // Envoi email
             $failedRecipients = array();
